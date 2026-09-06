@@ -40,9 +40,19 @@
 
 ## 2. Runtime Capability Gate
 
-在任何 GitHub source acquisition 前，若目前 execution runtime 中**實際存在**先前已驗證、仍可執行且來源可可靠辨識的 canonical `randomizer.py` copy，可先做一次低成本 reuse probe；probe 通過就直接用該 copy 執行本題新的 draw／cast，不必為形式重新抓 GitHub、重新 materialize 或重跑完整 smoke test。
+在任何 GitHub source acquisition 前，若目前 execution runtime 中**實際存在**先前驗證過的 canonical `randomizer.py` 與其 local verification marker，應先做一次**低成本 reuse probe**。
 
-這只是 opportunistic fast path，不保證每個 turn 都成立。Conversation context 記得「之前載入過」本身不算 runtime evidence；若 copy 不存在、不可執行、來源狀態無法可靠確認，或 probe 失敗，就回到正常 capability check。
+Probe 的最低充分檢查為：
+
+- `randomizer.py` 實際存在且可 import／execute；
+- verification marker 實際存在且可解析；
+- marker 記錄的 `randomizer.py` SHA-256 與目前檔案一致；
+- `algorithm_version`、`schema_version` 與 marker 一致；
+- Tarot deck 仍為 78 張且唯一，或執行等價的最低必要 invariant check。
+
+以上成立即可直接使用現有 copy 執行本題新的 draw／cast；**不要重新抓 GitHub、不要重新 materialize，也不要每題重跑完整 smoke test／完整 invariant suite。**
+
+這是 opportunistic fast path，不保證每個 turn 都成立。Conversation context 記得「之前載入過」本身不算 runtime evidence；若 copy／marker 不存在、SHA 不符、版本不符、import 失敗、最低 invariant 失敗或來源狀態無法可靠確認，就回到正常 capability check。
 
 ChatGPT 在第一次需要自行抽牌，或 reuse path 不成立時，應做最低充分 capability check：
 
@@ -50,6 +60,24 @@ ChatGPT 在第一次需要自行抽牌，或 reuse path 不成立時，應做最
 - canonical `randomizer.py` 是否可取得／已載入；
 - 必要標準庫是否可用；
 - 程式能否完成一次 bounded smoke test。
+
+首次取得並成功 smoke-test `randomizer.py` 後，若 runtime workspace 可保留檔案，應順手建立一份輕量 local verification marker，供後續 reuse probe 使用。Marker 只屬 temporary execution state，不是新的 canonical authority，也不是 Reading Record evidence layer。
+
+Marker 最低可包含：
+
+```json
+{
+  "verified": true,
+  "runtime_source_path": "masini1491/tarot-plum-randomizer/randomizer.py",
+  "runtime_source_commit": "<known SHA or unknown>",
+  "runtime_copy_sha256": "<sha256>",
+  "algorithm_version": "<version>",
+  "schema_version": "<version>",
+  "tarot_deck_size": 78
+}
+```
+
+不要求固定檔名或固定 workspace path；只要求後續 Python execution 能直接觀察並驗證該 marker 與 `randomizer.py`。
 
 不要為了能力盤點去掃描所有 runtime、compiler 或 sandbox 套件；只驗證本次真正需要的 Python capability。
 
@@ -71,24 +99,31 @@ Playbook 只保存治理規則，不另外維護一份 Python 抽牌程式，避
 
 `repository retrieval capability` 與 `Python runtime network capability` 是不同層級；Python sandbox 無法直接連 GitHub，不代表 ChatGPT 無法透過 repository-native connector 取得 canonical source。
 
-只有在目前沒有可直接重用的 verified runtime copy 時，才需要重新取得 `randomizer.py`。依最低充分順序：
+只有在目前沒有通過 reuse probe 的 verified runtime copy 時，才需要重新取得 `randomizer.py`。依最低充分順序：
 
 1. 若目前環境已有可直接讀取 GitHub repository 的 **connected GitHub tool／connector**，優先用它取得指定 `main`／ref 的 canonical `randomizer.py` 與可得的 source commit evidence。
 2. 取得 source 後，可將該檔案 materialize／寫入 ChatGPT 自己的 temporary／ephemeral runtime workspace，再由 Python 執行；temporary copy 只是 execution input，不會變成新的 canonical implementation。
-3. 若 GitHub connector 不可用，再評估 GitHub public/raw/Web access；只有在必要時才要求 Python runtime 自己具備外網／DNS／HTTPS 能力。
-4. 若已有本地副本，只有其來源與 canonical version 能被可靠確認時才可使用；未確認 freshness 的 cached copy 不得覆蓋較新的 canonical GitHub evidence。
-5. Connector 能讀 repository ≠ Python runtime 能連網 ≠ repository write authority。這三種 capability 不得互相推導。
-6. 若任何取得路徑只拿到不完整、截斷或無法確認為 canonical target 的 source，視為 acquisition gap，不能因「看起來像 randomizer」就執行並宣稱 canonical Runtime Draw。
+3. bounded smoke test 成功後，若 runtime 可保留檔案，建立 §2 所述的 local verification marker，讓後續 turn 可以用便宜 probe 直接 reuse。
+4. 若 GitHub connector 不可用，再評估 GitHub public/raw/Web access；只有在必要時才要求 Python runtime 自己具備外網／DNS／HTTPS 能力。
+5. 若已有本地副本，只有其來源與 canonical version 能被可靠確認時才可使用；未確認 freshness 的 cached copy 不得覆蓋較新的 canonical GitHub evidence。
+6. Connector 能讀 repository ≠ Python runtime 能連網 ≠ repository write authority。這三種 capability 不得互相推導。
+7. 若任何取得路徑只拿到不完整、截斷或無法確認為 canonical target 的 source，視為 acquisition gap，不能因「看起來像 randomizer」就執行並宣稱 canonical Runtime Draw。
 
-對已通過 reuse probe 的既有 runtime copy，不要求每題都重新查 `main` 是否有新 commit；若使用者明確要求最新版／完整 provenance，或已有 evidence 顯示 Randomizer source 已更新，再重新取得 canonical source。
+對已通過 reuse probe 的既有 runtime copy，不要求每題都重新查 `main` 是否有新 commit；若使用者明確要求 Randomizer 最新版／完整 provenance，或已有 evidence 顯示 Randomizer source 已更新，再重新取得 canonical source並更新 local marker。
 
-推薦一般 fallback 流程：
+推薦正常流程：
 
 ```text
+先 probe existing runtime copy
+  ↓ PASS
+fresh Runtime Draw
+
+  ↓ FAIL / unavailable
 GitHub connector / repository-native read
 → canonical randomizer.py + source evidence
 → temporary runtime copy
 → Python smoke test
+→ write lightweight verification marker
 → Runtime Draw
 ```
 
@@ -224,6 +259,8 @@ raw_input: A, B
 
 Provenance precision 必須如實保存：若只確認 source path、未確認 commit，就保留 `unknown`；若 runtime timestamp unavailable，就標 unavailable。單一 provenance 欄位已知，不代表其他欄位也已驗證。
 
+Local verification marker 只是 reuse optimization evidence；不得拿 marker 的時間或內容替代每一次真正 Runtime Draw 產生的 result／timestamp。
+
 ## 10. 使用者可見的標準 Runtime Draw
 
 預設保持簡潔，不把內部 audit metadata 全部印出來。
@@ -326,6 +363,10 @@ Canonical runtime tool 更新後，建議至少驗證：
 - JSON 可被正常解析；
 - `generated_at_utc` 與 `generated_at_taipei` 代表同一瞬間；
 - 台灣時間 offset 為 `+08:00`；
-- metadata-only 變更不會誤升 `algorithm_version`。
+- metadata-only 變更不會誤升 `algorithm_version`；
+- reuse probe 能用 local marker + SHA-256 + version + 最低 invariant 驗證現有 copy；
+- probe PASS 後不重新抓 GitHub／materialize／完整 smoke test；
+- probe PASS 後仍為每個新 question identity fresh execution／fresh shuffle；
+- probe FAIL 時會回到 canonical source acquisition，而不是強行使用 stale／不明 copy。
 
 測試屬於 Randomizer repo 的 implementation responsibility；本 Playbook 只要求 Runtime Draw 不應依賴未驗證、來源不明的臨時抽牌片段。
