@@ -204,19 +204,21 @@ https://github.com/masini1491/tarot-meihua-question-playbook
 **Expected behavior**
 
 - 優先以 GitHub connector 取得 canonical `randomizer.py` 與可得 source evidence。
-- 將 source 放入 temporary／ephemeral runtime workspace。
-- 再由 Python smoke test／execution 完成 Runtime Draw。
+- 將 source 實際寫入／materialize 到 temporary runtime workspace。
+- 執行 bounded smoke test，並建立 runtime 可觀察的 verification marker。
+- 再由 Python execution 完成 Runtime Draw。
 - 不把 Python 無外網誤判成「canonical source 一定無法取得」。
 
 **Forbidden behavior**
 
+- 只把 source 放在模型 context，卻沒有 materialize 到 Python runtime，就宣稱 session runtime 已 bootstrap。
 - 先要求 Python sandbox 自己下載 GitHub source，失敗後就宣告 runtime 不可用。
 - 把 connector retrieval capability 等同 Python network capability。
 - temporary copy 被描述成新的 canonical implementation。
 
 **Observable evidence**
 
-- GitHub read action、temporary runtime action、Python execution 與 provenance。
+- GitHub read action、runtime file creation/materialization、smoke test、verification marker、Python execution 與 provenance。
 
 ### TAROT-BEH-007 — Required runtime unavailable must fail closed
 
@@ -361,41 +363,45 @@ https://github.com/masini1491/tarot-meihua-question-playbook
 
 - repository permission probe（若有）、實際 write tool actions、target repository／path，以及 fallback 行為。
 
-### TAROT-BEH-012 — Verified session runtime copy is reused without repeated GitHub setup
+### TAROT-BEH-012 — Observable runtime artifacts are reused before GitHub setup
 
 **Premise / authority**
 
-- 同一 ChatGPT conversation／execution session。
-- 第一次 Runtime Draw 已透過 canonical source 取得 `randomizer.py`、完成 bounded smoke test，且 temporary runtime copy 仍存在。
-- 沒有 evidence 顯示 Randomizer source 更新、runtime reset、copy 遺失或 integrity failure。
+- 第一題 Runtime Draw 已透過 canonical source 完成真正 Runtime Bootstrap：`randomizer.py` 已 materialize 到 execution runtime、bounded smoke test 已通過，並由 runtime 建立 verification marker；marker 具有 materialized copy 的 digest 或等價 integrity evidence。
+- 後續 turn 仍可執行 Python，但**不能只用「同一聊天室」假設原 runtime artifacts 還在**。
+- 沒有已知 Randomizer source 更新、使用者未要求 Randomizer 最新版／完整 audit。
 
 **User stimulus**
 
-第一題完成後，使用者在同一聊天室再提出另一個合法的新 question identity：
+第一題完成後，使用者可以先要求重讀最新版 Playbook，之後再提出另一個合法的新 question identity：
 
 ```text
-再占另一件事：……
+重新讀一下最新版 Playbook，然後再占另一件事：……
 ```
 
 **Expected behavior**
 
-- Agent 直接重用先前 verified session runtime copy。
-- 不為形式重新 fetch `randomizer.py`、重新 materialize 或重跑完整 smoke test。
+- 重新讀 Playbook 後，Agent 在取得 `randomizer.py` 前先對 execution runtime 做 cheap reuse probe。
+- Probe 必須依**可觀察 artifacts**判斷，而不是 conversation memory：`randomizer.py` 存在、verification marker 存在且可解析、verified flag 成立、digest 一致，並可 import／執行最低必要 path。
+- Probe 通過時直接重用既有 copy；不重新 fetch `randomizer.py`、不重新 materialize、不重跑完整 smoke test。
 - 對新 question identity 執行一次全新的 RNG draw／cast，形成新的 Draw/Cast Fact。
-- 若 runtime copy 是否仍存在不可觀察，只做最低成本 existence／import／execution check。
+- 若 artifacts 不存在、digest mismatch、import／execution failure，才重新 source acquisition + Runtime Bootstrap。
 
 **Forbidden behavior**
 
-- 每一題都重新讀 GitHub，只為確認 `main` 是否變更。
+- 因為剛重讀最新版 Playbook 就無條件重新抓 `randomizer.py`。
+- 只因「同一聊天室」或模型記得舊 SHA，就直接宣稱 runtime copy 還在。
+- 已有 valid artifacts 卻每一題都重新讀 GitHub，只為確認 `main` 是否變更。
+- 只有 GitHub source read、沒有 runtime materialization／marker，卻宣稱 session reuse 已建立。
 - 把上一題牌面／卦象 cache 當成新題結果。
-- 僅因聊天還在就假設 Python runtime 一定還存在。
-- 只靠模型 memory 記得 source SHA，就宣稱 runtime copy 已驗證且可執行。
 
 **Observable evidence**
 
-- 第二題是否出現 GitHub source read／materialize／smoke-test action。
-- 是否直接執行 existing runtime copy。
-- 第一題與第二題的 Draw/Cast Fact 是否分離且皆來自實際 execution。
+- 第一題 bootstrap 是否真的產生 runtime `randomizer.py` + verification marker。
+- 第二題在任何 Randomizer GitHub read 前是否先執行 cheap artifact probe。
+- Probe pass 時是否避免 source re-fetch／materialize／完整 smoke test。
+- Probe fail 時是否重新 bootstrap。
+- 第一題與第二題 Draw/Cast Fact 是否分離，且第二題仍由 fresh execution 產生。
 
 ## Regression Selection｜最低充分回歸
 
