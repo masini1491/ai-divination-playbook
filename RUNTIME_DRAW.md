@@ -113,6 +113,41 @@ Web Randomizer / user self-draw
 - 若有 evidence 顯示 canonical Randomizer 已更新、session copy identity 不明、runtime 被重建／清空或上一輪 execution 出現 integrity failure，session verification 失效，重新進入 capability/source acquisition gate。
 - API／session cache 是否可重用是 execution concern，不會產生補占／重抽 permission；方法論 permission 仍由 `READING_LIFECYCLE.md` 決定。
 
+### 3.3 Verified Session Runtime State｜同聊天室重用契約
+
+第一次透過 GitHub／public source 取得並成功驗證 `randomizer.py` 後，Agent 可以在**目前仍可持續的同一 execution session**保留一份 ephemeral verification state，供後續占問直接執行。
+
+最低充分狀態可以概念上保存：
+
+```text
+runtime_session_verified: true
+runtime_source_path: masini1491/tarot-plum-randomizer/randomizer.py
+runtime_source_commit: <known SHA or unknown>
+runtime_algorithm_version: <verified version>
+runtime_schema_version: <verified version>
+runtime_copy_present: true
+runtime_smoke_test: passed
+```
+
+這些欄位是**ephemeral execution state**，不是 Reading Record 的新 evidence layer，也不要求預設顯示給使用者。
+
+重用規則：
+
+1. `runtime_session_verified = true`、copy 仍存在且上一輪 execution 無 integrity error 時，下一題直接呼叫該 copy 執行新的 draw／cast；不要為形式重新讀 GitHub。
+2. 不要求每次抽牌前去 GitHub 重新確認 `main` 是否有新 commit；否則 session reuse 失去降低 latency 的意義。
+3. 只有在下列情況重新驗證：使用者明確要求最新版／完整 audit、已知 Randomizer source 更新、session/runtime reset、copy 遺失、source identity 不可辨識、版本／payload contract 不符，或 execution integrity failure。
+4. 新一題仍必須產生全新的 RNG execution 與新的 Draw/Cast Fact；**reuse code, never reuse result**。
+5. Chat session 還在不代表 Python runtime 一定還在。若 runtime state 不可觀察，先做最低成本 existence／import／execution check；不要直接假設 cache 仍有效。
+6. Session state 不跨 fresh chat 自動延續，也不因模型 memory 記得某個 SHA 就視為 runtime copy 仍存在。
+
+簡化為：
+
+```text
+首次：GitHub → randomizer.py → smoke test → VERIFIED
+後續：VERIFIED copy → fresh execution → new Draw/Cast Fact
+失效：reset / stale evidence / integrity failure → re-acquire + re-verify
+```
+
 若 ChatGPT 取得的是 repo 某個 commit 的檔案，應在內部 provenance 中保留該 commit SHA。GitHub 的 commit time 只代表**該程式版本提交時間**，不是抽牌時間。
 
 若未能確認來源版本，可記 `runtime_source_commit: unknown`，但不得捏造 SHA。
@@ -378,6 +413,7 @@ Canonical runtime tool／HTTP adapter 更新後，建議至少驗證：
 - metadata-only／transport-only 變更不會誤升 `algorithm_version`；
 - API adapter 仍直接 import／呼叫 canonical `randomizer.py` functions，而不是複製 RNG／牌組／卦表；
 - API response 使用 `no-store` 或等價禁止結果 cache 的 policy；
-- 同 session verified copy reuse 只省 setup，不會重用上一題 Draw/Cast Fact。
+- 同 session verified copy reuse 只省 setup，不會重用上一題 Draw/Cast Fact；
+- verified session state 失效條件成立時會重新 acquire／verify，而不是盲目使用 stale copy。
 
 測試屬於 Randomizer repo 的 implementation responsibility；本 Playbook 只要求 Runtime Draw 不應依賴未驗證、來源不明的臨時抽牌片段或未驗證 service response。
