@@ -40,7 +40,11 @@
 
 ## 2. Runtime Capability Gate
 
-ChatGPT 在第一次需要自行抽牌時，應做最低充分 capability check：
+在任何 GitHub source acquisition 前，若目前 execution runtime 中**實際存在**先前已驗證、仍可執行且來源可可靠辨識的 canonical `randomizer.py` copy，可先做一次低成本 reuse probe；probe 通過就直接用該 copy 執行本題新的 draw／cast，不必為形式重新抓 GitHub、重新 materialize 或重跑完整 smoke test。
+
+這只是 opportunistic fast path，不保證每個 turn 都成立。Conversation context 記得「之前載入過」本身不算 runtime evidence；若 copy 不存在、不可執行、來源狀態無法可靠確認，或 probe 失敗，就回到正常 capability check。
+
+ChatGPT 在第一次需要自行抽牌，或 reuse path 不成立時，應做最低充分 capability check：
 
 - Python 是否可執行；
 - canonical `randomizer.py` 是否可取得／已載入；
@@ -48,6 +52,8 @@ ChatGPT 在第一次需要自行抽牌時，應做最低充分 capability check�
 - 程式能否完成一次 bounded smoke test。
 
 不要為了能力盤點去掃描所有 runtime、compiler 或 sandbox 套件；只驗證本次真正需要的 Python capability。
+
+Reuse 只重用程式，不重用上一題結果；每個新的 question identity 仍必須 fresh execution／fresh shuffle。
 
 若 execution environment 不可觀察或不可執行，不得因模型「通常能跑 Python」就假設本次可用。
 
@@ -65,7 +71,7 @@ Playbook 只保存治理規則，不另外維護一份 Python 抽牌程式，避
 
 `repository retrieval capability` 與 `Python runtime network capability` 是不同層級；Python sandbox 無法直接連 GitHub，不代表 ChatGPT 無法透過 repository-native connector 取得 canonical source。
 
-當本次需要載入 `randomizer.py` 時，依最低充分順序：
+只有在目前沒有可直接重用的 verified runtime copy 時，才需要重新取得 `randomizer.py`。依最低充分順序：
 
 1. 若目前環境已有可直接讀取 GitHub repository 的 **connected GitHub tool／connector**，優先用它取得指定 `main`／ref 的 canonical `randomizer.py` 與可得的 source commit evidence。
 2. 取得 source 後，可將該檔案 materialize／寫入 ChatGPT 自己的 temporary／ephemeral runtime workspace，再由 Python 執行；temporary copy 只是 execution input，不會變成新的 canonical implementation。
@@ -74,7 +80,9 @@ Playbook 只保存治理規則，不另外維護一份 Python 抽牌程式，避
 5. Connector 能讀 repository ≠ Python runtime 能連網 ≠ repository write authority。這三種 capability 不得互相推導。
 6. 若任何取得路徑只拿到不完整、截斷或無法確認為 canonical target 的 source，視為 acquisition gap，不能因「看起來像 randomizer」就執行並宣稱 canonical Runtime Draw。
 
-推薦概念流程：
+對已通過 reuse probe 的既有 runtime copy，不要求每題都重新查 `main` 是否有新 commit；若使用者明確要求最新版／完整 provenance，或已有 evidence 顯示 Randomizer source 已更新，再重新取得 canonical source。
+
+推薦一般 fallback 流程：
 
 ```text
 GitHub connector / repository-native read
@@ -116,7 +124,7 @@ Runtime result 中的 A／B、本卦、上下卦與動爻視為該次 canonical 
 
 ## 6. Preferred Invocation
 
-有 Python runtime 時，建議直接執行 Randomizer CLI。
+有 Python runtime 時，建議直接執行 Randomizer CLI。若 reuse probe 已通過，直接使用現有 verified copy；不要先重新抓 GitHub。
 
 單題塔羅：
 
