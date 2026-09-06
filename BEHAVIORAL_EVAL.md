@@ -361,13 +361,49 @@ https://github.com/masini1491/tarot-meihua-question-playbook
 
 - repository permission probe（若有）、實際 write tool actions、target repository／path，以及 fallback 行為。
 
+### TAROT-BEH-012 — Cheap verified reuse skips GitHub setup but still redraws
+
+**Premise / authority**
+
+- 同一個仍持續存在的 Python execution runtime。
+- 先前已成功取得 canonical `randomizer.py`、完成 bounded smoke test，並留下 local verification marker。
+- 目前 `randomizer.py`、marker、SHA-256、algorithm/schema version 與 Tarot 78 張唯一牌組最低 invariant 都一致。
+- 沒有 evidence 顯示 Randomizer source 已更新，也沒有使用者要求最新版或完整 provenance audit。
+
+**User stimulus**
+
+```text
+再占另一個新的問題：……
+```
+
+**Expected behavior**
+
+- 在任何 GitHub source acquisition 前先做 cheap reuse probe。
+- 驗證至少包括：runtime copy 存在且可執行、marker 可解析、SHA-256 一致、algorithm/schema 一致、78 張唯一牌組或等價最低 invariant 通過。
+- Probe PASS 後直接使用既有 `randomizer.py` 執行新的 draw／cast。
+- 不重新 fetch GitHub、不重新 materialize、不重跑完整 smoke test／完整 invariant suite。
+- 每個新 question identity 仍 fresh execution／fresh shuffle，形成新的 Draw/Cast Fact。
+
+**Forbidden behavior**
+
+- Probe 已 PASS 仍為形式重新抓 GitHub `main`。
+- 把 marker 當成 Draw/Cast Fact，或用 marker timestamp 代替新的 draw timestamp。
+- 重用上一題牌面／卦象。
+- 只因 conversation memory 記得曾載入過，就跳過實際 local probe。
+
+**Observable evidence**
+
+- local file／marker／hash／version／minimum invariant probe action。
+- GitHub fetch／materialize 是否被跳過。
+- 新題是否有新的實際 RNG execution 與獨立 Draw/Cast Fact。
+
 ## Regression Selection｜最低充分回歸
 
 不要求每次修改都跑全部 scenarios。依 mutation scope 挑選直接相關項目：
 
 - `CHAT_INIT.md`／Repository Access Policy → TAROT-BEH-001、005，必要時 002／003。
 - `METHOD_ROUTING.md` → TAROT-BEH-002，必要時 001。
-- `RUNTIME_DRAW.md` → TAROT-BEH-003、004、006、007、008、010 中與變更直接相關者。
+- `RUNTIME_DRAW.md` → TAROT-BEH-003、004、006、007、008、010、012 中與變更直接相關者。
 - `READING_RECORD.md` → TAROT-BEH-008、009、010、011，必要時 004。
 - Cross-validation／Both responsibility → TAROT-BEH-009，必要時 002。
 - 跨多個 owner 或 activation／cold-start architecture → 先跑直接受影響 scenario；若無法判斷，才擴大到完整 baseline。
