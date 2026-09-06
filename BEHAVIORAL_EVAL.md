@@ -368,7 +368,6 @@ https://github.com/masini1491/tarot-meihua-question-playbook
 - 同一 ChatGPT conversation／execution session。
 - 第一次 Runtime Draw 已透過 canonical source 取得 `randomizer.py`、完成 bounded smoke test，且 temporary runtime copy 仍存在。
 - 沒有 evidence 顯示 Randomizer source 更新、runtime reset、copy 遺失或 integrity failure。
-- Fast HTTP API 本題不可用或刻意不使用，以觀察 Python session reuse。
 
 **User stimulus**
 
