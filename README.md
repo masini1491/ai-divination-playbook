@@ -3,6 +3,8 @@
 一套可重用的 **塔羅（Tarot）＋梅花易數（Meihua Yishu）提問設計、占問生命週期、ChatGPT Runtime Draw、正式 Reading Record 與解讀治理方法論**。
 
 > **AI / ChatGPT 快速入口：** 實際使用本手冊時，直接從 [`CHAT_INIT.md`](CHAT_INIT.md) 開始並依 task routing 只讀最低必要文件／sections；不需要先完整閱讀本 README，也不要為了「熟悉手冊」掃描整個 Repository。
+>
+> **建議搭配 GitHub connector：** 若 ChatGPT 可連接 GitHub，建議啟用 GitHub connector，讓它能直接讀取本 Repository 的最新 `main` 與需要的 canonical files／sections，通常會比一般 Web fallback 更穩定、也更適合持續承接使用；但 connector 不是使用本手冊的必要條件。實際 repository access／fallback 規則仍以 [`CHAT_INIT.md`](CHAT_INIT.md) 為準。
 
 本儲存庫不以整理完整牌義、卦辭或宣稱「算得準」為主要目的，而是處理更前面的問題：
 
