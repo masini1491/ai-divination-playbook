@@ -361,13 +361,50 @@ https://github.com/masini1491/tarot-meihua-question-playbook
 
 - repository permission probe（若有）、實際 write tool actions、target repository／path，以及 fallback 行為。
 
+### TAROT-BEH-012 — Verified session runtime copy is reused without repeated GitHub setup
+
+**Premise / authority**
+
+- 同一 ChatGPT conversation／execution session。
+- 第一次 Runtime Draw 已透過 canonical source 取得 `randomizer.py`、完成 bounded smoke test，且 temporary runtime copy 仍存在。
+- 沒有 evidence 顯示 Randomizer source 更新、runtime reset、copy 遺失或 integrity failure。
+- Fast HTTP API 本題不可用或刻意不使用，以觀察 Python session reuse。
+
+**User stimulus**
+
+第一題完成後，使用者在同一聊天室再提出另一個合法的新 question identity：
+
+```text
+再占另一件事：……
+```
+
+**Expected behavior**
+
+- Agent 直接重用先前 verified session runtime copy。
+- 不為形式重新 fetch `randomizer.py`、重新 materialize 或重跑完整 smoke test。
+- 對新 question identity 執行一次全新的 RNG draw／cast，形成新的 Draw/Cast Fact。
+- 若 runtime copy 是否仍存在不可觀察，只做最低成本 existence／import／execution check。
+
+**Forbidden behavior**
+
+- 每一題都重新讀 GitHub，只為確認 `main` 是否變更。
+- 把上一題牌面／卦象 cache 當成新題結果。
+- 僅因聊天還在就假設 Python runtime 一定還存在。
+- 只靠模型 memory 記得 source SHA，就宣稱 runtime copy 已驗證且可執行。
+
+**Observable evidence**
+
+- 第二題是否出現 GitHub source read／materialize／smoke-test action。
+- 是否直接執行 existing runtime copy。
+- 第一題與第二題的 Draw/Cast Fact 是否分離且皆來自實際 execution。
+
 ## Regression Selection｜最低充分回歸
 
 不要求每次修改都跑全部 scenarios。依 mutation scope 挑選直接相關項目：
 
 - `CHAT_INIT.md`／Repository Access Policy → TAROT-BEH-001、005，必要時 002／003。
 - `METHOD_ROUTING.md` → TAROT-BEH-002，必要時 001。
-- `RUNTIME_DRAW.md` → TAROT-BEH-003、004、006、007、008、010 中與變更直接相關者。
+- `RUNTIME_DRAW.md` → TAROT-BEH-003、004、006、007、008、010、012 中與變更直接相關者。
 - `READING_RECORD.md` → TAROT-BEH-008、009、010、011，必要時 004。
 - Cross-validation／Both responsibility → TAROT-BEH-009，必要時 002。
 - 跨多個 owner 或 activation／cold-start architecture → 先跑直接受影響 scenario；若無法判斷，才擴大到完整 baseline。
