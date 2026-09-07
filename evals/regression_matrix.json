@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "authority": "selection-only",
+  "full_baseline": [
+    "TAROT-BEH-001",
+    "TAROT-BEH-002",
+    "TAROT-BEH-003",
+    "TAROT-BEH-004",
+    "TAROT-BEH-005",
+    "TAROT-BEH-006",
+    "TAROT-BEH-007",
+    "TAROT-BEH-008",
+    "TAROT-BEH-009",
+    "TAROT-BEH-010",
+    "TAROT-BEH-011",
+    "TAROT-BEH-012",
+    "TAROT-BEH-013",
+    "TAROT-BEH-014",
+    "TAROT-BEH-015"
+  ],
+  "change_classes": {
+    "bootstrap-access": ["TAROT-BEH-001", "TAROT-BEH-005", "TAROT-BEH-013"],
+    "method-routing": ["TAROT-BEH-002", "TAROT-BEH-001"],
+    "runtime-draw": ["TAROT-BEH-003", "TAROT-BEH-004", "TAROT-BEH-006", "TAROT-BEH-007", "TAROT-BEH-008", "TAROT-BEH-010", "TAROT-BEH-012"],
+    "reading-record": ["TAROT-BEH-008", "TAROT-BEH-009", "TAROT-BEH-010", "TAROT-BEH-011"],
+    "cross-validation": ["TAROT-BEH-009", "TAROT-BEH-014", "TAROT-BEH-002"],
+    "session-continuity": ["TAROT-BEH-013", "TAROT-BEH-015", "TAROT-BEH-001"],
+    "machine-routing": ["TAROT-BEH-001", "TAROT-BEH-013", "TAROT-BEH-015"],
+    "cold-start-architecture": ["TAROT-BEH-001", "TAROT-BEH-002", "TAROT-BEH-003", "TAROT-BEH-005", "TAROT-BEH-013", "TAROT-BEH-015"]
+  }
+}
