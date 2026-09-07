@@ -4,7 +4,7 @@
 
 > **AI / ChatGPT 快速入口：** 實際使用本手冊時，直接從 [`CHAT_INIT.md`](CHAT_INIT.md) 開始並依 task routing 只讀最低必要文件／sections；不需要先完整閱讀本 README，也不要為了「熟悉手冊」掃描整個 Repository。
 >
-> **建議搭配 GitHub connector：** 若 ChatGPT 可連接 GitHub，建議啟用 GitHub connector，讓它能直接讀取本 Repository 的最新 `main` 與需要的 canonical files／sections，通常會比一般 Web fallback 更穩定、也更適合持續承接使用；但 connector 不是使用本手冊的必要條件。實際 repository access／fallback 規則仍以 [`CHAT_INIT.md`](CHAT_INIT.md) 為準。
+> **建議搭配 GitHub connector：** 若 ChatGPT 可連接 GitHub，建議啟用 GitHub connector，讓它能直接讀取本 Repository 的最新 `main` 與需要的 canonical files／sections，通常會比一般 Web fallback 更穩定、也更適合持續承接使用；但 connector 不是使用本手冊的必要條件。實際 repository access／fallback／freshness 規則仍以 [`CHAT_INIT.md`](CHAT_INIT.md) 為準。
 
 本儲存庫不以整理完整牌義、卦辭或宣稱「算得準」為主要目的，而是處理更前面的問題：
 
@@ -29,6 +29,8 @@
 - 多人物平行題只給一份模板，要求使用者自行換名字。
 - ChatGPT 沒有真正執行程式，卻自行報一組牌並聲稱是隨機抽牌。
 - 保存紀錄時把原始解讀、後續現實與事後重讀混寫，導致後來無法知道「當時到底說了什麼」。
+- 長聊天室沿用過時 Playbook 規則，或讓大量舊 reading branch 污染 current judgment。
+- 把「抽了很多次都同方向」誤當成同等數量的獨立證據。
 
 ## 核心原則
 
@@ -76,7 +78,7 @@ WAITING FOR REALITY
 - **塔羅**：選項比較、人物／關係動態、事件流程、阻礙、相對適配度。
 - **梅花易數**：事件結構、主客／體用、轉折、動爻、外應與應期。
 
-交叉驗證是 reconciliation，不是多一票。見 [`CROSS_VALIDATION.md`](CROSS_VALIDATION.md)。
+交叉驗證是 reconciliation，不是多一票；**Draw count ≠ independent evidence count**。同一題、近義重抽、derived summary 或多次同方向結果不能只靠數量灌高 confidence。見 [`CROSS_VALIDATION.md`](CROSS_VALIDATION.md)。
 
 ### 7. 輸入契約先於解讀
 
@@ -126,9 +128,15 @@ stable reading identity
 
 > **Interpretation is not reality evidence; retrospective insight is not original prediction。**
 
-完整規則見 [`READING_RECORD.md`](READING_RECORD.md)。
+完整規則見 [`READING_RECORD.md`](READING_RECORD.md)。真實 Reading Record 不得寫入本公開 Playbook，即使 Agent 對 Repo 有寫入權限也一樣。
 
-### 10. ChatGPT 的輸出也要有契約
+### 10. 長聊天室要處理 freshness 與 handoff，不靠猜 Context
+
+若同一聊天室長期使用浮動 `main`，只有在使用者明確說規則已更新、出現 stale evidence 或 current-rule-sensitive decision 時才做便宜的 HEAD/ref probe；**時間經過本身不是 freshness trigger**。HEAD 變更後只重讀 material changed owners，不為任何 commit 全庫重掃。
+
+若長 session 出現可觀察 stale-premise／retrieval risk，先 bounded reconciliation；風險仍在時才建立最低充分 checkpoint 並建議 fresh session。Handoff 只攜帶 pointer 與 current working state，不是新的 authority。見 [`CHAT_INIT.md`](CHAT_INIT.md) 與 [`SESSION_HANDOFF.md`](SESSION_HANDOFF.md)。
+
+### 11. ChatGPT 的輸出也要有契約
 
 ChatGPT 必須：
 
@@ -151,17 +159,22 @@ ChatGPT 必須：
 
 | 文件 | 主要責任 |
 | --- | --- |
-| [`CHAT_INIT.md`](CHAT_INIT.md) | 新聊天室最小 bootstrap、Context admission、task routing |
+| [`CHAT_INIT.md`](CHAT_INIT.md) | 新聊天室 bootstrap、repository access、Playbook freshness、Context admission、task routing、session handoff gate |
+| [`PLAYBOOK_INDEX.json`](PLAYBOOK_INDEX.json) | machine-readable routing-only capability／owner index；不是 policy/state authority |
+| [`SESSION_HANDOFF.md`](SESSION_HANDOFF.md) | 長聊天室最低充分 checkpoint／rehydration adapter |
 | [`METHOD_ROUTING.md`](METHOD_ROUTING.md) | 未指定方法時，依 judgment function 選 Tarot／Meihua／Both |
 | [`INPUT_CONTRACT.md`](INPUT_CONTRACT.md) | 抽牌／起卦前要保存哪些題目、方法輸入與 provenance |
 | [`QUESTION_DESIGN.md`](QUESTION_DESIGN.md) | 問題怎麼拆、牌位怎麼定、高頻 Question Patterns |
 | [`READING_LIFECYCLE.md`](READING_LIFECYCLE.md) | 新題、承接、條件世界、補占、重占、現實更新、完成、horizon、回測 |
-| [`READING_RECORD.md`](READING_RECORD.md) | 正式 Reading Record 的 identity、status、六層證據與 append-only 保存契約 |
+| [`READING_RECORD.md`](READING_RECORD.md) | 正式 Reading Record 的 identity、status、六層證據、append-only 與 storage boundary |
 | [`RUNTIME_DRAW.md`](RUNTIME_DRAW.md) | ChatGPT 自行程式抽牌／起卦、canonical tool、capability gate、fail-closed |
 | [`TAROT.md`](TAROT.md) | Tarot-specific 牌位、牌陣與解讀規則 |
 | [`MEIHUA.md`](MEIHUA.md) | Meihua-specific 起卦、主互變、體用、動爻、外應與應期 |
-| [`CROSS_VALIDATION.md`](CROSS_VALIDATION.md) | Tarot × Meihua 分工、同題對齊、衝突 reconciliation |
+| [`CROSS_VALIDATION.md`](CROSS_VALIDATION.md) | Tarot × Meihua 分工、同題對齊、衝突 reconciliation、evidence lineage |
 | [`CHATGPT_OUTPUT.md`](CHATGPT_OUTPUT.md) | ChatGPT 出題／解讀、信心語言、Copy-ready、Pre-Send |
+| [`BEHAVIORAL_EVAL.md`](BEHAVIORAL_EVAL.md) | Cold：fresh／bounded behavioral regression scenarios |
+| [`evals/regression_matrix.json`](evals/regression_matrix.json) | Behavioral regression change-class selection metadata |
+| [`tools/behavioral_eval.py`](tools/behavioral_eval.py) | Eval record／matrix deterministic metadata validator |
 | [`CASE_STUDIES/`](CASE_STUDIES/) | Cold：匿名失敗案例與方法演進 |
 | [`references/`](references/) | Cold：外部 GitHub 來源、採用狀態、授權、authority boundary |
 | [`AGENTS.md`](AGENTS.md) | 薄 governance / maintenance router |
@@ -178,6 +191,9 @@ ChatGPT 必須：
 - **正式保存／跨聊天室承接／audit record** → 再加入 `READING_RECORD`
 - **承接／補占／重占／現實更新／回測** → 再加入 `READING_LIFECYCLE`
 - **塔羅＋梅花整合** → 再加入 `CROSS_VALIDATION`
+- **長聊天室 stale/retrieval risk** → `SESSION_HANDOFF`
+- **machine routing discovery** → 可選讀 `PLAYBOOK_INDEX.json`，命中後仍回 canonical owner
+- **behavioral regression** → `BEHAVIORAL_EVAL`；machine selection／record validation 可用 `evals/` + `tools/`
 - `CASE_STUDIES/`、`references/`、未被指定的舊占預設不載入
 
 資訊被保存，不代表每一題都要付 Context cost。
@@ -213,7 +229,7 @@ ChatGPT 設計／確認題目契約
 - 線上工具：`https://tarot-plum-randomizer-masini1491-9205.vercel.app/`
 - Repo：`https://github.com/masini1491/tarot-plum-randomizer`
 
-Randomizer 現在有兩個入口：
+Randomizer 有兩個入口：
 
 ```text
 index.html      → Web / 手機使用
@@ -274,7 +290,7 @@ python randomizer.py batch --counts 5,5,6,3 --format json
 - 出生日期、時間與地點等可識別資料
 - 健康、性相關私人紀錄
 - 私人公司未公開人事、薪資、客戶或專案資訊
-- 完整私人占卜日誌
+- 完整私人占卜日誌／Reading Record／實際 session handoff payload
 - secrets / credentials
 
 案例一律匿名化，只保留足以說明方法問題的最低必要結構。
@@ -283,7 +299,7 @@ python randomizer.py batch --counts 5,5,6,3 --format json
 
 GitHub 上已有許多抽牌、起卦、牌義、卦義或 AI 解讀專案；本 Repo 專注在另一層：
 
-> **題目設計 / 輸入契約 / Question identity / Reading lifecycle / Reading record / Runtime Draw governance / ChatGPT output governance / Cross-validation / Backtest discipline**
+> **題目設計 / 輸入契約 / Question identity / Reading lifecycle / Reading record / Runtime Draw governance / ChatGPT output governance / Cross-validation / Evidence lineage / Session continuity / Backtest discipline**
 
 也就是不只「怎麼解」，而是讓一個問題從提出、抽牌／起卦、正式保存、承接、程式執行到現實驗證都有可回查的契約。
 
