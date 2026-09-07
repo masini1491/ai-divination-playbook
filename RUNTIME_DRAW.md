@@ -40,34 +40,73 @@
 
 ## 2. Runtime Capability Gate
 
-在任何 GitHub source acquisition 前，若目前 execution runtime 中**實際存在**先前驗證過的 canonical `randomizer.py` 與其 local verification marker，應先做一次**低成本 reuse probe**。
+### 2.1 Deterministic Cache Slot｜先查固定位置，再決定是否抓 GitHub
 
-Probe 的最低充分檢查為：
+對普通 Runtime Draw，**第一個 source-related action 必須是 local cache probe，而不是 GitHub fetch。** 不再用「任意 workspace 搜尋」猜先前把程式放在哪裡。
 
-- `randomizer.py` 實際存在且可 import／execute；
-- verification marker 實際存在且可解析；
-- marker 記錄的 `randomizer.py` SHA-256 與目前檔案一致；
-- `algorithm_version`、`schema_version` 與 marker 一致；
-- Tarot deck 仍為 78 張且唯一，或執行等價的最低必要 invariant check。
+優先使用以下 deterministic cache slot：
 
-以上成立即可直接使用現有 copy 執行本題新的 draw／cast；**不要重新抓 GitHub、不要重新 materialize，也不要每題重跑完整 smoke test／完整 invariant suite。**
+```text
+/mnt/data/tarot-plum-runtime/randomizer.py
+/mnt/data/tarot-plum-runtime/verification.json
+```
 
-這是 opportunistic fast path，不保證每個 turn 都成立。Conversation context 記得「之前載入過」本身不算 runtime evidence；若 copy／marker 不存在、SHA 不符、版本不符、import 失敗、最低 invariant 失敗或來源狀態無法可靠確認，就回到正常 capability check。
+若 execution environment 沒有可寫的 `/mnt/data`，才依下列唯一 fallback：
 
-ChatGPT 在第一次需要自行抽牌，或 reuse path 不成立時，應做最低充分 capability check：
+```text
+<runtime-workspace>/.tarot-plum-runtime/randomizer.py
+<runtime-workspace>/.tarot-plum-runtime/verification.json
+```
+
+其中 `<runtime-workspace>` 必須是 execution surface 明確提供、可直接觀察的 current workspace；不得靠 conversation memory 猜 path，也不得為找 cache 做廣泛檔案系統掃描。
+
+若上述兩種 locator 都不可建立／不可觀察，視為 **cache unavailable**，直接進入正常 source acquisition；不要另外發明第三個隨機 cache path。
+
+### 2.2 Mandatory Reuse Probe｜固定順序的重用檢查
+
+在任何 GitHub source acquisition、raw download 或 materialize 前，依 deterministic cache slot 檢查：
+
+- `randomizer.py` 是否存在且可 import／execute；
+- `verification.json` 是否存在且可解析；
+- marker 記錄的 `runtime_copy_sha256` 是否與目前 `randomizer.py` 一致；
+- `algorithm_version`、`schema_version` 是否與目前程式一致；
+- Tarot deck 是否仍為 78 張且唯一，或執行等價的最低必要 invariant check。
+
+若以上 PASS：
+
+- 直接使用 cached `randomizer.py` 執行本題新的 draw／cast；
+- **本次 draw 禁止 GitHub fetch／raw download／重新 materialize canonical source；**
+- 不重跑完整 smoke test／完整 invariant suite；
+- 每個新的 question identity 仍 fresh execution／fresh shuffle，絕不重用上一題結果。
+
+只有以下情況之一成立，才可以在 cache PASS 後仍重新確認 Randomizer source：
+
+- 使用者明確要求「Randomizer 最新版／重新同步最新版」；
+- 有 concrete evidence 顯示 `masini1491/tarot-plum-randomizer` 的 canonical source 已更新；
+- 使用者要求完整 provenance，而現有 marker 缺少完成該 audit 所必要、且無法由 local copy 證明的 source identity；
+- local verification 本身 FAIL／無法完成。
+
+**Playbook 本身的 HEAD 更新，不等於 Randomizer source 已更新。** 不得只因重新讀了最新版 Playbook 就順手重新下載 `randomizer.py`。
+
+Conversation context 記得「之前載入過」本身不算 runtime evidence；真正的 reuse evidence 是 deterministic cache slot 中仍實際存在且通過驗證的檔案。
+
+### 2.3 First Acquisition｜第一次取得後必須回填固定 cache slot
+
+ChatGPT 在第一次需要自行抽牌，或 deterministic cache probe 不成立時，做最低充分 capability check：
 
 - Python 是否可執行；
-- canonical `randomizer.py` 是否可取得／已載入；
+- canonical `randomizer.py` 是否可取得；
 - 必要標準庫是否可用；
 - 程式能否完成一次 bounded smoke test。
 
-首次取得並成功 smoke-test `randomizer.py` 後，若 runtime workspace 可保留檔案，應順手建立一份輕量 local verification marker，供後續 reuse probe 使用。Marker 只屬 temporary execution state，不是新的 canonical authority，也不是 Reading Record evidence layer。
+首次取得並成功 smoke-test `randomizer.py` 後，只要 runtime 有上述可用 cache slot，**必須**把 canonical copy 與 verification marker 寫入該 slot，供後續 turn 直接 reuse；不要只把檔案留在臨時、不可預期名稱的位置。
 
-Marker 最低可包含：
+Marker 最低包含：
 
 ```json
 {
   "verified": true,
+  "cache_locator_version": 1,
   "runtime_source_path": "masini1491/tarot-plum-randomizer/randomizer.py",
   "runtime_source_commit": "<known SHA or unknown>",
   "runtime_copy_sha256": "<sha256>",
@@ -77,11 +116,26 @@ Marker 最低可包含：
 }
 ```
 
-不要求固定檔名或固定 workspace path；只要求後續 Python execution 能直接觀察並驗證該 marker 與 `randomizer.py`。
+Marker 只屬 temporary execution state，不是新的 canonical authority，也不是 Reading Record evidence layer。
 
-不要為了能力盤點去掃描所有 runtime、compiler 或 sandbox 套件；只驗證本次真正需要的 Python capability。
+若 runtime／kernel 被重建，cache slot 不存在，重新取得一次 canonical source 是正常 cold-cache 行為；**不存在的 cache 不得靠聊天記憶假裝仍存在。**
 
-Reuse 只重用程式，不重用上一題結果；每個新的 question identity 仍必須 fresh execution／fresh shuffle。
+不要為了能力盤點去掃描所有 runtime、compiler、sandbox 套件或任意目錄；只驗證本次真正需要的 Python capability與固定 cache slot。
+
+核心流程：
+
+```text
+Runtime Draw requested
+→ resolve deterministic cache slot
+→ probe randomizer.py + verification.json
+   ├─ PASS → GitHub acquisition forbidden for this draw → fresh RNG execution
+   └─ FAIL / absent / unavailable → canonical source acquisition
+        → bounded smoke test
+        → write fixed cache slot + marker
+        → fresh RNG execution
+```
+
+核心原則：**Fresh question means fresh RNG, not fresh program acquisition。**
 
 若 execution environment 不可觀察或不可執行，不得因模型「通常能跑 Python」就假設本次可用。
 
@@ -99,31 +153,33 @@ Playbook 只保存治理規則，不另外維護一份 Python 抽牌程式，避
 
 `repository retrieval capability` 與 `Python runtime network capability` 是不同層級；Python sandbox 無法直接連 GitHub，不代表 ChatGPT 無法透過 repository-native connector 取得 canonical source。
 
-只有在目前沒有通過 reuse probe 的 verified runtime copy 時，才需要重新取得 `randomizer.py`。依最低充分順序：
+**只有 §2 deterministic cache probe FAIL／absent／unavailable，或 §2 明列的 Randomizer-specific refresh trigger 成立時，才允許進入本節。**
+
+依最低充分順序：
 
 1. 若目前環境已有可直接讀取 GitHub repository 的 **connected GitHub tool／connector**，優先用它取得指定 `main`／ref 的 canonical `randomizer.py` 與可得的 source commit evidence。
-2. 取得 source 後，可將該檔案 materialize／寫入 ChatGPT 自己的 temporary／ephemeral runtime workspace，再由 Python 執行；temporary copy 只是 execution input，不會變成新的 canonical implementation。
-3. bounded smoke test 成功後，若 runtime 可保留檔案，建立 §2 所述的 local verification marker，讓後續 turn 可以用便宜 probe 直接 reuse。
+2. 取得 source 後，將該檔案寫入／materialize 至 §2 的 deterministic cache slot；若該 slot 不可用，才使用 current runtime 明確提供的 temporary execution path。
+3. bounded smoke test 成功後，建立／更新 §2 的 `verification.json`；後續普通 draw 直接走 cache probe，不再重新抓 GitHub。
 4. 若 GitHub connector 不可用，再評估 GitHub public/raw/Web access；只有在必要時才要求 Python runtime 自己具備外網／DNS／HTTPS 能力。
-5. 若已有本地副本，只有其來源與 canonical version 能被可靠確認時才可使用；未確認 freshness 的 cached copy 不得覆蓋較新的 canonical GitHub evidence。
+5. 若已有本地副本但不在 deterministic cache slot，不把「可能是以前下載的」當成已驗證 cache；除非能在不做 broad filesystem search 的前提下由 current runtime 明確定位並驗證，否則按 cold cache 處理。
 6. Connector 能讀 repository ≠ Python runtime 能連網 ≠ repository write authority。這三種 capability 不得互相推導。
 7. 若任何取得路徑只拿到不完整、截斷或無法確認為 canonical target 的 source，視為 acquisition gap，不能因「看起來像 randomizer」就執行並宣稱 canonical Runtime Draw。
 
-對已通過 reuse probe 的既有 runtime copy，不要求每題都重新查 `main` 是否有新 commit；若使用者明確要求 Randomizer 最新版／完整 provenance，或已有 evidence 顯示 Randomizer source 已更新，再重新取得 canonical source並更新 local marker。
+對已通過 cache probe 的既有 runtime copy，不要求每題都重新查 Randomizer `main` 是否有新 commit。Randomizer freshness 只由 §2.2 的明確 trigger 啟動。
 
 推薦正常流程：
 
 ```text
-先 probe existing runtime copy
+固定 cache slot probe
   ↓ PASS
 fresh Runtime Draw
 
-  ↓ FAIL / unavailable
+  ↓ FAIL / absent / unavailable
 GitHub connector / repository-native read
 → canonical randomizer.py + source evidence
-→ temporary runtime copy
-→ Python smoke test
-→ write lightweight verification marker
+→ deterministic cache slot
+→ Python bounded smoke test
+→ write verification.json
 → Runtime Draw
 ```
 
@@ -159,31 +215,35 @@ Runtime result 中的 A／B、本卦、上下卦與動爻視為該次 canonical 
 
 ## 6. Preferred Invocation
 
-有 Python runtime 時，建議直接執行 Randomizer CLI。若 reuse probe 已通過，直接使用現有 verified copy；不要先重新抓 GitHub。
+有 Python runtime 時，建議直接執行 Randomizer CLI。若 cache probe 已通過，直接從 deterministic cache slot 執行；不要先重新抓 GitHub。
+
+例如 `/mnt/data` cache slot 可用時：
 
 單題塔羅：
 
 ```text
-python randomizer.py tarot --count 6 --format json --source-commit <SHA>
+python /mnt/data/tarot-plum-runtime/randomizer.py tarot --count 6 --format json --source-commit <SHA>
 ```
 
 梅花：
 
 ```text
-python randomizer.py plum --format json --source-commit <SHA>
+python /mnt/data/tarot-plum-runtime/randomizer.py plum --format json --source-commit <SHA>
 ```
 
 塔羅＋梅花：
 
 ```text
-python randomizer.py both --count 6 --format json --source-commit <SHA>
+python /mnt/data/tarot-plum-runtime/randomizer.py both --count 6 --format json --source-commit <SHA>
 ```
 
 多題：
 
 ```text
-python randomizer.py batch --counts 5,5,6,3 --format json --source-commit <SHA>
+python /mnt/data/tarot-plum-runtime/randomizer.py batch --counts 5,5,6,3 --format json --source-commit <SHA>
 ```
+
+若使用 workspace fallback slot，將上方 script path 換成 `<runtime-workspace>/.tarot-plum-runtime/randomizer.py`。
 
 AI integration 優先使用 JSON，避免把人類排版重新解析成機械欄位。
 
@@ -364,9 +424,12 @@ Canonical runtime tool 更新後，建議至少驗證：
 - `generated_at_utc` 與 `generated_at_taipei` 代表同一瞬間；
 - 台灣時間 offset 為 `+08:00`；
 - metadata-only 變更不會誤升 `algorithm_version`；
-- reuse probe 能用 local marker + SHA-256 + version + 最低 invariant 驗證現有 copy；
-- probe PASS 後不重新抓 GitHub／materialize／完整 smoke test；
-- probe PASS 後仍為每個新 question identity fresh execution／fresh shuffle；
-- probe FAIL 時會回到 canonical source acquisition，而不是強行使用 stale／不明 copy。
+- deterministic cache locator 能穩定解析到固定 `randomizer.py` + `verification.json`；
+- reuse probe 能用 marker + SHA-256 + version + 最低 invariant 驗證現有 copy；
+- cache probe PASS 後不重新抓 GitHub／raw download／materialize／完整 smoke test；
+- Playbook 自身更新不會被誤當成 Randomizer freshness trigger；
+- cache probe PASS 後仍為每個新 question identity fresh execution／fresh shuffle；
+- cache probe FAIL／absent／unavailable 時才回到 canonical source acquisition，而不是強行使用 stale／不明 copy；
+- acquisition 成功後會把 canonical copy + marker 回填 deterministic cache slot。
 
 測試屬於 Randomizer repo 的 implementation responsibility；本 Playbook 只要求 Runtime Draw 不應依賴未驗證、來源不明的臨時抽牌片段。
