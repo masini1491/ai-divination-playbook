@@ -68,6 +68,33 @@ Remain ACCESS BLOCKED
 
 核心原則：**Prefer the connector, suggest it early without blocking public fallback, and never let canonical authority fall back to memory。**
 
+## Playbook Freshness Probe｜長聊天室的版本新鮮度
+
+第一次已取得 current Playbook，不代表長期聊天室可以永久把當時版本當成 current。若本次 workflow 跟隨的是浮動 `main`／latest，而不是使用者明確指定的固定 SHA／tag，採用**低成本 revision probe、material change 才重讀**。
+
+### 觸發條件
+
+以下任一情況成立時，才需要重新確認 current Playbook identity：
+
+- 使用者明確說 Playbook 已更新、要求「最新版／latest」，或維護者行為／commit notification／read-back 已提供 concrete stale evidence；
+- 即將進入會受 current rule materially 影響的 judgment boundary，例如新的重要 question identity、方法責任重新判定、Runtime Draw governance、正式 Reading Record／Backtest、Playbook 維護 mutation 或其他 currentness-sensitive decision；
+- 長 session 已出現 rule wording／owner／routing 可能 stale 的具體跡象，且當前 next action correctness 依賴 current rule。
+
+**單純經過幾分鐘／幾小時、聊天室變長或訊息變多，不是 freshness trigger。** 不建立固定分鐘數 timer、background polling 或每則訊息重新掃 Repo。
+
+### Probe 結果
+
+- **HEAD / declared ref unchanged**：沿用已確認的 working contract，不重新全文讀取。
+- **HEAD changed**：先做 bounded commit／file diff，判斷是否觸及目前 task 所依賴的 canonical owner；只重讀 material changed sections 與必要 routing dependency。
+- **Changed but irrelevant**：更新 observed Playbook identity 即可；不要因無關 commit 重建整個占問 Context。
+- **Changed and relevant**：以 current canonical rule reconciliation 後再繼續；若新規則改變 method、identity、Runtime、record、validation 或 STOP boundary，舊 session assumption 不得硬撐成 current truth。
+- **Probe unavailable**：不得猜「應該沒變」。若 current decision 必須依賴最新版規則，停在 `FRESHNESS UNAVAILABLE`／等價 evidence boundary；若不影響當前低風險工作，可清楚保留 last-confirmed identity 與 freshness limitation。
+- **Pinned SHA／tag**：固定 baseline 本身是 authority；除非使用者明確要求升級，不因 upstream `main` 變更自行漂移。
+
+Freshness probe 只確認規則版本；**不因此擴張 repository write、Runtime execution、Reading Record storage 或任何其他權限。**
+
+核心原則：**Freshness follows revision evidence and authority-sensitive decisions, not wall-clock age. Check identity cheaply, reload selectively。**
+
 ## 啟動順序
 
 處理本手冊相關的出題、解牌、解卦、承接、補占、Runtime Draw、正式保存、回測或 behavioral regression 時：
@@ -81,11 +108,12 @@ Remain ACCESS BLOCKED
 5. 若本次問題涉及「是不是新題、能不能承接／補占／重占、現實更新後怎麼轉題、是否已完成、怎麼回測」，讀 `READING_LIFECYCLE.md` 對應 section。
 6. 若使用者明確要求 ChatGPT **自己抽牌／起卦**，或已啟用本檔 Default Interaction Profile 且使用者未提供既有結果、未明確選擇自行抽牌／起卦，讀 `RUNTIME_DRAW.md`；必須先確認實際 runtime capability，再執行 canonical Randomizer，不能用模型自行報牌冒充抽牌。
 7. 若使用者要求**正式保存本次占卜、跨聊天室延續、建立 audit trail 或後續回測紀錄**，讀 `READING_RECORD.md`；只保存當時 Contract、Draw/Cast Fact、Original Interpretation 與後續追加層，不把私人日誌內容寫回本公開 Repo。
-8. 若本次任務是**驗證 fresh ChatGPT／AI 讀到本 Repo 後是否真的按規則 routing、取得 GitHub、執行 Runtime Draw、維持 reading identity／provenance 或 fail closed**，讀 `BEHAVIORAL_EVAL.md`，依 mutation scope／使用者指定 scenario 做最低充分 regression；一般占問不要載入 eval scenarios。
-9. 依下方路由只讀本次任務最低必要主題文件；`CHATGPT_OUTPUT.md`、`READING_LIFECYCLE.md` 與 `RUNTIME_DRAW.md` 有 Section Router 時，優先 bounded-read 對應 section，不預設全文載入。
-10. 先讀最能否決後續工作的高槓桿前提：若方法選擇、題目契約、條件分支、完成定義、方法來源或 Runtime Draw capability 本身已不成立，先指出問題，不要先花大量 Context 完整解讀後才回頭修正前提。
-11. 不為了「熟悉手冊」預設完整掃描所有文件、`BEHAVIORAL_EVAL.md`、`references/`、案例或歷史紀錄。
-12. 若使用者已提供實際牌面／卦象，直接處理既有結果；不要為了完整性自行重抽、重卦或改用另一套方法。
+8. 若本次任務是**驗證 fresh ChatGPT／AI 讀到本 Repo 後是否真的按規則 routing、取得 GitHub、執行 Runtime Draw、維持 reading identity／provenance、freshness／handoff 或 fail closed**，讀 `BEHAVIORAL_EVAL.md`，依 mutation scope／使用者指定 scenario 做最低充分 regression；一般占問不要載入 eval scenarios。
+9. 若 machine consumer 需要 stable capability／owner discovery，可選讀 `PLAYBOOK_INDEX.json`；它只提供 routing metadata，不保存 current state，也不取代 canonical Markdown owner。
+10. 依下方路由只讀本次任務最低必要主題文件；有 Section Router 時優先 bounded-read 對應 section，不預設全文載入。
+11. 先讀最能否決後續工作的高槓桿前提：若方法選擇、題目契約、條件分支、完成定義、方法來源或 Runtime Draw capability 本身已不成立，先指出問題，不要先花大量 Context 完整解讀後才回頭修正前提。
+12. 不為了「熟悉手冊」預設完整掃描所有文件、`BEHAVIORAL_EVAL.md`、`references/`、案例或歷史紀錄。
+13. 若使用者已提供實際牌面／卦象，直接處理既有結果；不要為了完整性自行重抽、重卦或改用另一套方法。
 
 ## 最低必要路由
 
@@ -107,8 +135,10 @@ Remain ACCESS BLOCKED
   → `READING_LIFECYCLE.md` + 需要的新題設計／方法／輸出 sections；若新 judgment node 尚未指定方法，再加 `METHOD_ROUTING.md`；若由 ChatGPT 代抽，再加 `RUNTIME_DRAW.md`；若要正式保存新節點，再加 `READING_RECORD.md`。
 - **舊占回測**
   → `READING_LIFECYCLE.md` 的 Backtest sections + 該次原始 Input Contract／原始題目紀錄 + 對應 `TAROT.md` 或 `MEIHUA.md` + `CHATGPT_OUTPUT.md` 的回測／Pre-Send sections；若需要產生正式回測紀錄，再加 `READING_RECORD.md`。
+- **長聊天室出現 stale-premise／retrieval risk，或準備 fresh-session handoff**
+  → 依本檔 `Session Continuity / Handoff Gate` 判斷；需要 checkpoint 時使用 `SESSION_HANDOFF.md`，新聊天室再從本檔重新 rehydrate current authority。
 - **Cold-start／Behavioral regression**
-  → `BEHAVIORAL_EVAL.md` + 該 scenario 明確指向的 canonical owner；只跑本次 mutation／failure 直接相關 scenarios，不因 validation 任務就全文掃描所有主規則。
+  → `BEHAVIORAL_EVAL.md` + 該 scenario 明確指向的 canonical owner；machine record／selection 可用 `evals/regression_matrix.json` + `tools/behavioral_eval.py`，但它們不取代 scenario semantics。
 - **外部 GitHub 來源研究**
   → `references/README.md` + 必要來源 dossier；主規則只有在研究結果真的需要比較／修改時才讀。
 
@@ -122,6 +152,30 @@ Remain ACCESS BLOCKED
 Historical Context 可以保存與回查，但 **Persistence ≠ default loading**。只有使用者明確承接／比較／回看、當前題以該前占作條件前提，或進行舊占回測時，才把特定歷史內容升為 Active Context。
 
 不得只因某個舊結論曾被多次引用，就讓它在新獨立題中取得更高事實或預測權重。完整規則見 `READING_LIFECYCLE.md`。
+
+## Session Continuity / Handoff Gate｜長聊天室交接
+
+聊天室變長本身不是問題；真正需要處理的是**可觀察的 stale-premise／retrieval risk**。
+
+可支持 handoff 的 material signals 包括：
+
+- Agent 反覆需要重新定位同一 reading identity、completion rule、已確認現實或 current Playbook rule 才能避免舊 branch 干擾；
+- 使用者需要重複糾正先前已明確成立的 material fact／constraint，且原因看起來是長 session 的 retrieval confusion；
+- 同一聊天室已跨大量獨立 readings、人物、時間窗或方法分支，而下一階段只需要很小的 current working set；
+- 已做 bounded reconciliation 後仍很快再次出現 stale assumption／錯誤承接；
+- 下一步是正式回測、Reading Record reconciliation、Playbook mutation 或其他高影響 judgment，而目前 session-health risk 足以改變 correctness。
+
+一般規則：
+
+- **不要捏造 context meter。** 除非產品真的提供可信 current-context metadata，不宣稱「已用掉 X%」「只剩 Y tokens」。
+- **Length alone ≠ handoff trigger。** 若 current reading identities、現實事實與 canonical pointers 都清楚，就繼續原聊天室。
+- 能用一次 bounded reconciliation 解決就先解決；material risk 仍存在，或剛好位於自然 judgment／lifecycle boundary 時，再主動建議 fresh session。
+- Handoff 前只建立**最低充分 checkpoint**；使用 `SESSION_HANDOFF.md` 或等價結構，不複製整段聊天。
+- Checkpoint 是 retrieval／recovery index，不是新的現實 authority、Reading Record 或占卜結論；新聊天室必須重新確認 current Playbook、active reading identity 與必要現實 evidence。
+- Handoff 不自動產生新 Reading Record、重新抽牌、補占權、repository write authority 或任何 durable obligation。
+- 真實個人占卜內容仍受 `READING_RECORD.md` storage boundary 約束；不得把 handoff checkpoint 寫進本公開 Playbook。
+
+核心原則：**不要等到長聊天室真的混亂才交接，也不要只因聊天很長就機械換房；以可觀察的 stale/retrieval risk 決定是否 fresh-session handoff。**
 
 ## 權威順序
 
