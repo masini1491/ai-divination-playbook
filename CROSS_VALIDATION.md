@@ -27,6 +27,21 @@
 
 不能直接改寫成「所以一定會發生」。
 
+### 2.1 Evidence Lineage / Independence Guard｜抽得多不等於證據獨立
+
+**Draw count ≠ independent evidence count。** 多次牌面／卦象／不同呈現方式看起來是多份結果，不代表它們形成同等數量的獨立證據。
+
+一般規則：
+
+- 同一 question identity 因不滿意結果、想再確認或只換近義題目而重抽／重卦，本來就不應取得新的方法論權重；若不符合 `READING_LIFECYCLE.md` 的 Follow-up Gate，先判定為不合法重問，而不是把多次結果拿來計票。
+- 即使多個 reading 都合法成立，只要它們共享高度相同的 subject、現實前提、判斷功能、來源方法或由同一先前 reading 衍生，仍應保留其 lineage；不要把「結果數量」直接翻成「獨立 corroboration 數量」。
+- 塔羅與梅花是兩套不同象徵方法，可以形成 cross-method reconciliation，但它們仍不是現實世界的 empirical evidence；兩套一致不會自動變成客觀機率或現實證明。
+- 同一 reading 的 summary、ranking、comparison、再次排版、不同敘述版本只是 derived view，不形成新的 source evidence。
+- 若真的存在彼此獨立的現實 observation，例如後續正式通知、實際見面、可驗證時間紀錄，應把這些放回 Reality Update／現實 evidence 層；不要讓象徵結果數量取代現實證據。
+- Lineage 無法可靠判定時，寧可標示「象徵結果多次同向，但獨立性未建立」，不要宣稱「多份獨立證據一致」。
+
+核心原則：**同向結果可以描述 symbolic consistency；confidence 不能只靠 draw count 膨脹。**
+
 ## 3. 衝突時不要投票
 
 若塔羅與梅花易數不一致，不採「二比一」或「哪套比較準」處理。
@@ -110,6 +125,7 @@
 一致訊號：
 互補訊號：
 衝突／不確定：
+證據 lineage／是否獨立：
 現實驗證點：
 ```
 
