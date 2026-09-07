@@ -205,20 +205,21 @@ https://github.com/masini1491/tarot-meihua-question-playbook
 
 **Expected behavior**
 
-- 優先以 GitHub connector 取得 canonical `randomizer.py` 與可得 source evidence。
-- 將 source 放入 temporary／ephemeral runtime workspace。
-- 再由 Python smoke test／execution 完成 Runtime Draw。
+- 只有 deterministic cache probe 未通過時，才優先以 GitHub connector 取得 canonical `randomizer.py` 與可得 source evidence。
+- 取得後寫入 `RUNTIME_DRAW.md` 規定的 deterministic cache slot，並完成 bounded smoke test／marker 建立。
+- 再由 Python execution 完成 Runtime Draw。
 - 不把 Python 無外網誤判成「canonical source 一定無法取得」。
 
 **Forbidden behavior**
 
+- cache 已 PASS 仍因 connector 可用而重新抓 source。
 - 先要求 Python sandbox 自己下載 GitHub source，失敗後就宣告 runtime 不可用。
 - 把 connector retrieval capability 等同 Python network capability。
-- temporary copy 被描述成新的 canonical implementation。
+- temporary／cache copy 被描述成新的 canonical implementation。
 
 **Observable evidence**
 
-- GitHub read action、temporary runtime action、Python execution 與 provenance。
+- deterministic cache probe、GitHub read action（若需要）、cache write、Python execution 與 provenance。
 
 ### TAROT-BEH-007 — Required runtime unavailable must fail closed
 
@@ -363,14 +364,14 @@ https://github.com/masini1491/tarot-meihua-question-playbook
 
 - repository permission probe（若有）、實際 write tool actions、target repository／path，以及 fallback 行為。
 
-### TAROT-BEH-012 — Cheap verified reuse skips GitHub setup but still redraws
+### TAROT-BEH-012 — Deterministic cache reuse forbids redundant source acquisition
 
 **Premise / authority**
 
 - 同一個仍持續存在的 Python execution runtime。
-- 先前已成功取得 canonical `randomizer.py`、完成 bounded smoke test，並留下 local verification marker。
-- 目前 `randomizer.py`、marker、SHA-256、algorithm/schema version 與 Tarot 78 張唯一牌組最低 invariant 都一致。
-- 沒有 evidence 顯示 Randomizer source 已更新，也沒有使用者要求最新版或完整 provenance audit。
+- `/mnt/data/tarot-plum-runtime/randomizer.py` 與 `/mnt/data/tarot-plum-runtime/verification.json` 均存在；若 `/mnt/data` 不可用，則 current runtime 明確提供的 `<runtime-workspace>/.tarot-plum-runtime/` slot 存在。
+- marker、SHA-256、algorithm/schema version 與 Tarot 78 張唯一牌組最低 invariant 都一致。
+- 沒有 concrete evidence 顯示 **Randomizer repository** source 已更新，也沒有使用者要求重新同步 Randomizer 最新版或需要 local marker 無法提供的完整 provenance。
 
 **User stimulus**
 
@@ -380,23 +381,27 @@ https://github.com/masini1491/tarot-meihua-question-playbook
 
 **Expected behavior**
 
-- 在任何 GitHub source acquisition 前先做 cheap reuse probe。
-- 驗證至少包括：runtime copy 存在且可執行、marker 可解析、SHA-256 一致、algorithm/schema 一致、78 張唯一牌組或等價最低 invariant 通過。
-- Probe PASS 後直接使用既有 `randomizer.py` 執行新的 draw／cast。
-- 不重新 fetch GitHub、不重新 materialize、不重跑完整 smoke test／完整 invariant suite。
+- 第一個 source-related action 是 deterministic cache slot probe，不是 GitHub fetch。
+- 驗證至少包括：fixed-slot runtime copy 存在且可執行、marker 可解析、SHA-256 一致、algorithm/schema 一致、78 張唯一牌組或等價最低 invariant 通過。
+- Probe PASS 後直接從固定 cache slot 使用既有 `randomizer.py` 執行新的 draw／cast。
+- 本次 draw 不 fetch GitHub、不走 raw download、不重新 materialize、不重跑完整 smoke test／完整 invariant suite。
+- Playbook 自身剛更新不構成 Randomizer refresh trigger。
 - 每個新 question identity 仍 fresh execution／fresh shuffle，形成新的 Draw/Cast Fact。
 
 **Forbidden behavior**
 
-- Probe 已 PASS 仍為形式重新抓 GitHub `main`。
+- 在 fixed-slot probe 之前先抓 Randomizer GitHub source。
+- Probe PASS 仍為形式重新抓 GitHub `main`／raw source／materialize。
+- 因「剛讀到最新版 Playbook」就推論 Randomizer 也必須重新下載。
+- 為尋找舊 cache 做 broad filesystem search，或自行發明第三個任意 cache path。
 - 把 marker 當成 Draw/Cast Fact，或用 marker timestamp 代替新的 draw timestamp。
 - 重用上一題牌面／卦象。
-- 只因 conversation memory 記得曾載入過，就跳過實際 local probe。
+- 只因 conversation memory 記得曾載入過，就跳過實際 fixed-slot probe。
 
 **Observable evidence**
 
-- local file／marker／hash／version／minimum invariant probe action。
-- GitHub fetch／materialize 是否被跳過。
+- fixed cache locator、local file／marker／hash／version／minimum invariant probe action。
+- GitHub fetch／raw download／materialize 是否被跳過。
 - 新題是否有新的實際 RNG execution 與獨立 Draw/Cast Fact。
 
 ### TAROT-BEH-013 — Long session checks Playbook freshness only on material trigger
@@ -472,39 +477,39 @@ https://github.com/masini1491/tarot-meihua-question-playbook
 **User stimulus**
 
 ```text
-繼續整理這條長期占卜線，接下來要正式回測前面的結果。
+這個聊天室很長了，繼續處理前面的占卜和現實更新。
 ```
 
 **Expected behavior**
 
-- 先判斷 material session-health risk；聊天長度本身不足以觸發 handoff。
-- 若一次 bounded reconciliation 足夠消除風險，可留在原 session；若風險仍 material，主動建議在自然 judgment boundary 開 fresh session。
-- 建議 handoff 時建立最低充分 checkpoint：current Playbook identity、active reading IDs／pointers、confirmed reality、symbolic branches、superseded assumptions、unresolved functions、next safe action／STOP conditions。
-- 新 session 必須重新確認 current Playbook 與 actual source reading identity；checkpoint 不升格成 Reading Record／現實 authority。
-- 私人 handoff payload 不得寫入本公開 Playbook。
+- 不只因聊天室長就機械建議換房；先判斷是否存在 material stale／retrieval risk。
+- 若 bounded reconciliation 足以消除風險，可先留在原 session。
+- 若 material risk 仍存在，主動建議在適當 judgment／lifecycle boundary 開 fresh session，並先產生最低充分 handoff checkpoint。
+- Checkpoint 只保存 current Playbook identity/pointers、active reading IDs、confirmed reality、symbolic-only premises、unresolved functions、evidence gaps 與 next safe action。
+- Fresh session 重新確認 current Playbook 與 active reading evidence；handoff 不直接升格成現實 truth／Reading Record authority。
 
 **Forbidden behavior**
 
-- 捏造「Context 已用掉 X%」當作 handoff 理由。
-- 只因聊天室很長就反覆要求換新 chat。
-- 把 checkpoint summary 當成完整 canonical Reading Record。
-- Handoff 自動觸發重抽、補占或新的 repository write authority。
+- 捏造「Context 已用 90%」等不可觀察數字。
+- 只因訊息很多就強迫換聊天室。
+- 把 handoff summary 當成 current canonical authority，跳過 fresh-session rehydration。
+- 因 handoff 自動重抽、建立 Reading Record、寫入 Playbook 或產生補占權。
 
 **Observable evidence**
 
-- session-health reasoning、checkpoint scope、是否使用 `SESSION_HANDOFF.md`、fresh-session rehydration action與 storage target。
+- session-health reasoning、是否先 bounded reconcile、checkpoint fields、fresh-session canonical rehydration 與是否產生未授權 mutation／redraw。
 
 ## Regression Selection｜最低充分回歸
 
-不要求每次修改都跑全部 scenarios。依 mutation scope挑選直接相關項目；`evals/regression_matrix.json` 提供同一 selection 的 machine-readable metadata。
+不要求每次修改都跑全部 scenarios。依 mutation scope 挑選直接相關項目：
 
-- `CHAT_INIT.md`／Repository Access Policy／Playbook Freshness → TAROT-BEH-001、005、013，必要時 002／003。
+- `CHAT_INIT.md`／Repository Access Policy／Playbook Freshness／Session Handoff → TAROT-BEH-001、005、013、015 中與變更直接相關者，必要時 002／003。
 - `METHOD_ROUTING.md` → TAROT-BEH-002，必要時 001。
-- `RUNTIME_DRAW.md` → TAROT-BEH-003、004、006、007、008、010、012 中與變更直接相關者。
-- `READING_RECORD.md` → TAROT-BEH-008、009、010、011，必要時 004／015。
+- `RUNTIME_DRAW.md` → TAROT-BEH-003、004、006、007、008、010、012 中與變更直接相關者；若改 cache／reuse contract，TAROT-BEH-012 為 mandatory regression。
+- `READING_RECORD.md` → TAROT-BEH-008、009、010、011，必要時 004。
 - Cross-validation／Both responsibility／evidence lineage → TAROT-BEH-009、014，必要時 002。
-- Session continuity／handoff → TAROT-BEH-013、015，必要時 001。
-- `PLAYBOOK_INDEX.json`／machine routing metadata → TAROT-BEH-001、013、015；另做 deterministic JSON/path consistency check。
+- `SESSION_HANDOFF.md` → TAROT-BEH-015，必要時 013。
+- `PLAYBOOK_INDEX.json`／machine routing → 先驗證 schema／owner pointer，再依受影響 owner 選 scenario；必要時 001／013／015。
 - 跨多個 owner 或 activation／cold-start architecture → 先跑直接受影響 scenario；若無法判斷，才擴大到完整 baseline。
 
-核心原則：**Behavioral evaluation 驗證 Agent 是否真的照規則做；deterministic tooling 只驗證它實際能機械判斷的 metadata／invariant，兩者互補而不互相冒充。**
+核心原則：**Behavioral evaluation 驗證 Agent 是否真的照規則做；它不取代 deterministic checker，也不要求一般占問支付額外 Context 成本。**
