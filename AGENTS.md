@@ -25,6 +25,8 @@
 - `BEHAVIORAL_EVAL.md`：低頻 cold-start／regression 行為驗證 scenarios；只驗證 Agent 是否遵守 canonical rules，不取代各主文件 authority，也不在一般占問預設載入。
 - `evals/regression_matrix.json`：Behavioral Eval change-class → scenario selection metadata；selection-only。
 - `tools/behavioral_eval.py`：只做 eval run record／regression matrix 的 deterministic metadata validation，不做 LLM semantic grading。
+- `tools/playbook_check.py`：Playbook 結構一致性的 deterministic checker；檢查 local Markdown links／anchors、`PLAYBOOK_INDEX.json` owner／section／adapter／runner、`CHAT_INIT.md` routed owner，以及 `BEHAVIORAL_EVAL.md` ↔ regression matrix scenario closure。
+- `tests/test_playbook_check.py`：`tools/playbook_check.py` 的單元測試；涵蓋正常 repo、manifest section drift、behavioral matrix drift 與缺失 routed owner。
 - `CASE_STUDIES/`：匿名化、低頻載入的失敗案例與方法演進。
 - `references/`：外部來源 dossier；不自動取得主規則權威。
 
@@ -87,6 +89,8 @@ git config user.email "10146979+masini1491@users.noreply.github.com"
 - Runtime implementation 變更優先修改 Randomizer repo；Playbook 只在 governance contract 改變時同步。
 - 修改 `CHAT_INIT.md`、`METHOD_ROUTING.md`、`RUNTIME_DRAW.md`、`READING_RECORD.md`、`CROSS_VALIDATION.md` 或 session continuity 等會改變 Agent 行為的 contract 後，依 `BEHAVIORAL_EVAL.md`／`evals/regression_matrix.json` 判斷最低充分 behavioral regression；不為純文字排版強制 full suite。
 - 可機械判斷的 routing／matrix／record metadata 可以交給 deterministic tool；需要 interpretation／judgment 的規則不得假裝由簡單 validator 決定。
+- 任何會修改 canonical owner 名稱／heading、`CHAT_INIT.md` routing、`PLAYBOOK_INDEX.json`、Behavioral Eval scenario ID、regression matrix 或 local Markdown link 的變更，至少執行 `python tools/playbook_check.py .`。
+- 修改 `tools/playbook_check.py` 本身時，至少執行 `python -m unittest tests.test_playbook_check`；若 checker contract 同時變更，再跑一次 repository-level `python tools/playbook_check.py .`。
 - 純 Markdown 修改至少檢查 routing、heading、link 與 ownership 是否矛盾；新增 canonical／validation surface 後確認可由 `CHAT_INIT.md`／`PLAYBOOK_INDEX.json` 等預期 discovery path 命中，不依賴模型猜檔名。
 
 ## 外部參考
