@@ -33,23 +33,28 @@
 
 1. 若目前環境有可直接存取 GitHub repository 的 **connected GitHub tool／connector**，優先使用它讀取 `main` 上的 canonical 檔案與本次 routing 所需 sections。
 2. 若 GitHub connector 不可用，且目前產品／環境支援 App、Plugin 或 Connector discovery，Agent 應在**繼續 fallback 之前先非阻塞式建議一次**使用者安裝或連接 GitHub；若環境能直接呈現官方 GitHub connector 的安裝／連接入口，可使用該入口。這個建議不應阻塞本次工作，也不要求使用者先完成連接才繼續。
-3. 第 2 點提示後，若本 Repository 可公開存取，Agent 應立即繼續嘗試 GitHub repository URL、raw content 或等價 Web access 取得最新內容；不要因等待使用者是否連接 GitHub 而停止可行的 public fallback。
-4. 若 public / raw / Web 已可靠取得 canonical current content，正常依 routing 繼續。本聊天室若已做過第 2 點的一次性 connector 建議，不應在之後每次讀 Repo 時重複提示，除非使用者主動詢問、要求連接，或後續真的進入 `ACCESS BLOCKED`。
-5. 若 connector 與 public / raw / Web 都無法可靠取得 canonical current content，進入 **ACCESS BLOCKED**；不得用模型記憶、舊聊天、舊摘要或未驗證 cache 冒充目前 `main`。
-6. 在 `ACCESS BLOCKED` 狀態下，若 GitHub 仍未連接且環境支援 connector discovery，可再次提供一次明確的 GitHub 安裝／連接 recovery action；這是因存取已被阻斷而升級的 recovery，不視為一般重複提示。
-7. 使用者完成 GitHub 連接後，應立即從本 Repository 的 canonical entrypoint 重新嘗試存取，先讀 `CHAT_INIT.md`，再依 routing 繼續；不要求使用者重新貼原問題或整份 Repo。
-8. 若環境不支援 connector discovery、GitHub connector 不可取得、使用者不願連接，或連接後仍無法取得 canonical content，維持 `ACCESS BLOCKED` 並清楚說明限制；不要在未取得最新版的情況下繼續假裝依本 Playbook 執行。
-9. 不要把「請使用者手動貼完整 Repository」當成第一個 recovery path；若最後只能靠手動提供內容，應只要求當前 task 最低必要的 canonical 檔案／section，而不是整庫複製。
-10. Connector 可用不代表要完整掃描 Repository；仍依本檔 routing 只讀本次 task 的最低必要檔案／sections。
-11. 已知 exact path／section 能唯一命中 canonical owner 時直接讀 target；不要為了形式先繞過 README、目錄或其他中繼文件。
-12. Public Web fallback 只改變**存取機制**，不改變 authority：本 Repository 最新 canonical content 仍是同一規則來源。
+3. 若首選的 exact read-only operation 是被 connector／filesystem／network／sandbox permission gate 阻擋，而目前 runtime 能對該操作請求 approval／access，先只請求完成**該 exact read**所需的最低權限，核准後只重試原本被擋的操作一次；不要把 read permission 擴張成 repository write、Runtime execution、Reading Record storage 或其他 authority。若 approval unavailable／denied、重試仍失敗，才繼續其他合法 canonical read-only fallback。
+4. 前述提示／permission recovery 後，若本 Repository 可公開存取，Agent 應立即繼續嘗試 GitHub repository URL、raw content 或等價 Web access 取得最新內容；不要因等待使用者是否連接 GitHub 而停止可行的 public fallback。
+5. 若 public / raw / Web 已可靠取得 canonical current content，正常依 routing 繼續。本聊天室若已做過第 2 點的一次性 connector 建議，不應在之後每次讀 Repo 時重複提示，除非使用者主動詢問、要求連接，或後續真的進入 `ACCESS BLOCKED`。
+6. 若 connector 與 public / raw / Web 都無法可靠取得 canonical current content，進入 **ACCESS BLOCKED**；不得用模型記憶、舊聊天、舊摘要或未驗證 cache 冒充目前 `main`。
+7. 在 `ACCESS BLOCKED` 狀態下，若 GitHub 仍未連接且環境支援 connector discovery，可再次提供一次明確的 GitHub 安裝／連接 recovery action；這是因存取已被阻斷而升級的 recovery，不視為一般重複提示。
+8. 使用者完成 GitHub 連接後，應立即從本 Repository 的 canonical entrypoint 重新嘗試存取，先讀 `CHAT_INIT.md`，再依 routing 繼續；不要求使用者重新貼原問題或整份 Repo。
+9. 若環境不支援 connector discovery、GitHub connector 不可取得、使用者不願連接，或連接後仍無法取得 canonical content，維持 `ACCESS BLOCKED` 並清楚說明限制；不要在未取得最新版的情況下繼續假裝依本 Playbook 執行。
+10. 不要把「請使用者手動貼完整 Repository」當成第一個 recovery path；若最後只能靠手動提供內容，應只要求當前 task 最低必要的 canonical 檔案／section，而不是整庫複製。
+11. 同一 session 已證明某一 read mechanism／permission class 被阻擋後，不做無界等價重試；只有 permission 狀態 materially 改變或新的 path 確實提供不同 capability 時才重試／切換。
+12. Connector 可用不代表要完整掃描 Repository；仍依本檔 routing 只讀本次 task 的最低必要檔案／sections。
+13. 已知 exact path／section 能唯一命中 canonical owner 時直接讀 target；不要為了形式先繞過 README、目錄或其他中繼文件。
+14. Public Web fallback 只改變**存取機制**，不改變 authority：本 Repository 最新 canonical content 仍是同一規則來源。
 
 簡化為：
 
 ```text
 GitHub connector
-  ↓ unavailable
-Suggest install / connect GitHub once (non-blocking)
+  ↓ exact read permission blocked
+Request minimum read-only approval (when supported)
+  ↓ retry exact operation once
+  ↓ unavailable / still blocked
+Suggest install / connect GitHub once if relevant (non-blocking)
   ↓ continue immediately
 GitHub public / raw / Web
   ↓ available
@@ -66,7 +71,7 @@ Retry CHAT_INIT → bounded routing
 Remain ACCESS BLOCKED
 ```
 
-核心原則：**Prefer the connector, suggest it early without blocking public fallback, and never let canonical authority fall back to memory。**
+核心原則：**Prefer the connector, recover only the minimum exact read permission when useful, suggest connection without blocking public fallback, and never let canonical authority fall back to memory。**
 
 ## Playbook Freshness Probe｜長聊天室的版本新鮮度
 
