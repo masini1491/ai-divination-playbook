@@ -69,6 +69,7 @@
 - `randomizer.py` 是否存在且可 import／execute；
 - `verification.json` 是否存在且可解析；
 - marker 記錄的 `runtime_copy_sha256` 是否與目前 `randomizer.py` 一致；
+- marker 的 `runtime_source_commit` 是否為可驗證 exact commit SHA，或若 unavailable 是否被明確標記為 weaker provenance；
 - `algorithm_version`、`schema_version` 是否與目前程式一致；
 - Tarot deck 是否仍為 78 張且唯一，或執行等價的最低必要 invariant check。
 
@@ -108,7 +109,8 @@ Marker 最低包含：
   "verified": true,
   "cache_locator_version": 1,
   "runtime_source_path": "masini1491/tarot-plum-randomizer/randomizer.py",
-  "runtime_source_commit": "<known SHA or unknown>",
+  "runtime_source_ref": "main",
+  "runtime_source_commit": "<exact immutable commit SHA or unknown>",
   "runtime_copy_sha256": "<sha256>",
   "algorithm_version": "<version>",
   "schema_version": "<version>",
@@ -130,6 +132,8 @@ Runtime Draw requested
 → probe randomizer.py + verification.json
    ├─ PASS → GitHub acquisition forbidden for this draw → fresh RNG execution
    └─ FAIL / absent / unavailable → canonical source acquisition
+        → resolve moving ref to exact commit
+        → acquire exact revision randomizer.py
         → bounded smoke test
         → write fixed cache slot + marker
         → fresh RNG execution
@@ -155,9 +159,21 @@ Playbook 只保存治理規則，不另外維護一份 Python 抽牌程式，避
 
 **只有 §2 deterministic cache probe FAIL／absent／unavailable，或 §2 明列的 Randomizer-specific refresh trigger 成立時，才允許進入本節。**
 
+#### Moving Ref Resolution Gate｜`main` 只用來選版本
+
+若取得的是浮動 ref（例如 `main`），在把程式寫入 cache 或宣告 snapshot provenance 前，先以最低成本 read-only identity probe 將該 ref resolve 成 **exact immutable commit SHA**。
+
+規則：
+
+- `main`／其他 moving ref 只用來選 current revision；真正的 runtime snapshot identity 是該次 resolved commit SHA。
+- Source acquisition 應盡可能直接讀取 resolved commit 上的 `randomizer.py`，避免「先解析 SHA、後又從已移動的 main 讀檔」造成 mixed snapshot。
+- Marker 應同時保存原始 ref 與 exact commit；後續 cache freshness 比較以 exact commit 為主。
+- 若 exact commit identity 因 connector／API capability 限制無法取得，但檔案內容仍可可靠取得，只有在本次不要求 immutable provenance 時才可繼續，並將 `runtime_source_commit` 明確記為 `unknown`；不得把 `main` 字串或 branch 名稱冒充 commit identity。
+- 若使用者要求最新版＋完整 provenance／audit，而 exact revision 無法建立，應 fail closed 在 provenance boundary，不宣稱已建立 immutable canonical snapshot。
+
 依最低充分順序：
 
-1. 若目前環境已有可直接讀取 GitHub repository 的 **connected GitHub tool／connector**，優先用它取得指定 `main`／ref 的 canonical `randomizer.py` 與可得的 source commit evidence。
+1. 若目前環境已有可直接讀取 GitHub repository 的 **connected GitHub tool／connector**，優先用它先 resolve 指定 `main`／ref 為 exact commit SHA，再取得該 exact revision 的 canonical `randomizer.py`。
 2. 取得 source 後，將該檔案寫入／materialize 至 §2 的 deterministic cache slot；若該 slot 不可用，才使用 current runtime 明確提供的 temporary execution path。
 3. bounded smoke test 成功後，建立／更新 §2 的 `verification.json`；後續普通 draw 直接走 cache probe，不再重新抓 GitHub。
 4. 若 GitHub connector 不可用，再評估 GitHub public/raw/Web access；只有在必要時才要求 Python runtime 自己具備外網／DNS／HTTPS 能力。
@@ -167,6 +183,20 @@ Playbook 只保存治理規則，不另外維護一份 Python 抽牌程式，避
 
 對已通過 cache probe 的既有 runtime copy，不要求每題都重新查 Randomizer `main` 是否有新 commit。Randomizer freshness 只由 §2.2 的明確 trigger 啟動。
 
+若 freshness trigger 成立，推薦先只做 cheap ref identity probe：
+
+```text
+cached runtime_source_commit = ABC
+current main resolves to ABC
+→ cache remains current; do not redownload
+
+cached runtime_source_commit = ABC
+current main resolves to DEF
+→ acquire DEF/randomizer.py
+→ verify
+→ replace cache + marker
+```
+
 推薦正常流程：
 
 ```text
@@ -175,7 +205,8 @@ Playbook 只保存治理規則，不另外維護一份 Python 抽牌程式，避
 fresh Runtime Draw
 
   ↓ FAIL / absent / unavailable
-GitHub connector / repository-native read
+resolve Randomizer ref → exact commit SHA
+→ GitHub connector / repository-native read at exact revision
 → canonical randomizer.py + source evidence
 → deterministic cache slot
 → Python bounded smoke test
@@ -185,7 +216,7 @@ GitHub connector / repository-native read
 
 若 ChatGPT 取得的是 repo 某個 commit 的檔案，應在內部 provenance 中保留該 commit SHA。GitHub 的 commit time 只代表**該程式版本提交時間**，不是抽牌時間。
 
-若未能確認來源版本，可記 `runtime_source_commit: unknown`，但不得捏造 SHA。
+若未能確認來源版本，可記 `runtime_source_commit: unknown`，但不得捏造 SHA，也不得把 moving ref 當成 immutable identity。
 
 ## 4. Tarot Runtime Contract
 
@@ -302,7 +333,8 @@ cards_source: chatgpt-runtime
 runtime_tool: tarot-plum-randomizer-python
 runtime_algorithm_version: <algorithm_version>
 runtime_schema_version: <schema_version>
-runtime_source_commit: <known commit SHA or unknown>
+runtime_source_ref: <main / tag / other declared ref>
+runtime_source_commit: <exact commit SHA or unknown>
 generated_at_utc: <tool output>
 generated_at_taipei: <tool output>
 timezone: Asia/Taipei
@@ -317,7 +349,7 @@ raw_input: A, B
 
 `chatgpt-runtime` 表示「ChatGPT 實際執行 canonical runtime tool」，不是「ChatGPT 自己用語言生成結果」。
 
-Provenance precision 必須如實保存：若只確認 source path、未確認 commit，就保留 `unknown`；若 runtime timestamp unavailable，就標 unavailable。單一 provenance 欄位已知，不代表其他欄位也已驗證。
+Provenance precision 必須如實保存：若只確認 source path／ref、未確認 commit，就保留 `unknown`；若 runtime timestamp unavailable，就標 unavailable。單一 provenance 欄位已知，不代表其他欄位也已驗證。
 
 Local verification marker 只是 reuse optimization evidence；不得拿 marker 的時間或內容替代每一次真正 Runtime Draw 產生的 result／timestamp。
 
@@ -425,11 +457,13 @@ Canonical runtime tool 更新後，建議至少驗證：
 - 台灣時間 offset 為 `+08:00`；
 - metadata-only 變更不會誤升 `algorithm_version`；
 - deterministic cache locator 能穩定解析到固定 `randomizer.py` + `verification.json`；
-- reuse probe 能用 marker + SHA-256 + version + 最低 invariant 驗證現有 copy；
+- reuse probe 能用 marker + SHA-256 + exact source commit + version + 最低 invariant 驗證現有 copy；
+- moving ref 能先 resolve 成 exact commit，且 acquisition 不混用不同 revision；
+- cache freshness trigger 先比較 exact commit；相同就不 redownload，不同才更新 cache；
 - cache probe PASS 後不重新抓 GitHub／raw download／materialize／完整 smoke test；
 - Playbook 自身更新不會被誤當成 Randomizer freshness trigger；
 - cache probe PASS 後仍為每個新 question identity fresh execution／fresh shuffle；
 - cache probe FAIL／absent／unavailable 時才回到 canonical source acquisition，而不是強行使用 stale／不明 copy；
-- acquisition 成功後會把 canonical copy + marker 回填 deterministic cache slot。
+- acquisition 成功後會把 canonical copy + exact source identity + marker 回填 deterministic cache slot。
 
 測試屬於 Randomizer repo 的 implementation responsibility；本 Playbook 只要求 Runtime Draw 不應依賴未驗證、來源不明的臨時抽牌片段。
