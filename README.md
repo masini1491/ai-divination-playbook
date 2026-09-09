@@ -22,6 +22,42 @@ Liuyao
 
 本手冊把占卜視為**象徵性、反思性與結構化推理工具**；現實決策仍應以可驗證資訊、專業意見與實際條件為優先。
 
+## 快速安裝／第一次使用
+
+第一次使用時，不需要下載整個 Repository、複製一大段 Prompt 或自己挑 Tarot／Meihua／Liuyao。最簡單的方式就是直接跟 ChatGPT 說：
+
+1. **「幫我安裝／連接 GitHub Connect 這個 ChatGPT 外掛。」**
+   - 如果 GitHub Connect 已經連接，可以直接跳過這一步。
+   - 若 ChatGPT 顯示 GitHub 授權／連接流程，依介面完成即可。
+2. **「讀取 `masini1491/ai-divination-playbook`。」**
+   - ChatGPT 應從 `CHAT_INIT.md` 開始，依 Playbook 的最低必要 routing 讀取，不需要掃完整個 Repo。
+3. **直接說你想占什麼。**
+
+例如：
+
+```text
+我想占從現在到月底，這個合作是否會正式談成並開始執行？
+```
+
+之後 ChatGPT 會依 Playbook 自動判斷本題適合 Tarot、Meihua 或 Liuyao，並依需要進行抽牌／起卦、解讀與後續紀錄流程。
+
+也可以把第一次設定直接一次講完：
+
+```text
+幫我安裝／連接 GitHub Connect 這個 ChatGPT 外掛；
+接著用 GitHub Connect 讀取 masini1491/ai-divination-playbook，
+從 CHAT_INIT.md 開始依最低必要 routing 載入。
+設定完成後，我會直接告訴你想占什麼，請依 Playbook 自動選擇適合的方法並執行。
+```
+
+核心就是：
+
+```text
+Connect GitHub
+→ 讀取 Playbook
+→ 說明「我想占……」
+```
+
 ## 一句話使用
 
 啟用本 Repo 後，正常互動可以只有：
