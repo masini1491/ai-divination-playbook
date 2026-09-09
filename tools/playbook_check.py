@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Deterministic structural checks for tarot-meihua-question-playbook."""
+"""Deterministic structural checks for ai-divination-playbook."""
 
 from __future__ import annotations
 
@@ -23,6 +23,11 @@ INDEX_SCHEMA_VERSION = 1
 INDEX_AUTHORITY = "routing-only"
 MATRIX_SCHEMA_VERSION = 1
 MATRIX_AUTHORITY = "selection-only"
+TEXT_SUFFIXES = {".md", ".json", ".py"}
+DEPRECATED_IDENTIFIERS = (
+    "tarot-" + "plum-randomizer",
+    "tarot-meihua-" + "question-playbook",
+)
 
 
 def outside_fence_lines(text: str):
@@ -89,6 +94,18 @@ def markdown_files(root: Path) -> list[Path]:
     return sorted(result)
 
 
+def text_files(root: Path) -> list[Path]:
+    result: list[Path] = []
+    for path in root.rglob("*"):
+        if not path.is_file() or path.suffix.lower() not in TEXT_SUFFIXES:
+            continue
+        rel = path.relative_to(root)
+        if any(part in IGNORED_DIRS for part in rel.parts):
+            continue
+        result.append(path)
+    return sorted(result)
+
+
 def load_json(path: Path) -> Any:
     return json.loads(path.read_text(encoding="utf-8"))
 
@@ -131,6 +148,19 @@ def check_markdown_links(root: Path) -> list[str]:
                     anchors = anchor_cache.setdefault(resolved, heading_anchors(resolved.read_text(encoding="utf-8")))
                     if fragment not in anchors:
                         errors.append(f"{path.relative_to(root)}:{line_no}: missing Markdown anchor: {match.group(1)}")
+    return errors
+
+
+def check_deprecated_identifiers(root: Path) -> list[str]:
+    errors: list[str] = []
+    for path in text_files(root):
+        try:
+            text = path.read_text(encoding="utf-8")
+        except UnicodeDecodeError:
+            continue
+        for identifier in DEPRECATED_IDENTIFIERS:
+            if identifier in text:
+                errors.append(f"{path.relative_to(root)}: deprecated canonical identifier: {identifier}")
     return errors
 
 
@@ -291,6 +321,7 @@ def check_behavioral_matrix(root: Path) -> list[str]:
 def validate(root: Path) -> list[str]:
     errors: list[str] = []
     errors.extend(check_markdown_links(root))
+    errors.extend(check_deprecated_identifiers(root))
     errors.extend(check_index(root))
     errors.extend(check_chat_init_router(root))
     errors.extend(check_behavioral_matrix(root))
@@ -298,7 +329,7 @@ def validate(root: Path) -> list[str]:
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Validate Tarot/Meihua Playbook structural routing.")
+    parser = argparse.ArgumentParser(description="Validate AI Divination Playbook structural routing.")
     parser.add_argument("root", nargs="?", type=Path, default=Path.cwd())
     args = parser.parse_args(argv)
     root = args.root.resolve()
