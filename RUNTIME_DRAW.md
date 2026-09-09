@@ -1,24 +1,26 @@
 # ChatGPT Runtime Draw｜程式抽牌／起卦治理
 
-本章是 ChatGPT／AI 在具有實際程式執行能力時，**自行執行塔羅抽牌或梅花起卦**的主要 authority。
+本章是 ChatGPT／AI 在具有實際程式執行能力時，**自行執行目前已支援之隨機抽牌／起卦**的主要 authority。
 
 本章不實作 RNG，也不複製抽牌程式。Canonical implementation 由：
 
-- `masini1491/tarot-plum-randomizer/randomizer.py`
+- `masini1491/divination-casting-randomizer/randomizer.py`
 
 維護。
+
+目前 canonical Randomizer 已實作 Tarot 與 Meihua。未來若新增其他 stochastic casting method，仍由 Randomizer 擁有實際抽樣 implementation；本 Playbook 只擁有 routing、capability、provenance 與 interpretation governance。
 
 核心原則：
 
 > **Language-model generation ≠ random draw。**
 >
-> 模型能說出牌名，不代表已完成隨機抽牌；宣稱 Runtime Draw 必須有真正的 runtime execution result。
+> 模型能說出牌名或卦象，不代表已完成隨機抽牌／起卦；宣稱 Runtime Draw 必須有真正的 runtime execution result。
 
 ## Section Router｜依 Runtime 任務只讀最低必要段落
 
 本檔可以按 section 漸進式讀取，不要求每次全文載入：
 
-- **普通 ChatGPT 代抽／代起卦** → 第 1～6 節 + 第 11～12 節；依方法只讀 Tarot 或 Meihua contract。
+- **普通 ChatGPT 代抽／代起卦** → 第 1～6 節 + 第 11～12 節；依方法只讀實際需要的 method contract。
 - **需要版本／timestamp／完整 provenance／audit** → 再讀第 7～10 節。
 - **判斷同題能否重抽、補占或 copy-ready vs runtime** → 第 13～14 節，並依需要讀 `READING_LIFECYCLE.md`。
 - **維護或驗證 canonical Randomizer** → 第 3、7～9、15 節；實際測試仍屬 Randomizer repo responsibility。
@@ -32,11 +34,11 @@
 
 1. 使用者明確要求 ChatGPT 自己抽，或上下文已授權由 ChatGPT 代為抽牌／起卦。
 2. 本次 execution environment 具有可實際執行 Python 的能力。
-3. 能取得並執行 `tarot-plum-randomizer` 的 canonical Python implementation，或已有與該 implementation 明確同步且可驗證的本地副本。
+3. 能取得並執行 `divination-casting-randomizer` 的 canonical Python implementation，或已有與該 implementation 明確同步且可驗證的本地副本。
 4. 題目、牌位／起卦契約已在結果出現前固定。
 5. 執行結果可以被保留為 `DRAW / CAST FACT`，而不是只留下模型重述。
 
-若只是模型「隨機想一組牌」，不得標記為 Runtime Draw。
+若只是模型「隨機想一組牌／卦」，不得標記為 Runtime Draw。
 
 ## 2. Runtime Capability Gate
 
@@ -47,15 +49,15 @@
 優先使用以下 deterministic cache slot：
 
 ```text
-/mnt/data/tarot-plum-runtime/randomizer.py
-/mnt/data/tarot-plum-runtime/verification.json
+/mnt/data/divination-casting-runtime/randomizer.py
+/mnt/data/divination-casting-runtime/verification.json
 ```
 
 若 execution environment 沒有可寫的 `/mnt/data`，才依下列唯一 fallback：
 
 ```text
-<runtime-workspace>/.tarot-plum-runtime/randomizer.py
-<runtime-workspace>/.tarot-plum-runtime/verification.json
+<runtime-workspace>/.divination-casting-runtime/randomizer.py
+<runtime-workspace>/.divination-casting-runtime/verification.json
 ```
 
 其中 `<runtime-workspace>` 必須是 execution surface 明確提供、可直接觀察的 current workspace；不得靠 conversation memory 猜 path，也不得為找 cache 做廣泛檔案系統掃描。
@@ -71,19 +73,19 @@
 - marker 記錄的 `runtime_copy_sha256` 是否與目前 `randomizer.py` 一致；
 - marker 的 `runtime_source_commit` 是否為可驗證 exact commit SHA，或若 unavailable 是否被明確標記為 weaker provenance；
 - `algorithm_version`、`schema_version` 是否與目前程式一致；
-- Tarot deck 是否仍為 78 張且唯一，或執行等價的最低必要 invariant check。
+- 本次要用的方法之最低必要 invariant 是否通過；目前至少包括 Tarot 78 張唯一牌組與 Meihua 雙數 contract 所需結構。
 
 若以上 PASS：
 
 - 直接使用 cached `randomizer.py` 執行本題新的 draw／cast；
 - **本次 draw 禁止 GitHub fetch／raw download／重新 materialize canonical source；**
 - 不重跑完整 smoke test／完整 invariant suite；
-- 每個新的 question identity 仍 fresh execution／fresh shuffle，絕不重用上一題結果。
+- 每個新的 question identity 仍 fresh execution／fresh shuffle 或 fresh cast，絕不重用上一題結果。
 
 只有以下情況之一成立，才可以在 cache PASS 後仍重新確認 Randomizer source：
 
 - 使用者明確要求「Randomizer 最新版／重新同步最新版」；
-- 有 concrete evidence 顯示 `masini1491/tarot-plum-randomizer` 的 canonical source 已更新；
+- 有 concrete evidence 顯示 `masini1491/divination-casting-randomizer` 的 canonical source 已更新；
 - 使用者要求完整 provenance，而現有 marker 缺少完成該 audit 所必要、且無法由 local copy 證明的 source identity；
 - local verification 本身 FAIL／無法完成。
 
@@ -107,8 +109,8 @@ Marker 最低包含：
 ```json
 {
   "verified": true,
-  "cache_locator_version": 1,
-  "runtime_source_path": "masini1491/tarot-plum-randomizer/randomizer.py",
+  "cache_locator_version": 2,
+  "runtime_source_path": "masini1491/divination-casting-randomizer/randomizer.py",
   "runtime_source_ref": "main",
   "runtime_source_commit": "<exact immutable commit SHA or unknown>",
   "runtime_copy_sha256": "<sha256>",
@@ -118,11 +120,13 @@ Marker 最低包含：
 }
 ```
 
+`cache_locator_version` 因 repository/cache locator rename 升為 2；這只是 local execution-state locator version，不是占卜演算法版本。
+
 Marker 只屬 temporary execution state，不是新的 canonical authority，也不是 Reading Record evidence layer。
 
 若 runtime／kernel 被重建，cache slot 不存在，重新取得一次 canonical source 是正常 cold-cache 行為；**不存在的 cache 不得靠聊天記憶假裝仍存在。**
 
-不要為了能力盤點去掃描所有 runtime、compiler、sandbox 套件或任意目錄；只驗證本次真正需要的 Python capability與固定 cache slot。
+不要為了能力盤點去掃描所有 runtime、compiler、sandbox 套件或任意目錄；只驗證本次真正需要的 Python capability 與固定 cache slot。
 
 核心流程：
 
@@ -148,10 +152,10 @@ Runtime Draw requested
 Runtime Draw 的 canonical implementation 是：
 
 ```text
-masini1491/tarot-plum-randomizer/randomizer.py
+masini1491/divination-casting-randomizer/randomizer.py
 ```
 
-Playbook 只保存治理規則，不另外維護一份 Python 抽牌程式，避免 Web、Python、Playbook 三份演算法 drift。
+Playbook 只保存治理規則，不另外維護一份 Python 抽牌／起卦程式，避免 Web、Python、Playbook 多份演算法 drift。
 
 ### 3.1 Source Acquisition Layering｜取得 canonical script 的優先序
 
@@ -253,28 +257,28 @@ Runtime result 中的 A／B、本卦、上下卦與動爻視為該次 canonical 
 單題塔羅：
 
 ```text
-python /mnt/data/tarot-plum-runtime/randomizer.py tarot --count 6 --format json --source-commit <SHA>
+python /mnt/data/divination-casting-runtime/randomizer.py tarot --count 6 --format json --source-commit <SHA>
 ```
 
 梅花：
 
 ```text
-python /mnt/data/tarot-plum-runtime/randomizer.py plum --format json --source-commit <SHA>
+python /mnt/data/divination-casting-runtime/randomizer.py plum --format json --source-commit <SHA>
 ```
 
 塔羅＋梅花：
 
 ```text
-python /mnt/data/tarot-plum-runtime/randomizer.py both --count 6 --format json --source-commit <SHA>
+python /mnt/data/divination-casting-runtime/randomizer.py both --count 6 --format json --source-commit <SHA>
 ```
 
 多題：
 
 ```text
-python /mnt/data/tarot-plum-runtime/randomizer.py batch --counts 5,5,6,3 --format json --source-commit <SHA>
+python /mnt/data/divination-casting-runtime/randomizer.py batch --counts 5,5,6,3 --format json --source-commit <SHA>
 ```
 
-若使用 workspace fallback slot，將上方 script path 換成 `<runtime-workspace>/.tarot-plum-runtime/randomizer.py`。
+若使用 workspace fallback slot，將上方 script path 換成 `<runtime-workspace>/.divination-casting-runtime/randomizer.py`。
 
 AI integration 優先使用 JSON，避免把人類排版重新解析成機械欄位。
 
@@ -288,13 +292,13 @@ AI integration 優先使用 JSON，避免把人類排版重新解析成機械欄
 - 梅花 A/B 與取卦公式；
 - 其他會改變實際抽取分布或結果契約的核心方法。
 
-若只是新增 timestamp、commit provenance、JSON 欄位或其他輸出 metadata，不應升 `algorithm_version`；這類變化使用獨立的 `schema_version`。
+若只是新增 timestamp、commit provenance、source identity、repository rename、JSON 欄位或其他輸出 metadata，不應升 `algorithm_version`；這類變化使用獨立的 `schema_version`。
 
 目前 canonical Randomizer：
 
 ```text
 algorithm_version: 1
-schema_version: 2
+schema_version: 3
 ```
 
 因此使用者可見仍可寫：
@@ -303,7 +307,7 @@ schema_version: 2
 Canonical Randomizer v1
 ```
 
-不需要因 provenance schema 更新而顯示 v2。
+不需要因 provenance/schema 更新而顯示新的 algorithm version。
 
 ## 8. Draw Timestamp｜抽牌時間
 
@@ -330,7 +334,7 @@ Runtime Draw 至少在工具輸出或正式紀錄中保存：
 
 ```text
 cards_source: chatgpt-runtime
-runtime_tool: tarot-plum-randomizer-python
+runtime_tool: divination-casting-randomizer-python
 runtime_algorithm_version: <algorithm_version>
 runtime_schema_version: <schema_version>
 runtime_source_ref: <main / tag / other declared ref>
@@ -408,11 +412,11 @@ Question Contract fixed
 如果 Runtime Draw 在本次環境不可用、canonical script 無法取得、程式執行失敗或結果無法可信解析：
 
 - 不得假裝已執行；
-- 不得由語言模型自行產生牌名來冒充抽牌；
+- 不得由語言模型自行產生牌名／卦象來冒充抽牌／起卦；
 - 不得偷偷改用另一套未宣告 RNG；
-- 應改用 Web `tarot-plum-randomizer`，或請使用者自行抽牌後提供結果。
+- 應改用 `divination-casting-randomizer` 的 Web UI，或請使用者自行抽牌／起卦後提供結果。
 
-若 runtime 部分成功，例如 Tarot 成功、梅花失敗，應分開標示，不能把整組宣稱為完整 Runtime Draw。
+若 runtime 部分成功，例如 Tarot 成功、Meihua 失敗，應分開標示，不能把整組宣稱為完整 Runtime Draw。
 
 ## 13. Runtime Draw 不改變補占紀律
 
@@ -462,7 +466,7 @@ Canonical runtime tool 更新後，建議至少驗證：
 - cache freshness trigger 先比較 exact commit；相同就不 redownload，不同才更新 cache；
 - cache probe PASS 後不重新抓 GitHub／raw download／materialize／完整 smoke test；
 - Playbook 自身更新不會被誤當成 Randomizer freshness trigger；
-- cache probe PASS 後仍為每個新 question identity fresh execution／fresh shuffle；
+- cache probe PASS 後仍為每個新 question identity fresh execution／fresh shuffle 或 fresh cast；
 - cache probe FAIL／absent／unavailable 時才回到 canonical source acquisition，而不是強行使用 stale／不明 copy；
 - acquisition 成功後會把 canonical copy + exact source identity + marker 回填 deterministic cache slot。
 
