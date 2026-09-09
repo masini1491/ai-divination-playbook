@@ -26,11 +26,51 @@ Liuyao three-coin raw cast
 
 ## Section Router｜依 Runtime 任務只讀最低必要段落
 
-- **普通 ChatGPT 代抽／代起卦** → §1～6 + §11～12；依方法只讀實際需要的 method contract。
+- **普通 ChatGPT 代抽／代起卦，verified cache 已可用** → 先讀下方 `Runtime Fast Path`，再依方法讀 §4～6A、§11～12；**不要為形式讀 §2.3／§3 的 acquisition 細節**。
+- **cache FAIL／首次 acquisition** → §1～3 + 對應 method contract + §6、§11～12。
+- **同一請求有多個合法獨立 readings** → `Runtime Fast Path` + §6A；可 batch 就不要逐題啟動 Python。
 - **需要版本／timestamp／完整 provenance／audit** → 再讀 §7～10。
 - **判斷同題能否重抽、補占或 copy-ready vs runtime** → §13～14 + 必要時 `READING_LIFECYCLE.md`。
 - **維護或驗證 canonical Randomizer** → §3、§7～9、§15；實際 tests 屬 Randomizer repo responsibility。
 - **正式保存 Runtime Draw / Cast** → §8～11 + `READING_RECORD.md`。
+
+若 fast path 已完整決定 execution，不要繼續讀 acquisition／maintenance sections；router 用來減少 latency 與 context cost，不是額外 ceremony。
+
+## Runtime Fast Path｜verified cache 命中時直接執行
+
+普通占問的最快合法路徑是：
+
+```text
+Question Contract fixed
+→ fixed-slot cache probe
+→ PASS
+→ one canonical Python execution
+→ Raw result captured
+→ DRAW / CAST FACT fixed
+→ Interpretation
+```
+
+Fast Path 適用條件：
+
+- 本題／各 child reading 的 question identity 與 method contract 已在結果前固定；
+- Python execution capability 已成立；
+- fixed cache slot 可讀；
+- `randomizer.py` + `verification.json` 通過 §2.2 的最低 reuse probe；
+- 本次方法包含在 verified supported methods；
+- 沒有 Randomizer-specific refresh trigger。
+
+一旦 PASS：
+
+1. **立即 reuse cached script**；不得重新抓 GitHub、重新 materialize 或跑 full smoke suite。
+2. 單一 reading → 一次 execution 直接取得結果。
+3. 同一請求有多個**已合法成立的獨立 question identities** → 依 §6A 優先合併成最少 canonical Python calls。
+4. 每個 child 仍必須 fresh shuffle / fresh cast；batch 只合併 execution transport，不合併 reading identity。
+5. Runtime output 一旦成功對應到 child identity，即固定為該 child 的 Draw / Cast Fact；不得因 batch 中其他 child 有問題而把已固定結果重抽。
+6. 若 output count、順序或 child mapping 無法可信確認，fail closed；不要盲目重跑整個 batch 來取得「比較好解析」的新結果。
+
+核心原則：
+
+> **Verify once per runtime state; draw fresh per question identity; batch compatible independent readings into as few executions as possible。**
 
 ## 1. 何時可以使用 Runtime Draw / Cast
 
@@ -100,7 +140,8 @@ Probe PASS：
 - 直接用 cached script fresh execution；
 - 本次 draw / cast 禁止重新取得 GitHub source／重新 materialize；
 - 不跑完整 smoke／full invariant suite；
-- 每個新 question identity 都 fresh shuffle / fresh cast，絕不重用上一題結果。
+- 每個新 question identity 都 fresh shuffle / fresh cast，絕不重用上一題結果；
+- 若同一 request 含多個 compatible independent identities，進 §6A automatic batching。
 
 只有以下 trigger 才能在 PASS 後重新確認 Randomizer source：
 
@@ -281,6 +322,45 @@ python /mnt/data/divination-casting-runtime/randomizer.py both --count 6 --forma
 
 AI integration 優先 JSON。
 
+## 6A. Automatic Batching｜多題一次執行，identity 仍分離
+
+若同一使用者 request 已經存在多個**合法、彼此獨立且 contract 都已固定**的 question identities，ChatGPT 應優先使用 canonical Randomizer 既有 multi-result capability，降低 Python process／tool round-trip 次數。
+
+### 同方法、同張數／同 casting contract
+
+```text
+# 4 個獨立 Tarot readings，每題 5 張
+python /mnt/data/divination-casting-runtime/randomizer.py tarot --count 5 --repeat 4 --format json --source-commit <SHA>
+
+# 4 個獨立 Meihua readings
+python /mnt/data/divination-casting-runtime/randomizer.py plum --repeat 4 --format json --source-commit <SHA>
+
+# 4 個獨立 Liuyao readings
+python /mnt/data/divination-casting-runtime/randomizer.py liuyao --method coins --repeat 4 --format json --source-commit <SHA>
+```
+
+### Tarot 多題張數不同
+
+```text
+# 四個獨立 Tarot readings，依序 5 / 3 / 6 / 5 張
+python /mnt/data/divination-casting-runtime/randomizer.py batch --counts 5,3,6,5 --method tarot --format json --source-commit <SHA>
+```
+
+### Batching Contract
+
+1. **先固定全部 child contracts，再執行 batch。** 不得抽完後才決定哪個 result 對應哪個人／哪個問題。
+2. output `results[0..N-1]` 依輸入 question identity 的固定順序一對一 mapping；結果出現後不得重排來配合較喜歡的解讀。
+3. 每個 child result 都是 fresh RNG：Tarot fresh full-deck shuffle、Meihua fresh A/B、Liuyao fresh six-line cast。
+4. `--repeat N` 的 N 代表 **N 個已合法成立的獨立 readings**；不得把它拿來對同一 question identity 連抽 N 次再投票或挑最好結果。
+5. batch/container 只共享 execution envelope／可共享同一次 package timestamp；不共享 question identity、Draw / Cast Fact identity、Reading Record identity 或 Reality Update。
+6. compatible multi-read request 若 canonical CLI 已支援 `--repeat`／`batch`，預設應使用最少 Python calls；逐題 serial invocation 只有在 child contract 不相容、單一 child 需要不同 method、或 runtime capability 不支援合併時才合理。
+7. mixed methods 不為追求單一 call 而硬塞進 legacy `both`；先依 method responsibility 分組，再用各方法最少合法 calls。`both` 只保留既有 Tarot + Meihua compatibility，不自動成為所有多方法 request 的 batching 策略。
+8. 若 batch output 無法可信確認 result count／順序／mapping，fail closed；不要重跑整批，因為那會改變其他 child 已可能形成的 stochastic result。
+
+核心原則：
+
+> **Batch execution ≠ merged reading。One process may produce many independent Draw / Cast Facts。**
+
 ## 7. Version Semantics｜版本語意
 
 `algorithm_version` 代表 stochastic draw / cast algorithm contract。改變實際抽樣分布、核心 shuffle/casting rule 或新增會改變 canonical stochastic method contract 的方法時才升版。
@@ -313,6 +393,8 @@ timezone: Asia/Taipei
 GitHub commit time 只代表 source provenance，不是 draw / cast time。
 
 對 Liuyao，如果 downstream deterministic engine 使用月建、日辰、六神、旬空等時間相關欄位，應使用**同一次 Raw Cast 的實際 timestamp**作為時間基準，不得事後另挑時間。
+
+同一 batch 的多個 child results 可共享 package-level execution timestamp；這只代表它們在同一次 canonical execution envelope 中產生，不合併 child identity。若 downstream method 需要比 package timestamp 更細的 per-child time precision，而 current Randomizer 未提供，標示 precision boundary，不得自行捏造不同時間。
 
 ## 9. Internal Provenance
 
@@ -395,6 +477,8 @@ Question Contract fixed
 
 不得邊解讀邊重抽／重起。
 
+多題 batch 時，上述順序對**每一個 child reading**分別成立；batch 只是同一 execution envelope，不代表多個 child 共用一個 Draw / Cast Fact。
+
 對 Liuyao：
 
 ```text
@@ -422,13 +506,17 @@ Raw Cast Fact
 → 依 LIUYAO.md 標記 Structured Fact unavailable
 ```
 
-不要因 engine 缺失就偷偷改成另一方法。
+若 batch execution 已返回可可信固定的部分 child results，但其他 child mapping／parse 失敗，不得為了修復失敗 child 而重跑整批並覆蓋已固定結果；保留可信 child facts，對 unresolved child fail closed 或在不會重抽其他 child 的前提下採最小修復。
+
+不要因 engine 缺失或單一 child failure 就偷偷改成另一方法。
 
 ## 13. Runtime Availability 不改變補占紀律
 
-Python 很快，不代表同題可以快速重抽。
+Python 很快、batch 很方便，都不代表同題可以快速重抽。
 
 同題／新題、承接、條件世界、補占／重占、多人物 identity 仍由 `READING_LIFECYCLE.md` 決定。
+
+`--repeat`／`batch` 只降低 execution overhead，不創造新的 judgment node，也不增加 symbolic evidence 的獨立性。
 
 > **Execution availability does not create divination authority。**
 
@@ -463,6 +551,9 @@ Canonical Randomizer 更新後至少驗證：
 - cache PASS 後不重抓 source；
 - new question identity fresh RNG；
 - cache FAIL 才 source acquisition；
+- compatible independent multi-readings 可由 `--repeat`／`batch` 在單一 execution 產生正確 result count；
+- batch child 順序可一對一對應 pre-fixed question identities；
+- batch 不把多題變成同一副牌的殘餘抽取，也不把多個 child identities 合併；
 - 需要 GitHub source acquisition 時只使用 GitHub Connect；connector unavailable 時不改走 public/raw/Web。
 
 ### Tarot
