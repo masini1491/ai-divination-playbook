@@ -14,7 +14,7 @@ Liuyao
 
 > **AI / ChatGPT 快速入口：** 實際使用本手冊時，直接從 [`CHAT_INIT.md`](CHAT_INIT.md) 開始並依 task routing 只讀最低必要文件／sections；不需要先完整閱讀本 README，也不要為了「熟悉手冊」掃描整個 Repository。
 >
-> **建議搭配 GitHub connector：** 若 ChatGPT 可連接 GitHub，建議啟用 GitHub connector，讓它直接讀取本 Repository 最新 `main` 與需要的 canonical owners；connector 不是必要條件。完整 repository access／fallback／freshness 規則仍以 [`CHAT_INIT.md`](CHAT_INIT.md) 為準。
+> **GitHub Connect 是本專案唯一 GitHub repository retrieval transport：** 只要需要讀取本 Repo、Randomizer、外部 method engine、GitHub reference、branch／commit／diff／license 等 GitHub-hosted evidence，一律使用 connected GitHub connector。若 connector 不可用而 task materially 依賴 current GitHub content，停在 `ACCESS BLOCKED`；不改走 public HTML、raw URL、generic Web、Python HTTP、`curl`／`wget`／`git clone`。完整規則以 [`CHAT_INIT.md`](CHAT_INIT.md) 為準。
 
 本儲存庫不以整理完整牌義、卦辭或宣稱「算得準」為主要目的，而是處理更前面的問題：
 
