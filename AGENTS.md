@@ -82,6 +82,46 @@ git config user.email "10146979+masini1491@users.noreply.github.com"
 
 除非使用者明確要求，不修改 global Git identity；不得保存 token、password、API key 或其他 credential。
 
+## GitHub Connect 讀取規則
+
+所有 **GitHub-hosted repository retrieval** 一律走 GitHub connector / GitHub Connect。這是 project-wide 規則，不只適用於本 Repository。
+
+包括：
+
+- 本 Repo 的 branch／tag／commit／tree／diff／file／section；
+- `divination-casting-randomizer`；
+- Liuyao／Qimen／未來 method engine；
+- `references/` 中任何 GitHub external source；
+- repo rename、freshness、comparison、license、release 或 source audit。
+
+禁止把以下當成 GitHub repository retrieval fallback：
+
+```text
+GitHub public HTML
+raw.githubusercontent.com
+generic Web search
+Python direct HTTP / requests / urllib
+curl / wget
+git clone
+memory / stale unverified cache
+```
+
+若 GitHub connector unavailable，而 current task materially 依賴 GitHub current content：
+
+```text
+minimum connector/read recovery
+→ still unavailable
+→ ACCESS BLOCKED
+```
+
+不要改走 public/raw/Web。
+
+例外只有已由其他 canonical owner 明確治理的**本地 verified runtime reuse**：例如 `RUNTIME_DRAW.md` 的 Randomizer deterministic cache。這種情況沒有新的 GitHub acquisition，因此可直接 reuse；一旦真的需要重新取得 GitHub source，仍只能走 GitHub connector。
+
+GitHub retrieval capability 不代表 Python execution、repository write 或 Reading Record storage authority。
+
+完整 repository access policy 由 `CHAT_INIT.md` 擁有；AGENTS 只保留 project-wide 摘要，不複製全部 recovery semantics。
+
 ## 語言規則
 
 - 正式說明、規則、案例與 reference 摘要預設繁體中文。
@@ -105,6 +145,7 @@ git config user.email "10146979+masini1491@users.noreply.github.com"
 ## AI 讀取紀律
 
 - 實際使用先讀 `CHAT_INIT.md`，再依 task bounded-read minimum canonical owners。
+- 所有 GitHub-hosted repository read/search/ref/diff 只用 GitHub connector；不得改走 public/raw/Web。
 - machine consumer 可選 `PLAYBOOK_INDEX.json` 做 owner discovery；命中後仍回 canonical Markdown owner。
 - 方法未指定才讀 `METHOD_ROUTING.md`；若使用者已指定 method 或已有實際 Draw / Cast Fact，不為形式重新 routing。
 - `BEHAVIORAL_EVAL.md`、`references/`、`CASE_STUDIES/`、Historical Context 預設 Cold。
@@ -133,7 +174,7 @@ judgment gap
 - 不因 Repo 名稱泛化就宣稱未定義方法已支援。
 - Runtime stochastic implementation 變更優先改 Randomizer repo；Playbook 只同步 governance contract。
 - deterministic engine 計算不得複製進 Playbook；必要時使用 thin adapter。
-- External reference 納入前記錄 source/ref、license、採用範圍、not-adopted boundary。
+- External GitHub reference 納入前，一律用 GitHub connector 取得並記錄 source/ref、license、採用範圍、not-adopted boundary。
 - 不在 README、AGENTS、CHAT_INIT、PLAYBOOK_INDEX 與 method owner 間複製完整 normative policy。
 - `CROSS_VALIDATION.md` 目前只擁有已正式定義的 reconciliation；新增 method 不代表自動獲得 pairwise cross-validation semantics。
 - 任何改變 `CHAT_INIT.md`、`METHOD_ROUTING.md`、`RUNTIME_DRAW.md`、method owner、Reading Record、cross-validation、session continuity 等 Agent behavior 的 contract，依 `BEHAVIORAL_EVAL.md`／`evals/regression_matrix.json` 做最低充分 regression。
@@ -154,4 +195,4 @@ python tools/playbook_check.py .
 
 ## 外部參考
 
-可引用公開 Tarot／Meihua／Liuyao／Qimen／AI methodology repository，但外部規則不會自動成為本 Repo authority。整併時必須保留 premise、流派差異、license、authority boundary 與 not-adopted items。
+可引用公開 Tarot／Meihua／Liuyao／Qimen／AI methodology repository，但所有 GitHub source acquisition 只走 GitHub connector。外部規則不會自動成為本 Repo authority；整併時必須保留 premise、流派差異、license、authority boundary 與 not-adopted items。
