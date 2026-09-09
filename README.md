@@ -48,6 +48,21 @@ Agent 依 `CHAT_INIT.md` 自動完成：
 
 本專案不是把所有術數混成同一套算法，而是讓每個方法負責自己最擅長的 **judgment function**，再由 Playbook 自動 routing。
 
+最簡單的記憶方式：
+
+```text
+Psychology / Comparison
+→ Tarot
+
+Process / Evolution / Structure
+→ Meihua
+
+Outcome / Completion
+→ Liuyao
+```
+
+其中 `Process` 指的是**結構性的演化、主客作用與轉折**；`Outcome` 則是已有清楚、外部可驗證 `completion_rule` 的具體事件結果。這個簡化口訣只是 README overview，真正 routing authority 仍以 [`METHOD_ROUTING.md`](METHOD_ROUTING.md) 為準。
+
 ### Tarot｜人物、心理、互動與比較
 
 Tarot 優先處理：
@@ -100,6 +115,8 @@ Meihua 與 Liuyao 最重要的分界：
 「這件具體事情到底會不會完成？」
 → Liuyao
 ```
+
+Meihua 的「變卦方向」與「應期」在本 Playbook 中優先代表**後續 trajectory、轉折、階段與 checkpoint**，不自動等同 Liuyao 的 completion outcome 或精確完成日期。
 
 ### Liuyao｜單一具體事件的 outcome、阻礙與應期
 
