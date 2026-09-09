@@ -28,47 +28,59 @@
 
 > **Natural language in; method routing and execution details are the Agent's job unless a material ambiguity really requires clarification。**
 
-## Repository Access Policy｜最新版規則的取得方式
+## Repository Access Policy｜GitHub Connect 為唯一 GitHub 取得路徑
 
-當本 Repository 被指定為規則來源時，Agent 應以最低成本取得 canonical current content，不依賴模型記憶、舊聊天室摘要或 cached wording 冒充 latest。
+凡本 Playbook workflow 需要**從 GitHub 取得 repository 內容或 repository identity**，一律使用已連接的 **GitHub connector / GitHub Connect**。這是本專案的 canonical retrieval transport，不只是偏好順序。
 
-存取優先序：
+本節的「GitHub 內容」包括但不限於：
 
-1. 有 connected GitHub tool／connector → 優先 exact read `main` 上本次需要的 canonical files / sections。
-2. connector unavailable 且產品支援 Plugin / Connector discovery → 非阻塞式建議一次連接 GitHub；不要等待使用者完成才繼續合法 fallback。
-3. exact read 被 permission gate 擋住且環境能 request approval → 只請求完成該 exact read 所需最低 read permission；核准後重試原操作一次。
-4. connector 不可用／失敗後，若 public repository 可讀 → 立即嘗試 GitHub public / raw / Web。
-5. public / raw / Web 成功 → 依 bounded routing 繼續；同一聊天室不重複 connector 推銷。
-6. connector + public/raw/Web 都不能可靠取得 canonical current content → `ACCESS BLOCKED`。
-7. `ACCESS BLOCKED` 時不得用 memory、舊摘要或未驗證 cache 冒充 `main`；若 connector recovery 仍可能成立，可再提供一次明確連接入口。
-8. 使用者完成 GitHub connection 後，重新從 `CHAT_INIT.md` rehydrate；不要求重貼原問題。
-9. 若 connector unsupported／declined／still fails → 保持 `ACCESS BLOCKED`。
-10. 不把「請使用者貼整個 Repo」當第一 recovery；最後只能手動時，只要求本 task 最低必要 owner／section。
-11. 同一 permission/network mechanism 已證明被擋，不做無界等價重試。
-12. Connector 可用 ≠ full repo scan；仍只讀最低充分 canonical surfaces。
-13. 已知 exact path／section owner → 直接讀 target，不繞 README ceremony。
-14. Web fallback 只改 access mechanism，不改 authority。
+- 本 Repository 的 `main`、branch／tag、commit SHA、diff、tree、canonical files／sections；
+- `masini1491/divination-casting-randomizer` 的 source／ref／commit；
+- Liuyao／未來 method engine 的 GitHub source、release、license、reference；
+- `references/` 研究需要讀取的任何 GitHub repository；
+- freshness probe、rename reconciliation、external GitHub comparison 或其他 GitHub-hosted evidence。
+
+規則：
+
+1. **GitHub Connect first and only**：需要 GitHub repository data 時，直接使用 connected GitHub connector 的 exact read/search/ref/commit operation。
+2. 不以 generic Web search、GitHub public HTML、`raw.githubusercontent.com`、Python `requests`／`urllib`、shell `curl`／`wget`、`git clone` 或其他 direct network path 代替 GitHub connector 取得 GitHub 檔案。
+3. 若 GitHub connector 尚未連接／不可用，而本次 task materially 依賴 GitHub current content，先提供最低必要的 connect recovery；在 connector 可用前進入 **`ACCESS BLOCKED`**，不要改走 public/raw/Web。
+4. `ACCESS BLOCKED` 時不得用模型記憶、舊聊天室摘要、未驗證 cache 或曾經看過的 wording 冒充 current GitHub authority。
+5. GitHub connector 可用後，從 exact owner／path／ref 開始 bounded read；**connector available ≠ full repo scan**。
+6. 已知 exact path／section owner 時直接讀 target；router／README 只在 discovery 真有需要時使用。
+7. 需要 latest／freshness 時，先用 GitHub connector 做 cheap ref／HEAD identity probe；只有 material change 才 bounded-read changed owners。
+8. 需要 immutable provenance 時，使用 GitHub connector 把 moving ref resolve 成 exact commit SHA，再讀該 exact revision；不得拿 `main` 字串冒充 commit identity。
+9. 已通過專門治理的 local verified cache（例如 `RUNTIME_DRAW.md` 的 Randomizer deterministic cache）可以依其 owner 規則直接 reuse；**local verified reuse 不算新的 GitHub acquisition**，因此不要求每題重新連 GitHub。
+10. GitHub connector 只提供 repository retrieval capability；**retrieval authority ≠ Python execution authority ≠ repository write authority ≠ Reading Record storage authority**。
+11. 對 GitHub 的 write／create／update／delete 仍需該 task 的明確 write authority；本節只規定「GitHub 檔案怎麼讀」，不自動授權修改任何 repository。
+12. 若 connector 本身對 exact read 被 permission gate 擋住且可 request approval，只請求完成該 exact read 所需最低 read permission；不要擴張到 write 或其他 capability。
 
 簡化：
 
 ```text
-GitHub connector
-  ↓ unavailable / exact read blocked
-minimum read recovery if supported
-  ↓ still unavailable
-one non-blocking connect suggestion
-  ↓ continue
-public / raw / Web
-  ↓ success
-bounded canonical routing
+Need GitHub repository data
+→ GitHub connector / GitHub Connect
+   ├─ available → bounded exact read / ref / commit / diff
+   └─ unavailable / blocked
+        → minimum connect/read recovery
+        → still unavailable
+        → ACCESS BLOCKED
+```
 
-all fail
-→ ACCESS BLOCKED
+禁止的替代路徑：
+
+```text
+GitHub public HTML
+raw.githubusercontent.com
+Web search as repository fetch
+Python direct HTTP
+curl / wget / git clone
+memory / stale cache pretending to be current
 ```
 
 核心原則：
 
-> **Prefer connector, recover only minimum read authority, continue public fallback when possible, never fall back to memory as canonical truth。**
+> **All GitHub repository acquisition goes through GitHub Connect. Local verified runtime reuse may avoid a GitHub fetch; when a GitHub fetch is actually needed, no alternate transport substitutes for the connector。**
 
 ## Playbook Freshness Probe｜長聊天室的版本新鮮度
 
@@ -99,6 +111,8 @@ changed but irrelevant
 probe unavailable + currentness required
 → FRESHNESS UNAVAILABLE / STOP boundary
 ```
+
+Freshness probe 的 GitHub ref／commit／diff 取得同樣服從前節：**只用 GitHub connector**。
 
 Pinned SHA／tag 本身就是固定 authority，除非使用者要求升級，不跟著 upstream `main` 漂移。
 
