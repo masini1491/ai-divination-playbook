@@ -27,6 +27,36 @@ Tarot + Meihua（只有 distinct responsibilities 真正需要時）
 
 > **Single-method first。Cross-validation 不是資訊越多越好。**
 
+## Fast Path｜高信心命中就停止 routing
+
+普通題先用這個最小路由：
+
+```text
+Psychology / Comparison
+→ Tarot
+
+Process / Evolution / Structure
+→ Meihua
+
+Outcome / Completion
+→ Liuyao
+```
+
+具體化：
+
+```text
+主要問人物心理、互動、主觀感受、A/B/C 比較
+→ Tarot
+
+主要問事情怎麼變、轉折在哪、主客／體用結構
+→ Meihua
+
+主要問一件具體、外部可驗證的事情是否在 horizon 內完成／成立
+→ Liuyao
+```
+
+若只有一個分支高信心命中，**立即選 method，停止讀本檔其餘 sections**；只有出現 collision、ambiguous function、使用者要求多方法或 completion／心理／演化混在同一句時，才繼續讀對應 gate。
+
 ## 1. User Method Override｜使用者已指定方法
 
 若使用者已明確指定：
@@ -139,7 +169,7 @@ Node B：如果繼續推進，合作關係的結構與轉折怎麼發展？
 → Meihua
 ```
 
-不要因 Meihua 也能談吉凶／應期，就把明確 completion outcome 永遠留給 Meihua；也不要因 Liuyao能看動變，就拿它取代所有事件演化題。
+不要因 Meihua 也能談吉凶／應期，就把明確 completion outcome 永遠留給 Meihua；也不要因 Liuyao 能看動變，就拿它取代所有事件演化題。
 
 ## 4. Psychology vs Observable Event Gate｜Liuyao 與 Tarot 的分界
 
@@ -265,7 +295,8 @@ Method Routing 只決定「用哪套」。選完後才進行正式題目契約�
 RAW USER QUESTION
 → FUNCTION DETECTION
 → METHOD ROUTING
-→ INPUT CONTRACT / QUESTION DESIGN
+→ minimum contract normalization
+→ QUESTION_DESIGN only if a design gap remains
 → DRAW / CAST
 → STRUCTURED METHOD FACT（需要時）
 → INTERPRETATION
@@ -273,7 +304,7 @@ RAW USER QUESTION
 
 不要先抽牌／起卦，再根據結果反推「其實這題比較適合另一套」。
 
-若題目本身有契約缺陷，先修題；方法選得對不能補救混亂的 `subject`、`horizon`、`completion_rule` 或 position responsibility。
+若題目本身有契約缺陷，才補讀 `INPUT_CONTRACT.md`／`QUESTION_DESIGN.md` relevant sections；**普通清楚的新題不因為是新題就固定全文載入兩份文件。**
 
 ## 10. Runtime / Engine Capability 不影響方法選擇
 
