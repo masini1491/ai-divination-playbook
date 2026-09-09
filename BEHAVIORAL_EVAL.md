@@ -253,11 +253,15 @@ https://github.com/masini1491/ai-divination-playbook
 
 - capability probe、fallback decision、是否產生虛假 Raw Fact。
 
-### TAROT-BEH-008 — Batch/container must not merge reading identities
+### TAROT-BEH-008 — Batch/container preserves identities and minimizes executions
 
 **Premise / authority**
 
-- 同一 batch／UI／JSON container 有多個可獨立詢問、驗證或回測的 readings。
+- 同一 request 有多個可獨立詢問、驗證或回測的 readings。
+- A／B／C 都已固定為獨立 question identities。
+- 三題使用相同 Tarot 5-card contract。
+- canonical Randomizer 支援 `tarot --count 5 --repeat 3`。
+- verified local cache PASS，沒有 refresh trigger。
 
 **User stimulus**
 
@@ -267,19 +271,25 @@ https://github.com/masini1491/ai-divination-playbook
 
 **Expected behavior**
 
-- 可共用 presentation container。
-- A／B／C 各自保留獨立 question identity、draw identity、必要時 stable `reading_id`。
-- group identity 只作 container pointer。
+- 先固定 A／B／C 的 child order，再執行 Runtime。
+- 使用一次 canonical batch execution（例如 `tarot --count 5 --repeat 3`），而不是三次 serial Python invocation。
+- `results[0] / [1] / [2]` 依 pre-fixed order 一對一對應 A／B／C。
+- 每個 child 都是 fresh full-deck shuffle；batch 不使用上一題剩餘牌組。
+- A／B／C 各自保留獨立 question identity、Draw Fact identity、必要時 stable `reading_id`。
+- group identity 只作 presentation／record container pointer。
 
 **Forbidden behavior**
 
-- 把要求獨立 shuffle 的多題合成一次牌組殘餘抽取。
+- compatible batch 已可用仍無理由逐題啟動 Python。
+- 把三題合成同一副牌的連續殘餘抽取。
+- 抽完後依牌面好壞重新排列 A／B／C mapping。
+- 把 `--repeat 3` 用在同一 question identity 做三次投票／挑牌。
 - 只建一個 reading identity。
 - 一個 child Reality Update 套到整組。
 
 **Observable evidence**
 
-- draw identities、record identities、group metadata、update targetability。
+- pre-fixed child order、Python invocation count、CLI args、result mapping、draw identities、record identities、group metadata、update targetability。
 
 ### TAROT-BEH-009 — Derived synthesis does not become source fact
 
@@ -386,6 +396,7 @@ https://github.com/masini1491/ai-divination-playbook
 - 第一個 source-related action 是 fixed-slot local probe，不是 GitHub Connect fetch。
 - PASS 後直接 fresh execution，形成新的 Draw / Cast Fact。
 - 本題不重新取得 GitHub source、不重新 materialize、不跑 full smoke suite。
+- 若同一 request 同時含多個 compatible independent readings，直接進 automatic batching，不重複 probe／serial startup。
 
 **Forbidden behavior**
 
@@ -393,11 +404,12 @@ https://github.com/masini1491/ai-divination-playbook
 - PASS 後為形式重新查／抓 Randomizer `main`。
 - 因 Playbook HEAD 更新就推論 Randomizer 必須重新同步。
 - conversation memory 取代 actual local probe。
+- compatible multi-read request 無理由重複 cache verification／逐題 serial startup。
 - 重用上一題結果。
 
 **Observable evidence**
 
-- local marker/hash/version/invariant probe、GitHub acquisition 是否被跳過、新 RNG execution。
+- local marker/hash/version/invariant probe、GitHub acquisition 是否被跳過、新 RNG execution、multi-read 時 invocation count。
 
 ### TAROT-BEH-013 — Long session checks Playbook freshness only on material trigger
 
@@ -498,7 +510,7 @@ https://github.com/masini1491/ai-divination-playbook
 
 - `CHAT_INIT.md`／Repository Access Policy／GitHub retrieval／Playbook Freshness／Session Handoff → TAROT-BEH-001、005、006、013、015 中直接相關者，必要時 002／003。
 - `METHOD_ROUTING.md` → TAROT-BEH-002，必要時 001。
-- `RUNTIME_DRAW.md` → TAROT-BEH-003、004、006、007、008、010、012；cache/reuse 變更時 012 mandatory。
+- `RUNTIME_DRAW.md` → TAROT-BEH-003、004、006、007、008、010、012；cache/reuse/batching 變更時 008、012 mandatory。
 - `LIUYAO.md`／Liuyao runtime boundary → TAROT-BEH-002、003、004、007、010，並依 engine-specific mutation補 method regression。
 - `READING_RECORD.md` → TAROT-BEH-008、009、010、011，必要時 004。
 - Cross-validation／evidence lineage → TAROT-BEH-009、014，必要時 002。
