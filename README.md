@@ -44,6 +44,179 @@ Agent 依 `CHAT_INIT.md` 自動完成：
 
 使用者不需要先知道 Tarot、Meihua 或 Liuyao 哪一套比較適合。
 
+## 各個占卜工具負責什麼
+
+本專案不是把所有術數混成同一套算法，而是讓每個方法負責自己最擅長的 **judgment function**，再由 Playbook 自動 routing。
+
+### Tarot｜人物、心理、互動與比較
+
+Tarot 優先處理：
+
+- 人物主觀感受、心理與互動傾向；
+- 不同人物／方案／情境的相對比較；
+- 選項適配度、阻礙、助力與觸發因素；
+- 可以拆成清楚牌位的事件流程；
+- 已定義時間窗之間的相對支持度比較。
+
+快速理解：
+
+```text
+哪一個？
+哪個人？
+對方怎麼想／怎麼反應？
+A / B / C 哪個比較適合？
+→ Tarot
+```
+
+Tarot 不應因為「可以談未來」就取代所有具體事件成敗題；當問題核心是外部事件是否真的完成，優先交給 Liuyao。
+
+### Meihua｜事件演化、主客結構與轉折
+
+Meihua 優先處理：
+
+- 一件事情目前如何演變；
+- 主客／自身與外部的結構；
+- 體用關係；
+- 關鍵轉折與階段變化；
+- 主卦 → 互卦 → 變卦的發展脈絡；
+- 近程節奏、checkpoint 與象徵性應期。
+
+快速理解：
+
+```text
+事情接下來怎麼變？
+轉折在哪？
+目前主客關係怎麼樣？
+何時進入下一個階段？
+→ Meihua
+```
+
+Meihua 與 Liuyao 最重要的分界：
+
+```text
+「事情怎麼發展？」
+→ Meihua
+
+「這件具體事情到底會不會完成？」
+→ Liuyao
+```
+
+### Liuyao｜單一具體事件的 outcome、阻礙與應期
+
+Liuyao 優先處理**一個單一、具體、外部可驗證的事件**：
+
+- 合作、交易、申請、邀約、回覆、交付是否成立；
+- 已有明確 `completion_rule` 的成功／失敗問題；
+- 事件卡在哪個角色、條件或環節；
+- 用神、世應、動變等結構下的 outcome / obstacle；
+- 在同一事件 identity 下進一步看較具體 timing／應期訊號。
+
+快速理解：
+
+```text
+會不會成？
+月底前會不會完成？
+卡在哪？
+何時比較可能應驗？
+→ Liuyao
+```
+
+例如：
+
+```text
+她現在怎麼評估我？
+→ Tarot
+
+這段關係接下來怎麼演變？
+→ Meihua
+
+她是否會在本週五以前主動傳訊息？
+→ Liuyao
+```
+
+### Divination Casting Randomizer｜只負責真正抽牌／取數／起卦
+
+配套 Repo：
+
+```text
+masini1491/divination-casting-randomizer
+```
+
+它不負責「怎麼解」，只負責建立可信的 stochastic Raw Fact：
+
+```text
+Tarot
+→ 78-card shuffle + independent orientation
+
+Meihua
+→ canonical A / B double-number cast
+
+Liuyao
+→ canonical three-coin × 6 lines
+→ raw 6 / 7 / 8 / 9，bottom-to-top
+```
+
+也就是：
+
+> **Randomizer 決定抽到什麼／起出什麼，不決定那代表什麼。**
+
+### Liuyao deterministic engine｜只負責排出完整六爻 Structured Method Fact
+
+六爻 Randomizer 產生的六個 `6/7/8/9` 只是 Raw Cast Fact。若要進完整納甲六爻，deterministic engine 負責由既有 Raw Cast 計算：
+
+```text
+本卦
+之卦
+納甲
+五行
+六親
+世應
+六神
+伏神
+月建／日辰／旬空等
+```
+
+engine **不能重新起卦**，也不負責 AI 解讀。Preferred reference 與採用邊界見 [`references/ichingshifa.md`](references/ichingshifa.md)。
+
+### AI Divination Playbook｜負責調度與治理，不負責假裝計算
+
+本 Repo 負責把前面的工具串起來：
+
+```text
+自然語言問題
+→ 判斷 judgment function
+→ 選 Tarot / Meihua / Liuyao
+→ 固定 Input Contract
+→ 呼叫正確 Draw / Cast source
+→ 必要時取得 deterministic Structured Method Fact
+→ 依 method owner 解讀
+→ lifecycle / record / reality update / backtest
+```
+
+因此整套 responsibility 可以濃縮成：
+
+```text
+Tarot
+= 人物心理／互動／比較
+
+Meihua
+= 事件演化／主客／轉折
+
+Liuyao
+= 具體事件成敗／阻礙／應期
+
+Divination Casting Randomizer
+= 抽牌／取數／三錢起卦
+
+Liuyao deterministic engine
+= 六爻排盤／納甲 Structured Fact
+
+AI Divination Playbook
+= 自動選方法、定題、調工具、解讀與治理
+```
+
+完整 method selection 邊界仍以 [`METHOD_ROUTING.md`](METHOD_ROUTING.md) 為 canonical authority；本節是 README-level overview，不建立第二份 routing policy。
+
 ## 目前方法覆蓋
 
 | 方法 | 主要 judgment responsibility | stochastic source | method owner |
