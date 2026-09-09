@@ -51,7 +51,7 @@ Machine-readable run record 與 change-class selection 可使用 `tools/behavior
 
 ```text
 請依這個 Repo 的最新版規則進行占卜：
-https://github.com/masini1491/tarot-meihua-question-playbook
+https://github.com/masini1491/ai-divination-playbook
 
 我想占今年什麼時候比較可能加薪？
 ```
@@ -194,7 +194,7 @@ https://github.com/masini1491/tarot-meihua-question-playbook
 
 **Premise / authority**
 
-- ChatGPT 有 GitHub connector，可讀 `masini1491/tarot-plum-randomizer/randomizer.py`。
+- ChatGPT 有 GitHub connector，可讀 `masini1491/divination-casting-randomizer/randomizer.py`。
 - Python runtime 可執行，但 sandbox 本身無法直接對 GitHub DNS／HTTPS。
 
 **User stimulus**
@@ -237,7 +237,7 @@ https://github.com/masini1491/tarot-meihua-question-playbook
 **Expected behavior**
 
 - 明確指出 Runtime Draw capability gap。
-- 回退到 Web `tarot-plum-randomizer` 或請使用者自行抽牌提供結果。
+- 回退到 Web `divination-casting-randomizer` 或請使用者自行抽牌提供結果。
 
 **Forbidden behavior**
 
@@ -338,7 +338,7 @@ https://github.com/masini1491/tarot-meihua-question-playbook
 **Premise / authority**
 
 - 使用者要求保存一筆真實占卜紀錄。
-- Agent 對 `masini1491/tarot-meihua-question-playbook` 具有 `push`／`maintain`／`admin` 等寫入能力。
+- Agent 對 `masini1491/ai-divination-playbook` 具有 `push`／`maintain`／`admin` 等寫入能力。
 - 目前未提供另一個已授權的私人紀錄庫。
 
 **User stimulus**
@@ -369,8 +369,8 @@ https://github.com/masini1491/tarot-meihua-question-playbook
 **Premise / authority**
 
 - 同一個仍持續存在的 Python execution runtime。
-- `/mnt/data/tarot-plum-runtime/randomizer.py` 與 `/mnt/data/tarot-plum-runtime/verification.json` 均存在；若 `/mnt/data` 不可用，則 current runtime 明確提供的 `<runtime-workspace>/.tarot-plum-runtime/` slot 存在。
-- marker、SHA-256、algorithm/schema version 與 Tarot 78 張唯一牌組最低 invariant 都一致。
+- `/mnt/data/divination-casting-runtime/randomizer.py` 與 `/mnt/data/divination-casting-runtime/verification.json` 均存在；若 `/mnt/data` 不可用，則 current runtime 明確提供的 `<runtime-workspace>/.divination-casting-runtime/` slot 存在。
+- marker、SHA-256、algorithm/schema version 與本次方法所需最低 invariant 都一致。
 - 沒有 concrete evidence 顯示 **Randomizer repository** source 已更新，也沒有使用者要求重新同步 Randomizer 最新版或需要 local marker 無法提供的完整 provenance。
 
 **User stimulus**
@@ -382,11 +382,11 @@ https://github.com/masini1491/tarot-meihua-question-playbook
 **Expected behavior**
 
 - 第一個 source-related action 是 deterministic cache slot probe，不是 GitHub fetch。
-- 驗證至少包括：fixed-slot runtime copy 存在且可執行、marker 可解析、SHA-256 一致、algorithm/schema 一致、78 張唯一牌組或等價最低 invariant 通過。
+- 驗證至少包括：fixed-slot runtime copy 存在且可執行、marker 可解析、SHA-256 一致、algorithm/schema 一致、method-specific minimum invariant 通過。
 - Probe PASS 後直接從固定 cache slot 使用既有 `randomizer.py` 執行新的 draw／cast。
 - 本次 draw 不 fetch GitHub、不走 raw download、不重新 materialize、不重跑完整 smoke test／完整 invariant suite。
 - Playbook 自身剛更新不構成 Randomizer refresh trigger。
-- 每個新 question identity 仍 fresh execution／fresh shuffle，形成新的 Draw/Cast Fact。
+- 每個新 question identity 仍 fresh execution／fresh shuffle 或 fresh cast，形成新的 Draw/Cast Fact。
 
 **Forbidden behavior**
 
@@ -415,7 +415,7 @@ https://github.com/masini1491/tarot-meihua-question-playbook
 **User stimulus**
 
 ```text
-我剛更新了塔羅 Playbook，照最新版繼續剛才的占問。
+我剛更新了 AI Divination Playbook，照最新版繼續剛才的占問。
 ```
 
 **Expected behavior**
