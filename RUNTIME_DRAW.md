@@ -68,7 +68,7 @@ Liuyao three-coin raw cast
 
 ### 2.2 Mandatory Reuse Probe
 
-在任何 GitHub source acquisition、raw download 或 materialize 前，依固定 slot 檢查：
+在任何新的 GitHub source acquisition／materialization 前，依固定 slot 檢查：
 
 - `randomizer.py` 存在且可 import／execute；
 - `verification.json` 存在且可解析；
@@ -98,7 +98,7 @@ Liuyao
 Probe PASS：
 
 - 直接用 cached script fresh execution；
-- 本次 draw / cast 禁止 GitHub fetch、raw download、重新 materialize；
+- 本次 draw / cast 禁止重新取得 GitHub source／重新 materialize；
 - 不跑完整 smoke／full invariant suite；
 - 每個新 question identity 都 fresh shuffle / fresh cast，絕不重用上一題結果。
 
@@ -117,8 +117,8 @@ Cache FAIL／absent／unavailable 時才做：
 
 ```text
 Python capability
-→ resolve Randomizer moving ref to exact commit
-→ acquire exact revision randomizer.py
+→ GitHub Connect resolve Randomizer moving ref to exact commit
+→ GitHub Connect acquire exact revision randomizer.py
 → bounded smoke test
 → write fixed cache + verification marker
 → fresh draw / cast
@@ -143,6 +143,8 @@ Marker 最低包含：
 
 Marker 只屬 temporary execution state，不是 canonical authority，也不是 Reading Record evidence。
 
+若 GitHub Connect unavailable／blocked，且沒有已通過 probe 的 local verified cache，則 source acquisition 進入 `ACCESS BLOCKED`；**不得改走 GitHub public HTML、raw URL、generic Web、Python HTTP、`curl`／`wget`／`git clone`。**
+
 核心原則：
 
 > **Fresh question means fresh RNG, not fresh program acquisition。**
@@ -157,27 +159,40 @@ masini1491/divination-casting-randomizer/randomizer.py
 
 Playbook 不另維護一份抽牌／起卦程式。
 
-### 3.1 Source Acquisition Layering
+### 3.1 Source Acquisition Layering｜GitHub source 只走 GitHub Connect
 
 `repository retrieval capability`、`Python network capability`、`repository write authority` 是三件不同的事，不得互相推導。
 
 只有 §2 允許 source acquisition 時：
 
-1. connected GitHub tool／connector 優先 resolve `main` → exact commit SHA；
-2. 優先取得 exact revision 的 `randomizer.py`，避免 mixed snapshot；
-3. 寫入 fixed cache slot；
+1. **只使用 connected GitHub connector / GitHub Connect** resolve `main` → exact commit SHA；
+2. 仍透過 GitHub Connect 取得該 exact revision 的 `randomizer.py`，避免 mixed snapshot；
+3. 將 connector 取得的 source 寫入 fixed cache slot；
 4. bounded smoke test；
 5. marker 保存 ref + exact commit；
-6. connector 不可用才考慮 public/raw/Web；
+6. connector unavailable／blocked → `ACCESS BLOCKED`，不改走 public/raw/Web 或 Python direct network；
 7. 取得到的 source 若截斷／不完整／無法確認 canonical target，視為 acquisition gap。
 
-若 exact commit 無法確認但 source 可可靠取得，且本次不要求 immutable audit，可令：
+禁止的 GitHub source fallback：
+
+```text
+GitHub public HTML
+raw.githubusercontent.com
+generic Web search
+Python requests / urllib
+curl / wget
+git clone
+```
+
+若 exact commit 無法確認但 source 可可靠由 connector 取得，且本次不要求 immutable audit，可令：
 
 ```text
 runtime_source_commit: unknown
 ```
 
 不得拿 `main` 字串冒充 SHA。
+
+Local verified cache reuse 仍可先於 GitHub acquisition；這不違反 GitHub Connect-only，因為 reuse 並沒有重新取得 GitHub data。
 
 ## 4. Tarot Runtime Contract
 
@@ -242,7 +257,7 @@ Raw Cast 成功、engine 失敗時，不重起卦；保留 raw 6/7/8/9，fail cl
 
 ## 6. Preferred Invocation
 
-固定 cache slot可用時：
+固定 cache slot 可用時：
 
 ```text
 # Tarot
@@ -272,7 +287,7 @@ AI integration 優先 JSON。
 
 `schema_version` 代表 output metadata / shape。
 
-目前 canonical Randomizer（Liuyao three-coin 已加入）：
+目前 canonical Randomizer：
 
 ```text
 algorithm_version: 2
@@ -396,7 +411,8 @@ Raw Cast Fact
 - 不得假裝執行；
 - 不得由模型自行生成牌／數／六爻；
 - 不得偷換未宣告 RNG；
-- 改用 `divination-casting-randomizer` Web UI，或請使用者自行抽／起後提供結果。
+- 若 failure 是 **GitHub source acquisition**，遵守 `CHAT_INIT.md`：GitHub Connect unavailable 時停在 `ACCESS BLOCKED`，不改走 public/raw/Web；
+- 若 canonical runtime source 已可靠取得但 Python execution 本身不可用，可改由使用者使用 `divination-casting-randomizer` Web UI，或自行抽／起後提供結果。
 
 若 Liuyao Raw Cast 已成功但 deterministic engine unavailable：
 
@@ -446,7 +462,8 @@ Canonical Randomizer 更新後至少驗證：
 - fixed cache locator / marker / SHA reuse 正常；
 - cache PASS 後不重抓 source；
 - new question identity fresh RNG；
-- cache FAIL 才 source acquisition。
+- cache FAIL 才 source acquisition；
+- 需要 GitHub source acquisition 時只使用 GitHub Connect；connector unavailable 時不改走 public/raw/Web。
 
 ### Tarot
 
