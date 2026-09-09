@@ -100,6 +100,13 @@ class PlaybookCheckTests(unittest.TestCase):
         errors = playbook_check.validate(root)
         self.assertTrue(any("routed owner missing" in error for error in errors))
 
+    def test_deprecated_repository_identity_fails(self):
+        root = self.make_repo()
+        deprecated = "tarot-" + "plum-randomizer"
+        write(root, "STALE.md", f"legacy source: {deprecated}\n")
+        errors = playbook_check.validate(root)
+        self.assertTrue(any("deprecated canonical identifier" in error for error in errors))
+
 
 if __name__ == "__main__":
     unittest.main()
