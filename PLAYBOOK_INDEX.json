@@ -6,7 +6,7 @@
   },
   "capabilities": [
     {"id":"bootstrap.default-interaction","owner":"CHAT_INIT.md","section":"Default Interaction Profile｜只給 Repo 也能直接使用","kind":"contract"},
-    {"id":"bootstrap.repository-access","owner":"CHAT_INIT.md","section":"Repository Access Policy｜最新版規則的取得方式","kind":"contract"},
+    {"id":"bootstrap.repository-access","owner":"CHAT_INIT.md","section":"Repository Access Policy｜GitHub Connect 為唯一 GitHub 取得路徑","kind":"contract"},
     {"id":"bootstrap.playbook-freshness","owner":"CHAT_INIT.md","section":"Playbook Freshness Probe｜長聊天室的版本新鮮度","kind":"contract"},
     {"id":"session.handoff","owner":"CHAT_INIT.md","section":"Session Continuity / Handoff Gate｜長聊天室交接","kind":"contract","adapter":"SESSION_HANDOFF.md"},
     {"id":"method.routing","owner":"METHOD_ROUTING.md","kind":"contract"},
