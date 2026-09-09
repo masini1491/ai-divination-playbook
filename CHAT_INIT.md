@@ -15,18 +15,50 @@
 預設規則：
 
 1. 使用者以自然語言提問；Agent 自行正規化最低必要 Input Contract，不把 schema 當表單。
-2. 若使用者未指定方法，讀 `METHOD_ROUTING.md`，依主要 judgment function 自動選目前已支援的 Tarot / Meihua / Liuyao；single-method first。
+2. 若使用者未指定方法，讀 `METHOD_ROUTING.md` 的 Fast Path，依主要 judgment function 自動選目前已支援的 Tarot / Meihua / Liuyao；single-method first。只有 Fast Path 無法唯一裁決時才繼續讀後續 tie-breaker。
 3. 若沒有既有牌面／卦象／Cast Fact，也沒有要求自行抽／起，預設由 ChatGPT／AI 代抽／代起卦。
 4. stochastic method 必須進 `RUNTIME_DRAW.md`；模型自行生成牌名、數字、6/7/8/9 不算 Runtime Draw / Cast。
 5. Liuyao 若被選中，Raw Cast 後再讀 `LIUYAO.md`；完整納甲解讀只有在 Structured Method Fact engine capability 成立時才繼續。
-6. 只有缺失資訊會 materially 改變 question identity、主要 judgment function、horizon、completion rule、position responsibility、casting method 或 execution viability 時才澄清。
-7. 不先介紹整套 Playbook、文件架構或方法清單；routing 完成後直接處理。
-8. 使用者當次明確指定的方法、抽牌／起卦來源、牌數、output 或其他有效限制優先於本節 default。
-9. 已提供實際牌面／卦象／六爻 6/7/8/9 時，直接處理既有 fact；不得因 default Runtime 而重抽、重卦或換方法。
+6. 只有缺失資訊會 materially 改變 question identity、主要 judgment function、horizon、completion rule、position responsibility、casting method 或 execution viability 時才澄清；此時才讀 `INPUT_CONTRACT.md` 相關 sections。
+7. `QUESTION_DESIGN.md` 只在真的需要拆題、設計牌位、條件世界、時間窗比較或修復 question-contract 缺陷時載入；普通清楚的新題不是它的固定 Hot Path。
+8. 不先介紹整套 Playbook、文件架構或方法清單；routing 完成後直接處理。
+9. 使用者當次明確指定的方法、抽牌／起卦來源、牌數、output 或其他有效限制優先於本節 default。
+10. 已提供實際牌面／卦象／六爻 6/7/8/9 時，直接處理既有 fact；不得因 default Runtime 而重抽、重卦或換方法。
 
 核心原則：
 
 > **Natural language in; method routing and execution details are the Agent's job unless a material ambiguity really requires clarification。**
+
+## Ordinary Reading Fast Path｜普通占問最低載入路徑
+
+對 contract 已足夠、沒有承接／回測／正式保存等特殊需求的普通新題，優先使用：
+
+```text
+CHAT_INIT
+→ METHOD_ROUTING Fast Path（method 未指定時）
+→ selected method owner
+→ RUNTIME_DRAW relevant sections（只有 AI 需要實際抽／起時）
+→ CHATGPT_OUTPUT relevant sections
+→ STOP
+```
+
+只有遇到具體 evidence gap 才擴張：
+
+```text
+contract materially ambiguous
+→ INPUT_CONTRACT relevant sections
+
+需要拆題／牌位／條件世界／時間窗設計
+→ QUESTION_DESIGN relevant sections
+
+承接／補占／重占／Reality Update／completion／backtest
+→ READING_LIFECYCLE relevant sections
+
+正式保存／跨聊天室／audit
+→ READING_RECORD relevant sections
+```
+
+**不要因為「這是一個新題」就固定全文載入 `INPUT_CONTRACT.md` + `QUESTION_DESIGN.md`。**
 
 ## Repository Access Policy｜GitHub Connect 為唯一 GitHub 取得路徑
 
@@ -121,59 +153,72 @@ Freshness 只處理規則 identity，不擴張 Runtime、write、Reading Record 
 ## 啟動順序
 
 1. 判斷本次 task：method selection、新題、解讀、承接／補占、Reality Update、Runtime Draw / Cast、Reading Record、Backtest、behavioral eval 或 external reference research。
-2. 方法未指定且需要選方法 → `METHOD_ROUTING.md`。
-3. 建立 Active Context：本次訊息、confirmed reality、本題必要前提、使用者明確承接的 reading；其他歷史預設 Historical。
-4. Contract 不完整且會 material 改變 judgment → `INPUT_CONTRACT.md`；若題目已清楚，不為形式重讀。
-5. 同題／新題、補占／重占、Reality Update、completion／backtest → `READING_LIFECYCLE.md`。
-6. ChatGPT 代抽／代起卦 → `RUNTIME_DRAW.md`。
-7. 選到 Liuyao → `LIUYAO.md`；Raw Cast 與 Structured Method Fact 分層處理。
-8. 正式保存／跨聊天室／audit → `READING_RECORD.md`。
-9. cold-start／behavioral regression → `BEHAVIORAL_EVAL.md` + scenario 所指 owner。
-10. machine consumer owner discovery → 可選 `PLAYBOOK_INDEX.json`，命中後仍回 canonical Markdown owner。
-11. 先讀最可能否決後續工作的高槓桿前提；若 method、contract、runtime、engine 或 authority 已不成立，先停在正確 boundary。
-12. 不為「熟悉手冊」掃 full repo、references、cases 或 old readings。
+2. 普通新題先走 `Ordinary Reading Fast Path`；不要先載入所有 owner。
+3. 方法未指定且需要選方法 → `METHOD_ROUTING.md` Fast Path；只有無法唯一裁決才擴張 tie-breaker。
+4. 建立 Active Context：本次訊息、confirmed reality、本題必要前提、使用者明確承接的 reading；其他歷史預設 Historical。
+5. Contract 不完整且會 material 改變 judgment → `INPUT_CONTRACT.md` relevant sections；若題目已清楚，不為形式重讀。
+6. 需要拆題／牌位／條件世界／時間窗設計 → `QUESTION_DESIGN.md` relevant sections；普通新題不預設載入。
+7. 同題／新題、補占／重占、Reality Update、completion／backtest → `READING_LIFECYCLE.md`。
+8. ChatGPT 代抽／代起卦 → `RUNTIME_DRAW.md` relevant sections。
+9. 選到 Liuyao → `LIUYAO.md`；Raw Cast 與 Structured Method Fact 分層處理。
+10. 正式保存／跨聊天室／audit → `READING_RECORD.md`。
+11. cold-start／behavioral regression → `BEHAVIORAL_EVAL.md` + scenario 所指 owner。
+12. machine consumer owner discovery → 可選 `PLAYBOOK_INDEX.json`，命中後仍回 canonical Markdown owner。
+13. 先讀最可能否決後續工作的高槓桿前提；若 method、contract、runtime、engine 或 authority 已不成立，先停在正確 boundary。
+14. 不為「熟悉手冊」掃 full repo、references、cases 或 old readings。
 
 ## 最低必要路由
 
 ### 未指定方法
 
 ```text
-METHOD_ROUTING.md
-→ 選 method
-→ 對應 method owner
+METHOD_ROUTING.md Fast Path
+→ 若唯一命中：選 method → STOP routing
+→ 若 collision / ambiguity：再讀對應 tie-breaker sections
+→ selected method owner
 ```
 
-### 新題／重寫題目
+### 普通清楚的新題
 
 ```text
-METHOD_ROUTING（若 method 未定）
-+ INPUT_CONTRACT
-+ QUESTION_DESIGN
-+ CHATGPT_OUTPUT relevant sections
+METHOD_ROUTING Fast Path（若 method 未定）
+→ selected method owner
+→ RUNTIME_DRAW relevant sections（只有 AI 實際抽／起時）
+→ CHATGPT_OUTPUT relevant sections
+```
+
+不要僅因「新題」固定加入 `INPUT_CONTRACT.md` 或 `QUESTION_DESIGN.md`。
+
+### 需要修題／重寫題目
+
+```text
+INPUT_CONTRACT relevant sections（只有 contract gap）
++ QUESTION_DESIGN relevant sections（只有 design gap）
++ CHATGPT_OUTPUT copy-ready sections（若要交付題目）
 ```
 
 ### Tarot
 
 ```text
 TAROT.md
-+ CHATGPT_OUTPUT.md
-+ RUNTIME_DRAW.md only if AI draws
++ CHATGPT_OUTPUT relevant sections
++ RUNTIME_DRAW relevant sections only if AI draws
 ```
 
 ### Meihua
 
 ```text
 MEIHUA.md
-+ CHATGPT_OUTPUT.md
-+ RUNTIME_DRAW.md only if AI casts
++ CHATGPT_OUTPUT relevant sections
++ RUNTIME_DRAW relevant sections only if AI casts
 ```
 
 ### Liuyao
 
 ```text
 LIUYAO.md
-+ CHATGPT_OUTPUT.md
-+ RUNTIME_DRAW.md if AI performs three-coin Raw Cast
++ CHATGPT_OUTPUT relevant sections
++ RUNTIME_DRAW relevant sections if AI performs three-coin Raw Cast
 ```
 
 若完整六爻判斷需要 deterministic chart facts：
@@ -193,7 +238,7 @@ Engine unavailable 時保留 Raw Cast，不重起，也不由模型手算後冒�
 TAROT.md
 + MEIHUA.md
 + CROSS_VALIDATION.md
-+ CHATGPT_OUTPUT.md
++ CHATGPT_OUTPUT relevant sections
 ```
 
 目前 Liuyao 與其他方法可以形成 distinct readings / derived synthesis，但尚未自動套用 `CROSS_VALIDATION.md` 的 Tarot × Meihua semantics。
@@ -203,7 +248,7 @@ TAROT.md
 ```text
 method fixed
 → minimum contract fixed
-→ RUNTIME_DRAW.md
+→ RUNTIME_DRAW relevant sections
 → actual canonical execution
 → method owner
 → output
@@ -214,9 +259,9 @@ method fixed
 依需要加入：
 
 ```text
-READING_RECORD.md
-READING_LIFECYCLE.md
-RUNTIME_DRAW.md provenance sections
+READING_RECORD.md relevant sections
+READING_LIFECYCLE.md relevant sections
+RUNTIME_DRAW.md provenance sections（需要時）
 method owner
 ```
 
