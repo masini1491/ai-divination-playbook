@@ -74,6 +74,9 @@ class PlaybookCheckTests(unittest.TestCase):
         )
         return root
 
+    def test_repository_root_passes(self):
+        self.assertEqual(playbook_check.validate(ROOT), [])
+
     def test_valid_repo_passes(self):
         root = self.make_repo()
         self.assertEqual(playbook_check.validate(root), [])
