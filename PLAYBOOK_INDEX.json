@@ -17,17 +17,16 @@
     {"id":"runtime.draw","owner":"RUNTIME_DRAW.md","kind":"contract","implementation":"masini1491/divination-casting-randomizer/randomizer.py"},
     {"id":"method.tarot","owner":"TAROT.md","kind":"contract"},
     {"id":"method.meihua","owner":"MEIHUA.md","kind":"contract"},
-    {"id":"method.liuyao","owner":"LIUYAO.md","kind":"contract","casting_implementation":"masini1491/divination-casting-randomizer/randomizer.py","engine_adapter":"tools/liuyao_engine_adapter.py","engine_reference":"references/ichingshifa.md"},
+    {"id":"method.liuyao","owner":"LIUYAO.md","kind":"contract","casting_implementation":"masini1491/divination-casting-randomizer/randomizer.py","engine":"tools/liuyao_engine.py","calendar_provider":"tools/liuyao_calendar.py","runtime":"tools/liuyao_runtime.py"},
     {"id":"cross-validation.reconciliation","owner":"CROSS_VALIDATION.md","kind":"contract"},
-    {"id":"cross-validation.evidence-lineage","owner":"CROSS_VALIDATION.md","section":"Evidence Lineage / Independence Guard｜抽得多不等於證據獨立","kind":"contract"},
+    {"id":"cross-validation.evidence-lineage","owner":"CROSS_VALIDATION.md","section":"2.1 Evidence Lineage / Independence Guard｜抽得多不等於證據獨立","kind":"contract"},
     {"id":"output.chatgpt","owner":"CHATGPT_OUTPUT.md","section":"Section Router｜依任務只讀最低必要段落","kind":"contract"},
     {"id":"validation.structure","owner":"AGENTS.md","section":"維護風格","kind":"validation","runner":"tools/playbook_check.py"},
     {"id":"validation.behavioral-eval","owner":"BEHAVIORAL_EVAL.md","kind":"contract","matrix":"evals/regression_matrix.json","runner":"tools/behavioral_eval.py"},
-    {"id":"storage.playbook-boundary","owner":"READING_RECORD.md","section":"Storage-Agnostic Boundary｜與私人紀錄庫分離","kind":"contract"}
+    {"id":"storage.playbook-boundary","owner":"READING_RECORD.md","section":"11. Storage-Agnostic Boundary｜與私人紀錄庫分離","kind":"contract"}
   ],
   "adapters": {
-    "session_handoff": "SESSION_HANDOFF.md",
-    "liuyao_engine": "tools/liuyao_engine_adapter.py"
+    "session_handoff": "SESSION_HANDOFF.md"
   },
   "behavioral_regression": {
     "matrix": "evals/regression_matrix.json",
