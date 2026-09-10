@@ -16,7 +16,7 @@
 {
   "handoff_version": 1,
   "playbook": {
-    "repository": "masini1491/tarot-meihua-question-playbook",
+    "repository": "masini1491/ai-divination-playbook",
     "ref": "main",
     "observed_head": "<40-char SHA or UNKNOWN>"
   },
