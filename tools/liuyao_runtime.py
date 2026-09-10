@@ -42,7 +42,7 @@ calendar = _load("liuyao_calendar", "liuyao_calendar.py")
 engine = _load("liuyao_engine", "liuyao_engine.py")
 
 RUNTIME_NAME = "ai-divination-playbook/liuyao-runtime"
-RUNTIME_VERSION = "3"
+RUNTIME_VERSION = "4"
 
 POSITION_NAMES = {
     1: "初爻",
@@ -94,6 +94,60 @@ def _change_marker(value: int) -> str:
 def _active_flags(line: dict[str, Any]) -> list[str]:
     flags = line.get("flags") or {}
     return [name for name in ("旬空", "月破", "日沖") if flags.get(name)]
+
+
+def _joined_flags(flags: list[str]) -> str:
+    return "、".join(flags) if flags else ""
+
+
+def _fu_shen_text(items: list[dict[str, Any]]) -> str:
+    if not items:
+        return ""
+    return "；".join(
+        f"{item.get('six_relative') or ''} {item.get('najia') or ''}{item.get('five_element') or ''}".strip()
+        for item in items
+    )
+
+
+def build_markdown_table(presentation: dict[str, Any]) -> str:
+    """Render the derived presentation as a ChatGPT-ready Markdown table."""
+    h = presentation["header"]
+    xk = "、".join(h.get("xunkong") or []) or "—"
+    lines = [
+        f"起卦時間：{h.get('cast_timestamp') or '—'}｜月建：{h.get('month_branch') or '—'}｜日辰：{h.get('day_ganzhi') or '—'}｜旬空：{xk}",
+        f"本卦：{h.get('ben_gua') or '—'}（{h.get('ben_palace') or '—'}宮／{h.get('ben_palace_type') or '—'}）｜之卦：{h.get('zhi_gua') or '無（無動爻）'}",
+        "",
+        "| 六獸 | 六親 | 世應 | 本卦 | 五行 | 之卦 | 伏神 |",
+        "|---|---|---|---|---|---|---|",
+    ]
+    for row in presentation["rows"]:
+        primary_flags = _joined_flags(row["flags"])
+        ben = f"{row['traditional_label']} {row['ben_line_symbol']}"
+        if row["change_marker"]:
+            ben += f" {row['change_marker']}"
+        five = f"{row.get('ben_najia') or ''}{row.get('ben_five_element') or ''}"
+        if primary_flags:
+            five += f"（{primary_flags}）"
+        changed = row.get("changed")
+        if changed:
+            changed_text = f"{changed['line_symbol']} {changed.get('najia') or ''}{changed.get('five_element') or ''} {changed.get('six_relative') or ''}".strip()
+            changed_flags = _joined_flags(changed.get("flags") or [])
+            if changed_flags:
+                changed_text += f"（{changed_flags}）"
+        else:
+            changed_text = ""
+        lines.append(
+            "| " + " | ".join([
+                row.get("six_spirit") or "",
+                row.get("six_relative") or "",
+                row.get("shi_ying") or "",
+                ben,
+                five,
+                changed_text,
+                _fu_shen_text(row.get("fu_shen") or []),
+            ]) + " |"
+        )
+    return "\n".join(lines)
 
 
 def build_human_display(structured: dict[str, Any]) -> dict[str, Any]:
@@ -165,10 +219,11 @@ def build_human_display(structured: dict[str, Any]) -> dict[str, Any]:
             "fu_shen": fu_by_position.get(position, []),
         })
 
-    return {
+    presentation = {
         "authority": "derived-display-only",
         "display_order": "top-to-bottom",
         "canonical_storage_order": "bottom-to-top",
+        "render_hint": "ChatGPT should render markdown_table before interpretation when a full Liuyao Structured Method Fact is available.",
         "header": {
             "cast_timestamp": cal.get("timestamp"),
             "day_ganzhi": cal.get("day_ganzhi"),
@@ -186,6 +241,8 @@ def build_human_display(structured: dict[str, Any]) -> dict[str, Any]:
         "rows": rows,
         "lines": lines,
     }
+    presentation["markdown_table"] = build_markdown_table(presentation)
+    return presentation
 
 
 def build_liuyao_fact(raw_lines: str | list[int] | tuple[int, ...], *,
