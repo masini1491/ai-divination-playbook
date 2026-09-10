@@ -83,6 +83,31 @@ class LiuyaoRuntimeTests(unittest.TestCase):
             ],
         )
 
+    def test_chart_table_joins_structured_facts_for_human_display(self):
+        result = runtime.build_liuyao_fact(
+            "889877",
+            timestamp="2026-09-10T08:06:38+08:00",
+        )
+        display = result["presentation"]
+        self.assertEqual(
+            display["table_columns"],
+            ["六獸", "六親", "世應", "本卦", "五行", "之卦", "伏神"],
+        )
+        self.assertEqual(display["header"]["ben_gua"], "風山漸")
+        self.assertEqual(display["header"]["zhi_gua"], "風地觀")
+        self.assertEqual(display["header"]["day_ganzhi"], "丁亥")
+        self.assertEqual(display["header"]["month_branch"], "酉")
+        self.assertEqual(set(display["header"]["xunkong"]), {"午", "未"})
+        self.assertEqual([row["position"] for row in display["rows"]], [6, 5, 4, 3, 2, 1])
+        moving = next(row for row in display["rows"] if row["position"] == 3)
+        self.assertEqual(moving["change_marker"], "○")
+        self.assertIsNotNone(moving["changed"])
+        self.assertEqual(moving["changed"]["najia"], "乙卯")
+        self.assertEqual(moving["changed"]["six_relative"], "官鬼")
+        self.assertTrue(any(row["shi_ying"] == "世" for row in display["rows"]))
+        self.assertTrue(any(row["shi_ying"] == "應" for row in display["rows"]))
+        self.assertTrue(any(row["fu_shen"] for row in display["rows"]))
+
     def test_traditional_line_labels_follow_yang_nine_yin_six_convention(self):
         self.assertEqual(runtime.traditional_line_label(7, 1), "初九")
         self.assertEqual(runtime.traditional_line_label(8, 1), "初六")
