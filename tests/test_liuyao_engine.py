@@ -23,6 +23,22 @@ class LiuyaoEngineTests(unittest.TestCase):
         self.assertEqual(fact["zhi_gua"]["bits"], "100100")
         self.assertEqual(fact["zhi_gua"]["name"], "震為雷")
 
+    def test_changed_line_relatives_use_primary_palace(self):
+        # 889877 = 風山漸（艮宮）三爻動 → 風地觀（乾宮 metadata）。
+        # 化爻六親仍必須以本卦艮宮土為基準，而不是變卦乾宮金。
+        fact = engine.build_structured_fact("889877")
+        self.assertEqual(fact["ben_gua"]["name"], "風山漸")
+        self.assertEqual(fact["ben_gua"]["palace"], "艮")
+        self.assertEqual(fact["zhi_gua"]["name"], "風地觀")
+        self.assertEqual(fact["zhi_gua"]["palace"], "乾")
+        self.assertEqual(fact["zhi_gua"]["six_relative_reference_palace"], "艮")
+        self.assertEqual(fact["zhi_gua"]["six_relative_reference_element"], "土")
+        # 三爻化卯木；木剋艮宮土，故六親為官鬼。
+        self.assertEqual(fact["zhi_gua"]["lines"][2]["zhi"], "卯")
+        self.assertEqual(fact["zhi_gua"]["lines"][2]["six_relative"], "官鬼")
+        # 防止 regression 回到以變卦乾宮金計算（會得到妻財）。
+        self.assertNotEqual(fact["zhi_gua"]["lines"][2]["six_relative"], "妻財")
+
     def test_no_moving_lines_has_no_changed_chart(self):
         fact = engine.build_structured_fact("777777")
         self.assertEqual(fact["ben_gua"]["name"], "乾為天")
