@@ -42,7 +42,7 @@ calendar = _load("liuyao_calendar", "liuyao_calendar.py")
 engine = _load("liuyao_engine", "liuyao_engine.py")
 
 RUNTIME_NAME = "ai-divination-playbook/liuyao-runtime"
-RUNTIME_VERSION = "2"
+RUNTIME_VERSION = "3"
 
 POSITION_NAMES = {
     1: "初爻",
@@ -75,34 +75,115 @@ def traditional_line_label(value: int, position: int) -> str:
     return f"{yin_yang_name}{POSITION_TOKENS[position]}"
 
 
+def _line_symbol(yin_yang: str) -> str:
+    if yin_yang == "yang":
+        return "━━━━━━"
+    if yin_yang == "yin":
+        return "━━ ━━"
+    raise ValueError("yin_yang must be yang or yin")
+
+
+def _change_marker(value: int) -> str:
+    if value == 9:
+        return "○"
+    if value == 6:
+        return "×"
+    return ""
+
+
+def _active_flags(line: dict[str, Any]) -> list[str]:
+    flags = line.get("flags") or {}
+    return [name for name in ("旬空", "月破", "日沖") if flags.get(name)]
+
+
 def build_human_display(structured: dict[str, Any]) -> dict[str, Any]:
-    """Build non-authoritative top-to-bottom display metadata.
+    """Build non-authoritative top-to-bottom Liuyao chart-table metadata.
 
     Structured facts and raw line storage stay bottom-to-top. This function only
-    derives labels/order for human presentation and must never be written back as
-    a replacement for canonical ``raw_lines`` or ``ben_gua.lines`` ordering.
+    derives labels/order and joins already-computed fields into a human-facing
+    table. It never computes yongshen or interpretation and must never replace
+    canonical ``raw_lines`` / chart ordering.
     """
     raw_lines = structured.get("raw_lines")
     if not isinstance(raw_lines, list) or len(raw_lines) != 6:
         raise ValueError("structured raw_lines must contain six canonical lines")
 
+    ben = structured.get("ben_gua")
+    if not isinstance(ben, dict) or not isinstance(ben.get("lines"), list):
+        raise ValueError("structured ben_gua must contain line facts")
+    zhi = structured.get("zhi_gua")
+    moving = set(structured.get("moving_positions") or [])
+    cal = structured.get("calendar_context") or {}
+
+    ben_by_position = {int(line["position"]): line for line in ben["lines"]}
+    zhi_by_position = (
+        {int(line["position"]): line for line in zhi["lines"]}
+        if isinstance(zhi, dict) and isinstance(zhi.get("lines"), list)
+        else {}
+    )
+    fu_by_position: dict[int, list[dict[str, Any]]] = {}
+    for item in structured.get("fu_shen") or []:
+        fu_by_position.setdefault(int(item["position"]), []).append({
+            "six_relative": item.get("six_relative"),
+            "najia": item.get("najia"),
+            "five_element": item.get("five_element"),
+        })
+
     lines = []
+    rows = []
     for position in range(6, 0, -1):
         value = int(raw_lines[position - 1])
         line_type, changing = LINE_TYPES[value]
-        lines.append({
+        primary = ben_by_position[position]
+        changed = zhi_by_position.get(position) if position in moving else None
+        basic = {
             "position": position,
             "position_name": POSITION_NAMES[position],
             "traditional_label": traditional_line_label(value, position),
             "raw_value": value,
             "line_type": line_type,
             "changing": changing,
+        }
+        lines.append(basic)
+        rows.append({
+            **basic,
+            "six_spirit": primary.get("six_spirit"),
+            "six_relative": primary.get("six_relative"),
+            "shi_ying": primary.get("shi_ying"),
+            "ben_line_symbol": _line_symbol(primary["yin_yang"]),
+            "change_marker": _change_marker(value),
+            "ben_najia": primary.get("najia"),
+            "ben_five_element": primary.get("five_element"),
+            "flags": _active_flags(primary),
+            "changed": ({
+                "line_symbol": _line_symbol(changed["yin_yang"]),
+                "six_relative": changed.get("six_relative"),
+                "najia": changed.get("najia"),
+                "five_element": changed.get("five_element"),
+                "flags": _active_flags(changed),
+            } if changed is not None else None),
+            "fu_shen": fu_by_position.get(position, []),
         })
 
     return {
         "authority": "derived-display-only",
         "display_order": "top-to-bottom",
         "canonical_storage_order": "bottom-to-top",
+        "header": {
+            "cast_timestamp": cal.get("timestamp"),
+            "day_ganzhi": cal.get("day_ganzhi"),
+            "month_branch": cal.get("month_branch"),
+            "xunkong": cal.get("xunkong"),
+            "ben_gua": ben.get("name"),
+            "ben_palace": ben.get("palace"),
+            "ben_palace_element": ben.get("palace_element"),
+            "ben_palace_type": ben.get("palace_type"),
+            "zhi_gua": zhi.get("name") if isinstance(zhi, dict) else None,
+        },
+        "table_columns": [
+            "六獸", "六親", "世應", "本卦", "五行", "之卦", "伏神"
+        ],
+        "rows": rows,
         "lines": lines,
     }
 
