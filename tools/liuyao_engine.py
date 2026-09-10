@@ -16,7 +16,7 @@ import json
 from typing import Any
 
 ENGINE_NAME = "ai-divination-playbook/lightweight-liuyao"
-ENGINE_VERSION = "1"
+ENGINE_VERSION = "2"
 LINE_ORDER = "bottom-to-top"
 
 TRIGRAM_NAME = {
@@ -148,12 +148,17 @@ def _flags(zhi: str, month_branch: str | None, day_branch: str | None,
 
 
 def chart(bits: str, *, day_gan: str | None = None, month_branch: str | None = None,
-          day_branch: str | None = None, xunkong: tuple[str, str] | None = None) -> dict[str, Any]:
+          day_branch: str | None = None, xunkong: tuple[str, str] | None = None,
+          six_relative_palace: str | None = None) -> dict[str, Any]:
     if len(bits) != 6 or any(c not in "01" for c in bits):
         raise ValueError("bits must be six binary digits, bottom-to-top")
     lower, upper = bits[:3], bits[3:]
     palace, gua_type, shi = PALACE_TABLE[bits]
     palace_wx = PALACE_WUXING[palace]
+    relative_palace = six_relative_palace or palace
+    if relative_palace not in PALACE_WUXING:
+        raise ValueError("six_relative_palace must be a valid Eight-Palace name")
+    relative_palace_wx = PALACE_WUXING[relative_palace]
     in_gan, in_zhi, _, _ = NAJIA[TRIGRAM_NAME[lower]]
     _, _, out_gan, out_zhi = NAJIA[TRIGRAM_NAME[upper]]
     gans = [in_gan] * 3 + [out_gan] * 3
@@ -170,7 +175,7 @@ def chart(bits: str, *, day_gan: str | None = None, month_branch: str | None = N
             "gan": gan,
             "zhi": zhi,
             "five_element": wx,
-            "six_relative": six_relative(wx, palace_wx),
+            "six_relative": six_relative(wx, relative_palace_wx),
             "shi_ying": "世" if i == shi else ("應" if i == ying else None),
             "six_spirit": SIX_SPIRITS[(spirit_start + i - 1) % 6] if spirit_start is not None else None,
             "flags": _flags(zhi, month_branch, day_branch, xunkong),
@@ -185,6 +190,8 @@ def chart(bits: str, *, day_gan: str | None = None, month_branch: str | None = N
         "palace_type": gua_type,
         "shi_position": shi,
         "ying_position": ying,
+        "six_relative_reference_palace": relative_palace,
+        "six_relative_reference_element": relative_palace_wx,
         "lines": lines,
     }
 
@@ -227,8 +234,17 @@ def build_structured_fact(raw_lines: str | list[int] | tuple[int, ...], *,
     bian_bits = changed_bits(bits, moving)
     primary = chart(bits, day_gan=day_gan, month_branch=month_branch,
                     day_branch=day_branch, xunkong=xunkong)
-    changed = chart(bian_bits, day_gan=day_gan, month_branch=month_branch,
-                    day_branch=day_branch, xunkong=xunkong) if moving else None
+    # Traditional Liuyao transformed-line relatives remain referenced to the
+    # primary hexagram's palace element. The changed hexagram keeps its own
+    # structural palace metadata, but that palace must not redefine 化爻六親.
+    changed = chart(
+        bian_bits,
+        day_gan=day_gan,
+        month_branch=month_branch,
+        day_branch=day_branch,
+        xunkong=xunkong,
+        six_relative_palace=primary["palace"],
+    ) if moving else None
     return {
         "engine": ENGINE_NAME,
         "engine_version": ENGINE_VERSION,
