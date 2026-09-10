@@ -2,20 +2,21 @@
 
 本章是 **六爻（Liuyao / 六爻納甲）** 在本 Playbook 中的 method-specific authority。
 
-本章不實作 RNG，也不自行維護完整排盤程式：
+本章不實作 RNG；deterministic calculation 與 interpretation authority 明確分層：
 
 - stochastic 三錢起卦 → `masini1491/divination-casting-randomizer/randomizer.py`
-- deterministic 排盤／納甲 → 必須由可驗證的 Liuyao engine 建立 Structured Method Fact
+- deterministic 結構排盤 → `tools/liuyao_engine.py`
+- calendar-dependent facts → 只有經可驗證 calendar provider 或已固定外部 facts 才可加入
 - 題目與方法選擇 → `METHOD_ROUTING.md`
 - Runtime Cast governance → `RUNTIME_DRAW.md`
 - 新題／承接／補占 → `READING_LIFECYCLE.md`
 - 最終輸出 → `CHATGPT_OUTPUT.md`
 
-目前優先採用的外部 deterministic engine reference 是 `kentang2017/ichingshifa`；採用範圍、license 與不採用項目見 `references/ichingshifa.md`。外部 reference 不因被採用就成為本 Playbook 的 policy authority。
+外部 repositories（包含 `yaomancy/liuyao-engine`、`bopo/najia`、`AdrienSterling/yigram-najia-rules`、`kentang2017/ichingshifa`）只作 reference / differential oracle；不因被採用就成為本 Playbook 的 policy authority 或 Runtime dependency。
 
 核心原則：
 
-> **Randomizer 決定六爻原始 6/7/8/9；deterministic engine 決定盤；Playbook 決定題目責任與解讀治理。**
+> **Randomizer 決定六爻原始 6/7/8/9；deterministic engine 決定可驗證盤面 facts；Playbook 決定題目責任、用神 responsibility 與解讀治理。**
 
 > **Language model 不得手算後冒充 deterministic Liuyao engine output。**
 
@@ -26,7 +27,7 @@
 - **Runtime 三錢起卦** → §4 + `RUNTIME_DRAW.md`
 - **建立本卦／變卦／納甲等 Structured Method Fact** → §5
 - **正式解讀順序** → §6～8
-- **engine unavailable / partial fact** → §9
+- **engine / calendar fact unavailable** → §9
 - **保存與 provenance** → §10
 
 ## 1. Judgment Responsibility｜六爻主要回答什麼
@@ -179,35 +180,81 @@ Raw Cast Fact 至少保留：
 
 六個 6/7/8/9 只代表 **Raw Cast Fact**。正式六爻納甲解讀前，應由 deterministic engine 建立 **Structured Method Fact**。
 
-最低應能建立：
+### 5A. Canonical lightweight structural engine
+
+本 Repository 的 production structural owner 是：
+
+```text
+tools/liuyao_engine.py
+```
+
+它是 zero-external-dependency deterministic core；輸入已固定的六爻 `6/7/8/9`，輸出目前已驗證的 structural facts：
 
 ```text
 raw_lines
-ben_gua            # 本卦
-changed_lines      # 動爻
-zhi_gua            # 之卦／變卦
+moving_positions
+ben_gua / zhi_gua
+64-gua identity
+upper / lower trigram
+palace / palace element / generation type
+najia
+five elements
+six relatives
+shi / ying
+fu_shen
 ```
 
-若本題要使用完整納甲判斷，還應由 engine 建立可驗證欄位，例如：
+若 caller 已提供可靠 calendar facts，engine 亦可附加：
 
 ```text
-najia              # 納甲干支
-five_elements      # 五行
-six_relatives      # 六親
-shi_ying           # 世應
-six_spirits        # 六神／六獸
-fu_shen            # 伏神（若適用）
-calendar_context   # 月建、日辰、旬空等本題實際使用的時間條件
-engine_provenance
+six_spirits      # 需要 day_gan
+xunkong flag     # 需要 xunkong
+month-break flag # 需要 month_branch
+day-clash flag   # 需要 day_branch
 ```
 
-初始 preferred reference：
+**這個 structural engine 不負責從 timestamp 自行推算節氣月建／日柱／旬空，也沒有 interpretation authority 或 yongshen-selection authority。**
+
+### 5B. Calendar Fact Gate
+
+完整六爻若要使用月建、日辰、旬空、六神與依賴這些資料的旺衰／應期，calendar facts 必須另外取得並驗證。
+
+目前允許：
 
 ```text
-kentang2017/ichingshifa
+A. 已由可信 deterministic calendar provider 產生並保留 provenance 的 facts
+B. 使用者／既有 Reading Record 已提供、且本題明確固定的 verified calendar facts
 ```
 
-其公開 API 支援將六位 `6/7/8/9` 字串作手動 line input，例如 `mget_bookgua_details('789789')`；也提供納甲相關能力。具體採用狀態見 `references/ichingshifa.md`。
+目前不允許：
+
+```text
+Language model 心算／猜測干支、節氣、旬空
+把 Gregorian 月份直接當月建
+看到卦後才換時間基準
+engine 沒算出來卻把欄位補成完整盤
+```
+
+Calendar provider 尚未通過 production validation 時，structural facts 仍有效；只在 calendar-dependent layer fail closed。
+
+### 5C. Differential evidence
+
+Lightweight structural core 的固定表／規則應以 external references 作 differential oracle，而不是 Runtime dependency。現有 reference set 包含：
+
+```text
+AdrienSterling/yigram-najia-rules
+yaomancy/liuyao-engine
+bopo/najia
+```
+
+已加入的 differential tests 至少覆蓋：
+
+- 8 卦納甲地支 sequence；
+- 八宮五行；
+- 全 64 卦 palace / generation / 世應；
+- 六親五行生剋 semantics。
+
+Reference 自己標示 draft／unaudited 的資料不得因 test parity 就升格為唯一真理；重要 facts 仍應維持多來源或傳統規則交叉驗證。
 
 ### Authority boundary
 
@@ -215,14 +262,17 @@ kentang2017/ichingshifa
 Divination Casting Randomizer
 → raw stochastic cast authority
 
-Liuyao deterministic engine
-→ structured chart/calculation authority
+Lightweight Liuyao engine
+→ verified structural chart facts
+
+Calendar provider
+→ verified calendar-dependent facts only
 
 LIUYAO.md
-→ judgment responsibility + interpretation governance
+→ judgment responsibility + yongshen responsibility + interpretation governance
 ```
 
-不得把外部 engine 自己的隨機起卦拿來覆蓋 Randomizer 已固定的 Raw Cast Fact。
+不得把 engine 自己的隨機起卦拿來覆蓋 Randomizer 已固定的 Raw Cast Fact；也不得讓 engine 的 category mapping 取代 Playbook 的 question contract。
 
 ## 6. Interpretation Gate｜先定用神責任，再看吉凶
 
@@ -247,7 +297,7 @@ Secondary role(s): <只有原題真的需要才設定>
 1. 重述原題與 completion rule
 2. 確認 primary target / 用神 responsibility
 3. 看世應／主客位置與本題角色
-4. 看月日等時間條件下的旺衰／可作用程度
+4. 看月日等時間條件下的旺衰／可作用程度（只有 calendar facts 已驗證時）
 5. 看動爻與其作用方向
 6. 看變爻／之卦是否支持、改變或阻斷 primary outcome
 7. 看空破、合沖、生剋、伏神等只有本題需要且 engine 已可靠提供的訊號
@@ -262,7 +312,7 @@ Secondary role(s): <只有原題真的需要才設定>
 
 - **Outcome**：原 `completion_rule` 是否受支持；
 - **Obstacle / Cause**：哪個角色／條件阻礙或促成；
-- **Timing**：只有在盤面與方法規則有可辨識應期時才提出。
+- **Timing**：只有在盤面與方法規則有可辨識應期，且所需 calendar facts 已驗證時才提出。
 
 不得把「某用神旺」直接等同「事件必然完成」，也不得把某個時間象徵偽裝成精確保證日期。
 
@@ -270,17 +320,30 @@ Secondary role(s): <只有原題真的需要才設定>
 
 ## 9. Engine / Structured Fact 不可用時
 
-若 Raw Cast 已成功，但 deterministic engine 不可取得、執行失敗，或所需 Structured Method Fact 缺失：
+分層 fail closed：
+
+```text
+Raw Cast 成功 + structural engine 成功 + calendar unavailable
+→ 保留 Raw + structural facts
+→ 標記 calendar-dependent facts unavailable
+→ 不使用月建／日辰／旬空／六神／旺衰／精細應期作證據
+
+Raw Cast 成功 + structural engine unavailable
+→ 保留 Raw Cast
+→ LIUYAO STRUCTURED FACT UNAVAILABLE
+→ 不手算冒充 engine
+```
+
+共同規則：
 
 - Raw Cast Fact 仍然有效，不重起；
 - 不得由語言模型手算納甲、六親、世應等再冒充 engine output；
-- 標記 `LIUYAO STRUCTURED FACT UNAVAILABLE` 或等價 boundary；
-- 若使用者只要求不依賴納甲的基礎《周易》卦義分析，可以在**明確降級並取得使用者意圖一致**的前提下處理；不得把降級分析叫做完整六爻納甲解讀；
-- 不得因 engine unavailable 就偷偷改成 Tarot／Meihua。若要改方法，必須清楚說明是 fallback，並建立新的 method/cast identity。
+- 若使用者只要求不依賴完整納甲的基礎《周易》卦義分析，可以在**明確降級並取得使用者意圖一致**的前提下處理；不得把降級分析叫做完整六爻納甲解讀；
+- 不得因某 layer unavailable 就偷偷改成 Tarot／Meihua。若要改方法，必須清楚說明是 fallback，並建立新的 method/cast identity。
 
 核心原則：
 
-> **Cast succeeded ≠ full Liuyao chart succeeded。Preserve raw fact; fail closed at the missing layer。**
+> **Cast succeeded ≠ every Liuyao layer succeeded。Preserve every verified fact; fail closed only at the missing layer。**
 
 ## 10. Provenance / Reading Record
 
@@ -295,30 +358,29 @@ runtime_tool / runtime version / runtime source commit
 cast timestamp
 
 engine_name
-engine_source_ref / commit / version（可得時）
+engine_version / source commit（可得時）
 structured_fact fields actually used
+
+calendar_provider / version / source ref（若使用）
+calendar facts actually used
 
 original interpretation
 ```
 
-不要把 Randomizer provenance 與 Liuyao engine provenance 合併成一個模糊的 `source`。
+不要把 Randomizer provenance、structural engine provenance 與 calendar provenance 合併成一個模糊的 `source`。
 
-若外部 engine source commit 不可確認，保存 `unknown`／`unverified`；不得捏造 SHA。
-
-後續若 engine 更新，只代表新的 calculator revision；**不回頭改寫舊 reading 當時使用的 Raw Cast Fact 或 Structured Method Fact。**
+後續 engine 更新，只代表新的 calculator revision；**不回頭改寫舊 reading 當時使用的 Raw Cast Fact 或 Structured Method Fact。**
 
 ## 11. Pre-Send Check
 
 送出六爻解讀前快速確認：
 
-- [ ] 題目是否是一個清楚、可驗證的事件 identity？
-- [ ] completion rule / horizon 是否固定？
-- [ ] 6/7/8/9 是否來自實際 Cast Fact，而非模型自行生成？
-- [ ] line order 是否為 bottom-to-top 且沒有在轉換時顛倒？
-- [ ] 完整納甲判斷所用欄位是否真的來自 deterministic engine？
-- [ ] primary target / 用神 responsibility 是否在看到吉凶後才偷換？
-- [ ] outcome、obstacle、timing 是否分層？
-- [ ] 是否把象徵支持講成客觀保證？
-- [ ] engine unavailable 時是否保留 Raw Cast、停止在正確 boundary，而不是重起／手算冒充？
-
-核心原則：**One concrete event, one fixed cast, deterministic chart facts, then interpretation。**
+- [ ] 原題是一個清楚、可驗證的事件 judgment node。
+- [ ] Raw Cast 是既有 fact 或由 canonical Runtime 產生，不是模型自創。
+- [ ] line order 明確為 bottom-to-top。
+- [ ] 本卦／動爻／之卦／納甲等使用到的 structural facts 有 deterministic engine provenance。
+- [ ] calendar-dependent evidence 只有在 calendar facts 已驗證時才使用。
+- [ ] 用神 responsibility 在看結果前由 question contract 決定，不由 engine category mapping 代替。
+- [ ] 沒有因不喜歡結果而重起。
+- [ ] 沒有把 engine / calendar 缺失藏起來。
+- [ ] outcome、obstacle、timing 沒有混成同一個無法驗證的敘事。
