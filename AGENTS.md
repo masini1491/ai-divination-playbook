@@ -35,8 +35,11 @@
 - `evals/regression_matrix.json`：change-class → scenario selection metadata。
 - `tools/behavioral_eval.py`：eval run record／matrix deterministic validation；不做 semantic grading。
 - `tools/playbook_check.py`：structure/link/router/index consistency checker。
-- `tests/test_playbook_check.py`：checker unit tests。
-- `tools/liuyao_engine_adapter.py`：薄 adapter；只把 canonical Liuyao Raw Cast 交給外部 deterministic engine，不實作六爻算法。
+- `tests/test_playbook_check.py`：checker unit + repository-root integration tests。
+- `tools/liuyao_engine.py`：zero-dependency deterministic Liuyao structural engine；只產生 Structured Method Fact，不解讀。
+- `tools/liuyao_calendar.py`：zero-dependency Liuyao calendar fact provider；只產生月建／日辰／旬空等 deterministic calendar facts，不解讀。
+- `tools/liuyao_runtime.py`：把已固定 Raw Cast、calendar facts 與 structural engine 組合成完整 deterministic runtime payload，並提供 derived human presentation；不選用神、不解讀。
+- `tools/liuyao_engine_adapter.py`：legacy / fallback external-engine adapter；不是目前 production structural owner。
 - `references/`：Cold external source dossier；不自動取得 policy authority。
 - `CASE_STUDIES/`：Cold anonymized failure cases。
 
@@ -56,15 +59,26 @@ Meihua A/B cast
 Liuyao three-coin Raw Cast
 ```
 
-六爻完整納甲／盤面 calculation 不由 Randomizer 或 Playbook 手算；preferred external engine reference 見：
+六爻 production deterministic path 目前為：
 
 ```text
-references/ichingshifa.md
+fixed Raw Cast
+→ tools/liuyao_calendar.py      # calendar facts
+→ tools/liuyao_engine.py        # structural chart facts
+→ tools/liuyao_runtime.py       # deterministic composition + presentation
+→ LIUYAO.md                     # interpretation governance
 ```
 
-`tools/liuyao_engine_adapter.py` 只做 input validation、external engine invocation、provenance packaging；它不是第二份六爻 calculation authority。
+責任邊界：
 
-穩定 policy 只保留一個 canonical owner；routing/index/adapter 不複製完整 normative policy，也不得成為第二份 current state database。
+- Randomizer 只擁有 stochastic Raw Cast authority。
+- `liuyao_calendar.py` 只擁有 calendar fact calculation authority。
+- `liuyao_engine.py` 只擁有 structural chart calculation authority。
+- `liuyao_runtime.py` 只做 deterministic composition 與 derived presentation，不取得 interpretation / yongshen authority。
+- `LIUYAO.md` 才擁有 judgment responsibility、用神 responsibility 與 interpretation governance。
+- `references/ichingshifa.md` 與 `tools/liuyao_engine_adapter.py` 保留作歷史／fallback／reference surface，不覆蓋目前 production lightweight path。
+
+穩定 policy 只保留一個 canonical owner；routing/index/runtime 不複製完整 normative policy，也不得成為第二份 current state database。
 
 ## 儲存庫與 Git 身分設定
 
@@ -150,7 +164,7 @@ GitHub retrieval capability 不代表 Python execution、repository write 或 Re
 - 方法未指定才讀 `METHOD_ROUTING.md`；若使用者已指定 method 或已有實際 Draw / Cast Fact，不為形式重新 routing。
 - `BEHAVIORAL_EVAL.md`、`references/`、`CASE_STUDIES/`、Historical Context 預設 Cold。
 - AI 要自行抽／起才載入 `RUNTIME_DRAW.md`。
-- 選到 Liuyao 才載入 `LIUYAO.md`；完整 structured chart 只有 engine capability 成立才進一步執行。
+- 選到 Liuyao 才載入 `LIUYAO.md`；需要完整 structured chart 時才執行 `tools/liuyao_runtime.py` 的 deterministic path。
 - 只有保存／跨聊天室／Backtest／audit 才載入 `READING_RECORD.md`。
 - 只有 material session-health risk 才載入 `SESSION_HANDOFF.md`。
 - exact section／owner 已唯一時直接讀 target，不為 routing 增加 ceremony。
@@ -173,7 +187,7 @@ judgment gap
 
 - 不因 Repo 名稱泛化就宣稱未定義方法已支援。
 - Runtime stochastic implementation 變更優先改 Randomizer repo；Playbook 只同步 governance contract。
-- deterministic engine 計算不得複製進 Playbook；必要時使用 thin adapter。
+- deterministic calculation 必須有單一清楚 owner；不得讓 language model 手算結果冒充 engine fact，也不得讓 legacy adapter 覆蓋 current production owner。
 - External GitHub reference 納入前，一律用 GitHub connector 取得並記錄 source/ref、license、採用範圍、not-adopted boundary。
 - 不在 README、AGENTS、CHAT_INIT、PLAYBOOK_INDEX 與 method owner 間複製完整 normative policy。
 - `CROSS_VALIDATION.md` 目前只擁有已正式定義的 reconciliation；新增 method 不代表自動獲得 pairwise cross-validation semantics。
@@ -191,6 +205,7 @@ python -m unittest tests.test_playbook_check
 python tools/playbook_check.py .
 ```
 
+- repository CI 應至少執行 full unit-test discovery 與 root structural checker，避免 fixture-only tests 全綠但 canonical root 已漂移。
 - 純 Markdown 修改至少檢查 routing、heading、link、ownership、authority boundary 是否矛盾。
 
 ## 外部參考
