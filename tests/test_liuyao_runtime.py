@@ -108,6 +108,24 @@ class LiuyaoRuntimeTests(unittest.TestCase):
         self.assertTrue(any(row["shi_ying"] == "應" for row in display["rows"]))
         self.assertTrue(any(row["fu_shen"] for row in display["rows"]))
 
+    def test_markdown_table_is_ready_for_chatgpt_display(self):
+        result = runtime.build_liuyao_fact(
+            "889877",
+            timestamp="2026-09-10T08:06:38+08:00",
+        )
+        display = result["presentation"]
+        md = display["markdown_table"]
+        self.assertIn("| 六獸 | 六親 | 世應 | 本卦 | 五行 | 之卦 | 伏神 |", md)
+        self.assertIn("本卦：風山漸", md)
+        self.assertIn("之卦：風地觀", md)
+        self.assertIn("月建：酉", md)
+        self.assertIn("日辰：丁亥", md)
+        self.assertIn("旬空：午、未", md)
+        self.assertIn("九三", md)
+        self.assertIn("○", md)
+        self.assertIn("乙卯木 官鬼", md)
+        self.assertIn("ChatGPT should render markdown_table", display["render_hint"])
+
     def test_traditional_line_labels_follow_yang_nine_yin_six_convention(self):
         self.assertEqual(runtime.traditional_line_label(7, 1), "初九")
         self.assertEqual(runtime.traditional_line_label(8, 1), "初六")
