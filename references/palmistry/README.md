@@ -17,12 +17,14 @@
 
 - [`SYNTHESIS.md`](SYNTHESIS.md) — source comparison、architecture implication、remaining evidence gaps。
 - [`CHINESE_RULE_NORMALIZATION.md`](CHINESE_RULE_NORMALIZATION.md) — 《神相全編》／《太清神鑑》／《神相鐵關刀》的 rule-family normalization、lineage guard、術語 namespace 與中西 mapping boundary。
-- [`OBSERVATION_SCHEMA_DRAFT.md`](OBSERVATION_SCHEMA_DRAFT.md) — source-neutral Palm Observation Fact draft；image quality、geometry、unknown semantics、tradition projection 與 privacy boundary。
+- [`OBSERVATION_SCHEMA_DRAFT.md`](OBSERVATION_SCHEMA_DRAFT.md) — source-neutral Palm Observation Fact draft；scene/target selection、task-specific quality、geometry、unknown semantics、tradition projection 與 privacy boundary。
+- [`PHOTO_VALIDATION.md`](PHOTO_VALIDATION.md) — 代表性真實照片 field-coverage / fail-closed validation。
+- [`NORMALIZATION_CONTRACT_DRAFT.md`](NORMALIZATION_CONTRACT_DRAFT.md) — raw image → model adapter → raw geometry → canonical palm basis 的 deterministic normalization contract draft。
 
 ### Observation / CV references
 
-- [`palm-line-reader.md`](palm-line-reader.md) — `samuelwbarber/palm-line-reader`；三大主線 segmentation、MediaPipe crop、browser ONNX；注意 Reddit-derived training provenance。
-- [`yeonsumia-palmistry.md`](yeonsumia-palmistry.md) — `yeonsumia/palmistry`；view rectification、principal-line detection / classification / measurement pipeline。
+- [`palm-line-reader.md`](palm-line-reader.md) — `samuelwbarber/palm-line-reader`；三大主線 segmentation、shipped ONNX inference contract、reconstructed preprocessing caveat、Reddit-derived training provenance。
+- [`yeonsumia-palmistry.md`](yeonsumia-palmistry.md) — `yeonsumia/palmistry`；21-landmark homography rectification、principal-line detection/classification/measurement pipeline，以及 project-specific template / threshold boundary。
 - [`palm-astro-application.md`](palm-astro-application.md) — `lakshay102/Palm-Astro-Application`；geometry feature extraction concept；synthetic interpretation 與 unresolved code license 不採用。
 - [`tencent-palm-applications.md`](tencent-palm-applications.md) — `TencentYoutuResearch/Palm-Applications` / PalmDestiny；multimodal product-flow reference；prompt contamination、approximate CV heuristic 與 license inconsistency boundary。
 
@@ -44,4 +46,4 @@ CHAT_INIT.md production method set
 README production support list
 ```
 
-只有在 observation schema 經實際 image coverage validation、tradition-specific interpretation source normalization、fail-closed rules 與 behavioral regression 都足夠後，才評估 promotion。
+目前 normalization 已從純概念推進到 source-specific contract draft，但尚未有 production implementation、numeric tolerance、cross-device repeatability 或 behavioral regression；因此仍不進 router。
