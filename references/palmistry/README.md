@@ -23,6 +23,8 @@
 - [`normalization_probe.py`](normalization_probe.py) — Cold、standard-library-only synthetic invariant probe；驗 translation / rotation / scale / mirror / inverse-transform / fail-closed properties，不是 production tool。
 - [`SENSITIVITY_SWEEP.md`](SENSITIVITY_SWEEP.md) — L0/L5/L17 controlled perturbation 與 mirror-convention sensitivity 結果；synthetic research evidence，不是 production tolerance。
 - [`normalization_sensitivity_probe.py`](normalization_sensitivity_probe.py) — Cold、standard-library-only sensitivity executable；16-direction / 4096-combination bounded sweep，不是 production tool。
+- [`REAL_IMAGE_REPEATABILITY.md`](REAL_IMAGE_REPEATABILITY.md) — 真實影像 landmark repeatability / transform-consistency study protocol、runtime reconciliation 與 execution boundary。
+- [`real_image_repeatability_probe.py`](real_image_repeatability_probe.py) — detector-agnostic Cold harness；接收 L0/L5/L17 + inverse transform，計算 anchor / canonical frame drift；不是 detector，也不是 production tool。
 
 ### Observation / CV references
 
@@ -49,4 +51,11 @@ CHAT_INIT.md production method set
 README production support list
 ```
 
-目前 normalization 已有 source-specific contract draft、ideal synthetic deterministic probe（11 passed / 0 failed），以及 landmark perturbation / mirror-convention sensitivity sweep。後者已證明 small anchor error 會傳入 canonical frame，而漏做 mirror inverse 會造成 frame inversion；但這些仍不是 real-image repeatability 或 production tolerance。下一個主要 evidence gap 是 **real-image landmark repeatability / transform-consistency**，因此仍不進 router。
+目前 normalization 已完成：
+
+- source-specific contract draft；
+- ideal synthetic deterministic probe（11 passed / 0 failed）；
+- landmark perturbation / mirror-convention sensitivity sweep；
+- real-image repeatability harness self-test。
+
+但最後一項只代表**量測 harness 可用**，不是 MediaPipe / OpenPose real-image repeatability 已驗證。本輪執行環境缺可 materialize 的 hand-landmark runtime/model，因此 real-image numeric evidence 仍 pending。下一個主要 evidence gap 是：取得固定版本、可本地執行的 hand-landmark detector，直接跑 controlled rotate / scale / crop / mirror study；完成前仍不進 router。
