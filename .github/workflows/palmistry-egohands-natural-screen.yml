@@ -1,0 +1,205 @@
+name: Palmistry EgoHands Natural Screen (Ephemeral)
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  screen:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install research runtime
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libegl1 libgl1 libgles2
+          python -m pip install --upgrade pip
+          python -m pip install 'mediapipe==1.0.1' 'remotezip==0.12.3' 'scipy>=1.15,<2' requests
+      - name: Screen natural EgoHands frames via HTTP range
+        run: |
+          python - <<'PY'
+          from __future__ import annotations
+          import io, json, math, os, sys, urllib.request
+          from collections import Counter, defaultdict
+          from pathlib import PurePosixPath
+          import cv2
+          import mediapipe as mp
+          import numpy as np
+          import requests
+          from remotezip import RemoteZip
+          from scipy.io import loadmat
+
+          sys.path.insert(0, os.path.abspath('references/palmistry'))
+          from association_ambiguity_probe import MODEL_URL, MODEL_SHA256, download, detect_full
+
+          DATASET_URL = 'https://vision.soic.indiana.edu/egohands_files/egohands_data.zip'
+          SAMPLE_PER_FOLDER = 5
+
+          head = requests.head(DATASET_URL, allow_redirects=True, timeout=30)
+          print('=== EGOHANDS_HTTP ===')
+          print(json.dumps({
+              'status_code': head.status_code,
+              'final_url': head.url,
+              'content_length': head.headers.get('Content-Length'),
+              'accept_ranges': head.headers.get('Accept-Ranges'),
+              'etag': head.headers.get('ETag'),
+              'last_modified': head.headers.get('Last-Modified'),
+          }, indent=2))
+          head.raise_for_status()
+
+          model_path = 'hand_landmarker.task'
+          model_sha = download(MODEL_URL, __import__('pathlib').Path(model_path))
+          if model_sha != MODEL_SHA256:
+              raise RuntimeError(f'model sha mismatch: {model_sha}')
+
+          options = mp.tasks.vision.HandLandmarkerOptions(
+              base_options=mp.tasks.BaseOptions(model_asset_path=model_path),
+              running_mode=mp.tasks.vision.RunningMode.IMAGE,
+              num_hands=4,
+              min_hand_detection_confidence=0.5,
+              min_hand_presence_confidence=0.5,
+              min_tracking_confidence=0.5,
+          )
+
+          def polygon_count(frame_polygons) -> int:
+              count = 0
+              for polygon in frame_polygons:
+                  try:
+                      if len(polygon) >= 3:
+                          count += 1
+                  except TypeError:
+                      pass
+              return count
+
+          def evenly_spaced(values, k):
+              values = list(values)
+              if len(values) <= k:
+                  return values
+              positions = np.linspace(0, len(values) - 1, k)
+              out = []
+              for pos in positions:
+                  value = values[int(round(float(pos)))]
+                  if value not in out:
+                      out.append(value)
+              return out
+
+          rows = []
+          folder_summary = defaultdict(lambda: {'sampled': 0, 'retained2': 0, 'collapse': 0, 'det_counts': [], 'ann_counts': []})
+          readme_excerpt = []
+
+          with RemoteZip(DATASET_URL, initial_buffer_size=256 * 1024) as rz:
+              names = rz.namelist()
+              print('=== EGOHANDS_ZIP ===')
+              print(json.dumps({'entry_count': len(names), 'first_entries': names[:8]}, indent=2))
+
+              readme_names = [name for name in names if PurePosixPath(name).name.lower().startswith('readme')]
+              if readme_names:
+                  try:
+                      text = rz.read(readme_names[0]).decode('utf-8', errors='replace')
+                      for line in text.splitlines():
+                          low = line.lower()
+                          if any(token in low for token in ('license', 'citation', 'research', 'copyright', 'permission', 'polygon')):
+                              readme_excerpt.append(line[:300])
+                  except Exception as exc:
+                      readme_excerpt.append(f'README extraction failed: {exc}')
+
+              folders = sorted({
+                  str(PurePosixPath(name).parent)
+                  for name in names
+                  if name.startswith('_LABELLED_SAMPLES/') and name.endswith('.jpg')
+              })
+              print(json.dumps({'folder_count': len(folders), 'folders': folders}, indent=2))
+
+              with mp.tasks.vision.HandLandmarker.create_from_options(options) as landmarker:
+                  for folder in folders:
+                      frame_names = sorted(name for name in names if str(PurePosixPath(name).parent) == folder and name.endswith('.jpg'))
+                      mat_name = f'{folder}/polygons.mat'
+                      if mat_name not in names or not frame_names:
+                          continue
+                      video = loadmat(io.BytesIO(rz.read(mat_name)))
+                      polygons = video['polygons'][0]
+                      if len(frame_names) != len(polygons):
+                          raise RuntimeError(f'frame/annotation count mismatch in {folder}: {len(frame_names)} vs {len(polygons)}')
+                      multi_indices = [i for i in range(len(frame_names)) if polygon_count(polygons[i]) >= 2]
+                      selected = evenly_spaced(multi_indices, SAMPLE_PER_FOLDER)
+                      for i in selected:
+                          raw = rz.read(frame_names[i])
+                          image = cv2.imdecode(np.frombuffer(raw, dtype=np.uint8), cv2.IMREAD_COLOR)
+                          if image is None:
+                              raise RuntimeError(f'failed to decode {frame_names[i]}')
+                          candidates = detect_full(landmarker, image)
+                          ann_count = polygon_count(polygons[i])
+                          det_count = len(candidates)
+                          row = {
+                              'folder': folder.split('/')[-1],
+                              'frame': PurePosixPath(frame_names[i]).name,
+                              'frame_index': i,
+                              'annotated_hand_count': ann_count,
+                              'detector_candidate_count': det_count,
+                              'handedness': [c['handedness'] for c in candidates],
+                              'bbox_area_normalized': [c['bbox_area_normalized'] for c in candidates],
+                              'image_shape_h_w': list(image.shape[:2]),
+                          }
+                          rows.append(row)
+                          s = folder_summary[row['folder']]
+                          s['sampled'] += 1
+                          s['det_counts'].append(det_count)
+                          s['ann_counts'].append(ann_count)
+                          if det_count >= 2:
+                              s['retained2'] += 1
+                          if ann_count >= 2 and det_count < 2:
+                              s['collapse'] += 1
+
+          annotated_distribution = Counter(row['annotated_hand_count'] for row in rows)
+          detector_distribution = Counter(row['detector_candidate_count'] for row in rows)
+          joint_distribution = Counter((row['annotated_hand_count'], row['detector_candidate_count']) for row in rows)
+          variable_folders = []
+          for folder, s in folder_summary.items():
+              if len(set(s['det_counts'])) > 1:
+                  variable_folders.append({
+                      'folder': folder,
+                      'sampled': s['sampled'],
+                      'retained2': s['retained2'],
+                      'collapse': s['collapse'],
+                      'det_counts': s['det_counts'],
+                      'ann_counts': s['ann_counts'],
+                  })
+          variable_folders.sort(key=lambda x: (-x['retained2'], -x['collapse'], x['folder']))
+
+          result = {
+              'status': 'research-only',
+              'dataset_url': DATASET_URL,
+              'dataset_transport': {
+                  'content_length': head.headers.get('Content-Length'),
+                  'accept_ranges': head.headers.get('Accept-Ranges'),
+                  'etag': head.headers.get('ETag'),
+                  'last_modified': head.headers.get('Last-Modified'),
+              },
+              'dataset_readme_relevant_lines': readme_excerpt[:20],
+              'model_sha256': model_sha,
+              'mediapipe_version': mp.__version__,
+              'opencv_version': cv2.__version__,
+              'sample_per_folder_max': SAMPLE_PER_FOLDER,
+              'sampled_frame_count': len(rows),
+              'annotated_hand_count_distribution': {str(k): v for k, v in sorted(annotated_distribution.items())},
+              'detector_candidate_count_distribution': {str(k): v for k, v in sorted(detector_distribution.items())},
+              'joint_distribution': {f'ann{k[0]}_det{k[1]}': v for k, v in sorted(joint_distribution.items())},
+              'annotated_multi_but_detector_lt2': sum(1 for r in rows if r['annotated_hand_count'] >= 2 and r['detector_candidate_count'] < 2),
+              'detector_ge2': sum(1 for r in rows if r['detector_candidate_count'] >= 2),
+              'variable_candidate_count_folders': variable_folders[:12],
+              'rows': rows,
+          }
+          print('=== EGOHANDS_NATURAL_SCREEN_JSON ===')
+          print(json.dumps(result, indent=2))
+
+          if not rows:
+              raise RuntimeError('no natural frames were sampled')
+          if not any(r['detector_candidate_count'] >= 2 for r in rows):
+              raise RuntimeError('natural screen produced no >=2 candidate frame')
+          PY
