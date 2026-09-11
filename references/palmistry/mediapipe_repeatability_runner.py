@@ -1,198 +1,276 @@
 #!/usr/bin/env python3
-"""Cold research runner for MediaPipe real-image palm landmark repeatability.
+"""Cold research runner for MediaPipe palm landmark transform consistency.
 
-Downloads the official Hand Landmarker model and one public/free-licensed palm
-image, runs controlled image transforms, exports detector coordinates plus exact
-inverse transforms, and feeds them into real_image_repeatability_probe.py.
+Runs Case A (single palm) and Case B (multi-hand scene) with a pinned MediaPipe
+Hand Landmarker model. Candidate association is scene-local only: a baseline target
+is chosen by largest normalized hand bbox; transformed candidates are inverse-mapped
+to baseline coordinates and matched by minimum mean L0/L5/L17 distance.
 
-This is research instrumentation, not a production Palmistry runtime owner.
+This is research instrumentation, NOT biometric identity and NOT a production owner.
 """
-
 from __future__ import annotations
 
-import argparse
-import hashlib
-import json
-import platform
-import sys
-import urllib.request
+import argparse, hashlib, json, platform, sys, urllib.request
 from pathlib import Path
 from typing import Iterable
-
 import cv2
 import mediapipe as mp
 import numpy as np
-
-from real_image_repeatability_probe import evaluate_study, print_results
-
-MODEL_URL = (
-    "https://storage.googleapis.com/mediapipe-models/hand_landmarker/"
-    "hand_landmarker/float16/1/hand_landmarker.task"
+from real_image_repeatability_probe import (
+    Point, apply_homography, build_basis, evaluate_study, norm, parse_matrix, print_results
 )
-CASE_A_SOURCE_PAGE = "https://commons.wikimedia.org/wiki/File:Right_Hand_Palm.png"
-CASE_A_IMAGE_URL = "https://commons.wikimedia.org/wiki/Special:Redirect/file/Right_Hand_Palm.png"
-CASE_A_LICENSE = "CC BY-SA 4.0"
+
+MODEL_URL = "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task"
 USER_AGENT = "ai-divination-playbook-palmistry-research/1.0"
 MAX_BASELINE_DIM = 1600
 ANCHORS = (0, 5, 17)
+CASES = {
+    "case_a": {
+        "label": "Case A — single right palm",
+        "source_page": "https://commons.wikimedia.org/wiki/File:Right_Hand_Palm.png",
+        "image_url": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Right_Hand_Palm.png",
+        "license": "CC BY-SA 4.0",
+    },
+    "case_b": {
+        "label": "Case B — two palms, left emphasized",
+        "source_page": "https://commons.wikimedia.org/wiki/File:Open_Palm_of_the_Left_Hand,_Fingers.jpg",
+        "image_url": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Open_Palm_of_the_Left_Hand,_Fingers.jpg",
+        "license": "CC BY-SA 4.0",
+    },
+}
 
 
-def download(url: str, destination: Path) -> str:
-    request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+def download(url, dst):
+    req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
     h = hashlib.sha256()
-    with urllib.request.urlopen(request, timeout=60) as response, destination.open("wb") as out:
+    with urllib.request.urlopen(req, timeout=60) as r, dst.open("wb") as f:
         while True:
-            chunk = response.read(1024 * 1024)
-            if not chunk:
+            b = r.read(1024 * 1024)
+            if not b:
                 break
-            out.write(chunk)
-            h.update(chunk)
+            f.write(b)
+            h.update(b)
     return h.hexdigest()
 
 
-def ensure_max_dim(image: np.ndarray, max_dim: int = MAX_BASELINE_DIM) -> tuple[np.ndarray, float]:
-    height, width = image.shape[:2]
-    largest = max(height, width)
+def ensure_max_dim(img, max_dim=MAX_BASELINE_DIM):
+    h, w = img.shape[:2]
+    largest = max(h, w)
     if largest <= max_dim:
-        return image, 1.0
-    scale = max_dim / float(largest)
-    resized = cv2.resize(
-        image,
-        (max(1, round(width * scale)), max(1, round(height * scale))),
-        interpolation=cv2.INTER_AREA,
-    )
-    return resized, scale
+        return img, 1.0
+    s = max_dim / float(largest)
+    return cv2.resize(img, (max(1, round(w * s)), max(1, round(h * s))), interpolation=cv2.INTER_AREA), s
 
 
-def affine3(matrix2x3: np.ndarray) -> list[list[float]]:
-    return [
-        [float(matrix2x3[0, 0]), float(matrix2x3[0, 1]), float(matrix2x3[0, 2])],
-        [float(matrix2x3[1, 0]), float(matrix2x3[1, 1]), float(matrix2x3[1, 2])],
-        [0.0, 0.0, 1.0],
-    ]
+def bbox_area(lms: Iterable[object]):
+    pts = list(lms)
+    xs = [float(p.x) for p in pts]
+    ys = [float(p.y) for p in pts]
+    return max(0, max(xs) - min(xs)) * max(0, max(ys) - min(ys))
 
 
-def bbox_area(landmarks: Iterable[object]) -> float:
-    points = list(landmarks)
-    xs = [float(p.x) for p in points]
-    ys = [float(p.y) for p in points]
-    return max(0.0, max(xs) - min(xs)) * max(0.0, max(ys) - min(ys))
-
-
-def category_name(category: object) -> str | None:
-    name = getattr(category, "category_name", None)
-    if isinstance(name, str) and name:
-        return name
-    display = getattr(category, "display_name", None)
-    if isinstance(display, str) and display:
-        return display
+def category_name(cat):
+    for attr in ("category_name", "display_name"):
+        v = getattr(cat, attr, None)
+        if isinstance(v, str) and v:
+            return v
     return None
 
 
-def detect_one(landmarker: object, image_bgr: np.ndarray) -> dict[str, object]:
-    rgb = cv2.cvtColor(image_bgr, cv2.COLOR_BGR2RGB)
-    mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=np.ascontiguousarray(rgb))
-    result = landmarker.detect(mp_image)
-    hand_landmarks = list(result.hand_landmarks)
-    if not hand_landmarks:
-        raise RuntimeError("MediaPipe detected no hands")
-
-    index = max(range(len(hand_landmarks)), key=lambda i: bbox_area(hand_landmarks[i]))
-    selected = hand_landmarks[index]
-    height, width = image_bgr.shape[:2]
-    anchors = {
-        str(anchor): [float(selected[anchor].x) * width, float(selected[anchor].y) * height]
-        for anchor in ANCHORS
-    }
-
-    handedness = None
-    if index < len(result.handedness) and result.handedness[index]:
-        handedness = category_name(result.handedness[index][0])
-
-    return {
-        "landmarks": anchors,
-        "handedness": handedness,
-        "candidate_count": len(hand_landmarks),
-        "selected_index": index,
-        "selected_bbox_area_normalized": bbox_area(selected),
-    }
+def detect_all(landmarker, img):
+    rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    result = landmarker.detect(mp.Image(image_format=mp.ImageFormat.SRGB, data=np.ascontiguousarray(rgb)))
+    h, w = img.shape[:2]
+    out = []
+    for i, lms in enumerate(result.hand_landmarks):
+        handed = None
+        if i < len(result.handedness) and result.handedness[i]:
+            handed = category_name(result.handedness[i][0])
+        out.append({
+            "index": i,
+            "handedness": handed,
+            "bbox_area_normalized": bbox_area(lms),
+            "landmarks": {str(a): [float(lms[a].x) * w, float(lms[a].y) * h] for a in ANCHORS},
+        })
+    return out
 
 
-def variant_identity(image: np.ndarray) -> tuple[np.ndarray, list[list[float]]]:
-    return image.copy(), [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]
+def affine3(m):
+    return [[float(m[0, 0]), float(m[0, 1]), float(m[0, 2])], [float(m[1, 0]), float(m[1, 1]), float(m[1, 2])], [0.0, 0.0, 1.0]]
 
 
-def variant_rotate(image: np.ndarray, angle_deg: float) -> tuple[np.ndarray, list[list[float]]]:
-    h, w = image.shape[:2]
+def identity(img):
+    return img.copy(), [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]
+
+
+def rotate(img, deg):
+    h, w = img.shape[:2]
     center = ((w - 1) / 2.0, (h - 1) / 2.0)
-    forward = cv2.getRotationMatrix2D(center, angle_deg, 1.0)
-    transformed = cv2.warpAffine(
-        image,
-        forward,
-        (w, h),
-        flags=cv2.INTER_LINEAR,
-        borderMode=cv2.BORDER_CONSTANT,
-        borderValue=(255, 255, 255),
-    )
-    inverse = cv2.invertAffineTransform(forward)
-    return transformed, affine3(inverse)
+    forward = cv2.getRotationMatrix2D(center, deg, 1.0)
+    transformed = cv2.warpAffine(img, forward, (w, h), flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_CONSTANT, borderValue=(255, 255, 255))
+    return transformed, affine3(cv2.invertAffineTransform(forward))
 
 
-def variant_scale(image: np.ndarray, requested_scale: float) -> tuple[np.ndarray, list[list[float]]]:
-    h, w = image.shape[:2]
-    new_w = max(1, round(w * requested_scale))
-    new_h = max(1, round(h * requested_scale))
-    interpolation = cv2.INTER_AREA if requested_scale < 1.0 else cv2.INTER_CUBIC
-    transformed = cv2.resize(image, (new_w, new_h), interpolation=interpolation)
-    sx = new_w / float(w)
-    sy = new_h / float(h)
-    return transformed, [[1.0 / sx, 0.0, 0.0], [0.0, 1.0 / sy, 0.0], [0.0, 0.0, 1.0]]
+def scale(img, factor):
+    h, w = img.shape[:2]
+    nw, nh = max(1, round(w * factor)), max(1, round(h * factor))
+    interpolation = cv2.INTER_AREA if factor < 1 else cv2.INTER_CUBIC
+    return cv2.resize(img, (nw, nh), interpolation=interpolation), [[w / nw, 0.0, 0.0], [0.0, h / nh, 0.0], [0.0, 0.0, 1.0]]
 
 
-def variant_crop(image: np.ndarray, margin_fraction: float = 0.03) -> tuple[np.ndarray, list[list[float]]]:
-    h, w = image.shape[:2]
-    x0 = round(w * margin_fraction)
-    y0 = round(h * margin_fraction)
-    x1 = w - x0
-    y1 = h - y0
-    if x1 <= x0 or y1 <= y0:
-        raise RuntimeError("crop collapsed image")
-    transformed = image[y0:y1, x0:x1].copy()
-    return transformed, [[1.0, 0.0, float(x0)], [0.0, 1.0, float(y0)], [0.0, 0.0, 1.0]]
+def crop(img, fraction=0.03):
+    h, w = img.shape[:2]
+    x0, y0 = round(w * fraction), round(h * fraction)
+    return img[y0:h-y0, x0:w-x0].copy(), [[1.0, 0.0, float(x0)], [0.0, 1.0, float(y0)], [0.0, 0.0, 1.0]]
 
 
-def variant_mirror(image: np.ndarray) -> tuple[np.ndarray, list[list[float]]]:
-    _, w = image.shape[:2]
-    transformed = cv2.flip(image, 1)
-    return transformed, [[-1.0, 0.0, float(w - 1)], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]
+def mirror(img):
+    _, w = img.shape[:2]
+    return cv2.flip(img, 1), [[-1.0, 0.0, float(w - 1)], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]
 
 
-def metrics_to_json(metrics: object) -> dict[str, object]:
-    return {
-        "name": metrics.name,
-        "max_anchor_drift_fraction": metrics.max_anchor_drift_fraction,
-        "mean_anchor_drift_fraction": metrics.mean_anchor_drift_fraction,
-        "axis_angle_deg": metrics.axis_angle_deg,
-        "width_rel_error": metrics.width_rel_error,
-        "height_rel_error": metrics.height_rel_error,
-        "max_canonical_grid_drift": metrics.max_canonical_grid_drift,
-        "handedness_changed": metrics.handedness_changed,
+VARIANTS = [
+    ("same-pixels-rerun", identity),
+    ("rotate+10deg", lambda img: rotate(img, 10.0)),
+    ("rotate-10deg", lambda img: rotate(img, -10.0)),
+    ("scale-0.75x", lambda img: scale(img, 0.75)),
+    ("scale-1.25x", lambda img: scale(img, 1.25)),
+    ("crop-3pct", lambda img: crop(img, 0.03)),
+    ("horizontal-mirror", mirror),
+]
+
+
+def anchors_points(candidate):
+    return {int(k): Point(float(v[0]), float(v[1])) for k, v in candidate["landmarks"].items()}
+
+
+def mean_anchor_distance_after_inverse(candidate, inverse_transform, baseline_target, baseline_width):
+    matrix = parse_matrix(inverse_transform)
+    candidate_points = anchors_points(candidate)
+    baseline_points = anchors_points(baseline_target)
+    distances = [norm(apply_homography(candidate_points[a], matrix) - baseline_points[a]) / baseline_width for a in ANCHORS]
+    return sum(distances) / len(distances), max(distances)
+
+
+def select_transformed_candidate(candidates, inverse_transform, baseline_target, baseline_width):
+    if not candidates:
+        raise RuntimeError("MediaPipe detected no hands")
+    scored = []
+    for candidate in candidates:
+        mean_d, max_d = mean_anchor_distance_after_inverse(candidate, inverse_transform, baseline_target, baseline_width)
+        scored.append((mean_d, max_d, candidate))
+    scored.sort(key=lambda item: item[0])
+    best = scored[0]
+    second = scored[1][0] if len(scored) > 1 else None
+    return best[2], {
+        "best_mean_anchor_distance_fraction": best[0],
+        "best_max_anchor_distance_fraction": best[1],
+        "second_best_mean_anchor_distance_fraction": second,
+        "separation_fraction": None if second is None else second - best[0],
+        "candidate_scores": [
+            {
+                "index": item[2]["index"],
+                "handedness": item[2]["handedness"],
+                "mean_anchor_distance_fraction": item[0],
+                "max_anchor_distance_fraction": item[1],
+            }
+            for item in scored
+        ],
+        "selection_rule": "minimum mean L0/L5/L17 distance after inverse transform; scene-local association only",
     }
 
 
-def run(output_dir: Path) -> int:
-    output_dir.mkdir(parents=True, exist_ok=True)
-    model_path = output_dir / "hand_landmarker.task"
-    image_path = output_dir / "Right_Hand_Palm.png"
+def metric_json(metric):
+    return {key: getattr(metric, key) for key in (
+        "name", "max_anchor_drift_fraction", "mean_anchor_drift_fraction", "axis_angle_deg",
+        "width_rel_error", "height_rel_error", "max_canonical_grid_drift", "handedness_changed"
+    )}
 
-    model_sha256 = download(MODEL_URL, model_path)
-    source_sha256 = download(CASE_A_IMAGE_URL, image_path)
 
+def run_case(case_id, config, landmarker, model_sha, root):
+    case_dir = root / case_id
+    case_dir.mkdir(parents=True, exist_ok=True)
+    image_path = case_dir / ("source.png" if case_id == "case_a" else "source.jpg")
+    source_sha = download(config["image_url"], image_path)
     original = cv2.imread(str(image_path), cv2.IMREAD_COLOR)
     if original is None:
-        raise RuntimeError("failed to decode Case A image")
+        raise RuntimeError(f"failed to decode {case_id}")
     baseline_image, baseline_scale = ensure_max_dim(original)
+    baseline_candidates = detect_all(landmarker, baseline_image)
+    if not baseline_candidates:
+        raise RuntimeError(f"no hands in {case_id} baseline")
+    baseline_target = max(baseline_candidates, key=lambda c: c["bbox_area_normalized"])
+    baseline_width = build_basis(anchors_points(baseline_target)).width
 
+    variants = []
+    metadata = {}
+    for name, factory in VARIANTS:
+        transformed, inverse_transform = factory(baseline_image)
+        candidates = detect_all(landmarker, transformed)
+        selected, match = select_transformed_candidate(candidates, inverse_transform, baseline_target, baseline_width)
+        variants.append({
+            "name": name,
+            "landmarks": selected["landmarks"],
+            "inverse_transform": inverse_transform,
+            "handedness": selected["handedness"],
+        })
+        metadata[name] = {
+            "shape": list(transformed.shape[:2]),
+            "candidate_count": len(candidates),
+            "selected_index": selected["index"],
+            "selected_handedness": selected["handedness"],
+            "selected_bbox_area_normalized": selected["bbox_area_normalized"],
+            "match": match,
+        }
+
+    study = {"baseline": {"landmarks": baseline_target["landmarks"], "handedness": baseline_target["handedness"]}, "variants": variants}
+    metrics = evaluate_study(study)
+    provenance = {
+        "status": "research-only",
+        "case_id": case_id,
+        "case": config["label"],
+        "source_page": config["source_page"],
+        "source_license": config["license"],
+        "source_sha256": source_sha,
+        "source_original_shape": list(original.shape[:2]),
+        "working_baseline_shape": list(baseline_image.shape[:2]),
+        "working_baseline_scale_from_source": baseline_scale,
+        "model_url": MODEL_URL,
+        "model_sha256": model_sha,
+        "mediapipe_version": getattr(mp, "__version__", "unknown"),
+        "opencv_version": cv2.__version__,
+        "python_version": platform.python_version(),
+        "baseline_candidate_count": len(baseline_candidates),
+        "baseline_target_rule": "largest normalized landmark bounding box; scene-local target only",
+        "baseline_selected_index": baseline_target["index"],
+        "baseline_selected_handedness": baseline_target["handedness"],
+        "baseline_selected_bbox_area_normalized": baseline_target["bbox_area_normalized"],
+        "baseline_all_candidates": [
+            {"index": c["index"], "handedness": c["handedness"], "bbox_area_normalized": c["bbox_area_normalized"]}
+            for c in baseline_candidates
+        ],
+        "variant_metadata": metadata,
+    }
+
+    (case_dir / "study.json").write_text(json.dumps(study, indent=2), encoding="utf-8")
+    (case_dir / "provenance.json").write_text(json.dumps(provenance, indent=2), encoding="utf-8")
+    (case_dir / "metrics.json").write_text(json.dumps([metric_json(m) for m in metrics], indent=2), encoding="utf-8")
+    print(f"=== {case_id.upper()} PROVENANCE ===")
+    print(json.dumps(provenance, indent=2))
+    print(f"=== {case_id.upper()} METRICS ===")
+    print_results(metrics)
+    print(f"=== {case_id.upper()} METRICS_JSON ===")
+    print(json.dumps([metric_json(m) for m in metrics], indent=2))
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--output-dir", default="palmistry-repeatability-output")
+    args = parser.parse_args()
+    root = Path(args.output_dir)
+    root.mkdir(parents=True, exist_ok=True)
+    model_path = root / "hand_landmarker.task"
+    model_sha = download(MODEL_URL, model_path)
     options = mp.tasks.vision.HandLandmarkerOptions(
         base_options=mp.tasks.BaseOptions(model_asset_path=str(model_path)),
         running_mode=mp.tasks.vision.RunningMode.IMAGE,
@@ -201,89 +279,10 @@ def run(output_dir: Path) -> int:
         min_hand_presence_confidence=0.5,
         min_tracking_confidence=0.5,
     )
-
     with mp.tasks.vision.HandLandmarker.create_from_options(options) as landmarker:
-        baseline_detection = detect_one(landmarker, baseline_image)
-        variant_factories = [
-            ("same-pixels-rerun", lambda img: variant_identity(img)),
-            ("rotate+10deg", lambda img: variant_rotate(img, +10.0)),
-            ("rotate-10deg", lambda img: variant_rotate(img, -10.0)),
-            ("scale-0.75x", lambda img: variant_scale(img, 0.75)),
-            ("scale-1.25x", lambda img: variant_scale(img, 1.25)),
-            ("crop-3pct", lambda img: variant_crop(img, 0.03)),
-            ("horizontal-mirror", lambda img: variant_mirror(img)),
-        ]
-
-        variants = []
-        variant_metadata = {}
-        for name, factory in variant_factories:
-            transformed, inverse = factory(baseline_image)
-            detection = detect_one(landmarker, transformed)
-            variants.append(
-                {
-                    "name": name,
-                    "landmarks": detection["landmarks"],
-                    "inverse_transform": inverse,
-                    "handedness": detection["handedness"],
-                }
-            )
-            variant_metadata[name] = {
-                "shape": list(transformed.shape[:2]),
-                "candidate_count": detection["candidate_count"],
-                "selected_index": detection["selected_index"],
-                "selected_bbox_area_normalized": detection["selected_bbox_area_normalized"],
-            }
-
-    study = {
-        "baseline": {
-            "landmarks": baseline_detection["landmarks"],
-            "handedness": baseline_detection["handedness"],
-        },
-        "variants": variants,
-    }
-    metrics = evaluate_study(study)
-
-    provenance = {
-        "status": "research-only",
-        "case": "Case A — single right palm",
-        "source_page": CASE_A_SOURCE_PAGE,
-        "source_license": CASE_A_LICENSE,
-        "source_sha256": source_sha256,
-        "source_original_shape": list(original.shape[:2]),
-        "working_baseline_shape": list(baseline_image.shape[:2]),
-        "working_baseline_scale_from_source": baseline_scale,
-        "model_url": MODEL_URL,
-        "model_sha256": model_sha256,
-        "mediapipe_version": getattr(mp, "__version__", "unknown"),
-        "opencv_version": cv2.__version__,
-        "python_version": platform.python_version(),
-        "target_selection": "largest normalized landmark bounding box; Case A expected single target",
-        "baseline_candidate_count": baseline_detection["candidate_count"],
-        "baseline_selected_index": baseline_detection["selected_index"],
-        "baseline_selected_bbox_area_normalized": baseline_detection["selected_bbox_area_normalized"],
-        "variant_metadata": variant_metadata,
-    }
-
-    (output_dir / "case_a_study.json").write_text(json.dumps(study, indent=2), encoding="utf-8")
-    (output_dir / "case_a_provenance.json").write_text(json.dumps(provenance, indent=2), encoding="utf-8")
-    (output_dir / "case_a_metrics.json").write_text(
-        json.dumps([metrics_to_json(m) for m in metrics], indent=2), encoding="utf-8"
-    )
-
-    print("=== PROVENANCE ===")
-    print(json.dumps(provenance, indent=2))
-    print("=== METRICS ===")
-    print_results(metrics)
-    print("=== METRICS_JSON ===")
-    print(json.dumps([metrics_to_json(m) for m in metrics], indent=2))
+        for case_id, config in CASES.items():
+            run_case(case_id, config, landmarker, model_sha, root)
     return 0
-
-
-def main() -> int:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--output-dir", default="palmistry-repeatability-output")
-    args = parser.parse_args()
-    return run(Path(args.output_dir))
 
 
 if __name__ == "__main__":
