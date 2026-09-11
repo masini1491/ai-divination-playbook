@@ -1,251 +1,233 @@
 # Real-image Landmark Repeatability Study｜真實影像地標重複性研究
 
-Status: **REFERENCE-ONLY / PARTIALLY EXECUTED｜僅供參考／部分執行**
+Status: **REFERENCE-ONLY / CASE A+B EXECUTED｜僅供參考／A+B 已執行**
 
-Baseline: `masini1491/ai-divination-playbook@776934ab5ea6a688ebf91a98c71511ded70657ef`
+Evidence baseline: `masini1491/ai-divination-playbook@66697df63e122451136364157d66abf5c88440bc`
 
-Companion harness: [`real_image_repeatability_probe.py`](real_image_repeatability_probe.py)
+Companion tools:
 
-本研究節點的目標是把上一輪 synthetic sensitivity framework 接到真實掌心照片的 hand-landmark detector output：
+- [`real_image_repeatability_probe.py`](real_image_repeatability_probe.py) — detector-agnostic metric harness。
+- [`mediapipe_repeatability_runner.py`](mediapipe_repeatability_runner.py) — Cold MediaPipe research runner；不是 production owner。
+
+本研究把 synthetic normalization / sensitivity work 接到真實掌心照片：
 
 ```text
 public/free-licensed palm image
-→ fixed detector/version
-→ controlled rotate / scale / crop / mirror variants
-→ detect L0 / L5 / L17 on every variant
+→ pinned detector/runtime/model
+→ controlled rotate / scale / crop / mirror
+→ detect L0 / L5 / L17
 → inverse transform back to baseline-image coordinates
-→ express landmark displacement as palm-width fraction
-→ measure canonical-frame drift
+→ anchor drift as palm-width fraction
+→ canonical-frame drift
 ```
 
-本輪**沒有**產生 real-image detector accuracy / repeatability 數值。原因與邊界如下；這是刻意 fail closed，不是把人工目測或其他模型輸出冒充 detector evidence。
+本輪取得的數字是 **specific detector + specific model + specific image + specific transform** 的 research evidence；不是 MediaPipe 一般 accuracy 宣稱，也不是 production tolerance。
 
-## 1. Candidate image set
+## 1. Execution provenance
 
-沿用 [`PHOTO_VALIDATION.md`](PHOTO_VALIDATION.md) 已審核的公開真實照片，不把影像複製進 repository：
+實際 detector study 透過一次性 GitHub Actions research workflow 執行，原因是本地 container 無法取得 MediaPipe runtime/model binary。研究 workflow 在結果擷取後不保留於 final tree。
 
-### Case A — single right palm
-
-- Wikimedia Commons: `Right Hand Palm.png`
-- License: CC BY-SA 4.0
-- Purpose: single-target, near-frontal geometry case
-
-### Case B — two palms, left emphasized
-
-- Wikimedia Commons: `Open Palm of the Left Hand, Fingers.jpg`
-- License: CC BY-SA 4.0
-- Purpose: multi-hand target-selection / mirror-convention case
-
-真正執行 detector study 時，應以 source URL + license + immutable local checksum（研究環境產生）識別 fixture；repo 仍不保存真實 palm image。
-
-## 2. Detector/runtime reconciliation
-
-### MediaPipe path
-
-`samuelwbarber/palm-line-reader@bc48939f4deee6d8ff842bfde499396dab9c4830` 的 `pipeline/` 確實包含：
+成功 research run：
 
 ```text
-hand_landmarker.task
+GitHub Actions run: 34611890893
+head: 66697df63e122451136364157d66abf5c88440bc
+runner image: ubuntu-24.04 / 20260907.300.1
+Python: 3.12.14
+MediaPipe: 1.0.1
+OpenCV: 5.0.0
 ```
 
-其 GitHub object metadata：
+Pinned model：
 
 ```text
-size = 7,819,105 bytes
-blob = 0d53faf3786146e95c5bc010c48029ff16b7fa59
+https://storage.googleapis.com/mediapipe-models/hand_landmarker/
+hand_landmarker/float16/1/hand_landmarker.task
+SHA256: fbc2a30080c3c557093b5ddfc334698132eb341044ccee322ccf8bcf3607cde1
 ```
 
-但目前執行容器：
+同一 evidence commit 的 normal `Validate Playbook` workflow 亦成功完成（run `34611890817`）。
 
-- 沒有 `mediapipe` Python runtime；
-- Python package installation 無 network access；
-- GitHub connector 可確認 binary object metadata，但此工作流不能 materialize binary model 到 container；
-- 一般外部 binary/model download 也被環境隔離。
+## 2. Measurement contract
 
-所以不能在本輪真實執行 MediaPipe Hand Landmarker。
-
-### OpenPose fallback review
-
-為避免把研究卡死在單一 detector，本輪也檢視 `CMU-Perceptual-Computing-Lab/openpose@5c5d96523ef917bd30301245fdc8343937cae48d`。
-
-官方 hand constants 明確定義：
+`real_image_repeatability_probe.py` 接收：
 
 ```text
-HAND_NUMBER_PARTS = 21
-HAND_PROTOTXT = hand/pose_deploy.prototxt
-HAND_TRAINED_MODEL = hand/pose_iter_102000.caffemodel
+baseline L0 / L5 / L17
+variant L0 / L5 / L17
+known inverse image transform
+optional handedness label
 ```
 
-而 hand topology 包含：
+輸出：
 
-```text
-0→5
-0→17
-```
-
-因此 `0 / 5 / 17` 可作 wrist / index-ray base / little-ray base 的同 topology anchors，適合拿來做 detector-agnostic normalization experiment。
-
-但目前容器同樣無法取得 OpenPose trained caffemodel，因此也沒有真實執行 OpenPose inference。
-
-## 3. Harness added
-
-新增 [`real_image_repeatability_probe.py`](real_image_repeatability_probe.py)。它不是 detector；它只負責**接收 detector 已輸出的 landmarks + known inverse image transform**，然後計算：
-
-- max / mean anchor displacement as palm-width fraction；
+- max / mean anchor displacement ÷ baseline palm width；
 - palm-axis angle drift；
-- palm-width / palm-height scale drift；
-- canonical 5×5 grid 的 max coordinate drift；
+- palm-width / palm-height relative error；
+- canonical 5×5 palm grid max drift；
 - handedness label 是否相對 baseline 改變。
 
-Input contract 概念：
-
-```json
-{
-  "baseline": {
-    "landmarks": {
-      "0": [0, 0],
-      "5": [0, 0],
-      "17": [0, 0]
-    },
-    "handedness": "right"
-  },
-  "variants": [
-    {
-      "name": "rotate+10deg",
-      "landmarks": {
-        "0": [0, 0],
-        "5": [0, 0],
-        "17": [0, 0]
-      },
-      "inverse_transform": [
-        [1, 0, 0],
-        [0, 1, 0],
-        [0, 0, 1]
-      ],
-      "handedness": "right"
-    }
-  ]
-}
-```
-
-`inverse_transform` 必須把 variant detector coordinates 映回 baseline-image coordinates。這樣 harness 不需要知道 detector 是 MediaPipe、OpenPose 或其他 future adapter。
-
-## 4. Harness self-test
-
-本輪已在 local container 執行：
+Harness synthetic self-test：
 
 ```text
-python real_image_repeatability_probe.py --self-test
+exact rotate+translate + exact inverse
+→ max anchor drift = 0
+→ max canonical drift = 0
+
+injected 1% wrist displacement
+→ recovered max anchor drift = 1.0000%
+→ max canonical drift ≈ 1.2532%
 ```
 
-結果：
+因此以下 real-image drift 不是 inverse-transform harness 自己製造的已知 round-trip error。
+
+## 3. Case A — single right palm
+
+Source: Wikimedia Commons — `Right Hand Palm.png`
+
+License: CC BY-SA 4.0
+
+Source SHA256：
 
 ```text
-exact-rotate-translate
-max_anchor=0.0000%
-max_canonical=0.0000%
-
-exact-plus-wrist-noise
-max_anchor=1.0000%
-axis_deg≈0.525343
-max_canonical≈1.2532%
-
-summary: real-image repeatability harness self-test PASS
+2456fd263914f7b6c9109edc5056d994c7ca140fad3c567d2edf0f5422a42e22
 ```
 
-這證明：
-
-1. known affine transform + exact inverse 可以 round-trip 回 0 drift；
-2. 注入 1% palm-width wrist displacement 後，harness 能回推出 1% anchor drift；
-3. frame-level drift calculation 能對 synthetic injected error 產生非零 propagation。
-
-它**沒有**證明任何真實 detector repeatability。
-
-## 5. Controlled transform study contract
-
-當 detector runtime 可用時，Case A 最小 study 應至少包含：
+Image geometry：
 
 ```text
-baseline
-rotate +10°
-rotate -10°
-uniform scale 0.75×
-uniform scale 1.25×
-crop with safe palm margin
-horizontal mirror
+source: 4011 × 2553 (H×W)
+working baseline: 1600 × 1018
+scale: 0.3989030167040638
+baseline MediaPipe candidates: 1
+baseline handedness label: Right
 ```
 
-每個 variant 必須保存：
+### Case A results
+
+| Variant | Max anchor drift | Mean anchor drift | Axis error | Width error | Height error | Max canonical drift | Handedness changed |
+|---|---:|---:|---:|---:|---:|---:|---|
+| same-pixels rerun | 0.0000% | 0.0000% | 0.0000° | 0.0000% | 0.0000% | 0.0000% | no |
+| rotate +10° | 7.7876% | 4.0247% | 2.3574° | 1.4627% | 3.1190% | 7.3708% | no |
+| rotate -10° | 4.9099% | 2.7330% | 1.6336° | 0.1099% | 2.7399% | 4.7228% | no |
+| scale 0.75× | 1.5502% | 1.1984% | 0.3636° | 1.2164% | 0.1863% | 1.0967% | no |
+| scale 1.25× | 2.0721% | 1.7510% | 0.3431° | 2.1027% | 0.5699% | 2.4488% | no |
+| crop 3% | 1.7821% | 1.5323% | 0.5408° | 1.0019% | 0.8306% | 1.6727% | no |
+| horizontal mirror | 4.2577% | 2.3765% | 0.8753° | 2.3900% | 1.9661% | 2.9833% | yes |
+
+### Case A conclusion
+
+- identical pixels + fixed runtime/model 在本 run 中 deterministic；
+- exact inverse transform **不會**讓 detector landmarks 自動變成 invariant；
+- 此 fixture 對 ±10° rotation 的 sensitivity 明顯高於 scale / crop；
+- +10° 與 -10° 並不對稱，因此不能假設 transform error 只由角度絕對值決定；
+- mirror 經 inverse 回 baseline coordinates 後仍有約 2.98% canonical drift；handedness label 由 `Right` 變 `Left`。
+
+這些只描述 Case A，不推廣成 MediaPipe 一般性排序。
+
+## 4. Case B — overlapping two-palm scene
+
+Source: Wikimedia Commons — `Open Palm of the Left Hand, Fingers.jpg`
+
+License: CC BY-SA 4.0
+
+Source SHA256：
 
 ```text
-image transform matrix
-inverse transform matrix
-detector identity + immutable version/model identity
-target hand selection rule
-reported handedness
-L0/L5/L17 raw detector coordinates
+63a836d188b30341e6db0b751dcf64a9cc8129c1409b99df1ee843e45cc7a976
 ```
 
-然后 inverse 回 baseline coordinates 再比較。
-
-Case B 另驗：
-
-- multi-hand target 是否在 transform 後仍選到同一 anatomical hand；
-- mirror 後 handedness label / camera convention 是否可 reconciliation；
-- 若 target identity 或 mirror lineage 無法可靠維持，該 case fail closed，不計入 numeric repeatability aggregate。
-
-## 6. Required result classes
-
-未來 real-image 結果不能只報平均值。至少要分：
+Image geometry：
 
 ```text
-same-pixels deterministic rerun
-controlled affine transform consistency
-controlled mirror consistency
-multi-hand target-selection consistency
+source: 3024 × 4032 (H×W)
+working baseline: 1200 × 1600
+scale: 0.3968253968253968
+scene visually contains two overlapping palms
+baseline MediaPipe candidates: 1
+baseline selected handedness label: Left
 ```
 
-如果同一張完全相同 pixels、相同 detector/version 的 repeated inference 已 deterministic，第一類可以只記 deterministic fact；真正重要的是 transform consistency。
+重要：雖然 scene 有兩隻手，MediaPipe 在 baseline 與本組所有 transforms 都只回傳 **1 candidate**。因此此 case 能測「複雜／重疊 scene 下 detector transform consistency」，但**不能宣稱已驗證 multi-candidate target selection**。
 
-## 7. What this round establishes
+### Case B results
 
-目前可建立的 evidence：
+| Variant | Max anchor drift | Mean anchor drift | Axis error | Width error | Height error | Max canonical drift | Handedness changed |
+|---|---:|---:|---:|---:|---:|---:|---|
+| same-pixels rerun | 0.0000% | 0.0000% | 0.0000° | 0.0000% | 0.0000% | 0.0000% | no |
+| rotate +10° | 2.0970% | 1.6808% | 0.2982° | 1.0672% | 1.1963% | 2.1408% | no |
+| rotate -10° | 8.4448% | 3.7368% | 3.8073° | 1.5980% | 2.5284% | 8.8829% | no |
+| scale 0.75× | 3.3349% | 2.5779% | 1.4808° | 0.0867% | 0.5670% | 4.0574% | no |
+| scale 1.25× | 1.7600% | 1.5179% | 0.4854° | 0.1343% | 0.3007% | 1.6918% | no |
+| crop 3% | 7.6500% | 4.2483% | 2.2669° | 2.1814% | 4.3393% | 9.2687% | no |
+| horizontal mirror | 35.2223% | 27.0413% | 27.9349° | 35.9024% | 2.0861% | 77.3400% | yes |
 
-- real-image repeatability 的 metric / interchange contract 已可執行；
-- harness 對 exact transform round-trip 的 self-test PASS；
-- harness 能把 detector landmark displacement 換算成 palm-width fraction，並接到既有 canonical sensitivity frame；
-- MediaPipe binary/model 在 upstream repo 的存在可確認，但目前 execution environment 缺 runtime / binary materialization path；
-- OpenPose 可作 topology-compatible fallback reference，但本環境同樣缺可執行 model weights。
+### Case B mirror failure analysis
 
-## 8. What remains unresolved
+Mirror case 很重要：
 
-仍**沒有**建立：
+```text
+baseline handedness label = Left
+mirrored handedness label = Right
+max canonical drift       = 77.34%
+```
 
-- MediaPipe real-image L0/L5/L17 transform consistency；
-- OpenPose real-image transform consistency；
-- real-image handedness stability；
-- same-photo crop / rotate / scale / mirror numeric drift；
+把 mirrored L0/L5/L17 inverse 回 baseline image 後，三 anchor centroid 與 baseline centroid只相差約 **14 px**，仍落在前景大掌的粗略位置；但 palm-frame shape 本身嚴重改變：
+
+```text
+axis error  ≈ 27.93°
+width error ≈ 35.90%
+```
+
+這不像單純整個 candidate 跳到遠處另一掌；較符合「同一 foreground region 的 landmark geometry 在 mirror + overlapping-hand context 下失穩」的樣子。然而本 runner只保存三個 canonical anchors，且 detector只回一個 candidate，因此**不能證明 scene-local identity continuity**。Production-like判斷必須 fail closed，而不是把這組 mirror geometry 當可靠 observation。
+
+## 5. Cross-case findings
+
+本輪現在有真實影像 evidence 支持：
+
+1. **same pixels deterministic != transform invariant**。
+2. detector transform error 可以遠高於前一輪 synthetic 1% anchor-noise example。
+3. rotation sensitivity 具有 image/context-specific asymmetry；Case A 是 +10°較差，Case B 是 -10°較差。
+4. crop 本身也可能改變 detector landmark geometry；Case B crop 3% 的 canonical drift 約 9.27%。
+5. mirrored handedness label flip 是 detector output convention change；它不能直接改寫 anatomical hand-side fact。
+6. overlapping-hand scene 可讓 mirror transform 出現極大 geometry instability，即使 inverse transform math 正確。
+7. frame-level quality / uncertainty gate 必須使用 detector consistency evidence，不能只看單一 frame 的 landmark confidence。
+
+## 6. Multi-hand target-selection boundary
+
+`mediapipe_repeatability_runner.py` 已實作 research-only scene-local candidate matching：
+
+```text
+baseline target = largest normalized hand bbox
+variant candidates
+→ inverse each candidate L0/L5/L17 to baseline coordinates
+→ compare mean anchor distance to baseline target
+→ choose minimum-distance candidate
+→ preserve second-best distance / separation
+```
+
+此機制只允許**同一來源影像的已知 transform**之 scene-local association，不是 biometric identity，也不能跨照片認人。
+
+Case B 因 detector 始終只回一個 candidate，尚未真正 exercised「兩候選排序／ambiguity」分支。下一個 fixture 必須讓 detector 在 baseline 確實輸出 ≥2 hands，才能驗這個 gate。
+
+## 7. What remains unresolved
+
+仍不足以 promotion：
+
+- 至少一個 detector 實際輸出 ≥2 candidates 的 multi-hand fixture；
+- 多張不同真實掌型與 capture context 的 transform-consistency distribution；
+- same hand / multiple captures 的 pose、distance、lighting、device repeatability；
+- MediaPipe version / model-version compatibility matrix；
 - detector-to-detector agreement；
-- production admission tolerance。
+- palm-line segmentation endpoint uncertainty 如何與 landmark-frame uncertainty 合成；
+- production numeric admission thresholds。
 
-所以目前不能宣稱：
+因此目前**不能**把例如 2%、5% 或 10% drift 設成 production cutoff。
 
-```text
-real-image repeatability validated
-```
-
-只能宣稱：
-
-```text
-real-image repeatability harness validated;
-detector execution blocked by environment;
-real-image numeric evidence pending
-```
-
-## 9. Adoption decision
+## 8. Adoption decision
 
 Palmistry 狀態維持：
 
 **REFERENCE-ONLY / DRAFT / NOT PRODUCTION-ROUTABLE**
 
-下一個研究節點不應再擴充 synthetic math；應取得一個可固定版本、可本地執行的 hand-landmark runtime/model，然後直接用本 harness 跑 Case A / B controlled-transform study。完成前不建立 production numeric threshold，也不 promotion Palmistry routing。
+本輪把 evidence gap 從「沒有真實 detector 數值」推進到「已有兩個 public real-image transform studies，但 sampling / multi-candidate / cross-capture evidence仍不足」。下一個合理 research node 是新增真正被 detector 辨識為 ≥2 hands 的 public fixture，驗 candidate association / ambiguity fail-closed；之後再擴到多 capture / cross-device，而不是直接設 production threshold。

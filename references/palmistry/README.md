@@ -1,6 +1,6 @@
 # Palmistry References
 
-本目錄保存手相（Palmistry）相關的外部 GitHub repository、paper、dataset、computer-vision implementation 與傳統判讀資料之 Cold source dossier。
+本目錄保存手相（Palmistry）相關的外部 GitHub repository、paper、dataset、computer-vision implementation、真實影像 validation 與傳統判讀資料之 Cold source dossier。
 
 ## Authority boundary
 
@@ -15,34 +15,35 @@
 
 ## Research synthesis
 
-- [`SYNTHESIS.md`](SYNTHESIS.md) — source comparison、architecture implication、remaining evidence gaps。
+- [`SYNTHESIS.md`](SYNTHESIS.md) — source comparison、architecture implication、validation state 與 remaining evidence gaps。
 - [`CHINESE_RULE_NORMALIZATION.md`](CHINESE_RULE_NORMALIZATION.md) — 《神相全編》／《太清神鑑》／《神相鐵關刀》的 rule-family normalization、lineage guard、術語 namespace 與中西 mapping boundary。
 - [`OBSERVATION_SCHEMA_DRAFT.md`](OBSERVATION_SCHEMA_DRAFT.md) — source-neutral Palm Observation Fact draft；scene/target selection、task-specific quality、geometry、unknown semantics、tradition projection 與 privacy boundary。
 - [`PHOTO_VALIDATION.md`](PHOTO_VALIDATION.md) — 代表性真實照片 field-coverage / fail-closed validation。
 - [`NORMALIZATION_CONTRACT_DRAFT.md`](NORMALIZATION_CONTRACT_DRAFT.md) — raw image → model adapter → raw geometry → canonical palm basis 的 deterministic normalization contract draft。
-- [`normalization_probe.py`](normalization_probe.py) — Cold、standard-library-only synthetic invariant probe；驗 translation / rotation / scale / mirror / inverse-transform / fail-closed properties，不是 production tool。
-- [`SENSITIVITY_SWEEP.md`](SENSITIVITY_SWEEP.md) — L0/L5/L17 controlled perturbation 與 mirror-convention sensitivity 結果；synthetic research evidence，不是 production tolerance。
-- [`normalization_sensitivity_probe.py`](normalization_sensitivity_probe.py) — Cold、standard-library-only sensitivity executable；16-direction / 4096-combination bounded sweep，不是 production tool。
-- [`REAL_IMAGE_REPEATABILITY.md`](REAL_IMAGE_REPEATABILITY.md) — 真實影像 landmark repeatability / transform-consistency study protocol、runtime reconciliation 與 execution boundary。
-- [`real_image_repeatability_probe.py`](real_image_repeatability_probe.py) — detector-agnostic Cold harness；接收 L0/L5/L17 + inverse transform，計算 anchor / canonical frame drift；不是 detector，也不是 production tool。
+- [`normalization_probe.py`](normalization_probe.py) — Cold synthetic invariant probe；驗 translation / rotation / scale / mirror / inverse-transform / fail-closed properties，不是 production tool。
+- [`SENSITIVITY_SWEEP.md`](SENSITIVITY_SWEEP.md) — L0/L5/L17 controlled perturbation 與 mirror-convention sensitivity；不是 production tolerance。
+- [`normalization_sensitivity_probe.py`](normalization_sensitivity_probe.py) — 16-direction / 4096-combination bounded sensitivity executable。
+- [`REAL_IMAGE_REPEATABILITY.md`](REAL_IMAGE_REPEATABILITY.md) — MediaPipe Case A/B 真實影像 controlled-transform 結果、provenance、fail-closed interpretation 與 remaining gaps。
+- [`real_image_repeatability_probe.py`](real_image_repeatability_probe.py) — detector-agnostic metric harness；接收 L0/L5/L17 + inverse transform，計算 anchor / canonical-frame drift。
+- [`mediapipe_repeatability_runner.py`](mediapipe_repeatability_runner.py) — Cold research runner；下載 pinned official model + public fixtures、執行 controlled transforms 與 scene-local candidate association；不是 production runtime owner。
 
 ### Observation / CV references
 
 - [`palm-line-reader.md`](palm-line-reader.md) — `samuelwbarber/palm-line-reader`；三大主線 segmentation、shipped ONNX inference contract、reconstructed preprocessing caveat、Reddit-derived training provenance。
 - [`yeonsumia-palmistry.md`](yeonsumia-palmistry.md) — `yeonsumia/palmistry`；21-landmark homography rectification、principal-line detection/classification/measurement pipeline，以及 project-specific template / threshold boundary。
-- [`palm-astro-application.md`](palm-astro-application.md) — `lakshay102/Palm-Astro-Application`；geometry feature extraction concept；synthetic interpretation 與 unresolved code license 不採用。
-- [`tencent-palm-applications.md`](tencent-palm-applications.md) — `TencentYoutuResearch/Palm-Applications` / PalmDestiny；multimodal product-flow reference；prompt contamination、approximate CV heuristic 與 license inconsistency boundary。
+- [`palm-astro-application.md`](palm-astro-application.md) — geometry feature concepts；synthetic interpretation 與 unresolved code license 不採用。
+- [`tencent-palm-applications.md`](tencent-palm-applications.md) — multimodal product-flow reference；prompt contamination、approximate CV heuristic 與 license inconsistency boundary。
 
 ### Interpretation references
 
-- [`palmistry-for-all.md`](palmistry-for-all.md) — Cheiro 的 *Palmistry for All*（GITenberg / Project Gutenberg lineage）；西方 palmistry tradition reference，非中國手相 authority。
-- [`chinese-traditional-sources.md`](chinese-traditional-sources.md) — 中國傳統手相 provenance baseline；以《古今圖書集成》所收《神相全編》掌部、《神相鐵關刀》、《太清神鑑》為主要古籍來源，GitHub mirrors 只作 bounded retrieval / cross-check。
+- [`palmistry-for-all.md`](palmistry-for-all.md) — Cheiro 的 *Palmistry for All*；Western tradition reference，非中國手相 authority。
+- [`chinese-traditional-sources.md`](chinese-traditional-sources.md) — 中國傳統手相 provenance baseline；以《古今圖書集成》所收《神相全編》掌部、《神相鐵關刀》、《太清神鑑》為主要古籍來源。
 
 ## Current promotion state
 
 Palmistry 目前仍是 `PALMISTRY.md` 所定義的 **Cold scaffold / not production-routable**。
 
-本目錄的增加不修改：
+本目錄增加不修改：
 
 ```text
 METHOD_ROUTING.md
@@ -51,11 +52,15 @@ CHAT_INIT.md production method set
 README production support list
 ```
 
-目前 normalization 已完成：
+Normalization / observation research 目前已完成：
 
-- source-specific contract draft；
-- ideal synthetic deterministic probe（11 passed / 0 failed）；
-- landmark perturbation / mirror-convention sensitivity sweep；
-- real-image repeatability harness self-test。
+- source-neutral contract draft；
+- ideal synthetic invariant probe：11 passed / 0 failed；
+- controlled landmark perturbation / mirror sensitivity sweep；
+- detector-agnostic repeatability harness self-test；
+- pinned MediaPipe `1.0.1` + official Hand Landmarker model 的兩個 public real-image controlled-transform studies；
+- normal repository validation workflow PASS。
 
-但最後一項只代表**量測 harness 可用**，不是 MediaPipe / OpenPose real-image repeatability 已驗證。本輪執行環境缺可 materialize 的 hand-landmark runtime/model，因此 real-image numeric evidence 仍 pending。下一個主要 evidence gap 是：取得固定版本、可本地執行的 hand-landmark detector，直接跑 controlled rotate / scale / crop / mirror study；完成前仍不進 router。
+真實影像 evidence 已證明：same-pixels deterministic 不代表 rotate / scale / crop / mirror invariant；overlapping-hand Case B 在 mirror 後甚至出現約 77.34% canonical drift。因此目前不能直接設 production threshold。
+
+主要 remaining gaps：真正輸出 ≥2 detector candidates 的 multi-hand fixture、更多手型/照片、多 capture / device repeatability、detector-to-detector agreement、line-segmentation uncertainty 與 behavioral regression。Palmistry 仍不進 router。

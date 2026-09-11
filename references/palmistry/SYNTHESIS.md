@@ -2,195 +2,13 @@
 
 Status: **REFERENCE-ONLY｜僅供參考**
 
-Reviewed target baseline: `masini1491/ai-divination-playbook@776934ab5ea6a688ebf91a98c71511ded70657ef`
+Reviewed evidence baseline: `masini1491/ai-divination-playbook@66697df63e122451136364157d66abf5c88440bc`
 
-本檔只收斂外部研究與 Cold validation 結論，不建立 production Palmistry capability，也不修改 `METHOD_ROUTING.md`、`PLAYBOOK_INDEX.json`、`CHAT_INIT.md` 或既有 Tarot / Meihua / Liuyao contract。
+本檔只收斂外部研究與 Cold validation，不建立 production Palmistry capability，也不修改 `METHOD_ROUTING.md`、`PLAYBOOK_INDEX.json`、`CHAT_INIT.md` 或既有 Tarot / Meihua / Liuyao contract。
 
-## Research question
+## Architecture conclusion
 
-未來 Palmistry 若要安全加入本 Playbook，至少要拆開：
-
-```text
-raw image
-→ image / target-hand quality gate
-→ model-specific observation adapter
-→ raw-image observation geometry
-→ canonical palm coordinates
-→ source-neutral Palm Observation Fact
-→ tradition-specific projection
-→ tradition-specific interpretation
-→ user-visible synthesis
-```
-
-研究重點：
-
-1. 掌紋／掌型 observation 是否有可重用技術；
-2. preprocessing / coordinate normalization 能否形成可執行、可 fail-closed 的 contract；
-3. landmark / mirror errors 如何傳到 canonical geometry；
-4. real-image detector repeatability 是否足夠；
-5. interpretation 是否有可追溯傳統來源；
-6. source-specific terminology 如何避免無證據中西對照。
-
-## Observation / CV conclusion
-
-目前最有價值的 upstream：
-
-- `samuelwbarber/palm-line-reader`：三大主線 segmentation、browser ONNX deployment、明確 model I/O contract；
-- `yeonsumia/palmistry`：landmark-guided homography rectification、principal-line detection / classification / measurement pipeline。
-
-### `palm-line-reader`
-
-其 shipped student model contract 可重現：RGB / NCHW / 512×512、ImageNet normalization、plain resize、4-class logits、argmax mask；`model_meta.json` 記錄 held-out foreground Dice `0.8098`。
-
-但 current `pipeline/hand_preprocess.py` 是對遺失原始 preprocessing module 的 reconstruction，因此 wrist→middle-MCP rotation、landmark bbox + 100 px margin、MediaPipe handedness mirror 只能是 technical reference，不能冒充原模型 historical training preprocessing authority。
-
-其 repo 的 `pipeline/` 也確實包含 `hand_landmarker.task` binary；存在性與 object identity 可確認，但目前研究執行環境無法 materialize binary 到 container，也沒有預裝 MediaPipe runtime。
-
-### `yeonsumia/palmistry`
-
-實作使用：
-
-```text
-cv2.flip
-→ MediaPipe 21 landmarks
-→ hard-coded 21-point target template
-→ RANSAC homography
-→ warpPerspective
-→ HSV background heuristic
-→ fixed resize
-→ segmentation / graph / K-means classification
-→ landmark-relative measurement
-```
-
-這證明 landmark-guided rectification 是可行 decomposition，但 hard-coded target、RANSAC threshold、HSV threshold、cluster centers 都是 project-specific implementation，不升格成 canonical palm coordinate system。
-
-### OpenPose fallback review
-
-`CMU-Perceptual-Computing-Lab/openpose@5c5d96523ef917bd30301245fdc8343937cae48d` 官方 hand config 定義 21 points，且 topology 明確包含 `0→5`、`0→17`；模型檔名為：
-
-```text
-hand/pose_deploy.prototxt
-hand/pose_iter_102000.caffemodel
-```
-
-所以 OpenPose 可作 topology-compatible fallback reference；但目前容器同樣無法取得 trained weights，因此本輪沒有 real-image OpenPose inference。
-
-## Canonical coordinate decision
-
-[`NORMALIZATION_CONTRACT_DRAFT.md`](NORMALIZATION_CONTRACT_DRAFT.md) 的核心：
-
-```text
-model-specific coordinates
-≠ canonical Palm Observation Fact coordinates
-```
-
-canonical observation 先把 detector output inverse 回 raw-image geometry，再投影到 source-neutral palm basis。
-
-第一版 draft basis：
-
-```text
-L0  wrist
-L5  index MCP
-L17 little MCP
-```
-
-以 wrist→MCP midpoint 定義 longitudinal axis，以 little→index MCP 的正交分量定義 transverse axis，分別以 palm height / width normalization。這只是 geometry frame，不代表 Western line labels 或中國掌宮。
-
-## Deterministic synthetic invariant probe
-
-[`normalization_probe.py`](normalization_probe.py) 是 Cold、standard-library-only executable probe。
-
-首次執行：
-
-```text
-11 passed, 0 failed
-```
-
-已驗：translation / rotation / uniform-scale invariance、mirror/chirality、detector-only mirror inverse、crop/resize inverse、missing anchors fail closed、degenerate basis fail closed、multi-hand target selection、material foreshortening gate。
-
-`TOL = 1e-9` 只驗理想 floating-point arithmetic，不是 production tolerance。
-
-## Landmark perturbation / mirror sensitivity
-
-[`SENSITIVITY_SWEEP.md`](SENSITIVITY_SWEEP.md) + [`normalization_sensitivity_probe.py`](normalization_sensitivity_probe.py) 對 `L0/L5/L17` 做 16-direction bounded sweep；每層 simultaneous combinations = `16^3 = 4096`。
-
-Configured direction-grid maxima：
-
-| Per-anchor bound | Axis angle | Width error | Height error | Max canonical drift |
-|---:|---:|---:|---:|---:|
-| 0.25% | 0.2865° | 0.500% | 0.500% | 0.527% |
-| 0.50% | 0.5729° | 1.001% | 1.000% | 1.059% |
-| 1.00% | 1.1458° | 2.005% | 2.000% | 2.135% |
-| 2.00% | 2.2906° | 4.019% | 4.000% | 4.341% |
-| 5.00% | 5.7106° | 10.112% | 10.000% | 11.445% |
-
-這是 configured grid maxima，不是 continuous mathematical worst-case，也不是 real-image distribution。
-
-Anchor role：`L0` 對 longitudinal axis / palm-height 較敏感；`L5/L17` 對 transverse scale / palm-width 較敏感。
-
-若漏做 detector-only mirror inverse，canonical frame 等價於 `x → -x`；在 `x∈[-0.5,0.5]` span 上 max drift = 1.0 canonical unit、mean = 0.6。這是 semantic frame inversion，不是 ordinary small noise。
-
-## Real-image repeatability harness
-
-本輪新增：
-
-- [`REAL_IMAGE_REPEATABILITY.md`](REAL_IMAGE_REPEATABILITY.md)
-- [`real_image_repeatability_probe.py`](real_image_repeatability_probe.py)
-
-Harness 不做 detection；它接收固定 detector 已輸出的：
-
-```text
-baseline L0/L5/L17
-variant L0/L5/L17
-known inverse image transform
-optional handedness label
-```
-
-並計算：
-
-- max / mean anchor displacement as palm-width fraction；
-- palm-axis angle drift；
-- width / height scale drift；
-- canonical 5×5 grid max drift；
-- handedness label change。
-
-Local self-test 已 PASS：
-
-```text
-exact rotate+translate + exact inverse
-→ max anchor drift = 0
-→ max canonical drift = 0
-
-injected 1% wrist displacement
-→ recovered max anchor drift = 1.0000%
-→ max canonical drift ≈ 1.2532%
-```
-
-這證明 harness / interchange contract 可用；**不代表 MediaPipe 或 OpenPose real-image repeatability 已驗證**。
-
-### Current execution boundary
-
-本輪實際 reconciled：
-
-- container 沒有 `mediapipe` runtime；
-- network-isolated `pip install` 無法安裝；
-- upstream `hand_landmarker.task` binary 存在，但 connector workflow 無法 materialize binary 到 container；
-- OpenPose config / topology / model identity可讀，但 trained caffemodel 同樣無法在此環境取得。
-
-因此 real-image numeric study 被環境阻擋，並明確 fail closed；沒有用人工目測、LLM vision 或不同 detector 假裝成 MediaPipe/OpenPose evidence。
-
-## Traditional interpretation boundary
-
-中國與西方 source normalization 結論維持：
-
-- Cheiro 只代表 Western tradition；
-- `SXQ-640` / `TQ-V5` / `TGKD` 為中國傳統 provenance anchors；
-- `SXQ-640` 與 `TQ-V5` 高度近似段落不能機械視為獨立 corroboration；
-- `天／人／地紋 ↔ heart/head/life` 與 `玉柱紋 ↔ fate line` 仍是 `PROHIBITED_ASSUMPTION`；
-- CV detector class 不取得 Chinese terminology authority；
-- traditional source 不取得 image observation authority。
-
-## Current architecture
+目前 evidence 支持：
 
 ```text
 Scene / Target Selection Gate
@@ -204,48 +22,166 @@ Scene / Target Selection Gate
 → User-visible synthesis
 ```
 
-其中：
+責任邊界：
 
-- adapter 可依自身需要 crop / rotate / warp / mirror / resize；
-- transform lineage 必須可追溯，最好可 inverse；
-- canonical observation 不受 model-specific mirror / pixel grid 污染；
-- frame-level uncertainty 必須涵蓋 multi-anchor error；
-- real-image detector evidence與 synthetic sensitivity evidence分開保存。
+- detector preprocessing / mirror / resize 是 adapter implementation detail；
+- detector output 要能 inverse 回 raw-image geometry，才可進 canonical observation；
+- anatomical hand side 與 detector handedness / `mirrored_for_model` 分開；
+- observation fact 與 tradition interpretation 分開；
+- frame-level uncertainty 不能只看單 landmark confidence；
+- traditional source 不取得 image observation authority；
+- CV detector class 不取得 Chinese terminology authority。
 
-## Validation completed so far
+## Source-neutral coordinate decision
+
+[`NORMALIZATION_CONTRACT_DRAFT.md`](NORMALIZATION_CONTRACT_DRAFT.md) 使用 draft anchors：
+
+```text
+L0  wrist
+L5  index MCP
+L17 little MCP
+```
+
+wrist→MCP midpoint 定義 longitudinal axis；little→index MCP 的正交分量定義 transverse axis；palm height / width normalization。此 frame 只代表 geometry，不代表 Western line label 或中國掌宮。
+
+`normalization_probe.py` 已用 ideal synthetic fixtures executable-validated：
+
+```text
+11 passed, 0 failed
+```
+
+涵蓋 translation / rotation / uniform-scale invariance、mirror/chirality、crop/resize inverse、missing/degenerate anchors fail closed、target selection 與 perspective gate。
+
+## Synthetic sensitivity evidence
+
+[`SENSITIVITY_SWEEP.md`](SENSITIVITY_SWEEP.md) 對 L0/L5/L17 做 16-direction / 每層 4096 simultaneous combinations：
+
+| Per-anchor bound | Axis angle | Width error | Height error | Max canonical drift |
+|---:|---:|---:|---:|---:|
+| 0.25% | 0.2865° | 0.500% | 0.500% | 0.527% |
+| 0.50% | 0.5729° | 1.001% | 1.000% | 1.059% |
+| 1.00% | 1.1458° | 2.005% | 2.000% | 2.135% |
+| 2.00% | 2.2906° | 4.019% | 4.000% | 4.341% |
+| 5.00% | 5.7106° | 10.112% | 10.000% | 11.445% |
+
+這些只是 configured-grid maxima，不是 production thresholds。
+
+若 detector-only mirror 漏 inverse，在 canonical `x∈[-0.5,0.5]` frame 上可形成 100% max drift；所以 mirror lineage 是 admission gate，不是 optional metadata。
+
+## Real-image MediaPipe evidence
+
+[`REAL_IMAGE_REPEATABILITY.md`](REAL_IMAGE_REPEATABILITY.md) 現已取得兩個 public real-image controlled-transform studies。
+
+Pinned runtime/model：
+
+```text
+MediaPipe 1.0.1
+Python 3.12.14
+OpenCV 5.0.0
+Hand Landmarker float16/1
+model SHA256 fbc2a30080c3c557093b5ddfc334698132eb341044ccee322ccf8bcf3607cde1
+```
+
+Research run `34611890893` 成功；同 evidence commit 的 normal `Validate Playbook` run `34611890817` 亦成功。
+
+### Case A — single palm
+
+`Right Hand Palm.png` / CC BY-SA 4.0。
+
+Same-pixels rerun = 0 drift。Controlled transform max canonical drift：
+
+```text
+rotate +10°       7.3708%
+rotate -10°       4.7228%
+scale 0.75×       1.0967%
+scale 1.25×       2.4488%
+crop 3%           1.6727%
+horizontal mirror 2.9833%
+```
+
+Mirror 後 handedness label `Right → Left`。
+
+### Case B — overlapping two-palm scene
+
+`Open Palm of the Left Hand, Fingers.jpg` / CC BY-SA 4.0。
+
+Scene 視覺上有兩掌，但 MediaPipe baseline 與所有 transforms 都只回 1 candidate，因此此 fixture **沒有真正 exercised multi-candidate target-selection branch**。
+
+Same-pixels rerun = 0 drift。Controlled transform max canonical drift：
+
+```text
+rotate +10°        2.1408%
+rotate -10°        8.8829%
+scale 0.75×        4.0574%
+scale 1.25×        1.6918%
+crop 3%            9.2687%
+horizontal mirror 77.3400%
+```
+
+Mirror 後 handedness `Left → Right`；inverse 後三 anchors centroid只粗略移約 14 px，但 axis error ≈27.93°、width error ≈35.90%。這比較像 foreground palm landmark geometry 在 mirror + overlap context 下失穩，而不是單純 candidate 跳到很遠的另一掌；但只有三 anchors 且 detector只輸出一個 candidate，不能宣稱 scene-local identity continuity 已證明。
+
+## Cross-case conclusions
+
+現在可以用 real-image evidence 支持：
+
+1. **same-pixels deterministic 不等於 transform invariant**；
+2. exact inverse transform 只能消除已知 image-space transform，不能消除 detector本身對 transform 的 sensitivity；
+3. rotation error具 image/context-specific asymmetry，不能以單一角度 tolerance預測；
+4. crop / scale也能改變 landmark geometry；
+5. mirror handedness output 是 detector convention，不是 anatomical fact；
+6. overlapping-hand context 可以大幅放大 mirror instability；
+7. synthetic sensitivity numbers不能直接當 real-image cutoff；
+8. production-like quality gate需要 detector consistency / frame uncertainty evidence。
+
+## Traditional interpretation boundary
+
+中國與西方 source normalization維持：
+
+- Cheiro 只代表 Western tradition；
+- `SXQ-640` / `TQ-V5` / `TGKD` 為中國傳統 provenance anchors；
+- `SXQ-640` 與 `TQ-V5` 的近似段落不能機械視為獨立 corroboration；
+- `天／人／地紋 ↔ heart/head/life`、`玉柱紋 ↔ fate line` 仍為 `PROHIBITED_ASSUMPTION`；
+- named pattern 必須保留 source / anatomical scope / geometry basis。
+
+## Validation completed
 
 1. 中國傳統 source provenance baseline；
 2. source-specific rule-family normalization；
 3. Palm Observation Fact draft v2；
-4. 代表性真實照片 field-coverage / fail-closed review；
+4. public real-photo field-coverage / fail-closed review；
 5. upstream preprocessing / rectification implementation review；
-6. source-neutral normalization contract draft；
-7. Cold invariant probe：11 passed / 0 failed；
-8. controlled three-anchor perturbation sweep；
+6. source-neutral normalization contract；
+7. ideal synthetic invariant probe：11/11 PASS；
+8. controlled landmark perturbation sensitivity sweep；
 9. mirror-convention failure magnitude check；
-10. detector-agnostic real-image repeatability harness self-test PASS；
-11. MediaPipe / OpenPose runtime availability reconciliation。
+10. detector-agnostic repeatability harness self-test PASS；
+11. pinned MediaPipe real-image Case A controlled-transform study；
+12. pinned MediaPipe overlapping-hand Case B controlled-transform study；
+13. normal repository validation workflow PASS。
 
 ## Remaining evidence gaps
 
 目前仍不足以 promotion：
 
-1. **real-image landmark repeatability numeric evidence 尚未取得**；
-2. same-image rotate / scale / crop / mirror transform consistency 尚未真正跑 detector；
-3. camera / selfie mirroring auto-reconciliation 尚未驗；
-4. `palm-line-reader` aggregate Dice 不足以建立本專案 detector acceptance threshold；
-5. branch / island / star / minor lines / mounts detector evidence不足；
-6. Bagua / palm-palace projection geometry 未 formalize；
-7. named patterns / illustrated marks仍有 unresolved mapping；
-8. production numeric tolerance / landmark-version compatibility matrix尚未建立；
-9. Palmistry behavioral regression尚未建立。
+1. 至少一個 baseline 真正輸出 ≥2 detector candidates 的 multi-hand fixture，才能驗 target association / ambiguity；
+2. 多張不同 hand shapes / capture contexts 的 transform-consistency distribution；
+3. same hand / multiple captures 的 pose / distance / lighting / device repeatability；
+4. camera/selfie mirroring reconciliation 與 anatomical side contract；
+5. MediaPipe model/runtime version compatibility；
+6. detector-to-detector agreement；
+7. branch / island / star / minor lines / mounts 等 detector evidence；
+8. palm-line segmentation uncertainty 與 landmark-frame uncertainty 的合成方式；
+9. Bagua / palm-palace source-specific projection geometry；
+10. named patterns / illustrated marks unresolved mapping；
+11. production numeric admission thresholds；
+12. Palmistry behavioral regression，證明 promotion 不影響 Tarot / Meihua / Liuyao routing。
 
 ## Adoption decision
 
-所有外部來源、schema、normalization contracts、synthetic probes、sensitivity sweep與 real-image harness 仍為：
+所有 Palmistry external sources、schema、normalization contracts、synthetic probes、MediaPipe runners與 real-image results 仍為：
 
 **REFERENCE-ONLY / DRAFT｜僅供參考／草案**
 
 production method set 不變。
 
-下一個合理 research node：取得固定版本、可本地執行的 hand-landmark runtime/model，直接用 `REAL_IMAGE_REPEATABILITY.md` protocol 跑 Case A / B controlled-transform study。完成前不建立 production numeric threshold，也不 promotion Palmistry routing。
+下一個合理 research node：找一個 public scene，使 pinned detector 在 baseline **確實輸出兩個以上 hand candidates**，驗 scene-local matching / ambiguity fail-closed；之後再做 multiple captures / devices。現在仍不建立 production threshold，也不 promotion Palmistry routing。
