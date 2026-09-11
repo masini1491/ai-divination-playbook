@@ -21,7 +21,7 @@ jobs:
           sudo apt-get install -y libegl1 libgl1 libgles2
           python -m pip install --upgrade pip
           python -m pip install 'mediapipe==1.0.1'
-      - name: Screen public multi-palm fixtures
+      - name: Screen detector-friendly two-palm fixture
         run: |
           python - <<'PY'
           import hashlib, json, urllib.request
@@ -30,42 +30,28 @@ jobs:
           import mediapipe as mp
           import numpy as np
 
-          MODEL_URL = 'https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task'
-          CANDIDATES = [
-              {
-                  'id': 'mehndi_hands',
-                  'url': 'https://upload.wikimedia.org/wikipedia/commons/a/ac/Mehndi_hands.jpg',
-                  'page': 'https://commons.wikimedia.org/wiki/File:Mehndi_hands.jpg',
-                  'license': 'CC BY-SA 2.0',
-              },
-              {
-                  'id': 'bilateral_palmar_crease',
-                  'url': 'https://upload.wikimedia.org/wikipedia/commons/2/2b/25.12.2018_Vierfingerfurche%2C_beidseitig.JPG',
-                  'page': 'https://commons.wikimedia.org/wiki/File:25.12.2018_Vierfingerfurche,_beidseitig.JPG',
-                  'license': 'CC BY-SA 4.0',
-                  'privacy_note': 'source contains camera-location metadata; location values are intentionally not collected',
-              },
-          ]
+          MODEL_URL='https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task'
+          IMAGE_URL='https://upload.wikimedia.org/wikipedia/commons/8/82/Givinghandsandredpushpin.jpg'
+          PAGE='https://commons.wikimedia.org/wiki/File:Givinghandsandredpushpin.jpg'
 
-          def fetch(url, dst):
-              req = urllib.request.Request(url, headers={'User-Agent':'ai-divination-playbook-palmistry-research/1.0'})
-              h = hashlib.sha256()
-              with urllib.request.urlopen(req, timeout=60) as r, open(dst, 'wb') as f:
+          def fetch(url,dst):
+              req=urllib.request.Request(url,headers={'User-Agent':'ai-divination-playbook-palmistry-research/1.0'})
+              h=hashlib.sha256()
+              with urllib.request.urlopen(req,timeout=60) as r,open(dst,'wb') as f:
                   while True:
-                      b = r.read(1024 * 1024)
+                      b=r.read(1024*1024)
                       if not b: break
                       f.write(b); h.update(b)
               return h.hexdigest()
 
-          def resize(img, max_dim=1600):
-              h, w = img.shape[:2]
-              if max(h,w) <= max_dim: return img
-              s = max_dim / float(max(h,w))
-              return cv2.resize(img, (round(w*s), round(h*s)), interpolation=cv2.INTER_AREA)
-
-          model = Path('hand_landmarker.task')
-          model_sha = fetch(MODEL_URL, model)
-          options = mp.tasks.vision.HandLandmarkerOptions(
+          model=Path('hand_landmarker.task'); model_sha=fetch(MODEL_URL,model)
+          image=Path('givinghands.jpg'); image_sha=fetch(IMAGE_URL,image)
+          img=cv2.imread(str(image),cv2.IMREAD_COLOR)
+          if img is None: raise RuntimeError('image decode failed')
+          h,w=img.shape[:2]
+          if max(h,w)>1600:
+              s=1600/float(max(h,w)); img=cv2.resize(img,(round(w*s),round(h*s)),interpolation=cv2.INTER_AREA)
+          options=mp.tasks.vision.HandLandmarkerOptions(
               base_options=mp.tasks.BaseOptions(model_asset_path=str(model)),
               running_mode=mp.tasks.vision.RunningMode.IMAGE,
               num_hands=4,
@@ -73,43 +59,26 @@ jobs:
               min_hand_presence_confidence=0.5,
               min_tracking_confidence=0.5,
           )
-          summary = {'model_sha256': model_sha, 'mediapipe_version': mp.__version__, 'candidates': []}
           with mp.tasks.vision.HandLandmarker.create_from_options(options) as lm:
-              for item in CANDIDATES:
-                  path = Path(item['id'] + '.img')
-                  try:
-                      sha = fetch(item['url'], path)
-                      img = cv2.imread(str(path), cv2.IMREAD_COLOR)
-                      if img is None:
-                          summary['candidates'].append({k:v for k,v in item.items() if k != 'url'} | {'sha256': sha, 'decode_error': True})
-                          continue
-                      work = resize(img)
-                      rgb = cv2.cvtColor(work, cv2.COLOR_BGR2RGB)
-                      result = lm.detect(mp.Image(image_format=mp.ImageFormat.SRGB, data=np.ascontiguousarray(rgb)))
-                      hands = []
-                      for i, lms in enumerate(result.hand_landmarks):
-                          xs=[float(p.x) for p in lms]; ys=[float(p.y) for p in lms]
-                          bbox=max(0,max(xs)-min(xs))*max(0,max(ys)-min(ys))
-                          handed=None
-                          score=None
-                          if i < len(result.handedness) and result.handedness[i]:
-                              handed=getattr(result.handedness[i][0], 'category_name', None)
-                              score=float(getattr(result.handedness[i][0], 'score', 0.0))
-                          hands.append({'index':i,'handedness':handed,'handedness_score':score,'bbox_area_normalized':bbox})
-                      clean = {k:v for k,v in item.items() if k != 'url'}
-                      summary['candidates'].append(clean | {
-                          'sha256': sha,
-                          'source_shape_h_w': list(img.shape[:2]),
-                          'working_shape_h_w': list(work.shape[:2]),
-                          'candidate_count': len(hands),
-                          'hands': hands,
-                      })
-                  except Exception as exc:
-                      clean = {k:v for k,v in item.items() if k != 'url'}
-                      summary['candidates'].append(clean | {'error': type(exc).__name__ + ': ' + str(exc)})
-                  finally:
-                      path.unlink(missing_ok=True)
-          model.unlink(missing_ok=True)
+              rgb=cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
+              result=lm.detect(mp.Image(image_format=mp.ImageFormat.SRGB,data=np.ascontiguousarray(rgb)))
+              hands=[]
+              for i,lms in enumerate(result.hand_landmarks):
+                  xs=[float(p.x) for p in lms]; ys=[float(p.y) for p in lms]
+                  handed=None; score=None
+                  if i<len(result.handedness) and result.handedness[i]:
+                      handed=getattr(result.handedness[i][0],'category_name',None)
+                      score=float(getattr(result.handedness[i][0],'score',0.0))
+                  hands.append({'index':i,'handedness':handed,'handedness_score':score,'bbox_area_normalized':(max(xs)-min(xs))*(max(ys)-min(ys))})
           print('=== MULTIHAND_SCREEN_JSON ===')
-          print(json.dumps(summary, indent=2))
+          print(json.dumps({
+              'page':PAGE,
+              'license':'CC BY 2.0',
+              'image_sha256':image_sha,
+              'model_sha256':model_sha,
+              'mediapipe_version':mp.__version__,
+              'working_shape_h_w':list(img.shape[:2]),
+              'candidate_count':len(hands),
+              'hands':hands,
+          },indent=2))
           PY
