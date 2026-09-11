@@ -1,4 +1,4 @@
-name: Palmistry GTEA Hand-mask Inspect (Ephemeral)
+name: Palmistry GTEA GT-aligned Screen (Ephemeral)
 
 on:
   push:
@@ -8,58 +8,217 @@ permissions:
   contents: read
 
 jobs:
-  inspect:
+  screen:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Inspect official GTEA hand masks
+      - name: Install research runtime
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libegl1 libgl1 libgles2
+          python -m pip install --upgrade pip
+          python -m pip install 'mediapipe==1.0.1'
+      - name: Run GT-aligned natural hand screen
         run: |
           python - <<'PY'
-          import hashlib, io, json, re, zipfile
-          from collections import Counter
-          from pathlib import PurePosixPath
-          import urllib.request
+          from __future__ import annotations
+          import hashlib, io, json, os, re, sys, urllib.request, xml.etree.ElementTree as ET, zipfile
+          from collections import Counter, defaultdict
+          from pathlib import Path, PurePosixPath
+          import cv2
+          import mediapipe as mp
+          import numpy as np
+
+          sys.path.insert(0, os.path.abspath('references/palmistry'))
+          from association_ambiguity_probe import MODEL_URL, MODEL_SHA256, download, detect_full
 
           URL = 'https://www.dropbox.com/scl/fi/c3t6f2fl420157dnteatl/hand2K_dataset.zip?rlkey=zrxsntio1npottn21gtxcxack&dl=1'
+          EXPECTED_ARCHIVE_SHA = 'a64c0fcff572414fa964c5b524e989ffe2e0a6023316bf4554a0f3e24d66fb8b'
+          MAX_GT_MULTI_SAMPLES = 160
+          MIN_COMPONENT_AREA_PX = 100
+
           req = urllib.request.Request(URL, headers={'User-Agent':'ai-divination-playbook-palmistry-research/1.0'})
-          h = hashlib.sha256()
-          buf = io.BytesIO()
+          h = hashlib.sha256(); buf = io.BytesIO()
           with urllib.request.urlopen(req, timeout=120) as r:
-              headers = dict(r.headers.items())
               while True:
                   chunk = r.read(1024 * 1024)
-                  if not chunk:
-                      break
+                  if not chunk: break
                   h.update(chunk); buf.write(chunk)
-          size = buf.tell(); buf.seek(0)
+          archive_sha = h.hexdigest()
+          if archive_sha != EXPECTED_ARCHIVE_SHA:
+              raise RuntimeError(f'archive SHA mismatch: {archive_sha}')
+          buf.seek(0)
+
+          model_path = Path('hand_landmarker.task')
+          model_sha = download(MODEL_URL, model_path)
+          if model_sha != MODEL_SHA256:
+              raise RuntimeError(f'model SHA mismatch: {model_sha}')
+
+          def decode_image(z, name, flags):
+              raw = z.read(name)
+              image = cv2.imdecode(np.frombuffer(raw, dtype=np.uint8), flags)
+              if image is None:
+                  raise RuntimeError(f'failed to decode {name}')
+              return image
+
+          def component_summary(mask):
+              if mask.ndim == 3:
+                  gray = cv2.cvtColor(mask, cv2.COLOR_BGR2GRAY)
+              else:
+                  gray = mask
+              unique = np.unique(gray)
+              # Try conventional binary semantics first: any nonzero pixel is hand.
+              binary = (gray > 0).astype(np.uint8)
+              count, labels, stats, _ = cv2.connectedComponentsWithStats(binary, 8)
+              areas = sorted([int(stats[i, cv2.CC_STAT_AREA]) for i in range(1, count) if int(stats[i, cv2.CC_STAT_AREA]) >= MIN_COMPONENT_AREA_PX], reverse=True)
+              return {'unique_values': [int(v) for v in unique[:20]], 'component_areas': areas, 'component_count': len(areas), 'foreground_area': int(binary.sum())}
+
+          def xml_summary(raw):
+              try:
+                  root = ET.fromstring(raw)
+              except Exception as exc:
+                  return {'parse_error': str(exc)}
+              objects = []
+              for obj in root.findall('.//object'):
+                  name = obj.findtext('name') or obj.findtext('label') or 'unknown'
+                  box = obj.find('bndbox')
+                  coords = None
+                  if box is not None:
+                      coords = {k: box.findtext(k) for k in ('xmin','ymin','xmax','ymax')}
+                  objects.append({'name': name, 'bndbox': coords})
+              return {'object_count': len(objects), 'objects': objects[:10]}
+
           with zipfile.ZipFile(buf) as z:
-              names = z.namelist()
-              files = [n for n in names if not n.endswith('/')]
-              suffixes = Counter(PurePosixPath(n).suffix.lower() for n in files)
-              topdirs = Counter(PurePosixPath(n).parts[0] if PurePosixPath(n).parts else '' for n in files)
-              image_names = [n for n in files if PurePosixPath(n).suffix.lower() in {'.png','.jpg','.jpeg','.bmp'}]
-              examples = image_names[:80]
-          print('=== GTEA_HAND_MASK_INVENTORY ===')
-          print(json.dumps({
-              'status':'research-only',
-              'source_page':'https://cbs.ic.gatech.edu/fpv/',
-              'source_asset':'GTEA Hand Masks / hand2K_dataset.zip',
-              'downloaded_bytes':size,
-              'sha256':h.hexdigest(),
-              'http_headers':{
-                  'content_type':headers.get('Content-Type'),
-                  'content_length':headers.get('Content-Length'),
-                  'etag':headers.get('ETag'),
-                  'last_modified':headers.get('Last-Modified'),
-              },
-              'zip_entry_count':len(names),
-              'file_count':len(files),
-              'suffix_counts':dict(suffixes),
-              'top_level_counts':dict(topdirs),
-              'image_count':len(image_names),
-              'first_image_names':examples,
-          },indent=2))
+              names = z.namelist(); name_set = set(names)
+              readme = z.read('Readme.txt').decode('utf-8', errors='replace') if 'Readme.txt' in name_set else ''
+              print('=== GTEA_README ===')
+              print(readme[:12000])
+
+              # Inventory candidate triplets under GTEA. Match JPG/PNG/XML by basename when possible.
+              jpgs = [n for n in names if n.startswith('GTEA/') and n.lower().endswith('.jpg')]
+              pngs = [n for n in names if n.startswith('GTEA/') and n.lower().endswith('.png')]
+              xmls = [n for n in names if n.startswith('GTEA/') and n.lower().endswith('.xml')]
+              print('=== GTEA_COUNTS ===')
+              print(json.dumps({'jpg':len(jpgs),'png':len(pngs),'xml':len(xmls)}, indent=2))
+
+              # Inspect a few same-stem relations to settle archive semantics.
+              by_stem = defaultdict(dict)
+              for name in jpgs + pngs + xmls:
+                  stem = PurePosixPath(name).stem
+                  by_stem[stem][PurePosixPath(name).suffix.lower()] = name
+              matched = [(stem, parts) for stem, parts in by_stem.items() if '.jpg' in parts and '.png' in parts]
+              print('=== MATCHED_STEM_EXAMPLES ===')
+              print(json.dumps([{'stem':s,'files':p} for s,p in matched[:20]], indent=2))
+
+              # Build GT rows from matching JPG/PNG stems. We retain XML summary if present.
+              gt_rows = []
+              mask_semantics_examples = []
+              for stem, parts in matched:
+                  mask = decode_image(z, parts['.png'], cv2.IMREAD_UNCHANGED)
+                  cs = component_summary(mask)
+                  if len(mask_semantics_examples) < 12:
+                      xname = parts.get('.xml')
+                      xs = xml_summary(z.read(xname)) if xname else None
+                      mask_semantics_examples.append({'stem':stem,'jpg':parts['.jpg'],'png':parts['.png'],'xml':xname,'mask':cs,'xml_summary':xs})
+                  gt_rows.append({'stem':stem,'parts':parts,'gt_component_count':cs['component_count'],'component_areas':cs['component_areas'],'foreground_area':cs['foreground_area']})
+              print('=== MASK_SEMANTICS_EXAMPLES ===')
+              print(json.dumps(mask_semantics_examples, indent=2))
+
+              gt_dist = Counter(r['gt_component_count'] for r in gt_rows)
+              multi = [r for r in gt_rows if r['gt_component_count'] >= 2]
+              print('=== GT_COMPONENT_DISTRIBUTION ===')
+              print(json.dumps({'distribution':dict(sorted(gt_dist.items())),'multi_count':len(multi)}, indent=2))
+
+              # Bounded, deterministic even-spacing over GT>=2 frames.
+              if len(multi) > MAX_GT_MULTI_SAMPLES:
+                  positions = np.linspace(0, len(multi)-1, MAX_GT_MULTI_SAMPLES)
+                  selected = []
+                  used = set()
+                  for pos in positions:
+                      idx = int(round(float(pos)))
+                      if idx not in used:
+                          used.add(idx); selected.append(multi[idx])
+              else:
+                  selected = multi
+
+              options = mp.tasks.vision.HandLandmarkerOptions(
+                  base_options=mp.tasks.BaseOptions(model_asset_path=str(model_path)),
+                  running_mode=mp.tasks.vision.RunningMode.IMAGE,
+                  num_hands=4,
+                  min_hand_detection_confidence=0.5,
+                  min_hand_presence_confidence=0.5,
+                  min_tracking_confidence=0.5,
+              )
+              out = []
+              with mp.tasks.vision.HandLandmarker.create_from_options(options) as landmarker:
+                  for row in selected:
+                      image = decode_image(z, row['parts']['.jpg'], cv2.IMREAD_COLOR)
+                      candidates = detect_full(landmarker, image)
+                      m = re.match(r'(.+)_([0-9]+)$', row['stem'])
+                      sequence = m.group(1) if m else row['stem']
+                      frame_id = int(m.group(2)) if m else None
+                      out.append({
+                          'stem':row['stem'],
+                          'sequence':sequence,
+                          'frame_id':frame_id,
+                          'gt_component_count':row['gt_component_count'],
+                          'gt_component_areas':row['component_areas'],
+                          'detector_candidate_count':len(candidates),
+                          'detector_handedness':[c['handedness'] for c in candidates],
+                          'detector_bbox_area_normalized':[c['bbox_area_normalized'] for c in candidates],
+                          'shape_h_w':list(image.shape[:2]),
+                      })
+
+              joint = Counter((r['gt_component_count'], r['detector_candidate_count']) for r in out)
+              seq = defaultdict(list)
+              for r in out: seq[r['sequence']].append(r)
+              variable = []
+              for sequence, rows in seq.items():
+                  rows.sort(key=lambda r: (-1 if r['frame_id'] is None else r['frame_id']))
+                  counts = [r['detector_candidate_count'] for r in rows]
+                  if len(set(counts)) > 1:
+                      variable.append({
+                          'sequence':sequence,
+                          'sampled':len(rows),
+                          'detector_counts':counts,
+                          'frame_ids':[r['frame_id'] for r in rows],
+                          'gt_counts':[r['gt_component_count'] for r in rows],
+                          'detector_ge2':sum(1 for c in counts if c>=2),
+                          'detector_lt2':sum(1 for c in counts if c<2),
+                      })
+              variable.sort(key=lambda r:(-r['detector_ge2'],-r['detector_lt2'],r['sequence']))
+
+              result = {
+                  'status':'research-only',
+                  'source_page':'https://cbs.ic.gatech.edu/fpv/',
+                  'source_asset':'GTEA Hand Masks / hand2K_dataset.zip',
+                  'archive_sha256':archive_sha,
+                  'archive_bytes':buf.getbuffer().nbytes,
+                  'license_state':'public research download; no explicit redistribution license identified on reviewed GTEA page; no source image/mask copied into repository',
+                  'model_sha256':model_sha,
+                  'mediapipe_version':mp.__version__,
+                  'opencv_version':cv2.__version__,
+                  'gt_semantics':'connected components >=100 px in paired nonzero PNG mask; provisional until README/XML semantics corroborated',
+                  'requested_max_gt_multi_samples':MAX_GT_MULTI_SAMPLES,
+                  'actual_gt_multi_samples':len(out),
+                  'joint_distribution':{f'gt{k[0]}_det{k[1]}':v for k,v in sorted(joint.items())},
+                  'gt_ge2_det0':sum(1 for r in out if r['detector_candidate_count']==0),
+                  'gt_ge2_det1':sum(1 for r in out if r['detector_candidate_count']==1),
+                  'gt_ge2_det2plus':sum(1 for r in out if r['detector_candidate_count']>=2),
+                  'variable_sequences':variable[:20],
+                  'rows':out,
+                  'evidence_boundary':'mask component rule and max sample are analysis inputs; archive checksum, decoded masks, component counts, detector outputs and joint distribution are post-execution observations; production hand-count authority is not established by this research run',
+              }
+              print('=== GTEA_GT_ALIGNED_SCREEN_JSON ===')
+              print(json.dumps(result, indent=2))
+
+              if not out:
+                  raise RuntimeError('no GT>=2 frames found under provisional mask-component rule')
+              if not any(r['detector_candidate_count']>=2 for r in out):
+                  raise RuntimeError('GT>=2 screen produced no detector>=2 frames')
+              if not any(v['detector_ge2'] and v['detector_lt2'] for v in variable):
+                  raise RuntimeError('no sampled sequence showed both retained multi-candidate and collapse states')
           PY
