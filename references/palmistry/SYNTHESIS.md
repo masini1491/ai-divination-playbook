@@ -2,7 +2,7 @@
 
 Status: **REFERENCE-ONLY｜僅供參考**
 
-Reviewed target baseline: `masini1491/ai-divination-playbook@b68f0be26a3e622ce21123bfe23886962fd909c9`
+Reviewed target baseline: `masini1491/ai-divination-playbook@8621f095cf68366cf67cc0e6b7e10b3e076fd0e4`
 
 本檔只收斂外部研究結論，不建立 production Palmistry capability，也不修改 `METHOD_ROUTING.md`、`PLAYBOOK_INDEX.json`、`CHAT_INIT.md` 或既有 Tarot / Meihua / Liuyao contract。
 
@@ -21,7 +21,8 @@ Palm image
 
 1. 掌紋／掌型的 observation 是否已有可重用技術；
 2. interpretation 是否有可追溯的傳統來源；
-3. 哪些來源只能作技術或產品參考，不能升格成規則 authority。
+3. 如何把 source-specific terminology 正規化而不製造無證據的中西對照；
+4. 哪些來源只能作技術或產品參考，不能升格成規則 authority。
 
 ## Current conclusion
 
@@ -40,65 +41,79 @@ Palm image
 
 `GITenberg/Palmistry-for-All_20480` 保存 Cheiro 的 *Palmistry for All*，來源 metadata 指向 Project Gutenberg，內容涵蓋 Head / Life / Fate / Sun / Heart / Health lines、minor lines、timing、hand shapes、thumb、fingers、nails 與 mounts。
 
-這可以作為**西方 Cheiro palmistry tradition** 的 interpretation reference，但不得：
-
-- 冒充中國傳統手相；
-- 冒充科學或統計驗證；
-- 因為是歷史文本就直接升格成 current canonical rule；
-- 忽略 Project Gutenberg 對美國以外 copyright status 的保留說明。
+這可以作為**西方 Cheiro palmistry tradition** 的 interpretation reference，但不得冒充中國傳統手相，也不得冒充科學或統計驗證。
 
 ### Traditional interpretation — Chinese
 
-第二輪研究已補到可追溯的中國傳統 source anchors，詳見 [`chinese-traditional-sources.md`](chinese-traditional-sources.md)。目前最有價值的 primary / secondary provenance surfaces：
+中國傳統 source anchors 已建立，詳見 [`chinese-traditional-sources.md`](chinese-traditional-sources.md)：
 
-- 中文維基文庫《古今圖書集成》藝術典第 640 卷：收錄《神相全編》「論手／論掌紋／手背紋／玉掌記」等手相內容；
-- 《神相鐵關刀》：有多段 `相掌秘訣`、掌形、掌紋、八卦／掌宮內容；
-- 《太清神鑑》卷五：有論手、相掌紋、掌上三紋等內容；
-- `look-fate/lookfate-book`：可檢索的 GitHub mirror，用於 bounded search / cross-check，不替代古籍 provenance；
-- `youngzs/xuanxue`：可作 discovery / comparison，但本輪未確認清楚 root license / edition provenance，不作 reuse authority。
+- 中文維基文庫《古今圖書集成》藝術典第 640 卷所收《神相全編》掌部；
+- 《神相鐵關刀》掌部；
+- 《太清神鑑》卷五；
+- `look-fate/lookfate-book` 只作 GitHub bounded retrieval / cross-check；
+- `youngzs/xuanxue` 只作 discovery / comparison。
 
-因此原本的「缺中國手相傳統來源」gap 已縮小。現在真正的 gap 是：**如何把各文本的 source-specific vocabulary、位置定義與 rule family 正規化，而且不把後世／西方術語硬做一對一對應。**
+第三輪 normalization 進一步確認：
 
-### Screened out as rule authority
+- `SXQ-640` 與 `TQ-V5` 在三紋、深細／粗淺、破紋、縱橫理等段落高度近似，因此不能自動當成兩個獨立 rule origins；
+- `TGKD` 的掌部較強調八卦／掌宮、掌色與身面掌配合，但仍不能在沒有文本譜系研究時宣稱來源完全獨立；
+- 同名詞可能跨 anatomical scope，例如 `玉柱` 可出現在不同相術部位；因此 terminology 必須帶 source / section / anatomical scope。
 
-`Adamya-Gupta/HastAI-PalmReader` 主要把手掌圖片直接交給 Gemini，再以 prompt 要求 Fate / Head / Life / Heart / Career / Love / Future。README 的 Palm Reading 基礎參考是 WikiHow；沒有獨立 observation schema 或可追溯 rule library。
-
-因此不為它建立正式 source dossier；它只證明「prompt-only palm reader」不是本 Playbook 要採用的 architecture。
+詳見 [`CHINESE_RULE_NORMALIZATION.md`](CHINESE_RULE_NORMALIZATION.md)。
 
 ## Architecture implication
 
-目前 evidence 支持維持 `PALMISTRY.md` 已建立的分層：
+目前 evidence 支持維持：
 
 ```text
 Image Quality Gate
 → Objective Observation
 → Palm Observation Fact
+→ Tradition-specific Projection
 → Tradition-specific Interpretation
 → User-visible synthesis
 ```
 
-其中：
+這比原本五層再多明確拆出 **Tradition-specific Projection**：先把 source-neutral visual geometry 映射到某一本古籍／某一流派的術語，再允許 interpretation。
 
-- segmentation / landmarks / geometry tool 只能取得 observation responsibility；
-- 傳統書籍／規則庫只能取得 interpretation responsibility；
-- 任一 LLM prompt 不得同時自行宣告「看到了什麼」與「傳統上代表什麼」而沒有中間 fact boundary；
-- 不同流派的 interpretation 要保留 tradition / source provenance，不能合併成無來源的 generic palmistry truth。
+核心 boundary：
+
+- CV / vision layer 只擁有 observation responsibility；
+- traditional source 只擁有 interpretation vocabulary / rule responsibility；
+- source-local term mapping 不得覆寫 raw visual fact；
+- 中西術語相似只能先標 `GEOMETRICALLY_SIMILAR`，不能直接宣告等同。
+
+## Palm Observation Fact draft
+
+已新增 [`OBSERVATION_SCHEMA_DRAFT.md`](OBSERVATION_SCHEMA_DRAFT.md)，目前 draft 至少要求：
+
+- hand side / view / orientation；
+- image quality / focus / lighting / glare / occlusion / crop；
+- color reliability；
+- palm / finger geometry；
+- source-neutral line path / length / orientation / continuity / branches / intersections；
+- palm vs dorsal-hand anatomical scope；
+- unknown / not-observable / unresolved-mapping semantics；
+- tradition-specific projection with source provenance；
+- biometric / privacy boundary。
+
+這個 schema 仍只是 research draft，沒有升格到 `PALMISTRY.md`。
 
 ## Remaining evidence gaps
 
 目前仍不足以把 Palmistry promotion 到 production routing：
 
-1. 尚未定義 canonical `Palm Observation Fact` schema 與 confidence / unknown semantics；
-2. 三大主線之外的 fate line、minor lines、fork / break / island / star / mount 等 observation 尚未找到足夠可靠的 validated detector；
-3. 尚未建立 image-quality / occlusion / hand-side fail-closed gate；
-4. 中國傳統 sources 已有 provenance anchors，但尚未完成 source-specific rule normalization / conflict handling；
-5. 中西術語尚未建立安全 mapping；不得預設 `天／人／地紋 == heart／head／life line`；
+1. `Palm Observation Fact` schema 尚未以實際 hand images 做 field coverage / pose / left-right validation；
+2. 三大主線之外的 fate line、minor lines、fork / island / star / mount 等 observation 尚未找到足夠可靠的 validated detector；
+3. image-quality / occlusion / hand-side gate 尚未實作或建立 deterministic validator；
+4. 中國傳統 rule normalization 已有第一版 matrix，但 named patterns / illustrated marks 尚有大量 unresolved mapping；
+5. 中西術語仍未建立 production-safe mapping；目前 `天／人／地紋 ↔ heart／head／life` 與 `玉柱紋 ↔ fate line` 都是 `PROHIBITED_ASSUMPTION`；
 6. 尚未建立 Palmistry behavioral regression，證明加入後不影響既有 Tarot / Meihua / Liuyao routing。
 
 ## Adoption decision
 
-目前所有外部來源仍為：
+目前所有外部來源與新增 schema / matrix 仍為：
 
 **REFERENCE-ONLY｜僅供參考**
 
-因此 production method set 不變；下一個合理 research node 是 **source-specific rule normalization matrix + Palm Observation Fact schema draft**，不是先把 Palmistry 加進 router。
+因此 production method set 不變；下一個合理 research node 是 **以實際手掌影像驗證 Observation Schema coverage + image-quality gate**，仍不是先把 Palmistry 加進 router。

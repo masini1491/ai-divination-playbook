@@ -16,6 +16,8 @@
 ## Research synthesis
 
 - [`SYNTHESIS.md`](SYNTHESIS.md) — source comparison、architecture implication、remaining evidence gaps。
+- [`CHINESE_RULE_NORMALIZATION.md`](CHINESE_RULE_NORMALIZATION.md) — 《神相全編》／《太清神鑑》／《神相鐵關刀》的 rule-family normalization、lineage guard、術語 namespace 與中西 mapping boundary。
+- [`OBSERVATION_SCHEMA_DRAFT.md`](OBSERVATION_SCHEMA_DRAFT.md) — source-neutral Palm Observation Fact draft；image quality、geometry、unknown semantics、tradition projection 與 privacy boundary。
 
 ### Observation / CV references
 
@@ -42,4 +44,4 @@ CHAT_INIT.md production method set
 README production support list
 ```
 
-只有在 observation schema、tradition-specific interpretation source normalization、fail-closed rules 與 behavioral regression 都足夠後，才評估 promotion。
+只有在 observation schema 經實際 image coverage validation、tradition-specific interpretation source normalization、fail-closed rules 與 behavioral regression 都足夠後，才評估 promotion。
