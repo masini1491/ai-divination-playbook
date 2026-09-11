@@ -41,6 +41,10 @@
 - [`t-ai-skills.md`](t-ai-skills.md) — truth layer／interpretation layer 分離、統一 machine envelope 與 unavailable/graceful degradation。
 - [`metaphysics-synthesis-skill.md`](metaphysics-synthesis-skill.md) — 多方法 router、輸入完整度與系統間邊界。
 
+### 手相（研究階段）
+
+- [`palmistry/README.md`](palmistry/README.md) — Palmistry Cold reference index；分開 observation / CV 與 tradition-specific interpretation source，尚未進 production routing。
+
 ## 採用標記
 
 來源檔內保留英文狀態碼作為固定識別字，旁邊一律附繁中語意：
