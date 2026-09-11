@@ -20,6 +20,7 @@
 - [`OBSERVATION_SCHEMA_DRAFT.md`](OBSERVATION_SCHEMA_DRAFT.md) — source-neutral Palm Observation Fact draft；scene/target selection、task-specific quality、geometry、unknown semantics、tradition projection 與 privacy boundary。
 - [`PHOTO_VALIDATION.md`](PHOTO_VALIDATION.md) — 代表性真實照片 field-coverage / fail-closed validation。
 - [`NORMALIZATION_CONTRACT_DRAFT.md`](NORMALIZATION_CONTRACT_DRAFT.md) — raw image → model adapter → raw geometry → canonical palm basis 的 deterministic normalization contract draft。
+- [`normalization_probe.py`](normalization_probe.py) — Cold、standard-library-only synthetic probe；驗 translation / rotation / scale / mirror / inverse-transform / fail-closed properties，不是 production tool。
 
 ### Observation / CV references
 
@@ -46,4 +47,4 @@ CHAT_INIT.md production method set
 README production support list
 ```
 
-目前 normalization 已從純概念推進到 source-specific contract draft，但尚未有 production implementation、numeric tolerance、cross-device repeatability 或 behavioral regression；因此仍不進 router。
+目前 normalization 已有 source-specific contract draft，並完成第一輪 synthetic deterministic probe（11 passed / 0 failed）；但尚未建立真實 landmark noise tolerance、camera-mirroring compatibility、cross-device repeatability 或 behavioral regression，因此仍不進 router。

@@ -2,7 +2,7 @@
 
 Status: **REFERENCE-ONLY｜僅供參考**
 
-Reviewed target baseline: `masini1491/ai-divination-playbook@20317de314346d81bb3ee732d05650af0c4fd37c`
+Reviewed target baseline: `masini1491/ai-divination-playbook@c40fb0149c2fc01e0d9c91218cf56d8ce71383b7`
 
 本檔只收斂外部研究結論，不建立 production Palmistry capability，也不修改 `METHOD_ROUTING.md`、`PLAYBOOK_INDEX.json`、`CHAT_INIT.md` 或既有 Tarot / Meihua / Liuyao contract。
 
@@ -14,6 +14,7 @@ Reviewed target baseline: `masini1491/ai-divination-playbook@20317de314346d81bb3
 raw image
 → image / target-hand quality gate
 → model-specific observation adapter
+→ raw-image observation geometry
 → source-neutral Palm Observation Fact
 → tradition-specific projection
 → tradition-specific interpretation
@@ -23,7 +24,7 @@ raw image
 研究重點不是找「會算命的 App」，而是確認：
 
 1. 掌紋／掌型 observation 是否已有可重用技術；
-2. image preprocessing / coordinate normalization 能否形成可重現 contract；
+2. image preprocessing / coordinate normalization 能否形成可執行、可失敗關閉的 contract；
 3. interpretation 是否有可追溯的傳統來源；
 4. source-specific terminology 如何正規化而不製造無證據的中西對照。
 
@@ -36,7 +37,7 @@ raw image
 - `samuelwbarber/palm-line-reader`：三大主線 segmentation、browser ONNX deployment、明確 model I/O contract；
 - `yeonsumia/palmistry`：landmark-guided homography rectification、principal-line detection / classification / measurement pipeline。
 
-但第四輪 implementation review 把兩者的 authority boundary進一步釐清。
+implementation review 的 authority boundary：
 
 #### `palm-line-reader`
 
@@ -64,7 +65,7 @@ cv2.flip
 
 ### Canonical coordinate decision
 
-已新增 [`NORMALIZATION_CONTRACT_DRAFT.md`](NORMALIZATION_CONTRACT_DRAFT.md)。核心決策：
+[`NORMALIZATION_CONTRACT_DRAFT.md`](NORMALIZATION_CONTRACT_DRAFT.md) 的核心決策：
 
 ```text
 model-specific coordinates
@@ -81,7 +82,33 @@ L5  index MCP
 L17 little MCP
 ```
 
-以 wrist→MCP midpoint 定義 palm longitudinal axis，以 little→index MCP 的正交分量定義 transverse axis，分別以 palm height / width normalization。這個 frame 的目的只是建立 geometry observation coordinates，不是 Western line label 或中國掌宮。
+以 wrist→MCP midpoint 定義 palm longitudinal axis，以 little→index MCP 的正交分量定義 transverse axis，分別以 palm height / width normalization。這個 frame 只代表 geometry observation coordinates，不代表 Western line label 或中國掌宮。
+
+### Deterministic synthetic probe
+
+已新增 [`normalization_probe.py`](normalization_probe.py) 作 Cold research-only executable probe；standard library only，不放入 production `tools/`。
+
+首次執行結果：
+
+```text
+11 passed, 0 failed
+```
+
+已 executable-validated：
+
+- anchor expectations；
+- translation invariance；
+- in-plane rotation invariance；
+- uniform-scale invariance；
+- anatomical landmark labels 保留時的 mirror/chirality invariance；
+- detector-only mirror inverse round-trip；
+- crop/resize inverse round-trip；
+- missing L0/L5/L17 fail closed；
+- degenerate palm width / height fail closed；
+- multi-hand 必須先 selected target；
+- material foreshortening 無 reliable rectifier 時阻止 fine mapping。
+
+Probe 使用 `1e-9` tolerance 只驗理想 synthetic floating-point arithmetic；**不代表 production tolerance，也不代表真實 landmark noise robustness。**
 
 ### Mirroring / handedness boundary
 
@@ -137,28 +164,28 @@ Scene / Target Selection Gate
 4. 代表性真實照片 field-coverage / fail-closed review；
 5. upstream preprocessing / rectification implementation review；
 6. source-neutral normalization contract draft；
-7. synthetic reasoning check：draft palm basis 對 translation / in-plane rotation / uniform scale 可保持 canonical coordinate 不變，mirror 後只要 anatomical landmark identity 保留，也可維持 index-side positive orientation。
-
-上述 synthetic check 目前只是研究計算，不是 repository tool / regression test。
+7. repository Cold synthetic normalization probe；
+8. ideal synthetic translation / rotation / scale / mirror / inverse-transform / fail-closed properties：11 passed / 0 failed。
 
 ## Remaining evidence gaps
 
 目前仍不足以 promotion 到 production：
 
-1. normalization contract 尚無 repository implementation / deterministic tests / numeric tolerance；
-2. 尚未建立 MediaPipe landmark version / camera mirroring compatibility contract；
+1. synthetic probe 只驗 ideal geometry；尚未量化 MediaPipe landmark perturbation / repeatability 對 canonical coordinate 的影響；
+2. 尚未建立 camera / selfie mirroring compatibility contract；
 3. `palm-line-reader` aggregate Dice 不足以建立本專案 detector acceptance threshold，也缺 per-case / cross-device validation；
 4. branch / island / star / minor lines / mounts 等 detector evidence 仍不足；
 5. Bagua / palm-palace projection geometry 尚未 source-specifically formalize；
 6. named patterns / illustrated marks 仍有大量 unresolved mapping；
-7. 尚未建立 Palmistry behavioral regression，證明正式加入後不影響 Tarot / Meihua / Liuyao routing。
+7. 尚未建立 production numeric tolerance / landmark-version compatibility matrix；
+8. 尚未建立 Palmistry behavioral regression，證明正式加入後不影響 Tarot / Meihua / Liuyao routing。
 
 ## Adoption decision
 
-目前所有外部來源、schema、normalization contract 仍為：
+目前所有外部來源、schema、normalization contract、synthetic probe 仍為：
 
 **REFERENCE-ONLY / DRAFT｜僅供參考／草案**
 
 production method set 不變。
 
-下一個合理 research node 是：**建立 synthetic landmark fixtures 的 deterministic normalization probe**，先驗 translation / rotation / scale / mirror / inverse-transform / fail-closed properties；只有這段穩定後，才值得討論 production implementation owner。
+下一個合理 research node 是：**controlled landmark perturbation + mirror-convention sensitivity sweep**，量化 L0/L5/L17 的小幅誤差如何傳遞到 canonical coordinates；只有這一層有 bounds 後，才值得討論 production numeric tolerance 或正式 normalization implementation owner。
