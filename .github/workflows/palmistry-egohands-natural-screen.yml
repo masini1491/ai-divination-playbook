@@ -1,4 +1,4 @@
-name: Palmistry Natural Multi-capture Screen (Ephemeral)
+name: Palmistry GTEA Hand-mask Inspect (Ephemeral)
 
 on:
   push:
@@ -8,150 +8,58 @@ permissions:
   contents: read
 
 jobs:
-  screen:
+  inspect:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Install research runtime
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libegl1 libgl1 libgles2
-          python -m pip install --upgrade pip
-          python -m pip install 'mediapipe==1.0.1' requests
-      - name: Screen one official GTEA natural video
+      - name: Inspect official GTEA hand masks
         run: |
           python - <<'PY'
-          from __future__ import annotations
-          import hashlib, json, os, sys
+          import hashlib, io, json, re, zipfile
           from collections import Counter
-          from pathlib import Path
-          import cv2
-          import mediapipe as mp
-          import requests
+          from pathlib import PurePosixPath
+          import urllib.request
 
-          sys.path.insert(0, os.path.abspath('references/palmistry'))
-          from association_ambiguity_probe import MODEL_URL, MODEL_SHA256, download, detect_full
-
-          SOURCE_PAGE = 'https://cbs.ic.gatech.edu/fpv/'
-          DROPBOX_SHARE = 'https://www.dropbox.com/scl/fi/0sfkl9r59qchz71183s19/Ahmad_American.avi?rlkey=zlywl5mhpv3ycwgurbitq1fn2&dl=1'
-          MAX_SAMPLES = 120
-          TARGET_INTERVAL_SECONDS = 2.0
-
-          video_path = Path('gtea_american_p1.avi')
-          r = requests.get(DROPBOX_SHARE, stream=True, allow_redirects=True, timeout=60)
-          print('=== GTEA_TRANSPORT ===')
-          print(json.dumps({
-              'status_code': r.status_code,
-              'final_url': r.url,
-              'content_type': r.headers.get('Content-Type'),
-              'content_length': r.headers.get('Content-Length'),
-              'etag': r.headers.get('ETag'),
-              'last_modified': r.headers.get('Last-Modified'),
-          }, indent=2))
-          r.raise_for_status()
+          URL = 'https://www.dropbox.com/scl/fi/c3t6f2fl420157dnteatl/hand2K_dataset.zip?rlkey=zrxsntio1npottn21gtxcxack&dl=1'
+          req = urllib.request.Request(URL, headers={'User-Agent':'ai-divination-playbook-palmistry-research/1.0'})
           h = hashlib.sha256()
-          size = 0
-          with video_path.open('wb') as f:
-              for chunk in r.iter_content(1024 * 1024):
+          buf = io.BytesIO()
+          with urllib.request.urlopen(req, timeout=120) as r:
+              headers = dict(r.headers.items())
+              while True:
+                  chunk = r.read(1024 * 1024)
                   if not chunk:
-                      continue
-                  f.write(chunk)
-                  h.update(chunk)
-                  size += len(chunk)
-          video_sha = h.hexdigest()
-
-          model_path = Path('hand_landmarker.task')
-          model_sha = download(MODEL_URL, model_path)
-          if model_sha != MODEL_SHA256:
-              raise RuntimeError(f'model sha mismatch: {model_sha}')
-
-          cap = cv2.VideoCapture(str(video_path))
-          if not cap.isOpened():
-              raise RuntimeError('OpenCV failed to open GTEA video')
-          fps = float(cap.get(cv2.CAP_PROP_FPS))
-          total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-          duration = total_frames / fps if fps > 0 else None
-          if fps <= 0 or total_frames <= 0:
-              raise RuntimeError(f'invalid video metadata fps={fps} frames={total_frames}')
-          stride = max(1, round(fps * TARGET_INTERVAL_SECONDS))
-          candidate_indices = list(range(0, total_frames, stride))
-          if len(candidate_indices) > MAX_SAMPLES:
-              import numpy as np
-              candidate_indices = sorted(set(int(round(float(v))) for v in np.linspace(0, total_frames - 1, MAX_SAMPLES)))
-
-          options = mp.tasks.vision.HandLandmarkerOptions(
-              base_options=mp.tasks.BaseOptions(model_asset_path=str(model_path)),
-              running_mode=mp.tasks.vision.RunningMode.IMAGE,
-              num_hands=4,
-              min_hand_detection_confidence=0.5,
-              min_hand_presence_confidence=0.5,
-              min_tracking_confidence=0.5,
-          )
-          rows = []
-          with mp.tasks.vision.HandLandmarker.create_from_options(options) as landmarker:
-              for frame_index in candidate_indices:
-                  cap.set(cv2.CAP_PROP_POS_FRAMES, frame_index)
-                  ok, frame = cap.read()
-                  if not ok or frame is None:
-                      continue
-                  candidates = detect_full(landmarker, frame)
-                  rows.append({
-                      'frame_index': frame_index,
-                      'time_seconds': frame_index / fps,
-                      'detector_candidate_count': len(candidates),
-                      'handedness': [c['handedness'] for c in candidates],
-                      'bbox_area_normalized': [c['bbox_area_normalized'] for c in candidates],
-                      'shape_h_w': list(frame.shape[:2]),
-                  })
-          cap.release()
-
-          count_distribution = Counter(row['detector_candidate_count'] for row in rows)
-          transitions = []
-          for before, after in zip(rows, rows[1:]):
-              if before['detector_candidate_count'] != after['detector_candidate_count']:
-                  transitions.append({
-                      'from_frame': before['frame_index'],
-                      'to_frame': after['frame_index'],
-                      'from_time_seconds': before['time_seconds'],
-                      'to_time_seconds': after['time_seconds'],
-                      'from_count': before['detector_candidate_count'],
-                      'to_count': after['detector_candidate_count'],
-                  })
-
-          result = {
-              'status': 'research-only',
-              'source_page': SOURCE_PAGE,
-              'source_dataset': 'Georgia Tech GTEA — American Breakfast P1 / Ahmad_American.avi',
-              'source_download': 'official GTEA page-linked Dropbox share',
-              'license_state': 'public research download; no explicit redistribution license identified in the reviewed GTEA page; video not retained in repository',
-              'video_sha256': video_sha,
-              'downloaded_bytes': size,
-              'video_fps': fps,
-              'video_total_frames': total_frames,
-              'video_duration_seconds': duration,
-              'model_sha256': model_sha,
-              'mediapipe_version': mp.__version__,
-              'opencv_version': cv2.__version__,
-              'requested_sampling_interval_seconds': TARGET_INTERVAL_SECONDS,
-              'requested_max_samples': MAX_SAMPLES,
-              'actual_sampled_frames': len(rows),
-              'detector_candidate_count_distribution': {str(k): v for k, v in sorted(count_distribution.items())},
-              'frames_with_ge2_candidates': sum(1 for row in rows if row['detector_candidate_count'] >= 2),
-              'candidate_count_transition_count': len(transitions),
-              'transitions': transitions[:40],
-              'rows': rows,
-              'evidence_boundary': 'sampling interval/max samples are requested inputs; frame decode results, detector counts, handedness, bbox areas, and transitions are post-execution observations; no per-frame ground-truth hand count is claimed',
-          }
-          print('=== GTEA_NATURAL_SCREEN_JSON ===')
-          print(json.dumps(result, indent=2))
-
-          if not rows:
-              raise RuntimeError('no natural video frames sampled')
-          if not any(row['detector_candidate_count'] >= 2 for row in rows):
-              raise RuntimeError('natural screen produced no >=2 candidate frame')
-          if not transitions:
-              raise RuntimeError('natural screen produced no candidate-count transitions')
+                      break
+                  h.update(chunk); buf.write(chunk)
+          size = buf.tell(); buf.seek(0)
+          with zipfile.ZipFile(buf) as z:
+              names = z.namelist()
+              files = [n for n in names if not n.endswith('/')]
+              suffixes = Counter(PurePosixPath(n).suffix.lower() for n in files)
+              topdirs = Counter(PurePosixPath(n).parts[0] if PurePosixPath(n).parts else '' for n in files)
+              image_names = [n for n in files if PurePosixPath(n).suffix.lower() in {'.png','.jpg','.jpeg','.bmp'}]
+              examples = image_names[:80]
+          print('=== GTEA_HAND_MASK_INVENTORY ===')
+          print(json.dumps({
+              'status':'research-only',
+              'source_page':'https://cbs.ic.gatech.edu/fpv/',
+              'source_asset':'GTEA Hand Masks / hand2K_dataset.zip',
+              'downloaded_bytes':size,
+              'sha256':h.hexdigest(),
+              'http_headers':{
+                  'content_type':headers.get('Content-Type'),
+                  'content_length':headers.get('Content-Length'),
+                  'etag':headers.get('ETag'),
+                  'last_modified':headers.get('Last-Modified'),
+              },
+              'zip_entry_count':len(names),
+              'file_count':len(files),
+              'suffix_counts':dict(suffixes),
+              'top_level_counts':dict(topdirs),
+              'image_count':len(image_names),
+              'first_image_names':examples,
+          },indent=2))
           PY
