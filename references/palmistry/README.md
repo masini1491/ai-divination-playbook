@@ -13,9 +13,9 @@
 
 正式採用前應至少記錄 source/ref、license、用途、可驗證 observation 能力、interpretation scope、流派差異與 not-adopted boundary。
 
-## 第一輪研究
+## Research synthesis
 
-- [`SYNTHESIS.md`](SYNTHESIS.md) — 第一輪 source comparison、architecture implication、remaining evidence gaps。
+- [`SYNTHESIS.md`](SYNTHESIS.md) — source comparison、architecture implication、remaining evidence gaps。
 
 ### Observation / CV references
 
@@ -27,6 +27,7 @@
 ### Interpretation references
 
 - [`palmistry-for-all.md`](palmistry-for-all.md) — Cheiro 的 *Palmistry for All*（GITenberg / Project Gutenberg lineage）；西方 palmistry tradition reference，非中國手相 authority。
+- [`chinese-traditional-sources.md`](chinese-traditional-sources.md) — 中國傳統手相 provenance baseline；以《古今圖書集成》所收《神相全編》掌部、《神相鐵關刀》、《太清神鑑》為主要古籍來源，GitHub mirrors 只作 bounded retrieval / cross-check。
 
 ## Current promotion state
 
@@ -41,4 +42,4 @@ CHAT_INIT.md production method set
 README production support list
 ```
 
-只有在 observation schema、tradition-specific interpretation source、fail-closed rules 與 behavioral regression 都足夠後，才評估 promotion。
+只有在 observation schema、tradition-specific interpretation source normalization、fail-closed rules 與 behavioral regression 都足夠後，才評估 promotion。
