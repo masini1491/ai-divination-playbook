@@ -20,6 +20,7 @@
 - [`OBSERVATION_SCHEMA_DRAFT.md`](OBSERVATION_SCHEMA_DRAFT.md) — source-neutral Palm Observation Fact draft；scene/target selection、task-specific quality、geometry、unknown semantics、tradition projection 與 privacy boundary。
 - [`PHOTO_VALIDATION.md`](PHOTO_VALIDATION.md) — 代表性真實照片 field-coverage / fail-closed validation。
 - [`NORMALIZATION_CONTRACT_DRAFT.md`](NORMALIZATION_CONTRACT_DRAFT.md) — raw image → model adapter → raw geometry → canonical palm basis 的 deterministic normalization contract draft。
+- [`MULTICAPTURE_DATASET_GATE.md`](MULTICAPTURE_DATASET_GATE.md) — independent multi-capture / device repeatability 的 dataset qualification owner；區分 public availability、runtime acquisition、data-use permission 與 capture-domain fit。Tongji/XINHUA 為 contactless multi-session 首選但 permission 尚未閉合；THUPALMLAB 研究用途明確但為 scanner-domain control；MPW-180 是未來 mobile/device 候選但目前 release surface 尚未完成。
 - [`normalization_probe.py`](normalization_probe.py) — Cold synthetic invariant probe；驗 translation / rotation / scale / mirror / inverse-transform / fail-closed properties，不是 production tool。
 - [`SENSITIVITY_SWEEP.md`](SENSITIVITY_SWEEP.md) — L0/L5/L17 controlled perturbation 與 mirror-convention sensitivity；不是 production tolerance。
 - [`normalization_sensitivity_probe.py`](normalization_sensitivity_probe.py) — 16-direction / 4096-combination bounded sensitivity executable。
@@ -63,24 +64,8 @@ CHAT_INIT.md production method set
 README production support list
 ```
 
-Normalization / observation research 目前已完成：
+Normalization / observation research 目前已完成 source-neutral contract、synthetic invariants / sensitivity、真實影像 controlled-transform repeatability、multi-hand candidate / association ambiguity、GTEA natural two-hand reproduction / feature study / sequence-held-out validation，以及 natural retained-two near-tie negative reproduction screen。
 
-- source-neutral contract draft；
-- ideal synthetic invariant probe：11 passed / 0 failed；
-- controlled landmark perturbation / mirror sensitivity sweep；
-- detector-agnostic repeatability harness self-test；
-- pinned MediaPipe `1.0.1` + official Hand Landmarker model 的兩個 public real-image controlled-transform studies；
-- public multi-hand fixture bounded screen：4 個視覺上有 2–3 hands 的 fixtures 實際 baseline candidate counts 為 `0 / 1 / 1 / 0`；
-- MediaPipe upstream `right_hands.jpg` Case C：baseline 與 7 個 controlled variants 全部穩定輸出 2 candidates，實際 exercised best/second-best association branch；
-- candidate index 已證明不是 stable identity：rotate / crop / mirror 可由 baseline index `0` 變成 selected index `1`；
-- Case C 的 best-vs-second-best separation 約 `3.93–3.97 palm widths`，因此是乾淨 association 正例；
-- synthetic twin-hand proximity stress 已實測 candidate collapse / reappearance：`2.50W→2`、`2.00W→2`、`1.50W→1`、`1.25W→2`、`1.00W 以下→1`，顯示 detector behavior 非單調；
-- symmetric retained-two-candidate stress 已實測真正 near-tie：center bias `0.00W` 時仍有 2 candidates，observed pair distance 約 `2.022W`，best/second 約 `0.990W / 1.034W`，score gap約 `0.04375W`；`+0.05W` 時 best index由 `0` 換成 `1`；
-- GTEA `s2_coffee` natural sequence 已以 direct XML `Left hand + Right hand` 定義 36 個 GT-two-hand annotation samples；palm-detector stage 實測 `0/1/2 candidates = 1/18/17` 且相鄰 selected samples 有 18 次 count transition；full Hand Landmarker corrected research run 亦確認同一 36 samples 同時存在 `>=2` retention、`<2` loss 與 count transition；
-- 擴展 natural feature study 從 556 個 direct-XML GTEA 雙手候選中 deterministic sampling 240 frames；full Hand Landmarker 得 `0/1/2 = 42/129/69`。Retained-2 最強單變量訊號為左右手可見 polygon 面積平衡 (`area_ratio` median `0.719` vs `0.512`) 與較小手面積比例 (`4.69%` vs `3.66%`)；centroid separation、全圖亮度與 blur 幾乎無區分力。這些仍是 exploratory signal，不是 production gate；
-- frozen whole-sequence validation 覆蓋全部 556 eligible frames / 25 sequences，final candidate distribution `0/1/2 = 110/276/170`。24 個 informative sequences 中，`area_ratio` 有 `22/24 = 91.7%` 維持 retained>lost 方向，`min_area_frac` 有 `18/24 = 75%`；sequence-level exceptions 被保留，不建立 universal rule；
-- natural retained-two association screen 覆蓋全部 170 個 exactly-two frames；geometry-based best assignment 在 170/170 frames 皆有兩個 palm centers 落於各自 XML polygon。Best-vs-second gap 最小 `0.1721`、p10 `0.2751`、median `0.4410` image diagonal，因此此 GTEA screen 未重現 synthetic near-tie。Workflow 中 79 次 candidate-index A/B label flip 不構成 ranking/identity evidence。
+Multi-capture dataset qualification 也已完成第一輪：Tongji 與 XINHUA 提供最合適的 contactless multi-session 結構但 reuse permission 尚未閉合；THUPALMLAB 已有明確 non-commercial research / education permission，但屬 scanner-domain 且本次執行環境未能驗證 archive acquisition；MPW-180 最接近 multi-device mobile capture，但目前 repository 的 dataset DOI/link 仍未發布、README 所述 dataset-license artifact 亦尚不存在。這些狀態不得互相替代或提升 evidence precision。
 
-真實影像與 stress evidence 已證明：same-pixels deterministic 不代表 rotate / scale / crop / mirror invariant；人眼看到多手不能替代 detector candidate evidence；detector candidate list position 不能當 hand identity；association uncertainty 既要保存 candidate-count instability，也要保存 retained-two-candidate best/second score gap與 ranking stability；candidate-count instability 已不再只是 synthetic-composite artifact。Natural feature evidence 也不支持把「兩手越近越容易 collapse」當單調規則。Natural retained-two GTEA screen 則提供 negative reproduction evidence：在目前 geometry metric 下沒有接近 synthetic near-tie 的案例。
-
-目前仍不能直接設 production threshold。主要 remaining gaps：多 capture / device repeatability、detector-to-detector agreement、line-segmentation uncertainty、可辯護的 predeclared admission calibration 與 behavioral regression。Natural retained-two near-tie 已完成一輪 GTEA negative reproduction screen，但不能外推為自然影像不存在 near-tie。Palmistry 仍不進 router。
+目前仍不能直接設 production threshold。主要 remaining gaps：真正 permission-qualified 的 multi-capture / device repeatability、detector-to-detector agreement、line-segmentation uncertainty、可辯護的 predeclared admission calibration 與 behavioral regression。Palmistry 仍不進 router。
