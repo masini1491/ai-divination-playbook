@@ -27,9 +27,11 @@
 - [`MULTI_HAND_FIXTURE_SCREEN.md`](MULTI_HAND_FIXTURE_SCREEN.md) — 固定 MediaPipe baseline 的 public multi-hand fixture bounded screen；記錄 4 個視覺多手場景實際只得到 0/1 candidates 的負面 evidence 與 stop decision。
 - [`UPSTREAM_MULTI_HAND_ASSOCIATION.md`](UPSTREAM_MULTI_HAND_ASSOCIATION.md) — MediaPipe 官方 `right_hands.jpg` Case C；實際 baseline/所有 transforms 都輸出 2 candidates，驗 scene-local association、candidate reorder 與 best-vs-second-best separation。
 - [`ASSOCIATION_AMBIGUITY_STRESS.md`](ASSOCIATION_AMBIGUITY_STRESS.md) — Case C 衍生的 synthetic twin-hand proximity stress；實測 candidate collapse / reappearance、非單調 multi-candidate behavior 與 fail-closed implication。
+- [`RETAINED_TWO_CANDIDATE_NEAR_TIE.md`](RETAINED_TWO_CANDIDATE_NEAR_TIE.md) — 對稱 twin-hand composite；實測兩 candidates 保留、best/second score gap縮至 4.375% palm-width 且 ranking swap。
 - [`real_image_repeatability_probe.py`](real_image_repeatability_probe.py) — detector-agnostic metric harness；接收 L0/L5/L17 + inverse transform，計算 anchor / canonical-frame drift。
 - [`mediapipe_repeatability_runner.py`](mediapipe_repeatability_runner.py) — Cold research runner；下載 pinned official model + public fixtures、執行 controlled transforms 與 scene-local candidate association；不是 production runtime owner。
 - [`association_ambiguity_probe.py`](association_ambiguity_probe.py) — Cold synthetic-composite ambiguity stress runner；不是自然影像分布、不是 biometric identity、不是 production gate。
+- [`association_near_tie_probe.py`](association_near_tie_probe.py) — Cold retained-two-candidate near-tie probe；區分 requested composition geometry 與 post-detector observations。
 
 ### Observation / CV references
 
@@ -67,8 +69,9 @@ Normalization / observation research 目前已完成：
 - MediaPipe upstream `right_hands.jpg` Case C：baseline 與 7 個 controlled variants 全部穩定輸出 2 candidates，實際 exercised best/second-best association branch；
 - candidate index 已證明不是 stable identity：rotate / crop / mirror 可由 baseline index `0` 變成 selected index `1`；
 - Case C 的 best-vs-second-best separation 約 `3.93–3.97 palm widths`，因此是乾淨 association 正例；
-- synthetic twin-hand proximity stress 已實測 candidate collapse / reappearance：`2.50W→2`、`2.00W→2`、`1.50W→1`、`1.25W→2`、`1.00W 以下→1`，顯示 detector behavior 非單調。
+- synthetic twin-hand proximity stress 已實測 candidate collapse / reappearance：`2.50W→2`、`2.00W→2`、`1.50W→1`、`1.25W→2`、`1.00W 以下→1`，顯示 detector behavior 非單調；
+- symmetric retained-two-candidate stress 已實測真正 near-tie：center bias `0.00W` 時仍有 2 candidates，observed pair distance 約 `2.022W`，best/second 約 `0.990W / 1.034W`，score gap約 `0.04375W`；`+0.05W` 時 best index由 `0` 換成 `1`。
 
-真實影像與 stress evidence 已證明：same-pixels deterministic 不代表 rotate / scale / crop / mirror invariant；人眼看到多手不能替代 detector candidate evidence；detector candidate list position 不能當 hand identity；association uncertainty 也不能只靠 best-vs-second-best gap，因為第二 candidate 可能直接消失。candidate-count instability 應視為獨立 fail-closed signal。
+真實影像與 stress evidence 已證明：same-pixels deterministic 不代表 rotate / scale / crop / mirror invariant；人眼看到多手不能替代 detector candidate evidence；detector candidate list position 不能當 hand identity；association uncertainty 既要保存 candidate-count instability，也要保存 retained-two-candidate best/second score gap與 ranking stability。
 
-目前仍不能直接設 production threshold。主要 remaining gaps：retained-two-candidate near-tie stress、自然影像/更多手型、多 capture / device repeatability、detector-to-detector agreement、line-segmentation uncertainty 與 behavioral regression。Palmistry 仍不進 router。
+目前仍不能直接設 production threshold。主要 remaining gaps：自然影像/controlled real-capture ambiguity distribution、多 capture / device repeatability、detector-to-detector agreement、line-segmentation uncertainty 與 behavioral regression。Palmistry 仍不進 router。
