@@ -1,4 +1,4 @@
-name: Palmistry EgoHands Natural Screen (Ephemeral)
+name: Palmistry Natural Multi-capture Screen (Ephemeral)
 
 on:
   push:
@@ -20,186 +20,138 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libegl1 libgl1 libgles2
           python -m pip install --upgrade pip
-          python -m pip install 'mediapipe==1.0.1' 'remotezip==0.12.3' 'scipy>=1.15,<2' requests
-      - name: Screen natural EgoHands frames via HTTP range
+          python -m pip install 'mediapipe==1.0.1' requests
+      - name: Screen one official GTEA natural video
         run: |
           python - <<'PY'
           from __future__ import annotations
-          import io, json, math, os, sys, urllib.request
-          from collections import Counter, defaultdict
-          from pathlib import PurePosixPath
+          import hashlib, json, os, sys
+          from collections import Counter
+          from pathlib import Path
           import cv2
           import mediapipe as mp
-          import numpy as np
           import requests
-          from remotezip import RemoteZip
-          from scipy.io import loadmat
 
           sys.path.insert(0, os.path.abspath('references/palmistry'))
           from association_ambiguity_probe import MODEL_URL, MODEL_SHA256, download, detect_full
 
-          DATASET_URL = 'https://vision.soic.indiana.edu/egohands_files/egohands_data.zip'
-          SAMPLE_PER_FOLDER = 5
+          SOURCE_PAGE = 'https://cbs.ic.gatech.edu/fpv/'
+          DROPBOX_SHARE = 'https://www.dropbox.com/scl/fi/0sfkl9r59qchz71183s19/Ahmad_American.avi?rlkey=zlywl5mhpv3ycwgurbitq1fn2&dl=1'
+          MAX_SAMPLES = 120
+          TARGET_INTERVAL_SECONDS = 2.0
 
-          head = requests.head(DATASET_URL, allow_redirects=True, timeout=30)
-          print('=== EGOHANDS_HTTP ===')
+          video_path = Path('gtea_american_p1.avi')
+          r = requests.get(DROPBOX_SHARE, stream=True, allow_redirects=True, timeout=60)
+          print('=== GTEA_TRANSPORT ===')
           print(json.dumps({
-              'status_code': head.status_code,
-              'final_url': head.url,
-              'content_length': head.headers.get('Content-Length'),
-              'accept_ranges': head.headers.get('Accept-Ranges'),
-              'etag': head.headers.get('ETag'),
-              'last_modified': head.headers.get('Last-Modified'),
+              'status_code': r.status_code,
+              'final_url': r.url,
+              'content_type': r.headers.get('Content-Type'),
+              'content_length': r.headers.get('Content-Length'),
+              'etag': r.headers.get('ETag'),
+              'last_modified': r.headers.get('Last-Modified'),
           }, indent=2))
-          head.raise_for_status()
+          r.raise_for_status()
+          h = hashlib.sha256()
+          size = 0
+          with video_path.open('wb') as f:
+              for chunk in r.iter_content(1024 * 1024):
+                  if not chunk:
+                      continue
+                  f.write(chunk)
+                  h.update(chunk)
+                  size += len(chunk)
+          video_sha = h.hexdigest()
 
-          model_path = 'hand_landmarker.task'
-          model_sha = download(MODEL_URL, __import__('pathlib').Path(model_path))
+          model_path = Path('hand_landmarker.task')
+          model_sha = download(MODEL_URL, model_path)
           if model_sha != MODEL_SHA256:
               raise RuntimeError(f'model sha mismatch: {model_sha}')
 
+          cap = cv2.VideoCapture(str(video_path))
+          if not cap.isOpened():
+              raise RuntimeError('OpenCV failed to open GTEA video')
+          fps = float(cap.get(cv2.CAP_PROP_FPS))
+          total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+          duration = total_frames / fps if fps > 0 else None
+          if fps <= 0 or total_frames <= 0:
+              raise RuntimeError(f'invalid video metadata fps={fps} frames={total_frames}')
+          stride = max(1, round(fps * TARGET_INTERVAL_SECONDS))
+          candidate_indices = list(range(0, total_frames, stride))
+          if len(candidate_indices) > MAX_SAMPLES:
+              import numpy as np
+              candidate_indices = sorted(set(int(round(float(v))) for v in np.linspace(0, total_frames - 1, MAX_SAMPLES)))
+
           options = mp.tasks.vision.HandLandmarkerOptions(
-              base_options=mp.tasks.BaseOptions(model_asset_path=model_path),
+              base_options=mp.tasks.BaseOptions(model_asset_path=str(model_path)),
               running_mode=mp.tasks.vision.RunningMode.IMAGE,
               num_hands=4,
               min_hand_detection_confidence=0.5,
               min_hand_presence_confidence=0.5,
               min_tracking_confidence=0.5,
           )
-
-          def polygon_count(frame_polygons) -> int:
-              count = 0
-              for polygon in frame_polygons:
-                  try:
-                      if len(polygon) >= 3:
-                          count += 1
-                  except TypeError:
-                      pass
-              return count
-
-          def evenly_spaced(values, k):
-              values = list(values)
-              if len(values) <= k:
-                  return values
-              positions = np.linspace(0, len(values) - 1, k)
-              out = []
-              for pos in positions:
-                  value = values[int(round(float(pos)))]
-                  if value not in out:
-                      out.append(value)
-              return out
-
           rows = []
-          folder_summary = defaultdict(lambda: {'sampled': 0, 'retained2': 0, 'collapse': 0, 'det_counts': [], 'ann_counts': []})
-          readme_excerpt = []
-
-          with RemoteZip(DATASET_URL, initial_buffer_size=256 * 1024) as rz:
-              names = rz.namelist()
-              print('=== EGOHANDS_ZIP ===')
-              print(json.dumps({'entry_count': len(names), 'first_entries': names[:8]}, indent=2))
-
-              readme_names = [name for name in names if PurePosixPath(name).name.lower().startswith('readme')]
-              if readme_names:
-                  try:
-                      text = rz.read(readme_names[0]).decode('utf-8', errors='replace')
-                      for line in text.splitlines():
-                          low = line.lower()
-                          if any(token in low for token in ('license', 'citation', 'research', 'copyright', 'permission', 'polygon')):
-                              readme_excerpt.append(line[:300])
-                  except Exception as exc:
-                      readme_excerpt.append(f'README extraction failed: {exc}')
-
-              folders = sorted({
-                  str(PurePosixPath(name).parent)
-                  for name in names
-                  if name.startswith('_LABELLED_SAMPLES/') and name.endswith('.jpg')
-              })
-              print(json.dumps({'folder_count': len(folders), 'folders': folders}, indent=2))
-
-              with mp.tasks.vision.HandLandmarker.create_from_options(options) as landmarker:
-                  for folder in folders:
-                      frame_names = sorted(name for name in names if str(PurePosixPath(name).parent) == folder and name.endswith('.jpg'))
-                      mat_name = f'{folder}/polygons.mat'
-                      if mat_name not in names or not frame_names:
-                          continue
-                      video = loadmat(io.BytesIO(rz.read(mat_name)))
-                      polygons = video['polygons'][0]
-                      if len(frame_names) != len(polygons):
-                          raise RuntimeError(f'frame/annotation count mismatch in {folder}: {len(frame_names)} vs {len(polygons)}')
-                      multi_indices = [i for i in range(len(frame_names)) if polygon_count(polygons[i]) >= 2]
-                      selected = evenly_spaced(multi_indices, SAMPLE_PER_FOLDER)
-                      for i in selected:
-                          raw = rz.read(frame_names[i])
-                          image = cv2.imdecode(np.frombuffer(raw, dtype=np.uint8), cv2.IMREAD_COLOR)
-                          if image is None:
-                              raise RuntimeError(f'failed to decode {frame_names[i]}')
-                          candidates = detect_full(landmarker, image)
-                          ann_count = polygon_count(polygons[i])
-                          det_count = len(candidates)
-                          row = {
-                              'folder': folder.split('/')[-1],
-                              'frame': PurePosixPath(frame_names[i]).name,
-                              'frame_index': i,
-                              'annotated_hand_count': ann_count,
-                              'detector_candidate_count': det_count,
-                              'handedness': [c['handedness'] for c in candidates],
-                              'bbox_area_normalized': [c['bbox_area_normalized'] for c in candidates],
-                              'image_shape_h_w': list(image.shape[:2]),
-                          }
-                          rows.append(row)
-                          s = folder_summary[row['folder']]
-                          s['sampled'] += 1
-                          s['det_counts'].append(det_count)
-                          s['ann_counts'].append(ann_count)
-                          if det_count >= 2:
-                              s['retained2'] += 1
-                          if ann_count >= 2 and det_count < 2:
-                              s['collapse'] += 1
-
-          annotated_distribution = Counter(row['annotated_hand_count'] for row in rows)
-          detector_distribution = Counter(row['detector_candidate_count'] for row in rows)
-          joint_distribution = Counter((row['annotated_hand_count'], row['detector_candidate_count']) for row in rows)
-          variable_folders = []
-          for folder, s in folder_summary.items():
-              if len(set(s['det_counts'])) > 1:
-                  variable_folders.append({
-                      'folder': folder,
-                      'sampled': s['sampled'],
-                      'retained2': s['retained2'],
-                      'collapse': s['collapse'],
-                      'det_counts': s['det_counts'],
-                      'ann_counts': s['ann_counts'],
+          with mp.tasks.vision.HandLandmarker.create_from_options(options) as landmarker:
+              for frame_index in candidate_indices:
+                  cap.set(cv2.CAP_PROP_POS_FRAMES, frame_index)
+                  ok, frame = cap.read()
+                  if not ok or frame is None:
+                      continue
+                  candidates = detect_full(landmarker, frame)
+                  rows.append({
+                      'frame_index': frame_index,
+                      'time_seconds': frame_index / fps,
+                      'detector_candidate_count': len(candidates),
+                      'handedness': [c['handedness'] for c in candidates],
+                      'bbox_area_normalized': [c['bbox_area_normalized'] for c in candidates],
+                      'shape_h_w': list(frame.shape[:2]),
                   })
-          variable_folders.sort(key=lambda x: (-x['retained2'], -x['collapse'], x['folder']))
+          cap.release()
+
+          count_distribution = Counter(row['detector_candidate_count'] for row in rows)
+          transitions = []
+          for before, after in zip(rows, rows[1:]):
+              if before['detector_candidate_count'] != after['detector_candidate_count']:
+                  transitions.append({
+                      'from_frame': before['frame_index'],
+                      'to_frame': after['frame_index'],
+                      'from_time_seconds': before['time_seconds'],
+                      'to_time_seconds': after['time_seconds'],
+                      'from_count': before['detector_candidate_count'],
+                      'to_count': after['detector_candidate_count'],
+                  })
 
           result = {
               'status': 'research-only',
-              'dataset_url': DATASET_URL,
-              'dataset_transport': {
-                  'content_length': head.headers.get('Content-Length'),
-                  'accept_ranges': head.headers.get('Accept-Ranges'),
-                  'etag': head.headers.get('ETag'),
-                  'last_modified': head.headers.get('Last-Modified'),
-              },
-              'dataset_readme_relevant_lines': readme_excerpt[:20],
+              'source_page': SOURCE_PAGE,
+              'source_dataset': 'Georgia Tech GTEA — American Breakfast P1 / Ahmad_American.avi',
+              'source_download': 'official GTEA page-linked Dropbox share',
+              'license_state': 'public research download; no explicit redistribution license identified in the reviewed GTEA page; video not retained in repository',
+              'video_sha256': video_sha,
+              'downloaded_bytes': size,
+              'video_fps': fps,
+              'video_total_frames': total_frames,
+              'video_duration_seconds': duration,
               'model_sha256': model_sha,
               'mediapipe_version': mp.__version__,
               'opencv_version': cv2.__version__,
-              'sample_per_folder_max': SAMPLE_PER_FOLDER,
-              'sampled_frame_count': len(rows),
-              'annotated_hand_count_distribution': {str(k): v for k, v in sorted(annotated_distribution.items())},
-              'detector_candidate_count_distribution': {str(k): v for k, v in sorted(detector_distribution.items())},
-              'joint_distribution': {f'ann{k[0]}_det{k[1]}': v for k, v in sorted(joint_distribution.items())},
-              'annotated_multi_but_detector_lt2': sum(1 for r in rows if r['annotated_hand_count'] >= 2 and r['detector_candidate_count'] < 2),
-              'detector_ge2': sum(1 for r in rows if r['detector_candidate_count'] >= 2),
-              'variable_candidate_count_folders': variable_folders[:12],
+              'requested_sampling_interval_seconds': TARGET_INTERVAL_SECONDS,
+              'requested_max_samples': MAX_SAMPLES,
+              'actual_sampled_frames': len(rows),
+              'detector_candidate_count_distribution': {str(k): v for k, v in sorted(count_distribution.items())},
+              'frames_with_ge2_candidates': sum(1 for row in rows if row['detector_candidate_count'] >= 2),
+              'candidate_count_transition_count': len(transitions),
+              'transitions': transitions[:40],
               'rows': rows,
+              'evidence_boundary': 'sampling interval/max samples are requested inputs; frame decode results, detector counts, handedness, bbox areas, and transitions are post-execution observations; no per-frame ground-truth hand count is claimed',
           }
-          print('=== EGOHANDS_NATURAL_SCREEN_JSON ===')
+          print('=== GTEA_NATURAL_SCREEN_JSON ===')
           print(json.dumps(result, indent=2))
 
           if not rows:
-              raise RuntimeError('no natural frames were sampled')
-          if not any(r['detector_candidate_count'] >= 2 for r in rows):
+              raise RuntimeError('no natural video frames sampled')
+          if not any(row['detector_candidate_count'] >= 2 for row in rows):
               raise RuntimeError('natural screen produced no >=2 candidate frame')
+          if not transitions:
+              raise RuntimeError('natural screen produced no candidate-count transitions')
           PY
