@@ -32,21 +32,9 @@ Scene / Target Selection Gate
 
 ## Source-neutral coordinate frame
 
-Draft anchors：
+Draft anchors：`L0 wrist`、`L5 index MCP`、`L17 little MCP`。wrist→MCP midpoint 定義 longitudinal axis；little→index MCP 的正交分量定義 transverse axis；palm height / width normalization。此 frame 只代表 geometry，不代表 Western line label 或中國掌宮。
 
-```text
-L0  wrist
-L5  index MCP
-L17 little MCP
-```
-
-wrist→MCP midpoint 定義 longitudinal axis；little→index MCP 的正交分量定義 transverse axis；palm height / width normalization。此 frame 只代表 geometry，不代表 Western line label 或中國掌宮。
-
-Ideal synthetic invariant probe：
-
-```text
-11 passed / 0 failed
-```
+Ideal synthetic invariant probe：`11 passed / 0 failed`。
 
 Controlled simultaneous-anchor sensitivity sweep：
 
@@ -58,9 +46,7 @@ Controlled simultaneous-anchor sensitivity sweep：
 | 2.00% | 2.2906° | 4.019% | 4.000% | 4.341% |
 | 5.00% | 5.7106° | 10.112% | 10.000% | 11.445% |
 
-這些只是 configured-grid synthetic evidence，不是 production thresholds。
-
-若 detector-only mirror 漏 inverse，在 canonical `x∈[-0.5,0.5]` frame 上可形成 100% max drift；mirror lineage 因此是 admission gate，不是 optional metadata。
+這些只是 configured-grid synthetic evidence，不是 production thresholds。若 detector-only mirror 漏 inverse，在 canonical `x∈[-0.5,0.5]` frame 上可形成 100% max drift；mirror lineage 因此是 admission gate，不是 optional metadata。
 
 ## Real-image MediaPipe evidence
 
@@ -76,49 +62,15 @@ model SHA256 fbc2a30080c3c557093b5ddfc334698132eb341044ccee322ccf8bcf3607cde1
 
 ### Case A — single palm
 
-`Right Hand Palm.png` / CC BY-SA 4.0。
-
-Max canonical drift：
-
-```text
-same pixels        0.0000%
-rotate +10°        7.3708%
-rotate -10°        4.7228%
-scale 0.75×        1.0967%
-scale 1.25×        2.4488%
-crop 3%            1.6727%
-horizontal mirror  2.9833%
-```
-
-Mirror handedness `Right → Left`。
+`Right Hand Palm.png` / CC BY-SA 4.0。Max canonical drift：same pixels `0%`、rotate +10° `7.3708%`、rotate -10° `4.7228%`、scale 0.75× `1.0967%`、scale 1.25× `2.4488%`、crop 3% `1.6727%`、horizontal mirror `2.9833%`。Mirror handedness `Right → Left`。
 
 ### Case B — overlapping two-palm scene
 
-`Open Palm of the Left Hand, Fingers.jpg` / CC BY-SA 4.0。
-
-Scene 視覺上有兩掌，但 baseline 與 transforms 都只回 1 candidate。Max canonical drift：
-
-```text
-same pixels         0.0000%
-rotate +10°         2.1408%
-rotate -10°         8.8829%
-scale 0.75×         4.0574%
-scale 1.25×         1.6918%
-crop 3%             9.2687%
-horizontal mirror  77.3400%
-```
-
-Mirror handedness `Left → Right`。這組巨幅 mirror instability 不能被解讀為 anatomical-side evidence。
+`Open Palm of the Left Hand, Fingers.jpg` / CC BY-SA 4.0。Scene 視覺上有兩掌，但 baseline 與 transforms 都只回 1 candidate。Max canonical drift：same pixels `0%`、rotate +10° `2.1408%`、rotate -10° `8.8829%`、scale 0.75× `4.0574%`、scale 1.25× `1.6918%`、crop 3% `9.2687%`、horizontal mirror `77.3400%`。Mirror handedness `Left → Right`；不能解讀為 anatomical-side evidence。
 
 ### Public multi-hand bounded screen
 
-[`MULTI_HAND_FIXTURE_SCREEN.md`](MULTI_HAND_FIXTURE_SCREEN.md) 用相同 pinned runtime/model 與固定 `0.5` thresholds 篩選 4 個視覺上有 2–3 hands 的 public scenes，baseline candidate counts 為：
-
-```text
-0 / 1 / 1 / 0
-```
-
-因此已有直接 detector evidence 支持：
+[`MULTI_HAND_FIXTURE_SCREEN.md`](MULTI_HAND_FIXTURE_SCREEN.md) 用相同 pinned runtime/model 與固定 `0.5` thresholds 篩選 4 個視覺上有 2–3 hands 的 public scenes，baseline candidate counts 為 `0 / 1 / 1 / 0`。因此：
 
 ```text
 visually multiple hands
@@ -130,68 +82,69 @@ pinned detector returns multiple candidates
 
 ### Case C — upstream MediaPipe multi-hand fixture
 
-[`UPSTREAM_MULTI_HAND_ASSOCIATION.md`](UPSTREAM_MULTI_HAND_ASSOCIATION.md) 使用 MediaPipe 官方 `right_hands.jpg` test fixture：
+[`UPSTREAM_MULTI_HAND_ASSOCIATION.md`](UPSTREAM_MULTI_HAND_ASSOCIATION.md) 使用 MediaPipe 官方 `right_hands.jpg` test fixture：upstream revision `8dd04551858308f3003ace87632d7308d6a62212`、fixture SHA256 `4b5134daa4cb60465535239535f9f74c2842aba3aa5fd30bf04ef5678f93d87f`、research run `34614749960`。
+
+我們自己的 pinned Python runtime 得到 baseline 2 candidates，7 個 controlled variants 也全部 2 candidates。Candidate index 會在 rotate / crop / mirror 後從 baseline index `0` 變成 selected index `1`，所以 list position 不能當 scene-local identity。
+
+Best-vs-second-best separation 約 `3.93–3.97 palm widths`；Case C 因而是乾淨 association 正例，但不是 ambiguity stress case。
+
+### Association ambiguity stress
+
+[`ASSOCIATION_AMBIGUITY_STRESS.md`](ASSOCIATION_AMBIGUITY_STRESS.md) 以 Case C 來源手建立 synthetic twin-hand composite，固定 detector thresholds，不做 threshold tuning。Research run `34615812360`。
+
+Requested duplicate separation 與 detector candidate count：
 
 ```text
-upstream revision: 8dd04551858308f3003ace87632d7308d6a62212
-fixture SHA256: 4b5134daa4cb60465535239535f9f74c2842aba3aa5fd30bf04ef5678f93d87f
-research run: 34614749960
+2.50W → 2
+2.00W → 2
+1.50W → 1
+1.25W → 2
+1.00W → 1
+0.75W → 1
+0.50W → 1
+0.35W → 1
+0.25W → 1
+0.15W → 1
+0.00W → 1
 ```
 
-官方 Python / C++ tests 都明確把它當 two-hand fixture；我們自己的 pinned Python runtime 亦得到：
+在仍保留兩 candidates 的三個點：
+
+| Requested separation | Best mean distance | Second-best | Score gap |
+|---:|---:|---:|---:|
+| 2.50W | 3.071% | 250.615% | 247.544% |
+| 2.00W | 4.891% | 200.667% | 195.775% |
+| 1.25W | 11.294% | 124.553% | 113.259% |
+
+因此本輪沒有觀察到「兩 candidates 保留且逐步形成 near-tie」；更早出現的是 candidate collapse，而且 collapse / recovery 非單調（`1.50W→1` 但 `1.25W→2`）。
+
+這支持新的 fail-closed evidence rule：
 
 ```text
-baseline candidates = 2
-all 7 controlled variants = 2 candidates
+expected multi-target scene
++ detector candidate-count instability / collapse
+→ association unresolved
+→ target-specific fine geometry fail closed
 ```
 
-這使 scene-local best-vs-second-best branch 首次由 real detector output 真正 exercised。
-
-Association evidence：
-
-| Variant | Selected index | Best mean distance | Second-best | Separation |
-|---|---:|---:|---:|---:|
-| same-pixels | 0 | 0.0000% | 397.3044% | 397.3044% |
-| rotate +10° | 1 | 3.3253% | 395.8929% | 392.5676% |
-| rotate -10° | 1 | 2.8716% | 397.2671% | 394.3955% |
-| scale 0.75× | 0 | 0.7345% | 397.8279% | 397.0934% |
-| scale 1.25× | 0 | 0.7066% | 397.3751% | 396.6685% |
-| crop 3% | 1 | 2.3551% | 396.6983% | 394.3432% |
-| mirror | 1 | 4.8491% | 399.2808% | 394.4317% |
-
-Key finding：**candidate list index is not stable identity**。Baseline target 是 index `0`，但 rotate / crop / mirror 後 scene-local best match 會出現在 index `1`。因此 target association 必須靠 geometry / uncertainty evidence，而不能靠 detector list position。
-
-Case C geometry max canonical drift：
-
-```text
-same pixels         0.0000%
-rotate +10°         5.9313%
-rotate -10°         6.4146%
-scale 0.75×         0.8897%
-scale 1.25×         0.6691%
-crop 3%             3.3916%
-horizontal mirror  12.2287%
-```
-
-Mirror handedness again `Right → Left`。
-
-Case C 是乾淨 association 正例：best-vs-second-best separation 約 `3.93–3.97 palm widths`。因此**不能**宣稱 ambiguity fail-closed 已驗證；near-tie / candidate-loss stress 還沒做。
+但這仍是 qualitative research principle，不是 production numeric threshold。缺少第二 candidate 時，不得把 remaining candidate 自動視為 target identity 的延續。
 
 ## Cross-case conclusions
 
-現在可以用 executable / real-image evidence 支持：
+目前 executable / real-image / stress evidence 支持：
 
 1. same-pixels deterministic 不等於 transform invariant；
 2. exact inverse transform 只能消除已知 image-space transform，不能消除 detector sensitivity；
-3. rotation error具 image/context-specific asymmetry；
-4. crop / scale 也能改變 landmark geometry；
-5. detector handedness / mirror output 不是 anatomical hand-side fact；
-6. overlapping-hand context 可以大幅放大 mirror instability；
-7. synthetic sensitivity numbers不能直接當 real-image cutoff；
-8. human-visible hand count不能替代 detector candidate evidence；
-9. candidate list index不能當 scene-local hand identity；
-10. best / second-best inverse-mapped distance與 separation應被保留為 association uncertainty evidence；
-11. Case C 證明 association可成功，但因 separation太大，尚未驗 near-tie ambiguity fail-closed。
+3. rotation / crop / scale error具有 image/context dependency；
+4. detector handedness / mirror output 不是 anatomical hand-side fact；
+5. overlapping-hand context可極大放大 mirror instability；
+6. synthetic sensitivity numbers不能直接當 real-image cutoff；
+7. human-visible hand count不能替代 detector candidate evidence；
+8. candidate list index不能當 scene-local hand identity；
+9. best / second-best inverse-mapped distance與 separation應被保留；
+10. association uncertainty不能只靠 score gap，因為第二 candidate可能直接消失；
+11. candidate-count instability / disappearance / reappearance本身是獨立的 uncertainty signal；
+12. hand proximity與 detector ambiguity不是單調函數，不能建立簡單的距離→confidence規則。
 
 ## Traditional interpretation boundary
 
@@ -207,19 +160,20 @@ Case C 是乾淨 association 正例：best-vs-second-best separation 約 `3.93�
 
 目前仍不足以 promotion：
 
-1. association ambiguity stress：near-tie、candidate reorder、candidate disappearance / appearance；
-2. predeclared ambiguity admission contract與可辯護 threshold；
-3. 多張不同 hand shapes / capture contexts 的 transform-consistency distribution；
-4. same hand / multiple captures 的 pose / distance / lighting / device repeatability；
-5. camera/selfie mirroring reconciliation 與 anatomical side contract；
-6. MediaPipe model/runtime version compatibility；
-7. detector-to-detector agreement；
-8. branch / island / star / minor lines / mounts 等 detector evidence；
-9. palm-line segmentation uncertainty 與 landmark-frame uncertainty 的合成方式；
-10. Bagua / palm-palace source-specific projection geometry；
-11. named patterns / illustrated marks unresolved mapping；
-12. production numeric admission thresholds；
-13. Palmistry behavioral regression，證明 promotion 不影響 Tarot / Meihua / Liuyao routing。
+1. retained-two-candidate ambiguity：需要真正較小 best-vs-second-best gap 的 stress case；
+2. candidate-count instability 在自然影像、多手型與不同 occlusion pattern 的分布；
+3. predeclared ambiguity admission contract與可辯護 threshold；
+4. 多張不同 hand shapes / capture contexts 的 transform-consistency distribution；
+5. same hand / multiple captures 的 pose / distance / lighting / device repeatability；
+6. camera/selfie mirroring reconciliation 與 anatomical side contract；
+7. MediaPipe model/runtime version compatibility；
+8. detector-to-detector agreement；
+9. branch / island / star / minor lines / mounts 等 detector evidence；
+10. palm-line segmentation uncertainty 與 landmark-frame uncertainty 的合成方式；
+11. Bagua / palm-palace source-specific projection geometry；
+12. named patterns / illustrated marks unresolved mapping；
+13. production numeric admission thresholds；
+14. Palmistry behavioral regression，證明 promotion 不影響 Tarot / Meihua / Liuyao routing。
 
 ## Adoption decision
 
@@ -229,4 +183,14 @@ Case C 是乾淨 association 正例：best-vs-second-best separation 約 `3.93�
 
 production method set 不變。
 
-下一個合理 bounded research node：**association ambiguity stress**。使用已知 two-candidate fixture，透過受控 perturbation 讓 best / second-best separation 縮小，觀察 ranking stability、swap、candidate loss，並驗 fail-closed evidence contract。現在仍不建立 production threshold，也不 promotion Palmistry routing。
+下一個 bounded research node 應拆成兩條：
+
+```text
+A. candidate-count instability
+   → controlled occlusion / proximity 下的 disappearance / reappearance
+
+B. retained-two-candidate ambiguity
+   → 尋找仍保留兩 candidates 但 score gap 明顯縮小的 controlled case
+```
+
+在兩類 evidence 都足夠前，不建立 production threshold，也不 promotion Palmistry routing。

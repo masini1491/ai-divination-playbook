@@ -26,8 +26,10 @@
 - [`REAL_IMAGE_REPEATABILITY.md`](REAL_IMAGE_REPEATABILITY.md) — MediaPipe Case A/B 真實影像 controlled-transform 結果、provenance、fail-closed interpretation 與 remaining gaps。
 - [`MULTI_HAND_FIXTURE_SCREEN.md`](MULTI_HAND_FIXTURE_SCREEN.md) — 固定 MediaPipe baseline 的 public multi-hand fixture bounded screen；記錄 4 個視覺多手場景實際只得到 0/1 candidates 的負面 evidence 與 stop decision。
 - [`UPSTREAM_MULTI_HAND_ASSOCIATION.md`](UPSTREAM_MULTI_HAND_ASSOCIATION.md) — MediaPipe 官方 `right_hands.jpg` Case C；實際 baseline/所有 transforms 都輸出 2 candidates，驗 scene-local association、candidate reorder 與 best-vs-second-best separation。
+- [`ASSOCIATION_AMBIGUITY_STRESS.md`](ASSOCIATION_AMBIGUITY_STRESS.md) — Case C 衍生的 synthetic twin-hand proximity stress；實測 candidate collapse / reappearance、非單調 multi-candidate behavior 與 fail-closed implication。
 - [`real_image_repeatability_probe.py`](real_image_repeatability_probe.py) — detector-agnostic metric harness；接收 L0/L5/L17 + inverse transform，計算 anchor / canonical-frame drift。
 - [`mediapipe_repeatability_runner.py`](mediapipe_repeatability_runner.py) — Cold research runner；下載 pinned official model + public fixtures、執行 controlled transforms 與 scene-local candidate association；不是 production runtime owner。
+- [`association_ambiguity_probe.py`](association_ambiguity_probe.py) — Cold synthetic-composite ambiguity stress runner；不是自然影像分布、不是 biometric identity、不是 production gate。
 
 ### Observation / CV references
 
@@ -64,8 +66,9 @@ Normalization / observation research 目前已完成：
 - public multi-hand fixture bounded screen：4 個視覺上有 2–3 hands 的 fixtures 實際 baseline candidate counts 為 `0 / 1 / 1 / 0`；
 - MediaPipe upstream `right_hands.jpg` Case C：baseline 與 7 個 controlled variants 全部穩定輸出 2 candidates，實際 exercised best/second-best association branch；
 - candidate index 已證明不是 stable identity：rotate / crop / mirror 可由 baseline index `0` 變成 selected index `1`；
-- Case C 的 best-vs-second-best separation 約 `3.93–3.97 palm widths`，因此目前是乾淨 association 正例，尚不是 ambiguity stress case。
+- Case C 的 best-vs-second-best separation 約 `3.93–3.97 palm widths`，因此是乾淨 association 正例；
+- synthetic twin-hand proximity stress 已實測 candidate collapse / reappearance：`2.50W→2`、`2.00W→2`、`1.50W→1`、`1.25W→2`、`1.00W 以下→1`，顯示 detector behavior 非單調。
 
-真實影像 evidence 已證明：same-pixels deterministic 不代表 rotate / scale / crop / mirror invariant；人眼看到多手不能替代 detector candidate evidence；detector candidate list position 也不能當 hand identity。目前仍不能直接設 production threshold。
+真實影像與 stress evidence 已證明：same-pixels deterministic 不代表 rotate / scale / crop / mirror invariant；人眼看到多手不能替代 detector candidate evidence；detector candidate list position 不能當 hand identity；association uncertainty 也不能只靠 best-vs-second-best gap，因為第二 candidate 可能直接消失。candidate-count instability 應視為獨立 fail-closed signal。
 
-主要 remaining gaps：association near-tie / candidate-loss stress、更多手型/照片、多 capture / device repeatability、detector-to-detector agreement、line-segmentation uncertainty 與 behavioral regression。Palmistry 仍不進 router。
+目前仍不能直接設 production threshold。主要 remaining gaps：retained-two-candidate near-tie stress、自然影像/更多手型、多 capture / device repeatability、detector-to-detector agreement、line-segmentation uncertainty 與 behavioral regression。Palmistry 仍不進 router。
