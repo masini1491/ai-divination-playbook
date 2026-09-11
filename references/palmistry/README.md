@@ -20,7 +20,9 @@
 - [`OBSERVATION_SCHEMA_DRAFT.md`](OBSERVATION_SCHEMA_DRAFT.md) — source-neutral Palm Observation Fact draft；scene/target selection、task-specific quality、geometry、unknown semantics、tradition projection 與 privacy boundary。
 - [`PHOTO_VALIDATION.md`](PHOTO_VALIDATION.md) — 代表性真實照片 field-coverage / fail-closed validation。
 - [`NORMALIZATION_CONTRACT_DRAFT.md`](NORMALIZATION_CONTRACT_DRAFT.md) — raw image → model adapter → raw geometry → canonical palm basis 的 deterministic normalization contract draft。
-- [`normalization_probe.py`](normalization_probe.py) — Cold、standard-library-only synthetic probe；驗 translation / rotation / scale / mirror / inverse-transform / fail-closed properties，不是 production tool。
+- [`normalization_probe.py`](normalization_probe.py) — Cold、standard-library-only synthetic invariant probe；驗 translation / rotation / scale / mirror / inverse-transform / fail-closed properties，不是 production tool。
+- [`SENSITIVITY_SWEEP.md`](SENSITIVITY_SWEEP.md) — L0/L5/L17 controlled perturbation 與 mirror-convention sensitivity 結果；synthetic research evidence，不是 production tolerance。
+- [`normalization_sensitivity_probe.py`](normalization_sensitivity_probe.py) — Cold、standard-library-only sensitivity executable；16-direction / 4096-combination bounded sweep，不是 production tool。
 
 ### Observation / CV references
 
@@ -47,4 +49,4 @@ CHAT_INIT.md production method set
 README production support list
 ```
 
-目前 normalization 已有 source-specific contract draft，並完成第一輪 synthetic deterministic probe（11 passed / 0 failed）；但尚未建立真實 landmark noise tolerance、camera-mirroring compatibility、cross-device repeatability 或 behavioral regression，因此仍不進 router。
+目前 normalization 已有 source-specific contract draft、ideal synthetic deterministic probe（11 passed / 0 failed），以及 landmark perturbation / mirror-convention sensitivity sweep。後者已證明 small anchor error 會傳入 canonical frame，而漏做 mirror inverse 會造成 frame inversion；但這些仍不是 real-image repeatability 或 production tolerance。下一個主要 evidence gap 是 **real-image landmark repeatability / transform-consistency**，因此仍不進 router。
