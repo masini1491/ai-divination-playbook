@@ -91,7 +91,7 @@ Requested duplicate separation 與 detector candidate count：
 
 [`RETAINED_TWO_CANDIDATE_NEAR_TIE.md`](RETAINED_TWO_CANDIDATE_NEAR_TIE.md) 使用同一 source hand 的兩份 identical copies，requested pair separation 固定 `2.00W`，只掃 pair center bias。Research run `34616780936`。
 
-依最新 engineering integrity guard，requested composition geometry 與 detector post-execution observations分開保存。Requested `2.00W` 不是 measured actual；detector實測 pair distance約在 `2.020–2.043W`。
+Requested composition geometry 與 detector post-execution observations分開保存。Requested `2.00W` 不是 measured actual；detector實測 pair distance約在 `2.020–2.043W`。
 
 所有 11 個 bias points 都保留 2 candidates。最小 observed score gap 出現在 requested center bias `0.00W`：
 
@@ -103,18 +103,40 @@ score gap                   ≈ 0.04375W
 candidate count             = 2
 ```
 
-在 `+0.05W` 時仍保留 2 candidates，score gap約 `0.05205W`，但 best index由 `0` 變成 `1`。因此 retained-two-candidate ambiguity family 已真正 exercised：**候選數穩定，但兩個候選幾乎同樣合理，且小 perturbation 即可造成 ranking swap**。
+在 `+0.05W` 時仍保留 2 candidates，score gap約 `0.05205W`，但 best index由 `0` 變成 `1`。因此 retained-two-candidate ambiguity family 已真正 exercised。
 
-這支持第二個 qualitative fail-closed principle：
+### Natural GTEA two-hand reproduction
+
+[`GTEA_NATURAL_TWO_HAND_REPRODUCTION.md`](GTEA_NATURAL_TWO_HAND_REPRODUCTION.md) 以 GTEA `s2_coffee` direct XML `Left hand + Right hand` 定義 36 個 GT-two-hand annotation samples。Palm-detector stage 實測 `0/1/2 candidates = 1/18/17`，相鄰 selected samples有 18 次 count transition；corrected full Hand Landmarker run也確認同一批 samples 同時存在 `>=2` retention、`<2` loss與 count transition。Candidate-count instability 因此不再只是 synthetic-composite artifact。
+
+### Natural feature study
+
+[`GTEA_NATURAL_FEATURE_STUDY.md`](GTEA_NATURAL_FEATURE_STUDY.md) 從 556 個 direct-XML GTEA 雙手候選池中 deterministic sample 240 frames，使用相同 pinned full Hand Landmarker。Final candidate distribution：
 
 ```text
->=2 candidates retained
-+ materially small best-vs-second gap / ranking instability
-→ association unresolved
-→ target-specific fine geometry fail closed
+0 candidates = 42
+1 candidate  = 129
+2 candidates = 69
 ```
 
-`4.375% palm-width` 只是單一 synthetic-composite observed point，**不是 production cutoff**。
+Retained-2 vs lost-0/1 的 strongest univariate signals：
+
+```text
+area_ratio median          0.719 vs 0.512   (AUC≈0.682)
+smaller-hand area fraction 4.69% vs 3.66%   (AUC≈0.657)
+```
+
+這支持「可見手尺寸平衡」與「較小手是否足夠大」作為未來 observability gate 的候選 feature family，但不支持任何 numeric cutoff。
+
+相反地，本 sample 中：
+
+```text
+centroid separation median 0.37408 vs 0.37455 image diagonals
+frame brightness           111.30 vs 111.98
+blur                       101.22 vs 99.78
+```
+
+幾乎沒有單變量分離能力。`min_poly_gap_diag` 甚至在 retained-2 組更小（`0.0743` vs `0.0954`），因此不能把「兩手越近越容易 collapse」提升成單調規則。Reported p-values 只是 exploratory / uncorrected，而且 temporal frames 並非 independent-IID observations。
 
 ## Cross-case conclusions
 
@@ -130,10 +152,12 @@ candidate count             = 2
 8. candidate list index不能當 scene-local hand identity；
 9. best / second-best inverse-mapped distance與 separation應被保留；
 10. association uncertainty不能只靠 score gap，因為第二 candidate可能直接消失；
-11. candidate-count instability / disappearance / reappearance本身是獨立 uncertainty signal；
+11. candidate-count instability / disappearance / reappearance本身是獨立 uncertainty signal，且已在 natural capture重現；
 12. hand proximity與 detector ambiguity不是單調函數；
 13. 即使 candidate count穩定，best/second gap也可能縮小到 near-tie，且 ranking可在小 perturbation後 swap；
-14. requested composition input與 detector-observed actual必須保持 evidence boundary，不得混寫。
+14. requested composition input與 detector-observed actual必須保持 evidence boundary，不得混寫；
+15. natural two-hand observability較值得優先追蹤 relative smaller-hand scale / visible-area balance，而不是單獨依賴 centroid separation、全圖亮度或 blur；
+16. exploratory feature association不能直接變成 production quality threshold，仍需 sequence-held-out calibration。
 
 ## Traditional interpretation boundary
 
@@ -143,22 +167,23 @@ candidate count             = 2
 
 目前仍不足以 promotion：
 
-1. candidate-count instability 與 retained-two-candidate near-tie 在自然影像 / controlled real captures 的分布；
-2. predeclared ambiguity admission contract與可辯護 threshold；
-3. 多張不同 hand shapes / capture contexts 的 transform-consistency distribution；
-4. same hand / multiple captures 的 pose / distance / lighting / device repeatability；
-5. camera/selfie mirroring reconciliation 與 anatomical side contract；
-6. MediaPipe model/runtime version compatibility；
-7. detector-to-detector agreement；
-8. branch / island / star / minor lines / mounts 等 detector evidence；
-9. palm-line segmentation uncertainty 與 landmark-frame uncertainty 的合成方式；
-10. Bagua / palm-palace source-specific projection geometry；
-11. named patterns / illustrated marks unresolved mapping；
-12. production numeric admission thresholds；
-13. Palmistry behavioral regression，證明 promotion 不影響 Tarot / Meihua / Liuyao routing。
+1. sequence-held-out validation：size balance / smaller-hand scale / truncation feature family是否跨 GTEA sequence 維持 ordering；
+2. natural retained-two-candidate near-tie / ranking-swap distribution；
+3. predeclared ambiguity admission contract與可辯護 threshold；
+4. 多張不同 hand shapes / capture contexts 的 transform-consistency distribution；
+5. same hand / multiple captures 的 pose / distance / lighting / device repeatability；
+6. camera/selfie mirroring reconciliation 與 anatomical side contract；
+7. MediaPipe model/runtime version compatibility；
+8. detector-to-detector agreement；
+9. branch / island / star / minor lines / mounts 等 detector evidence；
+10. palm-line segmentation uncertainty 與 landmark-frame uncertainty 的合成方式；
+11. Bagua / palm-palace source-specific projection geometry；
+12. named patterns / illustrated marks unresolved mapping；
+13. production numeric admission thresholds；
+14. Palmistry behavioral regression，證明 promotion 不影響 Tarot / Meihua / Liuyao routing。
 
 ## Adoption decision
 
 所有 Palmistry external sources、schema、normalization contracts、synthetic probes、MediaPipe runners與 real-image results 仍為 **REFERENCE-ONLY / DRAFT**；production method set 不變。
 
-兩種 association ambiguity family 現在都已有 synthetic detector evidence：A. candidate-count collapse / instability；B. retained-two-candidate near-tie / ranking swap。下一個 bounded research node應轉向**自然影像或 controlled real captures 的 ambiguity / repeatability reproduction，以及 detector/runtime compatibility**，而不是繼續把 synthetic gap壓得更小。現在仍不建立 production threshold，也不 promotion Palmistry routing。
+Association ambiguity family A（candidate-count collapse / instability）現在已有 synthetic 與 natural evidence；family B（retained-two-candidate near-tie / ranking swap）目前仍只有 controlled synthetic evidence。下一個 bounded research node應優先做 **sequence-held-out natural observability validation**，並從 retained-two natural frames screen near-tie / ranking stability；現在仍不建立 production threshold，也不 promotion Palmistry routing。
