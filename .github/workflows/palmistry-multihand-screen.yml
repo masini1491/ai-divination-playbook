@@ -34,21 +34,16 @@ jobs:
           CANDIDATES = [
               {
                   'id': 'mehndi_hands',
-                  'file': 'Mehndi hands.jpg',
+                  'url': 'https://upload.wikimedia.org/wikipedia/commons/a/ac/Mehndi_hands.jpg',
                   'page': 'https://commons.wikimedia.org/wiki/File:Mehndi_hands.jpg',
                   'license': 'CC BY-SA 2.0',
               },
               {
-                  'id': 'three_open_palms_henna',
-                  'file': 'Three open palms placed together each decorated with beautiful henna.jpg',
-                  'page': 'https://commons.wikimedia.org/wiki/File:Three_open_palms_placed_together_each_decorated_with_beautiful_henna.jpg',
-                  'license': 'CC BY-SA 4.0',
-              },
-              {
                   'id': 'bilateral_palmar_crease',
-                  'file': '25.12.2018 Vierfingerfurche, beidseitig.JPG',
+                  'url': 'https://upload.wikimedia.org/wikipedia/commons/2/2b/25.12.2018_Vierfingerfurche%2C_beidseitig.JPG',
                   'page': 'https://commons.wikimedia.org/wiki/File:25.12.2018_Vierfingerfurche,_beidseitig.JPG',
                   'license': 'CC BY-SA 4.0',
+                  'privacy_note': 'source contains camera-location metadata; location values are intentionally not collected',
               },
           ]
 
@@ -81,34 +76,39 @@ jobs:
           summary = {'model_sha256': model_sha, 'mediapipe_version': mp.__version__, 'candidates': []}
           with mp.tasks.vision.HandLandmarker.create_from_options(options) as lm:
               for item in CANDIDATES:
-                  url = 'https://commons.wikimedia.org/wiki/Special:Redirect/file/' + urllib.parse.quote(item['file'])
                   path = Path(item['id'] + '.img')
-                  sha = fetch(url, path)
-                  img = cv2.imread(str(path), cv2.IMREAD_COLOR)
-                  if img is None:
-                      row = {**item, 'sha256': sha, 'decode_error': True}
-                      summary['candidates'].append(row); continue
-                  work = resize(img)
-                  rgb = cv2.cvtColor(work, cv2.COLOR_BGR2RGB)
-                  result = lm.detect(mp.Image(image_format=mp.ImageFormat.SRGB, data=np.ascontiguousarray(rgb)))
-                  hands = []
-                  for i, lms in enumerate(result.hand_landmarks):
-                      xs=[float(p.x) for p in lms]; ys=[float(p.y) for p in lms]
-                      bbox=max(0,max(xs)-min(xs))*max(0,max(ys)-min(ys))
-                      handed=None
-                      if i < len(result.handedness) and result.handedness[i]:
-                          handed=getattr(result.handedness[i][0], 'category_name', None)
-                      hands.append({'index':i,'handedness':handed,'bbox_area_normalized':bbox})
-                  row = {
-                      **item,
-                      'sha256': sha,
-                      'source_shape_h_w': list(img.shape[:2]),
-                      'working_shape_h_w': list(work.shape[:2]),
-                      'candidate_count': len(hands),
-                      'hands': hands,
-                  }
-                  summary['candidates'].append(row)
-                  path.unlink(missing_ok=True)
+                  try:
+                      sha = fetch(item['url'], path)
+                      img = cv2.imread(str(path), cv2.IMREAD_COLOR)
+                      if img is None:
+                          summary['candidates'].append({k:v for k,v in item.items() if k != 'url'} | {'sha256': sha, 'decode_error': True})
+                          continue
+                      work = resize(img)
+                      rgb = cv2.cvtColor(work, cv2.COLOR_BGR2RGB)
+                      result = lm.detect(mp.Image(image_format=mp.ImageFormat.SRGB, data=np.ascontiguousarray(rgb)))
+                      hands = []
+                      for i, lms in enumerate(result.hand_landmarks):
+                          xs=[float(p.x) for p in lms]; ys=[float(p.y) for p in lms]
+                          bbox=max(0,max(xs)-min(xs))*max(0,max(ys)-min(ys))
+                          handed=None
+                          score=None
+                          if i < len(result.handedness) and result.handedness[i]:
+                              handed=getattr(result.handedness[i][0], 'category_name', None)
+                              score=float(getattr(result.handedness[i][0], 'score', 0.0))
+                          hands.append({'index':i,'handedness':handed,'handedness_score':score,'bbox_area_normalized':bbox})
+                      clean = {k:v for k,v in item.items() if k != 'url'}
+                      summary['candidates'].append(clean | {
+                          'sha256': sha,
+                          'source_shape_h_w': list(img.shape[:2]),
+                          'working_shape_h_w': list(work.shape[:2]),
+                          'candidate_count': len(hands),
+                          'hands': hands,
+                      })
+                  except Exception as exc:
+                      clean = {k:v for k,v in item.items() if k != 'url'}
+                      summary['candidates'].append(clean | {'error': type(exc).__name__ + ': ' + str(exc)})
+                  finally:
+                      path.unlink(missing_ok=True)
           model.unlink(missing_ok=True)
           print('=== MULTIHAND_SCREEN_JSON ===')
           print(json.dumps(summary, indent=2))
