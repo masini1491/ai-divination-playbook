@@ -120,6 +120,35 @@ horizontal mirror 77.3400%
 
 Mirror 後 handedness `Left → Right`；inverse 後三 anchors centroid只粗略移約 14 px，但 axis error ≈27.93°、width error ≈35.90%。這比較像 foreground palm landmark geometry 在 mirror + overlap context 下失穩，而不是單純 candidate 跳到很遠的另一掌；但只有三 anchors 且 detector只輸出一個 candidate，不能宣稱 scene-local identity continuity 已證明。
 
+## Multi-hand fixture bounded screen
+
+[`MULTI_HAND_FIXTURE_SCREEN.md`](MULTI_HAND_FIXTURE_SCREEN.md) 進一步用相同 pinned model/runtime 與固定 `0.5` detection/presence thresholds 篩選 public multi-hand scenes；`num_hands=4`，max working dimension 1600 px。
+
+四個視覺上有 2–3 hands 的 fixtures 實際 baseline candidate counts：
+
+```text
+Mehndi hands.jpg                                  0
+25.12.2018 Vierfingerfurche, beidseitig.JPG       1
+Givinghandsandredpushpin.jpg                       1
+Three open palms ... henna.jpg                     0
+```
+
+成功 screening runs：`34613331865`、`34613479425`、`34613728619`。
+
+因此現在有直接 detector evidence 支持：
+
+```text
+visually multiple hands
+!=
+pinned detector returns multiple candidates
+```
+
+這表示 multi-candidate target-selection gate 不能靠 scene description 或人工目測推定；必須先觀察 detector 真正輸出的 candidate set。
+
+此輪依 bounded-discovery / evidence-gap stop rule停止公開圖片擴張。沒有為了得到 `>=2` candidates 而降低 confidence thresholds，因為那會改變目前的實驗 baseline，也不足以建立 production admission rule。
+
+下一次要恢復 multi-candidate association research，優先使用來源可控、已知能穩定觸發 ≥2 candidates 的 fixture strategy，例如 purpose-built/public test fixture、合適的 upstream MediaPipe multi-hand test fixture，或具同意且專為兩手完整分離拍攝的小型 controlled capture。
+
 ## Cross-case conclusions
 
 現在可以用 real-image evidence 支持：
@@ -131,7 +160,9 @@ Mirror 後 handedness `Left → Right`；inverse 後三 anchors centroid只粗�
 5. mirror handedness output 是 detector convention，不是 anatomical fact；
 6. overlapping-hand context 可以大幅放大 mirror instability；
 7. synthetic sensitivity numbers不能直接當 real-image cutoff；
-8. production-like quality gate需要 detector consistency / frame uncertainty evidence。
+8. production-like quality gate需要 detector consistency / frame uncertainty evidence；
+9. human-visible hand count 不能替代 detector candidate evidence；
+10. multi-candidate fixture acquisition 本身需要可重現的 admission contract，而不是無限搜尋或降低 threshold。
 
 ## Traditional interpretation boundary
 
@@ -157,13 +188,14 @@ Mirror 後 handedness `Left → Right`；inverse 後三 anchors centroid只粗�
 10. detector-agnostic repeatability harness self-test PASS；
 11. pinned MediaPipe real-image Case A controlled-transform study；
 12. pinned MediaPipe overlapping-hand Case B controlled-transform study；
-13. normal repository validation workflow PASS。
+13. public multi-hand fixture bounded screen（4 fixtures；candidate counts `0/1/1/0`）；
+14. normal repository validation workflow PASS for the prior real-image evidence baseline；本次 final evidence commit另以其當次 workflow 結果為準。
 
 ## Remaining evidence gaps
 
 目前仍不足以 promotion：
 
-1. 至少一個 baseline 真正輸出 ≥2 detector candidates 的 multi-hand fixture，才能驗 target association / ambiguity；
+1. 一個來源可控、baseline 可重現地輸出 ≥2 detector candidates 的 multi-hand fixture，才能真正驗 target association / ambiguity；
 2. 多張不同 hand shapes / capture contexts 的 transform-consistency distribution；
 3. same hand / multiple captures 的 pose / distance / lighting / device repeatability；
 4. camera/selfie mirroring reconciliation 與 anatomical side contract；
@@ -184,4 +216,4 @@ Mirror 後 handedness `Left → Right`；inverse 後三 anchors centroid只粗�
 
 production method set 不變。
 
-下一個合理 research node：找一個 public scene，使 pinned detector 在 baseline **確實輸出兩個以上 hand candidates**，驗 scene-local matching / ambiguity fail-closed；之後再做 multiple captures / devices。現在仍不建立 production threshold，也不 promotion Palmistry routing。
+下一個合理 research node 不再是 open-ended Commons 圖片搜尋，而是先取得**來源可控、已知可重現地產生 ≥2 candidates** 的 fixture strategy，再驗 scene-local matching / ambiguity fail-closed；之後才做 multiple captures / devices。現在仍不建立 production threshold，也不 promotion Palmistry routing。

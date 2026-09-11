@@ -24,6 +24,7 @@
 - [`SENSITIVITY_SWEEP.md`](SENSITIVITY_SWEEP.md) — L0/L5/L17 controlled perturbation 與 mirror-convention sensitivity；不是 production tolerance。
 - [`normalization_sensitivity_probe.py`](normalization_sensitivity_probe.py) — 16-direction / 4096-combination bounded sensitivity executable。
 - [`REAL_IMAGE_REPEATABILITY.md`](REAL_IMAGE_REPEATABILITY.md) — MediaPipe Case A/B 真實影像 controlled-transform 結果、provenance、fail-closed interpretation 與 remaining gaps。
+- [`MULTI_HAND_FIXTURE_SCREEN.md`](MULTI_HAND_FIXTURE_SCREEN.md) — 固定 MediaPipe baseline 的 public multi-hand fixture bounded screen；記錄 4 個視覺多手場景實際只得到 0/1 candidates 的負面 evidence 與 stop decision。
 - [`real_image_repeatability_probe.py`](real_image_repeatability_probe.py) — detector-agnostic metric harness；接收 L0/L5/L17 + inverse transform，計算 anchor / canonical-frame drift。
 - [`mediapipe_repeatability_runner.py`](mediapipe_repeatability_runner.py) — Cold research runner；下載 pinned official model + public fixtures、執行 controlled transforms 與 scene-local candidate association；不是 production runtime owner。
 
@@ -59,8 +60,9 @@ Normalization / observation research 目前已完成：
 - controlled landmark perturbation / mirror sensitivity sweep；
 - detector-agnostic repeatability harness self-test；
 - pinned MediaPipe `1.0.1` + official Hand Landmarker model 的兩個 public real-image controlled-transform studies；
-- normal repository validation workflow PASS。
+- public multi-hand fixture bounded screen：4 個視覺上有 2–3 hands 的 fixtures 實際 baseline candidate counts 為 `0 / 1 / 1 / 0`；
+- normal repository validation workflow PASS（已驗證前一個 real-image evidence baseline；本次 final commit 另以當次 workflow 為準）。
 
-真實影像 evidence 已證明：same-pixels deterministic 不代表 rotate / scale / crop / mirror invariant；overlapping-hand Case B 在 mirror 後甚至出現約 77.34% canonical drift。因此目前不能直接設 production threshold。
+真實影像 evidence 已證明：same-pixels deterministic 不代表 rotate / scale / crop / mirror invariant；overlapping-hand Case B 在 mirror 後甚至出現約 77.34% canonical drift。Multi-hand screen 又證明「人眼看到多手」不能替代 detector candidate evidence。因此目前不能直接設 production threshold，也不能宣稱 multi-candidate association 已驗證。
 
-主要 remaining gaps：真正輸出 ≥2 detector candidates 的 multi-hand fixture、更多手型/照片、多 capture / device repeatability、detector-to-detector agreement、line-segmentation uncertainty 與 behavioral regression。Palmistry 仍不進 router。
+主要 remaining gaps：來源可控且 baseline 穩定輸出 ≥2 detector candidates 的 fixture、多種手型/照片、多 capture / device repeatability、detector-to-detector agreement、line-segmentation uncertainty 與 behavioral regression。Palmistry 仍不進 router。
