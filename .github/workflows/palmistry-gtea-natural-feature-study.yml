@@ -89,18 +89,18 @@ jobs:
                   for stem,imn,lo,ro in selected:
                       im=decode(z,imn); H,W=im.shape[:2]; diag=math.hypot(W,H)
                       lp,rp=poly(lo),poly(ro); lc,la=centroid_area(lp); rc,ra=centroid_area(rp)
-                      min_area=min(la,ra)/(W*H); mean_area=(la+ra)/(2*W*H); area_ratio=min(la,ra)/max(la,ra)
-                      sep=math.hypot(lc[0]-rc[0],lc[1]-rc[1])/diag
-                      mind=float(np.sqrt(((lp[:,None,:]-rp[None,:,:])**2).sum(2)).min())/diag
-                      def bbox(p): return (p[:,0].min(),p[:,1].min(),p[:,0].max(),p[:,1].max())
+                      min_area=float(min(la,ra)/(W*H)); mean_area=float((la+ra)/(2*W*H)); area_ratio=float(min(la,ra)/max(la,ra))
+                      sep=float(math.hypot(lc[0]-rc[0],lc[1]-rc[1])/diag)
+                      mind=float(np.sqrt(((lp[:,None,:]-rp[None,:,:])**2).sum(2)).min()/diag)
+                      def bbox(p): return (float(p[:,0].min()),float(p[:,1].min()),float(p[:,0].max()),float(p[:,1].max()))
                       a,b=bbox(lp),bbox(rp); ix=max(0,min(a[2],b[2])-max(a[0],b[0])); iy=max(0,min(a[3],b[3])-max(a[1],b[1])); inter=ix*iy
-                      aa=max(0,a[2]-a[0])*max(0,a[3]-a[1]); ba=max(0,b[2]-b[0])*max(0,b[3]-b[1]); biou=inter/(aa+ba-inter) if aa+ba-inter else 0
-                      def border(p): return min(p[:,0].min(),p[:,1].min(),W-1-p[:,0].max(),H-1-p[:,1].max())/min(W,H)
-                      min_border=min(border(lp),border(rp))
+                      aa=max(0,a[2]-a[0])*max(0,a[3]-a[1]); ba=max(0,b[2]-b[0])*max(0,b[3]-b[1]); biou=float(inter/(aa+ba-inter) if aa+ba-inter else 0)
+                      def border(p): return float(min(p[:,0].min(),p[:,1].min(),W-1-p[:,0].max(),H-1-p[:,1].max())/min(W,H))
+                      min_border=float(min(border(lp),border(rp)))
                       gray=cv2.cvtColor(im,cv2.COLOR_BGR2GRAY); bright=float(gray.mean()); contrast=float(gray.std()); blur=float(cv2.Laplacian(gray,cv2.CV_64F).var())
                       mask=np.zeros((H,W),np.uint8); cv2.fillPoly(mask,[lp.astype(np.int32),rp.astype(np.int32)],255); hpix=gray[mask>0]
                       hand_bright=float(hpix.mean()); hand_contrast=float(hpix.std())
-                      det=detect_full(lm,im); count=len(det)
+                      det=detect_full(lm,im); count=int(len(det))
                       rows.append({'stem':stem,'count':count,'min_area_frac':min_area,'mean_area_frac':mean_area,'area_ratio':area_ratio,'centroid_sep_diag':sep,'min_poly_gap_diag':mind,'bbox_iou':biou,'min_border_frac':min_border,'brightness':bright,'contrast':contrast,'blur':blur,'hand_brightness':hand_bright,'hand_contrast':hand_contrast})
 
           features=['min_area_frac','mean_area_frac','area_ratio','centroid_sep_diag','min_poly_gap_diag','bbox_iou','min_border_frac','brightness','contrast','blur','hand_brightness','hand_contrast']
@@ -112,7 +112,7 @@ jobs:
               stats.append({'feature':f,'median_retained2':float(np.median(a)),'median_lost':float(np.median(b)),'auc_retained_gt_lost':auc,'p_two_sided':float(p)})
           stats.sort(key=lambda x:x['p_two_sided'])
           dist=Counter(r['count'] for r in rows)
-          result={'status':'research-only','archive_sha256':ARCHIVE_SHA,'candidate_pool':len(candidates),'requested_sample_n':SAMPLE_N,'actual_sample_n':len(rows),'sample_rule':'evenly spaced over sorted GTEA XML frames with direct Left hand + Right hand objects','final_candidate_count_distribution':{str(k):v for k,v in sorted(dist.items())},'retained2_n':len(retained),'lost_lt2_n':len(lost),'univariate_stats':stats,'top10_rows_by_smallest_min_hand_area':sorted(rows,key=lambda r:r['min_area_frac'])[:10],'evidence_boundary':'all feature values and detector counts are post-execution observations for this bounded sample; univariate p-values are exploratory and uncorrected; no production threshold follows.'}
+          result={'status':'research-only','archive_sha256':ARCHIVE_SHA,'candidate_pool':int(len(candidates)),'requested_sample_n':SAMPLE_N,'actual_sample_n':int(len(rows)),'sample_rule':'evenly spaced over sorted GTEA XML frames with direct Left hand + Right hand objects','final_candidate_count_distribution':{str(k):int(v) for k,v in sorted(dist.items())},'retained2_n':int(len(retained)),'lost_lt2_n':int(len(lost)),'univariate_stats':stats,'top10_rows_by_smallest_min_hand_area':sorted(rows,key=lambda r:r['min_area_frac'])[:10],'evidence_boundary':'all feature values and detector counts are post-execution observations for this bounded sample; univariate p-values are exploratory and uncorrected; no production threshold follows.'}
           print('=== GTEA_NATURAL_FEATURE_STUDY_JSON ===')
           print(json.dumps(result,indent=2))
           if not retained or not lost: raise RuntimeError('study lacks both retained and lost states')
