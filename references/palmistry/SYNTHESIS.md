@@ -2,9 +2,7 @@
 
 Status: **REFERENCE-ONLY｜僅供參考**
 
-Reviewed evidence baseline: `masini1491/ai-divination-playbook@66697df63e122451136364157d66abf5c88440bc`
-
-本檔只收斂外部研究與 Cold validation，不建立 production Palmistry capability，也不修改 `METHOD_ROUTING.md`、`PLAYBOOK_INDEX.json`、`CHAT_INIT.md` 或既有 Tarot / Meihua / Liuyao contract。
+本檔只收斂 external / Cold evidence，不建立 production Palmistry capability，也不修改 `METHOD_ROUTING.md`、`PLAYBOOK_INDEX.json`、`CHAT_INIT.md` 或既有 Tarot / Meihua / Liuyao contract。
 
 ## Architecture conclusion
 
@@ -32,9 +30,9 @@ Scene / Target Selection Gate
 - traditional source 不取得 image observation authority；
 - CV detector class 不取得 Chinese terminology authority。
 
-## Source-neutral coordinate decision
+## Source-neutral coordinate frame
 
-[`NORMALIZATION_CONTRACT_DRAFT.md`](NORMALIZATION_CONTRACT_DRAFT.md) 使用 draft anchors：
+Draft anchors：
 
 ```text
 L0  wrist
@@ -44,17 +42,13 @@ L17 little MCP
 
 wrist→MCP midpoint 定義 longitudinal axis；little→index MCP 的正交分量定義 transverse axis；palm height / width normalization。此 frame 只代表 geometry，不代表 Western line label 或中國掌宮。
 
-`normalization_probe.py` 已用 ideal synthetic fixtures executable-validated：
+Ideal synthetic invariant probe：
 
 ```text
-11 passed, 0 failed
+11 passed / 0 failed
 ```
 
-涵蓋 translation / rotation / uniform-scale invariance、mirror/chirality、crop/resize inverse、missing/degenerate anchors fail closed、target selection 與 perspective gate。
-
-## Synthetic sensitivity evidence
-
-[`SENSITIVITY_SWEEP.md`](SENSITIVITY_SWEEP.md) 對 L0/L5/L17 做 16-direction / 每層 4096 simultaneous combinations：
+Controlled simultaneous-anchor sensitivity sweep：
 
 | Per-anchor bound | Axis angle | Width error | Height error | Max canonical drift |
 |---:|---:|---:|---:|---:|
@@ -64,15 +58,13 @@ wrist→MCP midpoint 定義 longitudinal axis；little→index MCP 的正交分�
 | 2.00% | 2.2906° | 4.019% | 4.000% | 4.341% |
 | 5.00% | 5.7106° | 10.112% | 10.000% | 11.445% |
 
-這些只是 configured-grid maxima，不是 production thresholds。
+這些只是 configured-grid synthetic evidence，不是 production thresholds。
 
-若 detector-only mirror 漏 inverse，在 canonical `x∈[-0.5,0.5]` frame 上可形成 100% max drift；所以 mirror lineage 是 admission gate，不是 optional metadata。
+若 detector-only mirror 漏 inverse，在 canonical `x∈[-0.5,0.5]` frame 上可形成 100% max drift；mirror lineage 因此是 admission gate，不是 optional metadata。
 
 ## Real-image MediaPipe evidence
 
-[`REAL_IMAGE_REPEATABILITY.md`](REAL_IMAGE_REPEATABILITY.md) 現已取得兩個 public real-image controlled-transform studies。
-
-Pinned runtime/model：
+Pinned research baseline：
 
 ```text
 MediaPipe 1.0.1
@@ -82,60 +74,51 @@ Hand Landmarker float16/1
 model SHA256 fbc2a30080c3c557093b5ddfc334698132eb341044ccee322ccf8bcf3607cde1
 ```
 
-Research run `34611890893` 成功；同 evidence commit 的 normal `Validate Playbook` run `34611890817` 亦成功。
-
 ### Case A — single palm
 
 `Right Hand Palm.png` / CC BY-SA 4.0。
 
-Same-pixels rerun = 0 drift。Controlled transform max canonical drift：
+Max canonical drift：
 
 ```text
-rotate +10°       7.3708%
-rotate -10°       4.7228%
-scale 0.75×       1.0967%
-scale 1.25×       2.4488%
-crop 3%           1.6727%
-horizontal mirror 2.9833%
+same pixels        0.0000%
+rotate +10°        7.3708%
+rotate -10°        4.7228%
+scale 0.75×        1.0967%
+scale 1.25×        2.4488%
+crop 3%            1.6727%
+horizontal mirror  2.9833%
 ```
 
-Mirror 後 handedness label `Right → Left`。
+Mirror handedness `Right → Left`。
 
 ### Case B — overlapping two-palm scene
 
 `Open Palm of the Left Hand, Fingers.jpg` / CC BY-SA 4.0。
 
-Scene 視覺上有兩掌，但 MediaPipe baseline 與所有 transforms 都只回 1 candidate，因此此 fixture **沒有真正 exercised multi-candidate target-selection branch**。
-
-Same-pixels rerun = 0 drift。Controlled transform max canonical drift：
+Scene 視覺上有兩掌，但 baseline 與 transforms 都只回 1 candidate。Max canonical drift：
 
 ```text
-rotate +10°        2.1408%
-rotate -10°        8.8829%
-scale 0.75×        4.0574%
-scale 1.25×        1.6918%
-crop 3%            9.2687%
-horizontal mirror 77.3400%
+same pixels         0.0000%
+rotate +10°         2.1408%
+rotate -10°         8.8829%
+scale 0.75×         4.0574%
+scale 1.25×         1.6918%
+crop 3%             9.2687%
+horizontal mirror  77.3400%
 ```
 
-Mirror 後 handedness `Left → Right`；inverse 後三 anchors centroid只粗略移約 14 px，但 axis error ≈27.93°、width error ≈35.90%。這比較像 foreground palm landmark geometry 在 mirror + overlap context 下失穩，而不是單純 candidate 跳到很遠的另一掌；但只有三 anchors 且 detector只輸出一個 candidate，不能宣稱 scene-local identity continuity 已證明。
+Mirror handedness `Left → Right`。這組巨幅 mirror instability 不能被解讀為 anatomical-side evidence。
 
-## Multi-hand fixture bounded screen
+### Public multi-hand bounded screen
 
-[`MULTI_HAND_FIXTURE_SCREEN.md`](MULTI_HAND_FIXTURE_SCREEN.md) 進一步用相同 pinned model/runtime 與固定 `0.5` detection/presence thresholds 篩選 public multi-hand scenes；`num_hands=4`，max working dimension 1600 px。
-
-四個視覺上有 2–3 hands 的 fixtures 實際 baseline candidate counts：
+[`MULTI_HAND_FIXTURE_SCREEN.md`](MULTI_HAND_FIXTURE_SCREEN.md) 用相同 pinned runtime/model 與固定 `0.5` thresholds 篩選 4 個視覺上有 2–3 hands 的 public scenes，baseline candidate counts 為：
 
 ```text
-Mehndi hands.jpg                                  0
-25.12.2018 Vierfingerfurche, beidseitig.JPG       1
-Givinghandsandredpushpin.jpg                       1
-Three open palms ... henna.jpg                     0
+0 / 1 / 1 / 0
 ```
 
-成功 screening runs：`34613331865`、`34613479425`、`34613728619`。
-
-因此現在有直接 detector evidence 支持：
+因此已有直接 detector evidence 支持：
 
 ```text
 visually multiple hands
@@ -143,26 +126,72 @@ visually multiple hands
 pinned detector returns multiple candidates
 ```
 
-這表示 multi-candidate target-selection gate 不能靠 scene description 或人工目測推定；必須先觀察 detector 真正輸出的 candidate set。
+沒有為了湊 `>=2` 而降低 threshold。
 
-此輪依 bounded-discovery / evidence-gap stop rule停止公開圖片擴張。沒有為了得到 `>=2` candidates 而降低 confidence thresholds，因為那會改變目前的實驗 baseline，也不足以建立 production admission rule。
+### Case C — upstream MediaPipe multi-hand fixture
 
-下一次要恢復 multi-candidate association research，優先使用來源可控、已知能穩定觸發 ≥2 candidates 的 fixture strategy，例如 purpose-built/public test fixture、合適的 upstream MediaPipe multi-hand test fixture，或具同意且專為兩手完整分離拍攝的小型 controlled capture。
+[`UPSTREAM_MULTI_HAND_ASSOCIATION.md`](UPSTREAM_MULTI_HAND_ASSOCIATION.md) 使用 MediaPipe 官方 `right_hands.jpg` test fixture：
+
+```text
+upstream revision: 8dd04551858308f3003ace87632d7308d6a62212
+fixture SHA256: 4b5134daa4cb60465535239535f9f74c2842aba3aa5fd30bf04ef5678f93d87f
+research run: 34614749960
+```
+
+官方 Python / C++ tests 都明確把它當 two-hand fixture；我們自己的 pinned Python runtime 亦得到：
+
+```text
+baseline candidates = 2
+all 7 controlled variants = 2 candidates
+```
+
+這使 scene-local best-vs-second-best branch 首次由 real detector output 真正 exercised。
+
+Association evidence：
+
+| Variant | Selected index | Best mean distance | Second-best | Separation |
+|---|---:|---:|---:|---:|
+| same-pixels | 0 | 0.0000% | 397.3044% | 397.3044% |
+| rotate +10° | 1 | 3.3253% | 395.8929% | 392.5676% |
+| rotate -10° | 1 | 2.8716% | 397.2671% | 394.3955% |
+| scale 0.75× | 0 | 0.7345% | 397.8279% | 397.0934% |
+| scale 1.25× | 0 | 0.7066% | 397.3751% | 396.6685% |
+| crop 3% | 1 | 2.3551% | 396.6983% | 394.3432% |
+| mirror | 1 | 4.8491% | 399.2808% | 394.4317% |
+
+Key finding：**candidate list index is not stable identity**。Baseline target 是 index `0`，但 rotate / crop / mirror 後 scene-local best match 會出現在 index `1`。因此 target association 必須靠 geometry / uncertainty evidence，而不能靠 detector list position。
+
+Case C geometry max canonical drift：
+
+```text
+same pixels         0.0000%
+rotate +10°         5.9313%
+rotate -10°         6.4146%
+scale 0.75×         0.8897%
+scale 1.25×         0.6691%
+crop 3%             3.3916%
+horizontal mirror  12.2287%
+```
+
+Mirror handedness again `Right → Left`。
+
+Case C 是乾淨 association 正例：best-vs-second-best separation 約 `3.93–3.97 palm widths`。因此**不能**宣稱 ambiguity fail-closed 已驗證；near-tie / candidate-loss stress 還沒做。
 
 ## Cross-case conclusions
 
-現在可以用 real-image evidence 支持：
+現在可以用 executable / real-image evidence 支持：
 
-1. **same-pixels deterministic 不等於 transform invariant**；
-2. exact inverse transform 只能消除已知 image-space transform，不能消除 detector本身對 transform 的 sensitivity；
-3. rotation error具 image/context-specific asymmetry，不能以單一角度 tolerance預測；
-4. crop / scale也能改變 landmark geometry；
-5. mirror handedness output 是 detector convention，不是 anatomical fact；
+1. same-pixels deterministic 不等於 transform invariant；
+2. exact inverse transform 只能消除已知 image-space transform，不能消除 detector sensitivity；
+3. rotation error具 image/context-specific asymmetry；
+4. crop / scale 也能改變 landmark geometry；
+5. detector handedness / mirror output 不是 anatomical hand-side fact；
 6. overlapping-hand context 可以大幅放大 mirror instability；
 7. synthetic sensitivity numbers不能直接當 real-image cutoff；
-8. production-like quality gate需要 detector consistency / frame uncertainty evidence；
-9. human-visible hand count 不能替代 detector candidate evidence；
-10. multi-candidate fixture acquisition 本身需要可重現的 admission contract，而不是無限搜尋或降低 threshold。
+8. human-visible hand count不能替代 detector candidate evidence；
+9. candidate list index不能當 scene-local hand identity；
+10. best / second-best inverse-mapped distance與 separation應被保留為 association uncertainty evidence；
+11. Case C 證明 association可成功，但因 separation太大，尚未驗 near-tie ambiguity fail-closed。
 
 ## Traditional interpretation boundary
 
@@ -174,39 +203,23 @@ pinned detector returns multiple candidates
 - `天／人／地紋 ↔ heart/head/life`、`玉柱紋 ↔ fate line` 仍為 `PROHIBITED_ASSUMPTION`；
 - named pattern 必須保留 source / anatomical scope / geometry basis。
 
-## Validation completed
-
-1. 中國傳統 source provenance baseline；
-2. source-specific rule-family normalization；
-3. Palm Observation Fact draft v2；
-4. public real-photo field-coverage / fail-closed review；
-5. upstream preprocessing / rectification implementation review；
-6. source-neutral normalization contract；
-7. ideal synthetic invariant probe：11/11 PASS；
-8. controlled landmark perturbation sensitivity sweep；
-9. mirror-convention failure magnitude check；
-10. detector-agnostic repeatability harness self-test PASS；
-11. pinned MediaPipe real-image Case A controlled-transform study；
-12. pinned MediaPipe overlapping-hand Case B controlled-transform study；
-13. public multi-hand fixture bounded screen（4 fixtures；candidate counts `0/1/1/0`）；
-14. normal repository validation workflow PASS for the prior real-image evidence baseline；本次 final evidence commit另以其當次 workflow 結果為準。
-
 ## Remaining evidence gaps
 
 目前仍不足以 promotion：
 
-1. 一個來源可控、baseline 可重現地輸出 ≥2 detector candidates 的 multi-hand fixture，才能真正驗 target association / ambiguity；
-2. 多張不同 hand shapes / capture contexts 的 transform-consistency distribution；
-3. same hand / multiple captures 的 pose / distance / lighting / device repeatability；
-4. camera/selfie mirroring reconciliation 與 anatomical side contract；
-5. MediaPipe model/runtime version compatibility；
-6. detector-to-detector agreement；
-7. branch / island / star / minor lines / mounts 等 detector evidence；
-8. palm-line segmentation uncertainty 與 landmark-frame uncertainty 的合成方式；
-9. Bagua / palm-palace source-specific projection geometry；
-10. named patterns / illustrated marks unresolved mapping；
-11. production numeric admission thresholds；
-12. Palmistry behavioral regression，證明 promotion 不影響 Tarot / Meihua / Liuyao routing。
+1. association ambiguity stress：near-tie、candidate reorder、candidate disappearance / appearance；
+2. predeclared ambiguity admission contract與可辯護 threshold；
+3. 多張不同 hand shapes / capture contexts 的 transform-consistency distribution；
+4. same hand / multiple captures 的 pose / distance / lighting / device repeatability；
+5. camera/selfie mirroring reconciliation 與 anatomical side contract；
+6. MediaPipe model/runtime version compatibility；
+7. detector-to-detector agreement；
+8. branch / island / star / minor lines / mounts 等 detector evidence；
+9. palm-line segmentation uncertainty 與 landmark-frame uncertainty 的合成方式；
+10. Bagua / palm-palace source-specific projection geometry；
+11. named patterns / illustrated marks unresolved mapping；
+12. production numeric admission thresholds；
+13. Palmistry behavioral regression，證明 promotion 不影響 Tarot / Meihua / Liuyao routing。
 
 ## Adoption decision
 
@@ -216,4 +229,4 @@ pinned detector returns multiple candidates
 
 production method set 不變。
 
-下一個合理 research node 不再是 open-ended Commons 圖片搜尋，而是先取得**來源可控、已知可重現地產生 ≥2 candidates** 的 fixture strategy，再驗 scene-local matching / ambiguity fail-closed；之後才做 multiple captures / devices。現在仍不建立 production threshold，也不 promotion Palmistry routing。
+下一個合理 bounded research node：**association ambiguity stress**。使用已知 two-candidate fixture，透過受控 perturbation 讓 best / second-best separation 縮小，觀察 ranking stability、swap、candidate loss，並驗 fail-closed evidence contract。現在仍不建立 production threshold，也不 promotion Palmistry routing。
