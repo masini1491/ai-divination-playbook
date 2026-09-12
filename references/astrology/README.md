@@ -68,7 +68,7 @@ Exact reviewed revisions、license evidence、可借鑑範圍與 not-adopted bou
 
 ## 4. Executable research evidence
 
-目前已建立三組 Cold executable research node；都不是 production engine：
+目前已建立四組 Cold executable research node；都不是 production engine：
 
 ### Engine cross-implementation comparison
 
@@ -110,6 +110,27 @@ multi-passage / angular-wrap failure modes
 ```
 
 12 個 2020 lunar-phase benchmark sample 的計算結果都落在外部 benchmark 分鐘標記 ±25 秒內，並低於該 upstream test suite 的 90 秒門檻；但這不等於 sub-25-second cross-engine certification，因 benchmark 本身只有分鐘解析度。Station timestamps 目前仍是 single-engine self-consistency evidence，尚未跨 engine 驗證。
+
+### Transit-to-natal / ingress / timezone-DST
+
+- [`TRANSIT_NATAL_INGRESS_TIMEZONE_RESULTS.md`](TRANSIT_NATAL_INGRESS_TIMEZONE_RESULTS.md)
+- [`TIMEZONE_DST_CONTRACT_DRAFT.md`](TIMEZONE_DST_CONTRACT_DRAFT.md)
+- [`transit_natal_timezone_probe.py`](transit_natal_timezone_probe.py)
+
+本輪以 synthetic fixed natal longitude、Mercury retrograde passages、Venus sign-boundary crossings 與 Python `zoneinfo` 驗證：
+
+```text
+transit → fixed natal target
+multi-passage identity under retrograde
+target uncertainty → timing uncertainty
+direct ingress / retrograde return / direct re-ingress
+UTC fact vs IANA-local rendering
+DST nonexistent / ambiguous wall time
+23h / 25h local-day search windows
+fixed offset != timezone identity
+```
+
+Timezone / DST 文件仍是 Cold contract draft，不是 production input contract。
 
 以上結果只收窄 evidence gap，不建立 production tolerance 或正式 input contract。
 
