@@ -21,6 +21,7 @@
 - [`PHOTO_VALIDATION.md`](PHOTO_VALIDATION.md) — 代表性真實照片 field-coverage / fail-closed validation。
 - [`NORMALIZATION_CONTRACT_DRAFT.md`](NORMALIZATION_CONTRACT_DRAFT.md) — raw image → model adapter → raw geometry → canonical palm basis 的 deterministic normalization contract draft。
 - [`MULTICAPTURE_DATASET_GATE.md`](MULTICAPTURE_DATASET_GATE.md) — independent multi-capture / device repeatability 的 dataset qualification owner；區分 public availability、runtime acquisition、data-use permission 與 capture-domain fit。Tongji/XINHUA 為 contactless multi-session 首選但 permission 尚未閉合；THUPALMLAB 研究用途明確但為 scanner-domain control；MPW-180 是未來 mobile/device 候選但目前 release surface 尚未完成。
+- [`THUPALMLAB_DOMAIN_COMPATIBILITY.md`](THUPALMLAB_DOMAIN_COMPATIBILITY.md) — user-supplied THUPALMLAB subject-1 left-palm 8 impressions 的 bounded runtime probe；pinned MediaPipe 1.0.1 / 0.5 / IMAGE baseline 在 8/8 影像皆輸出 0 candidates，因此此 scanner sample 對目前 full-hand canonical observation runtime 為 negative compatibility result；不得外推為 dataset-wide failure。
 - [`normalization_probe.py`](normalization_probe.py) — Cold synthetic invariant probe；驗 translation / rotation / scale / mirror / inverse-transform / fail-closed properties，不是 production tool。
 - [`SENSITIVITY_SWEEP.md`](SENSITIVITY_SWEEP.md) — L0/L5/L17 controlled perturbation 與 mirror-convention sensitivity；不是 production tolerance。
 - [`normalization_sensitivity_probe.py`](normalization_sensitivity_probe.py) — 16-direction / 4096-combination bounded sensitivity executable。
@@ -66,6 +67,6 @@ README production support list
 
 Normalization / observation research 目前已完成 source-neutral contract、synthetic invariants / sensitivity、真實影像 controlled-transform repeatability、multi-hand candidate / association ambiguity、GTEA natural two-hand reproduction / feature study / sequence-held-out validation，以及 natural retained-two near-tie negative reproduction screen。
 
-Multi-capture dataset qualification 也已完成第一輪：Tongji 與 XINHUA 提供最合適的 contactless multi-session 結構但 reuse permission 尚未閉合；THUPALMLAB 已有明確 non-commercial research / education permission，但屬 scanner-domain 且本次執行環境未能驗證 archive acquisition；MPW-180 最接近 multi-device mobile capture，但目前 repository 的 dataset DOI/link 仍未發布、README 所述 dataset-license artifact 亦尚不存在。這些狀態不得互相替代或提升 evidence precision。
+Multi-capture dataset qualification 已完成第一輪：Tongji 與 XINHUA 提供最合適的 contactless multi-session 結構但 reuse permission 尚未閉合；MPW-180 最接近 multi-device mobile capture，但目前 repository 的 dataset DOI/link 仍未發布、README 所述 dataset-license artifact 亦尚不存在。THUPALMLAB 已有明確 non-commercial research / education permission，且現在已取得 user-supplied sample；但 pinned MediaPipe 1.0.1 baseline 對 subject-1 left-palm 的 8 次 scanner impressions 實測為 `0 candidates = 8/8`，因此只建立 bounded scanner-domain runtime incompatibility evidence，不能外推成 THUPALMLAB dataset-wide detector failure。
 
-目前仍不能直接設 production threshold。主要 remaining gaps：真正 permission-qualified 的 multi-capture / device repeatability、detector-to-detector agreement、line-segmentation uncertainty、可辯護的 predeclared admission calibration 與 behavioral regression。Palmistry 仍不進 router。
+目前仍不能直接設 production threshold。主要 remaining gaps：真正 permission-qualified 的 contactless multi-capture / device repeatability、detector-to-detector agreement、line-segmentation uncertainty、可辯護的 predeclared admission calibration 與 behavioral regression。Palmistry 仍不進 router。
