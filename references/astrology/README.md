@@ -66,7 +66,37 @@ birth / event input + provenance
 
 Exact reviewed revisions、license evidence、可借鑑範圍與 not-adopted boundary 見 [`SOURCE_REGISTRY.md`](SOURCE_REGISTRY.md)。
 
-## 4. Promotion is explicitly out of scope
+## 4. Executable research evidence
+
+目前已建立兩個 Cold executable research node；都不是 production engine：
+
+### Engine cross-implementation comparison
+
+- [`ENGINE_COMPARISON_RESULTS.md`](ENGINE_COMPARISON_RESULTS.md)
+- [`engine_comparison_probe.py`](engine_comparison_probe.py)
+
+第一輪比較使用 `kounkt/tri-horoscope` 的 fictional fixtures 作 Astronomy-Engine-family pinned output，與本地 `pyswisseph 2.10.03` 比較。
+
+重要限制：本次 runtime 雖要求 `FLG_SWIEPH`，實際 calculation flags 回報 `FLG_MOSEPH`，因此目前只能稱為：
+
+```text
+Swiss Ephemeris API / Moshier fallback
+vs
+Astronomy Engine family
+```
+
+不能稱為 `.se1` / DE441 Swiss comparison。
+
+### Unknown birth-time sensitivity
+
+- [`UNKNOWN_TIME_SENSITIVITY_RESULTS.md`](UNKNOWN_TIME_SENSITIVITY_RESULTS.md)
+- [`unknown_time_sensitivity_probe.py`](unknown_time_sensitivity_probe.py)
+
+第一輪 full-day 15-minute-grid 結果支持：angles / houses 對未知出生時間必須 fail closed；Moon 也需要 uncertainty-aware handling，不能單純以 local noon sign 取代完整不確定區間。
+
+以上結果只收窄 evidence gap，不建立 production tolerance 或正式 input contract。
+
+## 5. Promotion is explicitly out of scope
 
 本輪只建立 evidence/source architecture。任何未來 production admission 至少還需要獨立驗證：
 
@@ -84,7 +114,7 @@ source / license audit
 
 完成上述研究也**不自動**代表必須進 production router。
 
-## 5. Parallel-work boundary
+## 6. Parallel-work boundary
 
 建立本目錄時，`references/palmistry/**` 有另一條平行研究線進行中。本研究 branch 只修改：
 
