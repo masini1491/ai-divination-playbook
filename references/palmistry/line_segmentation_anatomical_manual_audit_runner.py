@@ -95,40 +95,142 @@ def make_html(template: dict[str, Any]) -> str:
     payload = json.dumps(template, ensure_ascii=False)
     return f'''<!doctype html>
 <meta charset="utf-8">
-<title>Palm-line blind manual audit</title>
+<title>掌紋三大主線盲標註</title>
 <style>
-body{{font-family:system-ui,sans-serif;background:#111;color:#eee;margin:18px}}
-button,select,input{{margin:4px;padding:7px}} canvas{{border:1px solid #777;max-width:92vw;height:auto}}
-.row{{margin:8px 0}} .warn{{color:#ffcc66}} pre{{white-space:pre-wrap}}
+body{{font-family:system-ui,sans-serif;background:#111;color:#eee;margin:18px;max-width:1100px}}
+button{{margin:4px;padding:10px 14px;font-size:15px;cursor:pointer}}
+canvas{{border:1px solid #777;max-width:92vw;height:auto}}
+.row{{margin:10px 0}}
+.warn{{color:#ffcc66}}
+.box{{border:1px solid #555;border-radius:8px;padding:12px;margin:10px 0;background:#1a1a1a}}
+.class-grid,.status-grid{{display:flex;flex-wrap:wrap;gap:6px}}
+.class-btn.active{{outline:3px solid #fff;font-weight:700}}
+#class-heart_line{{border-color:#ff5a5a}}
+#class-head_line{{border-color:#ffd54a}}
+#class-life_line{{border-color:#5ad67d}}
+.current{{font-size:20px;font-weight:700;margin:10px 0}}
+.guide{{font-size:16px;line-height:1.5}}
+.progress{{font-weight:700}}
+pre{{white-space:pre-wrap;font-size:12px}}
 </style>
-<h2>Blind palm-line manual audit</h2>
-<p class="warn">Do not open model predictions before freezing this annotation JSON and recording its SHA256.</p>
-<div class="row"><b id="name"></b> <span id="idx"></span></div>
-<div class="row">
-Class <select id="cls"><option>heart_line</option><option>head_line</option><option>life_line</option></select>
-<button onclick="setStatus('observable')">observable</button>
-<button onclick="setStatus('uncertain')">uncertain</button>
-<button onclick="setStatus('not_observable')">not_observable</button>
-<button onclick="undoPoint()">undo point</button>
-<button onclick="clearClass()">clear class</button>
+<h2>掌紋三大主線盲標註</h2>
+<p class="warn">這個頁面只顯示 blind palm image，不含任何模型預測。完成並凍結 annotations.json 以前不要查看模型結果。</p>
+<div class="box">
+<b>你要找的是這三條「主要皺褶」：</b>
+<ul>
+<li><b style="color:#ff7777">感情線（heart_line）</b>：四根手指根部下方、最靠上的主要橫向皺褶，通常由小指側往食指／中指方向。</li>
+<li><b style="color:#ffe16a">智慧線（head_line）</b>：掌心中段的主要橫向或斜向皺褶，通常由拇指與食指之間附近往小指側。</li>
+<li><b style="color:#6fe08d">生命線（life_line）</b>：由拇指與食指之間附近開始，繞著拇指根部外圍往手腕方向彎下的弧形主要皺褶。</li>
+</ul>
+<div>如果你無法可靠辨認某一條，就選「看不到／無法辨認」，不要猜。</div>
 </div>
-<div class="row"><button onclick="prevImg()">previous</button><button onclick="nextImg()">next</button><button onclick="downloadJSON()">download annotations.json</button></div>
+<div class="row"><b id="name"></b> <span id="idx"></span></div>
+<div class="progress" id="progress"></div>
+<div class="box">
+<div><b>步驟 1：先選你現在要標哪一條線</b></div>
+<div class="class-grid">
+<button class="class-btn" id="class-heart_line" onclick="setClass('heart_line')">感情線<br><small>heart_line</small></button>
+<button class="class-btn" id="class-head_line" onclick="setClass('head_line')">智慧線<br><small>head_line</small></button>
+<button class="class-btn" id="class-life_line" onclick="setClass('life_line')">生命線<br><small>life_line</small></button>
+</div>
+<div class="current" id="current"></div>
+<div class="guide" id="guide"></div>
+</div>
+<div class="box">
+<div><b>步驟 2：判斷這條線在這張手掌上是否能辨認</b></div>
+<div class="status-grid">
+<button id="st-observable" onclick="setStatus('observable')"></button>
+<button id="st-uncertain" onclick="setStatus('uncertain')"></button>
+<button id="st-not_observable" onclick="setStatus('not_observable')"></button>
+</div>
+<div>只有選「看得到，可以畫」後，才在圖片上沿著該皺褶中心依序點幾個點（至少 2 點；彎曲處多點幾個）。</div>
+<div><button onclick="undoPoint()">復原上一個點</button><button onclick="clearClass()">清除目前這條線</button></div>
+</div>
+<div class="row"><button onclick="prevImg()">上一張</button><button onclick="nextImg()">下一張</button><button onclick="downloadJSON()">全部完成後下載 annotations.json</button></div>
 <canvas id="cv" width="512" height="512"></canvas>
 <pre id="state"></pre>
 <script>
-const data={payload}; let i=0; const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
-const img=new Image();
+const data={payload};
+const classes=['heart_line','head_line','life_line'];
+const labels={{heart_line:'感情線',head_line:'智慧線',life_line:'生命線'}};
+const guides={{
+  heart_line:'位置提示：四根手指根部下方、最靠上的主要橫向皺褶；通常由小指側往食指／中指方向。',
+  head_line:'位置提示：掌心中段的主要橫向或斜向皺褶；通常由拇指與食指之間附近往小指側。',
+  life_line:'位置提示：從拇指與食指之間附近開始，繞拇指根部外圍往手腕彎下的弧形主要皺褶。'
+}};
 const colors={{heart_line:'#ff5a5a',head_line:'#ffd54a',life_line:'#5ad67d'}};
+let i=0;
+let currentClass='heart_line';
+const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
+const img=new Image();
 function rec(){{return data.images[i]}}
-function ann(){{return rec().annotations[document.getElementById('cls').value]}}
-function load(){{img.onload=draw; img.src='reference_blind/'+rec().blind_image; document.getElementById('name').textContent=rec().file; document.getElementById('idx').textContent=`${{i+1}}/${{data.images.length}}`;}}
-function draw(){{ctx.clearRect(0,0,512,512);ctx.drawImage(img,0,0,512,512);for(const c of Object.keys(colors)){{const a=rec().annotations[c],p=a.points_xy;ctx.strokeStyle=colors[c];ctx.fillStyle=colors[c];ctx.lineWidth=2;if(p.length){{ctx.beginPath();ctx.moveTo(p[0][0],p[0][1]);for(let k=1;k<p.length;k++)ctx.lineTo(p[k][0],p[k][1]);ctx.stroke();for(const q of p){{ctx.beginPath();ctx.arc(q[0],q[1],2.5,0,Math.PI*2);ctx.fill();}}}}}}document.getElementById('state').textContent=JSON.stringify(rec().annotations,null,2);}}
-cv.addEventListener('click',e=>{{const r=cv.getBoundingClientRect(),x=Math.round((e.clientX-r.left)*512/r.width),y=Math.round((e.clientY-r.top)*512/r.height);if(ann().status==='not_observable'||ann().status==='unset')return;ann().points_xy.push([Math.max(0,Math.min(511,x)),Math.max(0,Math.min(511,y))]);draw();}});
-function setStatus(s){{ann().status=s;if(s==='not_observable')ann().points_xy=[];draw();}}
-function undoPoint(){{ann().points_xy.pop();draw();}} function clearClass(){{ann().points_xy=[];ann().status='unset';draw();}}
-function prevImg(){{i=Math.max(0,i-1);load();}} function nextImg(){{i=Math.min(data.images.length-1,i+1);load();}}
-function downloadJSON(){{const blob=new Blob([JSON.stringify(data,null,2)],{{type:'application/json'}}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='annotations.json';a.click();URL.revokeObjectURL(a.href);}}
-document.getElementById('cls').addEventListener('change',draw);load();
+function ann(){{return rec().annotations[currentClass]}}
+function isComplete(a){{return ['observable','uncertain','not_observable'].includes(a.status) && (a.status!=='observable' || a.points_xy.length>=2)}}
+function imageProblems(r){{
+  const p=[];
+  for(const c of classes){{
+    const a=r.annotations[c];
+    if(!['observable','uncertain','not_observable'].includes(a.status)) p.push(labels[c]+' 尚未選狀態');
+    else if(a.status==='observable' && a.points_xy.length<2) p.push(labels[c]+' 至少需要 2 個點');
+  }}
+  return p;
+}}
+function allProblems(){{
+  const p=[];
+  for(let n=0;n<data.images.length;n++) for(const x of imageProblems(data.images[n])) p.push((n+1)+'/10 '+x);
+  return p;
+}}
+function load(){{
+  img.onload=draw;
+  img.src='reference_blind/'+rec().blind_image;
+  document.getElementById('name').textContent=rec().file;
+  document.getElementById('idx').textContent=(i+1)+'/'+data.images.length;
+}}
+function setClass(c){{currentClass=c;draw()}}
+function draw(){{
+  ctx.clearRect(0,0,512,512);ctx.drawImage(img,0,0,512,512);
+  for(const c of classes){{
+    const a=rec().annotations[c],p=a.points_xy;
+    ctx.strokeStyle=colors[c];ctx.fillStyle=colors[c];ctx.lineWidth=2;
+    if(p.length){{
+      ctx.beginPath();ctx.moveTo(p[0][0],p[0][1]);
+      for(let k=1;k<p.length;k++)ctx.lineTo(p[k][0],p[k][1]);
+      ctx.stroke();
+      for(const q of p){{ctx.beginPath();ctx.arc(q[0],q[1],2.5,0,Math.PI*2);ctx.fill();}}
+    }}
+  }}
+  for(const c of classes) document.getElementById('class-'+c).classList.toggle('active',c===currentClass);
+  document.getElementById('current').textContent='目前正在標：'+labels[currentClass]+'（'+currentClass+'）';
+  document.getElementById('guide').textContent=guides[currentClass];
+  document.getElementById('st-observable').textContent=labels[currentClass]+'：看得到，可以畫（observable）';
+  document.getElementById('st-uncertain').textContent=labels[currentClass]+'：不確定是哪條／路徑不清楚（uncertain）';
+  document.getElementById('st-not_observable').textContent=labels[currentClass]+'：看不到／無法辨認（not_observable）';
+  const imageDone=classes.filter(c=>isComplete(rec().annotations[c])).length;
+  let totalDone=0;for(const r of data.images)for(const c of classes)if(isComplete(r.annotations[c]))totalDone++;
+  document.getElementById('progress').textContent='本張完成 '+imageDone+'/3；全部完成 '+totalDone+'/30';
+  document.getElementById('state').textContent=JSON.stringify(rec().annotations,null,2);
+}}
+cv.addEventListener('click',e=>{{
+  if(ann().status!=='observable')return;
+  const r=cv.getBoundingClientRect(),x=Math.round((e.clientX-r.left)*512/r.width),y=Math.round((e.clientY-r.top)*512/r.height);
+  ann().points_xy.push([Math.max(0,Math.min(511,x)),Math.max(0,Math.min(511,y))]);draw();
+}});
+function setStatus(s){{ann().status=s;if(s!=='observable')ann().points_xy=[];draw()}}
+function undoPoint(){{ann().points_xy.pop();draw()}}
+function clearClass(){{ann().points_xy=[];ann().status='unset';draw()}}
+function prevImg(){{i=Math.max(0,i-1);load()}}
+function nextImg(){{
+  const p=imageProblems(rec());
+  if(p.length){{alert('這張還沒完成：\n'+p.join('\n'));return;}}
+  i=Math.min(data.images.length-1,i+1);load();
+}}
+function downloadJSON(){{
+  const p=allProblems();
+  if(p.length){{alert('還不能下載正式標註，尚有未完成項目：\n'+p.slice(0,12).join('\n')+(p.length>12?'\n...':'') );return;}}
+  const blob=new Blob([JSON.stringify(data,null,2)],{{type:'application/json'}}),a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);a.download='annotations.json';a.click();URL.revokeObjectURL(a.href);
+}}
+load();
 </script>'''
 
 
