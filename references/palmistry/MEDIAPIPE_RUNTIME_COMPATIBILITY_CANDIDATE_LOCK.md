@@ -17,7 +17,7 @@ same explicit raw-frame contract
 same detector options / thresholds
 ```
 
-本 lock 不代表 baseline installed wheel identity 已完成 reconciliation，也不代表 1.0.0 已安裝或執行。
+本 lock 不代表 historical MOHI installed wheel identity 已完成 reconciliation，也不代表 1.0.0 已安裝或執行。
 
 ## Public package evidence
 
@@ -31,7 +31,7 @@ mediapipe 1.0.0
 released 2026-07-27
 ```
 
-Both releases provide `py3-none-manylinux_2_28_x86_64` wheels, matching the existing x86_64 WSL/Linux research platform family。
+Both releases provide `py3-none-manylinux_2_28_x86_64` wheels, matching the chosen x86_64 Linux/WSL reconstruction platform family。
 
 ### Candidate exact wheel identities
 
@@ -56,8 +56,6 @@ PyPI SHA256
 ```
 
 These public hashes identify candidate wheel artifacts only。
-
-The existing installed baseline environment must still prove whether its installed `mediapipe 1.0.1` came from the exact public wheel above；version-string equality alone is insufficient。
 
 ## GitHub / package-version reconciliation caveat
 
@@ -92,7 +90,7 @@ upstream_revision = unresolved
 
 until a defensible package-to-repository mapping is established。
 
-This is not a blocker for a wheel-to-wheel runtime comparison as long as wheel / installed-package identities and raw-frame behavior are explicit。
+This is not a blocker for a wheel-to-wheel runtime comparison as long as wheel identities and raw-frame behavior are explicit。
 
 ## Why 1.0.0 is selected
 
@@ -153,9 +151,48 @@ The study must record：
 
 If the two runtimes cannot consume the same explicit pixel frame without hidden reorientation, stop and classify as `raw_frame_policy_mismatch` before landmark comparison。
 
-## Phase 0 still required locally
+## Post-scan provenance amendment
 
-Before MOHI execution, the existing baseline environment must report at least：
+A read-only local provenance scan found：
+
+```text
+frozen MOHI artifact:
+mediapipe = 1.0.1
+model SHA256 = resolved
+source ZIP SHA256 = resolved
+result JSON SHA256 = a4fbe499b6070a75e179c07de91cc3eef52d63392164d8288eb9065f5054bac0
+
+current Windows Python 3.13.15:
+mediapipe 1.0.1 present with dist-info / RECORD
+
+current WSL Conda envs:
+no mediapipe package present
+```
+
+The MOHI artifact does **not** store Python/platform/wheel identity, so the current Windows install cannot be attributed as the historical MOHI executor merely because its MediaPipe version matches。
+
+Likewise, separate GitHub Actions runs that recorded Python 3.12.14 / MediaPipe 1.0.1 / OpenCV 5.0.0 cannot be retroactively assigned to the MOHI artifact。
+
+Full boundary is recorded in [`MEDIAPIPE_RUNTIME_PROVENANCE_RECONCILIATION.md`](MEDIAPIPE_RUNTIME_PROVENANCE_RECONCILIATION.md)。
+
+Therefore Phase 0 is now defined as a **controlled reconstructed wheel-to-wheel comparison identity gate** rather than discovery of a presumed surviving historical local baseline environment。
+
+## Corrected Phase 0
+
+Before MOHI cross-runtime execution, create two new isolated environments with identical non-MediaPipe contracts。
+
+Preferred reconstruction candidate：
+
+```text
+platform family = x86_64 Linux / WSL
+Python          = 3.12.14, if reproducibly obtainable
+baseline wheel  = locked MediaPipe 1.0.1 manylinux wheel
+comparison wheel= locked MediaPipe 1.0.0 manylinux wheel
+```
+
+The exact Python patch and all non-MediaPipe dependency versions must be frozen before result inspection。
+
+Each environment must report：
 
 ```text
 python version
@@ -164,40 +201,41 @@ mediapipe.__version__
 importlib.metadata distribution version
 installed package location
 RECORD / dist-info identity
-wheel/source provenance if available
+exact wheel SHA256
 numpy version
 opencv version
 Task API import path
 ```
 
-The 1.0.0 comparison environment must separately record the same fields plus the exact acquired wheel SHA256。
+A disposable same-pixel-array smoke test must pass under both environments before MOHI is admitted。
 
 ## Stop rules
 
 Stop before cross-runtime inference if：
 
-- baseline `1.0.1` identity cannot be distinguished from a mutable/unresolved install source；
-- acquired 1.0.0 wheel hash differs from the locked PyPI SHA；
+- exact reconstruction identities cannot be durable-recorded；
+- acquired 1.0.1 or 1.0.0 wheel hash differs from the locked PyPI SHA；
 - same pinned Hand Landmarker model bytes cannot load under both runtimes；
 - detector options cannot be held constant；
 - raw input pixel frame cannot be held constant；
 - comparison requires changing model bytes or threshold values；
-- package import succeeds only after an unrecorded dependency substitution。
+- package import succeeds only after an unrecorded dependency substitution；
+- the study is described as an exact replay of the historical MOHI host environment despite missing historical Python/platform provenance。
 
 ## Next allowed action
 
-The next step is a **local runtime identity probe only**。
+The next step is a **controlled reconstruction Phase-0 identity probe only**。
 
 It should not yet execute the 150-entry MOHI study。
 
 The probe should：
 
-1. inspect the existing 1.0.1 environment；
-2. create or inspect a separate 1.0.0 environment；
-3. verify exact wheel / package identity；
+1. create two fresh isolated environments with the same Python and dependency contract；
+2. install the exact locked 1.0.1 / 1.0.0 wheel bytes separately；
+3. record complete environment identities；
 4. load the same Hand Landmarker model in both；
 5. run a disposable non-MOHI pixel-array smoke test；
-6. freeze the runtime identities before any MOHI comparison result。
+6. freeze both runtime identities before any MOHI comparison result。
 
 ## Boundary
 
@@ -205,6 +243,7 @@ This candidate lock does not establish：
 
 - that 1.0.0 and 1.0.1 are compatible；
 - that their landmarks agree；
+- exact reproduction of the historical MOHI host environment；
 - a production upgrade policy；
 - a compatibility threshold；
 - anatomical truth；
