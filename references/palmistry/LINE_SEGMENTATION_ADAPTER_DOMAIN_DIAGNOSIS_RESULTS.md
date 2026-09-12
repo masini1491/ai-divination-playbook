@@ -1,6 +1,6 @@
 # Palm Line Segmentation Adapter / Domain Diagnosis Results
 
-Status: **REFERENCE-ONLY / BOUNDED RESULT / RAW ARTIFACT HASH PENDING**
+Status: **REFERENCE-ONLY / BOUNDED RESULT / RAW ARTIFACT HASH PINNED**
 
 本文件收斂 `LINE_SEGMENTATION_ADAPTER_DOMAIN_DIAGNOSIS_PLAN.md` 第一輪正式 MOHI adapter/domain diagnosis。
 
@@ -31,7 +31,11 @@ Raw local artifact：
 /home/user/palm-detector-study/results/MOHI_line_segmentation_adapter_diagnosis.json
 ```
 
-Full SHA256 尚待補記。
+Full SHA256：
+
+```text
+83becc491dbebbe9cbf053a023f43303750b6e38d6a9cc662f1718cf8f30f423
+```
 
 ## Adapter definitions
 
