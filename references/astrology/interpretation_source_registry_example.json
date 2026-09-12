@@ -1,0 +1,156 @@
+{
+  "record_status": "REFERENCE-ONLY",
+  "record_kind": "interpretation_source_registry_example",
+  "record_id": "synthetic-astrology-source-registry-001",
+  "sources": [
+    {
+      "source_id": "source:wvanderen-astrology-skill",
+      "title": "astrology-skill",
+      "author_or_org": "wvanderen/astrology-skill contributors",
+      "source_role": "REFERENCE_IMPLEMENTATION",
+      "source_kind": "repository",
+      "tradition_tags": ["classical", "modern", "blended"],
+      "immutable_revision": "a9339b3c7151313530aa5002572c6612a2cfd59f",
+      "locator": "https://github.com/wvanderen/astrology-skill",
+      "language": "en",
+      "license_status": "verified_permissive",
+      "license_identifier": "MIT",
+      "copyright_status": "copyrighted",
+      "storage_mode": "normalized_paraphrase",
+      "verification_status": ["identity_verified", "revision_verified", "license_verified", "locator_verified"],
+      "admission_status": ["REFERENCE_ONLY"],
+      "admission_scope": [
+        "retrieval-first interpretation architecture",
+        "calculation-versus-interpretation separation",
+        "unknown-data fail-closed interpretation workflow"
+      ],
+      "excluded_scope": [
+        "project-canonical astrology doctrine",
+        "universal weighting hierarchy",
+        "scientific predictive validity"
+      ],
+      "notes": [
+        "Legal reuse permission does not create semantic or production authority."
+      ]
+    },
+    {
+      "source_id": "source:synthetic-classical-primary-a",
+      "title": "Synthetic Classical Primary A",
+      "author_or_org": "synthetic_fixture",
+      "source_role": "PRIMARY_TEXT",
+      "source_kind": "book",
+      "tradition_tags": ["classical"],
+      "publication_or_release_date": "synthetic",
+      "edition": "synthetic-edition-1",
+      "locator": "synthetic://classical-primary-a",
+      "language": "en",
+      "license_status": "not_applicable",
+      "license_identifier": null,
+      "copyright_status": "unknown",
+      "storage_mode": "metadata_plus_locator",
+      "verification_status": ["unverified"],
+      "admission_status": ["REFERENCE_ONLY"],
+      "admission_scope": ["fixture only"],
+      "excluded_scope": ["real historical authority", "production doctrine"],
+      "notes": ["Synthetic source used only to demonstrate conflict handling."]
+    },
+    {
+      "source_id": "source:synthetic-modern-practitioner-b",
+      "title": "Synthetic Modern Practitioner B",
+      "author_or_org": "synthetic_fixture",
+      "source_role": "PRACTITIONER_REFERENCE",
+      "source_kind": "practitioner_manual",
+      "tradition_tags": ["modern"],
+      "publication_or_release_date": "synthetic",
+      "locator": "synthetic://modern-practitioner-b",
+      "language": "en",
+      "license_status": "not_applicable",
+      "license_identifier": null,
+      "copyright_status": "unknown",
+      "storage_mode": "metadata_plus_locator",
+      "verification_status": ["unverified"],
+      "admission_status": ["REFERENCE_ONLY"],
+      "admission_scope": ["fixture only"],
+      "excluded_scope": ["real practitioner authority", "production doctrine"],
+      "notes": ["Synthetic source used only to demonstrate conflict handling."]
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "claim:retrieval-first-architecture",
+      "layer": "L4",
+      "claim_type": "methodological_claim",
+      "normalized_statement": "The reviewed reference implementation separates deterministic chart calculation from retrieval-first interpretation and does not authorize freehand invention of missing chart factors.",
+      "source_refs": ["source:wvanderen-astrology-skill"],
+      "source_locator_refs": [
+        "SKILL.md",
+        "references/foundations/interpretive_principles.md",
+        "references/foundations/birth_time_uncertainty.md"
+      ],
+      "tradition_tags": [],
+      "policy_refs": [],
+      "applies_to": ["interpretation architecture"],
+      "configuration_assumptions": [],
+      "scope": "architecture evidence only",
+      "confidence_status": "supported",
+      "support_status": "architecture_only",
+      "conflict_group_ids": [],
+      "cautions": [
+        "This does not admit the source's astrology meanings as project doctrine."
+      ],
+      "storage_origin": "project-authored normalized paraphrase"
+    },
+    {
+      "claim_id": "claim:synthetic-condition-a",
+      "layer": "L4",
+      "claim_type": "condition_meaning",
+      "normalized_statement": "Synthetic classical fixture A frames the condition in concrete functional terms.",
+      "source_refs": ["source:synthetic-classical-primary-a"],
+      "source_locator_refs": ["synthetic://classical-primary-a#fixture"],
+      "tradition_tags": ["classical"],
+      "policy_refs": ["synthetic-classical-policy"],
+      "applies_to": ["synthetic condition fixture"],
+      "configuration_assumptions": [],
+      "scope": "synthetic conflict fixture",
+      "confidence_status": "provisional",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": ["conflict:synthetic-classical-modern-001"],
+      "cautions": ["Not a real historical claim."],
+      "storage_origin": "project-authored synthetic fixture"
+    },
+    {
+      "claim_id": "claim:synthetic-condition-b",
+      "layer": "L4",
+      "claim_type": "condition_meaning",
+      "normalized_statement": "Synthetic modern fixture B frames the same condition in psychological-developmental terms.",
+      "source_refs": ["source:synthetic-modern-practitioner-b"],
+      "source_locator_refs": ["synthetic://modern-practitioner-b#fixture"],
+      "tradition_tags": ["modern"],
+      "policy_refs": ["synthetic-modern-policy"],
+      "applies_to": ["synthetic condition fixture"],
+      "configuration_assumptions": [],
+      "scope": "synthetic conflict fixture",
+      "confidence_status": "provisional",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": ["conflict:synthetic-classical-modern-001"],
+      "cautions": ["Not a real practitioner claim."],
+      "storage_origin": "project-authored synthetic fixture"
+    }
+  ],
+  "conflict_groups": [
+    {
+      "conflict_group_id": "conflict:synthetic-classical-modern-001",
+      "conflict_class": "tradition_difference",
+      "claim_refs": ["claim:synthetic-condition-a", "claim:synthetic-condition-b"],
+      "tradition_contexts": ["classical", "modern"],
+      "configuration_contexts": [],
+      "resolution_status": "scope_separated",
+      "resolution_note": "Preserve both claims under their named traditions; do not average them into a fictitious universal meaning."
+    }
+  ],
+  "privacy": {
+    "contains_real_birth_data": false,
+    "contains_real_client_reading": false,
+    "fixture_type": "synthetic_plus_public_repository_metadata"
+  }
+}
