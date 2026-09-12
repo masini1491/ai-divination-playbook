@@ -1,6 +1,6 @@
 # Palm Detector-to-Detector Agreement Plan
 
-Status: **REFERENCE-ONLY / PREDECLARED / EXECUTION BLOCKED BY FINAL MODEL-CONSTRUCTION SMOKE TEST**
+Status: **REFERENCE-ONLY / PREDECLARED / RUNTIME ARTIFACT GATE CLOSED / READY FOR FIRST EXECUTION**
 
 本 Cold plan 凍結 Palmistry observation research 的下一個獨立 evidence node：**detector-to-detector agreement**。
 
@@ -177,13 +177,15 @@ Checkpoint 也必須先從 official OpenMMLab artifact 取得、計算完整 SHA
 Platform: Linux / WSL2 / x86_64 / glibc 2.35
 Python: 3.9.18
 NumPy: 1.26.4
-OpenCV: 4.10.0
+OpenCV package: 4.10.0.84
+cv2.__version__: 4.10.0
 PyTorch: 1.13.1
 TorchVision: 0.14.1
 MMCV: 2.0.0
 MMDetection: 3.2.0
 MMEngine: 0.10.4
 MMPose: 1.3.2
+setuptools: 80.9.0
 MKL: 2020.2
 Intel OpenMP: 2023.0.0
 chumpy: 0.70
@@ -199,12 +201,17 @@ b74fb5941684fe13c337b8d4fce644293e12903fed5407f8b27921f107dc6003
 
 `torch.load(..., map_location="cpu")` 已成功讀取 checkpoint，top-level keys 為 `meta` / `state_dict`。
 
-但在任何 MOHI image 前，仍須完成最後一個 **MMPose frozen-config model-construction + checkpoint weight-load smoke test**。在該 smoke test 完成前：
+最後的 frozen-config MMPose model-construction + checkpoint weight-load smoke test 也已在任何 MOHI image 前完成：
 
 ```text
-NO MOHI RTMPOSE INFERENCE
-NO RESULT INSPECTION
+resolved installed frozen config = YES
+init_model(config, checkpoint, device="cpu") = PASS
+model type = TopdownPoseEstimator
+device = cpu
+MODEL LOAD = PASS
 ```
+
+因此 runtime artifact gate 已閉合。後續可在不改變任何 frozen protocol 的前提下開始第一輪 MOHI RTMPose execution。
 
 ## Frozen source sample
 
@@ -372,11 +379,10 @@ source integrity
 
 ## Stop rules
 
-在 inference 前停止，如果：
+在 inference 前或 execution 中停止，如果：
 
-- frozen-config MMPose model construction / checkpoint weight load 無法成功；
-- exact runtime dependencies 無法維持已驗證 lock；
-- official config / checkpoint identity 發生不明確 drift；
+- actual runtime identity drift from the closed runtime lock;
+- frozen config / checkpoint identity 不再等於已驗證 artifact；
 - full-image `inference_topdown()` adapter 無法保留 raw-image output mapping；
 - 21-keypoint semantics 無法 authoritative 對應；
 - 執行需要 MediaPipe-derived crop 或其他會破壞 detector independence 的補救。
