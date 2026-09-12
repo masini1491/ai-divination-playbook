@@ -1,4 +1,6 @@
 {
+  "schema_name": "interpretation_claim_registry",
+  "schema_version": "0.1.0-research",
   "record_status": "REFERENCE-ONLY",
   "record_kind": "interpretation_claim_family_registry",
   "record_id": "saturn-moon-major-aspects-research-v1",
@@ -14,27 +16,15 @@
       "source_kind": "translation",
       "tradition_tags": ["hellenistic", "ptolemaic", "classical"],
       "edition": "F. E. Robbins English translation, Loeb Classical Library; LacusCurtius web edition",
-      "locator": [
-        "Book I §13",
-        "Book III §4",
-        "Book III §13"
-      ],
+      "locator": ["Book I §13", "Book III §4", "Book III §13"],
       "language": "English translation of Greek primary text",
       "license_status": "license_unresolved",
       "copyright_status": "unknown",
       "storage_mode": ["metadata_plus_locator", "normalized_paraphrase"],
       "verification_status": ["identity_verified", "locator_verified"],
       "admission_status": ["CLAIM_ELIGIBLE", "POLICY_PROVENANCE_ELIGIBLE"],
-      "admission_scope": [
-        "historical aspect geometry",
-        "historical Moon/configured-planet doctrine",
-        "historical Saturn-Moon examples in bounded inquiry contexts"
-      ],
-      "excluded_scope": [
-        "modern psychological meanings",
-        "scientific predictive validity",
-        "clinical claims"
-      ],
+      "admission_scope": ["historical aspect geometry", "historical Moon/configured-planet doctrine", "historical Saturn-Moon examples in bounded inquiry contexts"],
+      "excluded_scope": ["modern psychological meanings", "scientific predictive validity", "clinical claims"],
       "independence_status": "independent_evidence"
     },
     {
@@ -52,16 +42,8 @@
       "storage_mode": ["metadata_plus_locator", "normalized_paraphrase"],
       "verification_status": ["identity_verified", "publication_verified", "locator_verified"],
       "admission_status": ["CLAIM_ELIGIBLE"],
-      "admission_scope": [
-        "historical context",
-        "classical astrology diversity",
-        "Ptolemaic Moon/soul framework",
-        "historiography and source cautions"
-      ],
-      "excluded_scope": [
-        "scientific validation of astrology",
-        "project-canonical interpretation policy"
-      ],
+      "admission_scope": ["historical context", "classical astrology diversity", "Ptolemaic Moon/soul framework", "historiography and source cautions"],
+      "excluded_scope": ["scientific validation of astrology", "project-canonical interpretation policy"],
       "independence_status": "independent_evidence"
     },
     {
@@ -79,16 +61,8 @@
       "storage_mode": ["metadata_plus_locator", "normalized_paraphrase"],
       "verification_status": ["identity_verified", "publication_verified", "locator_verified"],
       "admission_status": ["CLAIM_ELIGIBLE"],
-      "admission_scope": [
-        "modern psychological framing",
-        "Moon-Saturn opposition as parental-image / inner-life symbolism"
-      ],
-      "excluded_scope": [
-        "classical doctrine",
-        "literal parental biography",
-        "clinical diagnosis",
-        "scientific predictive validity"
-      ],
+      "admission_scope": ["modern psychological framing", "Moon-Saturn opposition as parental-image / inner-life symbolism"],
+      "excluded_scope": ["classical doctrine", "literal parental biography", "clinical diagnosis", "scientific predictive validity"],
       "independence_status": "independent_evidence"
     },
     {
@@ -99,11 +73,7 @@
       "source_kind": "repository",
       "tradition_tags": ["classical", "modern", "blended", "retrieval_first"],
       "immutable_revision": "a9339b3c7151313530aa5002572c6612a2cfd59f",
-      "locator": [
-        "references/aspects/by_planet_pair/moon_conjunction_saturn.md",
-        "references/aspects/by_planet_pair/moon_square_saturn.md",
-        "references/aspects/by_planet_pair/moon_opposition_saturn.md"
-      ],
+      "locator": ["references/aspects/by_planet_pair/moon_conjunction_saturn.md", "references/aspects/by_planet_pair/moon_square_saturn.md", "references/aspects/by_planet_pair/moon_opposition_saturn.md"],
       "language": "English",
       "license_status": "verified_permissive",
       "license_identifier": "MIT",
@@ -111,19 +81,9 @@
       "storage_mode": ["metadata_plus_locator", "normalized_paraphrase"],
       "verification_status": ["identity_verified", "revision_verified", "license_verified", "locator_verified"],
       "admission_status": ["REFERENCE_ONLY"],
-      "admission_scope": [
-        "retrieval-first architecture",
-        "qualified practitioner implementation evidence",
-        "aspect-form differentiation used by this implementation"
-      ],
-      "excluded_scope": [
-        "project-canonical doctrine",
-        "independent historical witness for its cited classical material",
-        "scientific predictive validity"
-      ],
-      "upstream_source_refs": [
-        "source:ptolemy-tetrabiblos-robbins-lacuscurtius"
-      ],
+      "admission_scope": ["retrieval-first architecture", "qualified practitioner implementation evidence", "aspect-form differentiation used by this implementation"],
+      "excluded_scope": ["project-canonical doctrine", "independent historical witness for its cited classical material", "scientific predictive validity"],
+      "upstream_source_refs": ["source:ptolemy-tetrabiblos-robbins-lacuscurtius"],
       "derivative_relationship": "classical mechanism notes explicitly paraphrase an upstream historical source family; modern psychological synthesis is implementation-authored",
       "independence_status": "shared_upstream"
     }
@@ -262,11 +222,7 @@
     {
       "conflict_group_id": "conflict:historical-vs-modern-scope",
       "conflict_class": ["historical_development", "scope_difference"],
-      "claim_refs": [
-        "claim:ptolemy-moon-configured-planets-soul",
-        "claim:ptolemy-saturn-regards-moon-maternal-context",
-        "claim:greene-moon-saturn-parent-image"
-      ],
+      "claim_refs": ["claim:ptolemy-moon-configured-planets-soul", "claim:ptolemy-saturn-regards-moon-maternal-context", "claim:greene-moon-saturn-parent-image"],
       "tradition_contexts": ["ptolemaic/classical", "modern psychological astrology"],
       "resolution_status": "scope_separated",
       "resolution_note": "Classical inquiry-specific doctrine and modern psychological interpretation are preserved as different claim scopes rather than averaged into one universal Moon-Saturn meaning."
@@ -274,12 +230,7 @@
     {
       "conflict_group_id": "conflict:geometry-vs-metaphor",
       "conflict_class": ["scope_difference"],
-      "claim_refs": [
-        "claim:ptolemy-major-aspect-geometry",
-        "claim:reference-conjunction-fusion",
-        "claim:reference-square-friction",
-        "claim:reference-opposition-polarity"
-      ],
+      "claim_refs": ["claim:ptolemy-major-aspect-geometry", "claim:reference-conjunction-fusion", "claim:reference-square-friction", "claim:reference-opposition-polarity"],
       "tradition_contexts": ["historical geometry", "modern practitioner semantics"],
       "resolution_status": "scope_separated",
       "resolution_note": "Aspect angle relations are geometric/technical evidence; fusion, friction, and polarity are interpretive metaphors requiring separate source provenance."
@@ -287,11 +238,7 @@
     {
       "conflict_group_id": "conflict:parent-symbol-vs-biography",
       "conflict_class": ["scope_difference"],
-      "claim_refs": [
-        "claim:ptolemy-saturn-regards-moon-maternal-context",
-        "claim:greene-moon-saturn-parent-image",
-        "claim:reference-opposition-polarity"
-      ],
+      "claim_refs": ["claim:ptolemy-saturn-regards-moon-maternal-context", "claim:greene-moon-saturn-parent-image", "claim:reference-opposition-polarity"],
       "tradition_contexts": ["historical maternal inquiry", "modern symbolic parent-image reading"],
       "resolution_status": "scope_separated",
       "resolution_note": "Astrological symbolism about parents or care does not establish literal parental behavior, childhood history, trauma, diagnosis, or another person's private motives."
