@@ -132,6 +132,31 @@ fixed offset != timezone identity
 
 Timezone / DST 文件仍是 Cold contract draft，不是 production input contract。
 
+### Structured Astrology Fact schema draft
+
+- [`STRUCTURED_ASTROLOGY_FACT_SCHEMA_DRAFT.md`](STRUCTURED_ASTROLOGY_FACT_SCHEMA_DRAFT.md)
+- [`structured_astrology_fact_example.json`](structured_astrology_fact_example.json)
+
+依最新 AI development Playbook 的 reuse-first gate，本輪先 bounded-review `theriftlab/immanuel-python@46190726ebe012f43c93d163745682e806975759` 的 structured chart / JSON data model，再以 **ADAPT conceptually / REFERENCE-ONLY source** 方式建立 source-neutral draft。
+
+Draft 收斂前四輪已實證的 gap：
+
+```text
+L0/L1/L2 fact boundary
+availability / bounded / ambiguous / placeholder state
+UTC + timezone/DST provenance
+requested vs effective ephemeris backend
+unknown-time fail-closed houses / angles
+chart object / house / aspect geometry facts
+transit-to-natal / station / ingress event identity
+retrograde multi-passage identity
+bounded natal target → bounded event-time propagation
+fact lineage
+L3 orb/tradition + L4 interpretation exclusion
+```
+
+目前只有 Markdown contract draft + synthetic JSON example，**尚未建立 executable JSON Schema validator**，也沒有 production authority。
+
 以上結果只收窄 evidence gap，不建立 production tolerance 或正式 input contract。
 
 ## 5. Promotion is explicitly out of scope
