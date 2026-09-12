@@ -33,13 +33,13 @@ The target measurement is **within-dataset palm-class repeatability**, not biome
 
 ### XINHUA Palmprint via `HewelXX/Dataset`
 
-GitHub connector inspection confirms that source JPEGs are present directly under `XINHUA/`, with repeated filename groups such as `100_1.jpg ... 100_20.jpg`.
+GitHub connector inspection confirms source JPEGs directly under `XINHUA/`, with repeated filename groups such as `100_1.jpg ... 100_20.jpg`.
 
-The associated publication's Data Availability statement identifies both the GitHub dataset location and Zenodo DOI `10.5281/zenodo.15473268`. It describes the corpus as 50 participants, 100 palm classes, 20 images per palm, with two capture periods of 10 images each.
+The associated publication's Data Availability statement identifies both the GitHub dataset location and Zenodo DOI `10.5281/zenodo.15473268`, and describes 50 participants, 100 palm classes, 20 images per palm, split into two capture periods of 10 images each.
 
-A connector capability probe successfully returned base64 JPEG content for `XINHUA/100_1.jpg`; no raw-GitHub fallback is required for bounded inspection.
+A connector capability probe successfully returned base64 JPEG content for `XINHUA/100_1.jpg` without raw-GitHub fallback.
 
-However, the GitHub repository itself contains no confirmed dataset license, and the publication's Data Availability statement establishes location/provenance rather than explicit reuse permission. The associated Zenodo record has not yet supplied a sufficiently explicit dataset-level license statement in the evidence captured for this Playbook.
+However, the repository itself contains no confirmed dataset license, and the publication's Data Availability statement establishes location/provenance rather than explicit reuse permission. The associated Zenodo record has not yet supplied a sufficiently explicit dataset-level license statement in the evidence captured for this Playbook.
 
 Decision:
 
@@ -50,7 +50,7 @@ LICENSE / DATA-USE GATE UNRESOLVED
 
 ### Tongji Contactless Palmprint Dataset
 
-The official project page describes a particularly strong longitudinal contactless design:
+The official project page describes:
 
 ```text
 300 volunteers
@@ -63,11 +63,9 @@ mean inter-session interval ≈ 61 days
 range 21–106 days
 ```
 
-The official page exposes public links for both original images and extracted ROI images and documents the session/name correspondence.
+The official page exposes public links for original images and ROI images and documents the session/name correspondence.
 
-This is currently one of the strongest domain-fit candidates for the exact question of within-session versus cross-session observation repeatability.
-
-However, the project page inspected in this research node does not state an explicit dataset reuse license comparable to THUPALMLAB's non-commercial-research statement.
+This is one of the strongest domain-fit candidates for within-session versus cross-session observation repeatability, but the inspected project page does not state an explicit dataset reuse license comparable to THUPALMLAB's non-commercial-research statement.
 
 Decision:
 
@@ -78,7 +76,7 @@ PROVENANCE STRONG
 DATA-USE / LICENSE GATE UNRESOLVED
 ```
 
-Do not treat public download availability alone as permission authority.
+Public download availability alone is not permission authority.
 
 ### THUPALMLAB multi-impression subset
 
@@ -96,33 +94,56 @@ The official page describes:
 commercial Hisign palmprint scanner
 ```
 
-This resolves the basic research-use permission gate more clearly than the current XINHUA / Tongji evidence.
+This resolves the research-use permission gate more clearly than the current XINHUA / Tongji evidence.
 
-But THUPALMLAB is a **contact / scanner-acquired high-resolution palmprint corpus**, whereas the existing Palmistry observation pipeline is primarily concerned with ordinary palm-facing photographs and MediaPipe landmark geometry. It is therefore a control/fallback corpus rather than an equivalent contactless validation corpus.
+THUPALMLAB is a **contact / scanner-acquired high-resolution palmprint corpus**, whereas the current Palmistry observation pipeline is primarily concerned with ordinary palm-facing photographs and MediaPipe full-hand landmark geometry.
 
-A bounded acquisition probe resolved the official download link to:
+The official archive location was resolved as:
 
 ```text
 https://ivg.au.tsinghua.edu.cn/dataset/samples_THUPALMLAB/THUPALMLAB.rar
 ```
 
-Observed execution boundary:
+A user subsequently supplied a bounded extracted sample consisting of one dataset-provided palm class (`subject 1 / left palm`) with eight scanner impressions (`1_l_1.bmp ... 1_l_8.bmp`).
 
-- the official HTML page remained reachable and advertised the archive;
-- Web retrieval of the archive itself was blocked by crawler robots handling;
-- the local execution container had no working external DNS/network path, so a direct archive download could not be verified there.
+Observed bounded runtime probe:
 
-This is **not evidence that the official dataset download is dead**. It is only an environment-specific acquisition limitation.
+```text
+source ZIP SHA256:
+8a97a27dab0bf362be9925f78873912f95fc19d79c49cfd789f6be55e63dfd93
+
+MediaPipe 1.0.1
+Hand Landmarker model SHA256:
+fbc2a30080c3c557093b5ddfc334698132eb341044ccee322ccf8bcf3607cde1
+
+IMAGE mode
+num_hands = 2
+min detection / presence / tracking = 0.5 / 0.5 / 0.5
+
+2040 × 2040 source → 1600 × 1600 working image
+
+candidate-count distribution:
+0 = 8
+1 = 0
+2 = 0
+
+usable_exactly_one_rate = 0.0
+```
+
+This is a **bounded scanner-domain compatibility negative result** for the sampled subject-1 left-palm impressions. It does not establish dataset-wide detector failure and must not be generalized to all THUPALMLAB images or all scanner palmprints.
 
 Decision:
 
 ```text
 DATA-USE GATE SATISFIED for non-commercial research / education
-capture-domain mismatch with ordinary contactless Palmistry images
-CURRENT RUNTIME ACQUISITION = UNVERIFIED / ENVIRONMENT-BLOCKED
+sample acquisition achieved via user-provided extract
+PINNED FULL-HAND RUNTIME COMPATIBILITY = NEGATIVE on 8/8 bounded impressions
+→ stop this MediaPipe-based THUPALMLAB repeatability path
+→ do not lower thresholds
+→ do not expand to 10 classes merely to rescue the corpus
 ```
 
-Do not manufacture a MediaPipe compatibility result without actual source images.
+The detailed runtime record lives in `THUPALMLAB_DOMAIN_COMPATIBILITY.md`.
 
 ### MPW-180 / PalmWildNet
 
@@ -135,23 +156,14 @@ code: Apache-2.0
 dataset: CC BY-NC 4.0
 ```
 
-But connector inspection of the current repository root shows only:
-
-```text
-README.md
-LICENSE
-Figure12b.png
-Figures/
-```
-
-The README's documented `DATASET_LICENSE` file is not present, the dataset DOI/link is still a placeholder, and the README explicitly states that the study is still under review and more information will be added after review.
+But connector inspection of the current repository root shows only `README.md`, `LICENSE`, `Figure12b.png`, and `Figures/`. The README's documented `DATASET_LICENSE` file is absent, the dataset DOI/link is still a placeholder, and the README states that the study is still under review.
 
 Decision:
 
 ```text
 capture-domain fit is excellent for future phone/device repeatability
-but CURRENT DATASET RELEASE SURFACE IS INCOMPLETE
-README license claim alone is insufficient to treat the corpus as acquired/released
+CURRENT DATASET RELEASE SURFACE IS INCOMPLETE
+README license claim alone is insufficient
 → hold until actual dataset + license artifact are published
 ```
 
@@ -167,46 +179,28 @@ observed GitHub object size: 5,422,067 bytes
 
 But the repository README is minimal and no license was found during qualification.
 
-Decision:
-
-```text
-acquisition object exists
-license / provenance qualification insufficient
-→ hold
-```
+Decision: acquisition exists, license/provenance qualification insufficient → hold.
 
 ### NTU Palmprints / NTU Contactless Palmprints
 
 Official/project documentation requires completing and returning a Data Release Agreement before a download link is supplied.
 
-Decision:
-
-```text
-scientifically relevant
-access-gated; not an anonymous reproducible baseline corpus
-```
+Decision: scientifically relevant but access-gated; not an anonymous reproducible baseline corpus.
 
 ### IITD Touchless Palmprint
 
 Acquisition likewise requires a request/agreement workflow.
 
-Decision:
-
-```text
-scientifically relevant
-but not suitable as an automated reproducible baseline corpus
-```
+Decision: scientifically relevant but not suitable as an automated reproducible baseline corpus.
 
 ## Current ranking
-
-For the specific Palmistry repeatability research need:
 
 | Candidate | Multi-capture structure | Data-use gate | Capture-domain fit | Current decision |
 |---|---|---|---|---|
 | Tongji Contactless | **2 sessions × 10 / palm** | unresolved | excellent | preferred if permission closes |
 | XINHUA | **2 periods × 10 / palm** | unresolved | excellent | preferred if permission closes |
 | MPW-180 | multi-device / video | release incomplete | **best future phone/device fit** | hold |
-| THUPALMLAB | **8 / palm** | **explicit non-commercial research/education** | scanner/contact mismatch | qualified fallback/control; acquisition unverified in current runtime |
+| THUPALMLAB | **8 / palm** | **explicit non-commercial research/education** | scanner/contact mismatch | bounded MediaPipe compatibility negative; stop current full-hand path |
 | BJTU V2 | repeated dataset likely useful | unresolved | contactless | hold |
 | NTU-CP / NTU-PI | repeated | agreement-controlled | contactless | hold |
 | IITD | repeated | agreement-controlled | contactless | hold |
@@ -229,24 +223,7 @@ compare within-class canonical geometry across captures
 report within-session and cross-session distributions separately
 ```
 
-At minimum report:
-
-- detector success/failure rate;
-- candidate-count distribution;
-- canonical anchor/frame drift;
-- within-session versus cross-session drift;
-- per-class heterogeneity;
-- truncation/orientation/target ambiguity/landmark failure modes.
-
-## Predeclared THUPALMLAB fallback experiment
-
-If source images become reproducibly available in an execution environment, THUPALMLAB may be used only as a **scanner-domain control**.
-
-Use each dataset-provided palm as one grouping class and its eight impressions as repeated captures.
-
-First test runtime compatibility at pinned thresholds. If the Hand Landmarker cannot detect a full hand because the images contain palmprint regions without sufficient finger/hand context, record that as a **runtime/domain compatibility negative result** and stop. Do not lower thresholds or manufacture landmarks.
-
-If full-hand detection is usable, apply the same canonical-coordinate repeatability measurements and report per-palm heterogeneity. Do not generalize scanner-domain repeatability to camera-domain repeatability.
+At minimum report detector success/failure rate, candidate-count distribution, canonical anchor/frame drift, within-session versus cross-session drift, per-class heterogeneity, and failure modes.
 
 ## Common prohibitions
 
@@ -263,7 +240,7 @@ Do **not**:
 
 ## Evidence boundary
 
-This node establishes dataset suitability, permission state, release state, and acquisition constraints only.
+This node establishes dataset suitability, permission state, release state, acquisition constraints, and the bounded THUPALMLAB runtime-compatibility result only.
 
 It does not establish:
 
@@ -279,14 +256,9 @@ Current executable state:
 ```text
 Tongji / XINHUA: strongest contactless multi-session candidates; permission unresolved
 MPW-180: strongest future phone/device candidate; dataset release incomplete
-THUPALMLAB: permission clear; scanner-domain control; acquisition not verified in this runtime
+THUPALMLAB: permission clear; bounded sample acquired; current pinned full-hand runtime failed 8/8 and is stopped
 ```
 
-The next high-value executable node requires either:
-
-1. a permission-qualified contactless multi-session corpus becoming available, or
-2. THUPALMLAB source images being acquired in a runtime that can reach the official archive.
-
-Until then, the correct outcome is **ACCESS / PERMISSION BOUNDED**, not invented repeatability evidence.
+The next high-value executable node requires a permission-qualified **contactless full-hand multi-capture / multi-session corpus**. Until then, the correct outcome is evidence-bounded rather than invented repeatability evidence.
 
 Palmistry remains **REFERENCE-ONLY / DRAFT / NOT PRODUCTION-ROUTABLE**.
