@@ -1,0 +1,82 @@
+{
+  "record_status": "REFERENCE-ONLY",
+  "record_kind": "interpretation_research_example",
+  "record_id": "synthetic-venus-libra-example",
+  "subject_ref": "synthetic_fixture_interpretation_001",
+  "facts": [
+    {
+      "fact_id": "fact:venus-longitude",
+      "layer": "L2",
+      "object_id": "Venus",
+      "longitude_deg": 195.0,
+      "zodiac_system": "tropical",
+      "sign_name": "Libra",
+      "availability": "available"
+    }
+  ],
+  "projections": [
+    {
+      "projection_id": "projection:venus-libra-domicile",
+      "layer": "L3",
+      "fact_refs": [
+        "fact:venus-longitude"
+      ],
+      "tradition_id": "western_classical_candidate",
+      "policy_id": "essential-dignity-traditional-candidate-v1",
+      "policy_version": "research-0.1",
+      "projection_kind": "dignity",
+      "result": {
+        "classification": "domicile",
+        "planet": "Venus",
+        "sign": "Libra"
+      },
+      "confidence": "supported",
+      "dependencies": [
+        "tropical zodiac configuration",
+        "traditional domicile rulership policy"
+      ],
+      "source_refs": [
+        "source:wvanderen-astrology-skill-classical-reference"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "claim:domicile-capacity-example",
+      "layer": "L4",
+      "claim_type": "condition_meaning",
+      "statement": "Within the referenced classical interpretive framework, domicile is used as one factor in describing a planet's condition and capacity to act according to its nature.",
+      "applies_to": [
+        "projection:venus-libra-domicile"
+      ],
+      "tradition_id": "western_classical_candidate",
+      "policy_refs": [
+        "essential-dignity-traditional-candidate-v1"
+      ],
+      "source": {
+        "repository": "wvanderen/astrology-skill",
+        "revision": "a9339b3c7151313530aa5002572c6612a2cfd59f",
+        "path": "references/traditions/classical.md",
+        "source_status": "REFERENCE_IMPLEMENTATION",
+        "adoption_status": "REFERENCE-ONLY"
+      },
+      "confidence": "qualified",
+      "scope": "research example of claim provenance, not a project-canonical doctrine",
+      "cautions": [
+        "The external reference is an architectural/practitioner reference, not project production authority.",
+        "The claim does not establish scientific predictive validity.",
+        "Other traditions or policies may classify or interpret planetary condition differently."
+      ],
+      "conflicts_with": []
+    }
+  ],
+  "synthesis": {
+    "layer": "L5",
+    "status": "example_only",
+    "text": "A later synthesis could use the explicit L3 dignity projection and the L4 sourced claim, while preserving that both are tradition-dependent and non-production research inputs."
+  },
+  "privacy": {
+    "contains_real_birth_data": false,
+    "fixture_type": "synthetic"
+  }
+}
