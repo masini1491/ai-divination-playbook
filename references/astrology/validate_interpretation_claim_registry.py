@@ -8,6 +8,8 @@ SOURCE_ROLES={"PRIMARY_TEXT","SCHOLARLY_SECONDARY","PRACTITIONER_REFERENCE","REF
 ADMISSION={"REJECTED","REFERENCE_ONLY","CLAIM_ELIGIBLE","POLICY_PROVENANCE_ELIGIBLE","CORPUS_STORAGE_ELIGIBLE","PRODUCTION_ADMITTED"}
 STORAGE={"metadata_only","metadata_plus_locator","normalized_paraphrase","short_excerpt_with_citation","licensed_module_copy","public_domain_text_copy","project_authored_synthesis","metadata_locator_normalized_paraphrase","metadata_revision_normalized_paraphrase"}
 INDEPENDENCE={"independent_evidence","likely_derivative","explicit_derivative","shared_upstream","unknown","primary_witness","secondary_analysis_of_multiple_primary_sources","derivative_practitioner_synthesis"}
+SCHEMA_NAME="interpretation_claim_registry"
+SCHEMA_VERSION="0.1.0-research"
 LAYERS={"L3","L4"}
 CONFIDENCE={"supported","qualified","provisional","conflicted","unsupported"}
 SUPPORT={"single_source_supported","multi_source_supported","tradition_bounded","qualified","conflicted","historical_only","architecture_only","unsupported"}
@@ -29,6 +31,14 @@ def validate_registry(data: Any):
         if k not in data: add(e,"REQUIRED_FIELD_MISSING",f"$.{k}","required field is missing")
     if data.get("record_status")!="REFERENCE-ONLY": add(e,"RECORD_STATUS_INVALID","$.record_status","research registry must be REFERENCE-ONLY")
     if data.get("record_kind")!="interpretation_claim_family_registry": add(e,"RECORD_KIND_INVALID","$.record_kind","must equal interpretation_claim_family_registry")
+    versioned=("schema_name" in data or "schema_version" in data)
+    if versioned:
+        if data.get("schema_name")!=SCHEMA_NAME: add(e,"SCHEMA_NAME_INVALID","$.schema_name",f"must equal {SCHEMA_NAME}")
+        if data.get("schema_version")!=SCHEMA_VERSION: add(e,"SCHEMA_VERSION_UNSUPPORTED","$.schema_version",f"must equal {SCHEMA_VERSION}")
+        if data.get("production_routable") is not False: add(e,"PRODUCTION_ROUTABLE_EXPLICIT_FALSE_REQUIRED","$.production_routable","versioned research registry must explicitly set production_routable=false")
+        if not isinstance(data.get("conflict_groups"),list): add(e,"CONFLICT_GROUPS_REQUIRED","$.conflict_groups","versioned registry must declare conflict_groups array")
+        pv=data.get("privacy")
+        if not isinstance(pv,dict) or pv.get("contains_real_birth_data") is not False: add(e,"PRIVACY_FALSE_REQUIRED","$.privacy.contains_real_birth_data","versioned registry must explicitly declare contains_real_birth_data=false")
     if data.get("production_routable") is True: add(e,"PRODUCTION_ROUTABLE_FORBIDDEN","$.production_routable","research registry cannot be production-routable")
     rr=data.get("research_result")
     if isinstance(rr,dict):
@@ -62,6 +72,14 @@ def validate_registry(data: Any):
         for x in storage-STORAGE: add(e,"STORAGE_MODE_INVALID",p+".storage_mode",f"unsupported storage mode: {x}")
         indep=s.get("independence_status")
         if indep is not None and indep not in INDEPENDENCE: add(e,"INDEPENDENCE_STATUS_INVALID",p+".independence_status",f"unsupported independence status: {indep}")
+        if versioned:
+            if "admission_state" in s: add(e,"LEGACY_SOURCE_FIELD_FORBIDDEN",p+".admission_state","versioned registry must use admission_status")
+            if "admission_status" not in s: add(e,"CANONICAL_ADMISSION_STATUS_REQUIRED",p+".admission_status","versioned registry requires admission_status")
+            if not isinstance(s.get("admission_status"),list): add(e,"CANONICAL_ADMISSION_STATUS_ARRAY_REQUIRED",p+".admission_status","versioned admission_status must be an array")
+            if not isinstance(s.get("storage_mode"),list): add(e,"CANONICAL_STORAGE_MODE_ARRAY_REQUIRED",p+".storage_mode","versioned storage_mode must be an array")
+            if "author" in s: add(e,"LEGACY_SOURCE_FIELD_FORBIDDEN",p+".author","versioned registry must use author_or_org")
+            if "revision" in s: add(e,"LEGACY_SOURCE_FIELD_FORBIDDEN",p+".revision","versioned registry must use immutable_revision")
+            if indep is None: add(e,"CANONICAL_INDEPENDENCE_STATUS_REQUIRED",p+".independence_status","versioned registry requires independence_status")
 
     for i,s in enumerate(sources):
         if not isinstance(s,dict) or not isinstance(s.get("source_id"),str): continue
@@ -102,6 +120,13 @@ def validate_registry(data: Any):
         if conf is not None and conf not in CONFIDENCE: add(e,"CLAIM_CONFIDENCE_INVALID",p,f"unsupported confidence: {conf}")
         sup=c.get("support_status")
         if sup is not None and sup not in SUPPORT: add(e,"CLAIM_SUPPORT_STATUS_INVALID",p+".support_status",f"unsupported support status: {sup}")
+        if versioned:
+            for legacy,canonical in (("statement","normalized_statement"),("confidence","confidence_status"),("conflict_group_refs","conflict_group_ids")):
+                if legacy in c: add(e,"LEGACY_CLAIM_FIELD_FORBIDDEN",p+"."+legacy,f"versioned registry must use {canonical}")
+            if not isinstance(c.get("normalized_statement"),str) or not c.get("normalized_statement","").strip(): add(e,"CANONICAL_STATEMENT_REQUIRED",p+".normalized_statement","versioned registry requires normalized_statement")
+            if c.get("confidence_status") not in CONFIDENCE: add(e,"CANONICAL_CONFIDENCE_REQUIRED",p+".confidence_status","versioned registry requires canonical confidence_status")
+            if c.get("support_status") not in SUPPORT: add(e,"CANONICAL_SUPPORT_STATUS_REQUIRED",p+".support_status","versioned registry requires canonical support_status")
+            if not isinstance(c.get("conflict_group_ids"),list): add(e,"CANONICAL_CONFLICT_IDS_REQUIRED",p+".conflict_group_ids","versioned registry requires conflict_group_ids array")
         crefs=c.get("conflict_group_ids",c.get("conflict_group_refs",[]))
         if crefs is None: crefs=[]
         if not isinstance(crefs,list) or not all(isinstance(x,str) for x in crefs): add(e,"CLAIM_CONFLICT_REFS_INVALID",p,"conflict refs must be string array")
