@@ -132,7 +132,111 @@ Detailed records:
 
 The sample must not be described as 150 unique independent source photographs because four entries belong to two byte-identical duplicate groups.
 
-## Candidate screen
+## Next research node: device-to-device repeatability
+
+MOHI does not isolate device change, so device-to-device repeatability remains open.
+
+The predeclared next-step owner is `DEVICE_REPEATABILITY_PLAN.md`.
+
+### MPD-v2 / Tongji Mobile Palmprint Dataset — primary structural candidate
+
+The official Mobile Palmprint project page describes MPD 2.0 with an original `PalmSet` of 16,000 full palm images from 200 subjects / 400 hands.
+
+The capture design explicitly uses two smartphone brands and two collection periods:
+
+```text
+Huawei
+Xiaomi
+2 periods
+10 photos / hand / phone / period
+```
+
+That structure is unusually useful because device and session are explicit factors rather than confounded.
+
+A paired analysis could therefore separate:
+
+```text
+same device / same session
+same device / cross session
+cross device / same session
+cross device / cross session
+```
+
+This is a stronger fit for smartphone-to-smartphone repeatability than a corpus that merely contains many different phones across different participants.
+
+Current limitation: the public project/download page and paper establish public availability and provenance, but the current Playbook evidence has not captured a sufficiently explicit dataset-level reuse license or equivalent data-use statement for automated research reuse.
+
+Decision:
+
+```text
+PRIMARY DEVICE-REPEATABILITY STRUCTURAL CANDIDATE
+FULL-HAND ORIGINALS AVAILABLE
+DEVICE FACTOR EXPLICIT
+SESSION FACTOR EXPLICIT
+PUBLIC DOWNLOAD SURFACE EXISTS
+DATA-USE / LICENSE GATE UNRESOLVED
+→ execution blocked
+```
+
+### XJTU-UP — secondary paired-device candidate
+
+Public literature and dataset references describe XJTU-UP as an unconstrained palmprint corpus captured using multiple smartphones and lighting conditions. Recent X-Palm benchmark documentation represents it with device-separated branches including iPhone and Huawei trees.
+
+This makes XJTU-UP a useful independent device-effect confirmation candidate.
+
+Current limitation: no sufficiently explicit dataset-level reuse permission has been closed in the Playbook evidence.
+
+Decision:
+
+```text
+MULTI-DEVICE STRUCTURE STRONG
+CONTACTLESS DOMAIN STRONG
+DATA-USE / LICENSE GATE UNRESOLVED
+→ execution blocked
+```
+
+### X-Palm — cross-domain reference, not first phone-to-phone corpus
+
+X-Palm (2026) provides paired scanner ↔ smartphone acquisition, with smartphone collection spanning 80+ device models from 10+ brands. Access is non-commercial academic use under an EULA workflow.
+
+This is valuable for scanner-to-phone domain shift and broad smartphone diversity, but current evidence does not establish same-palm acquisition across multiple phone models. Therefore it is not the preferred first smartphone-to-smartphone repeatability corpus.
+
+Decision:
+
+```text
+PAIRED SCANNER↔SMARTPHONE = YES
+BROAD PHONE DIVERSITY = YES
+SAME-PALM MULTI-PHONE PAIRING = NOT ESTABLISHED
+ACCESS = EULA-CONTROLLED
+```
+
+### MPW-180 / PalmWildNet — broad device-diversity candidate, not paired-device authority
+
+`bingolo/PalmWildNet` describes MPW-180 as a mobile palmprint corpus with:
+
+```text
+180 subjects
+multiple smartphones
+flash / non-flash
+indoor / outdoor
+720 videos
+thousands of ROI images
+```
+
+The README claims dataset CC BY-NC 4.0, but current repository inspection still shows only README / figures / Apache code license; the documented `DATASET_LICENSE` artifact is absent and the dataset DOI/link remains a placeholder.
+
+More importantly for this research question, current evidence establishes participant-owned device diversity, not clearly repeated same-palm acquisition across multiple smartphone models.
+
+Decision:
+
+```text
+BROAD MOBILE DEVICE DIVERSITY = STRONG
+PAIRED SAME-PALM MULTI-DEVICE STRUCTURE = NOT ESTABLISHED
+DATASET RELEASE / LICENSE ARTIFACT = INCOMPLETE
+→ hold
+```
+
+## Other candidate screen
 
 ### XINHUA Palmprint via `HewelXX/Dataset`
 
@@ -140,7 +244,7 @@ GitHub connector inspection confirms source JPEGs directly under `XINHUA/`, with
 
 The associated publication's Data Availability statement identifies both the GitHub dataset location and Zenodo DOI `10.5281/zenodo.15473268`, and describes 50 participants, 100 palm classes, 20 images per palm, split into two capture periods of 10 images each.
 
-However, the repository itself contains no confirmed dataset license, and the publication's Data Availability statement establishes location/provenance rather than explicit reuse permission. The associated Zenodo record has not yet supplied a sufficiently explicit dataset-level license statement in the evidence captured for this Playbook.
+However, the repository itself contains no confirmed dataset license, and the publication's Data Availability statement establishes location/provenance rather than explicit reuse permission.
 
 Decision:
 
@@ -164,106 +268,47 @@ mean inter-session interval ≈ 61 days
 range 21–106 days
 ```
 
-The official page exposes public links for original images and ROI images and documents the session/name correspondence.
-
-This remains a strong candidate for a longer-interval contactless repeatability study, but the inspected project page does not state an explicit dataset reuse license comparable to MOHI's research/teaching statement.
-
-Decision:
-
-```text
-excellent contactless / multi-session structure
-public download surface exists
-PROVENANCE STRONG
-DATA-USE / LICENSE GATE UNRESOLVED
-```
-
-Public download availability alone is not permission authority.
+This remains a strong longer-interval contactless repeatability candidate, but reuse permission is unresolved in current evidence.
 
 ### THUPALMLAB multi-impression subset
 
-The official Tsinghua University dataset page explicitly states that the public multi-impression subset may be downloaded for **non-commercial research and educational purposes**.
+The official Tsinghua University dataset page explicitly permits the public multi-impression subset for non-commercial research / education.
 
-The official page describes:
-
-```text
-80 subjects
-2 palms per subject
-8 impressions per palm
-1,280 palmprint images
-2040 × 2040 pixels
-500 ppi
-commercial Hisign palmprint scanner
-```
-
-A user supplied a bounded extracted sample consisting of one dataset-provided palm class (`subject 1 / left palm`) with eight scanner impressions.
-
-Observed bounded runtime probe under the same pinned MediaPipe baseline:
+A bounded subject-1 left-palm 8-impression probe under the pinned MediaPipe baseline returned:
 
 ```text
-candidate-count distribution:
-0 = 8
-1 = 0
-2 = 0
-usable_exactly_one_rate = 0.0
+0 candidates = 8
+usable exactly-one rate = 0.0
 ```
 
-Decision:
-
-```text
-DATA-USE GATE SATISFIED
-scanner/contact domain mismatch
-PINNED FULL-HAND RUNTIME COMPATIBILITY NEGATIVE on bounded 8/8 impressions
-→ stop this MediaPipe-based THUPALMLAB path
-```
-
-This does not establish dataset-wide detector failure.
-
-### MPW-180 / PalmWildNet
-
-IAPR TC4 lists MPW-180 as a recent palmprint dataset, and the GitHub repository `bingolo/PalmWildNet` describes a mobile palmprint corpus with multiple smartphones, flash/non-flash conditions, realistic environments, 180 subjects, 720 videos, and thousands of ROI images.
-
-The README claims code Apache-2.0 and dataset CC BY-NC 4.0, but the documented dataset-license artifact and final dataset DOI/link were not present during qualification.
-
-Decision:
-
-```text
-best future phone/device-fit candidate
-CURRENT DATASET RELEASE SURFACE INCOMPLETE
-→ hold until actual dataset + license artifact are published
-```
+Decision: bounded scanner-domain compatibility negative; current MediaPipe path stopped.
 
 ### BJTU Palm V2 via `HewelXX/Dataset`
 
-An actual archive object exists, but no sufficient dataset license/provenance statement was found.
-
-Decision: acquisition exists, license/provenance qualification insufficient → hold.
+Archive acquisition exists, but no sufficient dataset license/provenance statement was found.
 
 ### NTU Palmprints / NTU Contactless Palmprints
 
-Official/project documentation requires a Data Release Agreement before download.
-
-Decision: scientifically relevant but access-gated; not an anonymous reproducible baseline corpus.
+Access requires a Data Release Agreement.
 
 ### IITD Touchless Palmprint
 
-Acquisition requires a request/agreement workflow.
-
-Decision: scientifically relevant but not suitable as an automated reproducible baseline corpus.
+Access requires a request/agreement workflow.
 
 ## Current ranking
 
-| Candidate | Multi-capture structure | Data-use gate | Capture-domain fit | Current decision |
+| Candidate | Research role | Data-use gate | Device/session fit | Current decision |
 |---|---|---|---|---|
-| MOHI | **3 sessions × 5 / person** | **explicit research/teaching** | **mobile/contactless full hand** | **bounded study complete; duplicate audit closed** |
-| Tongji Contactless | **2 sessions × 10 / palm** | unresolved | excellent | preferred longer-interval follow-up if permission closes |
-| XINHUA | **2 periods × 10 / palm** | unresolved | excellent | alternative if permission closes |
-| MPW-180 | multi-device / video | release incomplete | **best future phone/device fit** | hold |
-| THUPALMLAB | **8 / palm** | explicit non-commercial research/education | scanner/contact mismatch | bounded MediaPipe compatibility negative; stopped |
-| BJTU V2 | repeated dataset likely useful | unresolved | contactless | hold |
-| NTU-CP / NTU-PI | repeated | agreement-controlled | contactless | hold |
-| IITD | repeated | agreement-controlled | contactless | hold |
+| MOHI | completed multi-session baseline | **explicit research/teaching** | same capture setup, 3 sessions | **bounded study complete** |
+| MPD-v2 | **primary phone-to-phone candidate** | unresolved | **2 phones × 2 periods, paired** | **execution blocked** |
+| XJTU-UP | secondary phone-to-phone candidate | unresolved | multi-phone / multi-lighting | execution blocked |
+| X-Palm | scanner↔phone cross-domain reference | EULA-controlled | broad phone diversity; pairing across phone models unproven | reference / gated |
+| MPW-180 | broad phone-diversity reference | release/license artifact incomplete | many phones; same-palm multi-phone pairing unproven | hold |
+| Tongji Contactless | longer-interval session candidate | unresolved | 2 sessions | hold |
+| XINHUA | alternative session candidate | unresolved | 2 periods | hold |
+| THUPALMLAB | scanner-domain control | explicit research/education | repeated impressions, scanner | bounded runtime negative |
 
-This ranking is about research operability and domain fit, not overall dataset scientific quality.
+This ranking is about research operability and factor isolation, not overall dataset scientific quality.
 
 ## Common prohibitions
 
@@ -277,6 +322,7 @@ Do **not**:
 - commit source images into this Playbook;
 - silently generalize scanner results to contactless phone/camera capture;
 - silently generalize MOHI results to device-to-device or long-term longitudinal stability;
+- treat broad device diversity as paired same-palm multi-device evidence;
 - describe duplicated sample entries as unique independent captures.
 
 ## Evidence boundary
@@ -287,7 +333,8 @@ This node now establishes:
 - positive pinned-runtime compatibility for all 150 MOHI image entries in the first study;
 - descriptive within-session versus cross-session geometry distributions;
 - a closed duplicate-content audit explaining all exact-zero detector-geometry groups;
-- a bounded negative scanner-domain runtime result for THUPALMLAB.
+- a bounded negative scanner-domain runtime result for THUPALMLAB;
+- a predeclared device-repeatability design with MPD-v2 as the strongest current structural candidate.
 
 It still does **not** establish:
 
@@ -301,12 +348,14 @@ It still does **not** establish:
 Current executable state:
 
 ```text
-MOHI: bounded contactless multi-session study complete; integrity caveat characterized
-Tongji / XINHUA: longer-interval / alternative contactless candidates; permission unresolved
-MPW-180: strongest future multi-device candidate; release incomplete
+MOHI: bounded contactless multi-session study complete
+MPD-v2: best paired smartphone-device design; data-use gate unresolved
+XJTU-UP: secondary paired-device candidate; data-use gate unresolved
+X-Palm: EULA-gated scanner↔smartphone cross-domain reference
+MPW-180: broad device diversity but release/pairing evidence incomplete
 THUPALMLAB: permission clear; bounded scanner sample incompatible with current pinned full-hand runtime
 ```
 
-The next high-value research gaps are **device-to-device repeatability**, **longer-term longitudinal stability**, **detector-to-detector agreement**, and **principal-line segmentation repeatability**.
+The next executable step is **not** dataset download. It is closing an explicit data-use permission gate for MPD-v2 or XJTU-UP while preserving the already-frozen `DEVICE_REPEATABILITY_PLAN.md`.
 
 Palmistry remains **REFERENCE-ONLY / DRAFT / NOT PRODUCTION-ROUTABLE**.
