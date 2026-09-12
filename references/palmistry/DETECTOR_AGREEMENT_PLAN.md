@@ -1,6 +1,6 @@
 # Palm Detector-to-Detector Agreement Plan
 
-Status: **REFERENCE-ONLY / PREDECLARED / EXECUTION BLOCKED BY RUNTIME ARTIFACT LOCK**
+Status: **REFERENCE-ONLY / PREDECLARED / EXECUTION BLOCKED BY FINAL MODEL-CONSTRUCTION SMOKE TEST**
 
 本 Cold plan 凍結 Palmistry observation research 的下一個獨立 evidence node：**detector-to-detector agreement**。
 
@@ -171,7 +171,35 @@ mmengine >= 0.4.0, < 1.0.0
 
 Checkpoint 也必須先從 official OpenMMLab artifact 取得、計算完整 SHA256、寫回本 plan 或其 execution record，之後才可開始 MOHI inference。
 
-在這個 lock 完成前：
+`DETECTOR_AGREEMENT_RUNTIME_LOCK.md` 現已 durable-record 並實際驗證：
+
+```text
+Platform: Linux / WSL2 / x86_64 / glibc 2.35
+Python: 3.9.18
+NumPy: 1.26.4
+OpenCV: 4.10.0
+PyTorch: 1.13.1
+TorchVision: 0.14.1
+MMCV: 2.0.0
+MMDetection: 3.2.0
+MMEngine: 0.10.4
+MMPose: 1.3.2
+MKL: 2020.2
+Intel OpenMP: 2023.0.0
+chumpy: 0.70
+CPU backend
+pip check: clean
+```
+
+Official checkpoint full SHA256 已閉合：
+
+```text
+b74fb5941684fe13c337b8d4fce644293e12903fed5407f8b27921f107dc6003
+```
+
+`torch.load(..., map_location="cpu")` 已成功讀取 checkpoint，top-level keys 為 `meta` / `state_dict`。
+
+但在任何 MOHI image 前，仍須完成最後一個 **MMPose frozen-config model-construction + checkpoint weight-load smoke test**。在該 smoke test 完成前：
 
 ```text
 NO MOHI RTMPOSE INFERENCE
@@ -346,8 +374,8 @@ source integrity
 
 在 inference 前停止，如果：
 
-- official checkpoint 無法取得或 SHA256 無法固定；
-- exact runtime dependencies 無法鎖定；
+- frozen-config MMPose model construction / checkpoint weight load 無法成功；
+- exact runtime dependencies 無法維持已驗證 lock；
 - official config / checkpoint identity 發生不明確 drift；
 - full-image `inference_topdown()` adapter 無法保留 raw-image output mapping；
 - 21-keypoint semantics 無法 authoritative 對應；
