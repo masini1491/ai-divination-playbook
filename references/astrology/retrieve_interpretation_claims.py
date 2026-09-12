@@ -176,7 +176,7 @@ def retrieve_claims(registry: dict[str, Any], query: dict[str, Any]) -> dict[str
 
         if eligible_count == len(resolved_sources):
             admission_mode = "claim_eligible"
-        elif eligible_count > 0:
+        elif eligible_count > 0 and reference_only_count > 0 and allow_reference_only and qualified_claim:
             admission_mode = "mixed_claim_eligible_and_reference_only"
         elif reference_only_count == len(resolved_sources) and allow_reference_only and qualified_claim:
             admission_mode = "qualified_reference_only"
