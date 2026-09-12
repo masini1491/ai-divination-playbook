@@ -31,7 +31,7 @@ def rotate_points(points: np.ndarray, matrix: np.ndarray) -> np.ndarray:
 
 
 def crop_with_padding(rgb: np.ndarray, x0: int, y0: int, x1: int, y1: int) -> np.ndarray:
-    """Crop [x0,y0,x1,y1) with deterministic black padding outside source."""
+    """Legacy helper retained for G0-adjacent study utilities; G1 does not use it."""
     h, w = rgb.shape[:2]
     out_w, out_h = max(1, x1 - x0), max(1, y1 - y0)
     out = np.zeros((out_h, out_w, 3), dtype=np.uint8)
@@ -45,7 +45,13 @@ def crop_with_padding(rgb: np.ndarray, x0: int, y0: int, x1: int, y1: int) -> np
 
 
 def reconstructed_upstream_crop(rgb: np.ndarray, points: np.ndarray) -> tuple[np.ndarray, dict[str, Any]]:
-    """Frozen-landmark reconstruction of pinned upstream crop geometry hypothesis."""
+    """Frozen-landmark reconstruction of pinned upstream crop geometry hypothesis.
+
+    Fidelity-critical behavior follows pinned upstream pipeline/hand_preprocess.py:
+    compute the float rotated-landmark bbox + fixed margin, absorb the float bbox
+    origin into the affine translation, then warp the source directly into the
+    ceil(span) output crop. This avoids an intermediate source-sized rotated canvas.
+    """
     h, w = rgb.shape[:2]
     center = tuple(points.mean(axis=0))
     v = points[9] - points[0]
@@ -71,32 +77,35 @@ def reconstructed_upstream_crop(rgb: np.ndarray, points: np.ndarray) -> tuple[np
         best_matrix = cv2.getRotationMatrix2D(center, theta, 1.0)
 
     rp = rotate_points(points, best_matrix)
-    mins, maxs = rp.min(axis=0), rp.max(axis=0)
-    x0 = math.floor(float(mins[0] - UPSTREAM_FIXED_MARGIN_PX))
-    y0 = math.floor(float(mins[1] - UPSTREAM_FIXED_MARGIN_PX))
-    x1 = math.ceil(float(maxs[0] + UPSTREAM_FIXED_MARGIN_PX))
-    y1 = math.ceil(float(maxs[1] + UPSTREAM_FIXED_MARGIN_PX))
+    x0, y0 = rp.min(axis=0) - UPSTREAM_FIXED_MARGIN_PX
+    x1, y1 = rp.max(axis=0) + UPSTREAM_FIXED_MARGIN_PX
+    x0, y0, x1, y1 = float(x0), float(y0), float(x1), float(y1)
+    out_w = max(1, int(math.ceil(x1 - x0)))
+    out_h = max(1, int(math.ceil(y1 - y0)))
 
-    # Rotate on the original canvas, matching the reconstruction's rotate-first geometry.
-    rotated = cv2.warpAffine(
+    crop_matrix = best_matrix.copy()
+    crop_matrix[0, 2] -= x0
+    crop_matrix[1, 2] -= y0
+    crop = cv2.warpAffine(
         rgb,
-        best_matrix,
-        (w, h),
+        crop_matrix,
+        (out_w, out_h),
         flags=cv2.INTER_LINEAR,
         borderMode=cv2.BORDER_CONSTANT,
         borderValue=(0, 0, 0),
     )
-    crop = crop_with_padding(rotated, x0, y0, x1, y1)
     return crop, {
         "geometry": "G1_reconstructed_upstream_like",
         "source_size_hw": [h, w],
         "rotation_center_xy": [float(center[0]), float(center[1])],
         "rotation_deg": float(best_angle),
-        "rotation_matrix": best_matrix.tolist(),
-        "rotated_landmark_bbox_xyxy_with_margin": [x0, y0, x1, y1],
+        "rotation_matrix_source_frame": best_matrix.tolist(),
+        "crop_affine_matrix": crop_matrix.tolist(),
+        "rotated_landmark_bbox_xyxy_with_margin_float": [x0, y0, x1, y1],
         "fixed_margin_px": UPSTREAM_FIXED_MARGIN_PX,
         "crop_size_hw": list(crop.shape[:2]),
         "upstream_revision": UPSTREAM_REVISION,
+        "implementation_fidelity": "float bbox origin absorbed into affine translation; direct source-to-crop warp",
         "authority_note": "reconstructed geometry hypothesis; not historical-training truth",
     }
 
