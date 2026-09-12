@@ -1,6 +1,6 @@
 # Palm Multi-capture Dataset Qualification Gate
 
-Status: **REFERENCE-ONLY / DATASET QUALIFICATION COMPLETE**
+Status: **REFERENCE-ONLY / DATASET QUALIFICATION COMPLETE / DEVICE PERMISSION AUDIT CLOSED-UNRESOLVED**
 
 This Cold note qualifies candidate public palm-image corpora for Palmistry **independent multi-capture repeatability** research and records the first completed permission-qualified contactless study.
 
@@ -138,6 +138,8 @@ MOHI does not isolate device change, so device-to-device repeatability remains o
 
 The predeclared next-step owner is `DEVICE_REPEATABILITY_PLAN.md`.
 
+A bounded public-authority permission audit was completed on 2026-09-12 for the two leading paired-device candidates. The audit intentionally distinguishes public release / reproducibility intent from dataset-level reuse authorization.
+
 ### MPD-v2 / Tongji Mobile Palmprint Dataset — primary structural candidate
 
 The official Mobile Palmprint project page describes MPD 2.0 with an original `PalmSet` of 16,000 full palm images from 200 subjects / 400 hands.
@@ -164,7 +166,13 @@ cross device / cross session
 
 This is a stronger fit for smartphone-to-smartphone repeatability than a corpus that merely contains many different phones across different participants.
 
-Current limitation: the public project/download page and paper establish public availability and provenance, but the current Playbook evidence has not captured a sufficiently explicit dataset-level reuse license or equivalent data-use statement for automated research reuse.
+Permission audit evidence:
+
+- official project page: `https://cslinzhang.github.io/MobilePalmPrint/`;
+- MPD paper: *Towards Palmprint Verification On Smartphones* (`arXiv:2003.13266`);
+- project-linked MPD 2.0 download surface, to the extent retrievable in the current research environment.
+
+The project page and paper establish public release, dataset provenance, reproducibility intent, and the device/session structure. They do **not** expose a dataset-level CC license, explicit research-use permission grant, EULA, data-use terms, redistribution rule, or equivalent reuse authorization on the inspected surfaces. The linked Baidu landing page could not be inspected in the current research environment, so no additional landing-page terms were observed.
 
 Decision:
 
@@ -173,8 +181,9 @@ PRIMARY DEVICE-REPEATABILITY STRUCTURAL CANDIDATE
 FULL-HAND ORIGINALS AVAILABLE
 DEVICE FACTOR EXPLICIT
 SESSION FACTOR EXPLICIT
-PUBLIC DOWNLOAD SURFACE EXISTS
-DATA-USE / LICENSE GATE UNRESOLVED
+PUBLIC RELEASE / REPRODUCIBILITY INTENT ESTABLISHED
+DATASET-LEVEL REUSE PERMISSION NOT ESTABLISHED
+DATA-USE / LICENSE GATE UNRESOLVED AFTER PUBLIC-AUTHORITY AUDIT
 → execution blocked
 ```
 
@@ -184,15 +193,37 @@ Public literature and dataset references describe XJTU-UP as an unconstrained pa
 
 This makes XJTU-UP a useful independent device-effect confirmation candidate.
 
-Current limitation: no sufficiently explicit dataset-level reuse permission has been closed in the Playbook evidence.
+After MPD-v2 remained unresolved, the permission audit checked the XJTU-UP paper *Towards Efficient Unconstrained Palmprint Recognition via Deep Distillation Hashing* / *Deep Distillation Hashing for Unconstrained Palmprint Recognition* (`arXiv:2004.03303`) and Xi'an Jiaotong University faculty/project pages associated with the dataset resource route.
+
+Those sources establish that the dataset was publicly released for research reproducibility and document its multi-smartphone acquisition. No inspected authoritative surface supplied a dataset-level CC license, explicit non-commercial/research-use grant, EULA, data-use terms, redistribution rule, or equivalent reuse statement.
 
 Decision:
 
 ```text
 MULTI-DEVICE STRUCTURE STRONG
 CONTACTLESS DOMAIN STRONG
-DATA-USE / LICENSE GATE UNRESOLVED
+PUBLIC RELEASE / RESEARCH CONTEXT ESTABLISHED
+DATASET-LEVEL REUSE PERMISSION NOT ESTABLISHED
+DATA-USE / LICENSE GATE UNRESOLVED AFTER PUBLIC-AUTHORITY AUDIT
 → execution blocked
+```
+
+### Permission-closing boundary
+
+For MPD-v2 and XJTU-UP, public release, citation by later papers, and availability of a download route are not treated as permission authority.
+
+Before acquisition, the Playbook requires either:
+
+- an authoritative dataset-owner page with explicit reuse terms; or
+- direct written authorization that clearly covers the intended bounded non-commercial research use, local automated processing, and derived aggregate reporting.
+
+Any closure evidence must record source, scope, restrictions, citation requirement, redistribution boundary, and local-retention conditions.
+
+Until that evidence exists:
+
+```text
+MPD-v2: NO ACQUISITION / NO INFERENCE
+XJTU-UP: NO ACQUISITION / NO INFERENCE
 ```
 
 ### X-Palm — cross-domain reference, not first phone-to-phone corpus
@@ -300,8 +331,8 @@ Access requires a request/agreement workflow.
 | Candidate | Research role | Data-use gate | Device/session fit | Current decision |
 |---|---|---|---|---|
 | MOHI | completed multi-session baseline | **explicit research/teaching** | same capture setup, 3 sessions | **bounded study complete** |
-| MPD-v2 | **primary phone-to-phone candidate** | unresolved | **2 phones × 2 periods, paired** | **execution blocked** |
-| XJTU-UP | secondary phone-to-phone candidate | unresolved | multi-phone / multi-lighting | execution blocked |
+| MPD-v2 | **primary phone-to-phone candidate** | unresolved after public-authority audit | **2 phones × 2 periods, paired** | **execution blocked** |
+| XJTU-UP | secondary phone-to-phone candidate | unresolved after public-authority audit | multi-phone / multi-lighting | execution blocked |
 | X-Palm | scanner↔phone cross-domain reference | EULA-controlled | broad phone diversity; pairing across phone models unproven | reference / gated |
 | MPW-180 | broad phone-diversity reference | release/license artifact incomplete | many phones; same-palm multi-phone pairing unproven | hold |
 | Tongji Contactless | longer-interval session candidate | unresolved | 2 sessions | hold |
@@ -334,7 +365,8 @@ This node now establishes:
 - descriptive within-session versus cross-session geometry distributions;
 - a closed duplicate-content audit explaining all exact-zero detector-geometry groups;
 - a bounded negative scanner-domain runtime result for THUPALMLAB;
-- a predeclared device-repeatability design with MPD-v2 as the strongest current structural candidate.
+- a predeclared device-repeatability design with MPD-v2 as the strongest current structural candidate;
+- a completed public-authority permission audit for MPD-v2 and XJTU-UP that leaves both reuse gates unresolved.
 
 It still does **not** establish:
 
@@ -349,13 +381,13 @@ Current executable state:
 
 ```text
 MOHI: bounded contactless multi-session study complete
-MPD-v2: best paired smartphone-device design; data-use gate unresolved
-XJTU-UP: secondary paired-device candidate; data-use gate unresolved
+MPD-v2: best paired smartphone-device design; public-authority permission audit unresolved
+XJTU-UP: secondary paired-device candidate; public-authority permission audit unresolved
 X-Palm: EULA-gated scanner↔smartphone cross-domain reference
 MPW-180: broad device diversity but release/pairing evidence incomplete
 THUPALMLAB: permission clear; bounded scanner sample incompatible with current pinned full-hand runtime
 ```
 
-The next executable step is **not** dataset download. It is closing an explicit data-use permission gate for MPD-v2 or XJTU-UP while preserving the already-frozen `DEVICE_REPEATABILITY_PLAN.md`.
+The next executable step is **not** dataset download. It is obtaining authoritative dataset-level reuse terms or direct written permission for MPD-v2 or XJTU-UP while preserving the already-frozen `DEVICE_REPEATABILITY_PLAN.md`.
 
 Palmistry remains **REFERENCE-ONLY / DRAFT / NOT PRODUCTION-ROUTABLE**.

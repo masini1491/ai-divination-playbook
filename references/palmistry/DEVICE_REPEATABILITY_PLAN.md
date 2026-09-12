@@ -54,9 +54,24 @@ cross device / cross session
 
 This lets device effect be compared against the already-known session effect instead of collapsing both together.
 
-### Current gate
+### Data-use gate
 
-The public project/download surface is visible, but this Playbook has not yet captured a sufficiently explicit dataset-level reuse license or equivalent permission statement authorizing automated research reuse.
+The public project/download surface is visible, but public availability is not itself a reuse grant.
+
+A bounded permission audit on 2026-09-12 checked the following authority surfaces:
+
+- official Mobile Palmprint project page (`https://cslinzhang.github.io/MobilePalmPrint/`);
+- the authors' MPD paper, *Towards Palmprint Verification On Smartphones* (`arXiv:2003.13266`);
+- the project-linked MPD 2.0 download surface to the extent retrievable in the current research environment.
+
+Observed:
+
+- the official project page exposes `MPD 2.0` and describes the `PalmSet` / generated datasets and capture structure;
+- the paper states that the labeled dataset and source code were made publicly available to support reproducibility and further study;
+- neither inspected authoritative surface supplied a dataset-level Creative Commons license, explicit research-only permission grant, EULA, data-use terms, redistribution rule, or equivalent reuse authorization;
+- the linked Baidu download landing page could not be inspected by the current research environment, so no additional terms from that landing page were observed.
+
+The paper's publication status or public-download wording must not be projected onto the dataset as a license.
 
 Decision:
 
@@ -64,6 +79,8 @@ Decision:
 STRUCTURAL FIT = HIGH
 DEVICE FACTOR = EXPLICIT
 SESSION FACTOR = EXPLICIT
+PUBLIC RELEASE / REPRODUCIBILITY INTENT = ESTABLISHED
+DATASET-LEVEL REUSE PERMISSION = NOT ESTABLISHED
 DATA-USE / LICENSE GATE = UNRESOLVED
 EXECUTION = BLOCKED
 ```
@@ -74,15 +91,46 @@ Public literature and project references describe XJTU-UP as an unconstrained pa
 
 This makes XJTU-UP useful for independent confirmation of device sensitivity.
 
-However, the current Playbook evidence has not yet closed a sufficiently explicit dataset-level data-use permission statement.
+### Data-use gate
+
+After MPD-v2 remained unresolved, the same 2026-09-12 bounded permission audit checked XJTU-UP authority surfaces, including:
+
+- the dataset paper, *Towards Efficient Unconstrained Palmprint Recognition via Deep Distillation Hashing* / later journal version *Deep Distillation Hashing for Unconstrained Palmprint Recognition* (`arXiv:2004.03303`);
+- Xi'an Jiaotong University faculty/project pages associated with Dexing Zhong's group and the historical dataset resource route.
+
+Observed:
+
+- the paper states that the collected dataset and related source code are publicly available from the XJTU resource page;
+- the university-hosted research pages establish the XJTU-UP project provenance and multi-smartphone dataset context;
+- no inspected authoritative surface supplied a dataset-level CC license, explicit non-commercial/research-use grant, EULA, data-use terms, redistribution rule, or equivalent permission statement.
+
+Therefore public release and repeated academic use establish provenance and research context, but do not close this Playbook's reuse gate.
 
 Decision:
 
 ```text
 MULTI-DEVICE STRUCTURE = STRONG
 CONTACTLESS FULL-HAND DOMAIN = STRONG
+PUBLIC RELEASE / RESEARCH CONTEXT = ESTABLISHED
+DATASET-LEVEL REUSE PERMISSION = NOT ESTABLISHED
 DATA-USE / LICENSE GATE = UNRESOLVED
 EXECUTION = BLOCKED
+```
+
+## Permission-closing requirement
+
+Because both public-authority audits remain unresolved, the next executable action is **permission closure**, not dataset acquisition.
+
+Sufficient closure may come from an authoritative dataset-owner surface or direct written authorization that clearly covers the intended bounded non-commercial research use, including local automated processing and reporting of derived aggregate statistics.
+
+Any such authorization should be recorded with its source, scope, restrictions, citation requirement, redistribution boundary, and whether source images may be retained locally. Absence of a public license must not be silently replaced by inference from academic custom or prior publications that used the dataset.
+
+Until that evidence exists:
+
+```text
+DO NOT DOWNLOAD FOR THIS STUDY
+DO NOT RUN INFERENCE
+DO NOT CREATE A 200-IMAGE MANIFEST
 ```
 
 ## Cross-domain reference: X-Palm
