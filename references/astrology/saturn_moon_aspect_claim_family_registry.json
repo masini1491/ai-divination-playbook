@@ -1,0 +1,322 @@
+{
+  "record_status": "REFERENCE-ONLY",
+  "record_kind": "interpretation_claim_family_registry",
+  "record_id": "saturn-moon-major-aspects-research-v1",
+  "subject": "Moon-Saturn conjunction, square, and opposition interpretation evidence",
+  "branch_baseline": "56db58abe6e3e52cb57b7b1e0fd68d31c5f278f0",
+  "production_routable": false,
+  "sources": [
+    {
+      "source_id": "source:ptolemy-tetrabiblos-robbins-lacuscurtius",
+      "title": "Tetrabiblos",
+      "author_or_org": "Claudius Ptolemy",
+      "source_role": "PRIMARY_TEXT",
+      "source_kind": "translation",
+      "tradition_tags": ["hellenistic", "ptolemaic", "classical"],
+      "edition": "F. E. Robbins English translation, Loeb Classical Library; LacusCurtius web edition",
+      "locator": [
+        "Book I §13",
+        "Book III §4",
+        "Book III §13"
+      ],
+      "language": "English translation of Greek primary text",
+      "license_status": "license_unresolved",
+      "copyright_status": "unknown",
+      "storage_mode": ["metadata_plus_locator", "normalized_paraphrase"],
+      "verification_status": ["identity_verified", "locator_verified"],
+      "admission_status": ["CLAIM_ELIGIBLE", "POLICY_PROVENANCE_ELIGIBLE"],
+      "admission_scope": [
+        "historical aspect geometry",
+        "historical Moon/configured-planet doctrine",
+        "historical Saturn-Moon examples in bounded inquiry contexts"
+      ],
+      "excluded_scope": [
+        "modern psychological meanings",
+        "scientific predictive validity",
+        "clinical claims"
+      ],
+      "independence_status": "independent_evidence"
+    },
+    {
+      "source_id": "source:campion-ore-2019",
+      "title": "Astrology in Ancient Greek and Roman Culture",
+      "author_or_org": "Nicholas Campion",
+      "source_role": "SCHOLARLY_SECONDARY",
+      "source_kind": "encyclopedia",
+      "tradition_tags": ["history_of_astrology", "classical_context"],
+      "publication_or_release_date": "2019-05-23",
+      "locator": "Oxford Research Encyclopedia of Planetary Science; DOI 10.1093/acrefore/9780190647926.013.46",
+      "language": "English",
+      "license_status": "verified_proprietary_or_restricted",
+      "copyright_status": "copyrighted",
+      "storage_mode": ["metadata_plus_locator", "normalized_paraphrase"],
+      "verification_status": ["identity_verified", "publication_verified", "locator_verified"],
+      "admission_status": ["CLAIM_ELIGIBLE"],
+      "admission_scope": [
+        "historical context",
+        "classical astrology diversity",
+        "Ptolemaic Moon/soul framework",
+        "historiography and source cautions"
+      ],
+      "excluded_scope": [
+        "scientific validation of astrology",
+        "project-canonical interpretation policy"
+      ],
+      "independence_status": "independent_evidence"
+    },
+    {
+      "source_id": "source:greene-eternal-triangle-skyscript",
+      "title": "Psychological Astrology: The Eternal Triangle",
+      "author_or_org": "Liz Greene",
+      "source_role": "PRACTITIONER_REFERENCE",
+      "source_kind": "article",
+      "tradition_tags": ["modern", "psychological_astrology"],
+      "publication_or_release_date": "2004-10-01",
+      "locator": "https://direct.skyscript.co.uk/lgreene",
+      "language": "English",
+      "license_status": "verified_proprietary_or_restricted",
+      "copyright_status": "copyrighted",
+      "storage_mode": ["metadata_plus_locator", "normalized_paraphrase"],
+      "verification_status": ["identity_verified", "publication_verified", "locator_verified"],
+      "admission_status": ["CLAIM_ELIGIBLE"],
+      "admission_scope": [
+        "modern psychological framing",
+        "Moon-Saturn opposition as parental-image / inner-life symbolism"
+      ],
+      "excluded_scope": [
+        "classical doctrine",
+        "literal parental biography",
+        "clinical diagnosis",
+        "scientific predictive validity"
+      ],
+      "independence_status": "independent_evidence"
+    },
+    {
+      "source_id": "source:wvanderen-astrology-skill-saturn-moon",
+      "title": "Moon-Saturn aspect-pair modules",
+      "author_or_org": "wvanderen/astrology-skill contributors",
+      "source_role": "REFERENCE_IMPLEMENTATION",
+      "source_kind": "repository",
+      "tradition_tags": ["classical", "modern", "blended", "retrieval_first"],
+      "immutable_revision": "a9339b3c7151313530aa5002572c6612a2cfd59f",
+      "locator": [
+        "references/aspects/by_planet_pair/moon_conjunction_saturn.md",
+        "references/aspects/by_planet_pair/moon_square_saturn.md",
+        "references/aspects/by_planet_pair/moon_opposition_saturn.md"
+      ],
+      "language": "English",
+      "license_status": "verified_permissive",
+      "license_identifier": "MIT",
+      "copyright_status": "copyrighted",
+      "storage_mode": ["metadata_plus_locator", "normalized_paraphrase"],
+      "verification_status": ["identity_verified", "revision_verified", "license_verified", "locator_verified"],
+      "admission_status": ["REFERENCE_ONLY"],
+      "admission_scope": [
+        "retrieval-first architecture",
+        "qualified practitioner implementation evidence",
+        "aspect-form differentiation used by this implementation"
+      ],
+      "excluded_scope": [
+        "project-canonical doctrine",
+        "independent historical witness for its cited classical material",
+        "scientific predictive validity"
+      ],
+      "upstream_source_refs": [
+        "source:ptolemy-tetrabiblos-robbins-lacuscurtius"
+      ],
+      "derivative_relationship": "classical mechanism notes explicitly paraphrase an upstream historical source family; modern psychological synthesis is implementation-authored",
+      "independence_status": "shared_upstream"
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "claim:ptolemy-major-aspect-geometry",
+      "layer": "L4",
+      "claim_type": "historical_doctrine",
+      "normalized_statement": "Ptolemy describes opposition, trine, quartile/square, and sextile as geometric relations between zodiacal signs; this establishes historical aspect geometry but not modern psychological meanings for those forms.",
+      "source_refs": ["source:ptolemy-tetrabiblos-robbins-lacuscurtius"],
+      "source_locator_refs": ["Book I §13"],
+      "tradition_tags": ["ptolemaic", "classical"],
+      "applies_to": ["aspect_geometry"],
+      "scope": "historical geometry/technique only",
+      "confidence_status": "supported",
+      "support_status": "single_source_supported",
+      "conflict_group_ids": ["conflict:geometry-vs-metaphor"],
+      "cautions": ["Does not establish fusion/friction/polarization psychological metaphors."],
+      "storage_origin": "project-authored normalized paraphrase"
+    },
+    {
+      "claim_id": "claim:ptolemy-moon-configured-planets-soul",
+      "layer": "L4",
+      "claim_type": "historical_doctrine",
+      "normalized_statement": "In Ptolemy's framework, the Moon and planets configured with her in separation and application contribute to judgment of the sensory or irrational part of the soul.",
+      "source_refs": ["source:ptolemy-tetrabiblos-robbins-lacuscurtius", "source:campion-ore-2019"],
+      "source_locator_refs": ["Tetrabiblos Book III §13", "Campion 2019 discussion of psychological analysis"],
+      "tradition_tags": ["ptolemaic", "classical"],
+      "applies_to": ["historical Moon interpretation", "planetary configuration with Moon"],
+      "scope": "historical doctrine and scholarly context",
+      "confidence_status": "supported",
+      "support_status": "multi_source_supported",
+      "conflict_group_ids": ["conflict:historical-vs-modern-scope"],
+      "cautions": ["Multi-source support here concerns what Ptolemy taught, not scientific validation."],
+      "storage_origin": "project-authored normalized paraphrase"
+    },
+    {
+      "claim_id": "claim:ptolemy-saturn-regards-moon-maternal-context",
+      "layer": "L4",
+      "claim_type": "historical_doctrine",
+      "normalized_statement": "Ptolemy includes Saturn regarding the Moon in a bounded maternal judgment and treats the configuration as difficult under specified conditions; this is not a universal natal-psychology rule for every Moon-Saturn aspect.",
+      "source_refs": ["source:ptolemy-tetrabiblos-robbins-lacuscurtius"],
+      "source_locator_refs": ["Book III §4"],
+      "tradition_tags": ["ptolemaic", "classical"],
+      "applies_to": ["maternal inquiry in Ptolemaic natal doctrine"],
+      "scope": "historical bounded inquiry",
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": ["conflict:historical-vs-modern-scope", "conflict:parent-symbol-vs-biography"],
+      "cautions": ["Do not generalize the maternal judgment to literal biography or all reading types."],
+      "storage_origin": "project-authored normalized paraphrase"
+    },
+    {
+      "claim_id": "claim:campion-classical-astrology-diversity",
+      "layer": "L4",
+      "claim_type": "methodological_claim",
+      "normalized_statement": "Historical scholarship treats Greek and Roman astrology as diverse rather than a single uniform doctrine and notes that surviving texts, transmission, and translation require contextual interpretation.",
+      "source_refs": ["source:campion-ore-2019"],
+      "source_locator_refs": ["Oxford Research Encyclopedia article"],
+      "tradition_tags": ["history_of_astrology"],
+      "applies_to": ["source interpretation", "historical claim scope"],
+      "scope": "historiography",
+      "confidence_status": "supported",
+      "support_status": "single_source_supported",
+      "conflict_group_ids": [],
+      "cautions": ["Does not validate astrological prediction."],
+      "storage_origin": "project-authored normalized paraphrase"
+    },
+    {
+      "claim_id": "claim:greene-moon-saturn-parent-image",
+      "layer": "L4",
+      "claim_type": "aspect_meaning",
+      "normalized_statement": "Within modern psychological astrology, Greene uses Moon-Saturn opposition as an example of a difficult or threatening parental image that later belongs to the individual's own inner psychological life rather than functioning only as a literal statement about a parent.",
+      "source_refs": ["source:greene-eternal-triangle-skyscript"],
+      "source_locator_refs": ["section discussing parental images and Moon-Saturn opposition"],
+      "tradition_tags": ["modern", "psychological_astrology"],
+      "applies_to": ["natal", "Moon-Saturn opposition"],
+      "scope": "modern psychological practitioner interpretation",
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": ["conflict:historical-vs-modern-scope", "conflict:parent-symbol-vs-biography"],
+      "cautions": ["Symbolic parental-image claim is not evidence of literal childhood events or clinical diagnosis."],
+      "storage_origin": "project-authored normalized paraphrase"
+    },
+    {
+      "claim_id": "claim:reference-conjunction-fusion",
+      "layer": "L4",
+      "claim_type": "aspect_meaning",
+      "normalized_statement": "The reviewed reference implementation frames Moon conjunct Saturn as a merged configuration in which needs/care and Saturnian limit/duty are experienced together.",
+      "source_refs": ["source:wvanderen-astrology-skill-saturn-moon"],
+      "source_locator_refs": ["moon_conjunction_saturn.md"],
+      "tradition_tags": ["modern", "blended"],
+      "applies_to": ["Moon-Saturn conjunction"],
+      "scope": "qualified practitioner/reference-implementation meaning",
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": ["conflict:geometry-vs-metaphor"],
+      "cautions": ["Do not attribute the fusion metaphor directly to Ptolemy without separate evidence."],
+      "storage_origin": "project-authored normalized paraphrase"
+    },
+    {
+      "claim_id": "claim:reference-square-friction",
+      "layer": "L4",
+      "claim_type": "aspect_meaning",
+      "normalized_statement": "The reviewed reference implementation frames Moon square Saturn as friction between need and constraint requiring active adjustment.",
+      "source_refs": ["source:wvanderen-astrology-skill-saturn-moon"],
+      "source_locator_refs": ["moon_square_saturn.md"],
+      "tradition_tags": ["modern", "blended"],
+      "applies_to": ["Moon-Saturn square"],
+      "scope": "qualified practitioner/reference-implementation meaning",
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": ["conflict:geometry-vs-metaphor"],
+      "cautions": ["Do not attribute the friction metaphor directly to Ptolemy without separate evidence."],
+      "storage_origin": "project-authored normalized paraphrase"
+    },
+    {
+      "claim_id": "claim:reference-opposition-polarity",
+      "layer": "L4",
+      "claim_type": "aspect_meaning",
+      "normalized_statement": "The reviewed reference implementation frames Moon opposite Saturn as a polarity between need and duty, including possible externalization of one side of the polarity.",
+      "source_refs": ["source:wvanderen-astrology-skill-saturn-moon", "source:greene-eternal-triangle-skyscript"],
+      "source_locator_refs": ["moon_opposition_saturn.md", "Greene Moon-Saturn opposition example"],
+      "tradition_tags": ["modern", "psychological_astrology", "blended"],
+      "applies_to": ["Moon-Saturn opposition"],
+      "scope": "modern practitioner interpretation",
+      "confidence_status": "qualified",
+      "support_status": "qualified",
+      "conflict_group_ids": ["conflict:geometry-vs-metaphor", "conflict:parent-symbol-vs-biography"],
+      "cautions": ["The two modern sources are not treated as proof of universal or clinical validity."],
+      "storage_origin": "project-authored normalized paraphrase"
+    }
+  ],
+  "conflict_groups": [
+    {
+      "conflict_group_id": "conflict:historical-vs-modern-scope",
+      "conflict_class": ["historical_development", "scope_difference"],
+      "claim_refs": [
+        "claim:ptolemy-moon-configured-planets-soul",
+        "claim:ptolemy-saturn-regards-moon-maternal-context",
+        "claim:greene-moon-saturn-parent-image"
+      ],
+      "tradition_contexts": ["ptolemaic/classical", "modern psychological astrology"],
+      "resolution_status": "scope_separated",
+      "resolution_note": "Classical inquiry-specific doctrine and modern psychological interpretation are preserved as different claim scopes rather than averaged into one universal Moon-Saturn meaning."
+    },
+    {
+      "conflict_group_id": "conflict:geometry-vs-metaphor",
+      "conflict_class": ["scope_difference"],
+      "claim_refs": [
+        "claim:ptolemy-major-aspect-geometry",
+        "claim:reference-conjunction-fusion",
+        "claim:reference-square-friction",
+        "claim:reference-opposition-polarity"
+      ],
+      "tradition_contexts": ["historical geometry", "modern practitioner semantics"],
+      "resolution_status": "scope_separated",
+      "resolution_note": "Aspect angle relations are geometric/technical evidence; fusion, friction, and polarity are interpretive metaphors requiring separate source provenance."
+    },
+    {
+      "conflict_group_id": "conflict:parent-symbol-vs-biography",
+      "conflict_class": ["scope_difference"],
+      "claim_refs": [
+        "claim:ptolemy-saturn-regards-moon-maternal-context",
+        "claim:greene-moon-saturn-parent-image",
+        "claim:reference-opposition-polarity"
+      ],
+      "tradition_contexts": ["historical maternal inquiry", "modern symbolic parent-image reading"],
+      "resolution_status": "scope_separated",
+      "resolution_note": "Astrological symbolism about parents or care does not establish literal parental behavior, childhood history, trauma, diagnosis, or another person's private motives."
+    }
+  ],
+  "non_admitted_claims": [
+    "Moon-Saturn proves childhood deprivation.",
+    "Moon-Saturn proves a cold or rejecting mother.",
+    "Moon-Saturn establishes attachment trauma or a nervous-system disorder.",
+    "All astrology traditions interpret Moon-Saturn the same way.",
+    "Conjunction, square, and opposition psychological metaphors are direct Ptolemaic doctrine.",
+    "Any Moon-Saturn aspect has predictive or clinical validity.",
+    "The project has selected a canonical Moon-Saturn orb or sect policy."
+  ],
+  "retrieval_contract": [
+    "Resolve L2 geometry before interpretation retrieval.",
+    "Apply an explicit L3 aspect/orb/context policy.",
+    "Declare natal, transit, or synastry applicability.",
+    "Declare classical, modern, or other tradition scope.",
+    "Retrieve only claim-eligible sources matching the scope.",
+    "Preserve conflict groups and source lineage.",
+    "Do not use retrieval failure as permission for model-memory invention."
+  ],
+  "privacy": {
+    "contains_real_birth_data": false,
+    "fixture_type": "source-evidence registry only"
+  }
+}
