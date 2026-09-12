@@ -1,0 +1,129 @@
+{
+  "record_status": "REFERENCE-ONLY",
+  "record_kind": "interpretation_claim_family_registry",
+  "record_id": "domicile-essential-dignity-research-v1",
+  "claim_family": "essential_dignity_domicile",
+  "sources": [
+    {
+      "source_id": "source:ptolemy-tetrabiblos-i-17",
+      "source_role": "PRIMARY_TEXT",
+      "title": "Tetrabiblos",
+      "author": "Claudius Ptolemy",
+      "locator": "Book I, section 17, Of the Houses of the Several Planets",
+      "access_note": "Reviewed via LacusCurtius / University of Chicago web edition of the Robbins translation.",
+      "admission_state": "CLAIM_ELIGIBLE",
+      "storage_mode": "metadata_locator_normalized_paraphrase",
+      "rights_note": "Ancient source and modern translation rights must be tracked separately; no translation corpus vendored.",
+      "independence_status": "primary_witness"
+    },
+    {
+      "source_id": "source:ribeiro-2025-universal-astrology",
+      "source_role": "SCHOLARLY_SECONDARY",
+      "title": "Is astrology universal? Early modern globalization and the disruption of traditional knowledge",
+      "author": "Luís Campos Ribeiro",
+      "publication": "The British Journal for the History of Science 58(3), September 2025, 425-445",
+      "doi": "10.1017/S0007087425000159",
+      "admission_state": "CLAIM_ELIGIBLE",
+      "storage_mode": "metadata_locator_normalized_paraphrase",
+      "rights_note": "Cambridge displays a CC BY-NC licence indicator; this registry does not vendor article text.",
+      "independence_status": "secondary_analysis_of_multiple_primary_sources"
+    },
+    {
+      "source_id": "source:wvanderen-classical-dignities",
+      "source_role": [
+        "PRACTITIONER_REFERENCE",
+        "REFERENCE_IMPLEMENTATION"
+      ],
+      "repository": "wvanderen/astrology-skill",
+      "revision": "a9339b3c7151313530aa5002572c6612a2cfd59f",
+      "path": "references/traditions/classical/dignities.md",
+      "admission_state": "REFERENCE_ONLY",
+      "storage_mode": "metadata_revision_normalized_paraphrase",
+      "rights_note": "Repository root is MIT licensed at the reviewed revision; legal reuse permission does not grant project doctrine authority.",
+      "independence_status": "derivative_practitioner_synthesis",
+      "upstream_source_refs": [
+        "source:ptolemy-tetrabiblos-i-17"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "claim:domicile-configuration",
+      "claim_type": "policy_configuration",
+      "layer": "L3",
+      "statement": "A named classical policy assigns planets to zodiac signs as domiciles or houses.",
+      "source_refs": [
+        "source:ptolemy-tetrabiblos-i-17"
+      ],
+      "confidence": "supported",
+      "scope": "historical doctrine configuration, not astronomy fact",
+      "conflict_group_refs": [
+        "conflict:southern-hemisphere-dignity-applicability"
+      ]
+    },
+    {
+      "claim_id": "claim:ptolemaic-seasonal-rationale",
+      "claim_type": "historical_doctrinal_rationale",
+      "layer": "L4",
+      "statement": "Ptolemy presents the domicile arrangement using a northern seasonal/natural-philosophy rationale together with planetary order and qualities.",
+      "source_refs": [
+        "source:ptolemy-tetrabiblos-i-17"
+      ],
+      "confidence": "supported",
+      "scope": "what this primary text argues; not a scientific validation of astrology"
+    },
+    {
+      "claim_id": "claim:southern-hemisphere-reversal-debate",
+      "claim_type": "historical_conflict",
+      "layer": "L4",
+      "statement": "Early-modern authors disagreed over whether season-dependent sign qualities and essential dignities should reverse in southern latitudes.",
+      "source_refs": [
+        "source:ribeiro-2025-universal-astrology"
+      ],
+      "confidence": "supported",
+      "scope": "history of doctrine and applicability debate",
+      "conflict_group_refs": [
+        "conflict:southern-hemisphere-dignity-applicability"
+      ]
+    },
+    {
+      "claim_id": "claim:modern-practitioner-domicile-capacity",
+      "claim_type": "condition_meaning",
+      "layer": "L4",
+      "statement": "In the reviewed modern classical-practitioner reference, domicile is framed as greater authority/capacity/resources and not as moral goodness.",
+      "source_refs": [
+        "source:wvanderen-classical-dignities"
+      ],
+      "confidence": "qualified",
+      "scope": "one practitioner/reference framework; not project-canonical doctrine"
+    }
+  ],
+  "conflict_groups": [
+    {
+      "conflict_group_id": "conflict:southern-hemisphere-dignity-applicability",
+      "conflict_types": [
+        "historical_development",
+        "policy_difference",
+        "scope_difference"
+      ],
+      "summary": "Season-based rationale produced competing early-modern positions: reverse dignities in southern latitudes versus preserve standard dignities as universal and treat regional effects separately.",
+      "resolution_status": "preserve_competing_doctrines",
+      "production_resolution": "not_decided"
+    }
+  ],
+  "lineage_rules": {
+    "count_derivative_sources_as_independent": false,
+    "practitioner_repeat_of_primary_claim_is_new_primary_evidence": false
+  },
+  "research_result": {
+    "contract_status": "source_admission_contract_supported_by_first_claim_family_test",
+    "key_decomposition": [
+      "configuration",
+      "rationale",
+      "historical_applicability",
+      "interpretive_meaning"
+    ],
+    "production_authority_granted": false,
+    "scientific_predictive_validity_claimed": false
+  }
+}
