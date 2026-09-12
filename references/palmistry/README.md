@@ -20,7 +20,8 @@
 - [`OBSERVATION_SCHEMA_DRAFT.md`](OBSERVATION_SCHEMA_DRAFT.md) — source-neutral Palm Observation Fact draft；scene/target selection、task-specific quality、geometry、unknown semantics、tradition projection 與 privacy boundary。
 - [`PHOTO_VALIDATION.md`](PHOTO_VALIDATION.md) — 代表性真實照片 field-coverage / fail-closed validation。
 - [`NORMALIZATION_CONTRACT_DRAFT.md`](NORMALIZATION_CONTRACT_DRAFT.md) — raw image → model adapter → raw geometry → canonical palm basis 的 deterministic normalization contract draft。
-- [`MULTICAPTURE_DATASET_GATE.md`](MULTICAPTURE_DATASET_GATE.md) — independent multi-capture / device repeatability 的 dataset qualification owner；MOHI 已完成 permission-qualified contactless multi-session bounded study；Tongji/XINHUA permission 尚未閉合；THUPALMLAB 為 scanner-domain negative control；MPW-180 仍是未來 mobile/device 候選。
+- [`MULTICAPTURE_DATASET_GATE.md`](MULTICAPTURE_DATASET_GATE.md) — independent multi-capture / device repeatability 的 dataset qualification owner；MOHI 已完成 permission-qualified contactless multi-session bounded study；MPD-v2 現為 paired smartphone device-repeatability 第一順位候選，但 data-use gate 尚未閉合。
+- [`DEVICE_REPEATABILITY_PLAN.md`](DEVICE_REPEATABILITY_PLAN.md) — 在任何 paired-device 結果 inspection 前預先凍結 smartphone device-repeatability protocol；主候選 MPD-v2，次候選 XJTU-UP；目前 `EXECUTION BLOCKED BY DATA-USE GATE`。
 - [`MOHI_MULTICAPTURE_PLAN.md`](MOHI_MULTICAPTURE_PLAN.md) — 在結果 inspection 前預先凍結 MOHI 10 persons × 3 sessions × 5 captures 的 first-study protocol、runtime、metrics、stop rules 與 evidence boundary。
 - [`MOHI_REPEATABILITY_RESULTS.md`](MOHI_REPEATABILITY_RESULTS.md) — MOHI 150 image-entry bounded repeatability result；pinned MediaPipe 150/150 exactly-one usable，cross-session pooled drift 高於 within-session；integrity audit 已確認 2 組 source-byte duplicates，exact-zero geometry 皆由 duplicate source 解釋，未改變 pooled ordering。
 - [`mohi_mediapipe_repeatability.py`](mohi_mediapipe_repeatability.py) — Cold pinned MOHI repeatability runner；輸出 detector usability、within/cross-session geometry summaries 與 per-person heterogeneity。
@@ -73,6 +74,8 @@ Normalization / observation research 目前已完成 source-neutral contract、s
 
 MOHI 第一輪 bounded study 使用 10 個 dataset person IDs × 3 sessions × 5 image entries：pinned MediaPipe 1.0.1 對 150/150 image entries 皆輸出 exactly one candidate；pooled cross-session geometry drift 高於 within-session。後續 integrity audit 確認 sample 內有 2 組 byte-identical source duplicates（共 4 image entries），且所有 exact-zero detector geometry 都由這兩組 duplicate source 解釋。原始 pooled ordering 不受此 bounded duplicate effect 影響，但此 sample 不得稱為 150 張 unique independent photographs。
 
-Tongji 與 XINHUA 仍是更長 session interval / alternative contactless corpora 的重要候選，但 reuse permission 尚未閉合；MPW-180 最接近 multi-device mobile capture，但目前 release surface 尚未完成。THUPALMLAB 已有明確 research permission，但 pinned MediaPipe 對 bounded scanner sample 8/8 皆為 0 candidates，因此只建立 scanner-domain runtime incompatibility evidence。
+Device-to-device research 已完成 predeclaration，但尚未執行。MPD-v2 現在是第一順位結構候選：官方專案描述 Huawei / Xiaomi × 2 periods，且每隻手在每支手機每個 period 保留 10 張 full-hand original images，因此能把 device effect 與 session effect 拆開。XJTU-UP 為次順位 multi-device confirmation candidate。兩者目前都因 dataset-level data-use / license 尚未充分閉合而 fail closed；MPW-180 則改列為 broad device-diversity reference，而不是 paired same-palm multi-device authority。
+
+Tongji 與 XINHUA 仍是更長 session interval / alternative contactless corpora 的重要候選，但 reuse permission 尚未閉合；THUPALMLAB 已有明確 research permission，但 pinned MediaPipe 對 bounded scanner sample 8/8 皆為 0 candidates，因此只建立 scanner-domain runtime incompatibility evidence。
 
 目前仍不能直接設 production threshold。主要 remaining gaps：真正 device-to-device repeatability、detector-to-detector agreement、line-segmentation uncertainty、較長期 longitudinal stability、可辯護的 predeclared admission calibration 與 behavioral regression。Palmistry 仍不進 router。
