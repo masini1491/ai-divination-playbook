@@ -1,6 +1,6 @@
 # MOHI Multi-session Repeatability Results
 
-Status: **REFERENCE-ONLY / BOUNDED EMPIRICAL RESULT**
+Status: **REFERENCE-ONLY / BOUNDED EMPIRICAL RESULT / INTEGRITY AUDIT CLOSED**
 
 This Cold note records the first predeclared permission-qualified contactless multi-session palm observation repeatability study.
 
@@ -12,7 +12,7 @@ Source sample:
 10 dataset person IDs
 3 sessions
 5 captures / session
-150 images total
+150 image entries total
 ```
 
 Uploaded result artifact reported:
@@ -36,7 +36,7 @@ No threshold lowering or post-hoc subject replacement was used.
 
 ## Runtime compatibility
 
-All 150 images decoded and all 150 returned exactly one candidate:
+All 150 image entries decoded and all 150 returned exactly one candidate:
 
 ```text
 total = 150
@@ -54,7 +54,7 @@ It does not establish compatibility for all phone cameras or uncontrolled field 
 
 ## Within-session repeatability
 
-Across 300 within-session pairs:
+The original pooled result contains 300 within-session pairs:
 
 | Metric | Mean | Median | P90 | P95 | Max |
 |---|---:|---:|---:|---:|---:|
@@ -68,7 +68,7 @@ Across 300 within-session pairs:
 
 ## Cross-session repeatability
 
-Across 750 cross-session pairs:
+The original pooled result contains 750 cross-session pairs:
 
 | Metric | Mean | Median | P90 | P95 | Max |
 |---|---:|---:|---:|---:|---:|
@@ -80,9 +80,68 @@ Across 750 cross-session pairs:
 | canonical 21-landmark mean drift | 0.07599 | 0.06994 | 0.12202 | 0.13983 | 0.27284 |
 | canonical 21-landmark max drift | 0.23552 | 0.22060 | 0.36743 | 0.44644 | 0.74641 |
 
+## Integrity audit closure
+
+A deterministic follow-up audit compared the 150 manifest rows with the ZIP contents and source-image SHA256 values.
+
+Observed:
+
+```text
+manifest rows = 150
+ZIP image entries = 150
+manifest hash mismatches = 0
+
+duplicate SHA groups = 2
+duplicate image entries = 4
+```
+
+The two duplicate-content groups are:
+
+```text
+P005/S1/01.jpg == P005/S3/02.jpg
+SHA256 = 8a40753c427c5b8441e92c6e8070cea6610455c428c7a5ac4fed32d777246fc7
+
+P001/S3/03.jpg == P001/S3/05.jpg
+SHA256 = a76b6cbc7fec8d90f454dca7c3e217a942d57b9adf4247ca1eac8184d2378f18
+```
+
+The audit found exactly two byte-identical detector-geometry groups, and both correspond exactly to those duplicate source-image groups:
+
+```text
+P005/S1/01 ↔ P005/S3/02
+same_source_bytes = true
+cross-session duplicate pair
+
+P001/S3/03 ↔ P001/S3/05
+same_source_bytes = true
+within-session duplicate pair
+```
+
+Therefore the observed exact-zero geometry is explained by duplicate source bytes rather than an unexplained detector coincidence.
+
+The original pooled tables above intentionally remain the raw experiment output. Their exact-zero minima must not be interpreted as independent-capture perfect invariance.
+
+For pooled means, the duplicate effect is bounded and too small to change the qualitative comparison:
+
+```text
+within-session:
+1 duplicate zero pair among 300
+removing it multiplies pooled means by 300 / 299
+≈ +0.334%
+
+cross-session:
+1 duplicate zero pair among 750
+removing it multiplies pooled means by 750 / 749
+≈ +0.134%
+```
+
+Because every cross-session pooled mean was already higher than its corresponding within-session mean, excluding the two duplicate-induced zero pairs does not reverse that ordering.
+
+A future publication-grade reanalysis may regenerate complete duplicate-excluded median / percentile tables from pair-level records. This is not required to close the present integrity question and must not be replaced by inferred percentiles from pooled summaries.
+
 ## Bounded interpretation
 
-Every pooled cross-session mean is higher than the corresponding within-session mean.
+Every original pooled cross-session mean is higher than the corresponding within-session mean.
 
 Examples:
 
@@ -100,30 +159,15 @@ axis angle delta:
 ≈ 1.44×
 ```
 
-Within this bounded MOHI setup, independent captures are not perfectly invariant, and changing session adds measurable observation variation beyond same-session recapture variation.
+Within this bounded MOHI setup, non-duplicate independent captures are not perfectly invariant, and changing session adds measurable observation variation beyond same-session recapture variation.
 
 This supports preserving `within-session` and `cross-session` as separate evidence classes rather than collapsing them into one repeatability number.
 
-## Data-integrity caution
-
-Several pooled metrics have an observed minimum of exactly `0.0`, including both within-session and cross-session summaries.
-
-Because pair construction does not intentionally include self-pairs, an exact-zero result must not automatically be interpreted as exceptional repeatability.
-
-Before using these distributions for any stronger calibration claim, perform a duplicate-source / duplicate-content audit on the 150-image sample using source-image hashes or equivalent provenance evidence.
-
-Until that audit closes:
-
-```text
-150/150 positive runtime compatibility = established
-cross-session > within-session pooled drift = established descriptively
-exact-zero pairs = unresolved integrity signal
-production tolerance / cutoff = not established
-```
+The integrity audit changes the interpretation of the exact-zero minima, not the direction of the pooled repeatability result.
 
 ## Evidence boundary
 
-This study establishes a bounded empirical repeatability distribution for one MOHI subset under one pinned MediaPipe runtime.
+This study establishes a bounded empirical repeatability distribution for one MOHI subset under one pinned MediaPipe runtime, with the duplicate-content caveat now explicitly characterized.
 
 It does **not** establish:
 
@@ -134,5 +178,7 @@ It does **not** establish:
 - detector-to-detector agreement;
 - principal-line segmentation repeatability;
 - anatomical handedness authority from detector labels.
+
+The sample contains two duplicate-content pairs and therefore must not be described as 150 unique independent source photographs.
 
 Palmistry remains **REFERENCE-ONLY / DRAFT / NOT PRODUCTION-ROUTABLE**.
