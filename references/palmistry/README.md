@@ -22,7 +22,8 @@
 - [`NORMALIZATION_CONTRACT_DRAFT.md`](NORMALIZATION_CONTRACT_DRAFT.md) — raw image → model adapter → raw geometry → canonical palm basis 的 deterministic normalization contract draft。
 - [`MULTICAPTURE_DATASET_GATE.md`](MULTICAPTURE_DATASET_GATE.md) — independent multi-capture / device repeatability 的 dataset qualification owner；MOHI 已完成 permission-qualified contactless multi-session bounded study；MPD-v2 / XJTU-UP 已完成 public-authority permission audit，但 dataset-level reuse permission 仍未閉合，因此 device study 仍 blocked。
 - [`DEVICE_REPEATABILITY_PLAN.md`](DEVICE_REPEATABILITY_PLAN.md) — 在任何 paired-device 結果 inspection 前預先凍結 smartphone device-repeatability protocol；主候選 MPD-v2，次候選 XJTU-UP；目前兩者均為 `EXECUTION BLOCKED BY DATA-USE GATE`，不可先下載或跑 inference。
-- [`DETECTOR_AGREEMENT_PLAN.md`](DETECTOR_AGREEMENT_PLAN.md) — 預先凍結 MediaPipe 1.0.1 vs MMPose v1.3.2 / RTMPose-m Hand5 的 detector-to-detector geometry agreement protocol；reuse MOHI bounded sample，primary analysis 對 148 unique source-byte representatives；目前 `EXECUTION BLOCKED BY RUNTIME ARTIFACT LOCK`，checkpoint SHA256 與 exact runtime dependencies 未鎖定前不可跑結果。
+- [`DETECTOR_AGREEMENT_PLAN.md`](DETECTOR_AGREEMENT_PLAN.md) — 預先凍結 MediaPipe 1.0.1 vs MMPose v1.3.2 / RTMPose-m Hand5 的 detector-to-detector geometry agreement protocol；reuse MOHI bounded sample，primary analysis 對 148 unique source-byte representatives；目前 `EXECUTION BLOCKED BY RUNTIME ARTIFACT LOCK`，checkpoint full SHA256 與 actual runtime validation 閉合前不可跑結果。
+- [`DETECTOR_AGREEMENT_RUNTIME_LOCK.md`](DETECTOR_AGREEMENT_RUNTIME_LOCK.md) — detector-agreement pre-run exact target runtime record；已鎖 Python 3.9.18 / PyTorch 1.13.1 / TorchVision 0.14.1 / MMCV 2.0.0 / MMDetection 3.2.0 / MMEngine 0.10.4 / MMPose 1.3.2 / CPU，但目前 checkpoint full SHA256 尚因 acquisition capability gate 未取得，target runtime 亦尚未在當前 Python 3.13.5 container 實際安裝驗證。
 - [`MOHI_MULTICAPTURE_PLAN.md`](MOHI_MULTICAPTURE_PLAN.md) — 在結果 inspection 前預先凍結 MOHI 10 persons × 3 sessions × 5 captures 的 first-study protocol、runtime、metrics、stop rules 與 evidence boundary。
 - [`MOHI_REPEATABILITY_RESULTS.md`](MOHI_REPEATABILITY_RESULTS.md) — MOHI 150 image-entry bounded repeatability result；pinned MediaPipe 150/150 exactly-one usable，cross-session pooled drift 高於 within-session；integrity audit 已確認 2 組 source-byte duplicates，exact-zero geometry 皆由 duplicate source 解釋，未改變 pooled ordering。
 - [`mohi_mediapipe_repeatability.py`](mohi_mediapipe_repeatability.py) — Cold pinned MOHI repeatability runner；輸出 detector usability、within/cross-session geometry summaries 與 per-person heterogeneity。
@@ -49,7 +50,7 @@
 ### Observation / CV references
 
 - [`palm-line-reader.md`](palm-line-reader.md) — `samuelwbarber/palm-line-reader`；三大主線 segmentation、shipped ONNX inference contract、reconstructed preprocessing caveat、Reddit-derived training provenance。
-- [`yeonsumia-palmistry.md`](yeonsumia-palmistry.md) — `yeonsumia/palmistry`；21-landmark homography rectification、principal-line detection/classification/measurement pipeline，以及 project-specific template / threshold boundary。
+- [`yeonsumia/palmistry`](yeonsumia-palmistry.md) — 21-landmark homography rectification、principal-line detection/classification/measurement pipeline，以及 project-specific template / threshold boundary。
 - [`palm-astro-application.md`](palm-astro-application.md) — geometry feature concepts；synthetic interpretation 與 unresolved code license 不採用。
 - [`tencent-palm-applications.md`](tencent-palm-applications.md) — multimodal product-flow reference；prompt contamination、approximate CV heuristic 與 license inconsistency boundary。
 
@@ -81,7 +82,7 @@ Device-to-device research 已完成 predeclaration，但尚未執行。MPD-v2 �
 
 因此目前 device-repeatability 的下一步不是 acquisition，也不是先建立 200-image manifest，而是取得 authoritative dataset-owner terms 或 dataset owner 的直接書面授權；在 gate 閉合前不得下載執行本研究、不得跑 inference。
 
-Detector-to-detector agreement 已完成 predeclaration，但尚未執行。第一個 independent detector 選用 `MMPose v1.3.2 / RTMPose-m Hand5`，以 full-image top-down bbox 避免 MediaPipe-derived crop；MOHI 150 entries 全部做 execution accounting，cross-detector primary distributions 則使用 148 個 deterministic unique source-byte representatives。checkpoint SHA256 與 exact runtime dependency set 未鎖定前維持 fail closed，不得先跑結果。
+Detector-to-detector agreement 已完成 predeclaration，但尚未執行。第一個 independent detector 選用 `MMPose v1.3.2 / RTMPose-m Hand5`，以 full-image top-down bbox 避免 MediaPipe-derived crop；MOHI 150 entries 全部做 execution accounting，cross-detector primary distributions 則使用 148 個 deterministic unique source-byte representatives。Pre-run target runtime 已鎖定 Python 3.9.18 / PyTorch 1.13.1 / TorchVision 0.14.1 / MMCV 2.0.0 / MMDetection 3.2.0 / MMEngine 0.10.4 / MMPose 1.3.2 / CPU；但 checkpoint full SHA256 尚未取得，且該 target runtime 尚未在目前只有 Python 3.13.5 的 execution container 實際安裝驗證，因此仍 fail closed，不得先跑 MOHI inference。
 
 Tongji 與 XINHUA 仍是更長 session interval / alternative contactless corpora 的重要候選，但 reuse permission 尚未閉合；THUPALMLAB 已有明確 research permission，但 pinned MediaPipe 對 bounded scanner sample 8/8 皆為 0 candidates，因此只建立 scanner-domain runtime incompatibility evidence。
 
