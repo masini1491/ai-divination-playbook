@@ -1,22 +1,24 @@
 # Palm Detector Agreement Runtime Lock
 
-Status: **REFERENCE-ONLY / PRE-RUN TARGET LOCK / CHECKPOINT SHA256 BLOCKED**
+Status: **REFERENCE-ONLY / PRE-RUN RUNTIME + CHECKPOINT IDENTITY VALIDATED / MODEL-CONSTRUCTION SMOKE TEST PENDING**
 
 本文件是 `DETECTOR_AGREEMENT_PLAN.md` 的 execution-side runtime identity record。
 
-它不修改已凍結的 detector-agreement protocol，也不代表 inference 已執行。
+它不修改已凍結的 detector-agreement protocol，也不代表 MOHI inference 已執行。
 
 ## Purpose
 
-在任何 MOHI RTMPose inference 前，把第二 detector 的 software / model identity 從 upstream version ranges 收斂成 exact target runtime，並把尚未閉合的 artifact identity 明確留下。
+在任何 MOHI RTMPose inference 前，把第二 detector 的 software / model identity 從 upstream version ranges 收斂成 exact runtime，並 durable-record 實際成功安裝與 checkpoint byte identity。
 
 本文件區分：
 
 ```text
 selected exact target
 ≠ installed successfully
-≠ execution validated
-≠ result produced
+≠ import/runtime validated
+≠ checkpoint bytes validated
+≠ model construction validated
+≠ MOHI result produced
 ```
 
 ## Repository / release identities
@@ -34,19 +36,13 @@ MMPose v1.3.2 `setup.py` declares `python_requires >=3.7` and classifiers throug
 
 ### MMCV
 
-Selected:
-
 ```text
 mmcv == 2.0.0
 tag commit:
 1db3967e860569c1501af4bff6c0964dec402289
 ```
 
-MMCV v2.0.0 release notes state support for PyTorch versions >=1.8 and Python >=3.7.
-
 ### MMDetection
-
-Selected:
 
 ```text
 mmdet == 3.2.0
@@ -54,7 +50,7 @@ tag commit:
 fe3f809a0a514189baf889aa358c498d51ee36cd
 ```
 
-Its `requirements/mminstall.txt` constrains:
+Published compatibility constraint:
 
 ```text
 mmcv >= 2.0.0rc4, < 2.2.0
@@ -63,62 +59,105 @@ mmengine >= 0.7.1, < 1.0.0
 
 ### MMEngine
 
-Selected:
-
 ```text
 mmengine == 0.10.4
 tag commit:
 66fb81f7b392b2cd304fc1979d8af3cc71a011f5
 ```
 
-MMPose v1.3.2 runtime guard accepts:
+MMPose v1.3.2 runtime guard accepts the selected MMCV / MMEngine pair.
+
+## Actual validated execution runtime
+
+Validated on the user-side Windows 11 WSL2 environment before any MOHI RTMPose inference:
 
 ```text
-mmengine >= 0.6.0, <= 1.0.0
-mmcv >= 2.0.0rc4, <= 3.0.0
-```
+platform:
+Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.35
 
-Therefore the selected MMEngine / MMCV pair sits inside both MMPose and MMDetection published compatibility ranges.
-
-## Frozen target runtime
-
-The first execution attempt, when a compatible environment is available, must use exactly:
-
-```text
-OS / arch: Linux x86_64
 Python: 3.9.18
+NumPy: 1.26.4
+OpenCV: 4.10.0
 PyTorch: 1.13.1
 TorchVision: 0.14.1
 MMCV: 2.0.0
 MMDetection: 3.2.0
 MMEngine: 0.10.4
 MMPose: 1.3.2
+chumpy: 0.70
+MKL: 2020.2
+Intel OpenMP: 2023.0.0
 execution device: CPU
+CUDA available: False
 backend: PyTorch eager inference via MMPose API
 ```
 
-Rationale for CPU-first:
-
-- removes CUDA / cuDNN / GPU-driver variation from the first bounded comparison;
-- the scientific question is geometry agreement, not throughput;
-- MMPose official API supports CPU inference;
-- a later GPU execution would be a separate runtime identity and must not silently replace this baseline.
-
-No package may float to a newer compatible version during the first study.
-
-## Current execution-environment reality
-
-The current execution container reports:
+Validation observations:
 
 ```text
-Python 3.13.5
+import torch = PASS
+import torchvision = PASS
+import mmcv = PASS
+import mmengine = PASS
+import mmdet = PASS
+import mmpose = PASS
+import mmcv.ops = PASS
+NumPy -> torch.from_numpy bridge = PASS
+python -m pip check = No broken requirements found
 ```
 
-No Python 3.9 interpreter, Conda, or Micromamba runtime was available in the inspected environment.
+### Runtime-resolution record
 
-Therefore the frozen target runtime above is currently **selected but not installed / runtime-validated here**.
+The first install attempt exposed compatibility details that are now part of the reproducibility lock.
 
-This is an environment capability gap, not evidence that the selected upstream versions are incompatible.
+Initial Conda resolution installed:
+
+```text
+mkl = 2025.0.0
+intel-openmp = 2025.0.0
+```
+
+Under PyTorch 1.13.1 this produced:
+
+```text
+libtorch_cpu.so: undefined symbol: iJIT_NotifyEvent
+```
+
+Before any MOHI result inspection, the runtime was corrected to:
+
+```text
+mkl = 2020.2
+intel-openmp = 2023.0.0
+```
+
+and PyTorch import then passed.
+
+A second compatibility issue appeared because pip had resolved:
+
+```text
+NumPy = 2.0.2
+OpenCV = 5.0.0.93
+```
+
+The MMCV / PyTorch binary path warned that modules compiled against NumPy 1.x cannot safely run against NumPy 2.0.2. Before any MOHI result inspection, the environment was corrected and validated as:
+
+```text
+NumPy = 1.26.4
+OpenCV = 4.10.0.84 package
+cv2.__version__ = 4.10.0
+```
+
+`opencv-python` was installed with `--no-deps` after NumPy pinning so pip would not silently promote NumPy back to 2.x.
+
+MMPose installation also required the legacy dependency:
+
+```text
+chumpy = 0.70
+```
+
+which was installed before MMPose using the current environment rather than an isolated legacy build path.
+
+These are pre-result runtime corrections, not post-hoc detector tuning.
 
 ## Model config identity
 
@@ -148,7 +187,7 @@ RHD
 Halpe Hand
 ```
 
-The COCO-WholeBody hand meta definition confirms:
+The hand metainfo correspondence used by the frozen protocol is:
 
 ```text
 0  = wrist
@@ -158,104 +197,115 @@ The COCO-WholeBody hand meta definition confirms:
 
 ## Official checkpoint identity
 
-Frozen official checkpoint filename:
+Official checkpoint filename:
 
 ```text
 rtmpose-m_simcc-hand5_pt-aic-coco_210e-256x256-74fb594_20230320.pth
 ```
 
-Official MMPose v1.3.2 documentation and model metadata point to the OpenMMLab download artifact with that exact filename.
+User-side acquisition from the official OpenMMLab download endpoint completed successfully.
 
-Important:
-
-```text
-74fb594
-```
-
-is part of the upstream filename and must **not** be treated as the full SHA256 value.
-
-### Current hash state
+Observed file size:
 
 ```text
-checkpoint full SHA256 = NOT YET ACQUIRED
+55,287,475 bytes
 ```
 
-A direct binary acquisition attempt from `download.openmmlab.com` in the current runtime failed at DNS / external-binary access level before any bytes were obtained.
-
-This is classified as:
+Full SHA256:
 
 ```text
-ACQUISITION CAPABILITY GATE
-≠ upstream source failure
-≠ checkpoint missing
-≠ checksum mismatch
+b74fb5941684fe13c337b8d4fce644293e12903fed5407f8b27921f107dc6003
 ```
 
-The official GitHub-hosted MMPose documentation still identifies the checkpoint URL and filename, so source identity remains established while byte identity remains unresolved.
+Important: the upstream filename fragment `74fb594` is not used as a substitute for the full digest above.
 
-## Gate state
+### Checkpoint deserialization smoke test
 
-The detector-agreement execution gate is therefore:
+The pinned file was read locally with:
+
+```text
+torch.load(path, map_location="cpu")
+```
+
+Observed:
+
+```text
+checkpoint type: dict
+top-level keys: ['meta', 'state_dict']
+```
+
+This establishes readable checkpoint serialization and byte identity under the pinned PyTorch runtime.
+
+It does **not** yet establish that MMPose can construct the frozen RTMPose-Hand5 config and load the weights into the model without error.
+
+## Current gate state
 
 ```text
 protocol predeclared = YES
 MMPose release identity = LOCKED
-MMCV target = LOCKED
-MMDetection target = LOCKED
-MMEngine target = LOCKED
-Python target = LOCKED
-PyTorch target = LOCKED
-TorchVision target = LOCKED
-CPU backend = LOCKED
-checkpoint filename / official URL = LOCKED
-checkpoint full SHA256 = BLOCKED
-exact target runtime installed = NOT YET VALIDATED
+MMCV = VALIDATED
+MMDetection = VALIDATED
+MMEngine = VALIDATED
+Python = VALIDATED
+NumPy = VALIDATED
+OpenCV = VALIDATED
+PyTorch = VALIDATED
+TorchVision = VALIDATED
+MKL / Intel OpenMP = VALIDATED
+CPU backend = VALIDATED
+pip dependency consistency = VALIDATED
+checkpoint official filename / source = LOCKED
+checkpoint full SHA256 = VALIDATED
+checkpoint torch deserialization = VALIDATED
+frozen-config MMPose model construction + weight load = PENDING
+MOHI RTMPose inference = NOT RUN
 ```
 
-Execution remains blocked.
+Execution remains fail-closed until the final model-construction smoke test passes.
 
-## Required next action before inference
+## Final required action before MOHI inference
 
-On a runtime that can reproduce the frozen target environment:
+Using this same validated environment and exact checkpoint bytes:
 
-1. create Python 3.9.18 environment;
-2. install the exact versions in this record;
-3. record `python --version` and package versions from the actual environment;
-4. obtain the official RTMPose Hand5 checkpoint from the upstream URL;
-5. compute full SHA256 locally;
-6. compare filename / source against this record;
-7. durable-record the hash and successful model-load smoke test;
-8. only then execute any MOHI image.
+1. resolve the installed MMPose copy of the frozen RTMPose-Hand5 config;
+2. call MMPose model construction on CPU with that config and the pinned checkpoint;
+3. confirm construction and weight loading complete without modifying config, model input size, crop rule, or checkpoint;
+4. record the successful smoke test here;
+5. only then permit runner execution against MOHI source images.
 
-The smoke test may verify model construction and checkpoint loading, but must not use a MOHI source image before the hash is recorded.
+The final smoke test must not use a MOHI image.
 
 ## Stop rules
 
 Stop before MOHI inference if any of the following occurs:
 
-- exact target package versions cannot coexist;
-- a package must be upgraded / downgraded outside this frozen set;
-- official checkpoint source resolves to a different artifact identity;
-- checkpoint bytes cannot be fully acquired;
-- full SHA256 cannot be computed;
-- checkpoint fails clean load under the frozen config;
-- CPU execution requires changing model config or geometry adapter.
+- frozen config cannot be resolved from the installed MMPose release;
+- checkpoint fails MMPose model construction / weight loading;
+- successful loading requires changing package versions outside this validated runtime;
+- successful loading requires changing model config or geometry adapter;
+- official checkpoint bytes differ from the full SHA256 above;
+- CPU execution requires a different checkpoint or model definition.
 
-Any required runtime change must be recorded **before** viewing MOHI detector-agreement results and requires a new explicit runtime-lock revision rather than silent substitution.
+Any required runtime change must be recorded **before** viewing MOHI detector-agreement results and requires an explicit runtime-lock revision rather than silent substitution.
 
 ## Evidence boundary
 
-This record currently establishes only a reproducible **target runtime specification** and the exact remaining blockers.
+This record now establishes:
 
-It does not establish:
+- successful exact runtime installation and import validation;
+- binary-extension loading through `mmcv.ops`;
+- a clean pip dependency check;
+- official checkpoint acquisition;
+- full checkpoint SHA256;
+- checkpoint deserialization under the pinned PyTorch runtime.
 
-- successful installation;
-- checkpoint byte identity;
-- successful model loading;
+It does not yet establish:
+
+- frozen-config MMPose model-construction success;
 - RTMPose compatibility with MOHI;
 - detector-to-detector agreement results.
 
-Until checkpoint SHA256 and actual environment validation are closed:
+Until the final frozen-config model-construction smoke test is recorded:
 
 ```text
 NO MOHI RTMPOSE INFERENCE
