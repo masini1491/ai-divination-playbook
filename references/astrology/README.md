@@ -68,7 +68,7 @@ Exact reviewed revisions、license evidence、可借鑑範圍與 not-adopted bou
 
 ## 4. Executable research evidence
 
-目前已建立兩個 Cold executable research node；都不是 production engine：
+目前已建立三組 Cold executable research node；都不是 production engine：
 
 ### Engine cross-implementation comparison
 
@@ -93,6 +93,23 @@ Astronomy Engine family
 - [`unknown_time_sensitivity_probe.py`](unknown_time_sensitivity_probe.py)
 
 第一輪 full-day 15-minute-grid 結果支持：angles / houses 對未知出生時間必須 fail closed；Moon 也需要 uncertainty-aware handling，不能單純以 local noon sign 取代完整不確定區間。
+
+### Transit / station / exact-aspect timing
+
+- [`TRANSIT_TIMING_VALIDATION_RESULTS.md`](TRANSIT_TIMING_VALIDATION_RESULTS.md)
+- [`transit_timing_validation_probe.py`](transit_timing_validation_probe.py)
+
+本輪以 pinned Astronomy Engine lunar-phase benchmark、AstroScript exact-aspect search architecture 與本地 `pyswisseph/Moshier` runtime，驗證：
+
+```text
+exact event root
+station speed zero-crossing
+applying / separating geometry
+orb entry / exact / exit separation
+multi-passage / angular-wrap failure modes
+```
+
+12 個 2020 lunar-phase benchmark sample 的計算結果都落在外部 benchmark 分鐘標記 ±25 秒內，並低於該 upstream test suite 的 90 秒門檻；但這不等於 sub-25-second cross-engine certification，因 benchmark 本身只有分鐘解析度。Station timestamps 目前仍是 single-engine self-consistency evidence，尚未跨 engine 驗證。
 
 以上結果只收窄 evidence gap，不建立 production tolerance 或正式 input contract。
 
