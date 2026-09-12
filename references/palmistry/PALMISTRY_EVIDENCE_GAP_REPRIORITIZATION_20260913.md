@@ -4,10 +4,11 @@ Status: **REFERENCE-ONLY / COLD RESEARCH ROADMAP / NO PRODUCTION PROMOTION**
 
 ## Purpose
 
-本文件在以下兩個新 bounded closures之後重新排序 Palmistry observation research：
+本文件在以下三個 bounded closures之後重新排序 Palmistry observation research：
 
 1. Palm Observation uncertainty-composition contract validation；
-2. MediaPipe `1.0.1` vs `1.0.0` runtime-only MOHI portability study。
+2. MediaPipe `1.0.1` vs `1.0.0` runtime-only MOHI portability study；
+3. capture / mirroring / anatomical-side deterministic lineage contract validation。
 
 它是 2026-09-12 roadmap 的後續 snapshot，不回寫歷史文件內容，也不建立 production routing / threshold。
 
@@ -54,6 +55,36 @@ Tracked raw 2D / anchor / canonical metrics全部 exact zero across mean / media
 
 這只關閉 runtime package pair，不關閉 model artifact version portability。
 
+### B3a. Capture / mirroring / anatomical-side deterministic contract — BOUNDEDLY CLOSED
+
+`CAPTURE_MIRRORING_CONTRACT_VALIDATION_RESULTS.md` 與 `CAPTURE_MIRRORING_ANATOMICAL_SIDE_NODE_CLOSURE.md` 已完成 predeclared 12-case deterministic validation。
+
+Formal result：
+
+```text
+cases_total                                = 12
+cases_pass                                 = 12
+cases_fail                                 = 0
+transform_round_trip_failures              = 0
+hard_blocker_rescue_failures               = 0
+detector_handedness_authority_violations   = 0
+preview_to_stored_frame_leakage_violations = 0
+side_uncertainty_overblocking_violations   = 0
+```
+
+Validated bounded behavior：
+
+- preview mirror不改寫 stored/raw/canonical geometry；
+- model-only mirror需要 verified inverse；
+- unknown / missing inverse時 detector-derived geometry fail closed；
+- EXIF orientation必須 exactly-once；
+- reflection-bearing EXIF 2/5/7需要 reflection-aware transform；
+- detector handedness不能建立或覆寫 anatomical-side authority；
+- side unresolved不應 overblock source-neutral geometry；
+- side-dependent tradition projection在 side unresolved時保持 unresolved。
+
+此 closure只屬 deterministic transform / capability-state contract；real-camera empirical lineage仍 open並移入 B2。
+
 ## Current priority map
 
 ### Priority A — Admission / uncertainty
@@ -93,41 +124,55 @@ SHA256 fbc2a30080c3c557093b5ddfc334698132eb341044ccee322ccf8bcf3607cde1
 
 沒有必要在沒有 upgrade需求時無限掃版本。應在實際 runtime migration candidate出現時再 predeclare pairwise study。
 
-#### B2. Device-to-device / capture-condition repeatability — OPEN / HIGH VALUE
+#### B2. Device-to-device / capture-condition repeatability — OPEN / HIGHEST-VALUE NEXT EMPIRICAL NODE
 
 MOHI已提供 same-palm multi-session repeated-capture evidence，但沒有 controlled multi-device identity。
 
-需要：
+B3a現在已先固定 deterministic mirror/orientation contract，因此 B2可以沿用明確 lineage fields，不再把以下因素混成未知 confound：
+
+```text
+stored-file mirror
+preview mirror
+EXIF orientation
+model-only mirror
+anatomical-side evidence
+```
+
+B2仍需要：
 
 - same palm under multiple known devices；
 - controlled distance / pose / illumination / exposure families；
+- explicit stored/preview/EXIF/model transform lineage；
 - device/session-held-out summaries；
 - capture provenance；
 - no biometric identity claims。
 
-#### B3. Camera / selfie mirroring reconciliation + anatomical-side contract — OPEN / DEPENDENCY-CENTRAL
+B2也應承接 real-camera empirical mirror/orientation validation，例如：
 
-目前已有概念原則：
+- Android / iOS front-camera preview-vs-file behavior；
+- OEM / app-specific EXIF correctness；
+- real-device orientation metadata correctness。
+
+#### B3a. Camera / selfie mirroring + anatomical-side deterministic contract — BOUNDEDLY CLOSED
+
+Synthetic asymmetric-geometry / capability-state validator已達 predeclared closure criterion。
+
+不要重跑同一 12-case validator來替代 real-device evidence。
+
+#### B3b. Real-camera capture lineage — OPEN / FOLDED INTO B2
+
+仍未 empirical驗證：
 
 ```text
-hand_side != detector handedness
-hand_side != mirrored_for_model
+sensor / device orientation metadata
+front-camera preview mirror
+stored-file mirror
+EXIF implementation correctness
+app export behavior
+user side-assertion provenance
 ```
 
-但缺可執行 capture-lineage contract：
-
-```text
-sensor orientation
-+ display rotation
-+ preview mirror
-+ stored-file mirror
-+ EXIF orientation
-+ detector-only mirror
-→ observation frame
-→ anatomical-side evidence state
-```
-
-這個 contract應在 B2 大規模 device study前先固定，否則跨-device capture可能把 mirror/orientation confound混進 repeatability。
+此部分應與 B2一起做 controlled capture study。
 
 ### Priority C — Feature / tradition expansion
 
@@ -154,29 +199,29 @@ branch / island / star / fate line / mounts等仍缺 observation detector eviden
 
 ## Recommended next node
 
-目前 dependency-centrality最高、且不需要先找新 dataset 的下一個 bounded node：
+目前 dependency-centrality最高、且真正需要新增 empirical evidence 的下一個 bounded node：
 
-> **Camera / selfie mirroring reconciliation + anatomical-side evidence contract**
+> **B2 controlled device / capture-condition repeatability with explicit capture-lineage recording**
 
 理由：
 
-1. detector handedness已多次被證明只能當 metadata，不是 anatomical authority；
-2. runtime-only portability已排除目前 pinned runtime pair造成的 2D geometry drift；
-3. 下一個真正大的 portability問題是 capture/device lineage；
-4. 在做 multi-device repeatability前，必須先知道 stored image frame如何由 sensor / preview / EXIF / app mirror轉成 observation frame；
-5. 這個 contract可以先用 synthetic asymmetric-hand geometry與 explicit transform cases驗證 fail-closed behavior，不需要等待新的 palm dataset。
+1. A2 uncertainty composition已 boundedly closed；
+2. B1a pinned runtime pair已排除目前 1.0.1 vs 1.0.0 的 2D geometry drift；
+3. B3a已固定 deterministic mirror / EXIF / anatomical-side contract；
+4. 下一個主要未知量因此集中到 real device / capture pipeline，而不是 schema semantics；
+5. B2可以同時驗證 device-to-device repeatability與 B3b real-camera lineage assumptions。
 
 建議順序：
 
 ```text
-B3 capture/mirroring contract validation
-→ B2 controlled device/capture repeatability
+B2 controlled device/capture repeatability + real-camera lineage
 → B1b model-artifact portability（只有實際 candidate model出現時）
 → A1 natural low-quality calibration
+→ C-level feature/tradition expansion
 ```
 
 ## Boundary
 
-本 roadmap不建立 production rule，也不把 exact-zero runtime result外推成 general MediaPipe certification。
+本 roadmap不建立 production rule，也不把 exact-zero runtime result或 12-case synthetic transform result外推成 general field-camera certification。
 
 Palmistry remains **REFERENCE-ONLY / DRAFT / NOT PRODUCTION-ROUTABLE**。
