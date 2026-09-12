@@ -132,7 +132,6 @@ def main() -> None:
     out_path.write_text(html, encoding="utf-8")
 
     if html.count("data:image/png;base64,") != 11:
-        # Ten entries in the JS map plus one literal first-image src.
         raise RuntimeError("embedded image count check failed")
     if '<img id="palm-photo"' not in html:
         raise RuntimeError("palm-photo element missing")
