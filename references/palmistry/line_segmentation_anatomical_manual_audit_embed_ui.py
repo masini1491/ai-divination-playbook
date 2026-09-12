@@ -1,18 +1,17 @@
 #!/usr/bin/env python3
-"""REFERENCE-ONLY transport helper for the blind palm-line manual audit UI.
+"""REFERENCE-ONLY self-contained simple UI for blind palm-line manual audit.
 
-Reads an already prepared blind packet, verifies every blind PNG against the
-SHA256 recorded in annotation_template.json, and writes a self-contained
-annotate_embedded.html.
+Reads an already prepared blind packet, verifies each blind PNG against the
+SHA256 recorded in annotation_template.json, embeds the PNG bytes directly in
+one HTML file, and exposes only three drawing buttons: heart/head/life line.
 
-The palm photograph is rendered by a real HTML <img> element, while the
-annotation canvas is a transparent overlay. The first verified blind PNG is
-written directly into the HTML img src so the first palm remains visible even
-if later JavaScript navigation logic fails.
+UI export rule for this simplified operator flow:
+- >=2 points for a class -> status=observable
+- <2 points for a class -> status=not_observable and points cleared
 
-This changes only UI image transport/presentation. It does not alter images,
-annotations, model inference, class semantics, tolerance geometry, or
-comparison metrics.
+The underlying annotation schema remains palm_line_manual_audit_v1. This helper
+does not run or reveal model inference and does not change image bytes,
+comparison tolerance, class IDs, or downstream metrics.
 """
 from __future__ import annotations
 
@@ -31,13 +30,6 @@ def sha256_file(path: Path) -> str:
     return h.hexdigest()
 
 
-def replace_exactly_once(text: str, old: str, new: str, label: str) -> str:
-    n = text.count(old)
-    if n != 1:
-        raise RuntimeError(f"expected exactly one {label}, found {n}")
-    return text.replace(old, new, 1)
-
-
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--packet-dir", type=Path, required=True)
@@ -46,7 +38,6 @@ def main() -> None:
 
     root = args.packet_dir
     template_path = root / "annotation_template.json"
-    html_path = root / "annotate.html"
     blind_dir = root / "reference_blind"
     out_path = root / args.output_name
 
@@ -67,80 +58,105 @@ def main() -> None:
         got = sha256_file(path)
         if got != expected:
             raise RuntimeError(f"blind PNG SHA mismatch: {name}: {got}")
-        encoded = base64.b64encode(path.read_bytes()).decode("ascii")
-        embedded[name] = "data:image/png;base64," + encoded
+        embedded[name] = "data:image/png;base64," + base64.b64encode(path.read_bytes()).decode("ascii")
 
+    payload = json.dumps(template, ensure_ascii=False)
+    image_map = json.dumps(embedded, ensure_ascii=False)
     first_name = images[0]["blind_image"]
     first_src = embedded[first_name]
 
-    html = html_path.read_text(encoding="utf-8")
+    html = r'''<!doctype html>
+<meta charset="utf-8">
+<title>掌紋三大主線標註</title>
+<style>
+body{font-family:system-ui,sans-serif;background:#111;color:#eee;margin:18px;max-width:900px}
+button{font-size:18px;padding:10px 18px;margin:5px;cursor:pointer}
+.linebtn.active{outline:4px solid #fff;font-weight:700}
+#heart{border:3px solid #ff5a5a} #head{border:3px solid #4da3ff} #life{border:3px solid #5ad67d}
+#stage{position:relative;width:min(512px,92vw);aspect-ratio:1/1;margin:14px 0;border:2px solid #888;background:#000}
+#photo,#cv{position:absolute;inset:0;width:100%;height:100%}
+#photo{z-index:1;display:block} #cv{z-index:2;cursor:crosshair}
+#current{font-size:20px;font-weight:700;margin:8px 0}.hint{color:#ddd;line-height:1.6}.nav{margin-top:10px}
+</style>
+<h2>掌紋三大主線標註</h2>
+<div class="hint">先按一條線，再直接在手掌照片上沿著那條線點幾個點。<b>至少 2 點</b>才算有畫到。看不到的線就不要畫。</div>
+<div>
+<button class="linebtn" id="heart" onclick="selectLine('heart_line')">感情線</button>
+<button class="linebtn" id="head" onclick="selectLine('head_line')">智慧線</button>
+<button class="linebtn" id="life" onclick="selectLine('life_line')">生命線</button>
+</div>
+<div id="current"></div>
+<div><button onclick="undoPoint()">復原上一點</button><button onclick="clearLine()">清除這條線</button></div>
+<div id="fileinfo"></div>
+<div id="stage"><img id="photo" src="__FIRST_SRC__" alt="blind palm"><canvas id="cv" width="512" height="512"></canvas></div>
+<div class="nav"><button onclick="prevImg()">上一張</button><button onclick="nextImg()">下一張</button><button onclick="downloadJSON()">下載 annotations.json</button></div>
+<script>
+const data=__PAYLOAD__;
+const imgs=__IMAGE_MAP__;
+const classes=['heart_line','head_line','life_line'];
+const labels={heart_line:'感情線',head_line:'智慧線',life_line:'生命線'};
+const colors={heart_line:'#ff5a5a',head_line:'#4da3ff',life_line:'#5ad67d'};
+let idx=0, current='heart_line';
+const photo=document.getElementById('photo');
+const cv=document.getElementById('cv');
+const ctx=cv.getContext('2d');
+function rec(){return data.images[idx]}
+function ann(){return rec().annotations[current]}
+function selectLine(c){current=c;draw()}
+function draw(){
+  ctx.clearRect(0,0,512,512);
+  for(const c of classes){
+    const p=rec().annotations[c].points_xy;
+    if(!p.length) continue;
+    ctx.strokeStyle=colors[c];ctx.fillStyle=colors[c];ctx.lineWidth=3;
+    ctx.beginPath();ctx.moveTo(p[0][0],p[0][1]);
+    for(let k=1;k<p.length;k++)ctx.lineTo(p[k][0],p[k][1]);ctx.stroke();
+    for(const q of p){ctx.beginPath();ctx.arc(q[0],q[1],3,0,Math.PI*2);ctx.fill()}
+  }
+  document.getElementById('heart').classList.toggle('active',current==='heart_line');
+  document.getElementById('head').classList.toggle('active',current==='head_line');
+  document.getElementById('life').classList.toggle('active',current==='life_line');
+  document.getElementById('current').textContent='目前畫：'+labels[current];
+  document.getElementById('fileinfo').textContent=(idx+1)+'/10  '+rec().file;
+}
+function load(){photo.src=imgs[rec().blind_image];draw()}
+cv.addEventListener('click',e=>{
+  const r=cv.getBoundingClientRect();
+  const x=Math.max(0,Math.min(511,Math.round((e.clientX-r.left)*512/r.width)));
+  const y=Math.max(0,Math.min(511,Math.round((e.clientY-r.top)*512/r.height)));
+  ann().points_xy.push([x,y]);
+  ann().status=ann().points_xy.length>=2?'observable':'unset';
+  draw();
+});
+function undoPoint(){ann().points_xy.pop();ann().status=ann().points_xy.length>=2?'observable':'unset';draw()}
+function clearLine(){ann().points_xy=[];ann().status='unset';draw()}
+function prevImg(){idx=Math.max(0,idx-1);load()}
+function nextImg(){idx=Math.min(data.images.length-1,idx+1);load()}
+function normalizeForExport(){
+  for(const r of data.images){for(const c of classes){const a=r.annotations[c];
+    if(a.points_xy.length>=2)a.status='observable';
+    else{a.points_xy=[];a.status='not_observable'}
+  }}
+}
+function downloadJSON(){
+  normalizeForExport();
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='annotations.json';a.click();URL.revokeObjectURL(a.href);
+}
+load();
+</script>'''
 
-    extra_css = """
-#palm-stage{position:relative;width:min(512px,92vw);aspect-ratio:1/1;border:2px solid #888;background:#000;margin:14px 0;overflow:hidden}
-#palm-photo,#cv{position:absolute;inset:0;width:100%;height:100%;margin:0;padding:0}
-#palm-photo{z-index:1;display:block;object-fit:fill}
-#cv{z-index:2;border:0;max-width:none;cursor:crosshair;background:transparent}
-#image-load-status{font-weight:700;margin:6px 0 14px 0;color:#9fe8ff}
-"""
-    html = replace_exactly_once(html, "</style>", extra_css + "</style>", "style terminator")
-
-    old_canvas = '<canvas id="cv" width="512" height="512"></canvas>'
-    new_canvas = (
-        '<div id="palm-stage">'
-        f'<img id="palm-photo" width="512" height="512" alt="blind palm image" src="{first_src}">'
-        '<canvas id="cv" width="512" height="512"></canvas>'
-        '</div>'
-        f'<div id="image-load-status">第一張照片已直接嵌入：{first_name}</div>'
-    )
-    html = replace_exactly_once(html, old_canvas, new_canvas, "canvas element")
-
-    marker = "<script>"
-    if html.count(marker) != 1:
-        raise RuntimeError("expected exactly one script marker")
-    js_map = "const embeddedBlindImages=" + json.dumps(embedded, ensure_ascii=False) + ";\n"
-    html = html.replace(marker, marker + "\n" + js_map, 1)
-
-    old_decl = "const cv=document.getElementById('cv'),ctx=cv.getContext('2d');\nconst img=new Image();"
-    new_decl = (
-        "const cv=document.getElementById('cv'),ctx=cv.getContext('2d');\n"
-        "const palmPhoto=document.getElementById('palm-photo');\n"
-        "const imageLoadStatus=document.getElementById('image-load-status');"
-    )
-    html = replace_exactly_once(html, old_decl, new_decl, "canvas/image declaration")
-
-    old_load = """function load(){
-  img.onload=draw;
-  img.src='reference_blind/'+rec().blind_image;
-  document.getElementById('name').textContent=rec().file;
-  document.getElementById('idx').textContent=(i+1)+'/'+data.images.length;
-}"""
-    new_load = """function load(){
-  const name=rec().blind_image;
-  imageLoadStatus.textContent='照片載入中：'+name;
-  palmPhoto.onload=()=>{imageLoadStatus.textContent='照片已載入：'+name;draw();};
-  palmPhoto.onerror=()=>{imageLoadStatus.textContent='照片載入失敗：'+name;};
-  palmPhoto.src=embeddedBlindImages[name];
-  document.getElementById('name').textContent=rec().file;
-  document.getElementById('idx').textContent=(i+1)+'/'+data.images.length;
-}"""
-    html = replace_exactly_once(html, old_load, new_load, "load() function")
-
-    old_draw_start = "  ctx.clearRect(0,0,512,512);ctx.drawImage(img,0,0,512,512);"
-    new_draw_start = "  ctx.clearRect(0,0,512,512);"
-    html = replace_exactly_once(html, old_draw_start, new_draw_start, "draw() image-paint statement")
-
+    html = html.replace("__FIRST_SRC__", first_src)
+    html = html.replace("__PAYLOAD__", payload)
+    html = html.replace("__IMAGE_MAP__", image_map)
     out_path.write_text(html, encoding="utf-8")
 
     if html.count("data:image/png;base64,") != 11:
         raise RuntimeError("embedded image count check failed")
-    if '<img id="palm-photo"' not in html:
-        raise RuntimeError("palm-photo element missing")
-
-    print("EMBEDDED IMAGE-ELEMENT BLIND UI READY")
+    print("SIMPLE EMBEDDED BLIND UI READY")
     print(f"images_verified = {len(embedded)}")
-    print(f"first_image = {first_name}")
-    print("first_image_literal_src = PASS")
-    print("transparent_annotation_overlay = PASS")
+    print("buttons = 感情線 / 智慧線 / 生命線")
+    print("export_rule = >=2 points observable; otherwise not_observable")
     print(f"output = {out_path}")
     print(f"output_sha256 = {sha256_file(out_path)}")
 
