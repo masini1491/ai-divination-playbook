@@ -7,6 +7,9 @@ from pathlib import Path
 
 from validate_interpretation_claim_registry import validate_registry
 
+SCHEMA_NAME="interpretation_claim_registry"
+SCHEMA_VERSION="0.1.0-research"
+
 def domicile_fixture():
     return {
         "record_status":"REFERENCE-ONLY","record_kind":"interpretation_claim_family_registry","record_id":"fixture-domicile",
@@ -38,58 +41,85 @@ def saturn_fixture():
         "privacy":{"contains_real_birth_data":False}
     }
 
+def canonical_fixture():
+    d=saturn_fixture()
+    d["schema_name"]=SCHEMA_NAME
+    d["schema_version"]=SCHEMA_VERSION
+    return d
+
 def codes(data): return {x["code"] for x in validate_registry(data)}
 
 class ClaimRegistryValidatorTests(unittest.TestCase):
-    def test_domicile_style_fixture_valid(self): self.assertEqual(validate_registry(domicile_fixture()), [])
-    def test_saturn_style_fixture_valid(self): self.assertEqual(validate_registry(saturn_fixture()), [])
+    def test_legacy_domicile_style_fixture_valid(self): self.assertEqual(validate_registry(domicile_fixture()), [])
+    def test_legacy_saturn_style_fixture_valid(self): self.assertEqual(validate_registry(saturn_fixture()), [])
+    def test_canonical_fixture_valid(self): self.assertEqual(validate_registry(canonical_fixture()), [])
     def test_record_status_invalid(self):
-        d=saturn_fixture(); d["record_status"]="PRODUCTION"; self.assertIn("RECORD_STATUS_INVALID",codes(d))
+        d=canonical_fixture(); d["record_status"]="PRODUCTION"; self.assertIn("RECORD_STATUS_INVALID",codes(d))
     def test_record_kind_invalid(self):
-        d=saturn_fixture(); d["record_kind"]="x"; self.assertIn("RECORD_KIND_INVALID",codes(d))
+        d=canonical_fixture(); d["record_kind"]="x"; self.assertIn("RECORD_KIND_INVALID",codes(d))
+    def test_schema_name_invalid(self):
+        d=canonical_fixture(); d["schema_name"]="x"; self.assertIn("SCHEMA_NAME_INVALID",codes(d))
+    def test_schema_version_invalid(self):
+        d=canonical_fixture(); d["schema_version"]="9"; self.assertIn("SCHEMA_VERSION_UNSUPPORTED",codes(d))
+    def test_versioned_requires_explicit_production_false(self):
+        d=canonical_fixture(); d.pop("production_routable"); self.assertIn("PRODUCTION_ROUTABLE_EXPLICIT_FALSE_REQUIRED",codes(d))
     def test_production_routable_forbidden(self):
-        d=saturn_fixture(); d["production_routable"]=True; self.assertIn("PRODUCTION_ROUTABLE_FORBIDDEN",codes(d))
+        d=canonical_fixture(); d["production_routable"]=True; self.assertIn("PRODUCTION_ROUTABLE_FORBIDDEN",codes(d))
     def test_production_authority_forbidden(self):
         d=domicile_fixture(); d["research_result"]["production_authority_granted"]=True; self.assertIn("PRODUCTION_AUTHORITY_FORBIDDEN",codes(d))
     def test_scientific_validity_promotion_forbidden(self):
         d=domicile_fixture(); d["research_result"]["scientific_predictive_validity_claimed"]=True; self.assertIn("SCIENTIFIC_VALIDITY_PROMOTION_FORBIDDEN",codes(d))
+    def test_versioned_requires_explicit_privacy_false(self):
+        d=canonical_fixture(); d.pop("privacy"); self.assertIn("PRIVACY_FALSE_REQUIRED",codes(d))
     def test_real_birth_data_forbidden(self):
-        d=saturn_fixture(); d["privacy"]["contains_real_birth_data"]=True; self.assertIn("REAL_BIRTH_DATA_FORBIDDEN",codes(d))
+        d=canonical_fixture(); d["privacy"]["contains_real_birth_data"]=True; self.assertIn("REAL_BIRTH_DATA_FORBIDDEN",codes(d))
     def test_duplicate_source_id(self):
-        d=saturn_fixture(); d["sources"].append(copy.deepcopy(d["sources"][0])); self.assertIn("SOURCE_ID_DUPLICATE",codes(d))
+        d=canonical_fixture(); d["sources"].append(copy.deepcopy(d["sources"][0])); self.assertIn("SOURCE_ID_DUPLICATE",codes(d))
     def test_unknown_upstream_source(self):
-        d=saturn_fixture(); d["sources"][2]["upstream_source_refs"]=["source:nope"]; self.assertIn("UPSTREAM_SOURCE_REF_UNKNOWN",codes(d))
+        d=canonical_fixture(); d["sources"][2]["upstream_source_refs"]=["source:nope"]; self.assertIn("UPSTREAM_SOURCE_REF_UNKNOWN",codes(d))
     def test_upstream_self_reference(self):
-        d=saturn_fixture(); d["sources"][2]["upstream_source_refs"]=["source:c"]; self.assertIn("UPSTREAM_SOURCE_SELF_REFERENCE",codes(d))
+        d=canonical_fixture(); d["sources"][2]["upstream_source_refs"]=["source:c"]; self.assertIn("UPSTREAM_SOURCE_SELF_REFERENCE",codes(d))
     def test_invalid_source_role(self):
-        d=saturn_fixture(); d["sources"][0]["source_role"]="BLOG"; self.assertIn("SOURCE_ROLE_INVALID",codes(d))
+        d=canonical_fixture(); d["sources"][0]["source_role"]="BLOG"; self.assertIn("SOURCE_ROLE_INVALID",codes(d))
     def test_invalid_admission_status(self):
-        d=saturn_fixture(); d["sources"][0]["admission_status"]=["FOO"]; self.assertIn("ADMISSION_STATUS_INVALID",codes(d))
+        d=canonical_fixture(); d["sources"][0]["admission_status"]=["FOO"]; self.assertIn("ADMISSION_STATUS_INVALID",codes(d))
     def test_production_admission_forbidden(self):
-        d=saturn_fixture(); d["sources"][0]["admission_status"]=["PRODUCTION_ADMITTED"]; self.assertIn("PRODUCTION_ADMISSION_FORBIDDEN",codes(d))
+        d=canonical_fixture(); d["sources"][0]["admission_status"]=["PRODUCTION_ADMITTED"]; self.assertIn("PRODUCTION_ADMISSION_FORBIDDEN",codes(d))
     def test_unverified_web_promotion_forbidden(self):
-        d=saturn_fixture(); d["sources"][0]["source_role"]="UNVERIFIED_WEB_SOURCE"; d["sources"][0]["admission_status"]=["CLAIM_ELIGIBLE"]; self.assertIn("UNVERIFIED_WEB_PROMOTION_FORBIDDEN",codes(d))
+        d=canonical_fixture(); d["sources"][0]["source_role"]="UNVERIFIED_WEB_SOURCE"; self.assertIn("UNVERIFIED_WEB_PROMOTION_FORBIDDEN",codes(d))
     def test_invalid_storage_mode(self):
-        d=saturn_fixture(); d["sources"][0]["storage_mode"]=["copy_everything"]; self.assertIn("STORAGE_MODE_INVALID",codes(d))
+        d=canonical_fixture(); d["sources"][0]["storage_mode"]=["copy_everything"]; self.assertIn("STORAGE_MODE_INVALID",codes(d))
+    def test_versioned_rejects_admission_state_alias(self):
+        d=canonical_fixture(); d["sources"][0]["admission_state"]=d["sources"][0].pop("admission_status"); self.assertIn("LEGACY_SOURCE_FIELD_FORBIDDEN",codes(d))
+    def test_versioned_requires_admission_status_array(self):
+        d=canonical_fixture(); d["sources"][0]["admission_status"]="CLAIM_ELIGIBLE"; self.assertIn("CANONICAL_ADMISSION_STATUS_ARRAY_REQUIRED",codes(d))
+    def test_versioned_requires_storage_mode_array(self):
+        d=canonical_fixture(); d["sources"][0]["storage_mode"]="metadata_plus_locator"; self.assertIn("CANONICAL_STORAGE_MODE_ARRAY_REQUIRED",codes(d))
+    def test_versioned_rejects_author_alias(self):
+        d=canonical_fixture(); d["sources"][0]["author"]="x"; self.assertIn("LEGACY_SOURCE_FIELD_FORBIDDEN",codes(d))
     def test_duplicate_claim_id(self):
-        d=saturn_fixture(); d["claims"].append(copy.deepcopy(d["claims"][0])); self.assertIn("CLAIM_ID_DUPLICATE",codes(d))
+        d=canonical_fixture(); d["claims"].append(copy.deepcopy(d["claims"][0])); self.assertIn("CLAIM_ID_DUPLICATE",codes(d))
     def test_invalid_claim_layer(self):
-        d=saturn_fixture(); d["claims"][0]["layer"]="L5"; self.assertIn("CLAIM_LAYER_INVALID",codes(d))
+        d=canonical_fixture(); d["claims"][0]["layer"]="L5"; self.assertIn("CLAIM_LAYER_INVALID",codes(d))
     def test_claim_statement_required(self):
         d=saturn_fixture(); d["claims"][0].pop("normalized_statement"); self.assertIn("CLAIM_STATEMENT_REQUIRED",codes(d))
+    def test_versioned_rejects_statement_alias(self):
+        d=canonical_fixture(); d["claims"][0]["statement"]=d["claims"][0].pop("normalized_statement"); self.assertIn("LEGACY_CLAIM_FIELD_FORBIDDEN",codes(d))
+    def test_versioned_requires_support_status(self):
+        d=canonical_fixture(); d["claims"][0].pop("support_status"); self.assertIn("CANONICAL_SUPPORT_STATUS_REQUIRED",codes(d))
     def test_unknown_claim_source_ref(self):
-        d=saturn_fixture(); d["claims"][0]["source_refs"]=["source:nope","source:b"]; self.assertIn("CLAIM_SOURCE_REF_UNKNOWN",codes(d))
+        d=canonical_fixture(); d["claims"][0]["source_refs"]=["source:nope","source:b"]; self.assertIn("CLAIM_SOURCE_REF_UNKNOWN",codes(d))
     def test_unknown_claim_conflict_ref(self):
-        d=saturn_fixture(); d["claims"][0]["conflict_group_ids"]=["conflict:nope"]; self.assertIn("CLAIM_CONFLICT_REF_UNKNOWN",codes(d))
+        d=canonical_fixture(); d["claims"][0]["conflict_group_ids"]=["conflict:nope"]; self.assertIn("CLAIM_CONFLICT_REF_UNKNOWN",codes(d))
     def test_unknown_conflict_claim_ref(self):
-        d=saturn_fixture(); d["conflict_groups"][0]["claim_refs"]=["claim:nope"]; self.assertIn("CONFLICT_CLAIM_REF_UNKNOWN",codes(d))
+        d=canonical_fixture(); d["conflict_groups"][0]["claim_refs"]=["claim:nope"]; self.assertIn("CONFLICT_CLAIM_REF_UNKNOWN",codes(d))
     def test_multi_source_requires_two_sources(self):
-        d=saturn_fixture(); d["claims"][0]["source_refs"]=["source:a"]; self.assertIn("MULTI_SOURCE_COUNT_INSUFFICIENT",codes(d))
+        d=canonical_fixture(); d["claims"][0]["source_refs"]=["source:a"]; self.assertIn("MULTI_SOURCE_COUNT_INSUFFICIENT",codes(d))
     def test_multi_source_requires_independent_roots(self):
-        d=saturn_fixture(); d["claims"][0]["source_refs"]=["source:a","source:c"]; self.assertIn("MULTI_SOURCE_INDEPENDENCE_INSUFFICIENT",codes(d))
+        d=canonical_fixture(); d["claims"][0]["source_refs"]=["source:a","source:c"]; self.assertIn("MULTI_SOURCE_INDEPENDENCE_INSUFFICIENT",codes(d))
     def test_reference_only_cannot_self_promote_supported_claim(self):
-        d=saturn_fixture(); d["claims"][1]["confidence_status"]="supported"; d["claims"][1]["support_status"]="single_source_supported"; self.assertIn("REFERENCE_ONLY_AUTHORITY_PROMOTION",codes(d))
-    def test_reference_only_qualified_claim_allowed(self): self.assertNotIn("REFERENCE_ONLY_AUTHORITY_PROMOTION",codes(saturn_fixture()))
+        d=canonical_fixture(); d["claims"][1]["confidence_status"]="supported"; d["claims"][1]["support_status"]="single_source_supported"; self.assertIn("REFERENCE_ONLY_AUTHORITY_PROMOTION",codes(d))
+    def test_reference_only_qualified_claim_allowed(self): self.assertNotIn("REFERENCE_ONLY_AUTHORITY_PROMOTION",codes(canonical_fixture()))
 
 class CurrentRegistryCompatibilityTests(unittest.TestCase):
     def test_current_registry_files_validate_when_present(self):
