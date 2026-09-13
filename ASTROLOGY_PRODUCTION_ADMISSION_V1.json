@@ -1,0 +1,82 @@
+{
+  "schema_name": "astrology_production_admission",
+  "schema_version": "1.0.0",
+  "method": "Astrology",
+  "method_version": "astrology-v1",
+  "status": "PRODUCTION_ADMITTED",
+  "activation": "explicit_user_request_only",
+  "ordinary_auto_routing": false,
+  "built_in_ephemeris_provider": false,
+  "fact_bundle_schema": "astrology_fact_bundle@1.0.0",
+  "reading_modes": ["natal", "transit"],
+  "configuration_policy": {
+    "zodiac_systems": ["tropical"],
+    "centers": ["geocentric"],
+    "house_systems": ["Whole Sign", "Placidus"],
+    "unknown_birth_time_houses_angles": "forbidden"
+  },
+  "dignity_policy": {
+    "admitted": ["domicile", "exaltation", "detriment", "fall"],
+    "not_admitted": ["triplicity", "terms", "bounds", "face", "decan", "peregrine_scoring", "numeric_dignity_scoring"]
+  },
+  "aspect_policy": {
+    "major_only": true,
+    "max_orb_degrees": {
+      "conjunction": 8.0,
+      "opposition": 8.0,
+      "trine": 7.0,
+      "square": 7.0,
+      "sextile": 5.0
+    }
+  },
+  "source_policy": {
+    "required_source_admission_any": ["CLAIM_ELIGIBLE", "POLICY_PROVENANCE_ELIGIBLE"],
+    "forbidden_source_admission": ["REFERENCE_ONLY", "REJECTED", "UNVERIFIED_WEB_SOURCE"],
+    "preserve_conflicts": true,
+    "no_research_status_mutation": true
+  },
+  "admitted_research_registries": [
+    "domicile-essential-dignity-research-v1",
+    "first-seventh-house-axis-research-v1",
+    "fourth-tenth-house-axis-research-v1",
+    "remaining-house-axes-research-v1",
+    "essential-dignity-expansion-research-v1",
+    "transit-interpretation-research-v1",
+    "saturn-moon-major-aspects-research-v1"
+  ],
+  "qualified_only_registries": [
+    "high-value-planet-aspects-research-v1"
+  ],
+  "qualified_registry_policy": {
+    "production_pair_specific_meaning": "not_admitted_until_claim_sources_are_independently_admitted",
+    "general_aspect_geometry": "admitted_when_supplied_as_deterministic_fact"
+  },
+  "unsupported_scopes": [
+    "synastry",
+    "composite",
+    "solar_return",
+    "annual_profection",
+    "rectification",
+    "eclipse_prediction",
+    "lunation_prediction",
+    "time_lord_systems",
+    "raw_birth_data_model_calculation",
+    "unsourced_planet_in_sign_personality_templates"
+  ],
+  "high_stakes_guardrails": [
+    "no_deterministic_death_prediction",
+    "no_medical_diagnosis_or_outcome_claim",
+    "no_legal_outcome_guarantee",
+    "no_financial_return_or_loss_guarantee",
+    "no_pregnancy_guarantee",
+    "no_accident_guarantee",
+    "no_job_loss_guarantee",
+    "no_relationship_ending_guarantee"
+  ],
+  "research_baseline": "d7fdb4b2c4ca6a615e95723166c507acc8b9421f",
+  "admission_decision": {
+    "decision": "admit_bounded_astrology_v1",
+    "rationale": "Research v1 established deterministic fact boundaries, typed source/tradition routing, bounded source-backed house/dignity/aspect/transit evidence, fail-closed preconditions, and direct regression evidence. Production v1 therefore admits interpretation over validated or explicitly user-supplied structured facts while leaving ephemeris-provider admission separate.",
+    "scientific_predictive_validity_claimed": false
+  }
+}
