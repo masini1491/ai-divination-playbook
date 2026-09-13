@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ASTROLOGY_RUNTIME_GATE_RESULT_V1.schema.json",
+  "title": "Astrology Runtime Gate Result 1.0",
+  "description": "Result envelope emitted by tools/astrology_runtime.py for Astrology Fact Bundle admission. This gate validates deterministic/structured facts only and has no semantic interpretation authority.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_name", "schema_version", "method", "method_version", "status", "interpretation_allowed", "errors"],
+  "properties": {
+    "schema_name": {"const": "astrology_runtime_gate_result"},
+    "schema_version": {"const": "1.0.0"},
+    "method": {"const": "Astrology"},
+    "method_version": {"const": "astrology-v1"},
+    "status": {"enum": ["admitted", "rejected"]},
+    "interpretation_allowed": {"type": "boolean"},
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["code", "path", "message"],
+        "properties": {
+          "code": {"type": "string", "minLength": 1},
+          "path": {"type": "string", "minLength": 1},
+          "message": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "reading_mode": {"type": ["string", "null"]},
+    "subject_ref": {"type": ["string", "null"]},
+    "fact_source": {"type": ["string", "null"]},
+    "calculation_verification": {"type": ["string", "null"]}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"status": {"const": "admitted"}}, "required": ["status"]},
+      "then": {
+        "properties": {
+          "interpretation_allowed": {"const": true},
+          "errors": {"maxItems": 0}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"status": {"const": "rejected"}}, "required": ["status"]},
+      "then": {
+        "properties": {
+          "interpretation_allowed": {"const": false},
+          "errors": {"minItems": 1}
+        }
+      }
+    }
+  ]
+}
