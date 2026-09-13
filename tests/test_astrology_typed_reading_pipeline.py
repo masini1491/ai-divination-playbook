@@ -121,7 +121,7 @@ class AstrologyTypedReadingPipelineTests(unittest.TestCase):
 
         with self.assertRaisesRegex(
             AstrologyTypedReadingPipelineError,
-            "claim ref is not selected by the interpretation handoff",
+            "cites claim outside admitted handoff",
         ):
             run_typed_pipeline(load(READING), typed_request(), output, repo_root=ROOT)
 
