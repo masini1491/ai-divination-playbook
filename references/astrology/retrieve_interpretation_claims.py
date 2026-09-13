@@ -118,6 +118,7 @@ def _base_bundle(registry: dict[str, Any], query: dict[str, Any] | Any) -> dict[
         "guardrails": [],
         "excluded": [],
         "tradition_provenance": {},
+        "precondition_provenance": {},
     }
 
 
@@ -145,10 +146,28 @@ def retrieve_claims(registry: dict[str, Any], query: dict[str, Any], taxonomy: d
         bundle["errors"] = registry_errors
         return bundle
 
+    registry_preconditions = registry.get("retrieval_preconditions", {})
+    if not isinstance(registry_preconditions, dict):
+        registry_preconditions = {}
+    query_requires_l2 = bool(query.get("requires_l2_facts"))
+    query_requires_l3 = bool(query.get("requires_l3_policy"))
+    registry_requires_l2 = bool(registry_preconditions.get("requires_l2_facts"))
+    registry_requires_l3 = bool(registry_preconditions.get("requires_l3_policy"))
+    effective_requires_l2 = query_requires_l2 or registry_requires_l2
+    effective_requires_l3 = query_requires_l3 or registry_requires_l3
+    bundle["precondition_provenance"] = {
+        "query_requires_l2_facts": query_requires_l2,
+        "query_requires_l3_policy": query_requires_l3,
+        "registry_requires_l2_facts": registry_requires_l2,
+        "registry_requires_l3_policy": registry_requires_l3,
+        "effective_requires_l2_facts": effective_requires_l2,
+        "effective_requires_l3_policy": effective_requires_l3,
+    }
+
     failures: list[str] = []
-    if query.get("requires_l2_facts") and not query.get("l2_fact_refs"):
+    if effective_requires_l2 and not query.get("l2_fact_refs"):
         failures.append("l2_fact_refs_required")
-    if query.get("requires_l3_policy") and not query.get("l3_policy_refs"):
+    if effective_requires_l3 and not query.get("l3_policy_refs"):
         failures.append("l3_policy_refs_required")
     if failures:
         bundle["retrieval_status"] = "precondition_failed"
@@ -294,6 +313,9 @@ def retrieve_claims(registry: dict[str, Any], query: dict[str, Any], taxonomy: d
         "conflict_group_refs": [group["conflict_group_id"] for group in used_conflicts],
         "tradition_context_refs": list(query.get("tradition_context_refs_any", [])),
         "synthesis_mode": query.get("synthesis_mode"),
+        "registry_retrieval_preconditions": dict(registry_preconditions),
+        "effective_requires_l2_facts": effective_requires_l2,
+        "effective_requires_l3_policy": effective_requires_l3,
     }
     return bundle
 

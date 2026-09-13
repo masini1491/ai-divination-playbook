@@ -24,6 +24,7 @@ CONTEXT_FIELD_DIMENSIONS = {
     "historical_context_refs": {"historical_context"},
     "meta_context_refs": {"meta_perspective"},
 }
+PRECONDITION_BOOLEAN_FIELDS = {"requires_l2_facts", "requires_l3_policy"}
 
 
 def add(errors: list[dict[str, str]], code: str, path: str, message: str) -> None:
@@ -85,6 +86,18 @@ def _validate_context_refs(
             add(errors, "TYPED_CONTEXT_DIMENSION_INVALID", path, f"context {ref} must belong to: {allowed}")
 
 
+def _validate_retrieval_preconditions(data: dict[str, Any], errors: list[dict[str, str]]) -> None:
+    if "retrieval_preconditions" not in data:
+        return
+    value = data.get("retrieval_preconditions")
+    if not isinstance(value, dict):
+        add(errors, "RETRIEVAL_PRECONDITIONS_OBJECT_REQUIRED", "$.retrieval_preconditions", "must be an object")
+        return
+    for field in PRECONDITION_BOOLEAN_FIELDS:
+        if field in value and not isinstance(value[field], bool):
+            add(errors, "RETRIEVAL_PRECONDITION_BOOLEAN_REQUIRED", f"$.retrieval_preconditions.{field}", "must be boolean")
+
+
 def validate_registry(data: Any, taxonomy: dict[str, Any] | None = None) -> list[dict[str, str]]:
     errors: list[dict[str, str]] = []
     if not isinstance(data, dict):
@@ -115,6 +128,7 @@ def validate_registry(data: Any, taxonomy: dict[str, Any] | None = None) -> list
         privacy = data.get("privacy")
         if not isinstance(privacy, dict) or privacy.get("contains_real_birth_data") is not False:
             add(errors, "PRIVACY_FALSE_REQUIRED", "$.privacy.contains_real_birth_data", "versioned registry must explicitly declare contains_real_birth_data=false")
+        _validate_retrieval_preconditions(data, errors)
 
     if v2:
         if taxonomy is None:
