@@ -1,0 +1,58 @@
+{
+  "schema_name": "astrology_output_draft",
+  "schema_version": "1.0.0",
+  "question_id": "fixture-natal-house-question",
+  "conclusion": {
+    "text": "The admitted seventh-house evidence supports treating partnership or marriage as a relevant symbolic topic in this reading, without establishing another person's motives or guaranteeing an outcome.",
+    "fact_refs": [
+      {
+        "bundle": "natal",
+        "fact_id": "fact:house:7"
+      }
+    ],
+    "claim_refs": [
+      {
+        "registry_record_id": "first-seventh-house-axis-research-v1",
+        "claim_id": "claim:valens-seventh-place-marriage"
+      }
+    ]
+  },
+  "evidence": [
+    {
+      "text": "The selected deterministic chart fact is the seventh-house cusp/identity in the admitted natal bundle.",
+      "fact_refs": [
+        {
+          "bundle": "natal",
+          "fact_id": "fact:house:7"
+        }
+      ],
+      "claim_refs": []
+    },
+    {
+      "text": "The selected source-backed historical claim links the seventh place with marriage within the reviewed Hellenistic material; that scope should not be expanded into modern private-motive claims.",
+      "fact_refs": [
+        {
+          "bundle": "natal",
+          "fact_id": "fact:house:7"
+        }
+      ],
+      "claim_refs": [
+        {
+          "registry_record_id": "first-seventh-house-axis-research-v1",
+          "claim_id": "claim:valens-seventh-place-marriage"
+        }
+      ]
+    }
+  ],
+  "pre_send_attestations": {
+    "direct_answer_checked": true,
+    "scope_and_exclusions_checked": true,
+    "evidence_language_checked": true,
+    "conclusion_consistency_checked": true,
+    "unresolved_handling_checked": true,
+    "eligible_layer_checked": true,
+    "structured_fact_provenance_checked": true,
+    "unsupported_factor_boundary_checked": true,
+    "conflict_and_caution_checked": true
+  }
+}

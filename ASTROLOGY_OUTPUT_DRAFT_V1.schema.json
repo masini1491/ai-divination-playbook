@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ASTROLOGY_OUTPUT_DRAFT_V1.schema.json",
+  "title": "Astrology Production v1 User-Facing Output Draft",
+  "description": "Closed-world caller/ChatGPT-authored draft contract consumed by tools/astrology_output_guard.py. The guard validates provenance references and required pre-send attestations; it does not independently prove semantic correctness.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_name",
+    "schema_version",
+    "question_id",
+    "conclusion",
+    "evidence",
+    "pre_send_attestations"
+  ],
+  "properties": {
+    "schema_name": {
+      "const": "astrology_output_draft"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "question_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "conclusion": {
+      "$ref": "#/$defs/output_unit"
+    },
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 8,
+      "items": {
+        "$ref": "#/$defs/output_unit"
+      }
+    },
+    "pre_send_attestations": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "direct_answer_checked",
+        "scope_and_exclusions_checked",
+        "evidence_language_checked",
+        "conclusion_consistency_checked",
+        "unresolved_handling_checked",
+        "eligible_layer_checked",
+        "structured_fact_provenance_checked",
+        "unsupported_factor_boundary_checked",
+        "conflict_and_caution_checked"
+      ],
+      "properties": {
+        "direct_answer_checked": {"const": true},
+        "scope_and_exclusions_checked": {"const": true},
+        "evidence_language_checked": {"const": true},
+        "conclusion_consistency_checked": {"const": true},
+        "unresolved_handling_checked": {"const": true},
+        "eligible_layer_checked": {"const": true},
+        "structured_fact_provenance_checked": {"const": true},
+        "unsupported_factor_boundary_checked": {"const": true},
+        "conflict_and_caution_checked": {"const": true}
+      }
+    }
+  },
+  "$defs": {
+    "fact_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["bundle", "fact_id"],
+      "properties": {
+        "bundle": {
+          "enum": ["natal", "transit"]
+        },
+        "fact_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "claim_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["registry_record_id", "claim_id"],
+      "properties": {
+        "registry_record_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "claim_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "output_unit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["text", "fact_refs", "claim_refs"],
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1600
+        },
+        "fact_refs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/fact_ref"
+          }
+        },
+        "claim_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/claim_ref"
+          }
+        }
+      }
+    }
+  }
+}

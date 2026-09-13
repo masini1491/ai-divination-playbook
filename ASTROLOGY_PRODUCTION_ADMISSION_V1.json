@@ -33,6 +33,37 @@
       "final_prose_authority": false,
       "final_method_owner": "ASTROLOGY.md",
       "final_output_owner": "CHATGPT_OUTPUT.md"
+    },
+    "output_delivery": {
+      "adapter_id": "astrology-output-guard-v1",
+      "runtime_owner": "tools/astrology_output_guard.py",
+      "draft_schema": "ASTROLOGY_OUTPUT_DRAFT_V1.schema.json",
+      "draft_schema_id": "astrology_output_draft@1.0.0",
+      "output_schema_id": "astrology_user_facing_output@1.0.0",
+      "authority": "provenance_and_pre_send_validation_only",
+      "requires_admitted_interpretation_handoff": true,
+      "requires_all_fact_refs_selected_in_handoff": true,
+      "requires_all_claim_refs_selected_in_handoff": true,
+      "requires_question_identity_match": true,
+      "requires_pre_send_attestations": true,
+      "semantic_interpretation_authority": false,
+      "final_text_authority": false,
+      "final_method_owner": "ASTROLOGY.md",
+      "final_output_owner": "CHATGPT_OUTPUT.md"
+    },
+    "end_to_end_pipeline": {
+      "pipeline_id": "astrology-production-reading-pipeline-v1",
+      "runtime_owner": "tools/astrology_reading_pipeline.py",
+      "run_schema_id": "astrology_reading_pipeline_run@1.0.0",
+      "authority": "composition_only",
+      "stages": [
+        "astrology_reading_run@1.0.0",
+        "astrology_interpretation_handoff@1.0.0",
+        "astrology_user_facing_output@1.0.0"
+      ],
+      "reading_record_storage": "external_only",
+      "semantic_selection_authority": false,
+      "final_text_authority": false
     }
   },
   "natal_provider": {
@@ -135,8 +166,8 @@
   "natal_provider_admission_baseline": "09d2a014190b59a5a758c9a0618b06e72a82aecb",
   "transit_place_admission_baseline": "01a159990d2086f3a47be2e299d2e7f04a0e1758",
   "admission_decision": {
-    "decision": "admit_bounded_astrology_v1_with_natal_transit_offline_place_resolution_composition_orchestration_and_interpretation_handoff",
-    "rationale": "Astrology Production v1 admits the existing natal provider, bounded transit provider, offline city/locality resolver, composition-only reading orchestration, and an evidence-packaging interpretation handoff. The handoff accepts only an already-admitted reading run, verifies selected fact identities, permits only claims from boundedly admitted registries whose cited sources satisfy production source-admission policy, preserves cautions/conflicts/provenance, and delegates final interpretation/prose to ASTROLOGY.md plus CHATGPT_OUTPUT.md without gaining astronomical, semantic-selection, final-prose, or storage authority.",
+    "decision": "admit_bounded_astrology_v1_with_end_to_end_user_facing_pipeline",
+    "rationale": "Astrology Production v1 admits the existing natal/transit/place-resolution calculation path, composition-only reading orchestration, evidence-packaging interpretation handoff, provenance/pre-send output guard, and one composition-only end-to-end pipeline. The output guard validates only references already selected by the admitted handoff, preserves question identity, unsupported factors, disclosures, conflicts and source provenance, and requires explicit Pre-Send attestations. Semantic interpretation and final wording remain governed by ASTROLOGY.md and CHATGPT_OUTPUT.md; the deterministic adapters gain no independent astrological meaning, final-prose, scientific-validity, or private-storage authority.",
     "scientific_predictive_validity_claimed": false
   }
 }
