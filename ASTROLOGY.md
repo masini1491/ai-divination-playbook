@@ -2,17 +2,28 @@
 
 Status: **PRODUCTION V1 / EXPLICIT-REQUEST ONLY**
 
-本章是 Astrology 的 production method owner。Astrology v1 將 input resolution、deterministic calculation、runtime validation 與 interpretation 分層：
+本章是 Astrology 的 production method owner。Astrology v1 將 input resolution、deterministic calculation、runtime validation、interpretation evidence handoff 與 final-output validation 分層：
 
 ```text
 explicit Astrology request
-→ raw birth data / supplied chart facts
+→ ASTROLOGY_READING_REQUEST_V1.schema.json
 → optional offline place resolution
 → deterministic natal / transit provider
 → Astrology Fact Bundle 1.0
 → tools/astrology_runtime.py gate
-→ admitted interpretation claims
-→ bounded synthesis
+→ tools/astrology_orchestrator.py
+→ ASTROLOGY_INTERPRETATION_REQUEST_V1.schema.json
+→ tools/astrology_interpretation_handoff.py
+→ bounded synthesis under ASTROLOGY.md + CHATGPT_OUTPUT.md
+→ ASTROLOGY_OUTPUT_DRAFT_V1.schema.json
+→ tools/astrology_output_guard.py
+→ astrology_user_facing_output@1.0.0
+```
+
+單一 composition-only production entrypoint：
+
+```text
+tools/astrology_reading_pipeline.py
 ```
 
 普通未指定方法的占問仍走 `METHOD_ROUTING.md` 的 Tarot / Meihua / Liuyao Fast Path；Astrology **不參與 ordinary auto-routing**。
@@ -411,7 +422,54 @@ Admitted interpretation evidence 必須保留 source admission、tradition/histo
 
 不要為了「完整」把整張盤所有 factor 一次全部傾倒。
 
-## 14. Uncertainty / Safety
+## 14. Production Interpretation Handoff / User-Facing Output
+
+Calculation admission 與 semantic interpretation 必須分離。Production v1 的完整 user-facing path：
+
+```text
+astrology_reading_run@1.0.0
+→ tools/astrology_interpretation_handoff.py
+→ astrology_interpretation_handoff@1.0.0
+→ ChatGPT bounded semantic synthesis
+→ astrology_output_draft@1.0.0
+→ tools/astrology_output_guard.py
+→ astrology_user_facing_output@1.0.0
+```
+
+`tools/astrology_interpretation_handoff.py` 只做：
+
+- 驗證 selected Fact Bundle refs 確實存在於 admitted reading run；
+- 驗證 registry / claim 已由 production manifest bounded-admit；
+- 套用 production source policy；
+- 保留 source provenance、cautions、conflicts、required disclosures、unsupported factors；
+- 不選擇使用者問題的答案，也不撰寫 interpretation prose。
+
+`tools/astrology_output_guard.py` 只做：
+
+- 驗證 draft question identity 與 handoff 相同；
+- 驗證所有 fact/claim refs 均在 handoff boundary 內；
+- 驗證 closed-world draft contract；
+- 要求 `CHATGPT_OUTPUT.md` 的 Pre-Send semantic checks 顯式 attest；
+- preserve unsupported factors / required disclosures / conflicts / source provenance；
+- 不自動判斷自然語言 interpretation 是否「占星上正確」，也不替 ChatGPT 生成 final prose。
+
+`tools/astrology_reading_pipeline.py` 是 composition-only adapter，將上述 admitted stages 串成單一 execution path；不新增 calculation、semantic-selection、final-text 或 Reading Record storage authority。
+
+Transit user-facing regression 必須至少證明：
+
+```text
+explicit transit request
+→ natal baseline
+→ bounded deterministic transit search
+→ runtime gate
+→ selected transit event fact
+→ production-admitted interpretation claim or explicit unsupported_factor
+→ guarded user-facing output
+```
+
+能計算出 transit exact event **不等於** pair-specific semantic meaning 自動 admitted；未 admitted meaning 仍必須 fail closed 或明確列為 unsupported。
+
+## 15. Uncertainty / Safety
 
 輸出區分：
 
@@ -433,7 +491,7 @@ Synthesis
 
 Astrology 不是 medical / legal / financial / safety decision authority；高風險決策以實際專業 evidence 為主。
 
-## 15. Unsupported-Factor Behavior
+## 16. Unsupported-Factor Behavior
 
 ```text
 unsupported_factor
@@ -450,7 +508,7 @@ unsupported_factor
 - 超過 provider scope 就自行補算；
 - research detail ≠ production authority。
 
-## 16. Provenance / Recording
+## 17. Provenance / Recording
 
 Reading Record 至少保存：
 
@@ -474,7 +532,7 @@ reality updates
 
 真實 birth data / chart data 仍服從 `READING_RECORD.md` storage boundary；不得寫入本公開 Playbook。
 
-## 17. Authority Summary
+## 18. Authority Summary
 
 ```text
 ASTROLOGY.md
@@ -492,8 +550,23 @@ tools/astrology_transit_provider.py
 tools/astrology_runtime.py
 → Fact Bundle validation + deterministic admission gate
 
+tools/astrology_orchestrator.py
+→ reading-request normalization + stage composition only
+
+tools/astrology_interpretation_handoff.py
+→ admitted fact/claim provenance packaging only
+
+tools/astrology_output_guard.py
+→ provenance + Pre-Send draft validation only
+
+tools/astrology_reading_pipeline.py
+→ complete production reading composition only
+
 ASTROLOGY_*_ADMISSION_V1.json
 → bounded production admissions
+
+CHATGPT_OUTPUT.md
+→ final output / Pre-Send owner
 
 references/astrology/**
 → historical research evidence; not automatically production authority
@@ -509,6 +582,10 @@ ordinary auto-routing                NO
 offline city/locality resolver       YES
 built-in natal provider              YES
 transit event-search provider        YES
+request orchestration                YES
+interpretation evidence handoff      YES
+user-facing output guard             YES
+single end-to-end pipeline           YES
 raw birth data → natal bundle        YES (exact/approximate time)
 exact transit event search           YES (bounded ≤400 days)
 street/building geocoding            NO
