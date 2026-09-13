@@ -1,0 +1,54 @@
+{
+  "source": {
+    "repository": "kounkt/tri-horoscope",
+    "revision": "11318426c52c222eea108583ca45420c864825ca",
+    "path": "tests/E1_south_sydney.json",
+    "license": "MIT"
+  },
+  "input": {
+    "local_datetime": "1990-06-15T10:00:00",
+    "timezone_name": "Australia/Sydney",
+    "latitude": -33.8688,
+    "longitude": 151.2093,
+    "house_system": "Placidus"
+  },
+  "tolerance_deg": 0.0167,
+  "expected": {
+    "ascendant": 129.23773867936075,
+    "midheaven": 56.53446776452245,
+    "cusps": {
+      "1": 129.23773867936075,
+      "2": 172.2065793451775,
+      "3": 208.76835728356625,
+      "10": 56.53446776452245,
+      "11": 79.61232281706197,
+      "12": 102.19836103849667
+    },
+    "longitudes": {
+      "Sun": 83.65180941107269,
+      "Moon": 338.7211078932378,
+      "Mercury": 64.83848531942562,
+      "Venus": 48.18948510285202,
+      "Mars": 10.68145374476211,
+      "Jupiter": 105.78123609162321,
+      "Saturn": 294.06106114802265,
+      "Uranus": 278.1833723820316,
+      "Neptune": 283.72933754376083,
+      "Pluto": 225.41231807730105,
+      "NorthNode": 309.7207893663234
+    },
+    "houses": {
+      "Sun": 11,
+      "Moon": 7,
+      "Mercury": 10,
+      "Venus": 9,
+      "Mars": 8,
+      "Jupiter": 12,
+      "Saturn": 6,
+      "Uranus": 5,
+      "Neptune": 6,
+      "Pluto": 3,
+      "NorthNode": 7
+    }
+  }
+}
