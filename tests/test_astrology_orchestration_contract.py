@@ -5,11 +5,12 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+SCHEMA_ROOT = ROOT / "schemas" / "astrology"
 
 
 class AstrologyOrchestrationContractTests(unittest.TestCase):
     def test_request_schema_is_closed_world_and_bounded_to_natal_transit(self):
-        data = json.loads((ROOT / "ASTROLOGY_READING_REQUEST_V1.schema.json").read_text(encoding="utf-8"))
+        data = json.loads((SCHEMA_ROOT / "ASTROLOGY_READING_REQUEST_V1.schema.json").read_text(encoding="utf-8"))
         self.assertEqual("ASTROLOGY_READING_REQUEST_V1.schema.json", data["$id"])
         self.assertFalse(data["additionalProperties"])
         self.assertEqual(["natal", "transit"], data["properties"]["reading_mode"]["enum"])
@@ -21,7 +22,7 @@ class AstrologyOrchestrationContractTests(unittest.TestCase):
         self.assertNotIn("solar_return", json.dumps(data))
 
     def test_interpretation_request_schema_is_closed_world_evidence_selection(self):
-        data = json.loads((ROOT / "ASTROLOGY_INTERPRETATION_REQUEST_V1.schema.json").read_text(encoding="utf-8"))
+        data = json.loads((SCHEMA_ROOT / "ASTROLOGY_INTERPRETATION_REQUEST_V1.schema.json").read_text(encoding="utf-8"))
         self.assertEqual("ASTROLOGY_INTERPRETATION_REQUEST_V1.schema.json", data["$id"])
         self.assertFalse(data["additionalProperties"])
         self.assertIn("fact_refs", data["required"])
@@ -31,7 +32,7 @@ class AstrologyOrchestrationContractTests(unittest.TestCase):
         self.assertNotIn("solar_return", json.dumps(data))
 
     def test_output_draft_schema_is_closed_world_and_requires_pre_send_gate(self):
-        data = json.loads((ROOT / "ASTROLOGY_OUTPUT_DRAFT_V1.schema.json").read_text(encoding="utf-8"))
+        data = json.loads((SCHEMA_ROOT / "ASTROLOGY_OUTPUT_DRAFT_V1.schema.json").read_text(encoding="utf-8"))
         self.assertEqual("ASTROLOGY_OUTPUT_DRAFT_V1.schema.json", data["$id"])
         self.assertFalse(data["additionalProperties"])
         self.assertIn("conclusion", data["required"])
@@ -47,7 +48,7 @@ class AstrologyOrchestrationContractTests(unittest.TestCase):
         orchestration = data["orchestration"]
         self.assertEqual("astrology-production-orchestrator-v1", orchestration["orchestrator_id"])
         self.assertEqual("tools/astrology_orchestrator.py", orchestration["runtime_owner"])
-        self.assertEqual("ASTROLOGY_READING_REQUEST_V1.schema.json", orchestration["request_schema"])
+        self.assertEqual("schemas/astrology/ASTROLOGY_READING_REQUEST_V1.schema.json", orchestration["request_schema"])
         self.assertEqual("composition_only", orchestration["authority"])
         self.assertTrue(orchestration["runtime_gate_required_for_every_generated_bundle"])
         self.assertEqual("READING_RECORD.md", orchestration["reading_record_bridge"])
@@ -61,7 +62,7 @@ class AstrologyOrchestrationContractTests(unittest.TestCase):
         handoff = data["orchestration"]["interpretation_handoff"]
         self.assertEqual("astrology-interpretation-handoff-v1", handoff["adapter_id"])
         self.assertEqual("tools/astrology_interpretation_handoff.py", handoff["runtime_owner"])
-        self.assertEqual("ASTROLOGY_INTERPRETATION_REQUEST_V1.schema.json", handoff["request_schema"])
+        self.assertEqual("schemas/astrology/ASTROLOGY_INTERPRETATION_REQUEST_V1.schema.json", handoff["request_schema"])
         self.assertEqual("evidence_packaging_only", handoff["authority"])
         self.assertTrue(handoff["requires_admitted_reading_run"])
         self.assertTrue(handoff["requires_registry_production_admission"])
@@ -76,7 +77,7 @@ class AstrologyOrchestrationContractTests(unittest.TestCase):
         output = data["orchestration"]["output_delivery"]
         self.assertEqual("astrology-output-guard-v1", output["adapter_id"])
         self.assertEqual("tools/astrology_output_guard.py", output["runtime_owner"])
-        self.assertEqual("ASTROLOGY_OUTPUT_DRAFT_V1.schema.json", output["draft_schema"])
+        self.assertEqual("schemas/astrology/ASTROLOGY_OUTPUT_DRAFT_V1.schema.json", output["draft_schema"])
         self.assertEqual("provenance_and_pre_send_validation_only", output["authority"])
         self.assertTrue(output["requires_admitted_interpretation_handoff"])
         self.assertTrue(output["requires_all_fact_refs_selected_in_handoff"])
@@ -100,11 +101,11 @@ class AstrologyOrchestrationContractTests(unittest.TestCase):
         rows = {row["id"]: row for row in data["capabilities"]}
         row = rows["method.astrology"]
         self.assertEqual("explicit-request-only", row["activation"])
-        self.assertEqual("ASTROLOGY_READING_REQUEST_V1.schema.json", row["request_schema"])
+        self.assertEqual("schemas/astrology/ASTROLOGY_READING_REQUEST_V1.schema.json", row["request_schema"])
         self.assertEqual("tools/astrology_orchestrator.py", row["orchestrator"])
-        self.assertEqual("ASTROLOGY_INTERPRETATION_REQUEST_V1.schema.json", row["interpretation_request_schema"])
+        self.assertEqual("schemas/astrology/ASTROLOGY_INTERPRETATION_REQUEST_V1.schema.json", row["interpretation_request_schema"])
         self.assertEqual("tools/astrology_interpretation_handoff.py", row["interpretation_handoff"])
-        self.assertEqual("ASTROLOGY_OUTPUT_DRAFT_V1.schema.json", row["output_draft_schema"])
+        self.assertEqual("schemas/astrology/ASTROLOGY_OUTPUT_DRAFT_V1.schema.json", row["output_draft_schema"])
         self.assertEqual("tools/astrology_output_guard.py", row["output_guard"])
         self.assertEqual("tools/astrology_reading_pipeline.py", row["end_to_end_pipeline"])
         self.assertEqual("tools/astrology_runtime.py", row["runtime"])
