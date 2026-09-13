@@ -1,90 +1,95 @@
 # AI 占卜提問與治理實戰手冊
 
-一套可重用的 **AI 占卜提問設計、方法路由、占問生命週期、Runtime Draw / Cast、正式 Reading Record 與解讀治理方法論**。
+一套可重用的 **AI 占卜提問設計、方法路由、占問生命週期、Runtime Draw / Cast、deterministic method facts、Reading Record 與解讀治理方法論**。
 
-目前已完成 canonical method owner 與 production routing 的方法：
+目前 production-ready methods：
 
 ```text
 Tarot
 Meihua
 Liuyao
+Astrology（explicit-request only）
 ```
 
-其中 Tarot + Meihua 已有正式 cross-validation contract；Liuyao 已完成 method routing、canonical three-coin Raw Cast 與 method-specific governance，但若要使用完整納甲／六親／世應等 structured facts，仍需要 deterministic Liuyao engine capability 成立。
+其中：
+
+- Tarot / Meihua / Liuyao 參與 ordinary method routing；
+- Astrology Production v1 已正式可用，但只在使用者明確要求「用占星／看本命盤／看行運」時啟用，不加入 ordinary auto-routing；
+- Tarot + Meihua 已有 canonical cross-validation contract；其他 method pair 在沒有專門 reconciliation contract 前，不宣稱為正式 cross-validation。
 
 > **AI / ChatGPT 快速入口：** 實際使用本手冊時，直接從 [`CHAT_INIT.md`](CHAT_INIT.md) 開始並依 task routing 只讀最低必要文件／sections；不需要先完整閱讀本 README，也不要為了「熟悉手冊」掃描整個 Repository。
 >
-> **GitHub Connect 是本專案唯一 GitHub repository retrieval transport：** 只要需要讀取本 Repo、Randomizer、外部 method engine、GitHub reference、branch／commit／diff／license 等 GitHub-hosted evidence，一律使用 connected GitHub connector。若 connector 不可用而 task materially 依賴 current GitHub content，停在 `ACCESS BLOCKED`；不改走 public HTML、raw URL、generic Web、Python HTTP、`curl`／`wget`／`git clone`。完整規則以 [`CHAT_INIT.md`](CHAT_INIT.md) 為準。
+> **GitHub Connect 是本專案唯一 GitHub repository retrieval transport：** 只要需要讀取本 Repo、Randomizer、外部 method engine、GitHub reference、branch／commit／diff／license 等 GitHub-hosted evidence，一律使用 connected GitHub connector。若 connector 不可用而 task materially 依賴 current GitHub content，停在 `ACCESS BLOCKED`；完整規則以 [`CHAT_INIT.md`](CHAT_INIT.md) 為準。
 
-本儲存庫不以整理完整牌義、卦辭或宣稱「算得準」為主要目的，而是處理更前面的問題：
+本儲存庫不以整理完整牌義、卦辭、星座關鍵字或宣稱「算得準」為主要目的，而是處理更前面的問題：
 
-> **怎麼把自然語言占問轉成低歧義、可比較、可追蹤、可驗證的 judgment contract；讓 AI 自動選擇適合的方法，取得可信 Draw / Cast / Structured Method Fact，並在承接、補占、現實更新與回測時維持原契約？**
+> **怎麼把自然語言占問轉成低歧義、可比較、可追蹤、可驗證的 judgment contract；讓 AI 選擇合適的方法、取得可信 Draw / Cast / deterministic facts，並在解讀、承接、現實更新與回測時維持原契約與 provenance？**
 
 本手冊把占卜視為**象徵性、反思性與結構化推理工具**；現實決策仍應以可驗證資訊、專業意見與實際條件為優先。
 
 ## 快速安裝／第一次使用
 
-第一次使用時，不需要下載整個 Repository、複製一大段 Prompt 或自己挑 Tarot／Meihua／Liuyao。最簡單的方式就是直接跟 ChatGPT 說：
+第一次使用時，不需要下載整個 Repository、複製大段 Prompt 或先學會選方法。
 
-1. **「幫我安裝／連接 GitHub Connect 這個 ChatGPT 外掛。」**
-   - 如果 GitHub Connect 已經連接，可以直接跳過這一步。
-   - 若 ChatGPT 顯示 GitHub 授權／連接流程，依介面完成即可。
-2. **「讀取 `masini1491/ai-divination-playbook`。」**
-   - ChatGPT 應從 `CHAT_INIT.md` 開始，依 Playbook 的最低必要 routing 讀取，不需要掃完整個 Repo。
-3. **直接說你想占什麼。**
+1. 連接 GitHub Connect。
+2. 告訴 ChatGPT：`讀取 masini1491/ai-divination-playbook`。
+3. ChatGPT 應從 `CHAT_INIT.md` 開始做 minimum-sufficient routing。
+4. 直接說你想占什麼；若要 Astrology，明確說「用占星／看本命盤／看行運」。
 
-例如：
+一般占問例如：
 
 ```text
 我想占從現在到月底，這個合作是否會正式談成並開始執行？
 ```
 
-之後 ChatGPT 會依 Playbook 自動判斷本題適合 Tarot、Meihua 或 Liuyao，並依需要進行抽牌／起卦、解讀與後續紀錄流程。
+ordinary auto-routing 會在 Tarot / Meihua / Liuyao 中依主要 judgment function 選擇方法。
 
-也可以把第一次設定直接一次講完：
-
-```text
-幫我安裝／連接 GitHub Connect 這個 ChatGPT 外掛；
-接著用 GitHub Connect 讀取 masini1491/ai-divination-playbook，
-從 CHAT_INIT.md 開始依最低必要 routing 載入。
-設定完成後，我會直接告訴你想占什麼，請依 Playbook 自動選擇適合的方法並執行。
-```
-
-核心就是：
+Astrology 例如：
 
 ```text
-Connect GitHub
-→ 讀取 Playbook
-→ 說明「我想占……」
+用占星看我最近這段工作的行運影響。
+看我的本命盤。
+用本命盤 + 行運看接下來三個月。
 ```
+
+這些要求直接交給 [`ASTROLOGY.md`](ASTROLOGY.md)，不先改寫成 Tarot / Meihua / Liuyao，也不送到 research router。
 
 ## 一句話使用
 
-啟用本 Repo 後，正常互動可以只有：
+一般占問可以只有：
 
 ```text
 我想占……
 ```
 
-Agent 依 `CHAT_INIT.md` 自動完成：
+Agent 依 `CHAT_INIT.md`：
 
 ```text
 自然語言問題
 → judgment function detection
-→ method routing
+→ ordinary method routing（Tarot / Meihua / Liuyao）
 → minimum Input Contract
-→ Draw / Cast / Structured Method Fact
+→ Draw / Cast / deterministic Structured Method Fact
 → interpretation
 → 必要時 Reading Record / Reality Update / Backtest
 ```
 
-使用者不需要先知道 Tarot、Meihua 或 Liuyao 哪一套比較適合。
+若使用者明確指定 Astrology：
 
-## 各個占卜工具負責什麼
+```text
+explicit Astrology request
+→ deterministic input resolution / natal or transit calculation
+→ Astrology Fact Gate
+→ admitted evidence selection / interpretation handoff
+→ bounded synthesis
+→ output guard
+```
 
-本專案不是把所有術數混成同一套算法，而是讓每個方法負責自己最擅長的 **judgment function**，再由 Playbook 自動 routing。
+## 各個方法負責什麼
 
-最簡單的記憶方式：
+本專案不是把所有術數混成同一套算法，而是把不同 judgment responsibility 分開。
+
+ordinary auto-routing 的簡化記憶方式：
 
 ```text
 Psychology / Comparison
@@ -97,7 +102,14 @@ Outcome / Completion
 → Liuyao
 ```
 
-其中 `Process` 指的是**結構性的演化、主客作用與轉折**；`Outcome` 則是已有清楚、外部可驗證 `completion_rule` 的具體事件結果。這個簡化口訣只是 README overview，真正 routing authority 仍以 [`METHOD_ROUTING.md`](METHOD_ROUTING.md) 為準。
+Astrology 則是 user override：
+
+```text
+用占星／看本命盤／看行運
+→ Astrology
+```
+
+這只是 README overview；真正 routing authority 仍以 [`METHOD_ROUTING.md`](METHOD_ROUTING.md)、[`CHAT_INIT.md`](CHAT_INIT.md) 與各 method owner 為準。
 
 ### Tarot｜人物、心理、互動與比較
 
@@ -106,7 +118,7 @@ Tarot 優先處理：
 - 人物主觀感受、心理與互動傾向；
 - 不同人物／方案／情境的相對比較；
 - 選項適配度、阻礙、助力與觸發因素；
-- 可以拆成清楚牌位的事件流程；
+- 可拆成清楚牌位的事件流程；
 - 已定義時間窗之間的相對支持度比較。
 
 快速理解：
@@ -118,8 +130,6 @@ Tarot 優先處理：
 A / B / C 哪個比較適合？
 → Tarot
 ```
-
-Tarot 不應因為「可以談未來」就取代所有具體事件成敗題；當問題核心是外部事件是否真的完成，優先交給 Liuyao。
 
 ### Meihua｜事件演化、主客結構與轉折
 
@@ -138,21 +148,8 @@ Meihua 優先處理：
 事情接下來怎麼變？
 轉折在哪？
 目前主客關係怎麼樣？
-何時進入下一個階段？
 → Meihua
 ```
-
-Meihua 與 Liuyao 最重要的分界：
-
-```text
-「事情怎麼發展？」
-→ Meihua
-
-「這件具體事情到底會不會完成？」
-→ Liuyao
-```
-
-Meihua 的「變卦方向」與「應期」在本 Playbook 中優先代表**後續 trajectory、轉折、階段與 checkpoint**，不自動等同 Liuyao 的 completion outcome 或精確完成日期。
 
 ### Liuyao｜單一具體事件的 outcome、阻礙與應期
 
@@ -164,30 +161,68 @@ Liuyao 優先處理**一個單一、具體、外部可驗證的事件**：
 - 用神、世應、動變等結構下的 outcome / obstacle；
 - 在同一事件 identity 下進一步看較具體 timing／應期訊號。
 
-快速理解：
+Production deterministic path 已由本 Repo 維護：
 
 ```text
-會不會成？
-月底前會不會完成？
-卡在哪？
-何時比較可能應驗？
-→ Liuyao
+fixed Raw Cast
+→ tools/liuyao_calendar.py
+→ tools/liuyao_engine.py
+→ tools/liuyao_runtime.py
+→ LIUYAO.md
 ```
 
-例如：
+Randomizer 只負責產生 raw `6 / 7 / 8 / 9 × 6`；deterministic engine / calendar / runtime 再建立完整 Structured Method Fact。Language model 不得自行手算後冒充 engine output。
+
+### Astrology｜本命盤與行運（Production v1 / explicit-request only）
+
+Astrology Production v1 適合使用者明確要求：
 
 ```text
-她現在怎麼評估我？
-→ Tarot
-
-這段關係接下來怎麼演變？
-→ Meihua
-
-她是否會在本週五以前主動傳訊息？
-→ Liuyao
+用占星幫我看
+看我的本命盤
+看這段行運
+用本命盤 + 行運看某段時間
 ```
 
-### Divination Casting Randomizer｜只負責真正抽牌／取數／起卦
+目前 admitted production scope 包括：
+
+- Tropical / geocentric natal calculation；
+- Whole Sign / Placidus houses；
+- planets / luminaries、ASC / MC、houses、major aspects；
+- retrograde / speed；
+- exact transit-to-natal aspects；
+- stations、tropical ingresses / re-ingresses、repeated passages；
+- offline city/locality → coordinates + IANA timezone resolution；
+- deterministic Fact Gate；
+- exact-reference 與 typed-selector evidence selection paths；
+- interpretation handoff 與 final output guard。
+
+主要 production flow：
+
+```text
+explicit Astrology request
+→ optional tools/astrology_place_resolver.py
+→ tools/astrology_provider.py / tools/astrology_transit_provider.py
+→ Astrology Fact Bundle 1.0
+→ tools/astrology_runtime.py
+→ tools/astrology_orchestrator.py
+→ admitted evidence selection / interpretation handoff
+→ bounded synthesis under ASTROLOGY.md + CHATGPT_OUTPUT.md
+→ tools/astrology_output_guard.py
+```
+
+重要邊界：
+
+- Astrology **不參與 ordinary auto-routing**；
+- raw birth data 不授權 language model 自行手算 planets / houses / aspects；
+- birth time、timezone 或 location identity 有 material ambiguity 時必須 fail closed；
+- Research Astrology 與 Production Astrology 分離：來源／架構／evidence 研究走 [`RESEARCH_ROUTING.md`](RESEARCH_ROUTING.md) → `references/astrology/**`。
+
+Production owner：[`ASTROLOGY.md`](ASTROLOGY.md)。
+
+## Runtime 與 deterministic calculation
+
+### Divination Casting Randomizer
 
 配套 Repo：
 
@@ -195,187 +230,86 @@ Liuyao 優先處理**一個單一、具體、外部可驗證的事件**：
 masini1491/divination-casting-randomizer
 ```
 
-它不負責「怎麼解」，只負責建立可信的 stochastic Raw Fact：
+目前負責：
 
 ```text
-Tarot
-→ 78-card shuffle + independent orientation
-
-Meihua
-→ canonical A / B double-number cast
-
-Liuyao
-→ canonical three-coin × 6 lines
-→ raw 6 / 7 / 8 / 9，bottom-to-top
+Tarot draw
+Meihua A/B cast
+Liuyao three-coin Raw Cast
 ```
 
-也就是：
+Randomizer 只決定 stochastic raw result，不負責 interpretation。
 
-> **Randomizer 決定抽到什麼／起出什麼，不決定那代表什麼。**
-
-### Liuyao deterministic engine｜只負責排出完整六爻 Structured Method Fact
-
-六爻 Randomizer 產生的六個 `6/7/8/9` 只是 Raw Cast Fact。若要進完整納甲六爻，deterministic engine 負責由既有 Raw Cast 計算：
+### Liuyao deterministic engine
 
 ```text
-本卦
-之卦
-納甲
-五行
-六親
-世應
-六神
-伏神
-月建／日辰／旬空等
+Raw Cast
+→ calendar facts
+→ structural chart facts
+→ deterministic runtime payload
 ```
 
-engine **不能重新起卦**，也不負責 AI 解讀。Preferred reference 與採用邊界見 [`references/ichingshifa.md`](references/ichingshifa.md)。
-
-### AI Divination Playbook｜負責調度與治理，不負責假裝計算
-
-本 Repo 負責把前面的工具串起來：
+Canonical implementation：
 
 ```text
-自然語言問題
-→ 判斷 judgment function
-→ 選 Tarot / Meihua / Liuyao
-→ 固定 Input Contract
-→ 呼叫正確 Draw / Cast source
-→ 必要時取得 deterministic Structured Method Fact
-→ 依 method owner 解讀
-→ lifecycle / record / reality update / backtest
+tools/liuyao_calendar.py
+tools/liuyao_engine.py
+tools/liuyao_runtime.py
 ```
 
-因此整套 responsibility 可以濃縮成：
+### Astrology deterministic providers
+
+Canonical production implementation：
 
 ```text
-Tarot
-= 人物心理／互動／比較
-
-Meihua
-= 事件演化／主客／轉折
-
-Liuyao
-= 具體事件成敗／阻礙／應期
-
-Divination Casting Randomizer
-= 抽牌／取數／三錢起卦
-
-Liuyao deterministic engine
-= 六爻排盤／納甲 Structured Fact
-
-AI Divination Playbook
-= 自動選方法、定題、調工具、解讀與治理
+tools/astrology_place_resolver.py
+tools/astrology_provider.py
+tools/astrology_transit_provider.py
+tools/astrology_runtime.py
+tools/astrology_orchestrator.py
+tools/astrology_evidence_selector.py
+tools/astrology_interpretation_handoff.py
+tools/astrology_reading_pipeline.py
+tools/astrology_typed_reading_pipeline.py
+tools/astrology_output_guard.py
 ```
 
-完整 method selection 邊界仍以 [`METHOD_ROUTING.md`](METHOD_ROUTING.md) 為 canonical authority；本節是 README-level overview，不建立第二份 routing policy。
+核心原則：
+
+> **Randomizer 決定 stochastic fact；deterministic engine/provider 決定可驗證 method facts；method owner 決定 interpretation governance。**
 
 ## 目前方法覆蓋
 
-| 方法 | 主要 judgment responsibility | stochastic source | method owner |
+| 方法 | 主要 responsibility | Fact acquisition / calculation | method owner |
 | --- | --- | --- | --- |
 | Tarot | 人物心理／互動、選項比較、主觀適配、牌位拆解 | `divination-casting-randomizer` | [`TAROT.md`](TAROT.md) |
 | Meihua | 事件演化、主客／體用、轉折、節奏與象徵應期 | `divination-casting-randomizer` | [`MEIHUA.md`](MEIHUA.md) |
-| Liuyao | 單一具體事件是否成立、阻礙來源、較具體 outcome / timing | `divination-casting-randomizer` three-coin Raw Cast | [`LIUYAO.md`](LIUYAO.md) |
-
-### Routing 核心差異
-
-```text
-她現在怎麼評估我？
-→ Tarot
-
-這段關係接下來怎麼演變？
-→ Meihua
-
-她會不會在本週五以前主動傳訊息？
-→ Liuyao
-```
-
-```text
-A/B/C 哪個方案比較適合？
-→ Tarot
-
-這個合作局勢接下來怎麼轉？
-→ Meihua
-
-截至月底前，雙方是否會談妥價格並正式開始合作？
-→ Liuyao
-```
-
-完整判斷規則見 [`METHOD_ROUTING.md`](METHOD_ROUTING.md)。
+| Liuyao | 單一具體事件是否成立、阻礙來源、較具體 outcome / timing | Randomizer three-coin Raw Cast + local deterministic engine/calendar/runtime | [`LIUYAO.md`](LIUYAO.md) |
+| Astrology | 本命盤、行運與 admitted natal/transit factors；explicit-request only | local deterministic place resolver + natal/transit providers + Fact Gate | [`ASTROLOGY.md`](ASTROLOGY.md) |
 
 ## Authority boundary
 
 整套架構刻意分層：
 
 ```text
-METHOD_ROUTING
-→ 決定 judgment function 與 method
+CHAT_INIT / METHOD_ROUTING
+→ 決定 task identity、ordinary method routing 或 explicit Astrology override
 
-CASTING / INPUT ACQUISITION
-→ 隨機型方法使用 canonical Randomizer
+CASTING / INPUT RESOLUTION
+→ stochastic methods 使用 canonical Randomizer
+→ Astrology 可使用 admitted place resolver
 
-METHOD ENGINE / CONTRACT
+DETERMINISTIC ENGINE / PROVIDER
 → 建立 method-specific fixed facts
 
-PLAYBOOK INTERPRETATION GOVERNANCE
-→ 解讀、承接、紀錄、Reality Update、Backtest
+METHOD OWNER
+→ interpretation policy、unsupported-factor boundary、fail-closed rules
+
+CHATGPT_OUTPUT
+→ user-visible output governance
 ```
 
-### Randomizer 負責什麼
-
-配套 Repo：
-
-```text
-masini1491/divination-casting-randomizer
-```
-
-目前支援：
-
-```text
-Tarot draw
-Meihua A/B cast
-Liuyao three-coin raw cast
-```
-
-Python CLI：
-
-```text
-python randomizer.py tarot --count 6 --format json
-python randomizer.py plum --format json
-python randomizer.py liuyao --method coins --format json
-```
-
-Randomizer 只負責 stochastic acquisition；不負責 AI interpretation，也不把完整六爻納甲邏輯塞進 RNG layer。
-
-### Liuyao 的額外一層
-
-六爻 Raw Cast 只固定：
-
-```text
-6 / 7 / 8 / 9 × 6
-bottom-to-top
-```
-
-完整六爻判斷若需要：
-
-```text
-本卦
-之卦
-納甲
-五行
-六親
-世應
-六神
-伏神
-月建／日辰／旬空等
-```
-
-必須由 deterministic engine 建立 Structured Method Fact。Preferred reference 與採用邊界見 [`references/ichingshifa.md`](references/ichingshifa.md)。
-
-核心原則：
-
-> **Randomizer 決定原始 stochastic result；engine 決定 deterministic chart facts；Playbook 決定怎麼問與怎麼解。**
+README 只負責人類 overview，不建立第二份 routing 或 method policy authority。
 
 ## 核心治理原則
 
@@ -387,29 +321,26 @@ bottom-to-top
 
 「會不會、何時、為什麼、好不好、怎麼辦」通常不應全部混進同一 judgment node。
 
-### 3. Draw / Cast Fact 與 interpretation 分離
+### 3. Fact 與 interpretation 分離
 
 ```text
 Question Contract fixed
-→ Draw / Cast
-→ raw fact fixed
-→ Structured Method Fact（需要時）
+→ stochastic Draw / Cast 或 deterministic calculation
+→ raw / structured fact fixed
 → Interpretation
 ```
 
-不得看到不喜歡的結果後重抽、重起或更換算法。
+不得看到不喜歡的結果後重抽、重起、重算或偷偷換方法。
 
-### 4. Runtime 必須是真執行
+### 4. Runtime / calculation 必須是真執行
 
-> **Language-model generation ≠ random draw / cast。**
+> **Language-model generation ≠ random draw / cast / deterministic chart calculation。**
 
-ChatGPT 只有實際執行 canonical Runtime tool，才能把結果標為 `chatgpt-runtime`。能力不足時 fail closed。
-
-詳見 [`RUNTIME_DRAW.md`](RUNTIME_DRAW.md)。
+能力不足時 fail closed；不得用模型自由生成結果冒充 runtime / provider output。
 
 ### 5. Symbolic consistency ≠ independent reality evidence
 
-不同抽牌／卦象同方向可以說 symbolic consistency，但不能因抽了三次就宣稱三份獨立現實證據。
+不同 readings 同方向可以說 symbolic consistency，但不能把多次占問直接宣稱為多份獨立現實證據。
 
 ### 6. Reading history append-only
 
@@ -417,7 +348,7 @@ ChatGPT 只有實際執行 canonical Runtime tool，才能把結果標為 `chatg
 
 ```text
 QUESTION / CONTRACT FACT
-DRAW / CAST FACT
+DRAW / CAST / ASTROLOGY FACT
 STRUCTURED METHOD FACT（若有）
 ORIGINAL INTERPRETATION
 REALITY UPDATE
@@ -431,14 +362,17 @@ BACKTEST JUDGMENT
 
 | 文件 | 主要責任 |
 | --- | --- |
+| [`AGENTS.md`](AGENTS.md) | repository governance / project AI mode / maintenance boundary |
 | [`CHAT_INIT.md`](CHAT_INIT.md) | fresh chat bootstrap、repository access、freshness、task routing、handoff gate |
 | [`PLAYBOOK_INDEX.json`](PLAYBOOK_INDEX.json) | machine-readable routing-only owner index |
-| [`METHOD_ROUTING.md`](METHOD_ROUTING.md) | Tarot / Meihua / Liuyao method selection |
+| [`METHOD_ROUTING.md`](METHOD_ROUTING.md) | ordinary Tarot / Meihua / Liuyao method selection；Astrology explicit override boundary |
+| [`RESEARCH_ROUTING.md`](RESEARCH_ROUTING.md) | explicit research-line discovery / research vs production separation |
 | [`INPUT_CONTRACT.md`](INPUT_CONTRACT.md) | 題目與 method input / provenance contract |
 | [`QUESTION_DESIGN.md`](QUESTION_DESIGN.md) | 問題拆解與牌位／功能設計 |
 | [`TAROT.md`](TAROT.md) | Tarot-specific contract |
 | [`MEIHUA.md`](MEIHUA.md) | Meihua-specific contract |
 | [`LIUYAO.md`](LIUYAO.md) | Liuyao judgment、Raw Cast → Structured Fact、解讀與 fail-closed contract |
+| [`ASTROLOGY.md`](ASTROLOGY.md) | Astrology Production v1 method owner、Fact Gate、interpretation / unsupported-factor governance |
 | [`RUNTIME_DRAW.md`](RUNTIME_DRAW.md) | Runtime Draw / Cast、cache、source、provenance、fail closed |
 | [`CROSS_VALIDATION.md`](CROSS_VALIDATION.md) | 目前正式 Tarot × Meihua reconciliation / evidence lineage |
 | [`READING_LIFECYCLE.md`](READING_LIFECYCLE.md) | 新題、承接、條件世界、補占、重占、現實更新、完成、回測 |
@@ -446,7 +380,10 @@ BACKTEST JUDGMENT
 | [`CHATGPT_OUTPUT.md`](CHATGPT_OUTPUT.md) | user-visible output / Copy-ready / Pre-Send |
 | [`BEHAVIORAL_EVAL.md`](BEHAVIORAL_EVAL.md) | cold-start / behavioral regression |
 | [`SESSION_HANDOFF.md`](SESSION_HANDOFF.md) | fresh-session rehydration checkpoint adapter |
-| [`references/`](references/) | Cold external source dossiers / license / adoption boundary |
+| [`references/astrology/`](references/astrology/) | Astrology research evidence；不是 production owner |
+| [`references/palmistry/`](references/palmistry/) | Palmistry research line；目前不是 production method |
+| [`reports/astrology/`](reports/astrology/) | Astrology production admission / execution evidence reports |
+| [`schemas/astrology/`](schemas/astrology/) | Astrology Production v1 machine contracts |
 
 ## Cross-validation 現況
 
@@ -456,23 +393,43 @@ BACKTEST JUDGMENT
 Tarot + Meihua
 ```
 
-Liuyao 可以與其他 readings 並列成 distinct readings，也可以形成 derived synthesis；但在新增專門 reconciliation contract 前，不要把 `Liuyao + Tarot` 或 `Liuyao + Meihua` 宣稱為已 canonical 化的 cross-validation pair。
+Liuyao 與 Astrology 都已是 production methods，但 **production-ready 不等於已存在任意 pairwise cross-validation contract**。
 
-這保留一個重要原則：
+在新增專門 reconciliation contract 前，不把下列組合宣稱為 canonical cross-validation：
 
-> **新增方法先補 judgment gap，不是先增加投票數。**
+```text
+Liuyao + Tarot
+Liuyao + Meihua
+Astrology + Tarot
+Astrology + Meihua
+Astrology + Liuyao
+```
+
+可以在同一使用者請求中形成 distinct readings 或 bounded derived synthesis，但必須保留各自 responsibility 與 evidence lineage。
+
+## Research lines 與 production methods
+
+Research discoverability 不等於 production admission。
+
+目前：
+
+- Astrology：Research v1 evidence 保留於 `references/astrology/**`；另外已有獨立的 Production v1 authority。
+- Palmistry：已有 bounded research line，但目前仍不是 ordinary production method。
+
+任何 research line 未來進 production，仍需完整完成 method owner、fact/runtime authority、routing、provenance、behavioral regression 與 explicit admission。
 
 ## 下一階段方法
 
 未來若加入 Qimen、Da Liu Ren 等方法，仍遵循：
 
 ```text
-method owner
-→ input / casting / deterministic engine authority
+judgment gap
+→ method owner
+→ input / casting / deterministic authority
 → routing
 → runtime / provenance
 → behavioral regression
-→ 才算正式支援
+→ explicit admission
 ```
 
 Repository 名稱泛化不代表 AI 可以自行發明未定義的方法流程。
@@ -481,15 +438,15 @@ Repository 名稱泛化不代表 AI 可以自行發明未定義的方法流程�
 
 本 Repo 是公開方法論 repository，不保存：
 
-- 真實姓名與可識別感情／關係細節
-- 出生日期、時間與地點等可識別資料
-- 健康、性相關私人紀錄
-- 私人公司未公開人事、薪資、客戶或專案資訊
-- 完整私人 Reading Record / session handoff payload
-- secrets / credentials
+- 真實姓名與可識別感情／關係細節；
+- 出生日期、時間與地點等可識別個人資料；
+- 健康、性相關私人紀錄；
+- 私人公司未公開人事、薪資、客戶或專案資訊；
+- 完整私人 Reading Record / session handoff payload；
+- secrets / credentials。
 
-真實 Reading Record 不得寫入本公開 Playbook。
+真實 Reading Record 與個人 Astrology birth data 不得寫入本公開 Playbook。
 
 ## 狀態
 
-持續演進中。優先從真實使用中反覆出現的 judgment gap、routing collision、Runtime execution、record integrity 與 backtest 問題反向萃取規則，而不是追求文件數量或術數數量。
+持續演進中。現在的 production surface 已涵蓋 Tarot、Meihua、Liuyao 與 explicit-request Astrology Production v1；後續仍以真實使用中反覆出現的 judgment gap、routing collision、runtime / deterministic calculation、record integrity 與 backtest 問題反向萃取規則，而不是追求文件數量或術數數量。
