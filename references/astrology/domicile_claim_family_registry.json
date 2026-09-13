@@ -6,109 +6,202 @@
   "sources": [
     {
       "source_id": "source:ptolemy-tetrabiblos-i-17",
-      "source_role": "PRIMARY_TEXT",
       "title": "Tetrabiblos",
-      "author": "Claudius Ptolemy",
+      "author_or_org": "Claudius Ptolemy",
+      "source_role": "PRIMARY_TEXT",
+      "source_kind": "translation",
+      "tradition_tags": ["ptolemaic", "classical"],
+      "publication_or_release_date": null,
+      "edition": "Robbins translation web edition reviewed via LacusCurtius / University of Chicago",
+      "immutable_revision": null,
       "locator": "Book I, section 17, Of the Houses of the Several Planets",
-      "access_note": "Reviewed via LacusCurtius / University of Chicago web edition of the Robbins translation.",
-      "admission_state": "CLAIM_ELIGIBLE",
-      "storage_mode": "metadata_locator_normalized_paraphrase",
-      "rights_note": "Ancient source and modern translation rights must be tracked separately; no translation corpus vendored.",
-      "independence_status": "primary_witness"
+      "language": "English translation of ancient Greek source",
+      "license_status": "license_unresolved",
+      "license_identifier": null,
+      "copyright_status": "mixed_or_compilation",
+      "storage_mode": ["metadata_plus_locator", "normalized_paraphrase"],
+      "verification_status": "partially_verified",
+      "admission_status": "POLICY_PROVENANCE_ELIGIBLE",
+      "admission_scope": [
+        "historical doctrine configuration",
+        "Ptolemaic rationale for domicile assignments"
+      ],
+      "excluded_scope": [
+        "scientific predictive validity",
+        "automatic production doctrine",
+        "verbatim translation corpus storage"
+      ],
+      "upstream_source_refs": [],
+      "derivative_relationship": "primary witness in reviewed translation",
+      "independence_status": "independent_evidence",
+      "notes": [
+        "Ancient work and reviewed translation are separate rights objects.",
+        "Only metadata, locator, and project-authored paraphrase are stored here."
+      ]
     },
     {
       "source_id": "source:ribeiro-2025-universal-astrology",
-      "source_role": "SCHOLARLY_SECONDARY",
       "title": "Is astrology universal? Early modern globalization and the disruption of traditional knowledge",
-      "author": "Luís Campos Ribeiro",
-      "publication": "The British Journal for the History of Science 58(3), September 2025, 425-445",
-      "doi": "10.1017/S0007087425000159",
-      "admission_state": "CLAIM_ELIGIBLE",
-      "storage_mode": "metadata_locator_normalized_paraphrase",
-      "rights_note": "Cambridge displays a CC BY-NC licence indicator; this registry does not vendor article text.",
-      "independence_status": "secondary_analysis_of_multiple_primary_sources"
+      "author_or_org": "Luis Campos Ribeiro",
+      "source_role": "SCHOLARLY_SECONDARY",
+      "source_kind": "academic_paper",
+      "tradition_tags": ["history_of_astrology", "early_modern"],
+      "publication_or_release_date": "2025-09",
+      "edition": "The British Journal for the History of Science 58(3), 425-445",
+      "immutable_revision": "DOI:10.1017/S0007087425000159",
+      "locator": "Cambridge Core article and DOI record",
+      "language": "English",
+      "license_status": "verified_proprietary_or_restricted",
+      "license_identifier": "CC BY-NC indicator displayed by Cambridge Core at review time",
+      "copyright_status": "copyrighted",
+      "storage_mode": ["metadata_plus_locator", "normalized_paraphrase"],
+      "verification_status": "publication_verified",
+      "admission_status": "CLAIM_ELIGIBLE",
+      "admission_scope": [
+        "history of doctrine",
+        "southern-hemisphere applicability debate",
+        "historical source lineage and disagreement"
+      ],
+      "excluded_scope": [
+        "scientific predictive validity",
+        "automatic production doctrine",
+        "journal text corpus storage"
+      ],
+      "upstream_source_refs": ["source:ptolemy-tetrabiblos-i-17"],
+      "derivative_relationship": "scholarly analysis of multiple historical primary sources",
+      "independence_status": "independent_evidence",
+      "notes": [
+        "Scholarly authority here is historical/contextual, not validation of astrological efficacy.",
+        "No article text is vendored."
+      ]
     },
     {
       "source_id": "source:wvanderen-classical-dignities",
-      "source_role": [
-        "PRACTITIONER_REFERENCE",
-        "REFERENCE_IMPLEMENTATION"
+      "title": "Classical Dignities",
+      "author_or_org": "wvanderen/astrology-skill contributors",
+      "source_role": "PRACTITIONER_REFERENCE",
+      "source_kind": "repository",
+      "tradition_tags": ["classical", "modern_practitioner"],
+      "publication_or_release_date": null,
+      "edition": null,
+      "immutable_revision": "a9339b3c7151313530aa5002572c6612a2cfd59f",
+      "locator": "references/traditions/classical/dignities.md",
+      "language": "English",
+      "license_status": "verified_permissive",
+      "license_identifier": "MIT",
+      "copyright_status": "copyrighted",
+      "storage_mode": ["metadata_plus_locator", "normalized_paraphrase"],
+      "verification_status": "license_verified",
+      "admission_status": "REFERENCE_ONLY",
+      "admission_scope": [
+        "modern practitioner framing",
+        "reference implementation / retrieval precedent"
       ],
-      "repository": "wvanderen/astrology-skill",
-      "revision": "a9339b3c7151313530aa5002572c6612a2cfd59f",
-      "path": "references/traditions/classical/dignities.md",
-      "admission_state": "REFERENCE_ONLY",
-      "storage_mode": "metadata_revision_normalized_paraphrase",
-      "rights_note": "Repository root is MIT licensed at the reviewed revision; legal reuse permission does not grant project doctrine authority.",
-      "independence_status": "derivative_practitioner_synthesis",
-      "upstream_source_refs": [
-        "source:ptolemy-tetrabiblos-i-17"
+      "excluded_scope": [
+        "independent historical witness to Ptolemy",
+        "automatic project doctrine",
+        "production admission"
+      ],
+      "upstream_source_refs": ["source:ptolemy-tetrabiblos-i-17"],
+      "derivative_relationship": "explicit derivative practitioner synthesis citing older doctrine families",
+      "independence_status": "explicit_derivative",
+      "notes": [
+        "The reviewed file also functions as a reference-implementation precedent, but source_role is kept singular per the draft contract.",
+        "Legal reuse permission does not grant semantic or production authority."
       ]
     }
   ],
   "claims": [
     {
       "claim_id": "claim:domicile-configuration",
-      "claim_type": "policy_configuration",
-      "layer": "L3",
-      "statement": "A named classical policy assigns planets to zodiac signs as domiciles or houses.",
-      "source_refs": [
-        "source:ptolemy-tetrabiblos-i-17"
-      ],
-      "confidence": "supported",
-      "scope": "historical doctrine configuration, not astronomy fact",
-      "conflict_group_refs": [
-        "conflict:southern-hemisphere-dignity-applicability"
-      ]
+      "layer": "L4",
+      "claim_type": "historical_doctrine",
+      "normalized_statement": "Ptolemy presents a named scheme in which planets have zodiacal houses or domiciles, including Cancer for the Moon and Leo for the Sun, with the remaining visible planets assigned in relation to the luminaries and planetary qualities.",
+      "source_refs": ["source:ptolemy-tetrabiblos-i-17"],
+      "source_locator_refs": ["Tetrabiblos Book I section 17"],
+      "tradition_tags": ["ptolemaic", "classical"],
+      "policy_refs": ["candidate:ptolemaic-domicile-policy"],
+      "applies_to": ["domicile_configuration"],
+      "configuration_assumptions": ["historical Ptolemaic zodiacal framework"],
+      "scope": "historical doctrine provenance; not an L1/L2 astronomical fact",
+      "confidence_status": "supported",
+      "support_status": "historical_only",
+      "conflict_group_ids": ["conflict:southern-hemisphere-dignity-applicability"],
+      "cautions": ["Does not establish scientific validity or universal project policy."],
+      "storage_origin": "project_authored_synthesis"
     },
     {
       "claim_id": "claim:ptolemaic-seasonal-rationale",
-      "claim_type": "historical_doctrinal_rationale",
       "layer": "L4",
-      "statement": "Ptolemy presents the domicile arrangement using a northern seasonal/natural-philosophy rationale together with planetary order and qualities.",
-      "source_refs": [
-        "source:ptolemy-tetrabiblos-i-17"
-      ],
-      "confidence": "supported",
-      "scope": "what this primary text argues; not a scientific validation of astrology"
+      "claim_type": "historical_doctrine",
+      "normalized_statement": "The reviewed Ptolemaic passage explains domicile assignments partly through northern seasonal and natural-philosophy reasoning together with planetary order and qualities.",
+      "source_refs": ["source:ptolemy-tetrabiblos-i-17"],
+      "source_locator_refs": ["Tetrabiblos Book I section 17"],
+      "tradition_tags": ["ptolemaic", "classical"],
+      "policy_refs": [],
+      "applies_to": ["domicile_rationale"],
+      "configuration_assumptions": ["historical Ptolemaic framework"],
+      "scope": "what this primary text argues",
+      "confidence_status": "supported",
+      "support_status": "historical_only",
+      "conflict_group_ids": ["conflict:southern-hemisphere-dignity-applicability"],
+      "cautions": ["Do not restate as the scientific reason for rulerships."],
+      "storage_origin": "project_authored_synthesis"
     },
     {
       "claim_id": "claim:southern-hemisphere-reversal-debate",
-      "claim_type": "historical_conflict",
       "layer": "L4",
-      "statement": "Early-modern authors disagreed over whether season-dependent sign qualities and essential dignities should reverse in southern latitudes.",
-      "source_refs": [
-        "source:ribeiro-2025-universal-astrology"
-      ],
-      "confidence": "supported",
-      "scope": "history of doctrine and applicability debate",
-      "conflict_group_refs": [
-        "conflict:southern-hemisphere-dignity-applicability"
-      ]
+      "claim_type": "historical_doctrine",
+      "normalized_statement": "The reviewed scholarly history documents early-modern disagreement over whether season-dependent sign qualities and essential dignities should reverse in southern latitudes or remain universal with regional effects handled separately.",
+      "source_refs": ["source:ribeiro-2025-universal-astrology"],
+      "source_locator_refs": ["DOI:10.1017/S0007087425000159"],
+      "tradition_tags": ["history_of_astrology", "early_modern"],
+      "policy_refs": [],
+      "applies_to": ["southern_hemisphere_dignity_applicability"],
+      "configuration_assumptions": ["early-modern astrological doctrine debate"],
+      "scope": "history of doctrine and applicability conflict",
+      "confidence_status": "supported",
+      "support_status": "conflicted",
+      "conflict_group_ids": ["conflict:southern-hemisphere-dignity-applicability"],
+      "cautions": ["Documents disagreement; does not resolve which doctrine is true."],
+      "storage_origin": "project_authored_synthesis"
     },
     {
       "claim_id": "claim:modern-practitioner-domicile-capacity",
-      "claim_type": "condition_meaning",
       "layer": "L4",
-      "statement": "In the reviewed modern classical-practitioner reference, domicile is framed as greater authority/capacity/resources and not as moral goodness.",
-      "source_refs": [
-        "source:wvanderen-classical-dignities"
-      ],
-      "confidence": "qualified",
-      "scope": "one practitioner/reference framework; not project-canonical doctrine"
+      "claim_type": "condition_meaning",
+      "normalized_statement": "In the reviewed modern classical-practitioner reference, domicile is framed as greater authority and capacity to act from the planet's own terms, while dignity is explicitly separated from moral goodness.",
+      "source_refs": ["source:wvanderen-classical-dignities"],
+      "source_locator_refs": ["wvanderen/astrology-skill@a9339b3c7151313530aa5002572c6612a2cfd59f:references/traditions/classical/dignities.md"],
+      "tradition_tags": ["classical", "modern_practitioner"],
+      "policy_refs": [],
+      "applies_to": ["domicile_condition_meaning"],
+      "configuration_assumptions": ["reviewed practitioner framework"],
+      "scope": "one practitioner/reference framework; not project-canonical doctrine",
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": [],
+      "cautions": ["Derivative from older doctrine families and not independent historical evidence."],
+      "storage_origin": "project_authored_synthesis"
     }
   ],
   "conflict_groups": [
     {
       "conflict_group_id": "conflict:southern-hemisphere-dignity-applicability",
-      "conflict_types": [
-        "historical_development",
-        "policy_difference",
-        "scope_difference"
+      "conflict_class": "historical_development",
+      "claim_refs": [
+        "claim:domicile-configuration",
+        "claim:ptolemaic-seasonal-rationale",
+        "claim:southern-hemisphere-reversal-debate"
       ],
-      "summary": "Season-based rationale produced competing early-modern positions: reverse dignities in southern latitudes versus preserve standard dignities as universal and treat regional effects separately.",
-      "resolution_status": "preserve_competing_doctrines",
-      "production_resolution": "not_decided"
+      "tradition_contexts": [
+        "Ptolemaic northern-seasonal rationale",
+        "early-modern southern-hemisphere reversal proposals",
+        "early-modern universality defenses"
+      ],
+      "configuration_contexts": ["hemisphere / seasonal applicability"],
+      "resolution_status": "coexist",
+      "resolution_note": "Preserve competing historical doctrines and scopes; no production resolution is selected."
     }
   ],
   "lineage_rules": {
