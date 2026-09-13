@@ -4,36 +4,44 @@ Status: **REFERENCE-ONLY / RESEARCH V1 COMPLETE**
 
 Production owner: [`../../ASTROLOGY.md`](../../ASTROLOGY.md)
 
-Production admission manifest: [`../../ASTROLOGY_PRODUCTION_ADMISSION_V1.json`](../../ASTROLOGY_PRODUCTION_ADMISSION_V1.json)
+Production admissions:
 
-Production natal-provider admission: [`../../ASTROLOGY_PROVIDER_ADMISSION_V1.json`](../../ASTROLOGY_PROVIDER_ADMISSION_V1.json)
+- [`../../ASTROLOGY_PRODUCTION_ADMISSION_V1.json`](../../ASTROLOGY_PRODUCTION_ADMISSION_V1.json)
+- [`../../ASTROLOGY_PROVIDER_ADMISSION_V1.json`](../../ASTROLOGY_PROVIDER_ADMISSION_V1.json)
+- [`../../ASTROLOGY_TRANSIT_PROVIDER_ADMISSION_V1.json`](../../ASTROLOGY_TRANSIT_PROVIDER_ADMISSION_V1.json)
+- [`../../ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json`](../../ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json)
 
-Production natal-provider execution evidence: [`../../ASTROLOGY_NATAL_PROVIDER_ADMISSION_RESULTS.md`](../../ASTROLOGY_NATAL_PROVIDER_ADMISSION_RESULTS.md)
+Production execution evidence:
+
+- [`../../ASTROLOGY_NATAL_PROVIDER_ADMISSION_RESULTS.md`](../../ASTROLOGY_NATAL_PROVIDER_ADMISSION_RESULTS.md)
+- [`../../ASTROLOGY_CALCULATION_COMPLETION_RESULTS.md`](../../ASTROLOGY_CALCULATION_COMPLETION_RESULTS.md)
 
 Research maturity review: [`ASTROLOGY_RESEARCH_V1_MATURITY_REVIEW.md`](ASTROLOGY_RESEARCH_V1_MATURITY_REVIEW.md)
 
 Integrated research execution evidence: [`ASTROLOGY_RESEARCH_V1_COMPLETION_EXECUTION_RESULTS.md`](ASTROLOGY_RESEARCH_V1_COMPLETION_EXECUTION_RESULTS.md)
 
-本目錄是 Astrology 的 **historical / ongoing research evidence surface**。Research v1 已完成；Astrology Production v1 另由 root `ASTROLOGY.md` 明確 admission。兩層不得互相覆蓋：
+本目錄是 Astrology 的 **historical / ongoing research evidence surface**。Research v1 已完成；current production authority 另由 root owners 明確 admission。兩層不得互相覆蓋：
 
 ```text
 references/astrology/**
 → research evidence / provenance / validators / claim registries
-→ remains REFERENCE-ONLY unless boundedly selected by production admission policy
+→ remains REFERENCE-ONLY unless boundedly selected by production policy
 
 ASTROLOGY.md
 + ASTROLOGY_PRODUCTION_ADMISSION_V1.json
-+ ASTROLOGY_PROVIDER_ADMISSION_V1.json
++ provider/resolver admission manifests
++ tools/astrology_place_resolver.py
 + tools/astrology_provider.py
++ tools/astrology_transit_provider.py
 + tools/astrology_runtime.py
 → production-v1 authority
 ```
 
-Production admission **沒有**把本目錄所有研究來源或 claims 整體改成 production authority，也沒有改寫任何歷史研究結果。
+Production admission **沒有**把本目錄所有研究來源或 claims 整體改成 production authority，也沒有改寫歷史 research-result 文件當時的狀態。
 
 ## 1. Scope
 
-本研究線涵蓋：
+Research v1 涵蓋：
 
 ```text
 zodiac / placements
@@ -46,7 +54,7 @@ interpretation retrieval / synthesis boundary
 tradition/source provenance
 ```
 
-Production 與 research intent 現在明確分流：
+Production 與 research intent 明確分流：
 
 ```text
 「用占星幫我看／看本命盤／看行運」
@@ -72,20 +80,18 @@ L0 input + provenance
 
 核心研究原則：
 
-1. 天文位置、宮位、相位等 deterministic facts 不由 language model 手算後冒充 engine fact。
-2. zodiac、house system、backend、timezone 等設定必須保存 provenance。
+1. 天文位置、宮位、相位與行運 exact events 不由 language model 手算後冒充 engine fact。
+2. zodiac、house system、engine、timezone、location-resolution provenance 必須可追溯。
 3. 出生時間未知時，houses / angles 等 time-sensitive facts fail closed。
 4. astronomical facts 與 tradition-specific claims 分層。
 5. interpretation 不得反向補造缺失 chart facts。
-6. v0.2 claim registries 可宣告 `retrieval_preconditions`，由 retrieval core 與 query requirements OR-compose 後 fail closed。
+6. claim registries 的 preconditions 由 retrieval core fail closed。
 
 詳細見 [`EVIDENCE_ARCHITECTURE.md`](EVIDENCE_ARCHITECTURE.md)。
 
 ## 3. Calculation / fact evidence
 
 ### Production natal provider
-
-Current production provider：
 
 ```text
 tools/astrology_provider.py
@@ -99,54 +105,64 @@ Admission/evidence：
 - [`../../ASTROLOGY_NATAL_PROVIDER_ADMISSION_RESULTS.md`](../../ASTROLOGY_NATAL_PROVIDER_ADMISSION_RESULTS.md)
 - [`PRODUCTION_NATAL_PROVIDER_EVIDENCE.md`](PRODUCTION_NATAL_PROVIDER_EVIDENCE.md)
 
-這個 provider 是 root production authority 的一部分，不會把本目錄其他 research probes 一併升格。它目前只 admission natal raw-birth-data calculation；transit event search仍是獨立未 admission scope。
+### Production offline place resolver
 
-### Historical engine comparison
+```text
+tools/astrology_place_resolver.py
+resolver_id = geonamescache-city-v1
+geonamescache==3.0.2
+```
+
+它只處理 city/locality name → coordinates + IANA timezone，並在同名多地時 fail closed；不是 astronomical authority。
+
+### Production transit provider
+
+```text
+tools/astrology_transit_provider.py
+provider_id = astronomy-engine-transit-v1
+```
+
+Bounded production scope：
+
+- transit-to-natal exact major aspects；
+- station roots；
+- tropical ingress / retrograde return / re-ingress；
+- retrograde multiple-passage identity；
+- UTC canonical timing；
+- search span ≤ 400 days。
+
+Admission/evidence：
+
+- [`../../ASTROLOGY_TRANSIT_PROVIDER_ADMISSION_V1.json`](../../ASTROLOGY_TRANSIT_PROVIDER_ADMISSION_V1.json)
+- [`../../ASTROLOGY_CALCULATION_COMPLETION_RESULTS.md`](../../ASTROLOGY_CALCULATION_COMPLETION_RESULTS.md)
+
+### Historical engine/timing research
 
 - [`ENGINE_COMPARISON_RESULTS.md`](ENGINE_COMPARISON_RESULTS.md)
-- [`engine_comparison_probe.py`](engine_comparison_probe.py)
+- [`TRANSIT_TIMING_VALIDATION_RESULTS.md`](TRANSIT_TIMING_VALIDATION_RESULTS.md)
+- [`TRANSIT_NATAL_INGRESS_TIMEZONE_RESULTS.md`](TRANSIT_NATAL_INGRESS_TIMEZONE_RESULTS.md)
+- [`TIMEZONE_DST_CONTRACT_DRAFT.md`](TIMEZONE_DST_CONTRACT_DRAFT.md)
 
-Research runtime 曾比較 Swiss Ephemeris API / Moshier fallback 與 Astronomy Engine-family fixtures。這些歷史 probes 本身仍只是 research evidence；目前 production provider 的 authority 來自獨立 provider admission manifest、runtime owner與 production regression，而不是由舊 probe 自動升格。
+這些歷史 probes 本身仍是 research evidence。Current production provider authority 來自獨立 admission manifests、runtime owners 與 production regressions，不是舊 probe 自動升格。
 
 ### Unknown birth-time sensitivity
 
 - [`UNKNOWN_TIME_SENSITIVITY_RESULTS.md`](UNKNOWN_TIME_SENSITIVITY_RESULTS.md)
 - [`unknown_time_sensitivity_probe.py`](unknown_time_sensitivity_probe.py)
 
-結果支持 houses / angles 對未知出生時間 fail closed，Moon 亦需 uncertainty-aware handling。Production raw-birth-data provider因此不以 local noon 取代 unknown birth time。
-
-### Transit / station / ingress
-
-- [`TRANSIT_TIMING_VALIDATION_RESULTS.md`](TRANSIT_TIMING_VALIDATION_RESULTS.md)
-- [`TRANSIT_NATAL_INGRESS_TIMEZONE_RESULTS.md`](TRANSIT_NATAL_INGRESS_TIMEZONE_RESULTS.md)
-- [`TIMEZONE_DST_CONTRACT_DRAFT.md`](TIMEZONE_DST_CONTRACT_DRAFT.md)
-
-Research 已涵蓋 exact-event roots、station、applying/separating、retrograde repeated passages、ingress/re-ingress、timezone/DST ambiguity 等；它們目前**尚未形成 production transit event-search provider**。
+Production raw-birth-data provider因此不以 local noon 取代 unknown birth time。
 
 ### Structured Astrology Fact
 
 - [`STRUCTURED_ASTROLOGY_FACT_SCHEMA_DRAFT.md`](STRUCTURED_ASTROLOGY_FACT_SCHEMA_DRAFT.md)
-- [`structured_astrology_fact_example.json`](structured_astrology_fact_example.json)
 - [`validate_structured_astrology_fact.py`](validate_structured_astrology_fact.py)
 - [`STRUCTURED_ASTROLOGY_FACT_VALIDATION_RESULTS.md`](STRUCTURED_ASTROLOGY_FACT_VALIDATION_RESULTS.md)
 
-Research v1 已有 executable deterministic validator。Production v1 沒有直接把 research schema 改名升格，而是建立獨立 `astrology_fact_bundle@1.0.0` gate，保留版本／authority boundary。
+Production v1 沒有把 research schema retroactively 改名升格，而是使用獨立 `astrology_fact_bundle@1.0.0` gate。
 
 ## 4. Interpretation / claim architecture
 
-Research v1 包含：
-
-```text
-source-admission architecture
-v0.2 typed claim registry
-tradition taxonomy
-query/tradition resolution
-source-admission filtering
-conflict preservation
-provenance bundle
-L5 synthesis contract
-registry-declared L2/L3 preconditions
-```
+Research v1 包含 source admission、v0.2 typed claim registry、tradition taxonomy、query/tradition resolution、conflict preservation、provenance bundle、L5 synthesis contract 與 registry-declared preconditions。
 
 主要 owners：
 
@@ -156,46 +172,21 @@ registry-declared L2/L3 preconditions
 - [`retrieve_interpretation_claims.py`](retrieve_interpretation_claims.py)
 - [`TRADITION_TAXONOMY_DRAFT.md`](TRADITION_TAXONOMY_DRAFT.md)
 
-Research validator 繼續禁止 registry 自行宣告 `PRODUCTION_ADMITTED`。Production v1 透過獨立 manifest 做 bounded admission，避免 retroactive mutation。
+Research validator 繼續禁止 registry 自行宣告 `PRODUCTION_ADMITTED`；Production v1 透過獨立 manifest bounded-admit。
 
 ## 5. Research-v1 knowledge coverage
 
-### Twelve houses
+12-house opposing axes `1↔7 / 2↔8 / 3↔9 / 4↔10 / 5↔11 / 6↔12` 已有 bounded research coverage。
 
-六條 opposing axes 均有 bounded machine-readable research coverage：
+Essential dignity research涵蓋 domicile、triplicity、exaltation/fall、terms/bounds、face/decan terminology gap，以及 later detriment/peregrine/reception framing；Production v1 只 bounded-admit major dignity policy。
 
-```text
-1 ↔ 7
-2 ↔ 8
-3 ↔ 9
-4 ↔ 10
-5 ↔ 11
-6 ↔ 12
-```
+Planet/aspect research包含 Saturn–Moon family 與 additional exemplars；REFERENCE_ONLY pair-specific wording不因 deterministic geometry可計算就自動升格。
 
-主要 evidence：
+Transit interpretation research要求 deterministic facts + explicit timing policy，並排除 high-stakes event certainty。
 
-- [`FIRST_SEVENTH_HOUSE_AXIS_EVIDENCE.md`](FIRST_SEVENTH_HOUSE_AXIS_EVIDENCE.md)
-- [`FOURTH_TENTH_HOUSE_AXIS_EVIDENCE.md`](FOURTH_TENTH_HOUSE_AXIS_EVIDENCE.md)
-- [`REMAINING_HOUSE_AXES_EVIDENCE.md`](REMAINING_HOUSE_AXES_EVIDENCE.md)
+## 6. Historical integrated validation
 
-### Essential dignity
-
-Research coverage包含 domicile、triplicity、exaltation/fall、terms/bounds、face/decan terminology gap，以及 later detriment/peregrine/reception framing。Production v1 只 bounded-admit major dignity policy；較有 plurality 的 minor dignity tables仍留在 research。
-
-### Planet / aspect families
-
-Research v1 有 Saturn–Moon family 與五個 additional high-value pair exemplars。這些 coverage 是 representative，不是所有 possible pair 的 universal corpus。REFERENCE_ONLY pair-specific wording不因 Production v1 存在就自動升格。
-
-### Transit interpretation
-
-[`TRANSIT_INTERPRETATION_CLAIM_FAMILY_EVIDENCE.md`](TRANSIT_INTERPRETATION_CLAIM_FAMILY_EVIDENCE.md) 與 companion registry要求 supplied facts + explicit timing policy，並排除 high-stakes event certainty。
-
-## 6. Research-v1 integrated validation
-
-Canonical research completion evidence：
-
-[`ASTROLOGY_RESEARCH_V1_COMPLETION_EXECUTION_RESULTS.md`](ASTROLOGY_RESEARCH_V1_COMPLETION_EXECUTION_RESULTS.md)
+Research completion evidence：[`ASTROLOGY_RESEARCH_V1_COMPLETION_EXECUTION_RESULTS.md`](ASTROLOGY_RESEARCH_V1_COMPLETION_EXECUTION_RESULTS.md)
 
 GitHub Actions #209：
 
@@ -211,13 +202,9 @@ playbook structure                PASS
 
 ## 7. Current authority boundary
 
-Research v1 的歷史 maturity 結論保存在：
+歷史 maturity 結論保存在 [`ASTROLOGY_RESEARCH_V1_MATURITY_REVIEW.md`](ASTROLOGY_RESEARCH_V1_MATURITY_REVIEW.md)。該文件當時記錄 `production admission: NOT GRANTED` 是正確的時間點 evidence，不 retroactively 改寫。
 
-[`ASTROLOGY_RESEARCH_V1_MATURITY_REVIEW.md`](ASTROLOGY_RESEARCH_V1_MATURITY_REVIEW.md)
-
-該文件在當時正確記錄 `production admission: NOT GRANTED`；它是**時間點 evidence**，不應 retroactively 改寫。
-
-目前 current state 已演進為：
+Current state：
 
 ```text
 research evidence                     REFERENCE-ONLY / RESEARCH V1 COMPLETE
@@ -225,43 +212,44 @@ production method owner               ASTROLOGY.md
 production admission                  bounded Astrology v1
 activation                            explicit request only
 ordinary auto-routing                 NO
-built-in natal ephemeris provider     YES
+offline city/locality resolver        YES
 natal provider                        astronomy-engine-natal-v1
-raw birth data → natal bundle         YES, exact/approximate time + coordinates + IANA timezone
-transit event-search provider         NO
-provider-owned geocoding              NO
+raw birth data → natal bundle         YES, exact/approximate time
+transit event-search provider         astronomy-engine-transit-v1
+exact transit search                  YES, bounded ≤400 days
+street/building geocoding             NO
 scientific validity claim             NO
 ```
 
-Production v1 的 current policy請讀 root `ASTROLOGY.md`；不要從 research result docs 反推 current production state。
-
 ## 8. Root integration boundary
 
-Research request：
+Production natal：
+
+```text
+explicit Astrology reading intent
+→ ASTROLOGY.md
+→ optional offline place resolver
+→ tools/astrology_provider.py
+→ Astrology Fact Bundle
+→ tools/astrology_runtime.py
+```
+
+Production transit：
+
+```text
+admitted natal bundle
+→ tools/astrology_transit_provider.py
+→ transit Astrology Fact Bundle
+→ tools/astrology_runtime.py
+→ ASTROLOGY.md
+```
+
+Research：
 
 ```text
 explicit Astrology research intent
 → RESEARCH_ROUTING.md
 → references/astrology/**
-```
-
-Production natal reading：
-
-```text
-explicit Astrology reading intent
-→ ASTROLOGY.md
-→ tools/astrology_provider.py when raw birth data is complete
-→ Astrology Fact Bundle
-→ Astrology Fact Gate
-```
-
-Production transit reading：
-
-```text
-explicit Astrology transit intent
-→ ASTROLOGY.md
-→ requires supplied / separately verified transit facts
-→ current natal provider does not search transit events
 ```
 
 Ordinary unspecified divination：
