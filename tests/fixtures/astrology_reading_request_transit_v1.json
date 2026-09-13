@@ -1,0 +1,32 @@
+{
+  "schema_name": "astrology_reading_request",
+  "schema_version": "1.0.0",
+  "reading_mode": "transit",
+  "subject_ref": "fixture-subject",
+  "birth": {
+    "local_datetime": "1990-06-15T10:00:00",
+    "birth_time_certainty": "exact",
+    "house_system": "Whole Sign",
+    "location": {
+      "place": {
+        "name": "Tokyo",
+        "country_code": "jp"
+      }
+    }
+  },
+  "transit": {
+    "start_utc": "2026-06-01T00:00:00Z",
+    "end_utc": "2026-07-01T00:00:00Z",
+    "moving_bodies": [
+      "Sun"
+    ],
+    "natal_targets": [
+      "Sun"
+    ],
+    "aspects": [
+      "conjunction"
+    ],
+    "include_stations": false,
+    "include_ingresses": false
+  }
+}
