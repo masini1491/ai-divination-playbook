@@ -1,19 +1,14 @@
 #!/usr/bin/env python3
 """Deterministically select admitted Astrology evidence from explicit typed selectors.
 
-This adapter deliberately does not parse natural-language questions. A caller (normally
-ChatGPT under ASTROLOGY.md) must provide explicit typed fact and claim selectors. The
-adapter matches those selectors against an already-admitted reading run, restricts claim
-search to production-declared registries, and then asks the existing interpretation
-handoff to revalidate the exact proposed selection and source admission.
+A caller must provide typed selectors. This adapter does not infer them from free text.
+It matches selectors against an admitted reading run, restricts claim search to
+production-declared registries, binds claims to deterministic applicability derived from
+the selected fact types, and asks the existing interpretation handoff to revalidate the
+exact selection and source admission.
 
-Authority boundary:
-- deterministic evidence selection only;
-- no chart calculation;
-- no free-text NLU;
-- no astrological meaning authorship;
-- no source-admission widening;
-- no final prose authority.
+Authority: deterministic evidence selection only. No chart calculation, free-text NLU,
+astrological meaning authorship, source-admission widening, or final prose authority.
 """
 from __future__ import annotations
 
@@ -31,6 +26,11 @@ SELECTION_SCHEMA_VERSION = "1.0.0"
 SELECTOR_ID = "astrology-typed-evidence-selector-v1"
 SELECTOR_VERSION = "1.0.0"
 PRODUCTION_MANIFEST_PATH = "ASTROLOGY_PRODUCTION_ADMISSION_V1.json"
+HOUSE_NAMES = {
+    1: "first house", 2: "second house", 3: "third house", 4: "fourth house",
+    5: "fifth house", 6: "sixth house", 7: "seventh house", 8: "eighth house",
+    9: "ninth house", 10: "tenth house", 11: "eleventh house", 12: "twelfth house",
+}
 
 
 class AstrologyEvidenceSelectionError(ValueError):
@@ -85,13 +85,8 @@ def _validate_request(data: Any) -> dict[str, Any]:
         raise AstrologyEvidenceSelectionError("$ must be an object")
     _exact_keys(
         data,
-        allowed={
-            "schema_name", "schema_version", "question_id", "question", "focus", "exclusions",
-            "fact_selectors", "claim_selectors", "unsupported_factors",
-        },
-        required={
-            "schema_name", "schema_version", "question_id", "question", "fact_selectors", "claim_selectors",
-        },
+        allowed={"schema_name", "schema_version", "question_id", "question", "focus", "exclusions", "fact_selectors", "claim_selectors", "unsupported_factors"},
+        required={"schema_name", "schema_version", "question_id", "question", "fact_selectors", "claim_selectors"},
         path="$",
     )
     if data["schema_name"] != REQUEST_SCHEMA_NAME:
@@ -104,36 +99,30 @@ def _validate_request(data: Any) -> dict[str, Any]:
         raise AstrologyEvidenceSelectionError("$.claim_selectors must be an array")
 
     fact_selectors: list[dict[str, Any]] = []
-    selector_ids: set[str] = set()
+    fact_selector_ids: set[str] = set()
     for index, raw in enumerate(data["fact_selectors"]):
         path = f"$.fact_selectors[{index}]"
         if not isinstance(raw, dict):
             raise AstrologyEvidenceSelectionError(f"{path} must be an object")
         kind = raw.get("selector_kind")
-        common_required = {"selector_id", "selector_kind", "bundle", "cardinality"}
-        common_allowed = set(common_required)
+        common = {"selector_id", "selector_kind", "bundle", "cardinality"}
         if kind == "object":
-            required = common_required | {"object_id"}
-            allowed = common_allowed | {"object_id", "object_type"}
+            required, allowed = common | {"object_id"}, common | {"object_id", "object_type"}
         elif kind == "house":
-            required = common_required | {"house_number"}
-            allowed = common_allowed | {"house_number"}
+            required, allowed = common | {"house_number"}, common | {"house_number"}
         elif kind == "aspect":
-            required = common_required | {"left_object_id", "right_object_id", "aspect"}
-            allowed = common_allowed | {"left_object_id", "right_object_id", "aspect"}
+            required = common | {"left_object_id", "right_object_id", "aspect"}
+            allowed = set(required)
         elif kind == "event":
-            required = common_required | {"event_kind"}
-            allowed = common_allowed | {
-                "event_kind", "moving_body", "natal_target", "aspect", "passage_index", "transition",
-                "ingress_type", "from_sign", "to_sign", "exact_time_utc",
-            }
+            required = common | {"event_kind"}
+            allowed = common | {"event_kind", "moving_body", "natal_target", "aspect", "passage_index", "transition", "ingress_type", "from_sign", "to_sign", "exact_time_utc"}
         else:
             raise AstrologyEvidenceSelectionError(f"{path}.selector_kind is unsupported")
         _exact_keys(raw, allowed=allowed, required=required, path=path)
         selector_id = _text(raw["selector_id"], f"{path}.selector_id")
-        if selector_id in selector_ids:
+        if selector_id in fact_selector_ids:
             raise AstrologyEvidenceSelectionError(f"duplicate fact selector_id: {selector_id}")
-        selector_ids.add(selector_id)
+        fact_selector_ids.add(selector_id)
         if raw["bundle"] not in {"natal", "transit"}:
             raise AstrologyEvidenceSelectionError(f"{path}.bundle must be natal or transit")
         if kind in {"house", "aspect"} and raw["bundle"] != "natal":
@@ -156,10 +145,7 @@ def _validate_request(data: Any) -> dict[str, Any]:
             raise AstrologyEvidenceSelectionError(f"{path} must be an object")
         _exact_keys(
             raw,
-            allowed={
-                "selector_id", "registry_record_id", "claim_type", "applies_to_all",
-                "tradition_context_refs_any", "fact_selector_ids",
-            },
+            allowed={"selector_id", "registry_record_id", "claim_type", "applies_to_all", "tradition_context_refs_any", "fact_selector_ids"},
             required={"selector_id", "claim_type", "applies_to_all", "fact_selector_ids"},
             path=path,
         )
@@ -167,24 +153,18 @@ def _validate_request(data: Any) -> dict[str, Any]:
         if selector_id in claim_selector_ids:
             raise AstrologyEvidenceSelectionError(f"duplicate claim selector_id: {selector_id}")
         claim_selector_ids.add(selector_id)
-        fact_selector_ids = _string_list(raw["fact_selector_ids"], f"{path}.fact_selector_ids", allow_empty=False)
-        unknown = sorted(set(fact_selector_ids) - selector_ids)
+        linked = _string_list(raw["fact_selector_ids"], f"{path}.fact_selector_ids", allow_empty=False)
+        unknown = sorted(set(linked) - fact_selector_ids)
         if unknown:
-            raise AstrologyEvidenceSelectionError(
-                f"{path}.fact_selector_ids contains unknown selector(s): {', '.join(unknown)}"
-            )
-        claim_selectors.append(
-            {
-                **raw,
-                "selector_id": selector_id,
-                "claim_type": _text(raw["claim_type"], f"{path}.claim_type"),
-                "applies_to_all": _string_list(raw["applies_to_all"], f"{path}.applies_to_all", allow_empty=False),
-                "tradition_context_refs_any": _string_list(
-                    raw.get("tradition_context_refs_any", []), f"{path}.tradition_context_refs_any"
-                ),
-                "fact_selector_ids": fact_selector_ids,
-            }
-        )
+            raise AstrologyEvidenceSelectionError(f"{path}.fact_selector_ids contains unknown selector(s): {', '.join(unknown)}")
+        claim_selectors.append({
+            **raw,
+            "selector_id": selector_id,
+            "claim_type": _text(raw["claim_type"], f"{path}.claim_type"),
+            "applies_to_all": _string_list(raw["applies_to_all"], f"{path}.applies_to_all", allow_empty=False),
+            "tradition_context_refs_any": _string_list(raw.get("tradition_context_refs_any", []), f"{path}.tradition_context_refs_any"),
+            "fact_selector_ids": linked,
+        })
 
     unsupported: list[dict[str, str]] = []
     raw_unsupported = data.get("unsupported_factors", [])
@@ -195,10 +175,7 @@ def _validate_request(data: Any) -> dict[str, Any]:
         if not isinstance(raw, dict):
             raise AstrologyEvidenceSelectionError(f"{path} must be an object")
         _exact_keys(raw, allowed={"factor", "reason"}, required={"factor", "reason"}, path=path)
-        unsupported.append({
-            "factor": _text(raw["factor"], f"{path}.factor"),
-            "reason": _text(raw["reason"], f"{path}.reason"),
-        })
+        unsupported.append({"factor": _text(raw["factor"], f"{path}.factor"), "reason": _text(raw["reason"], f"{path}.reason")})
 
     return {
         "schema_name": REQUEST_SCHEMA_NAME,
@@ -234,65 +211,63 @@ def _bundle_rows(run: dict[str, Any], bundle_name: str, collection: str) -> list
     if not isinstance(bundle, dict):
         raise AstrologyEvidenceSelectionError(f"requested fact bundle is unavailable: {bundle_name}")
     rows = bundle.get("facts", {}).get(collection, [])
-    if not isinstance(rows, list):
-        return []
-    return [row for row in rows if isinstance(row, dict) and isinstance(row.get("fact_id"), str)]
+    return [row for row in rows if isinstance(row, dict) and isinstance(row.get("fact_id"), str)] if isinstance(rows, list) else []
 
 
 def _object_id_index(run: dict[str, Any], bundle_name: str) -> dict[str, str]:
-    return {
-        row["fact_id"]: str(row["object_id"])
-        for row in _bundle_rows(run, bundle_name, "objects")
-        if isinstance(row.get("object_id"), str)
-    }
+    return {row["fact_id"]: row["object_id"] for row in _bundle_rows(run, bundle_name, "objects") if isinstance(row.get("object_id"), str)}
 
 
 def _fact_matches(run: dict[str, Any], selector: dict[str, Any]) -> list[dict[str, str]]:
-    kind = selector["selector_kind"]
-    bundle = selector["bundle"]
+    kind, bundle = selector["selector_kind"], selector["bundle"]
     if kind == "object":
-        rows = _bundle_rows(run, bundle, "objects")
-        matched = [
-            row for row in rows
-            if row.get("object_id") == selector["object_id"]
-            and ("object_type" not in selector or row.get("object_type") == selector["object_type"])
-        ]
+        matched = [row for row in _bundle_rows(run, bundle, "objects") if row.get("object_id") == selector["object_id"] and ("object_type" not in selector or row.get("object_type") == selector["object_type"])]
     elif kind == "house":
-        rows = _bundle_rows(run, bundle, "houses")
-        matched = [row for row in rows if row.get("house_number") == selector["house_number"]]
+        matched = [row for row in _bundle_rows(run, bundle, "houses") if row.get("house_number") == selector["house_number"]]
     elif kind == "aspect":
-        rows = _bundle_rows(run, bundle, "aspects")
         objects = _object_id_index(run, bundle)
         requested_pair = {selector["left_object_id"], selector["right_object_id"]}
         matched = []
-        for row in rows:
+        for row in _bundle_rows(run, bundle, "aspects"):
             pair = {objects.get(row.get("left_ref")), objects.get(row.get("right_ref"))}
             if row.get("aspect") == selector["aspect"] and pair == requested_pair:
                 matched.append(row)
     else:
-        rows = _bundle_rows(run, bundle, "events")
-        fields = {
-            key: value for key, value in selector.items()
-            if key not in {"selector_id", "selector_kind", "bundle", "cardinality"}
-        }
-        matched = [row for row in rows if all(row.get(key) == value for key, value in fields.items())]
+        fields = {key: value for key, value in selector.items() if key not in {"selector_id", "selector_kind", "bundle", "cardinality"}}
+        matched = [row for row in _bundle_rows(run, bundle, "events") if all(row.get(key) == value for key, value in fields.items())]
 
     refs = [{"bundle": bundle, "fact_id": row["fact_id"]} for row in matched]
-    cardinality = selector["cardinality"]
-    if cardinality == "exactly_one" and len(refs) != 1:
-        raise AstrologyEvidenceSelectionError(
-            f"fact selector {selector['selector_id']} expected exactly one match, found {len(refs)}"
-        )
-    if cardinality == "one_or_more" and not refs:
+    if selector["cardinality"] == "exactly_one" and len(refs) != 1:
+        raise AstrologyEvidenceSelectionError(f"fact selector {selector['selector_id']} expected exactly one match, found {len(refs)}")
+    if selector["cardinality"] == "one_or_more" and not refs:
         raise AstrologyEvidenceSelectionError(f"fact selector {selector['selector_id']} matched no facts")
     return refs
+
+
+def _selector_applicability(selector: dict[str, Any]) -> set[str]:
+    kind = selector["selector_kind"]
+    tags = {selector["bundle"]}
+    if kind == "house":
+        tags.add(HOUSE_NAMES[selector["house_number"]])
+    elif kind == "object":
+        tags.add(selector["object_id"])
+    elif kind == "aspect":
+        tags.update({selector["left_object_id"], selector["right_object_id"], selector["aspect"]})
+    else:
+        event_kind = selector["event_kind"]
+        tags.add({"transit_to_natal": "transit-to-natal", "station": "station", "ingress": "ingress"}[event_kind])
+        if event_kind == "transit_to_natal":
+            tags.add("exact passage")
+        for key in ("moving_body", "natal_target", "aspect"):
+            if isinstance(selector.get(key), str):
+                tags.add(selector[key])
+    return tags
 
 
 def _registry_index(root: Path, manifest: dict[str, Any]) -> dict[str, dict[str, Any]]:
     admitted = set(manifest.get("admitted_research_registries", []))
     index: dict[str, dict[str, Any]] = {}
-    registry_dir = root / "references" / "astrology"
-    for path in sorted(registry_dir.glob("*.json")):
+    for path in sorted((root / "references" / "astrology").glob("*.json")):
         try:
             data = json.loads(path.read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError):
@@ -311,11 +286,11 @@ def _registry_index(root: Path, manifest: dict[str, Any]) -> dict[str, dict[str,
     return index
 
 
-def _claim_matches(claim: dict[str, Any], selector: dict[str, Any]) -> bool:
+def _claim_matches(claim: dict[str, Any], selector: dict[str, Any], required_applicability: set[str]) -> bool:
     if claim.get("claim_type") != selector["claim_type"]:
         return False
     applies_to = {item for item in claim.get("applies_to", []) if isinstance(item, str)}
-    if not set(selector["applies_to_all"]).issubset(applies_to):
+    if not (set(selector["applies_to_all"]) | required_applicability).issubset(applies_to):
         return False
     requested_traditions = set(selector.get("tradition_context_refs_any", []))
     if requested_traditions:
@@ -325,34 +300,24 @@ def _claim_matches(claim: dict[str, Any], selector: dict[str, Any]) -> bool:
     return True
 
 
-def _select_claims(
-    registry_index: dict[str, dict[str, Any]],
-    selector: dict[str, Any],
-) -> list[dict[str, str]]:
+def _select_claims(registry_index: dict[str, dict[str, Any]], selector: dict[str, Any], required_applicability: set[str]) -> list[dict[str, str]]:
     requested_registry = selector.get("registry_record_id")
     if requested_registry is not None:
         if requested_registry not in registry_index:
-            raise AstrologyEvidenceSelectionError(
-                f"claim selector {selector['selector_id']} requests an unadmitted registry: {requested_registry}"
-            )
+            raise AstrologyEvidenceSelectionError(f"claim selector {selector['selector_id']} requests an unadmitted registry: {requested_registry}")
         candidates = [(requested_registry, registry_index[requested_registry])]
     else:
         candidates = sorted(registry_index.items())
-
     matches: list[dict[str, str]] = []
     for registry_id, registry in candidates:
         for claim in registry.get("claims", []):
-            if not isinstance(claim, dict) or not isinstance(claim.get("claim_id"), str):
-                continue
-            if _claim_matches(claim, selector):
+            if isinstance(claim, dict) and isinstance(claim.get("claim_id"), str) and _claim_matches(claim, selector, required_applicability):
                 matches.append({"registry_record_id": registry_id, "claim_id": claim["claim_id"]})
     if not matches:
-        raise AstrologyEvidenceSelectionError(f"claim selector {selector['selector_id']} matched no admitted claims")
+        raise AstrologyEvidenceSelectionError(f"claim selector {selector['selector_id']} matched no admitted claims after fact-applicability binding")
     if len(matches) > 1:
         rendered = ", ".join(f"{row['registry_record_id']}::{row['claim_id']}" for row in matches)
-        raise AstrologyEvidenceSelectionError(
-            f"claim selector {selector['selector_id']} is ambiguous; refine typed criteria: {rendered}"
-        )
+        raise AstrologyEvidenceSelectionError(f"claim selector {selector['selector_id']} is ambiguous; refine typed criteria: {rendered}")
     return matches
 
 
@@ -383,24 +348,20 @@ def selection_to_interpretation_request(selection: dict[str, Any]) -> dict[str, 
     }
 
 
-def select_evidence(
-    reading_run: Any,
-    typed_request: Any,
-    *,
-    repo_root: Path | None = None,
-) -> dict[str, Any]:
+def select_evidence(reading_run: Any, typed_request: Any, *, repo_root: Path | None = None) -> dict[str, Any]:
     run = _validate_run(reading_run)
     request = _validate_request(typed_request)
     root = repo_root or _root_dir()
     manifest = _load_json(root / PRODUCTION_MANIFEST_PATH)
     registries = _registry_index(root, manifest)
 
-    fact_refs_by_selector: dict[str, list[dict[str, str]]] = {}
+    selectors_by_id = {selector["selector_id"]: selector for selector in request["fact_selectors"]}
+    refs_by_selector: dict[str, list[dict[str, str]]] = {}
     fact_provenance: list[dict[str, Any]] = []
     all_fact_refs: list[dict[str, str]] = []
     for selector in request["fact_selectors"]:
         refs = _fact_matches(run, selector)
-        fact_refs_by_selector[selector["selector_id"]] = refs
+        refs_by_selector[selector["selector_id"]] = refs
         fact_provenance.append({"selector_id": selector["selector_id"], "matched_fact_refs": refs})
         all_fact_refs.extend(refs)
     all_fact_refs = _dedupe_fact_refs(all_fact_refs)
@@ -409,21 +370,17 @@ def select_evidence(
     claim_provenance: list[dict[str, Any]] = []
     seen_claims: set[tuple[str, str]] = set()
     for selector in request["claim_selectors"]:
-        matches = _select_claims(registries, selector)
-        linked_refs = _dedupe_fact_refs(
-            [ref for selector_id in selector["fact_selector_ids"] for ref in fact_refs_by_selector[selector_id]]
-        )
-        if not linked_refs:
-            raise AstrologyEvidenceSelectionError(
-                f"claim selector {selector['selector_id']} has no resolved fact refs"
-            )
+        linked_ids = selector["fact_selector_ids"]
+        linked_refs = _dedupe_fact_refs([ref for selector_id in linked_ids for ref in refs_by_selector[selector_id]])
+        required_applicability: set[str] = set()
+        for selector_id in linked_ids:
+            required_applicability.update(_selector_applicability(selectors_by_id[selector_id]))
+        matches = _select_claims(registries, selector, required_applicability)
         provenance_refs: list[dict[str, str]] = []
         for match in matches:
             identity = (match["registry_record_id"], match["claim_id"])
             if identity in seen_claims:
-                raise AstrologyEvidenceSelectionError(
-                    f"claim selected more than once by typed criteria: {identity[0]} / {identity[1]}"
-                )
+                raise AstrologyEvidenceSelectionError(f"claim selected more than once by typed criteria: {identity[0]} / {identity[1]}")
             seen_claims.add(identity)
             claim_requests.append({**match, "fact_refs": linked_refs})
             provenance_refs.append(match)
@@ -450,13 +407,8 @@ def select_evidence(
         "fact_refs": all_fact_refs,
         "claim_requests": claim_requests,
         "unsupported_factors": request["unsupported_factors"],
-        "selection_provenance": {
-            "fact_selectors": fact_provenance,
-            "claim_selectors": claim_provenance,
-        },
+        "selection_provenance": {"fact_selectors": fact_provenance, "claim_selectors": claim_provenance},
     }
-
-    # Existing production handoff is the source-admission and exact-reference gate.
     try:
         build_handoff(run, selection_to_interpretation_request(selection), repo_root=root)
     except InterpretationHandoffError as exc:
@@ -476,14 +428,7 @@ def main() -> int:
     try:
         result = select_evidence(_load(args.reading_run), _load(args.typed_request))
     except (OSError, json.JSONDecodeError, AstrologyEvidenceSelectionError) as exc:
-        result = {
-            "schema_name": SELECTION_SCHEMA_NAME,
-            "schema_version": SELECTION_SCHEMA_VERSION,
-            "status": "rejected",
-            "selection_allowed": False,
-            "error": str(exc),
-        }
-        print(json.dumps(result, ensure_ascii=False, indent=2))
+        print(json.dumps({"schema_name": SELECTION_SCHEMA_NAME, "schema_version": SELECTION_SCHEMA_VERSION, "status": "rejected", "selection_allowed": False, "error": str(exc)}, ensure_ascii=False, indent=2))
         return 1
     print(json.dumps(result, ensure_ascii=False, indent=2))
     return 0
