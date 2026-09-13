@@ -28,6 +28,7 @@ class PlaybookCheckTests(unittest.TestCase):
         write(root, "OWNER.md", "# Owner\n\n## Section A\n")
         write(root, "BEHAVIORAL_EVAL.md", "# Eval\n\n### TAROT-BEH-001 — One\n")
         write(root, "SESSION_HANDOFF.md", "# Handoff\n")
+        write(root, "SCHEMA.json", "{}\n")
         write(root, "tools/behavioral_eval.py", "print('ok')\n")
         write(
             root,
@@ -55,6 +56,7 @@ class PlaybookCheckTests(unittest.TestCase):
                             "owner": "OWNER.md",
                             "section": "Section A",
                             "kind": "contract",
+                            "schema": "SCHEMA.json",
                         },
                         {
                             "id": "validation.behavioral",
@@ -88,6 +90,21 @@ class PlaybookCheckTests(unittest.TestCase):
         (root / "PLAYBOOK_INDEX.json").write_text(json.dumps(data), encoding="utf-8")
         errors = playbook_check.validate(root)
         self.assertTrue(any("section missing" in error for error in errors))
+
+    def test_missing_index_local_file_pointer_fails(self):
+        root = self.make_repo()
+        data = json.loads((root / "PLAYBOOK_INDEX.json").read_text(encoding="utf-8"))
+        data["capabilities"][0]["schema"] = "MISSING_SCHEMA.json"
+        (root / "PLAYBOOK_INDEX.json").write_text(json.dumps(data), encoding="utf-8")
+        errors = playbook_check.validate(root)
+        self.assertTrue(any("MISSING_SCHEMA.json" in error for error in errors))
+
+    def test_non_path_metadata_is_not_treated_as_local_file(self):
+        root = self.make_repo()
+        data = json.loads((root / "PLAYBOOK_INDEX.json").read_text(encoding="utf-8"))
+        data["capabilities"][0]["activation"] = "explicit-request-only"
+        (root / "PLAYBOOK_INDEX.json").write_text(json.dumps(data), encoding="utf-8")
+        self.assertEqual(playbook_check.validate(root), [])
 
     def test_behavioral_matrix_drift_fails(self):
         root = self.make_repo()
