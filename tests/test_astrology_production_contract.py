@@ -48,7 +48,7 @@ class AstrologyProductionContractTests(unittest.TestCase):
         text = (ROOT / "RESEARCH_ROUTING.md").read_text(encoding="utf-8")
         self.assertIn("Production owner：[`ASTROLOGY.md`](ASTROLOGY.md)", text)
         self.assertIn("Astrology production reading 不屬於這個 gate", text)
-        self.assertIn("research 檔案本身不因此改成 production owner", text)
+        self.assertIn("不因 production v1 已 admission 就回頭改寫成 production source of truth", text)
 
     def test_machine_index_exposes_method_astrology(self):
         data = json.loads((ROOT / "PLAYBOOK_INDEX.json").read_text(encoding="utf-8"))
