@@ -1,0 +1,199 @@
+{
+  "schema_name": "interpretation_claim_registry",
+  "schema_version": "0.2.0-research",
+  "record_status": "REFERENCE-ONLY",
+  "record_kind": "interpretation_claim_family_registry",
+  "record_id": "high-value-planet-aspects-research-v1",
+  "claim_family": "high_value_planet_aspects",
+  "production_routable": false,
+  "retrieval_preconditions": {
+    "requires_l2_facts": true,
+    "requires_l3_policy": true
+  },
+  "sources": [
+    {
+      "source_id": "source:ptolemy-major-aspect-geometry",
+      "title": "Tetrabiblos, Book I §13 and related planetary-nature sections",
+      "author_or_org": "Claudius Ptolemy; F. E. Robbins translation; LacusCurtius / University of Chicago",
+      "source_role": "PRIMARY_TEXT",
+      "source_kind": "public_web_edition",
+      "tradition_tags": ["ptolemaic", "hellenistic", "classical_antiquity"],
+      "locator": "LacusCurtius Tetrabiblos Book I §§5,7,13,24",
+      "language": "English translation of Greek primary text",
+      "license_status": "public_web_edition_translation_rights_separately_tracked",
+      "copyright_status": "historical_primary_text_modern_edition_status_separate",
+      "storage_mode": ["metadata_plus_locator", "normalized_paraphrase"],
+      "verification_status": ["identity_verified", "locator_verified"],
+      "admission_status": ["CLAIM_ELIGIBLE"],
+      "admission_scope": ["major aspect geometry and general planetary-nature doctrine"],
+      "excluded_scope": ["modern pair-specific psychological meaning", "scientific predictive validity"],
+      "independence_status": "primary_witness"
+    },
+    {
+      "source_id": "source:wvanderen-high-value-aspect-pairs",
+      "title": "Selected planet-pair aspect interpretation modules",
+      "author_or_org": "wvanderen/astrology-skill contributors",
+      "source_role": "REFERENCE_IMPLEMENTATION",
+      "source_kind": "repository",
+      "tradition_tags": ["modern", "retrieval_first", "pair_specific_interpretation"],
+      "immutable_revision": "a9339b3c7151313530aa5002572c6612a2cfd59f",
+      "locator": [
+        "references/aspects/by_planet_pair/sun_square_saturn.md",
+        "references/aspects/by_planet_pair/venus_square_mars.md",
+        "references/aspects/by_planet_pair/mars_opposition_saturn.md",
+        "references/aspects/by_planet_pair/mercury_trine_jupiter.md",
+        "references/aspects/by_planet_pair/venus_square_saturn.md"
+      ],
+      "language": "English",
+      "license_status": "verified_permissive",
+      "license_identifier": "MIT",
+      "copyright_status": "copyrighted",
+      "storage_mode": ["metadata_plus_locator", "normalized_paraphrase"],
+      "verification_status": ["identity_verified", "revision_verified", "license_verified", "locator_verified"],
+      "admission_status": ["REFERENCE_ONLY"],
+      "admission_scope": ["qualified pair-specific natal/transit/synastry interpretation"],
+      "excluded_scope": ["independent historical witness", "project-canonical doctrine", "guaranteed event prediction"],
+      "independence_status": "shared_upstream",
+      "upstream_source_refs": ["source:ptolemy-major-aspect-geometry"]
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "claim:ptolemy-major-aspect-geometry-distinct",
+      "layer": "L3",
+      "claim_type": "aspect_policy",
+      "normalized_statement": "Ptolemy's reviewed aspect doctrine distinguishes opposition, trine, quartile/square and sextile as different zodiacal angular relationships; geometry alone does not determine a complete pair-specific interpretation.",
+      "source_refs": ["source:ptolemy-major-aspect-geometry"],
+      "source_locator_refs": ["Tetrabiblos I.13"],
+      "tradition_tags": ["ptolemaic", "hellenistic", "classical_antiquity"],
+      "tradition_context_refs": ["lineage:hellenistic:ptolemaic"],
+      "historical_context_refs": ["context:classical_antiquity"],
+      "applies_to": ["aspect", "opposition", "trine", "square", "sextile"],
+      "scope": "historical major-aspect geometry doctrine",
+      "confidence_status": "supported",
+      "support_status": "single_source_supported",
+      "conflict_group_ids": ["conflict:geometry-vs-pair-meaning"],
+      "cautions": ["Do not infer a modern psychological pair meaning from aspect geometry alone."],
+      "storage_origin": "project-authored normalized paraphrase"
+    },
+    {
+      "claim_id": "claim:reference-sun-square-saturn",
+      "layer": "L4",
+      "claim_type": "aspect_meaning",
+      "normalized_statement": "The reviewed reference module frames Sun square Saturn as friction between visibility/purpose and limit/duty, with possible themes of pressure, delayed recognition, seriousness, responsibility and confidence built through tested effort.",
+      "source_refs": ["source:wvanderen-high-value-aspect-pairs"],
+      "source_locator_refs": ["references/aspects/by_planet_pair/sun_square_saturn.md"],
+      "tradition_tags": ["modern", "retrieval_first", "pair_specific_interpretation"],
+      "tradition_context_refs": [],
+      "historical_context_refs": ["context:modern_contemporary"],
+      "applies_to": ["Sun", "Saturn", "square", "natal", "transit", "synastry"],
+      "scope": "qualified pair-specific reference framing",
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": ["conflict:geometry-vs-pair-meaning"],
+      "cautions": ["Do not treat pressure, fathers, authority or recognition outcomes as deterministic."],
+      "storage_origin": "project-authored normalized paraphrase"
+    },
+    {
+      "claim_id": "claim:reference-venus-square-mars",
+      "layer": "L4",
+      "claim_type": "aspect_meaning",
+      "normalized_statement": "The reviewed reference module frames Venus square Mars as friction between attraction/pleasure and assertion/urgency, potentially expressed as chemistry, creative heat, relational conflict or desire requiring pacing and consent.",
+      "source_refs": ["source:wvanderen-high-value-aspect-pairs"],
+      "source_locator_refs": ["references/aspects/by_planet_pair/venus_square_mars.md"],
+      "tradition_tags": ["modern", "retrieval_first", "pair_specific_interpretation"],
+      "tradition_context_refs": [],
+      "historical_context_refs": ["context:modern_contemporary"],
+      "applies_to": ["Venus", "Mars", "square", "natal", "transit", "synastry"],
+      "scope": "qualified pair-specific reference framing",
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": ["conflict:geometry-vs-pair-meaning"],
+      "cautions": ["Consent and non-coercive framing are mandatory; chemistry is not a guaranteed relationship outcome."],
+      "storage_origin": "project-authored normalized paraphrase"
+    },
+    {
+      "claim_id": "claim:reference-mars-opposition-saturn",
+      "layer": "L4",
+      "claim_type": "aspect_meaning",
+      "normalized_statement": "The reviewed reference module frames Mars opposition Saturn as a polarity between force/action and restraint/limit, potentially expressed as disciplined confrontation and endurance or as stalemate and stop-start momentum.",
+      "source_refs": ["source:wvanderen-high-value-aspect-pairs"],
+      "source_locator_refs": ["references/aspects/by_planet_pair/mars_opposition_saturn.md"],
+      "tradition_tags": ["modern", "retrieval_first", "pair_specific_interpretation"],
+      "tradition_context_refs": [],
+      "historical_context_refs": ["context:modern_contemporary"],
+      "applies_to": ["Mars", "Saturn", "opposition", "natal", "transit", "synastry"],
+      "scope": "qualified pair-specific reference framing",
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": ["conflict:geometry-vs-pair-meaning"],
+      "cautions": ["Do not turn malefic symbolism into fatalism or guaranteed harm."],
+      "storage_origin": "project-authored normalized paraphrase"
+    },
+    {
+      "claim_id": "claim:reference-mercury-trine-jupiter",
+      "layer": "L4",
+      "claim_type": "aspect_meaning",
+      "normalized_statement": "The reviewed reference module frames Mercury trine Jupiter as a supportive relation between detail and breadth, potentially aiding learning, teaching, writing, counsel and larger-scale meaning while still requiring precision checks.",
+      "source_refs": ["source:wvanderen-high-value-aspect-pairs"],
+      "source_locator_refs": ["references/aspects/by_planet_pair/mercury_trine_jupiter.md"],
+      "tradition_tags": ["modern", "retrieval_first", "pair_specific_interpretation"],
+      "tradition_context_refs": [],
+      "historical_context_refs": ["context:modern_contemporary"],
+      "applies_to": ["Mercury", "Jupiter", "trine", "natal", "transit", "synastry"],
+      "scope": "qualified pair-specific reference framing",
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": ["conflict:geometry-vs-pair-meaning"],
+      "cautions": ["Ease does not guarantee good judgment or factual accuracy."],
+      "storage_origin": "project-authored normalized paraphrase"
+    },
+    {
+      "claim_id": "claim:reference-venus-square-saturn",
+      "layer": "L4",
+      "claim_type": "aspect_meaning",
+      "normalized_statement": "The reviewed reference module frames Venus square Saturn as friction between affection/value/pleasure and limit/time/duty, potentially expressed through serious commitment, disciplined craft, caution or difficulty receiving warmth and value.",
+      "source_refs": ["source:wvanderen-high-value-aspect-pairs"],
+      "source_locator_refs": ["references/aspects/by_planet_pair/venus_square_saturn.md"],
+      "tradition_tags": ["modern", "retrieval_first", "pair_specific_interpretation"],
+      "tradition_context_refs": [],
+      "historical_context_refs": ["context:modern_contemporary"],
+      "applies_to": ["Venus", "Saturn", "square", "natal", "transit", "synastry"],
+      "scope": "qualified pair-specific reference framing",
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": ["conflict:geometry-vs-pair-meaning"],
+      "cautions": ["Do not infer lovelessness, deprivation or relationship failure as certainty."],
+      "storage_origin": "project-authored normalized paraphrase"
+    }
+  ],
+  "conflict_groups": [
+    {
+      "conflict_group_id": "conflict:geometry-vs-pair-meaning",
+      "conflict_class": ["source_role_difference", "scope_difference"],
+      "claim_refs": [
+        "claim:ptolemy-major-aspect-geometry-distinct",
+        "claim:reference-sun-square-saturn",
+        "claim:reference-venus-square-mars",
+        "claim:reference-mars-opposition-saturn",
+        "claim:reference-mercury-trine-jupiter",
+        "claim:reference-venus-square-saturn"
+      ],
+      "resolution_status": "coexist",
+      "resolution_note": "General primary aspect doctrine and modern pair-specific reference interpretations coexist but are not interchangeable evidence."
+    }
+  ],
+  "non_admitted_claims": [
+    "No pair-specific event outcome is guaranteed.",
+    "No relationship, medical, career or financial outcome is deterministic.",
+    "REFERENCE_ONLY pair modules require explicit qualified opt-in.",
+    "No scientific predictive validity is claimed."
+  ],
+  "research_result": {
+    "production_authority_granted": false,
+    "scientific_predictive_validity_claimed": false
+  },
+  "privacy": {
+    "contains_real_birth_data": false
+  }
+}
