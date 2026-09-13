@@ -87,6 +87,24 @@
       "reading_record_storage": "external_only",
       "semantic_selection_authority": false,
       "final_text_authority": false
+    },
+    "typed_end_to_end_pipeline": {
+      "pipeline_id": "astrology-production-typed-reading-pipeline-v1",
+      "runtime_owner": "tools/astrology_typed_reading_pipeline.py",
+      "run_schema": "ASTROLOGY_TYPED_READING_PIPELINE_RUN_V1.schema.json",
+      "run_schema_id": "astrology_typed_reading_pipeline_run@1.0.0",
+      "authority": "composition_only",
+      "stages": [
+        "astrology_reading_run@1.0.0",
+        "astrology_typed_evidence_selection@1.0.0",
+        "astrology_interpretation_handoff@1.0.0",
+        "astrology_user_facing_output@1.0.0"
+      ],
+      "legacy_exact_reference_pipeline_preserved": true,
+      "free_text_query_resolution": false,
+      "reading_record_storage": "external_only",
+      "semantic_selection_authority": false,
+      "final_text_authority": false
     }
   },
   "natal_provider": {
@@ -192,8 +210,8 @@
   "natal_provider_admission_baseline": "09d2a014190b59a5a758c9a0618b06e72a82aecb",
   "transit_place_admission_baseline": "01a159990d2086f3a47be2e299d2e7f04a0e1758",
   "admission_decision": {
-    "decision": "admit_bounded_astrology_v1_with_typed_evidence_selection",
-    "rationale": "Astrology Production v1 retains the existing natal/transit/place-resolution calculation path, deterministic fact-bundle runtime gate, composition-only reading orchestration, evidence-packaging interpretation handoff, provenance/pre-send output guard, and end-to-end pipeline, and additionally admits a bounded typed evidence selector that maps explicit machine-readable selectors to exact fact and claim references. The selector fails closed on ambiguity or fact/claim applicability mismatch and reuses the existing handoff as the source-admission gate. It does not parse free-text questions, promote the REFERENCE-ONLY query-resolution research stack, author astrological meanings, widen source admission, or author final prose. Scientific predictive validity is not claimed.",
+    "decision": "admit_bounded_astrology_v1_with_typed_evidence_pipeline",
+    "rationale": "Astrology Production v1 retains the existing natal/transit/place-resolution calculation path, runtime gates, exact-reference pipeline, interpretation handoff and output guard. It additionally admits a composition-only typed pipeline that inserts the bounded deterministic evidence selector between the admitted reading run and the existing handoff. The typed pipeline preserves explicit selection provenance and legacy exact-reference compatibility, while granting no free-text NLU, astrological-meaning, source-admission, final-prose, scientific-validity, or storage authority. The REFERENCE-ONLY query-resolution research stack remains non-production.",
     "scientific_predictive_validity_claimed": false
   }
 }
