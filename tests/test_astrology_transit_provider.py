@@ -15,7 +15,7 @@ from tools.astrology_transit_provider import (
 UTC = dt.timezone.utc
 
 
-def _minimal_natal_bundle() -> dict:
+def _minimal_natal_bundle(longitude_deg: float = 110.0) -> dict:
     return {
         "schema_name": "astrology_fact_bundle",
         "schema_version": "1.0.0",
@@ -32,7 +32,7 @@ def _minimal_natal_bundle() -> dict:
                     "fact_id": "fact:object:mercury",
                     "object_type": "planet",
                     "object_id": "Mercury",
-                    "longitude_deg": 110.0,
+                    "longitude_deg": longitude_deg,
                 }
             ],
             "houses": [],
@@ -66,7 +66,6 @@ class AstrologyTransitProviderTests(unittest.TestCase):
         self.assertEqual([1, 2, 3], [e["passage_index"] for e in events])
         self.assertTrue(all(e["passage_count"] == 3 for e in events))
 
-        # Cross-engine benchmark from the earlier Moshier-backed research probe.
         expected = [
             "2026-06-16T15:44:17.088+00:00",
             "2026-07-14T03:53:27.175+00:00",
@@ -76,6 +75,29 @@ class AstrologyTransitProviderTests(unittest.TestCase):
             delta = abs((_parse(event["exact_time_utc"]) - _parse(expected_time)).total_seconds())
             self.assertLess(delta, 600.0)
             self.assertLess(event["angular_residual_deg"], 1e-5)
+
+    def test_tangential_exact_contact_at_station_is_not_missed(self):
+        stations = search_stations(
+            start_utc="2026-06-20T00:00:00Z",
+            end_utc="2026-07-05T00:00:00Z",
+            moving_bodies=["Mercury"],
+        )
+        self.assertEqual(1, len(stations))
+        station = stations[0]
+        tangent_natal = _minimal_natal_bundle(float(station["longitude_deg"]))
+        events = search_transit_to_natal(
+            tangent_natal,
+            start_utc="2026-06-20T00:00:00Z",
+            end_utc="2026-07-05T00:00:00Z",
+            moving_bodies=["Mercury"],
+            natal_targets=["Mercury"],
+            aspects=["conjunction"],
+        )
+        self.assertGreaterEqual(len(events), 1)
+        tangent = min(events, key=lambda e: abs((_parse(e["exact_time_utc"]) - _parse(station["exact_time_utc"])).total_seconds()))
+        self.assertLess(abs((_parse(tangent["exact_time_utc"]) - _parse(station["exact_time_utc"])).total_seconds()), 2.0)
+        self.assertEqual("tangential_station", tangent["root_kind"])
+        self.assertLessEqual(tangent["angular_residual_deg"], 1e-4)
 
     def test_mercury_2026_station_topology_matches_research(self):
         events = search_stations(
@@ -105,7 +127,7 @@ class AstrologyTransitProviderTests(unittest.TestCase):
         self.assertEqual(2, len(events))
         self.assertEqual(["direct_to_retrograde", "retrograde_to_direct"], [e["transition"] for e in events])
 
-    def test_venus_210_degree_crossing_has_three_passages(self):
+    def test_venus_210_degree_crossing_has_ingress_return_and_reingress(self):
         events = search_ingresses(
             start_utc="2026-08-01T00:00:00Z",
             end_utc="2026-12-31T23:59:59Z",
@@ -117,6 +139,10 @@ class AstrologyTransitProviderTests(unittest.TestCase):
         self.assertEqual(
             [("Libra", "Scorpio"), ("Scorpio", "Libra"), ("Libra", "Scorpio")],
             [(e["from_sign"], e["to_sign"]) for e in hits],
+        )
+        self.assertEqual(
+            ["direct_ingress", "retrograde_return", "direct_reingress"],
+            [e["ingress_type"] for e in hits],
         )
 
     def test_transit_bundle_passes_existing_runtime_gate(self):
