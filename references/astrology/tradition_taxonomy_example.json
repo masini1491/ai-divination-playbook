@@ -1,0 +1,188 @@
+{
+  "schema_name": "astrology_tradition_taxonomy",
+  "schema_version": "0.1.0-research",
+  "record_status": "REFERENCE-ONLY",
+  "production_routable": false,
+  "contexts": [
+    {
+      "context_id": "lineage:hellenistic",
+      "dimension": "doctrinal_lineage",
+      "label": "Hellenistic astrology",
+      "parent_id": null,
+      "aliases": ["hellenistic"],
+      "description": "Broad historical/doctrinal lineage container; not treated as one uniform doctrine.",
+      "source_refs": [],
+      "admission_status": "REFERENCE_ONLY",
+      "notes": ["Child contexts may represent identifiable authorial or school-specific frameworks."]
+    },
+    {
+      "context_id": "lineage:hellenistic:ptolemaic",
+      "dimension": "doctrinal_lineage",
+      "label": "Ptolemaic framework",
+      "parent_id": "lineage:hellenistic",
+      "aliases": ["ptolemaic"],
+      "description": "Claims scoped to Ptolemy's identifiable textual framework.",
+      "source_refs": ["source:ptolemy-tetrabiblos-robbins-lacuscurtius"],
+      "admission_status": "REFERENCE_ONLY",
+      "notes": ["Does not stand for all Hellenistic astrology."]
+    },
+    {
+      "context_id": "school:modern:psychological_astrology",
+      "dimension": "interpretive_school",
+      "label": "Psychological astrology",
+      "parent_id": null,
+      "aliases": ["psychological_astrology"],
+      "description": "Modern interpretive school/family using psychological and symbolic framing.",
+      "source_refs": ["source:greene-eternal-triangle-skyscript"],
+      "admission_status": "REFERENCE_ONLY",
+      "notes": ["Must not be projected backward onto historical doctrine without evidence."]
+    },
+    {
+      "context_id": "context:classical_antiquity",
+      "dimension": "historical_context",
+      "label": "Classical antiquity",
+      "parent_id": null,
+      "aliases": [],
+      "description": "Historical context marker only.",
+      "source_refs": [],
+      "admission_status": "REFERENCE_ONLY",
+      "notes": []
+    },
+    {
+      "context_id": "context:early_modern",
+      "dimension": "historical_context",
+      "label": "Early modern",
+      "parent_id": null,
+      "aliases": ["early_modern"],
+      "description": "Historical context for early-modern transmission and doctrine debates.",
+      "source_refs": ["source:ribeiro-2025-universal-astrology"],
+      "admission_status": "REFERENCE_ONLY",
+      "notes": ["Historical period is not itself an interpretive school."]
+    },
+    {
+      "context_id": "context:modern_contemporary",
+      "dimension": "historical_context",
+      "label": "Modern / contemporary",
+      "parent_id": null,
+      "aliases": ["modern"],
+      "description": "Broad historical context; intentionally not a canonical doctrine ID.",
+      "source_refs": [],
+      "admission_status": "REFERENCE_ONLY",
+      "notes": ["The legacy tag 'modern' remains too broad for doctrine routing."]
+    },
+    {
+      "context_id": "meta:history_of_astrology",
+      "dimension": "meta_perspective",
+      "label": "History of astrology",
+      "parent_id": null,
+      "aliases": ["history_of_astrology"],
+      "description": "Scholarly/meta perspective for historical and source-context claims.",
+      "source_refs": ["source:campion-ore-2019", "source:ribeiro-2025-universal-astrology"],
+      "admission_status": "REFERENCE_ONLY",
+      "notes": ["Does not become a natal-reading tradition."]
+    },
+    {
+      "context_id": "synthesis:single_tradition",
+      "dimension": "synthesis_mode",
+      "label": "Single-tradition synthesis",
+      "parent_id": null,
+      "aliases": [],
+      "description": "L5 output remains within one explicitly resolved tradition context.",
+      "source_refs": [],
+      "admission_status": "REFERENCE_ONLY",
+      "notes": []
+    },
+    {
+      "context_id": "synthesis:parallel_comparison",
+      "dimension": "synthesis_mode",
+      "label": "Parallel comparison",
+      "parent_id": null,
+      "aliases": [],
+      "description": "Present multiple traditions side by side without averaging them.",
+      "source_refs": [],
+      "admission_status": "REFERENCE_ONLY",
+      "notes": []
+    },
+    {
+      "context_id": "synthesis:explicit_blend",
+      "dimension": "synthesis_mode",
+      "label": "Explicit blend",
+      "parent_id": null,
+      "aliases": ["blended"],
+      "description": "Blend only when explicitly requested and provenance/conflict boundaries remain visible.",
+      "source_refs": [],
+      "admission_status": "REFERENCE_ONLY",
+      "notes": ["Not a doctrine source by itself."]
+    },
+    {
+      "context_id": "implementation:retrieval_first",
+      "dimension": "implementation_mode",
+      "label": "Retrieval-first implementation",
+      "parent_id": null,
+      "aliases": ["retrieval_first"],
+      "description": "Implementation behavior for evidence retrieval; never satisfies a doctrine requirement by itself.",
+      "source_refs": ["source:wvanderen-astrology-skill-saturn-moon"],
+      "admission_status": "REFERENCE_ONLY",
+      "notes": []
+    }
+  ],
+  "legacy_tag_mappings": [
+    {
+      "tag": "hellenistic",
+      "mapping_status": "canonical",
+      "context_refs": ["lineage:hellenistic"]
+    },
+    {
+      "tag": "ptolemaic",
+      "mapping_status": "canonical",
+      "context_refs": ["lineage:hellenistic:ptolemaic"]
+    },
+    {
+      "tag": "classical",
+      "mapping_status": "ambiguous",
+      "context_refs": [],
+      "reason": "Too broad to route canonically without a more specific lineage decision."
+    },
+    {
+      "tag": "history_of_astrology",
+      "mapping_status": "canonical",
+      "context_refs": ["meta:history_of_astrology"]
+    },
+    {
+      "tag": "early_modern",
+      "mapping_status": "canonical",
+      "context_refs": ["context:early_modern"]
+    },
+    {
+      "tag": "modern",
+      "mapping_status": "ambiguous",
+      "context_refs": ["context:modern_contemporary"],
+      "reason": "Usable as historical context, not as a doctrine/school selector."
+    },
+    {
+      "tag": "psychological_astrology",
+      "mapping_status": "canonical",
+      "context_refs": ["school:modern:psychological_astrology"]
+    },
+    {
+      "tag": "blended",
+      "mapping_status": "conditional",
+      "context_refs": ["synthesis:explicit_blend"],
+      "reason": "Only valid when blending is explicitly selected."
+    },
+    {
+      "tag": "retrieval_first",
+      "mapping_status": "canonical",
+      "context_refs": ["implementation:retrieval_first"]
+    }
+  ],
+  "query_resolution": {
+    "resolution_status_values": ["explicit", "inferred_from_named_school", "unspecified", "ambiguous", "unsupported"],
+    "default_multi_tradition_synthesis_mode": "synthesis:parallel_comparison",
+    "silent_default_tradition_allowed": false,
+    "retrieval_miss_allows_cross_tradition_substitution": false
+  },
+  "privacy": {
+    "contains_real_birth_data": false
+  }
+}
