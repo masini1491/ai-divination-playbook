@@ -41,7 +41,7 @@ class AstrologyProductionContractTests(unittest.TestCase):
         self.assertEqual("2.1.19", data["dependency"]["version"])
         self.assertEqual("MIT", data["dependency"]["license"])
         self.assertEqual("fail_closed", data["calculation_policy"]["dst_ambiguous_wall_time"])
-        self.assertIn("transit event search".replace(" ", "_"), [x.replace("-", "_").replace(" ", "_") for x in data["not_admitted"]])
+        self.assertTrue(any("transit event search" in item for item in data["not_admitted"]))
 
     def test_manifest_keeps_reference_only_pair_registry_qualified(self):
         data = json.loads((ROOT / "ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
@@ -75,6 +75,7 @@ class AstrologyProductionContractTests(unittest.TestCase):
         row = rows["method.astrology"]
         self.assertEqual("ASTROLOGY.md", row["owner"])
         self.assertEqual("explicit-request-only", row["activation"])
+        self.assertEqual("tools/astrology_provider.py", row["natal_provider"])
         self.assertEqual("tools/astrology_runtime.py", row["runtime"])
 
     def test_astrology_method_owner_forbids_model_calculation_and_names_provider(self):
