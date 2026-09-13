@@ -1,0 +1,4 @@
+# Astrology Production v1 deterministic provider dependency.
+# Upstream: cosinekitty/astronomy@865d3da7d8112bbc7911238052c6af4aaf877181
+# License: MIT
+astronomy-engine==2.1.19
