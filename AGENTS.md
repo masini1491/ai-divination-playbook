@@ -1,5 +1,7 @@
 # AGENTS.md
 
+Project AI mode: ChatGPT-Only
+
 ## 儲存庫用途
 
 本儲存庫是一套可重用、公開的 AI 占卜方法與治理 Playbook，用於：
