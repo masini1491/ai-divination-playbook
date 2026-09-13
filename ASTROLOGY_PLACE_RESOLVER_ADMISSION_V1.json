@@ -1,0 +1,43 @@
+{
+  "schema_name": "astrology_place_resolver_admission",
+  "schema_version": "1.0.0",
+  "resolver_id": "geonamescache-city-v1",
+  "resolver_version": "1.0.0",
+  "status": "PRODUCTION_ADMITTED",
+  "scope": ["city_or_locality_name_to_coordinates_and_iana_timezone"],
+  "runtime_owner": "tools/astrology_place_resolver.py",
+  "dependency": {
+    "package": "geonamescache",
+    "version": "3.0.2",
+    "source_repository": "yaph/geonamescache",
+    "source_revision": "df4f6497b321f7981645ab0c5c77d3354c63bd01",
+    "software_license": "MIT",
+    "dataset_origin": "GeoNames",
+    "dataset_license": "CC-BY-4.0",
+    "attribution_required": true
+  },
+  "resolution_policy": {
+    "network_required": false,
+    "default_min_city_population": 500,
+    "supported_population_datasets": [500, 1000, 5000, 15000],
+    "exact_name_or_alternate_name_match": true,
+    "country_code_filter": "optional ISO alpha-2 disambiguator",
+    "ambiguous_name": "fail_closed_with_candidates",
+    "not_found": "fail_closed",
+    "auto_pick_largest_population_when_ambiguous": false
+  },
+  "output": ["geoname_id", "name", "country_code", "admin1_code", "latitude", "longitude", "timezone_name", "population"],
+  "validation": {
+    "production_tests": "tests/test_astrology_place_resolver.py",
+    "fixtures": ["Tokyo, JP", "Taipei, TW", "Springfield ambiguity"]
+  },
+  "not_admitted": [
+    "street_address geocoding",
+    "postal-code geocoding",
+    "building-level geocoding",
+    "network geocoder fallback",
+    "silent city disambiguation",
+    "location accuracy guarantee"
+  ],
+  "astronomical_authority": false
+}
