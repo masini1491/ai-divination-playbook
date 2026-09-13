@@ -5,7 +5,7 @@
 Canonical implementation：
 
 ```text
-masini1491/divination-casting-randomizer/randomizer.py
+runtime/casting/randomizer.py
 ```
 
 支援：Tarot、Meihua、Liuyao three-coin raw cast。六爻 deterministic structured facts 由 `LIUYAO.md` 治理。
@@ -19,7 +19,7 @@ masini1491/divination-casting-randomizer/randomizer.py
 - **多個合法獨立 readings** → `Automatic Batching`。
 - **完整 provenance／audit／保存** → 再讀 `Provenance` + `READING_RECORD.md`。
 - **補占／重占／copy-ready** → `READING_LIFECYCLE.md`／`CHATGPT_OUTPUT.md`。
-- **維護 Randomizer** → 本檔 `Validation`；implementation tests 屬 Randomizer repo。
+- **維護 Randomizer** → 本檔 `Validation` + `runtime/casting/**` + `tests/casting/**`。
 
 不要為形式載入 acquisition／audit／maintenance sections。**Fast path 已足夠時就 STOP。**
 
@@ -73,7 +73,7 @@ PASS 後：
 
 - script + marker 存在可解析；
 - marker SHA-256 與 script 一致；
-- source commit 為 exact SHA 或明確 weaker provenance；
+- source repository / path / commit 符合 marker；
 - algorithm/schema 與 script 一致；
 - 本次方法最低 invariant PASS。
 
@@ -93,8 +93,8 @@ PASS → Fast Path。只有以下 trigger 才重新確認 Randomizer source：�
 
 ```text
 Python capability
-→ GitHub Connect resolve Randomizer ref → exact commit
-→ GitHub Connect acquire exact revision randomizer.py
+→ GitHub Connect resolve ai-divination-playbook ref → exact commit
+→ GitHub Connect acquire exact revision runtime/casting/randomizer.py
 → bounded smoke
 → write fixed cache + verification marker
 → import
@@ -104,8 +104,10 @@ Python capability
 Marker 最低：
 
 ```json
-{"verified":true,"cache_locator_version":2,"runtime_source_path":"masini1491/divination-casting-randomizer/randomizer.py","runtime_source_ref":"main","runtime_source_commit":"<SHA or unknown>","runtime_copy_sha256":"<sha256>","algorithm_version":"<version>","schema_version":"<version>","supported_methods":["tarot","plum","liuyao"],"tarot_deck_size":78}
+{"verified":true,"cache_locator_version":3,"runtime_source_repository":"masini1491/ai-divination-playbook","runtime_source_path":"runtime/casting/randomizer.py","runtime_source_ref":"main","runtime_source_commit":"<SHA or unknown>","runtime_copy_sha256":"<sha256>","algorithm_version":"<version>","schema_version":"<version>","supported_methods":["tarot","plum","liuyao"],"tarot_deck_size":78}
 ```
+
+`cache_locator_version = 3` 是 repository/path authority cutover 的 locator revision；**不是** Randomizer algorithm/schema revision。
 
 GitHub repository acquisition **只走 GitHub Connect**。connector unavailable／blocked 且無 verified cache → `ACCESS BLOCKED`。禁止 public HTML、raw URL、generic Web、Python HTTP、curl/wget/git clone。
 
@@ -218,7 +220,7 @@ Contract fixed
 
 若 batch 部分 child 已可信固定、其他 child failure，不得重跑整批覆蓋已固定 facts；保留可信 child，對 unresolved child 最小修復或 fail closed。
 
-若 canonical source 已取得但 Python 不可用，可改用已部署 Randomizer Web UI 或使用者自行抽／起；若 GitHub source acquisition 本身被阻擋，仍遵守 `ACCESS BLOCKED`。
+若 canonical source 已取得但 Python 不可用，可改用仍在線的 deployed Randomizer Web UI 或使用者自行抽／起；這是 runtime fallback，不改變 GitHub repository authority。若 GitHub source acquisition 本身被阻擋，仍遵守 `ACCESS BLOCKED`。
 
 Runtime 快、batch 方便都不創造補占 authority；同題／新題／補占仍由 `READING_LIFECYCLE.md` 決定。
 
@@ -227,14 +229,17 @@ Runtime 快、batch 方便都不創造補占 authority；同題／新題／補�
 Canonical Randomizer version semantics：
 
 ```text
+source: divination-casting-randomizer-python
 algorithm_version: 2
 schema_version: 4
 ai_schema_version: 1  # compact transport only
 ```
 
+`source` 是 logical runtime identity；Phase 3 只改 repository/path authority，不改 logical identity 或 algorithm/schema versions。
+
 Runtime timestamp：`generated_at_utc` + `generated_at_taipei` + `Asia/Taipei`；GitHub commit time 不是 draw time。普通 `ai-json` 至少傳 Taipei timestamp；正式保存若需要 UTC，從 full canonical payload 取得，不自行捏造。
 
-共同 provenance：source/tool、algorithm/schema、source ref/commit、actual draw/cast timestamp/timezone。Meihua 另存 A/B；Liuyao 另存 raw six lines + bottom-to-top；deterministic engine provenance 分開保存。
+共同 provenance：source/tool、algorithm/schema、source repository/path/ref/commit（能取得時）、actual draw/cast timestamp/timezone。Phase 3 之後新 execution 的 `runtime_source_commit` 指向包含 `runtime/casting/randomizer.py` 的 `ai-divination-playbook` commit；歷史 legacy-repo commit provenance 保持有效，不重寫。Meihua 另存 A/B；Liuyao 另存 raw six lines + bottom-to-top；deterministic engine provenance 分開保存。
 
 使用者可見預設只顯示必要結果、實際時間與 `Canonical Randomizer v2`，不要 dump audit metadata。
 
@@ -250,7 +255,9 @@ Common：
 - cache marker/hash/version/invariant reuse；PASS 不重抓 source；
 - in-memory reuse 不重用結果；new question fresh RNG；
 - `--repeat`／batch result count/order/independent identity 正確；
-- GitHub acquisition only through GitHub Connect。
+- GitHub acquisition only through GitHub Connect；
+- `PLAYBOOK_INDEX.json` 與 method owners 都指向 `runtime/casting/randomizer.py`；
+- Phase 2 snapshot parity gate 仍保留 legacy import provenance，直到 migration retirement 完成。
 
 Tarot：78 unique、count boundary、單題無重複、multi-reading independent shuffle、orientation legal。
 
@@ -258,4 +265,4 @@ Meihua：A/B range、moving line 1～6、64 mapping complete。
 
 Liuyao：six bottom-to-top lines、3 coins/line、coin ∈ {2,3}、value ∈ {6,7,8,9}、6/9 changing、7/8 static、theoretical 1/8–3/8–3/8–1/8、Randomizer 不產生納甲 facts。
 
-Implementation tests 屬 Randomizer repo；Playbook 負責 runtime provenance、authority boundary、fast-path governance 與 fail-closed。
+Implementation tests 現由本 Repo `tests/casting/**` 維護；legacy Randomizer repo 保留 rollback／deployment compatibility，直到後續 retirement gates 完成。
