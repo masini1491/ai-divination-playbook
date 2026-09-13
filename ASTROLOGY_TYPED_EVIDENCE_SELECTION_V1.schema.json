@@ -1,0 +1,159 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ASTROLOGY_TYPED_EVIDENCE_SELECTION_V1.schema.json",
+  "title": "Astrology Production v1 Typed Evidence Selection",
+  "description": "Successful deterministic evidence-selection artifact. This artifact records exact selected fact and claim references plus selection provenance; it does not contain free-text interpretation authority.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_name",
+    "schema_version",
+    "status",
+    "selection_allowed",
+    "selector",
+    "question_id",
+    "question",
+    "fact_refs",
+    "claim_requests",
+    "unsupported_factors",
+    "selection_provenance"
+  ],
+  "properties": {
+    "schema_name": {"const": "astrology_typed_evidence_selection"},
+    "schema_version": {"const": "1.0.0"},
+    "status": {"const": "selected"},
+    "selection_allowed": {"const": true},
+    "selector": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "selector_id",
+        "selector_version",
+        "authority",
+        "natural_language_understanding_authority",
+        "semantic_meaning_authority",
+        "source_admission_authority",
+        "final_prose_authority"
+      ],
+      "properties": {
+        "selector_id": {"const": "astrology-typed-evidence-selector-v1"},
+        "selector_version": {"const": "1.0.0"},
+        "authority": {"const": "deterministic_evidence_selection_only"},
+        "natural_language_understanding_authority": {"const": false},
+        "semantic_meaning_authority": {"const": false},
+        "source_admission_authority": {"const": false},
+        "final_prose_authority": {"const": false}
+      }
+    },
+    "question_id": {"type": "string", "minLength": 1},
+    "question": {"type": "string", "minLength": 1},
+    "focus": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "exclusions": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "fact_refs": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/fact_ref"}
+    },
+    "claim_requests": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/claim_request"}
+    },
+    "unsupported_factors": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/unsupported_factor"}
+    },
+    "selection_provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fact_selectors", "claim_selectors"],
+      "properties": {
+        "fact_selectors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["selector_id", "matched_fact_refs"],
+            "properties": {
+              "selector_id": {"type": "string", "minLength": 1},
+              "matched_fact_refs": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {"$ref": "#/$defs/fact_ref"}
+              }
+            }
+          }
+        },
+        "claim_selectors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["selector_id", "matched_claim_refs"],
+            "properties": {
+              "selector_id": {"type": "string", "minLength": 1},
+              "matched_claim_refs": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["registry_record_id", "claim_id"],
+                  "properties": {
+                    "registry_record_id": {"type": "string", "minLength": 1},
+                    "claim_id": {"type": "string", "minLength": 1}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "fact_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["bundle", "fact_id"],
+      "properties": {
+        "bundle": {"enum": ["natal", "transit"]},
+        "fact_id": {"type": "string", "minLength": 1}
+      }
+    },
+    "claim_request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["registry_record_id", "claim_id", "fact_refs"],
+      "properties": {
+        "registry_record_id": {"type": "string", "minLength": 1},
+        "claim_id": {"type": "string", "minLength": 1},
+        "fact_refs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/fact_ref"}
+        }
+      }
+    },
+    "unsupported_factor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["factor", "reason"],
+      "properties": {
+        "factor": {"type": "string", "minLength": 1},
+        "reason": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

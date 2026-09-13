@@ -1,0 +1,216 @@
+from __future__ import annotations
+
+import json
+import unittest
+from pathlib import Path
+
+from tools.astrology_evidence_selector import (
+    AstrologyEvidenceSelectionError,
+    select_evidence,
+    selection_to_interpretation_request,
+)
+from tools.astrology_interpretation_handoff import build_handoff
+from tools.astrology_orchestrator import run_request
+
+ROOT = Path(__file__).resolve().parents[1]
+NATAL_READING = ROOT / "tests" / "fixtures" / "astrology_pipeline_reading_request_natal_v1.json"
+TRANSIT_READING = ROOT / "tests" / "fixtures" / "astrology_reading_request_transit_v1.json"
+
+
+def load(path: Path) -> dict:
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def natal_typed_request() -> dict:
+    return {
+        "schema_name": "astrology_typed_evidence_selection_request",
+        "schema_version": "1.0.0",
+        "question_id": "typed-natal-seventh",
+        "question": "What symbolic relationship theme is supported by the admitted seventh-house evidence?",
+        "focus": ["seventh house"],
+        "exclusions": ["specific partner motives", "guaranteed relationship outcomes"],
+        "fact_selectors": [
+            {
+                "selector_id": "fact-house-7",
+                "selector_kind": "house",
+                "bundle": "natal",
+                "cardinality": "exactly_one",
+                "house_number": 7,
+            }
+        ],
+        "claim_selectors": [
+            {
+                "selector_id": "claim-seventh-marriage",
+                "registry_record_id": "first-seventh-house-axis-research-v1",
+                "claim_type": "historical_doctrine",
+                "applies_to_all": ["natal", "seventh house", "marriage"],
+                "tradition_context_refs_any": ["lineage:hellenistic"],
+                "fact_selector_ids": ["fact-house-7"],
+            }
+        ],
+        "unsupported_factors": [
+            {
+                "factor": "specific partner motives",
+                "reason": "House symbolism does not establish another person's private motives.",
+            }
+        ],
+    }
+
+
+class AstrologyEvidenceSelectorTests(unittest.TestCase):
+    def test_natal_typed_selection_materializes_existing_handoff_request(self):
+        run = run_request(load(NATAL_READING))
+        selection = select_evidence(run, natal_typed_request(), repo_root=ROOT)
+
+        self.assertEqual("selected", selection["status"])
+        self.assertTrue(selection["selection_allowed"])
+        self.assertEqual(
+            "deterministic_evidence_selection_only",
+            selection["selector"]["authority"],
+        )
+        self.assertFalse(selection["selector"]["natural_language_understanding_authority"])
+        self.assertFalse(selection["selector"]["semantic_meaning_authority"])
+        self.assertEqual(
+            [{"bundle": "natal", "fact_id": "fact:house:7"}],
+            selection["fact_refs"],
+        )
+        self.assertEqual(
+            "claim:valens-seventh-place-marriage",
+            selection["claim_requests"][0]["claim_id"],
+        )
+
+        handoff = build_handoff(
+            run,
+            selection_to_interpretation_request(selection),
+            repo_root=ROOT,
+        )
+        self.assertEqual("ready_for_bounded_interpretation", handoff["status"])
+        self.assertEqual("fact:house:7", handoff["selected_facts"][0]["fact"]["fact_id"])
+
+    def test_transit_typed_selection_uses_runtime_event_fields_not_fact_id(self):
+        run = run_request(load(TRANSIT_READING))
+        event = next(
+            row
+            for row in run["fact_bundles"]["transit"]["facts"]["events"]
+            if row.get("event_kind") == "transit_to_natal"
+        )
+        typed = {
+            "schema_name": "astrology_typed_evidence_selection_request",
+            "schema_version": "1.0.0",
+            "question_id": "typed-transit-boundary",
+            "question": "What deterministic transit fact is present and what production boundary applies?",
+            "fact_selectors": [
+                {
+                    "selector_id": "transit-contact",
+                    "selector_kind": "event",
+                    "bundle": "transit",
+                    "cardinality": "exactly_one",
+                    "event_kind": "transit_to_natal",
+                    "moving_body": event["moving_body"],
+                    "natal_target": event["natal_target"],
+                    "aspect": event["aspect"],
+                    "passage_index": event["passage_index"],
+                }
+            ],
+            "claim_selectors": [
+                {
+                    "selector_id": "transit-policy",
+                    "registry_record_id": "transit-interpretation-research-v1",
+                    "claim_type": "transit_policy",
+                    "applies_to_all": ["transit", "exact passage"],
+                    "fact_selector_ids": ["transit-contact"],
+                }
+            ],
+            "unsupported_factors": [],
+        }
+
+        selection = select_evidence(run, typed, repo_root=ROOT)
+        self.assertEqual(event["fact_id"], selection["fact_refs"][0]["fact_id"])
+        self.assertEqual(
+            "claim:project-transit-facts-before-interpretation",
+            selection["claim_requests"][0]["claim_id"],
+        )
+
+    def test_ambiguous_claim_selector_fails_closed(self):
+        run = run_request(load(NATAL_READING))
+        typed = natal_typed_request()
+        selector = typed["claim_selectors"][0]
+        selector.pop("registry_record_id")
+        selector.pop("tradition_context_refs_any")
+        selector["applies_to_all"] = ["natal", "seventh house", "marriage"]
+
+        with self.assertRaisesRegex(AstrologyEvidenceSelectionError, "ambiguous"):
+            select_evidence(run, typed, repo_root=ROOT)
+
+    def test_fact_claim_applicability_mismatch_fails_closed(self):
+        run = run_request(load(NATAL_READING))
+        typed = natal_typed_request()
+        typed["fact_selectors"][0]["house_number"] = 12
+
+        with self.assertRaisesRegex(
+            AstrologyEvidenceSelectionError,
+            "matched no admitted claims after fact-applicability binding",
+        ):
+            select_evidence(run, typed, repo_root=ROOT)
+
+    def test_unknown_fact_selector_reference_is_rejected(self):
+        run = run_request(load(NATAL_READING))
+        typed = natal_typed_request()
+        typed["claim_selectors"][0]["fact_selector_ids"] = ["missing-selector"]
+
+        with self.assertRaisesRegex(AstrologyEvidenceSelectionError, "unknown selector"):
+            select_evidence(run, typed, repo_root=ROOT)
+
+    def test_reference_only_claim_cannot_bypass_typed_applicability(self):
+        run = run_request(load(TRANSIT_READING))
+        event = next(
+            row
+            for row in run["fact_bundles"]["transit"]["facts"]["events"]
+            if row.get("event_kind") == "transit_to_natal"
+        )
+        typed = {
+            "schema_name": "astrology_typed_evidence_selection_request",
+            "schema_version": "1.0.0",
+            "question_id": "typed-reference-only-block",
+            "question": "Use the reference-only transit meaning.",
+            "fact_selectors": [
+                {
+                    "selector_id": "transit-contact",
+                    "selector_kind": "event",
+                    "bundle": "transit",
+                    "cardinality": "exactly_one",
+                    "event_kind": "transit_to_natal",
+                    "moving_body": event["moving_body"],
+                    "natal_target": event["natal_target"],
+                    "aspect": event["aspect"],
+                    "passage_index": event["passage_index"],
+                }
+            ],
+            "claim_selectors": [
+                {
+                    "selector_id": "reference-only-meaning",
+                    "registry_record_id": "transit-interpretation-research-v1",
+                    "claim_type": "transit_meaning",
+                    "applies_to_all": ["transit", "natal promise", "activation"],
+                    "fact_selector_ids": ["transit-contact"],
+                }
+            ],
+        }
+
+        with self.assertRaisesRegex(
+            AstrologyEvidenceSelectionError,
+            "matched no admitted claims after fact-applicability binding",
+        ):
+            select_evidence(run, typed, repo_root=ROOT)
+
+    def test_unadmitted_registry_is_rejected(self):
+        run = run_request(load(NATAL_READING))
+        typed = natal_typed_request()
+        typed["claim_selectors"][0]["registry_record_id"] = "high-value-planet-aspects-research-v1"
+
+        with self.assertRaisesRegex(AstrologyEvidenceSelectionError, "unadmitted registry"):
+            select_evidence(run, typed, repo_root=ROOT)
+
+
+if __name__ == "__main__":
+    unittest.main()

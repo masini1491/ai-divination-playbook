@@ -1,0 +1,165 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ASTROLOGY_TYPED_EVIDENCE_SELECTION_REQUEST_V1.schema.json",
+  "title": "Astrology Production v1 Typed Evidence Selection Request",
+  "description": "Closed-world typed request for deterministic selection of already-admitted Astrology facts and interpretation claims. The selector does not infer selectors from free text, calculate chart facts, admit research sources, or author interpretation prose.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_name",
+    "schema_version",
+    "question_id",
+    "question",
+    "fact_selectors",
+    "claim_selectors"
+  ],
+  "properties": {
+    "schema_name": {"const": "astrology_typed_evidence_selection_request"},
+    "schema_version": {"const": "1.0.0"},
+    "question_id": {"type": "string", "minLength": 1},
+    "question": {"type": "string", "minLength": 1},
+    "focus": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "exclusions": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "fact_selectors": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "oneOf": [
+          {"$ref": "#/$defs/object_selector"},
+          {"$ref": "#/$defs/house_selector"},
+          {"$ref": "#/$defs/aspect_selector"},
+          {"$ref": "#/$defs/event_selector"}
+        ]
+      }
+    },
+    "claim_selectors": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/claim_selector"}
+    },
+    "unsupported_factors": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/unsupported_factor"}
+    }
+  },
+  "$defs": {
+    "selector_common": {
+      "type": "object",
+      "properties": {
+        "selector_id": {"type": "string", "minLength": 1},
+        "cardinality": {"enum": ["exactly_one", "one_or_more"]}
+      }
+    },
+    "object_selector": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["selector_id", "selector_kind", "bundle", "cardinality", "object_id"],
+      "properties": {
+        "selector_id": {"type": "string", "minLength": 1},
+        "selector_kind": {"const": "object"},
+        "bundle": {"enum": ["natal", "transit"]},
+        "cardinality": {"enum": ["exactly_one", "one_or_more"]},
+        "object_id": {"type": "string", "minLength": 1},
+        "object_type": {"enum": ["planet", "point", "angle"]}
+      }
+    },
+    "house_selector": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["selector_id", "selector_kind", "bundle", "cardinality", "house_number"],
+      "properties": {
+        "selector_id": {"type": "string", "minLength": 1},
+        "selector_kind": {"const": "house"},
+        "bundle": {"const": "natal"},
+        "cardinality": {"enum": ["exactly_one", "one_or_more"]},
+        "house_number": {"type": "integer", "minimum": 1, "maximum": 12}
+      }
+    },
+    "aspect_selector": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "selector_id",
+        "selector_kind",
+        "bundle",
+        "cardinality",
+        "left_object_id",
+        "right_object_id",
+        "aspect"
+      ],
+      "properties": {
+        "selector_id": {"type": "string", "minLength": 1},
+        "selector_kind": {"const": "aspect"},
+        "bundle": {"const": "natal"},
+        "cardinality": {"enum": ["exactly_one", "one_or_more"]},
+        "left_object_id": {"type": "string", "minLength": 1},
+        "right_object_id": {"type": "string", "minLength": 1},
+        "aspect": {"enum": ["conjunction", "opposition", "trine", "square", "sextile"]}
+      }
+    },
+    "event_selector": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["selector_id", "selector_kind", "bundle", "cardinality", "event_kind"],
+      "properties": {
+        "selector_id": {"type": "string", "minLength": 1},
+        "selector_kind": {"const": "event"},
+        "bundle": {"const": "transit"},
+        "cardinality": {"enum": ["exactly_one", "one_or_more"]},
+        "event_kind": {"enum": ["transit_to_natal", "station", "ingress"]},
+        "moving_body": {"type": "string", "minLength": 1},
+        "natal_target": {"type": "string", "minLength": 1},
+        "aspect": {"enum": ["conjunction", "opposition", "trine", "square", "sextile"]},
+        "passage_index": {"type": "integer", "minimum": 1},
+        "transition": {"enum": ["direct_to_retrograde", "retrograde_to_direct", "unresolved"]},
+        "ingress_type": {"enum": ["direct_ingress", "retrograde_return", "direct_reingress"]},
+        "from_sign": {"type": "string", "minLength": 1},
+        "to_sign": {"type": "string", "minLength": 1},
+        "exact_time_utc": {"type": "string", "minLength": 1}
+      }
+    },
+    "claim_selector": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["selector_id", "claim_type", "applies_to_all", "fact_selector_ids"],
+      "properties": {
+        "selector_id": {"type": "string", "minLength": 1},
+        "registry_record_id": {"type": "string", "minLength": 1},
+        "claim_type": {"type": "string", "minLength": 1},
+        "applies_to_all": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "tradition_context_refs_any": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "fact_selector_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "unsupported_factor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["factor", "reason"],
+      "properties": {
+        "factor": {"type": "string", "minLength": 1},
+        "reason": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}
