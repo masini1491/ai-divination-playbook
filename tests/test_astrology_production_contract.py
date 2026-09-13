@@ -61,7 +61,7 @@ class AstrologyProductionContractTests(unittest.TestCase):
     def test_astrology_method_owner_forbids_llm_chart_calculation(self):
         text = (ROOT / "ASTROLOGY.md").read_text(encoding="utf-8")
         self.assertIn("模型不得手算星盤", text)
-        self.assertIn("built-in production ephemeris calculator", text)
+        self.assertIn("不內建 production ephemeris calculator", text)
         self.assertIn("FACT ACQUISITION UNAVAILABLE", text)
 
 
