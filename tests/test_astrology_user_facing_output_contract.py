@@ -7,7 +7,7 @@ from pathlib import Path
 from tools.astrology_output_guard import build_output
 
 ROOT = Path(__file__).resolve().parents[1]
-SCHEMA_PATH = ROOT / "ASTROLOGY_USER_FACING_OUTPUT_V1.schema.json"
+SCHEMA_PATH = ROOT / "schemas" / "astrology" / "ASTROLOGY_USER_FACING_OUTPUT_V1.schema.json"
 
 
 def _handoff() -> dict:
@@ -138,7 +138,10 @@ class AstrologyUserFacingOutputContractTests(unittest.TestCase):
         output = manifest["orchestration"]["output_delivery"]
         rows = {row["id"]: row for row in index["capabilities"]}
         method = rows["method.astrology"]
-        self.assertEqual("ASTROLOGY_USER_FACING_OUTPUT_V1.schema.json", output["output_schema"])
+        self.assertEqual(
+            "schemas/astrology/ASTROLOGY_USER_FACING_OUTPUT_V1.schema.json",
+            output["output_schema"],
+        )
         self.assertEqual("astrology_user_facing_output@1.0.0", output["output_schema_id"])
         self.assertEqual(output["output_schema"], method["user_facing_output_schema"])
         self.assertFalse(output["semantic_interpretation_authority"])

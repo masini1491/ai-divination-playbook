@@ -5,8 +5,9 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-SCHEMA = ROOT / "ASTROLOGY_TYPED_READING_PIPELINE_RUN_V1.schema.json"
-LEGACY_SCHEMA = ROOT / "ASTROLOGY_READING_PIPELINE_RUN_V1.schema.json"
+SCHEMA_ROOT = ROOT / "schemas" / "astrology"
+SCHEMA = SCHEMA_ROOT / "ASTROLOGY_TYPED_READING_PIPELINE_RUN_V1.schema.json"
+LEGACY_SCHEMA = SCHEMA_ROOT / "ASTROLOGY_READING_PIPELINE_RUN_V1.schema.json"
 MANIFEST = ROOT / "ASTROLOGY_PRODUCTION_ADMISSION_V1.json"
 INDEX = ROOT / "PLAYBOOK_INDEX.json"
 
@@ -67,7 +68,7 @@ class AstrologyTypedPipelineContractTests(unittest.TestCase):
         index = load(INDEX)
         astrology = next(row for row in index["capabilities"] if row["id"] == "method.astrology")
         self.assertEqual(
-            "ASTROLOGY_TYPED_READING_PIPELINE_RUN_V1.schema.json",
+            "schemas/astrology/ASTROLOGY_TYPED_READING_PIPELINE_RUN_V1.schema.json",
             astrology["typed_pipeline_run_schema"],
         )
         self.assertEqual(
