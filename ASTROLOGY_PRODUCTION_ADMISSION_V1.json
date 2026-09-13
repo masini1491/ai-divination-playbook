@@ -39,6 +39,7 @@
       "runtime_owner": "tools/astrology_output_guard.py",
       "draft_schema": "ASTROLOGY_OUTPUT_DRAFT_V1.schema.json",
       "draft_schema_id": "astrology_output_draft@1.0.0",
+      "output_schema": "ASTROLOGY_USER_FACING_OUTPUT_V1.schema.json",
       "output_schema_id": "astrology_user_facing_output@1.0.0",
       "authority": "provenance_and_pre_send_validation_only",
       "requires_admitted_interpretation_handoff": true,
@@ -167,7 +168,7 @@
   "transit_place_admission_baseline": "01a159990d2086f3a47be2e299d2e7f04a0e1758",
   "admission_decision": {
     "decision": "admit_bounded_astrology_v1_with_end_to_end_user_facing_pipeline",
-    "rationale": "Astrology Production v1 admits the existing natal/transit/place-resolution calculation path, composition-only reading orchestration, evidence-packaging interpretation handoff, provenance/pre-send output guard, and one composition-only end-to-end pipeline. The output guard validates only references already selected by the admitted handoff, preserves question identity, unsupported factors, disclosures, conflicts and source provenance, and requires explicit Pre-Send attestations. Semantic interpretation and final wording remain governed by ASTROLOGY.md and CHATGPT_OUTPUT.md; the deterministic adapters gain no independent astrological meaning, final-prose, scientific-validity, or private-storage authority.",
+    "rationale": "Astrology Production v1 admits the existing natal/transit/place-resolution calculation path, composition-only reading orchestration, evidence-packaging interpretation handoff, provenance/pre-send output guard, and one composition-only end-to-end pipeline. The output guard validates only references already selected by the admitted handoff, preserves question identity, unsupported factors, disclosures, conflicts and source provenance, and requires explicit Pre-Send attestations. ASTROLOGY_USER_FACING_OUTPUT_V1.schema.json now declares the successful public artifact shape without granting semantic authority. Semantic interpretation and final wording remain governed by ASTROLOGY.md and CHATGPT_OUTPUT.md; the deterministic adapters gain no independent astrological meaning, final-prose, scientific-validity, or private-storage authority.",
     "scientific_predictive_validity_claimed": false
   }
 }
