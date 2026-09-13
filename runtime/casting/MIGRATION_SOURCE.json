@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "authority": "migration-candidate-only",
+  "source_repository": "masini1491/divination-casting-randomizer",
+  "source_commit": "17cc4c84fd5c09b60de721b671c1d6511ab3d0e9",
+  "source_tree": "f29bde4b6556fadd15ad69bd627f134a299cf94d",
+  "candidate_root": "runtime/casting",
+  "production_files": {
+    "API.md": "51d6dad99c6255ad0897c4ca0d8ba2d909e99d62",
+    "api/__init__.py": "d79cebc3faf6afade6c32ce8d1a58ac530bc1deb",
+    "api/cast.py": "89d0934d62ec4ca8860e5940d665c02a3a7d3b9c",
+    "contract_vectors.json": "831fd7e8758d3b4f6ac92c17c758582cf4685c51",
+    "index.html": "595ce514c3e4446b1b900d86a888cb5fc8c9b111",
+    "openapi.json": "6100b09c9a86527302dfc3584be3f04ad9a00a90",
+    "randomizer.py": "4bc4677459edec57e5dcb73d2d48e08fc3058663"
+  },
+  "runtime_identity": {
+    "source": "divination-casting-randomizer-python",
+    "algorithm_version": "2",
+    "schema_version": "4",
+    "ai_schema_version": "1"
+  },
+  "cutover_state": "not-authoritative",
+  "production_deployment_source": "legacy-repository"
+}

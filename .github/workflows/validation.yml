@@ -28,3 +28,23 @@ jobs:
 
       - name: Run structural checker
         run: python tools/playbook_check.py .
+
+  casting-candidate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Validate migration source manifest
+        run: python -m json.tool runtime/casting/MIGRATION_SOURCE.json > /dev/null
+
+      - name: Validate OpenAPI JSON
+        run: python -m json.tool runtime/casting/openapi.json > /dev/null
+
+      - name: Run Randomizer candidate unit and parity tests
+        run: python -m unittest discover -s tests/casting -v
