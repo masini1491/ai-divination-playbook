@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ASTROLOGY_TYPED_READING_PIPELINE_RUN_V1.schema.json",
+  "title": "Astrology Production v1 Typed Reading Pipeline Run",
+  "description": "Closed-world successful composition envelope for the typed-evidence Astrology path. The pipeline exposes deterministic evidence-selection provenance without changing the legacy exact-reference pipeline contract.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_name", "schema_version", "status", "output_allowed", "pipeline", "stages", "rendered_text"],
+  "properties": {
+    "schema_name": {"const": "astrology_typed_reading_pipeline_run"},
+    "schema_version": {"const": "1.0.0"},
+    "status": {"const": "ready_for_user"},
+    "output_allowed": {"const": true},
+    "pipeline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pipeline_id",
+        "pipeline_version",
+        "authority",
+        "free_text_query_resolution",
+        "semantic_selection_authored",
+        "final_text_authored",
+        "reading_record_storage"
+      ],
+      "properties": {
+        "pipeline_id": {"const": "astrology-production-typed-reading-pipeline-v1"},
+        "pipeline_version": {"const": "1.0.0"},
+        "authority": {"const": "composition_only"},
+        "free_text_query_resolution": {"const": false},
+        "semantic_selection_authored": {"const": false},
+        "final_text_authored": {"const": false},
+        "reading_record_storage": {"const": "external_only"}
+      }
+    },
+    "stages": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reading_run", "evidence_selection", "interpretation_handoff", "user_facing_output"],
+      "properties": {
+        "reading_run": {
+          "type": "object",
+          "required": ["schema_name", "schema_version"],
+          "properties": {
+            "schema_name": {"const": "astrology_reading_run"},
+            "schema_version": {"const": "1.0.0"}
+          }
+        },
+        "evidence_selection": {
+          "type": "object",
+          "required": ["schema_name", "schema_version", "status", "selection_allowed"],
+          "properties": {
+            "schema_name": {"const": "astrology_typed_evidence_selection"},
+            "schema_version": {"const": "1.0.0"},
+            "status": {"const": "selected"},
+            "selection_allowed": {"const": true}
+          }
+        },
+        "interpretation_handoff": {
+          "type": "object",
+          "required": ["schema_name", "schema_version"],
+          "properties": {
+            "schema_name": {"const": "astrology_interpretation_handoff"},
+            "schema_version": {"const": "1.0.0"}
+          }
+        },
+        "user_facing_output": {
+          "type": "object",
+          "required": ["schema_name", "schema_version"],
+          "properties": {
+            "schema_name": {"const": "astrology_user_facing_output"},
+            "schema_version": {"const": "1.0.0"}
+          }
+        }
+      }
+    },
+    "rendered_text": {"type": "string", "minLength": 1}
+  }
+}
