@@ -209,7 +209,47 @@ The run ended `FAIL` only because the current research README already linked to 
 
 Therefore #234 is **not** success evidence and must not be represented as such. It is useful failure-boundary evidence showing that the calculation tests passed while a repository-link integrity requirement remained open.
 
-## 8. Evidence limits
+## 8. Complete integration run — GitHub Actions #235
+
+After adding this completion record and thereby closing the README link-integrity gap:
+
+```text
+run: Validate Playbook #235
+run id: 34761616256
+job id: 103735341769
+head: 9a3c8c612f0e26279839707f3a5435f6488cd3a0
+PR merge-ref: 4aebff6472ccb9057f7197b006b92e071da52be4
+Ubuntu: 24.04.5 LTS
+Python: 3.12.14
+git: 2.55.0
+runner: 2.337.0
+```
+
+Dependencies actually installed:
+
+```text
+astronomy-engine-2.1.19
+geonamescache-3.0.2
+typing-extensions-4.16.0
+```
+
+Results:
+
+```text
+place resolver                  5 / 5 PASS
+production admission contract  12 / 12 PASS
+natal provider                 13 / 13 PASS
+runtime gate                   15 / 15 PASS
+transit provider                8 / 8 PASS
+--------------------------------------------
+Astrology production relevant  53 / 53 PASS
+whole root suite               83 / 83 PASS
+playbook structure             PASS
+```
+
+#235 is the canonical complete-integration execution evidence for the implemented calculation path at that head. A subsequent final-head CI is still required if this evidence-record update changes the branch head before merge.
+
+## 9. Evidence limits
 
 These tests establish:
 
