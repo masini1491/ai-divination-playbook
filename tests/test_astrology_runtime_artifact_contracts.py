@@ -7,14 +7,15 @@ from pathlib import Path
 from tools.astrology_reading_pipeline import run_pipeline
 
 ROOT = Path(__file__).resolve().parents[1]
+SCHEMA_ROOT = ROOT / "schemas" / "astrology"
 READING = ROOT / "tests" / "fixtures" / "astrology_pipeline_reading_request_natal_v1.json"
 INTERPRETATION = ROOT / "tests" / "fixtures" / "astrology_pipeline_interpretation_request_natal_v1.json"
 OUTPUT = ROOT / "tests" / "fixtures" / "astrology_pipeline_output_draft_natal_v1.json"
 
 SCHEMAS = {
-    "reading_run": ROOT / "ASTROLOGY_READING_RUN_V1.schema.json",
-    "interpretation_handoff": ROOT / "ASTROLOGY_INTERPRETATION_HANDOFF_V1.schema.json",
-    "pipeline_run": ROOT / "ASTROLOGY_READING_PIPELINE_RUN_V1.schema.json",
+    "reading_run": SCHEMA_ROOT / "ASTROLOGY_READING_RUN_V1.schema.json",
+    "interpretation_handoff": SCHEMA_ROOT / "ASTROLOGY_INTERPRETATION_HANDOFF_V1.schema.json",
+    "pipeline_run": SCHEMA_ROOT / "ASTROLOGY_READING_PIPELINE_RUN_V1.schema.json",
 }
 
 
@@ -93,10 +94,13 @@ class AstrologyRuntimeArtifactContractTests(unittest.TestCase):
         row = {item["id"]: item for item in index["capabilities"]}["method.astrology"]
         orchestration = manifest["orchestration"]
 
-        self.assertEqual("ASTROLOGY_READING_RUN_V1.schema.json", orchestration["run_schema"])
+        self.assertEqual(
+            "schemas/astrology/ASTROLOGY_READING_RUN_V1.schema.json",
+            orchestration["run_schema"],
+        )
         self.assertEqual(orchestration["run_schema"], row["reading_run_schema"])
         self.assertEqual(
-            "ASTROLOGY_INTERPRETATION_HANDOFF_V1.schema.json",
+            "schemas/astrology/ASTROLOGY_INTERPRETATION_HANDOFF_V1.schema.json",
             orchestration["interpretation_handoff"]["handoff_schema"],
         )
         self.assertEqual(
@@ -104,7 +108,7 @@ class AstrologyRuntimeArtifactContractTests(unittest.TestCase):
             row["interpretation_handoff_schema"],
         )
         self.assertEqual(
-            "ASTROLOGY_READING_PIPELINE_RUN_V1.schema.json",
+            "schemas/astrology/ASTROLOGY_READING_PIPELINE_RUN_V1.schema.json",
             orchestration["end_to_end_pipeline"]["run_schema"],
         )
         self.assertEqual(orchestration["end_to_end_pipeline"]["run_schema"], row["pipeline_run_schema"])
