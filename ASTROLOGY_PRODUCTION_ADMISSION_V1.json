@@ -16,7 +16,24 @@
     "authority": "composition_only",
     "runtime_gate_required_for_every_generated_bundle": true,
     "reading_record_bridge": "READING_RECORD.md",
-    "reading_record_storage": "external_only"
+    "reading_record_storage": "external_only",
+    "interpretation_handoff": {
+      "adapter_id": "astrology-interpretation-handoff-v1",
+      "runtime_owner": "tools/astrology_interpretation_handoff.py",
+      "request_schema": "ASTROLOGY_INTERPRETATION_REQUEST_V1.schema.json",
+      "request_schema_id": "astrology_interpretation_request@1.0.0",
+      "handoff_schema_id": "astrology_interpretation_handoff@1.0.0",
+      "authority": "evidence_packaging_only",
+      "requires_admitted_reading_run": true,
+      "requires_selected_fact_refs_exist": true,
+      "requires_registry_production_admission": true,
+      "requires_source_production_admission": true,
+      "preserve_claim_cautions": true,
+      "preserve_registered_conflicts": true,
+      "final_prose_authority": false,
+      "final_method_owner": "ASTROLOGY.md",
+      "final_output_owner": "CHATGPT_OUTPUT.md"
+    }
   },
   "natal_provider": {
     "provider_id": "astronomy-engine-natal-v1",
@@ -118,8 +135,8 @@
   "natal_provider_admission_baseline": "09d2a014190b59a5a758c9a0618b06e72a82aecb",
   "transit_place_admission_baseline": "01a159990d2086f3a47be2e299d2e7f04a0e1758",
   "admission_decision": {
-    "decision": "admit_bounded_astrology_v1_with_natal_transit_offline_place_resolution_and_composition_orchestration",
-    "rationale": "Astrology Production v1 admits the existing natal provider, bounded transit provider, offline city/locality resolver, and a composition-only orchestration entry point. The orchestrator normalizes one closed-world reading request, invokes only already-admitted providers, re-applies the Astrology runtime gate to every generated Fact Bundle, and emits a portable bridge for external Reading Record v2 storage without gaining astronomical, interpretation, or storage authority.",
+    "decision": "admit_bounded_astrology_v1_with_natal_transit_offline_place_resolution_composition_orchestration_and_interpretation_handoff",
+    "rationale": "Astrology Production v1 admits the existing natal provider, bounded transit provider, offline city/locality resolver, composition-only reading orchestration, and an evidence-packaging interpretation handoff. The handoff accepts only an already-admitted reading run, verifies selected fact identities, permits only claims from boundedly admitted registries whose cited sources satisfy production source-admission policy, preserves cautions/conflicts/provenance, and delegates final interpretation/prose to ASTROLOGY.md plus CHATGPT_OUTPUT.md without gaining astronomical, semantic-selection, final-prose, or storage authority.",
     "scientific_predictive_validity_claimed": false
   }
 }

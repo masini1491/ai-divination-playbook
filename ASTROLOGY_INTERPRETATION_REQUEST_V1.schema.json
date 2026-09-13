@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ASTROLOGY_INTERPRETATION_REQUEST_V1.schema.json",
+  "title": "Astrology Production v1 Interpretation Handoff Request",
+  "description": "Closed-world evidence-selection request for tools/astrology_interpretation_handoff.py. Semantic selection may be proposed by ChatGPT, but this contract does not grant calculation, claim-admission, or final-prose authority.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_name",
+    "schema_version",
+    "question_id",
+    "question",
+    "fact_refs",
+    "claim_requests"
+  ],
+  "properties": {
+    "schema_name": {
+      "const": "astrology_interpretation_request"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "question_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "question": {
+      "type": "string",
+      "minLength": 1
+    },
+    "focus": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "exclusions": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "fact_refs": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/fact_ref"
+      }
+    },
+    "claim_requests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "registry_record_id",
+          "claim_id",
+          "fact_refs"
+        ],
+        "properties": {
+          "registry_record_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "claim_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "fact_refs": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "$ref": "#/$defs/fact_ref"
+            }
+          }
+        }
+      }
+    },
+    "unsupported_factors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "factor",
+          "reason"
+        ],
+        "properties": {
+          "factor": {
+            "type": "string",
+            "minLength": 1
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "fact_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "bundle",
+        "fact_id"
+      ],
+      "properties": {
+        "bundle": {
+          "enum": [
+            "natal",
+            "transit"
+          ]
+        },
+        "fact_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}
