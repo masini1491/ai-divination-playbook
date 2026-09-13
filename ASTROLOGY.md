@@ -2,7 +2,9 @@
 
 Status: **PRODUCTION V1 / EXPLICIT-REQUEST ONLY**
 
-本章是 Astrology 的 production method owner。Astrology v1 將 input resolution、deterministic calculation、runtime validation、interpretation evidence handoff 與 final-output validation 分層：
+本章是 Astrology 的 production method owner。Astrology v1 將 input resolution、deterministic calculation、runtime validation、evidence selection / interpretation handoff 與 final-output validation 分層。
+
+Production 支援兩條相容的 composition-only reading path；兩者都必須先取得 admitted `astrology_reading_run@1.0.0`，且都不授權 deterministic runtime 自由理解自然語言：
 
 ```text
 explicit Astrology request
@@ -12,19 +14,30 @@ explicit Astrology request
 → Astrology Fact Bundle 1.0
 → tools/astrology_runtime.py gate
 → tools/astrology_orchestrator.py
-→ ASTROLOGY_INTERPRETATION_REQUEST_V1.schema.json
-→ tools/astrology_interpretation_handoff.py
+→ astrology_reading_run@1.0.0
+→ [exact-reference path]
+   ASTROLOGY_INTERPRETATION_REQUEST_V1.schema.json
+   → tools/astrology_interpretation_handoff.py
+→ [typed-selector path]
+   ASTROLOGY_TYPED_EVIDENCE_SELECTION_REQUEST_V1.schema.json
+   → tools/astrology_evidence_selector.py
+   → astrology_typed_evidence_selection@1.0.0
+   → ASTROLOGY_INTERPRETATION_REQUEST_V1.schema.json
+   → tools/astrology_interpretation_handoff.py
 → bounded synthesis under ASTROLOGY.md + CHATGPT_OUTPUT.md
 → ASTROLOGY_OUTPUT_DRAFT_V1.schema.json
 → tools/astrology_output_guard.py
 → astrology_user_facing_output@1.0.0
 ```
 
-單一 composition-only production entrypoint：
+Composition-only production entrypoints：
 
 ```text
-tools/astrology_reading_pipeline.py
+tools/astrology_reading_pipeline.py        # legacy exact-reference path
+tools/astrology_typed_reading_pipeline.py  # typed-selector path
 ```
+
+Typed-selector path 的 caller（例如 ChatGPT）必須先把使用者問題整理成 explicit typed selectors；production selector **不做 free-text query resolution、不取得 natural-language understanding authority，也不自行決定 astrological meaning**。
 
 普通未指定方法的占問仍走 `METHOD_ROUTING.md` 的 Tarot / Meihua / Liuyao Fast Path；Astrology **不參與 ordinary auto-routing**。
 
@@ -422,12 +435,17 @@ Admitted interpretation evidence 必須保留 source admission、tradition/histo
 
 不要為了「完整」把整張盤所有 factor 一次全部傾倒。
 
-## 14. Production Interpretation Handoff / User-Facing Output
+## 14. Production Evidence Selection / Interpretation Handoff / User-Facing Output
 
-Calculation admission 與 semantic interpretation 必須分離。Production v1 的完整 user-facing path：
+Calculation admission、evidence selection 與 semantic interpretation 必須分離。Production v1 保留兩條相容路徑。
+
+### Exact-reference path
+
+Caller 已有 exact fact / claim references 時，可直接建立 `ASTROLOGY_INTERPRETATION_REQUEST_V1.schema.json`：
 
 ```text
 astrology_reading_run@1.0.0
+→ explicit exact fact_refs / claim_requests
 → tools/astrology_interpretation_handoff.py
 → astrology_interpretation_handoff@1.0.0
 → ChatGPT bounded semantic synthesis
@@ -435,6 +453,63 @@ astrology_reading_run@1.0.0
 → tools/astrology_output_guard.py
 → astrology_user_facing_output@1.0.0
 ```
+
+`tools/astrology_reading_pipeline.py` 是這條路徑的 composition-only adapter；不新增 calculation、semantic-selection、final-text 或 Reading Record storage authority。
+
+### Typed-selector path
+
+Caller 可先把自然語言問題整理成 explicit typed selectors，再交給 deterministic selector：
+
+```text
+astrology_reading_run@1.0.0
++ astrology_typed_evidence_selection_request@1.0.0
+→ tools/astrology_evidence_selector.py
+→ astrology_typed_evidence_selection@1.0.0
+→ ASTROLOGY_INTERPRETATION_REQUEST_V1.schema.json
+→ tools/astrology_interpretation_handoff.py
+→ astrology_interpretation_handoff@1.0.0
+→ ChatGPT bounded semantic synthesis
+→ astrology_output_draft@1.0.0
+→ tools/astrology_output_guard.py
+→ astrology_user_facing_output@1.0.0
+```
+
+Typed request / result contracts：
+
+```text
+ASTROLOGY_TYPED_EVIDENCE_SELECTION_REQUEST_V1.schema.json
+ASTROLOGY_TYPED_EVIDENCE_SELECTION_V1.schema.json
+ASTROLOGY_TYPED_READING_PIPELINE_RUN_V1.schema.json
+```
+
+`tools/astrology_evidence_selector.py` 只做 deterministic evidence selection：
+
+- 只接受 explicit typed fact / claim selectors；
+- fact selector 可依 object、house、aspect、transit event 等結構欄位匹配 admitted reading-run facts；
+- claim selector 只在 admitted production registries / sources 內匹配；
+- fact selector 與 claim applicability 必須 deterministic binding；不得只靠 caller 自由指定 selector id 偷渡不相符的 claim；
+- zero match、multiple match、fact/claim applicability mismatch、unadmitted registry/source 均 fail closed；
+- selected exact refs 仍交由既有 interpretation handoff 重新驗證 source admission / provenance boundary；
+- 不做 free-text query resolution；
+- 不取得 natural-language understanding、astrological-meaning、source-admission、final-prose authority。
+
+因此 production typed-selector path 的責任分工是：
+
+```text
+ChatGPT / caller
+→ understand the user question
+→ author explicit typed selectors
+
+production deterministic selector
+→ resolve those explicit selectors to exact admitted facts / claims
+→ fail closed on ambiguity or mismatch
+```
+
+`tools/astrology_typed_reading_pipeline.py` 只把 admitted reading run → typed selection → existing handoff → guarded output 串成 composition-only execution path；它不新增 free-text NLU、semantic-selection、final-text 或 Reading Record storage authority。Legacy exact-reference path 必須維持可用。
+
+`references/astrology/**` 中的 query-resolution research contract 仍是 **REFERENCE_ONLY / NOT PRODUCTION-ROUTABLE**；typed-selector admission 不等於把 research free-text query resolver promotion 到 production。
+
+### Shared handoff / output boundaries
 
 `tools/astrology_interpretation_handoff.py` 只做：
 
@@ -453,8 +528,6 @@ astrology_reading_run@1.0.0
 - preserve unsupported factors / required disclosures / conflicts / source provenance；
 - 不自動判斷自然語言 interpretation 是否「占星上正確」，也不替 ChatGPT 生成 final prose。
 
-`tools/astrology_reading_pipeline.py` 是 composition-only adapter，將上述 admitted stages 串成單一 execution path；不新增 calculation、semantic-selection、final-text 或 Reading Record storage authority。
-
 Transit user-facing regression 必須至少證明：
 
 ```text
@@ -466,6 +539,8 @@ explicit transit request
 → production-admitted interpretation claim or explicit unsupported_factor
 → guarded user-facing output
 ```
+
+Typed transit path 還必須保留 selector provenance，並從 structured event fields 選出 exact admitted event；caller 不需要預先知道 fact id。
 
 能計算出 transit exact event **不等於** pair-specific semantic meaning 自動 admitted；未 admitted meaning 仍必須 fail closed 或明確列為 unsupported。
 
@@ -553,6 +628,9 @@ tools/astrology_runtime.py
 tools/astrology_orchestrator.py
 → reading-request normalization + stage composition only
 
+tools/astrology_evidence_selector.py
+→ deterministic typed fact/claim selection only; no free-text NLU or meaning authority
+
 tools/astrology_interpretation_handoff.py
 → admitted fact/claim provenance packaging only
 
@@ -560,7 +638,10 @@ tools/astrology_output_guard.py
 → provenance + Pre-Send draft validation only
 
 tools/astrology_reading_pipeline.py
-→ complete production reading composition only
+→ exact-reference production reading composition only
+
+tools/astrology_typed_reading_pipeline.py
+→ typed-selector production reading composition only
 
 ASTROLOGY_*_ADMISSION_V1.json
 → bounded production admissions
@@ -569,7 +650,7 @@ CHATGPT_OUTPUT.md
 → final output / Pre-Send owner
 
 references/astrology/**
-→ historical research evidence; not automatically production authority
+→ historical research evidence; query-resolution research remains non-production unless separately admitted
 ```
 
 Production status：
@@ -583,9 +664,12 @@ offline city/locality resolver       YES
 built-in natal provider              YES
 transit event-search provider        YES
 request orchestration                YES
+deterministic typed evidence selector YES
 interpretation evidence handoff      YES
 user-facing output guard             YES
-single end-to-end pipeline           YES
+exact-reference end-to-end pipeline  YES
+typed-selector end-to-end pipeline   YES
+production free-text query resolver  NO
 raw birth data → natal bundle        YES (exact/approximate time)
 exact transit event search           YES (bounded ≤400 days)
 street/building geocoding            NO
