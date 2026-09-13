@@ -8,8 +8,9 @@ from tools.astrology_provider import build_natal_bundle
 from tools.astrology_runtime import gate_bundle
 
 ROOT = Path(__file__).resolve().parents[1]
-FACT_SCHEMA = ROOT / "ASTROLOGY_FACT_BUNDLE_V1.schema.json"
-GATE_SCHEMA = ROOT / "ASTROLOGY_RUNTIME_GATE_RESULT_V1.schema.json"
+SCHEMA_ROOT = ROOT / "schemas" / "astrology"
+FACT_SCHEMA = SCHEMA_ROOT / "ASTROLOGY_FACT_BUNDLE_V1.schema.json"
+GATE_SCHEMA = SCHEMA_ROOT / "ASTROLOGY_RUNTIME_GATE_RESULT_V1.schema.json"
 
 
 def load(path: Path) -> dict:
@@ -84,11 +85,14 @@ class AstrologyFactRuntimeContractTests(unittest.TestCase):
         method = {row["id"]: row for row in index["capabilities"]}["method.astrology"]
 
         self.assertEqual("astrology_fact_bundle@1.0.0", manifest["fact_bundle_schema"])
-        self.assertEqual("ASTROLOGY_FACT_BUNDLE_V1.schema.json", manifest["fact_bundle_schema_path"])
+        self.assertEqual(
+            "schemas/astrology/ASTROLOGY_FACT_BUNDLE_V1.schema.json",
+            manifest["fact_bundle_schema_path"],
+        )
         self.assertEqual(manifest["fact_bundle_schema_path"], method["fact_bundle_schema"])
         self.assertEqual("astrology_runtime_gate_result@1.0.0", manifest["runtime_gate_result_schema"])
         self.assertEqual(
-            "ASTROLOGY_RUNTIME_GATE_RESULT_V1.schema.json",
+            "schemas/astrology/ASTROLOGY_RUNTIME_GATE_RESULT_V1.schema.json",
             manifest["runtime_gate_result_schema_path"],
         )
         self.assertEqual(manifest["runtime_gate_result_schema_path"], method["runtime_gate_result_schema"])
