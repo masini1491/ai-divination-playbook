@@ -264,61 +264,46 @@ def section_ranges(text: str, heading: str) -> list[tuple[int, int]]:
             if next_match and len(next_match.group(1)) <= level:
                 end = j
                 break
-        ranges.append((i, end))
+        ranges.append((i + 1, end))
     return ranges
 
 
-def check_unique_owner_sections(root: Path, manifests: list[dict[str, Any]]) -> list[str]:
+def check_chat_init_router(root: Path) -> list[str]:
     errors: list[str] = []
-    for manifest in manifests:
-        owner = root / manifest["owner"]
-        text = owner.read_text(encoding="utf-8")
-        for section in manifest.get("required_sections", []):
-            count = len(section_ranges(text, section))
-            if count != 1:
-                errors.append(f"{manifest['owner']}: section must appear exactly once: {section} (found {count})")
+    path = root / "CHAT_INIT.md"
+    if not path.exists():
+        return ["CHAT_INIT.md: missing"]
+    text = path.read_text(encoding="utf-8")
+    lines = text.splitlines()
+    ranges = section_ranges(text, "最低必要路由")
+    if not ranges:
+        return ["CHAT_INIT.md: missing heading '最低必要路由'"]
+    for start, end in ranges:
+        for i in range(start, end):
+            line = lines[i]
+            if "→" not in line:
+                continue
+            for target in CODE_SPAN_RE.findall(line):
+                target = target.strip()
+                if target.endswith(".md") and not any(ch in target for ch in "*?[]"):
+                    if not (root / target).is_file():
+                        errors.append(f"CHAT_INIT.md:{i+1}: routed owner missing: {target}")
     return errors
-
-
-def load_required_manifests(root: Path) -> tuple[list[dict[str, Any]], list[str]]:
-    errors: list[str] = []
-    manifests: list[dict[str, Any]] = []
-    for path in sorted(root.glob("*_ADMISSION_V1.json")):
-        try:
-            data = load_json(path)
-        except Exception as exc:
-            errors.append(f"{path.name}: invalid JSON: {exc}")
-            continue
-        if not isinstance(data, dict):
-            errors.append(f"{path.name}: top-level value must be an object")
-            continue
-        owner = data.get("owner")
-        required_sections = data.get("required_sections", [])
-        if owner is not None and isinstance(required_sections, list):
-            manifests.append({"manifest": path.name, "owner": owner, "required_sections": required_sections})
-    return manifests, errors
-
-
-def check_manifest_owner_sections(root: Path) -> list[str]:
-    manifests, errors = load_required_manifests(root)
-    for manifest in manifests:
-        owner = root / manifest["owner"]
-        if not owner.is_file():
-            errors.append(f"{manifest['manifest']}: owner missing: {manifest['owner']}")
-    valid = [m for m in manifests if (root / m["owner"]).is_file()]
-    errors.extend(check_unique_owner_sections(root, valid))
-    return errors
-
-
-def behavioral_ids(text: str) -> set[str]:
-    return set(BEHAVIOR_ID_RE.findall(text))
 
 
 def check_behavioral_matrix(root: Path) -> list[str]:
     errors: list[str] = []
+    behavior_path = root / "BEHAVIORAL_EVAL.md"
     matrix_path = root / "evals" / "regression_matrix.json"
-    eval_path = root / "BEHAVIORAL_EVAL.md"
-    if not matrix_path.is_file() or not eval_path.is_file():
+    if not behavior_path.exists():
+        errors.append("BEHAVIORAL_EVAL.md: missing")
+        return errors
+    if not matrix_path.exists():
+        errors.append("evals/regression_matrix.json: missing")
+        return errors
+    scenario_ids = set(BEHAVIOR_ID_RE.findall(behavior_path.read_text(encoding="utf-8")))
+    if not scenario_ids:
+        errors.append("BEHAVIORAL_EVAL.md: no TAROT-BEH scenario headings found")
         return errors
     try:
         matrix = load_json(matrix_path)
@@ -330,42 +315,22 @@ def check_behavioral_matrix(root: Path) -> list[str]:
         errors.append(f"evals/regression_matrix.json: schema_version must be {MATRIX_SCHEMA_VERSION}")
     if matrix.get("authority") != MATRIX_AUTHORITY:
         errors.append(f"evals/regression_matrix.json: authority must be {MATRIX_AUTHORITY}")
-    known = behavioral_ids(eval_path.read_text(encoding="utf-8"))
-    full = matrix.get("full_baseline", [])
-    if not isinstance(full, list) or not full:
-        errors.append("evals/regression_matrix.json: full_baseline must be a non-empty array")
-        full = []
-    for scenario in full:
-        if scenario not in known:
-            errors.append(f"evals/regression_matrix.json: unknown full_baseline scenario: {scenario}")
-    change_classes = matrix.get("change_classes", {})
-    if not isinstance(change_classes, dict):
-        errors.append("evals/regression_matrix.json: change_classes must be an object")
+    baseline = matrix.get("full_baseline")
+    if not isinstance(baseline, list) or set(baseline) != scenario_ids or len(baseline) != len(scenario_ids):
+        errors.append("evals/regression_matrix.json: full_baseline must contain every BEHAVIORAL_EVAL scenario exactly once")
+    change_classes = matrix.get("change_classes")
+    if not isinstance(change_classes, dict) or not change_classes:
+        errors.append("evals/regression_matrix.json: change_classes must be a non-empty object")
     else:
-        for name, scenarios in change_classes.items():
-            if not isinstance(scenarios, list) or not scenarios:
+        for name, ids in change_classes.items():
+            if not isinstance(ids, list) or not ids:
                 errors.append(f"evals/regression_matrix.json: change_classes.{name} must be a non-empty array")
                 continue
-            for scenario in scenarios:
-                if scenario not in known:
-                    errors.append(f"evals/regression_matrix.json: unknown scenario in {name}: {scenario}")
-    return errors
-
-
-def check_chat_init_routes(root: Path) -> list[str]:
-    errors: list[str] = []
-    path = root / "CHAT_INIT.md"
-    if not path.is_file():
-        return ["CHAT_INIT.md: missing"]
-    text = path.read_text(encoding="utf-8")
-    for match in CODE_SPAN_RE.finditer(text):
-        value = match.group(1)
-        if not value.endswith(".md") or "/" in value:
-            continue
-        if value in {"CHAT_INIT.md"}:
-            continue
-        if not (root / value).is_file():
-            errors.append(f"CHAT_INIT.md: routed owner missing: {value}")
+            unknown = sorted(set(ids) - scenario_ids)
+            if unknown:
+                errors.append(f"evals/regression_matrix.json: change_classes.{name} has unknown IDs: {', '.join(unknown)}")
+            if len(ids) != len(set(ids)):
+                errors.append(f"evals/regression_matrix.json: change_classes.{name} has duplicate IDs")
     return errors
 
 
@@ -374,24 +339,25 @@ def validate(root: Path) -> list[str]:
     errors.extend(check_markdown_links(root))
     errors.extend(check_deprecated_identifiers(root))
     errors.extend(check_index(root))
-    errors.extend(check_manifest_owner_sections(root))
+    errors.extend(check_chat_init_router(root))
     errors.extend(check_behavioral_matrix(root))
-    errors.extend(check_chat_init_routes(root))
     return errors
 
 
-def main() -> int:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("root", nargs="?", default=".")
-    args = parser.parse_args()
-    errors = validate(Path(args.root))
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description="Validate AI Divination Playbook structural routing.")
+    parser.add_argument("root", nargs="?", type=Path, default=Path.cwd())
+    args = parser.parse_args(argv)
+    root = args.root.resolve()
+    errors = validate(root)
     if errors:
         for error in errors:
-            print(error)
+            print(f"FAIL {error}")
+        print(f"SUMMARY {len(errors)} error(s)")
         return 1
-    print("playbook structure OK")
+    print("PASS playbook structure")
     return 0
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    sys.exit(main())
