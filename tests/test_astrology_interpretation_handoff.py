@@ -82,12 +82,12 @@ def valid_request() -> dict:
         "question": "What symbolic theme is most relevant to this Moon-Saturn opposition?",
         "focus": ["Moon-Saturn opposition"],
         "exclusions": ["literal childhood biography", "clinical diagnosis"],
-        "fact_refs": [fact_ref],
+        "fact_refs": [dict(fact_ref)],
         "claim_requests": [
             {
                 "registry_record_id": "saturn-moon-major-aspects-research-v1",
                 "claim_id": "claim:greene-moon-saturn-parent-image",
-                "fact_refs": [fact_ref],
+                "fact_refs": [dict(fact_ref)],
             }
         ],
         "unsupported_factors": [],
