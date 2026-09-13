@@ -1,9 +1,7 @@
 {
   "schema_version": 1,
   "authority": "routing-only",
-  "bootstrap": {
-    "path": "CHAT_INIT.md"
-  },
+  "bootstrap": {"path":"CHAT_INIT.md"},
   "capabilities": [
     {"id":"bootstrap.default-interaction","owner":"CHAT_INIT.md","section":"Default Interaction Profile｜只給 Repo 也能直接使用","kind":"contract"},
     {"id":"bootstrap.repository-access","owner":"CHAT_INIT.md","section":"Repository Access Policy｜GitHub Connect 為唯一 GitHub 取得路徑","kind":"contract"},
@@ -21,7 +19,7 @@
     {"id":"method.tarot","owner":"TAROT.md","kind":"contract"},
     {"id":"method.meihua","owner":"MEIHUA.md","kind":"contract"},
     {"id":"method.liuyao","owner":"LIUYAO.md","kind":"contract","casting_implementation":"masini1491/divination-casting-randomizer/randomizer.py","engine":"tools/liuyao_engine.py","calendar_provider":"tools/liuyao_calendar.py","runtime":"tools/liuyao_runtime.py"},
-    {"id":"method.astrology","owner":"ASTROLOGY.md","kind":"contract","activation":"explicit-request-only","natal_provider":"tools/astrology_provider.py","runtime":"tools/astrology_runtime.py","provider_admission_manifest":"ASTROLOGY_PROVIDER_ADMISSION_V1.json","admission_manifest":"ASTROLOGY_PRODUCTION_ADMISSION_V1.json"},
+    {"id":"method.astrology","owner":"ASTROLOGY.md","kind":"contract","activation":"explicit-request-only","place_resolver":"tools/astrology_place_resolver.py","natal_provider":"tools/astrology_provider.py","transit_provider":"tools/astrology_transit_provider.py","runtime":"tools/astrology_runtime.py","place_resolver_admission_manifest":"ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json","natal_provider_admission_manifest":"ASTROLOGY_PROVIDER_ADMISSION_V1.json","transit_provider_admission_manifest":"ASTROLOGY_TRANSIT_PROVIDER_ADMISSION_V1.json","admission_manifest":"ASTROLOGY_PRODUCTION_ADMISSION_V1.json"},
     {"id":"cross-validation.reconciliation","owner":"CROSS_VALIDATION.md","kind":"contract"},
     {"id":"cross-validation.evidence-lineage","owner":"CROSS_VALIDATION.md","section":"2.1 Evidence Lineage / Independence Guard｜抽得多不等於證據獨立","kind":"contract"},
     {"id":"output.chatgpt","owner":"CHATGPT_OUTPUT.md","section":"Section Router｜依任務只讀最低必要段落","kind":"contract"},
@@ -29,15 +27,7 @@
     {"id":"validation.behavioral-eval","owner":"BEHAVIORAL_EVAL.md","kind":"contract","matrix":"evals/regression_matrix.json","runner":"tools/behavioral_eval.py"},
     {"id":"storage.playbook-boundary","owner":"READING_RECORD.md","section":"11. Storage-Agnostic Boundary｜與私人紀錄庫分離","kind":"contract"}
   ],
-  "adapters": {
-    "session_handoff": "SESSION_HANDOFF.md"
-  },
-  "behavioral_regression": {
-    "matrix": "evals/regression_matrix.json",
-    "runner": "tools/behavioral_eval.py"
-  },
-  "structural_validation": {
-    "runner": "tools/playbook_check.py",
-    "tests": "tests/test_playbook_check.py"
-  }
+  "adapters": {"session_handoff":"SESSION_HANDOFF.md"},
+  "behavioral_regression": {"matrix":"evals/regression_matrix.json","runner":"tools/behavioral_eval.py"},
+  "structural_validation": {"runner":"tools/playbook_check.py","tests":"tests/test_playbook_check.py"}
 }

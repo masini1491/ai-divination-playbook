@@ -16,6 +16,22 @@
     "requires_explicit_coordinates": true,
     "requires_iana_timezone": true
   },
+  "place_resolver": {
+    "resolver_id": "geonamescache-city-v1",
+    "admission_manifest": "ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json",
+    "runtime_owner": "tools/astrology_place_resolver.py",
+    "scope": ["city_or_locality_name_to_coordinates_and_iana_timezone"],
+    "network_required": false,
+    "ambiguous_name": "fail_closed"
+  },
+  "transit_provider": {
+    "provider_id": "astronomy-engine-transit-v1",
+    "admission_manifest": "ASTROLOGY_TRANSIT_PROVIDER_ADMISSION_V1.json",
+    "runtime_owner": "tools/astrology_transit_provider.py",
+    "scope": ["transit_to_natal_exact_aspects", "stations", "tropical_ingresses"],
+    "max_search_days": 400,
+    "canonical_event_time": "UTC"
+  },
   "fact_bundle_schema": "astrology_fact_bundle@1.0.0",
   "reading_modes": ["natal", "transit"],
   "configuration_policy": {
@@ -55,9 +71,7 @@
     "transit-interpretation-research-v1",
     "saturn-moon-major-aspects-research-v1"
   ],
-  "qualified_only_registries": [
-    "high-value-planet-aspects-research-v1"
-  ],
+  "qualified_only_registries": ["high-value-planet-aspects-research-v1"],
   "qualified_registry_policy": {
     "production_pair_specific_meaning": "not_admitted_until_claim_sources_are_independently_admitted",
     "general_aspect_geometry": "admitted_when_supplied_as_deterministic_fact"
@@ -73,8 +87,10 @@
     "time_lord_systems",
     "raw_birth_data_model_calculation",
     "provider_unknown_birth_time_noon_substitution",
-    "provider_geocoding",
-    "provider_transit_event_search",
+    "street_or_building_geocoding",
+    "unbounded_transit_search",
+    "transit_house_search",
+    "sidereal_transit_ingress",
     "unsourced_planet_in_sign_personality_templates"
   ],
   "high_stakes_guardrails": [
@@ -88,10 +104,11 @@
     "no_relationship_ending_guarantee"
   ],
   "research_baseline": "d7fdb4b2c4ca6a615e95723166c507acc8b9421f",
-  "provider_admission_baseline": "09d2a014190b59a5a758c9a0618b06e72a82aecb",
+  "natal_provider_admission_baseline": "09d2a014190b59a5a758c9a0618b06e72a82aecb",
+  "transit_place_admission_baseline": "01a159990d2086f3a47be2e299d2e7f04a0e1758",
   "admission_decision": {
-    "decision": "admit_bounded_astrology_v1_with_natal_provider",
-    "rationale": "Research v1 established deterministic fact boundaries, typed source/tradition routing, bounded source-backed interpretation evidence, and unknown-time/timezone contracts. Astrology Production v1 now additionally admits the MIT Astronomy Engine based natal provider for raw birth data with explicit coordinates, IANA timezone, conservative Placidus latitude handling, upstream fixture parity, and mandatory runtime-gate validation. Transit event search remains separate.",
+    "decision": "admit_bounded_astrology_v1_with_natal_transit_and_offline_place_resolution",
+    "rationale": "Astrology Production v1 now admits an MIT Astronomy Engine natal provider, a bounded Astronomy Engine transit event-search provider, and an offline GeoNames city/locality resolver. All deterministic provider outputs remain subject to Astrology Fact Bundle runtime validation; ambiguous place names, unsupported geocoding scopes, unknown birth-time substitution, and unbounded transit searches fail closed.",
     "scientific_predictive_validity_claimed": false
   }
 }

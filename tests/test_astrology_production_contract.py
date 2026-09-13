@@ -18,21 +18,29 @@ class AstrologyProductionContractTests(unittest.TestCase):
         self.assertTrue(data["built_in_ephemeris_provider"])
         self.assertFalse(data["admission_decision"]["scientific_predictive_validity_claimed"])
 
-    def test_manifest_admits_natal_provider_but_not_transit_search_provider(self):
+    def test_manifest_admits_natal_transit_and_place_resolution(self):
         data = json.loads((ROOT / "ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
-        provider = data["natal_provider"]
-        self.assertEqual("astronomy-engine-natal-v1", provider["provider_id"])
-        self.assertTrue(provider["raw_birth_data_supported"])
-        self.assertTrue(provider["requires_iana_timezone"])
-        self.assertIn("provider_transit_event_search", data["unsupported_scopes"])
+        natal = data["natal_provider"]
+        transit = data["transit_provider"]
+        place = data["place_resolver"]
+        self.assertEqual("astronomy-engine-natal-v1", natal["provider_id"])
+        self.assertEqual("astronomy-engine-transit-v1", transit["provider_id"])
+        self.assertEqual("geonamescache-city-v1", place["resolver_id"])
+        self.assertTrue(natal["raw_birth_data_supported"])
+        self.assertEqual(400, transit["max_search_days"])
+        self.assertFalse(place["network_required"])
+        self.assertNotIn("provider_transit_event_search", data["unsupported_scopes"])
+        self.assertNotIn("provider_geocoding", data["unsupported_scopes"])
 
     def test_manifest_admits_natal_and_transit_interpretation_only(self):
         data = json.loads((ROOT / "ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
         self.assertEqual({"natal", "transit"}, set(data["reading_modes"]))
         self.assertIn("synastry", data["unsupported_scopes"])
         self.assertIn("raw_birth_data_model_calculation", data["unsupported_scopes"])
+        self.assertIn("street_or_building_geocoding", data["unsupported_scopes"])
+        self.assertIn("unbounded_transit_search", data["unsupported_scopes"])
 
-    def test_provider_admission_manifest_is_pinned_and_bounded(self):
+    def test_natal_provider_admission_manifest_is_pinned_and_bounded(self):
         data = json.loads((ROOT / "ASTROLOGY_PROVIDER_ADMISSION_V1.json").read_text(encoding="utf-8"))
         self.assertEqual("astrology_provider_admission", data["schema_name"])
         self.assertEqual("PRODUCTION_ADMITTED", data["status"])
@@ -41,7 +49,30 @@ class AstrologyProductionContractTests(unittest.TestCase):
         self.assertEqual("2.1.19", data["dependency"]["version"])
         self.assertEqual("MIT", data["dependency"]["license"])
         self.assertEqual("fail_closed", data["calculation_policy"]["dst_ambiguous_wall_time"])
-        self.assertTrue(any("transit event search" in item for item in data["not_admitted"]))
+
+    def test_transit_provider_admission_manifest_is_pinned_and_bounded(self):
+        data = json.loads((ROOT / "ASTROLOGY_TRANSIT_PROVIDER_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        self.assertEqual("astrology_transit_provider_admission", data["schema_name"])
+        self.assertEqual("PRODUCTION_ADMITTED", data["status"])
+        self.assertIn("transit_to_natal_exact_aspects", data["scope"])
+        self.assertIn("stations", data["scope"])
+        self.assertIn("tropical_ingresses", data["scope"])
+        self.assertEqual("astronomy-engine", data["dependency"]["package"])
+        self.assertEqual("2.1.19", data["dependency"]["version"])
+        self.assertEqual(400, data["input_contract"]["max_search_days"])
+        self.assertEqual("UTC", data["calculation_policy"]["canonical_event_time"])
+
+    def test_place_resolver_admission_manifest_is_offline_and_attributed(self):
+        data = json.loads((ROOT / "ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        self.assertEqual("astrology_place_resolver_admission", data["schema_name"])
+        self.assertEqual("PRODUCTION_ADMITTED", data["status"])
+        self.assertEqual("geonamescache", data["dependency"]["package"])
+        self.assertEqual("3.0.2", data["dependency"]["version"])
+        self.assertEqual("MIT", data["dependency"]["software_license"])
+        self.assertEqual("CC-BY-4.0", data["dependency"]["dataset_license"])
+        self.assertTrue(data["dependency"]["attribution_required"])
+        self.assertFalse(data["resolution_policy"]["network_required"])
+        self.assertFalse(data["resolution_policy"]["auto_pick_largest_population_when_ambiguous"])
 
     def test_manifest_keeps_reference_only_pair_registry_qualified(self):
         data = json.loads((ROOT / "ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
@@ -69,21 +100,27 @@ class AstrologyProductionContractTests(unittest.TestCase):
         self.assertIn("Astrology production reading 不屬於這個 gate", text)
         self.assertIn("不因 production v1 已 admission 就回頭改寫成 production source of truth", text)
 
-    def test_machine_index_exposes_method_astrology(self):
+    def test_machine_index_exposes_complete_astrology_runtime_path(self):
         data = json.loads((ROOT / "PLAYBOOK_INDEX.json").read_text(encoding="utf-8"))
         rows = {row["id"]: row for row in data["capabilities"]}
         row = rows["method.astrology"]
         self.assertEqual("ASTROLOGY.md", row["owner"])
         self.assertEqual("explicit-request-only", row["activation"])
+        self.assertEqual("tools/astrology_place_resolver.py", row["place_resolver"])
         self.assertEqual("tools/astrology_provider.py", row["natal_provider"])
+        self.assertEqual("tools/astrology_transit_provider.py", row["transit_provider"])
         self.assertEqual("tools/astrology_runtime.py", row["runtime"])
 
-    def test_astrology_method_owner_forbids_model_calculation_and_names_provider(self):
+    def test_astrology_method_owner_forbids_model_calculation_and_names_all_providers(self):
         text = (ROOT / "ASTROLOGY.md").read_text(encoding="utf-8")
         self.assertIn("model freehand calculation", text)
+        self.assertIn("tools/astrology_place_resolver.py", text)
         self.assertIn("tools/astrology_provider.py", text)
+        self.assertIn("tools/astrology_transit_provider.py", text)
         self.assertIn("astronomy-engine-natal-v1", text)
-        self.assertIn("transit event-search provider 尚未 admission", text)
+        self.assertIn("astronomy-engine-transit-v1", text)
+        self.assertIn("geonamescache-city-v1", text)
+        self.assertIn("max search span", text)
 
 
 if __name__ == "__main__":

@@ -9,7 +9,7 @@
 - 低歧義 Input Contract／Question Design；
 - Tarot／Meihua／Liuyao／Astrology method-specific contract；
 - ChatGPT Runtime Draw / Cast governance；
-- deterministic Astrology natal calculation + Fact Gate governance；
+- deterministic Astrology place resolution + natal/transit calculation + Fact Gate governance；
 - Reading lifecycle、Reading Record、Reality Update、Backtest；
 - cross-validation／derived synthesis 的 evidence boundary；
 - ChatGPT user-visible output governance。
@@ -23,7 +23,7 @@
 - `PLAYBOOK_INDEX.json`：machine-readable routing-only capability／owner index；不是 policy/state authority。
 - `SESSION_HANDOFF.md`：最低充分 handoff checkpoint adapter；不是 Reading Record authority。
 - `METHOD_ROUTING.md`：未指定方法時，依 judgment function 選目前正式支援的方法；Astrology v1 只接受 explicit user override，不參與 ordinary auto-routing。
-- `RESEARCH_ROUTING.md`：使用者明確指定 Astrology research / Palmistry 等已登錄 research line時的 research owner discovery、authority boundary 與 ordinary-router separation；不是 production method router。
+- `RESEARCH_ROUTING.md`：使用者明確指定 Astrology research / Palmistry 等已登錄 research line 時的 research owner discovery、authority boundary 與 ordinary-router separation；不是 production method router。
 - `INPUT_CONTRACT.md`：題目、method input 與 provenance contract。
 - `QUESTION_DESIGN.md`：題目拆解、position responsibility、高頻題型。
 - `READING_LIFECYCLE.md`：新題／承接／補占／重占／Reality Update／completion／backtest。
@@ -32,10 +32,14 @@
 - `TAROT.md`：Tarot-specific contract。
 - `MEIHUA.md`：Meihua-specific contract。
 - `LIUYAO.md`：Liuyao judgment responsibility、Raw Cast → Structured Method Fact、interpretation、engine fail-closed contract。
-- `ASTROLOGY.md`：Astrology Production v1 method owner；explicit-request activation、natal provider、Fact Gate、admitted interpretation policy與 unsupported-factor boundary。
+- `ASTROLOGY.md`：Astrology Production v1 method owner；explicit-request activation、place resolution、natal/transit providers、Fact Gate、admitted interpretation policy 與 unsupported-factor boundary。
 - `ASTROLOGY_PRODUCTION_ADMISSION_V1.json`：Astrology v1 machine-readable production-admission manifest；不是 research source database。
 - `ASTROLOGY_PROVIDER_ADMISSION_V1.json`：Astrology natal provider 的 dependency/input/calculation/provenance admission manifest。
+- `ASTROLOGY_TRANSIT_PROVIDER_ADMISSION_V1.json`：Astrology transit event-search provider 的 bounded calculation admission manifest。
+- `ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json`：Astrology offline city/locality resolver 的 dependency/data-license/resolution admission manifest。
+- `tools/astrology_place_resolver.py`：offline city/locality → coordinates + IANA timezone input-resolution owner；不取得天文 authority。
 - `tools/astrology_provider.py`：admitted raw-birth-data natal provider；使用 pinned MIT Astronomy Engine + project-owned house/aspect derivation產生 Astrology Fact Bundle 1.0，不解讀。
+- `tools/astrology_transit_provider.py`：admitted bounded transit event-search provider；搜尋 exact transit-to-natal aspects、stations、tropical ingresses/re-ingresses，不解讀。
 - `tools/astrology_runtime.py`：Astrology Fact Bundle 1.0 production gate；驗證 provider/supplied facts 是否可進 interpretation，不重新計算天文位置。
 - `CROSS_VALIDATION.md`：目前正式 Tarot × Meihua reconciliation 與 evidence lineage／independence guard。
 - `CHATGPT_OUTPUT.md`：最終出題、解讀、Copy-ready、Pre-Send output contract。
@@ -81,9 +85,21 @@ Astrology Production v1 natal path：
 
 ```text
 raw birth data
+→ optional tools/astrology_place_resolver.py  # city/locality only; fail closed on ambiguity
 → explicit local wall time + IANA timezone + coordinates
 → tools/astrology_provider.py
 → Astrology Fact Bundle 1.0
+→ tools/astrology_runtime.py
+→ ASTROLOGY.md
+```
+
+Astrology Production v1 transit path：
+
+```text
+admitted natal Astrology Fact Bundle
++ bounded UTC search window / moving bodies / natal targets / major aspects
+→ tools/astrology_transit_provider.py
+→ transit Astrology Fact Bundle 1.0
 → tools/astrology_runtime.py
 → ASTROLOGY.md
 ```
@@ -97,8 +113,6 @@ user-supplied structured export / verified existing record
 → ASTROLOGY.md
 ```
 
-Transit interpretation 已 production-admitted，但 **transit event-search provider 尚未 admission**；不得讓 natal provider、research probe 或 language model補出 transit exact events。
-
 責任邊界：
 
 - Randomizer 只擁有 stochastic Raw Cast authority。
@@ -106,8 +120,10 @@ Transit interpretation 已 production-admitted，但 **transit event-search prov
 - `liuyao_engine.py` 只擁有 structural chart calculation authority。
 - `liuyao_runtime.py` 只做 deterministic composition 與 derived presentation，不取得 interpretation / yongshen authority。
 - `LIUYAO.md` 才擁有 judgment responsibility、用神 responsibility 與 interpretation governance。
-- `astrology_provider.py` 擁有 admitted natal astronomical/house/aspect calculation authority；不 geocode、不解讀、不搜尋 transit events。
-- `astrology_runtime.py` 只驗證 Astrology facts 與 production config；provider output 也不得繞過它。
+- `astrology_place_resolver.py` 只做 city/locality input resolution；同名多地、not-found 都 fail closed；不自動挑人口最大地點，也不取得天文 authority。
+- `astrology_provider.py` 擁有 admitted natal astronomical/house/aspect calculation authority；不解讀、不搜尋 transit events。
+- `astrology_transit_provider.py` 擁有 admitted bounded transit exact-event search authority；canonical event time 是 UTC；不做 event-outcome interpretation。
+- `astrology_runtime.py` 只驗證 Astrology facts 與 production config；任何 provider output 也不得繞過它。
 - `ASTROLOGY.md` 擁有 Astrology v1 interpretation / source-admission / unsupported-factor governance。
 - research 階段 `pyswisseph` probes 與 external calculators 不因存在而取得 production authority。
 - user-supplied Astrology facts 必須保留 `user_asserted` provenance。
@@ -202,8 +218,9 @@ GitHub retrieval capability 不代表 Python execution、repository write 或 Re
 - `BEHAVIORAL_EVAL.md`、`references/`、`CASE_STUDIES/`、Historical Context 預設 Cold；明確 research intent 只 bounded-load 對應 research owner與必要 evidence，不因此掃完整 `references/`。
 - AI 要自行抽／起 stochastic method 才載入 `RUNTIME_DRAW.md`。
 - 選到 Liuyao 才載入 `LIUYAO.md`；需要完整 structured chart 時才執行 `tools/liuyao_runtime.py` 的 deterministic path。
+- Astrology raw birth data 若只有 city/locality 名稱，可先用 `tools/astrology_place_resolver.py`；歧義或不支援的地址粒度必須 fail closed，不由模型猜座標或 timezone。
 - Astrology natal raw birth data 有 exact/approximate time、IANA timezone 與 coordinates 時，可交給 `tools/astrology_provider.py`；其輸出仍必須通過 `tools/astrology_runtime.py`。模型本身不得手算。
-- Astrology transit 若缺 admitted deterministic event facts，fail closed 在缺失層；不得讓 natal provider冒充 transit-search provider。
+- Astrology transit 需要 exact event 時，可由 `tools/astrology_transit_provider.py` 消費 admitted natal bundle；search span 必須在 provider boundary 內，輸出仍須 runtime gate。
 - 只有保存／跨聊天室／Backtest／audit 才載入 `READING_RECORD.md`。
 - 只有 material session-health risk 才載入 `SESSION_HANDOFF.md`。
 - exact section／owner 已唯一時直接讀 target，不為 routing 增加 ceremony。
