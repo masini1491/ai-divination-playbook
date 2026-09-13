@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ASTROLOGY_FACT_BUNDLE_V1.schema.json",
+  "title": "Astrology Fact Bundle 1.0",
+  "description": "Machine-readable minimum shape accepted by tools/astrology_runtime.py. Cross-field, reference-integrity, unknown-time, house-system, aspect-orb and transit-mode admission policy remains owned by the runtime gate and is intentionally not duplicated here.",
+  "type": "object",
+  "required": ["schema_name", "schema_version", "method", "reading_mode", "fact_source", "calculation_verification", "subject_ref", "birth_time_certainty", "configuration", "facts"],
+  "properties": {
+    "schema_name": {"const": "astrology_fact_bundle"},
+    "schema_version": {"const": "1.0.0"},
+    "method": {"const": "Astrology"},
+    "reading_mode": {"enum": ["natal", "transit"]},
+    "fact_source": {"enum": ["approved_provider", "user_supplied_structured_export", "existing_verified_record"]},
+    "calculation_verification": {"enum": ["verified_provider", "user_asserted", "verified_existing_record"]},
+    "subject_ref": {"type": "string", "minLength": 1},
+    "birth_time_certainty": {"enum": ["exact", "approximate", "unknown", "rectified"]},
+    "configuration": {
+      "type": "object",
+      "required": ["zodiac_system", "center"],
+      "properties": {
+        "zodiac_system": {"const": "tropical"},
+        "center": {"const": "geocentric"},
+        "house_system": {"type": ["string", "null"], "enum": ["Whole Sign", "Placidus", null]}
+      },
+      "additionalProperties": true
+    },
+    "provider": {"type": "object"},
+    "facts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["objects", "houses", "aspects", "events"],
+      "properties": {
+        "objects": {"type": "array", "items": {"$ref": "#/$defs/fact_row"}},
+        "houses": {"type": "array", "items": {"$ref": "#/$defs/fact_row"}},
+        "aspects": {"type": "array", "items": {"$ref": "#/$defs/fact_row"}},
+        "events": {"type": "array", "items": {"$ref": "#/$defs/fact_row"}}
+      }
+    }
+  },
+  "additionalProperties": true,
+  "$defs": {
+    "fact_row": {
+      "type": "object",
+      "required": ["fact_id"],
+      "properties": {
+        "fact_id": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": true
+    }
+  }
+}
