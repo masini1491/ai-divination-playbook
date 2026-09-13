@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "authority": "migration-candidate-only",
+  "authority": "migration-provenance",
   "source_repository": "masini1491/divination-casting-randomizer",
   "source_commit": "17cc4c84fd5c09b60de721b671c1d6511ab3d0e9",
   "source_tree": "f29bde4b6556fadd15ad69bd627f134a299cf94d",
@@ -20,6 +20,8 @@
     "schema_version": "4",
     "ai_schema_version": "1"
   },
-  "cutover_state": "not-authoritative",
+  "cutover_state": "runtime-authoritative",
+  "runtime_repository": "masini1491/ai-divination-playbook",
+  "runtime_path": "runtime/casting/randomizer.py",
   "production_deployment_source": "legacy-repository"
 }

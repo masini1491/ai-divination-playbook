@@ -29,7 +29,7 @@ mget_bookgua_details(lines)
 目前採用為 **preferred deterministic engine reference**：
 
 ```text
-divination-casting-randomizer
+runtime/casting/randomizer.py
 → 產生 canonical raw 6/7/8/9
 
 ichingshifa-style deterministic engine
@@ -40,7 +40,7 @@ ai-divination-playbook
 → method routing + interpretation governance
 ```
 
-Randomizer 的 raw cast authority 不交給外部 engine。
+Randomizer 的 raw cast authority 不交給外部 engine；logical runtime identity `divination-casting-randomizer-python` 可繼續出現在 provenance，但 current canonical implementation path 是本 Repo 的 `runtime/casting/randomizer.py`。
 
 ## Not adopted
 

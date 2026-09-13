@@ -200,7 +200,7 @@ https://github.com/masini1491/ai-divination-playbook
 
 **Premise / authority**
 
-- GitHub Connect 可讀 `masini1491/divination-casting-randomizer/randomizer.py`。
+- GitHub Connect 可讀 current `masini1491/ai-divination-playbook` exact commit 的 `runtime/casting/randomizer.py`。
 - Python runtime 可執行，但 sandbox 本身不能直接連 GitHub DNS／HTTPS。
 - deterministic cache probe 未通過，因此 source acquisition 合法需要發生。
 
@@ -212,8 +212,8 @@ https://github.com/masini1491/ai-divination-playbook
 
 **Expected behavior**
 
-- 用 GitHub Connect resolve source ref／commit 並取得 canonical script。
-- 將取得的 script 放入 `RUNTIME_DRAW.md` fixed cache slot，完成 bounded smoke／marker。
+- 用 GitHub Connect resolve `ai-divination-playbook` source ref／exact commit，並取得該 revision 的 `runtime/casting/randomizer.py`。
+- 將取得的 script 放入 `RUNTIME_DRAW.md` fixed cache slot，完成 bounded smoke／marker；marker 使用 cache locator v3 並保留 current repository/path/commit provenance。
 - 再用 Python execution 執行 Runtime Draw / Cast。
 - Python 無外網不影響 GitHub repository retrieval 判斷。
 
@@ -221,11 +221,12 @@ https://github.com/masini1491/ai-divination-playbook
 
 - 要求 Python sandbox 自己下載 GitHub source。
 - 把 Python network failure 等同 GitHub source unavailable。
+- 回到 legacy Randomizer repo 取得 current canonical runtime source。
 - 把 connector retrieval capability、Python execution、repository write authority混為一談。
 
 **Observable evidence**
 
-- connector source read、cache write／verification、Python execution、provenance。
+- current-repo connector source read、cache v3 marker／verification、Python execution、repository/path/commit provenance。
 
 ### TAROT-BEH-007 — Required runtime unavailable must fail closed
 

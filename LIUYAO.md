@@ -4,7 +4,7 @@
 
 本章不實作 RNG；deterministic calculation 與 interpretation authority 明確分層：
 
-- stochastic 三錢起卦 → `masini1491/divination-casting-randomizer/randomizer.py`
+- stochastic 三錢起卦 → `runtime/casting/randomizer.py`
 - deterministic 結構排盤 → `tools/liuyao_engine.py`
 - calendar-dependent facts → 只有經可驗證 calendar provider 或已固定外部 facts 才可加入
 - 題目與方法選擇 → `METHOD_ROUTING.md`
@@ -141,7 +141,7 @@ runtime provenance
 
 ## 4. Canonical Three-Coin Cast｜三錢法 Raw Cast Fact
 
-本 Playbook 預設的 AI Runtime 六爻起卦方式是 `divination-casting-randomizer` 的 canonical three-coin cast：
+本 Playbook 預設的 AI Runtime 六爻起卦方式是 logical runtime identity `divination-casting-randomizer-python` 的 canonical three-coin cast；目前 canonical implementation 位於 `runtime/casting/randomizer.py`：
 
 ```text
 每爻 3 枚獨立公平二元抽樣
@@ -159,7 +159,7 @@ runtime provenance
 CLI：
 
 ```text
-python randomizer.py liuyao --method coins --format json
+python runtime/casting/randomizer.py liuyao --method coins --format json
 ```
 
 Raw Cast Fact 至少保留：
