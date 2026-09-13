@@ -19,6 +19,11 @@ METHOD = "Astrology"
 READING_MODES = {"natal", "transit"}
 FACT_SOURCES = {"approved_provider", "user_supplied_structured_export", "existing_verified_record"}
 CALCULATION_VERIFICATION = {"verified_provider", "user_asserted", "verified_existing_record"}
+FACT_SOURCE_VERIFICATION = {
+    "approved_provider": "verified_provider",
+    "user_supplied_structured_export": "user_asserted",
+    "existing_verified_record": "verified_existing_record",
+}
 BIRTH_TIME_CERTAINTY = {"exact", "approximate", "unknown", "rectified"}
 ZODIAC_SYSTEMS = {"tropical"}
 CENTERS = {"geocentric"}
@@ -81,8 +86,17 @@ def validate_bundle(data: Any) -> list[dict[str, str]]:
     elif fact_source not in FACT_SOURCES:
         _error(errors, "FACT_SOURCE_UNSUPPORTED", "$.fact_source", f"must be one of {sorted(FACT_SOURCES)}")
 
-    if data.get("calculation_verification") not in CALCULATION_VERIFICATION:
+    verification = data.get("calculation_verification")
+    if verification not in CALCULATION_VERIFICATION:
         _error(errors, "CALCULATION_VERIFICATION_INVALID", "$.calculation_verification", f"must be one of {sorted(CALCULATION_VERIFICATION)}")
+    elif fact_source in FACT_SOURCE_VERIFICATION and verification != FACT_SOURCE_VERIFICATION[fact_source]:
+        _error(
+            errors,
+            "FACT_SOURCE_VERIFICATION_MISMATCH",
+            "$.calculation_verification",
+            f"{fact_source} requires {FACT_SOURCE_VERIFICATION[fact_source]}",
+        )
+
     if not _string(data.get("subject_ref")):
         _error(errors, "SUBJECT_REF_REQUIRED", "$.subject_ref", "non-empty subject_ref is required")
 
@@ -130,6 +144,7 @@ def validate_bundle(data: Any) -> list[dict[str, str]]:
         _error(errors, "HOUSE_SYSTEM_REQUIRED", "$.configuration.house_system", "house facts require an explicit admitted house system")
 
     seen_ids: set[str] = set()
+    object_or_house_ids: set[str] = set()
     for collection_name, collection in (("objects", objects), ("houses", houses), ("aspects", aspects), ("events", events)):
         for i, row in enumerate(collection):
             path = f"$.facts.{collection_name}[{i}]"
@@ -143,6 +158,8 @@ def validate_bundle(data: Any) -> list[dict[str, str]]:
                 _error(errors, "FACT_ID_DUPLICATE", path + ".fact_id", "fact_id must be unique")
             else:
                 seen_ids.add(fact_id)
+                if collection_name in {"objects", "houses"}:
+                    object_or_house_ids.add(fact_id)
 
     for i, aspect in enumerate(aspects):
         if not isinstance(aspect, dict):
@@ -151,15 +168,18 @@ def validate_bundle(data: Any) -> list[dict[str, str]]:
         name = aspect.get("aspect")
         if name not in MAJOR_ASPECT_ORBS:
             _error(errors, "ASPECT_UNSUPPORTED", path + ".aspect", "production v1 admits major aspects only")
-            continue
-        orb = aspect.get("orb_deg")
-        if not _finite_number(orb) or float(orb) < 0:
-            _error(errors, "ASPECT_ORB_INVALID", path + ".orb_deg", "orb_deg must be a finite non-negative number")
-        elif float(orb) > MAJOR_ASPECT_ORBS[name]:
-            _error(errors, "ASPECT_ORB_EXCEEDS_POLICY", path + ".orb_deg", f"{name} exceeds production v1 max orb {MAJOR_ASPECT_ORBS[name]}")
+        else:
+            orb = aspect.get("orb_deg")
+            if not _finite_number(orb) or float(orb) < 0:
+                _error(errors, "ASPECT_ORB_INVALID", path + ".orb_deg", "orb_deg must be a finite non-negative number")
+            elif float(orb) > MAJOR_ASPECT_ORBS[name]:
+                _error(errors, "ASPECT_ORB_EXCEEDS_POLICY", path + ".orb_deg", f"{name} exceeds production v1 max orb {MAJOR_ASPECT_ORBS[name]}")
         for ref_key in ("left_ref", "right_ref"):
-            if not _string(aspect.get(ref_key)):
+            ref = aspect.get(ref_key)
+            if not _string(ref):
                 _error(errors, "ASPECT_REF_REQUIRED", path + f".{ref_key}", f"{ref_key} is required")
+            elif ref not in object_or_house_ids:
+                _error(errors, "ASPECT_REF_UNKNOWN", path + f".{ref_key}", f"unknown fact ref: {ref}")
 
     for i, event in enumerate(events):
         if not isinstance(event, dict):
