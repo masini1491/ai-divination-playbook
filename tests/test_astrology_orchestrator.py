@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import json
+import subprocess
+import sys
 import unittest
 from pathlib import Path
 
@@ -12,6 +14,25 @@ FIXTURE = ROOT / "tests" / "fixtures" / "astrology_reading_request_transit_v1.js
 
 
 class AstrologyOrchestratorTests(unittest.TestCase):
+    def test_module_cli_runs_end_to_end_fixture(self):
+        completed = subprocess.run(
+            [sys.executable, "-m", "tools.astrology_orchestrator", str(FIXTURE)],
+            cwd=ROOT,
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual(0, completed.returncode, completed.stderr or completed.stdout)
+        result = json.loads(completed.stdout)
+        self.assertEqual("admitted", result["status"])
+        self.assertTrue(result["interpretation_allowed"])
+        self.assertEqual(
+            "astrology-production-orchestrator-v1",
+            result["orchestrator"]["orchestrator_id"],
+        )
+        self.assertIn("natal", result["fact_bundles"])
+        self.assertIn("transit", result["fact_bundles"])
+
     def test_end_to_end_place_natal_transit_runtime_pipeline(self):
         request = json.loads(FIXTURE.read_text(encoding="utf-8"))
         result = run_request(request)
