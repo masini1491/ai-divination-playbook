@@ -99,6 +99,14 @@ class PlaybookCheckTests(unittest.TestCase):
         errors = playbook_check.validate(root)
         self.assertTrue(any("MISSING_SCHEMA.json" in error for error in errors))
 
+    def test_external_implementation_locator_is_not_treated_as_local_file(self):
+        root = self.make_repo()
+        data = json.loads((root / "PLAYBOOK_INDEX.json").read_text(encoding="utf-8"))
+        data["capabilities"][0]["implementation"] = "owner/external-repo/tool.py"
+        data["capabilities"][0]["casting_implementation"] = "owner/external-repo/casting.py"
+        (root / "PLAYBOOK_INDEX.json").write_text(json.dumps(data), encoding="utf-8")
+        self.assertEqual(playbook_check.validate(root), [])
+
     def test_non_path_metadata_is_not_treated_as_local_file(self):
         root = self.make_repo()
         data = json.loads((root / "PLAYBOOK_INDEX.json").read_text(encoding="utf-8"))
