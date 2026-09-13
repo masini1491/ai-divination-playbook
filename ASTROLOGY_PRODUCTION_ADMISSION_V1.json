@@ -96,6 +96,9 @@
     "canonical_event_time": "UTC"
   },
   "fact_bundle_schema": "astrology_fact_bundle@1.0.0",
+  "fact_bundle_schema_path": "ASTROLOGY_FACT_BUNDLE_V1.schema.json",
+  "runtime_gate_result_schema": "astrology_runtime_gate_result@1.0.0",
+  "runtime_gate_result_schema_path": "ASTROLOGY_RUNTIME_GATE_RESULT_V1.schema.json",
   "reading_modes": ["natal", "transit"],
   "configuration_policy": {
     "zodiac_systems": ["tropical"],
@@ -171,7 +174,7 @@
   "transit_place_admission_baseline": "01a159990d2086f3a47be2e299d2e7f04a0e1758",
   "admission_decision": {
     "decision": "admit_bounded_astrology_v1_with_end_to_end_user_facing_pipeline",
-    "rationale": "Astrology Production v1 admits the existing natal/transit/place-resolution calculation path, composition-only reading orchestration, evidence-packaging interpretation handoff, provenance/pre-send output guard, and one composition-only end-to-end pipeline. Public success-artifact schemas now cover the reading run, interpretation handoff, guarded user-facing output, and complete pipeline envelope without granting any new semantic, calculation, routing, final-prose, or storage authority. Semantic interpretation and final wording remain governed by ASTROLOGY.md and CHATGPT_OUTPUT.md; the deterministic adapters gain no independent astrological meaning, scientific-validity, or private-storage authority.",
+    "rationale": "Astrology Production v1 admits the existing natal/transit/place-resolution calculation path, deterministic fact-bundle runtime gate, composition-only reading orchestration, evidence-packaging interpretation handoff, provenance/pre-send output guard, and one composition-only end-to-end pipeline. Machine-readable contracts now expose the fact-bundle minimum shape and runtime-gate result while leaving cross-field admission policy in tools/astrology_runtime.py, and success-artifact schemas cover the reading run, handoff, guarded output, and pipeline envelope. No new semantic, calculation, routing, final-prose, scientific-validity, or storage authority is granted.",
     "scientific_predictive_validity_claimed": false
   }
 }
