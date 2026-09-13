@@ -9,7 +9,7 @@ REQUEST_SCHEMA = ROOT / "ASTROLOGY_TYPED_EVIDENCE_SELECTION_REQUEST_V1.schema.js
 SELECTION_SCHEMA = ROOT / "ASTROLOGY_TYPED_EVIDENCE_SELECTION_V1.schema.json"
 MANIFEST = ROOT / "ASTROLOGY_PRODUCTION_ADMISSION_V1.json"
 INDEX = ROOT / "PLAYBOOK_INDEX.json"
-RESEARCH_QUERY_SCHEMA = ROOT / "references" / "astrology" / "astrology_query_resolution.schema.json"
+RESEARCH_QUERY_CONTRACT = ROOT / "references" / "astrology" / "QUERY_RESOLUTION_ROUTING_CONTRACT_DRAFT.md"
 
 
 def load(path: Path) -> dict:
@@ -54,9 +54,10 @@ class AstrologyEvidenceSelectorContractTests(unittest.TestCase):
         self.assertFalse(selector["final_prose_authority"])
         self.assertFalse(selector["research_routing_contract_promoted"])
 
-        research = load(RESEARCH_QUERY_SCHEMA)
-        self.assertEqual("REFERENCE-ONLY", research["properties"]["record_status"]["const"])
-        self.assertFalse(research["properties"]["production_routable"]["const"])
+        research = RESEARCH_QUERY_CONTRACT.read_text(encoding="utf-8")
+        self.assertIn("REFERENCE-ONLY", research)
+        self.assertIn("production_routable = false", research)
+        self.assertIn("NOT PRODUCTION-ROUTABLE", research)
 
     def test_index_publishes_all_selector_local_paths(self):
         index = load(INDEX)
