@@ -15,14 +15,33 @@ class AstrologyProductionContractTests(unittest.TestCase):
         self.assertEqual("PRODUCTION_ADMITTED", data["status"])
         self.assertEqual("explicit_user_request_only", data["activation"])
         self.assertFalse(data["ordinary_auto_routing"])
-        self.assertFalse(data["built_in_ephemeris_provider"])
+        self.assertTrue(data["built_in_ephemeris_provider"])
         self.assertFalse(data["admission_decision"]["scientific_predictive_validity_claimed"])
 
-    def test_manifest_admits_natal_and_transit_only(self):
+    def test_manifest_admits_natal_provider_but_not_transit_search_provider(self):
+        data = json.loads((ROOT / "ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        provider = data["natal_provider"]
+        self.assertEqual("astronomy-engine-natal-v1", provider["provider_id"])
+        self.assertTrue(provider["raw_birth_data_supported"])
+        self.assertTrue(provider["requires_iana_timezone"])
+        self.assertIn("provider_transit_event_search", data["unsupported_scopes"])
+
+    def test_manifest_admits_natal_and_transit_interpretation_only(self):
         data = json.loads((ROOT / "ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
         self.assertEqual({"natal", "transit"}, set(data["reading_modes"]))
         self.assertIn("synastry", data["unsupported_scopes"])
         self.assertIn("raw_birth_data_model_calculation", data["unsupported_scopes"])
+
+    def test_provider_admission_manifest_is_pinned_and_bounded(self):
+        data = json.loads((ROOT / "ASTROLOGY_PROVIDER_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        self.assertEqual("astrology_provider_admission", data["schema_name"])
+        self.assertEqual("PRODUCTION_ADMITTED", data["status"])
+        self.assertEqual(["natal"], data["scope"])
+        self.assertEqual("astronomy-engine", data["dependency"]["package"])
+        self.assertEqual("2.1.19", data["dependency"]["version"])
+        self.assertEqual("MIT", data["dependency"]["license"])
+        self.assertEqual("fail_closed", data["calculation_policy"]["dst_ambiguous_wall_time"])
+        self.assertIn("transit event search".replace(" ", "_"), [x.replace("-", "_").replace(" ", "_") for x in data["not_admitted"]])
 
     def test_manifest_keeps_reference_only_pair_registry_qualified(self):
         data = json.loads((ROOT / "ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
@@ -58,11 +77,12 @@ class AstrologyProductionContractTests(unittest.TestCase):
         self.assertEqual("explicit-request-only", row["activation"])
         self.assertEqual("tools/astrology_runtime.py", row["runtime"])
 
-    def test_astrology_method_owner_forbids_llm_chart_calculation(self):
+    def test_astrology_method_owner_forbids_model_calculation_and_names_provider(self):
         text = (ROOT / "ASTROLOGY.md").read_text(encoding="utf-8")
-        self.assertIn("模型不得手算星盤", text)
-        self.assertIn("不內建 production ephemeris calculator", text)
-        self.assertIn("FACT ACQUISITION UNAVAILABLE", text)
+        self.assertIn("model freehand calculation", text)
+        self.assertIn("tools/astrology_provider.py", text)
+        self.assertIn("astronomy-engine-natal-v1", text)
+        self.assertIn("transit event-search provider 尚未 admission", text)
 
 
 if __name__ == "__main__":
