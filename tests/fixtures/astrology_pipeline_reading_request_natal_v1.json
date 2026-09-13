@@ -1,0 +1,17 @@
+{
+  "schema_name": "astrology_reading_request",
+  "schema_version": "1.0.0",
+  "reading_mode": "natal",
+  "subject_ref": "fixture-subject",
+  "birth": {
+    "local_datetime": "1990-06-15T10:00:00",
+    "birth_time_certainty": "exact",
+    "house_system": "Whole Sign",
+    "location": {
+      "place": {
+        "name": "Tokyo",
+        "country_code": "JP"
+      }
+    }
+  }
+}
