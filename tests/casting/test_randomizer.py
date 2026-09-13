@@ -88,6 +88,10 @@ class RandomizerTests(unittest.TestCase):
         self.assertEqual(len(payload["results"]), 3)
         self.assertEqual(payload["runtime_source_commit"], "abc123")
         self.assertEqual([result["tarot"]["count"] for result in payload["results"]], [5, 5, 5])
+        for result in payload["results"]:
+            cards = result["tarot"]["cards"]
+            self.assertEqual(len(cards), 5)
+            self.assertEqual(len({card["full_name"] for card in cards}), 5)
 
     def test_compact_ai_payload_preserves_tarot_fact(self):
         full = randomizer.package([randomizer.make_result("tarot", 5)], source_commit="abc123")
