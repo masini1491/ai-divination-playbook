@@ -29,8 +29,11 @@
     "root_tolerance_seconds": 0.5,
     "default_scan_step_hours": 3.0,
     "station_scan_step_hours": 6.0,
+    "tangential_station_hit_detection": true,
+    "tangential_station_angle_tolerance_deg": 0.0001,
     "retrograde_multiple_passages": "preserve_all_exact_roots_with_sequence",
     "ingress_boundaries": "30_degree_tropical_sign_boundaries",
+    "ingress_sequence_labels": ["direct_ingress", "retrograde_return", "direct_reingress"],
     "local_time_rendering": "derived_only_from_UTC_and_explicit_IANA_timezone",
     "interpretation_authority": "none"
   },
@@ -42,13 +45,14 @@
     ],
     "mercury_three_pass_topology": "required",
     "mercury_three_pass_time_tolerance_seconds": 600,
+    "tangential_station_exact_contact": "required",
     "mercury_station_2026_count": 6,
     "saturn_station_2026_count": 2,
-    "venus_210_boundary_2026_crossing_count": 3,
+    "venus_210_boundary_2026_sequence": ["direct_ingress", "retrograde_return", "direct_reingress"],
     "runtime_gate_required": true
   },
   "not_admitted": [
-    "transit_house search",
+    "transit house search",
     "angle/cusp transit timing beyond supplied natal target facts",
     "sidereal ingress",
     "eclipse prediction",
