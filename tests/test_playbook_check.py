@@ -135,6 +135,19 @@ class PlaybookCheckTests(unittest.TestCase):
         errors = playbook_check.validate(root)
         self.assertTrue(any("deprecated canonical identifier" in error for error in errors))
 
+    def test_legacy_deployment_url_is_allowed_only_in_casting_openapi(self):
+        root = self.make_repo()
+        url = "https://tarot-" + "plum-randomizer-masini1491-9205.vercel.app"
+        write(root, "runtime/casting/openapi.json", json.dumps({"servers": [{"url": url}]}))
+        self.assertEqual(playbook_check.validate(root), [])
+
+    def test_legacy_deployment_url_outside_casting_openapi_fails(self):
+        root = self.make_repo()
+        url = "https://tarot-" + "plum-randomizer-masini1491-9205.vercel.app"
+        write(root, "STALE.md", f"deployment: {url}\n")
+        errors = playbook_check.validate(root)
+        self.assertTrue(any("deprecated canonical identifier" in error for error in errors))
+
 
 if __name__ == "__main__":
     unittest.main()
