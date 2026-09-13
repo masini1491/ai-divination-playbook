@@ -258,9 +258,6 @@ def _selector_applicability(selector: dict[str, Any]) -> set[str]:
         tags.add({"transit_to_natal": "transit-to-natal", "station": "station", "ingress": "ingress"}[event_kind])
         if event_kind == "transit_to_natal":
             tags.add("exact passage")
-        for key in ("moving_body", "natal_target", "aspect"):
-            if isinstance(selector.get(key), str):
-                tags.add(selector[key])
     return tags
 
 
