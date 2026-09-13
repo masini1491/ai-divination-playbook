@@ -135,22 +135,23 @@ class AstrologyEvidenceSelectorTests(unittest.TestCase):
         run = run_request(load(NATAL_READING))
         typed = natal_typed_request()
         selector = typed["claim_selectors"][0]
-        selector["registry_record_id"] = "remaining-house-axes-research-v1"
-        selector["applies_to_all"] = ["natal"]
-        selector["tradition_context_refs_any"] = ["lineage:hellenistic"]
+        selector.pop("registry_record_id")
+        selector.pop("tradition_context_refs_any")
+        selector["applies_to_all"] = ["natal", "seventh house", "marriage"]
 
         with self.assertRaisesRegex(AstrologyEvidenceSelectionError, "ambiguous"):
             select_evidence(run, typed, repo_root=ROOT)
 
-    def test_missing_fact_selector_match_fails_closed(self):
+    def test_fact_claim_applicability_mismatch_fails_closed(self):
         run = run_request(load(NATAL_READING))
         typed = natal_typed_request()
         typed["fact_selectors"][0]["house_number"] = 12
-        typed["claim_selectors"][0]["applies_to_all"] = ["natal", "seventh house", "marriage"]
 
-        selection = select_evidence(run, typed, repo_root=ROOT)
-        self.assertEqual("fact:house:12", selection["fact_refs"][0]["fact_id"])
-        self.assertEqual("claim:valens-seventh-place-marriage", selection["claim_requests"][0]["claim_id"])
+        with self.assertRaisesRegex(
+            AstrologyEvidenceSelectionError,
+            "matched no admitted claims after fact-applicability binding",
+        ):
+            select_evidence(run, typed, repo_root=ROOT)
 
     def test_unknown_fact_selector_reference_is_rejected(self):
         run = run_request(load(NATAL_READING))
@@ -160,7 +161,7 @@ class AstrologyEvidenceSelectorTests(unittest.TestCase):
         with self.assertRaisesRegex(AstrologyEvidenceSelectionError, "unknown selector"):
             select_evidence(run, typed, repo_root=ROOT)
 
-    def test_reference_only_transit_meaning_stays_blocked_by_existing_handoff(self):
+    def test_reference_only_claim_cannot_bypass_typed_applicability(self):
         run = run_request(load(TRANSIT_READING))
         event = next(
             row
@@ -196,7 +197,10 @@ class AstrologyEvidenceSelectorTests(unittest.TestCase):
             ],
         }
 
-        with self.assertRaisesRegex(AstrologyEvidenceSelectionError, "forbidden by production source policy"):
+        with self.assertRaisesRegex(
+            AstrologyEvidenceSelectionError,
+            "matched no admitted claims after fact-applicability binding",
+        ):
             select_evidence(run, typed, repo_root=ROOT)
 
     def test_unadmitted_registry_is_rejected(self):
