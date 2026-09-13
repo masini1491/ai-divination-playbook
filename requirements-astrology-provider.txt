@@ -1,4 +1,10 @@
-# Astrology Production v1 deterministic provider dependency.
-# Upstream: cosinekitty/astronomy@865d3da7d8112bbc7911238052c6af4aaf877181
-# License: MIT
+# Astrology Production v1 deterministic provider dependencies.
+# Astronomy Engine upstream: cosinekitty/astronomy@865d3da7d8112bbc7911238052c6af4aaf877181
+# Astronomy Engine license: MIT
 astronomy-engine==2.1.19
+
+# Offline city/place input resolver.
+# Software upstream: yaph/geonamescache@df4f6497b321f7981645ab0c5c77d3354c63bd01
+# Software license: MIT
+# Bundled GeoNames data origin/license: GeoNames, CC-BY-4.0 (attribution required).
+geonamescache==3.0.2
