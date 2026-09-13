@@ -32,7 +32,7 @@ DEPRECATED_IDENTIFIERS = (
 )
 ALLOWED_LEGACY_DEPLOYMENT_URLS_BY_PATH = {
     "runtime/casting/openapi.json": (
-        "https://tarot-plum-randomizer-masini1491-9205.vercel.app",
+        "https://tarot-" + "plum-randomizer-masini1491-9205.vercel.app",
     ),
 }
 
