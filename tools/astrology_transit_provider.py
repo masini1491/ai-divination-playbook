@@ -6,9 +6,9 @@ intervals using Astronomy Engine-backed longitude/speed calculations from the
 production natal provider. It emits a transit-mode Astrology Fact Bundle 1.0.
 
 Supported event families:
-- transit-to-natal major-aspect exact roots;
+- transit-to-natal major-aspect exact roots, including tangential station hits;
 - stations (longitude-speed zero crossings);
-- tropical zodiac ingresses/re-ingresses.
+- tropical zodiac ingresses / retrograde returns / direct re-ingresses.
 """
 from __future__ import annotations
 
@@ -23,7 +23,6 @@ from tools.astrology_provider import (
     BODY_NAMES,
     _longitude_and_speed,
     _normalize_degrees,
-    _sign_fields,
     _signed_delta_degrees,
 )
 from tools.astrology_runtime import MAJOR_ASPECT_ORBS, gate_bundle
@@ -33,6 +32,7 @@ PROVIDER_VERSION = "1.0.0"
 MAX_SEARCH_DAYS = 400.0
 DEFAULT_STEP_HOURS = 3.0
 ROOT_TOLERANCE_SECONDS = 0.5
+TANGENTIAL_STATION_ANGLE_TOLERANCE_DEG = 1e-4
 UTC = dt.timezone.utc
 
 ASPECT_ANGLES = {
@@ -126,7 +126,6 @@ def _find_longitude_crossings(
     while current < end:
         nxt = min(current + step, end)
         next_error = _longitude_error(body, target_deg, nxt)
-        # Avoid the false sign flip at the signed-angle wrap boundary.
         if current_error == 0 or next_error == 0 or (
             current_error * next_error < 0 and abs(current_error - next_error) < 180.0
         ):
@@ -212,6 +211,7 @@ def search_transit_to_natal(
     for body in moving_bodies:
         if body not in BODY_NAMES or body == "NorthNode":
             raise TransitProviderInputError(f"unsupported moving body: {body}")
+        station_roots = [] if body in {"Sun", "Moon"} else _find_station_roots(body, start, end)
         for target_id in natal_targets:
             if target_id not in natal:
                 raise TransitProviderInputError(f"natal target unavailable: {target_id}")
@@ -219,20 +219,27 @@ def search_transit_to_natal(
             for aspect in aspects:
                 if aspect not in ASPECT_ANGLES:
                     raise TransitProviderInputError(f"unsupported aspect: {aspect}")
-                roots: list[tuple[dt.datetime, float]] = []
+                roots: list[tuple[dt.datetime, float, str]] = []
                 for delta in ASPECT_ANGLES[aspect]:
                     target_lon = _normalize_degrees(natal_lon + delta)
                     for root in _find_longitude_crossings(body, target_lon, start, end):
-                        roots.append((root, target_lon))
-                roots = sorted(roots, key=lambda item: item[0])
-                deduped: list[tuple[dt.datetime, float]] = []
-                for root, target_lon in roots:
-                    if not deduped or abs((root - deduped[-1][0]).total_seconds()) > 2.0:
-                        deduped.append((root, target_lon))
+                        roots.append((root, target_lon, "crossing"))
+                    for station in station_roots:
+                        if abs(_longitude_error(body, target_lon, station)) <= TANGENTIAL_STATION_ANGLE_TOLERANCE_DEG:
+                            roots.append((station, target_lon, "tangential_station"))
 
-                for passage_index, (root, target_lon) in enumerate(deduped, start=1):
+                roots.sort(key=lambda item: item[0])
+                deduped: list[tuple[dt.datetime, float, str]] = []
+                for root, target_lon, root_kind in roots:
+                    if deduped and abs((root - deduped[-1][0]).total_seconds()) <= 2.0:
+                        if root_kind == "tangential_station":
+                            previous = deduped[-1]
+                            deduped[-1] = (previous[0], previous[1], root_kind)
+                        continue
+                    deduped.append((root, target_lon, root_kind))
+
+                for passage_index, (root, target_lon, root_kind) in enumerate(deduped, start=1):
                     transit_lon, speed = _longitude_and_speed(body, root)
-                    branch_delta = _signed_delta_degrees(natal_lon, target_lon)
                     events.append(
                         {
                             "fact_id": f"fact:event:transit:{body.lower()}:{aspect}:{target_id.lower()}:{passage_index}:{int(root.timestamp())}",
@@ -241,13 +248,14 @@ def search_transit_to_natal(
                             "natal_target": target_id,
                             "natal_longitude_deg": natal_lon,
                             "aspect": aspect,
-                            "aspect_branch_deg": branch_delta,
+                            "aspect_branch_deg": _signed_delta_degrees(natal_lon, target_lon),
                             "exact_time_utc": _iso_utc(root),
                             "transit_longitude_deg": transit_lon,
                             "target_longitude_deg": target_lon,
                             "angular_residual_deg": abs(_signed_delta_degrees(target_lon, transit_lon)),
                             "motion_direction": _motion_direction(speed),
                             "speed_deg_per_day": speed,
+                            "root_kind": root_kind,
                             "passage_index": passage_index,
                             "passage_count": len(deduped),
                         }
@@ -255,12 +263,7 @@ def search_transit_to_natal(
     return sorted(events, key=lambda row: (row["exact_time_utc"], row["fact_id"]))
 
 
-def search_stations(
-    *,
-    start_utc: str,
-    end_utc: str,
-    moving_bodies: Iterable[str],
-) -> list[dict[str, Any]]:
+def search_stations(*, start_utc: str, end_utc: str, moving_bodies: Iterable[str]) -> list[dict[str, Any]]:
     start, end = _validate_window(start_utc, end_utc)
     events: list[dict[str, Any]] = []
     for body in moving_bodies:
@@ -293,12 +296,7 @@ def search_stations(
     return sorted(events, key=lambda row: (row["exact_time_utc"], row["fact_id"]))
 
 
-def search_ingresses(
-    *,
-    start_utc: str,
-    end_utc: str,
-    moving_bodies: Iterable[str],
-) -> list[dict[str, Any]]:
+def search_ingresses(*, start_utc: str, end_utc: str, moving_bodies: Iterable[str]) -> list[dict[str, Any]]:
     start, end = _validate_window(start_utc, end_utc)
     sign_names = (
         "Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo",
@@ -313,6 +311,7 @@ def search_ingresses(
             for root in _find_longitude_crossings(body, float(boundary), start, end):
                 roots.append((root, float(boundary)))
         roots.sort(key=lambda item: item[0])
+        retrograde_returned_boundaries: set[float] = set()
         for index, (root, boundary) in enumerate(roots, start=1):
             longitude, speed = _longitude_and_speed(body, root)
             before_lon = _longitude_and_speed(body, root - dt.timedelta(minutes=5))[0]
@@ -324,6 +323,10 @@ def search_ingresses(
             direction = _motion_direction(speed)
             if direction == "retrograde":
                 semantic_kind = "retrograde_return"
+                retrograde_returned_boundaries.add(boundary)
+            elif boundary in retrograde_returned_boundaries:
+                semantic_kind = "direct_reingress"
+                retrograde_returned_boundaries.remove(boundary)
             else:
                 semantic_kind = "direct_ingress"
             events.append(
@@ -409,6 +412,7 @@ def build_transit_bundle(
             "search_start_utc": _iso_utc(start),
             "search_end_utc": _iso_utc(end),
             "root_tolerance_seconds": ROOT_TOLERANCE_SECONDS,
+            "tangential_station_angle_tolerance_deg": TANGENTIAL_STATION_ANGLE_TOLERANCE_DEG,
             "default_step_hours": DEFAULT_STEP_HOURS,
             "natal_source_provider": natal_bundle.get("provider", {}).get("provider_id"),
         },
@@ -433,7 +437,8 @@ def main() -> int:
     parser.add_argument("--no-ingresses", action="store_true")
     args = parser.parse_args()
     try:
-        natal_bundle = json.load(open(args.natal_bundle, encoding="utf-8"))
+        with open(args.natal_bundle, encoding="utf-8") as handle:
+            natal_bundle = json.load(handle)
         bundle = build_transit_bundle(
             natal_bundle,
             start_utc=args.start_utc,
