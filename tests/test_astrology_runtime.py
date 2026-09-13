@@ -53,6 +53,19 @@ class AstrologyRuntimeTests(unittest.TestCase):
         codes = {e["code"] for e in validate_bundle(data)}
         self.assertIn("FACT_SOURCE_FORBIDDEN", codes)
 
+    def test_source_verification_pair_must_match(self):
+        data = natal_bundle()
+        data["calculation_verification"] = "verified_provider"
+        codes = {e["code"] for e in validate_bundle(data)}
+        self.assertIn("FACT_SOURCE_VERIFICATION_MISMATCH", codes)
+
+    def test_approved_provider_requires_verified_provider_status(self):
+        data = natal_bundle()
+        data["fact_source"] = "approved_provider"
+        data["calculation_verification"] = "user_asserted"
+        codes = {e["code"] for e in validate_bundle(data)}
+        self.assertIn("FACT_SOURCE_VERIFICATION_MISMATCH", codes)
+
     def test_unknown_birth_time_forbids_houses(self):
         data = natal_bundle()
         data["birth_time_certainty"] = "unknown"
@@ -91,6 +104,12 @@ class AstrologyRuntimeTests(unittest.TestCase):
         data["facts"]["aspects"][0]["orb_deg"] = 7.5
         codes = {e["code"] for e in validate_bundle(data)}
         self.assertIn("ASPECT_ORB_EXCEEDS_POLICY", codes)
+
+    def test_aspect_refs_must_resolve(self):
+        data = natal_bundle()
+        data["facts"]["aspects"][0]["right_ref"] = "fact:missing"
+        codes = {e["code"] for e in validate_bundle(data)}
+        self.assertIn("ASPECT_REF_UNKNOWN", codes)
 
     def test_transit_mode_requires_transit_fact(self):
         data = natal_bundle()
