@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ASTROLOGY_INTERPRETATION_HANDOFF_V1.schema.json",
+  "title": "Astrology Production v1 Interpretation Handoff",
+  "description": "Closed-world successful evidence-package artifact emitted by tools/astrology_interpretation_handoff.py. Selected fact and claim payloads preserve their source/runtime structures; this schema grants no semantic-selection or final-prose authority.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_name", "schema_version", "status", "interpretation_allowed", "adapter", "owners", "question", "reading_run_identity", "selected_facts", "selected_claims", "conflicts", "unsupported_factors", "required_disclosures", "synthesis_constraints", "provenance"],
+  "properties": {
+    "schema_name": {"const": "astrology_interpretation_handoff"},
+    "schema_version": {"const": "1.0.0"},
+    "status": {"const": "ready_for_bounded_interpretation"},
+    "interpretation_allowed": {"const": true},
+    "adapter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["adapter_id", "adapter_version", "authority", "semantic_selection_validated_not_authored", "final_prose_authority"],
+      "properties": {
+        "adapter_id": {"const": "astrology-interpretation-handoff-v1"},
+        "adapter_version": {"const": "1.0.0"},
+        "authority": {"const": "evidence_packaging_only"},
+        "semantic_selection_validated_not_authored": {"const": true},
+        "final_prose_authority": {"const": false}
+      }
+    },
+    "owners": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["method_owner", "output_owner", "production_manifest", "request_schema"],
+      "properties": {
+        "method_owner": {"const": "ASTROLOGY.md"},
+        "output_owner": {"const": "CHATGPT_OUTPUT.md"},
+        "production_manifest": {"const": "ASTROLOGY_PRODUCTION_ADMISSION_V1.json"},
+        "request_schema": {"const": "ASTROLOGY_INTERPRETATION_REQUEST_V1.schema.json"}
+      }
+    },
+    "question": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["question_id", "text", "focus", "exclusions"],
+      "properties": {
+        "question_id": {"type": "string", "minLength": 1},
+        "text": {"type": "string", "minLength": 1},
+        "focus": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "exclusions": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+      }
+    },
+    "reading_run_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema_name", "schema_version", "reading_mode", "subject_ref", "orchestrator"],
+      "properties": {
+        "schema_name": {"const": "astrology_reading_run"},
+        "schema_version": {"const": "1.0.0"},
+        "reading_mode": {"enum": ["natal", "transit"]},
+        "subject_ref": {"type": "string", "minLength": 1},
+        "orchestrator": {"type": "object"}
+      }
+    },
+    "selected_facts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["bundle", "collection", "fact"],
+        "properties": {
+          "bundle": {"enum": ["natal", "transit"]},
+          "collection": {"enum": ["objects", "houses", "aspects", "events"]},
+          "fact": {"type": "object"}
+        }
+      }
+    },
+    "selected_claims": {"type": "array", "items": {"type": "object"}},
+    "conflicts": {"type": "array", "items": {"type": "object"}},
+    "unsupported_factors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["factor", "reason"],
+        "properties": {
+          "factor": {"type": "string", "minLength": 1},
+          "reason": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "required_disclosures": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "synthesis_constraints": {"type": "array", "minItems": 5, "items": {"type": "string", "minLength": 1}},
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["production_method_version", "source_policy", "admitted_registry_ids", "fact_bundle_sources"],
+      "properties": {
+        "production_method_version": {"const": "astrology-v1"},
+        "source_policy": {"type": "object"},
+        "admitted_registry_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "fact_bundle_sources": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "natal": {"type": "object"},
+            "transit": {"type": "object"}
+          },
+          "required": ["natal"]
+        }
+      }
+    }
+  }
+}
