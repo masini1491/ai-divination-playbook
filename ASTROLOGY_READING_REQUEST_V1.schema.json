@@ -59,61 +59,69 @@
         "location": {
           "type": "object",
           "additionalProperties": false,
+          "properties": {
+            "place": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "name"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "country_code": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z]{2}$"
+                }
+              }
+            },
+            "coordinates": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "latitude",
+                "longitude",
+                "timezone_name"
+              ],
+              "properties": {
+                "latitude": {
+                  "type": "number",
+                  "minimum": -90,
+                  "maximum": 90
+                },
+                "longitude": {
+                  "type": "number",
+                  "minimum": -180,
+                  "maximum": 180
+                },
+                "timezone_name": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          },
           "oneOf": [
             {
               "required": [
                 "place"
               ],
-              "properties": {
-                "place": {
-                  "type": "object",
-                  "additionalProperties": false,
-                  "required": [
-                    "name"
-                  ],
-                  "properties": {
-                    "name": {
-                      "type": "string",
-                      "minLength": 1
-                    },
-                    "country_code": {
-                      "type": "string",
-                      "pattern": "^[A-Za-z]{2}$"
-                    }
-                  }
-                }
+              "not": {
+                "required": [
+                  "coordinates"
+                ]
               }
             },
             {
               "required": [
                 "coordinates"
               ],
-              "properties": {
-                "coordinates": {
-                  "type": "object",
-                  "additionalProperties": false,
-                  "required": [
-                    "latitude",
-                    "longitude",
-                    "timezone_name"
-                  ],
-                  "properties": {
-                    "latitude": {
-                      "type": "number",
-                      "minimum": -90,
-                      "maximum": 90
-                    },
-                    "longitude": {
-                      "type": "number",
-                      "minimum": -180,
-                      "maximum": 180
-                    },
-                    "timezone_name": {
-                      "type": "string",
-                      "minLength": 1
-                    }
-                  }
-                }
+              "not": {
+                "required": [
+                  "place"
+                ]
               }
             }
           ]
