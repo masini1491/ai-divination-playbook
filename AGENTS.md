@@ -31,6 +31,7 @@ Project AI mode: ChatGPT-Only
 - `READING_LIFECYCLE.md`：新題／承接／補占／重占／Reality Update／completion／backtest。
 - `READING_RECORD.md`：durable reading identity、evidence layers、append-only、storage boundary。
 - `RUNTIME_DRAW.md`：ChatGPT／AI stochastic draw/cast 的 runtime capability、canonical source、cache、provenance、fail closed。
+- `runtime/casting/randomizer.py`：Tarot／Meihua／Liuyao three-coin Raw Cast 的 canonical stochastic implementation；不解讀。
 - `TAROT.md`：Tarot-specific contract。
 - `MEIHUA.md`：Meihua-specific contract。
 - `LIUYAO.md`：Liuyao judgment responsibility、Raw Cast → Structured Method Fact、interpretation、engine fail-closed contract。
@@ -59,10 +60,10 @@ Project AI mode: ChatGPT-Only
 
 ### Runtime / engine boundary
 
-Stochastic implementation 不在本 Repo 維護：
+Canonical stochastic implementation 由本 Repo 維護：
 
 ```text
-masini1491/divination-casting-randomizer/randomizer.py
+runtime/casting/randomizer.py
 ```
 
 目前擁有：
@@ -156,7 +157,7 @@ git config user.email "10146979+masini1491@users.noreply.github.com"
 包括：
 
 - 本 Repo 的 branch／tag／commit／tree／diff／file／section；
-- `divination-casting-randomizer`；
+- `divination-casting-randomizer` 的歷史／rollback／migration provenance；
 - Liuyao／Astrology provider／Qimen／未來 method engine；
 - `references/` 中任何 GitHub external source；
 - repo rename、freshness、comparison、license、release 或 source audit。
@@ -246,7 +247,7 @@ judgment gap
 
 - research-line discoverability 不等於 method adoption；`RESEARCH_ROUTING.md` / `PLAYBOOK_INDEX.json` pointer 不得繞過上述順序。
 - 不因 Repo 名稱泛化就宣稱未定義方法已支援。
-- Runtime stochastic implementation 變更優先改 Randomizer repo；Playbook 只同步 governance contract。
+- Runtime stochastic implementation 變更優先修改本 Repo 的 `runtime/casting/**`，並同步 `RUNTIME_DRAW.md`／相關 tests；legacy Randomizer repo 只保留 migration／rollback／compatibility responsibility，除非 rollback 階段另有明確授權。
 - deterministic calculation 必須有單一清楚 owner；不得讓 language model 手算結果冒充 engine fact，也不得讓 legacy adapter / research probe 覆蓋 current production owner。
 - External GitHub reference 納入前，一律用 GitHub connector 取得並記錄 source/ref、license、採用範圍、not-adopted boundary。
 - 不在 README、AGENTS、CHAT_INIT、PLAYBOOK_INDEX 與 method owner 間複製完整 normative policy。
