@@ -21,6 +21,7 @@ BEHAVIOR_ID_RE = re.compile(r"^###\s+(TAROT-BEH-\d{3})\b", re.MULTILINE)
 INDEX_NAME = "PLAYBOOK_INDEX.json"
 INDEX_SCHEMA_VERSION = 1
 INDEX_AUTHORITY = "routing-only"
+INDEX_LOCAL_PATH_SUFFIXES = (".md", ".json", ".py")
 MATRIX_SCHEMA_VERSION = 1
 MATRIX_AUTHORITY = "selection-only"
 TEXT_SUFFIXES = {".md", ".json", ".py"}
@@ -164,6 +165,14 @@ def check_deprecated_identifiers(root: Path) -> list[str]:
     return errors
 
 
+def check_index_local_file_value(root: Path, prefix: str, value: Any) -> list[str]:
+    if not isinstance(value, str) or not value.lower().endswith(INDEX_LOCAL_PATH_SUFFIXES):
+        return []
+    if not (root / value).is_file():
+        return [f"{prefix} must point to an existing local file: {value}"]
+    return []
+
+
 def check_index(root: Path) -> list[str]:
     errors: list[str] = []
     path = root / INDEX_NAME
@@ -210,10 +219,10 @@ def check_index(root: Path) -> list[str]:
         if section is not None:
             if not isinstance(section, str) or section not in heading_names((root / owner).read_text(encoding="utf-8")):
                 errors.append(f"{prefix}.section missing in {owner}: {section}")
-        for key in ("adapter", "matrix", "runner"):
-            target = item.get(key)
-            if target is not None and (not isinstance(target, str) or not (root / target).is_file()):
-                errors.append(f"{prefix}.{key} must point to an existing file")
+        for key, value in item.items():
+            if key in {"owner", "section"}:
+                continue
+            errors.extend(check_index_local_file_value(root, f"{prefix}.{key}", value))
 
     adapters = data.get("adapters", {})
     if not isinstance(adapters, dict):
