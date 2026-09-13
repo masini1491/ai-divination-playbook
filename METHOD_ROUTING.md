@@ -1,13 +1,14 @@
 # Method Routing｜占卜方法選擇
 
-本章只處理一件事：**當使用者尚未指定占卜方法時，ChatGPT 應如何依主要 judgment function 選擇目前已正式支援的方法。**
+本章只處理一件事：**當使用者尚未指定占卜方法時，ChatGPT 應如何依主要 judgment function 選擇目前已正式支援的方法；若使用者已明確指定 production method，則尊重 override 並直接交給該 method owner。**
 
-目前 production-ready routing 支援：
+目前 production-ready methods：
 
 ```text
 Tarot
 Meihua
 Liuyao
+Astrology（explicit-request only；不參與 ordinary auto-routing）
 Tarot + Meihua（只有 distinct responsibilities 真正需要時）
 ```
 
@@ -17,6 +18,7 @@ Tarot + Meihua（只有 distinct responsibilities 真正需要時）
 - Tarot-specific → `TAROT.md`
 - Meihua-specific → `MEIHUA.md`
 - Liuyao-specific → `LIUYAO.md`
+- Astrology-specific → `ASTROLOGY.md`
 - Tarot + Meihua 已存在後怎麼整合 → `CROSS_VALIDATION.md`
 - 新題／承接／補占／重占 → `READING_LIFECYCLE.md`
 - ChatGPT 自行抽牌／起卦 → `RUNTIME_DRAW.md`
@@ -26,6 +28,8 @@ Tarot + Meihua（只有 distinct responsibilities 真正需要時）
 > **先判斷使用者真正想知道的 judgment function，再選方法；不是先選流派，再把問題硬塞進去。**
 
 > **Single-method first。Cross-validation 不是資訊越多越好。**
+
+> **Astrology v1 是 explicit-request method：使用者沒指定 Astrology 時，不因題目看起來像星盤題就把它加入 ordinary Fast Path。**
 
 ## Fast Path｜高信心命中就停止 routing
 
@@ -55,7 +59,9 @@ Outcome / Completion
 → Liuyao
 ```
 
-若只有一個分支高信心命中，**立即選 method，停止讀本檔其餘 sections**；只有出現 collision、ambiguous function、使用者要求多方法或 completion／心理／演化混在同一句時，才繼續讀對應 gate。
+Astrology 不在這個 ordinary auto-selection tree。只有使用者明確說「用占星／用星盤／看行運」等 production intent 時，才由 User Method Override 直接交給 `ASTROLOGY.md`。
+
+若只有一個 ordinary 分支高信心命中，**立即選 method，停止讀本檔其餘 sections**；只有出現 collision、ambiguous function、使用者要求多方法或 completion／心理／演化混在同一句時，才繼續讀對應 gate。
 
 ## 1. User Method Override｜使用者已指定方法
 
@@ -64,17 +70,30 @@ Outcome / Completion
 - 「用塔羅」→ 使用 Tarot；
 - 「用梅花」→ 使用 Meihua；
 - 「用六爻」→ 使用 Liuyao；
+- 「用占星／用星盤／看本命盤／看行運」→ 使用 Astrology，讀 `ASTROLOGY.md`；
 - 「兩個都看／交叉看」→ 先進 Cross-validation Responsibility Gate，不預設固定哪兩套。
+
+Astrology 的 override 還需區分 production reading 與 research intent：
+
+```text
+用占星幫我看／看我的本命盤／看這段行運
+→ ASTROLOGY.md
+
+研究占星來源／維護 Astrology research dossier／比較研究架構
+→ RESEARCH_ROUTING.md
+```
 
 原則上尊重使用者選擇，不因 ChatGPT 個人偏好自行換方法。
 
 只有當指定方法與問題功能明顯不合、無法依該方法形成乾淨契約，或方法本身在本次 workflow 不可用時，才應簡短指出限制並推薦更合適方法。
 
-若使用者已提供實際牌面／卦象／六爻 Cast Fact，直接依既有方法處理；不得為了「方法更適合」自行重抽、重卦或改系統。
+若 Astrology 是指定方法但缺 deterministic chart facts / approved provider，依 `ASTROLOGY.md` fail closed 在 Fact Gate；不得因 Tarot / Meihua / Liuyao 比較容易執行就偷偷換方法。
+
+若使用者已提供實際牌面／卦象／六爻 Cast Fact 或 structured Astrology facts，直接依既有 method fact 處理；不得為了「方法更適合」自行重抽、重卦、重算或改系統。
 
 ## 2. Function Detection｜先辨識問題功能
 
-方法選擇前，先辨識本題的**主要 judgment function**。
+方法未指定時，先辨識本題的**主要 judgment function**。
 
 ### 優先 Tarot
 
@@ -147,9 +166,11 @@ A/B/C 哪個方案比較適合？
 → Liuyao
 ```
 
+如果使用者說「用占星看這段關係／用行運看這個工作窗口」，method override 優先，不再依上面三分支改選；後續能否執行由 `ASTROLOGY.md` 的 deterministic fact gate 決定。
+
 ## 3. Outcome vs Evolution Gate｜Liuyao 與 Meihua 的核心分界
 
-這是最重要的 tie-breaker：
+這是 ordinary auto-routing 最重要的 tie-breaker：
 
 ```text
 核心是「會不會完成這件具體事情？」
@@ -210,12 +231,12 @@ Node B：如果繼續推進，合作關係的結構與轉折怎麼發展？
 
 目前已完整定義的 cross-validation owner 是 `CROSS_VALIDATION.md` 的 Tarot × Meihua reconciliation。
 
-Liuyao 納入 routing 後，**不因此自動宣告所有 Liuyao + Tarot／Meihua 組合都已具備 production-ready cross-validation contract**。
+Liuyao 或 Astrology 納入 production 後，**不因此自動宣告它們與 Tarot／Meihua／彼此的組合已具備 production-ready cross-validation contract**。
 
 若要在同一使用者請求中追加第二套方法，至少必須：
 
 1. 兩套方法承擔不同、可先寫出的 judgment responsibilities；
-2. Primary Method 已由主要 judgment function 決定；
+2. Primary Method 已由主要 judgment function或明確 user override 決定；
 3. Secondary Method 不得只是「再確認一次」；
 4. 若目前沒有對應 canonical reconciliation contract，應保持為兩個獨立 readings，再作明確標示的 derived synthesis，不假裝已有正式 cross-validation owner。
 
@@ -231,6 +252,8 @@ Secondary Tarot responsibility:
 
 這可以是兩個 distinct readings，但目前不要稱為已 canonical 化的 `Liuyao + Tarot Cross-validation`。
 
+Astrology 與其他 production methods 亦同：目前可以並列成 distinct evidence tracks，但沒有 canonical Astrology × Tarot / Meihua / Liuyao reconciliation semantics。
+
 ## 7. Generic / Unspecified Request｜使用者只說「幫我占」
 
 若使用者沒有指定方法，但問題功能已足以判斷，ChatGPT 應直接選擇，不需要每次反問方法。
@@ -240,9 +263,10 @@ Secondary Tarot responsibility:
 - 人物、選項、主觀感受、相對比較 → Tarot；
 - 事件演變、主客結構、轉折、節奏 → Meihua；
 - 單一具體事件 outcome／completion → Liuyao；
+- Astrology 不參與 ordinary auto-selection；
 - 只有真正存在兩個 distinct functions 時才考慮第二套方法。
 
-只有在**不同方法會實質改變題目功能，而現有資訊不足以知道使用者真正想問哪一層**時，才做一次最小澄清。
+只有在**不同 ordinary methods 會實質改變題目功能，而現有資訊不足以知道使用者真正想問哪一層**時，才做一次最小澄清。
 
 例如：
 
@@ -258,14 +282,14 @@ Secondary Tarot responsibility:
 月底前會不會正式成立 → Liuyao
 ```
 
-此時才需要最小澄清。
+此時才需要最小澄清；不因可能也能用占星而把 Astrology 加入候選。
 
 ## 8. Tie-breaker｜同時命中多種方法
 
 依以下順序裁決：
 
-1. 使用者明確指定的方法；
-2. 主要 judgment function；
+1. 使用者明確指定的方法（包含 Astrology）；
+2. 若未指定，主要 judgment function；
 3. 是否有清楚、外部可驗證的 completion rule；
 4. 單方法是否已充分；
 5. 需要第二套時，是否能在結果出現前寫出不同 responsibility；
@@ -274,7 +298,10 @@ Secondary Tarot responsibility:
 ### 簡化決策樹
 
 ```text
-是否主要問人物心理／關係主觀／選項比較？
+使用者明確指定 Astrology？
+→ yes: Astrology → ASTROLOGY.md
+
+否，是否主要問人物心理／關係主觀／選項比較？
 → yes: Tarot
 
 否，是否主要問一個明確事件如何演變／轉折？
@@ -293,16 +320,16 @@ Method Routing 只決定「用哪套」。選完後才進行正式題目契約�
 
 ```text
 RAW USER QUESTION
-→ FUNCTION DETECTION
+→ USER METHOD OVERRIDE or FUNCTION DETECTION
 → METHOD ROUTING
 → minimum contract normalization
 → QUESTION_DESIGN only if a design gap remains
-→ DRAW / CAST
+→ METHOD FACT / DRAW / CAST
 → STRUCTURED METHOD FACT（需要時）
 → INTERPRETATION
 ```
 
-不要先抽牌／起卦，再根據結果反推「其實這題比較適合另一套」。
+不要先抽牌／起卦／看星盤結果，再根據結果反推「其實這題比較適合另一套」。
 
 若題目本身有契約缺陷，才補讀 `INPUT_CONTRACT.md`／`QUESTION_DESIGN.md` relevant sections；**普通清楚的新題不因為是新題就固定全文載入兩份文件。**
 
@@ -315,7 +342,7 @@ RAW USER QUESTION
 ```text
 先選方法
 → 固定題目契約
-→ 確認 casting / engine capability
+→ 確認 casting / engine / fact-provider capability
 → 執行或 fail closed
 ```
 
@@ -327,7 +354,15 @@ Randomizer 可起六爻
 完整納甲 engine 一定可用
 ```
 
-若 Liuyao 是最佳方法，但 Structured Method Fact engine 不可用，依 `LIUYAO.md` fail closed 在缺失層；不得只因 Tarot 比較容易執行就偷偷改方法。
+尤其 Astrology：
+
+```text
+使用者有 raw birth data
+≠
+本 session 已有 approved deterministic chart provider
+```
+
+若 Liuyao 是最佳方法但 Structured Method Fact engine 不可用，依 `LIUYAO.md` fail closed 在缺失層；若 Astrology 是明確指定方法但 chart facts 不可取得，依 `ASTROLOGY.md` fail closed 在 Fact Gate。兩者都不得只因另一套比較容易執行就偷偷改方法。
 
 ## 11. 建議的 Agent-facing 最小輸出
 
@@ -347,18 +382,26 @@ Randomizer 可起六爻
 理由：本題核心是事情接下來怎麼演變與在哪裡轉折，不是先裁決一個單一完成結果。
 ```
 
-不要把方法選擇包裝成「哪一套比較準」；這是**問題功能與方法責任的匹配**。
+或指定 Astrology 但缺 facts 時：
+
+```text
+方法：Astrology
+目前缺少可驗證的星盤 facts，因此停在 Astrology Fact Gate；不會改用其他方法或自行手算補圖。
+```
+
+不要把方法選擇包裝成「哪一套比較準」；這是**問題功能、使用者 override 與方法責任的匹配**。
 
 ## 12. Pre-Route Check
 
-送入正式出題／抽牌前，快速確認：
+送入正式出題／方法執行前，快速確認：
 
-- [ ] 使用者是否已指定方法？
-- [ ] 主要 judgment function 是什麼？
+- [ ] 使用者是否已指定方法？若指定 Astrology，是否直接進 `ASTROLOGY.md`？
+- [ ] 若是 Astrology，使用者是在要 production reading 還是 research task？
+- [ ] ordinary 未指定方法時，主要 judgment function 是什麼？
 - [ ] 是否有清楚的 completion rule / horizon？
 - [ ] 這題是在問心理、演化，還是單一 outcome？
 - [ ] 一套方法是否已足夠？
 - [ ] 若追加第二套，是否能在結果出現前寫出不同 responsibility？
-- [ ] 是否已有實際牌面／卦象／Cast Fact，因此不得重新 routing 成另一套？
+- [ ] 是否已有實際牌面／卦象／Cast Fact／Astrology Fact Bundle，因此不得重新 routing 或自行替換 fact source？
 
-核心原則：**Psychology/comparison → Tarot; evolution/turning point → Meihua; concrete outcome/completion → Liuyao。**
+核心原則：**Explicit Astrology → Astrology; otherwise Psychology/comparison → Tarot; evolution/turning point → Meihua; concrete outcome/completion → Liuyao。**

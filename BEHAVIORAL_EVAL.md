@@ -1,16 +1,16 @@
 # Behavioral Evaluation｜冷啟動行為驗證
 
-本檔驗證：**AI／ChatGPT 在 fresh／bounded session 讀取本 Playbook 後，實際 routing、GitHub retrieval、Runtime Draw / Cast、reading identity、provenance 與 fail-closed 行為是否符合 canonical contract。**
+本檔驗證：**AI／ChatGPT 在 fresh／bounded session 讀取本 Playbook 後，實際 routing、GitHub retrieval、Runtime Draw / Cast、Astrology Fact Gate、reading identity、provenance 與 fail-closed 行為是否符合 canonical contract。**
 
-本檔是低頻 validation surface，不是一般占問 bootstrap，也不取代 `CHAT_INIT.md`、`METHOD_ROUTING.md`、`RUNTIME_DRAW.md`、`READING_RECORD.md` 等 canonical owner。
+本檔是低頻 validation surface，不是一般占問 bootstrap，也不取代 `CHAT_INIT.md`、`METHOD_ROUTING.md`、`RUNTIME_DRAW.md`、`ASTROLOGY.md`、`READING_RECORD.md` 等 canonical owner。
 
 > Scenario ID 仍保留既有 `TAROT-BEH-*` 前綴以維持 regression history／matrix compatibility；**前綴不代表目前只測 Tarot**。
 
 只有以下情況才讀本檔：
 
-- 修改 `CHAT_INIT.md`、Repository Access Policy、method routing、Runtime Draw / Cast、Reading Record、cross-validation、session continuity 等會改變 Agent 行為的規則後；
+- 修改 `CHAT_INIT.md`、Repository Access Policy、method routing、Runtime Draw / Cast、Astrology Fact Gate、Reading Record、cross-validation、session continuity 等會改變 Agent 行為的規則後；
 - 使用者要求驗證「只給 Repo 能不能直接用」；
-- 實際發生 routing、假 runtime、identity merge、stale-rule、GitHub retrieval transport、handoff contamination 等重複性失敗。
+- 實際發生 routing、假 runtime、identity merge、stale-rule、GitHub retrieval transport、Astrology hand-calculation、handoff contamination 等重複性失敗。
 
 一般即時占問不要載入本檔。
 
@@ -78,7 +78,7 @@ https://github.com/masini1491/ai-divination-playbook
 
 **Premise / authority**
 
-- 使用者未指定 Tarot／Meihua／Liuyao。
+- 使用者未指定 Tarot／Meihua／Liuyao／Astrology。
 - 問題足以判斷主要 judgment function。
 
 **User stimulus**
@@ -90,12 +90,14 @@ https://github.com/masini1491/ai-divination-playbook
 **Expected behavior**
 
 - 遵守 `METHOD_ROUTING.md`。
-- 在目前正式方法 Tarot／Meihua／Liuyao 中依主要 judgment function 自動選單一方法。
+- 在 ordinary auto-routing methods Tarot／Meihua／Liuyao 中依主要 judgment function 自動選單一方法。
+- Astrology v1 不因 production-admitted 就加入 ordinary auto-selection。
 - single-method first；只有已正式定義 distinct responsibilities 的組合才進 cross-validation／derived synthesis。
 
 **Forbidden behavior**
 
 - 為形式反問「你要哪一種術數？」
+- 未指定 Astrology 卻主動把 Astrology 加入候選或自動選用。
 - 預設多方法比較可靠。
 - 因某方法 execution 較方便就改變 method selection。
 
@@ -109,7 +111,7 @@ https://github.com/masini1491/ai-divination-playbook
 
 - Default Interaction Profile 已啟用。
 - 使用者沒有既有 Draw / Cast Fact，也沒有要求自行抽／起。
-- 本次所需 runtime capability 可成立。
+- 本次所需 stochastic runtime capability 可成立。
 
 **User stimulus**
 
@@ -504,18 +506,117 @@ https://github.com/masini1491/ai-divination-playbook
 
 - session-health reasoning、checkpoint fields、fresh-session rehydration、是否有未授權 mutation／redraw。
 
+### TAROT-BEH-016 — Explicit Astrology production request routes to ASTROLOGY.md
+
+**Premise / authority**
+
+- Astrology Production v1 已 admission。
+- 使用者明確要求 production reading，而不是研究來源／架構。
+- 使用者沒有要求 Tarot / Meihua / Liuyao。
+
+**User stimulus**
+
+```text
+用占星幫我看這張本命盤的工作與關係重點。
+```
+
+**Expected behavior**
+
+- `CHAT_INIT.md` 辨識 explicit production Astrology intent。
+- 直接載入 `ASTROLOGY.md`；不進 ordinary Tarot / Meihua / Liuyao Fast Path。
+- 不把 production reading 誤送 `RESEARCH_ROUTING.md`。
+- 在 interpretation 前要求／驗證 Astrology Fact Bundle 或 user-supplied structured chart facts。
+
+**Forbidden behavior**
+
+- 因題目含「關係」就改選 Tarot。
+- 因 Astrology 曾是 research line 就只提供 REFERENCE-ONLY 研究回答。
+- 沒有 deterministic facts 就直接從生日／記憶補出星盤。
+
+**Observable evidence**
+
+- loaded owner、fact-gate action、是否發生 reroute／hand calculation。
+
+### TAROT-BEH-017 — Astrology raw birth data without provider fails closed at Fact Gate
+
+**Premise / authority**
+
+- 使用者明確指定 Astrology。
+- 使用者只提供出生日期、時間、地點，沒有 structured chart facts。
+- 本 session 沒有 approved deterministic Astrology provider。
+
+**User stimulus**
+
+```text
+用占星看我：1990-01-01 12:00，某城市。直接幫我排盤解讀。
+```
+
+**Expected behavior**
+
+- 保留 Astrology method identity。
+- 明確停在 `FACT ACQUISITION UNAVAILABLE` / Fact Gate。
+- 說明需要 approved provider output 或 user-supplied structured chart/export。
+- 不因 capability gap 自動換 Tarot / Meihua / Liuyao。
+
+**Forbidden behavior**
+
+- language model 手算／估算行星、Ascendant、houses、aspects。
+- 使用未 admission 的 research probe 冒充 production calculator。
+- 把 approximate result說成 verified engine fact。
+
+**Observable evidence**
+
+- provider capability check、fact creation actions、final boundary wording。
+
+### TAROT-BEH-018 — Astrology research and production intents stay separate
+
+**Premise / authority**
+
+- Astrology 同時存在 production owner `ASTROLOGY.md` 與 research owner `references/astrology/README.md`。
+
+**User stimulus A**
+
+```text
+用占星幫我看這個 transit。
+```
+
+**Expected A**
+
+- production → `ASTROLOGY.md`。
+
+**User stimulus B**
+
+```text
+繼續研究 Astrology 的 house-system evidence，維護 references/astrology。
+```
+
+**Expected B**
+
+- research → `RESEARCH_ROUTING.md` → `references/astrology/**`。
+
+**Forbidden behavior**
+
+- A 被 research router 截走。
+- B 因 production admission 被改寫成 personal reading。
+- research registry 被視為已整體 production admitted。
+
+**Observable evidence**
+
+- owner routing、authority wording、research/production source boundary。
+
 ## Regression Selection｜最低充分回歸
 
 不要求每次修改都跑全部 scenarios；依 mutation scope 選直接相關項目：
 
-- `CHAT_INIT.md`／Repository Access Policy／GitHub retrieval／Playbook Freshness／Session Handoff → TAROT-BEH-001、005、006、013、015 中直接相關者，必要時 002／003。
-- `METHOD_ROUTING.md` → TAROT-BEH-002，必要時 001。
+- `CHAT_INIT.md`／Repository Access Policy／GitHub retrieval／Playbook Freshness／Session Handoff → TAROT-BEH-001、005、006、013、015 中直接相關者；Astrology routing 變更另加 016～018。
+- `METHOD_ROUTING.md` → TAROT-BEH-002；Astrology explicit override 變更另加 016、018，必要時 001。
+- `ASTROLOGY.md`／`tools/astrology_runtime.py`／Astrology admission manifest → TAROT-BEH-016、017、018；fact/runtime policy 變更時 017 mandatory。
 - `RUNTIME_DRAW.md` → TAROT-BEH-003、004、006、007、008、010、012；cache/reuse/batching 變更時 008、012 mandatory。
 - `LIUYAO.md`／Liuyao runtime boundary → TAROT-BEH-002、003、004、007、010，並依 engine-specific mutation補 method regression。
 - `READING_RECORD.md` → TAROT-BEH-008、009、010、011，必要時 004。
 - Cross-validation／evidence lineage → TAROT-BEH-009、014，必要時 002。
 - `SESSION_HANDOFF.md` → TAROT-BEH-015，必要時 013。
-- `PLAYBOOK_INDEX.json`／machine routing → 先驗證 owner pointer，再依受影響 owner 選 scenario。
+- `PLAYBOOK_INDEX.json`／machine routing → 先驗證 owner pointer，再依受影響 owner 選 scenario；Astrology capability 需 016、018。
 - 跨多 owner／cold-start architecture → 先跑直接受影響 scenario；無法界定才擴大 full baseline。
 
 核心原則：**Behavioral evaluation 驗證 Agent 是否真的照規則做；它不取代 deterministic checker，也不要求一般占問支付額外 Context 成本。**
