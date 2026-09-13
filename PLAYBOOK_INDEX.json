@@ -21,7 +21,7 @@
     {"id":"method.tarot","owner":"TAROT.md","kind":"contract"},
     {"id":"method.meihua","owner":"MEIHUA.md","kind":"contract"},
     {"id":"method.liuyao","owner":"LIUYAO.md","kind":"contract","casting_implementation":"masini1491/divination-casting-randomizer/randomizer.py","engine":"tools/liuyao_engine.py","calendar_provider":"tools/liuyao_calendar.py","runtime":"tools/liuyao_runtime.py"},
-    {"id":"method.astrology","owner":"ASTROLOGY.md","kind":"contract","activation":"explicit-request-only","runtime":"tools/astrology_runtime.py","admission_manifest":"ASTROLOGY_PRODUCTION_ADMISSION_V1.json"},
+    {"id":"method.astrology","owner":"ASTROLOGY.md","kind":"contract","activation":"explicit-request-only","natal_provider":"tools/astrology_provider.py","runtime":"tools/astrology_runtime.py","provider_admission_manifest":"ASTROLOGY_PROVIDER_ADMISSION_V1.json","admission_manifest":"ASTROLOGY_PRODUCTION_ADMISSION_V1.json"},
     {"id":"cross-validation.reconciliation","owner":"CROSS_VALIDATION.md","kind":"contract"},
     {"id":"cross-validation.evidence-lineage","owner":"CROSS_VALIDATION.md","section":"2.1 Evidence Lineage / Independence Guard｜抽得多不等於證據獨立","kind":"contract"},
     {"id":"output.chatgpt","owner":"CHATGPT_OUTPUT.md","section":"Section Router｜依任務只讀最低必要段落","kind":"contract"},

@@ -6,14 +6,25 @@
   "status": "PRODUCTION_ADMITTED",
   "activation": "explicit_user_request_only",
   "ordinary_auto_routing": false,
-  "built_in_ephemeris_provider": false,
+  "built_in_ephemeris_provider": true,
+  "natal_provider": {
+    "provider_id": "astronomy-engine-natal-v1",
+    "admission_manifest": "ASTROLOGY_PROVIDER_ADMISSION_V1.json",
+    "runtime_owner": "tools/astrology_provider.py",
+    "scope": ["natal"],
+    "raw_birth_data_supported": true,
+    "requires_explicit_coordinates": true,
+    "requires_iana_timezone": true
+  },
   "fact_bundle_schema": "astrology_fact_bundle@1.0.0",
   "reading_modes": ["natal", "transit"],
   "configuration_policy": {
     "zodiac_systems": ["tropical"],
     "centers": ["geocentric"],
     "house_systems": ["Whole Sign", "Placidus"],
-    "unknown_birth_time_houses_angles": "forbidden"
+    "unknown_birth_time_houses_angles": "forbidden",
+    "provider_unknown_birth_time": "not_admitted",
+    "placidus_provider_max_abs_latitude": 66.0
   },
   "dignity_policy": {
     "admitted": ["domicile", "exaltation", "detriment", "fall"],
@@ -61,6 +72,9 @@
     "lunation_prediction",
     "time_lord_systems",
     "raw_birth_data_model_calculation",
+    "provider_unknown_birth_time_noon_substitution",
+    "provider_geocoding",
+    "provider_transit_event_search",
     "unsourced_planet_in_sign_personality_templates"
   ],
   "high_stakes_guardrails": [
@@ -74,9 +88,10 @@
     "no_relationship_ending_guarantee"
   ],
   "research_baseline": "d7fdb4b2c4ca6a615e95723166c507acc8b9421f",
+  "provider_admission_baseline": "09d2a014190b59a5a758c9a0618b06e72a82aecb",
   "admission_decision": {
-    "decision": "admit_bounded_astrology_v1",
-    "rationale": "Research v1 established deterministic fact boundaries, typed source/tradition routing, bounded source-backed house/dignity/aspect/transit evidence, fail-closed preconditions, and direct regression evidence. Production v1 therefore admits interpretation over validated or explicitly user-supplied structured facts while leaving ephemeris-provider admission separate.",
+    "decision": "admit_bounded_astrology_v1_with_natal_provider",
+    "rationale": "Research v1 established deterministic fact boundaries, typed source/tradition routing, bounded source-backed interpretation evidence, and unknown-time/timezone contracts. Astrology Production v1 now additionally admits the MIT Astronomy Engine based natal provider for raw birth data with explicit coordinates, IANA timezone, conservative Placidus latitude handling, upstream fixture parity, and mandatory runtime-gate validation. Transit event search remains separate.",
     "scientific_predictive_validity_claimed": false
   }
 }

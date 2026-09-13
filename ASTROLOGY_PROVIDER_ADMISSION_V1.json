@@ -1,0 +1,70 @@
+{
+  "schema_name": "astrology_provider_admission",
+  "schema_version": "1.0.0",
+  "provider_id": "astronomy-engine-natal-v1",
+  "provider_version": "1.0.0",
+  "status": "PRODUCTION_ADMITTED",
+  "scope": ["natal"],
+  "output_schema": "astrology_fact_bundle@1.0.0",
+  "runtime_owner": "tools/astrology_provider.py",
+  "dependency": {
+    "package": "astronomy-engine",
+    "version": "2.1.19",
+    "source_repository": "cosinekitty/astronomy",
+    "source_revision": "865d3da7d8112bbc7911238052c6af4aaf877181",
+    "license": "MIT"
+  },
+  "house_algorithm_reference": {
+    "repository": "kounkt/tri-horoscope",
+    "revision": "11318426c52c222eea108583ca45420c864825ca",
+    "path": "src/natal_v0.py",
+    "license": "MIT",
+    "reuse": "bounded algorithm adaptation and parity reference; no wholesale dependency"
+  },
+  "input_contract": {
+    "local_datetime": "naive ISO-8601 local wall time",
+    "timezone_name": "IANA timezone required",
+    "latitude": "decimal degrees [-90,90]",
+    "longitude": "decimal degrees [-180,180]",
+    "house_systems": ["Whole Sign", "Placidus"],
+    "birth_time_certainty": ["exact", "approximate"],
+    "geocoding": "not_owned_by_provider"
+  },
+  "calculation_policy": {
+    "zodiac_system": "tropical",
+    "center": "geocentric",
+    "bodies": ["Sun", "Moon", "Mercury", "Venus", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto", "NorthNode"],
+    "angles": ["Ascendant", "Midheaven"],
+    "major_aspects": ["conjunction", "opposition", "trine", "square", "sextile"],
+    "aspect_orbs_owner": "tools/astrology_runtime.py",
+    "placidus_max_abs_latitude": 66.0,
+    "dst_nonexistent_wall_time": "fail_closed",
+    "dst_ambiguous_wall_time": "fail_closed",
+    "unknown_birth_time": "not_admitted_for_raw-birth-data provider",
+    "fixed_offset_as_timezone_identity": "not_admitted"
+  },
+  "provenance": {
+    "fact_source": "approved_provider",
+    "calculation_verification": "verified_provider",
+    "provider_metadata_required": true
+  },
+  "validation": {
+    "upstream_fixture": "tests/fixtures/astrology_provider_sydney_1990.json",
+    "upstream_tolerance_deg": 0.0167,
+    "runtime_gate_required": true,
+    "production_tests": "tests/test_astrology_provider.py"
+  },
+  "not_admitted": [
+    "geocoding",
+    "unknown-time noon substitution",
+    "sidereal zodiac",
+    "topocentric planet positions",
+    "synastry",
+    "composite",
+    "solar return",
+    "rectification",
+    "transit event search",
+    "Placidus above admitted latitude boundary"
+  ],
+  "scientific_predictive_validity_claimed": false
+}

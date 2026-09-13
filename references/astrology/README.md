@@ -6,6 +6,10 @@ Production owner: [`../../ASTROLOGY.md`](../../ASTROLOGY.md)
 
 Production admission manifest: [`../../ASTROLOGY_PRODUCTION_ADMISSION_V1.json`](../../ASTROLOGY_PRODUCTION_ADMISSION_V1.json)
 
+Production natal-provider admission: [`../../ASTROLOGY_PROVIDER_ADMISSION_V1.json`](../../ASTROLOGY_PROVIDER_ADMISSION_V1.json)
+
+Production natal-provider execution evidence: [`../../ASTROLOGY_NATAL_PROVIDER_ADMISSION_RESULTS.md`](../../ASTROLOGY_NATAL_PROVIDER_ADMISSION_RESULTS.md)
+
 Research maturity review: [`ASTROLOGY_RESEARCH_V1_MATURITY_REVIEW.md`](ASTROLOGY_RESEARCH_V1_MATURITY_REVIEW.md)
 
 Integrated research execution evidence: [`ASTROLOGY_RESEARCH_V1_COMPLETION_EXECUTION_RESULTS.md`](ASTROLOGY_RESEARCH_V1_COMPLETION_EXECUTION_RESULTS.md)
@@ -19,6 +23,8 @@ references/astrology/**
 
 ASTROLOGY.md
 + ASTROLOGY_PRODUCTION_ADMISSION_V1.json
++ ASTROLOGY_PROVIDER_ADMISSION_V1.json
++ tools/astrology_provider.py
 + tools/astrology_runtime.py
 → production-v1 authority
 ```
@@ -77,19 +83,37 @@ L0 input + provenance
 
 ## 3. Calculation / fact evidence
 
-### Engine comparison
+### Production natal provider
+
+Current production provider：
+
+```text
+tools/astrology_provider.py
+provider_id = astronomy-engine-natal-v1
+astronomy-engine==2.1.19
+```
+
+Admission/evidence：
+
+- [`../../ASTROLOGY_PROVIDER_ADMISSION_V1.json`](../../ASTROLOGY_PROVIDER_ADMISSION_V1.json)
+- [`../../ASTROLOGY_NATAL_PROVIDER_ADMISSION_RESULTS.md`](../../ASTROLOGY_NATAL_PROVIDER_ADMISSION_RESULTS.md)
+- [`PRODUCTION_NATAL_PROVIDER_EVIDENCE.md`](PRODUCTION_NATAL_PROVIDER_EVIDENCE.md)
+
+這個 provider 是 root production authority 的一部分，不會把本目錄其他 research probes 一併升格。它目前只 admission natal raw-birth-data calculation；transit event search仍是獨立未 admission scope。
+
+### Historical engine comparison
 
 - [`ENGINE_COMPARISON_RESULTS.md`](ENGINE_COMPARISON_RESULTS.md)
 - [`engine_comparison_probe.py`](engine_comparison_probe.py)
 
-Research runtime 曾比較 Swiss Ephemeris API / Moshier fallback 與 Astronomy Engine-family fixtures。這些 probes 是 research evidence，**不是 Production v1 內建 ephemeris provider**。
+Research runtime 曾比較 Swiss Ephemeris API / Moshier fallback 與 Astronomy Engine-family fixtures。這些歷史 probes 本身仍只是 research evidence；目前 production provider 的 authority 來自獨立 provider admission manifest、runtime owner與 production regression，而不是由舊 probe 自動升格。
 
 ### Unknown birth-time sensitivity
 
 - [`UNKNOWN_TIME_SENSITIVITY_RESULTS.md`](UNKNOWN_TIME_SENSITIVITY_RESULTS.md)
 - [`unknown_time_sensitivity_probe.py`](unknown_time_sensitivity_probe.py)
 
-結果支持 houses / angles 對未知出生時間 fail closed，Moon 亦需 uncertainty-aware handling。
+結果支持 houses / angles 對未知出生時間 fail closed，Moon 亦需 uncertainty-aware handling。Production raw-birth-data provider因此不以 local noon 取代 unknown birth time。
 
 ### Transit / station / ingress
 
@@ -97,7 +121,7 @@ Research runtime 曾比較 Swiss Ephemeris API / Moshier fallback 與 Astronomy 
 - [`TRANSIT_NATAL_INGRESS_TIMEZONE_RESULTS.md`](TRANSIT_NATAL_INGRESS_TIMEZONE_RESULTS.md)
 - [`TIMEZONE_DST_CONTRACT_DRAFT.md`](TIMEZONE_DST_CONTRACT_DRAFT.md)
 
-Research 已涵蓋 exact-event roots、station、applying/separating、retrograde repeated passages、ingress/re-ingress、timezone/DST ambiguity 等；它們不自動建立 production backend/tolerance authority。
+Research 已涵蓋 exact-event roots、station、applying/separating、retrograde repeated passages、ingress/re-ingress、timezone/DST ambiguity 等；它們目前**尚未形成 production transit event-search provider**。
 
 ### Structured Astrology Fact
 
@@ -196,13 +220,17 @@ Research v1 的歷史 maturity 結論保存在：
 目前 current state 已演進為：
 
 ```text
-research evidence                 REFERENCE-ONLY / RESEARCH V1 COMPLETE
-production method owner           ASTROLOGY.md
-production admission              bounded Astrology v1
-activation                        explicit request only
-ordinary auto-routing             NO
-built-in production ephemeris     NO
-scientific validity claim         NO
+research evidence                     REFERENCE-ONLY / RESEARCH V1 COMPLETE
+production method owner               ASTROLOGY.md
+production admission                  bounded Astrology v1
+activation                            explicit request only
+ordinary auto-routing                 NO
+built-in natal ephemeris provider     YES
+natal provider                        astronomy-engine-natal-v1
+raw birth data → natal bundle         YES, exact/approximate time + coordinates + IANA timezone
+transit event-search provider         NO
+provider-owned geocoding              NO
+scientific validity claim             NO
 ```
 
 Production v1 的 current policy請讀 root `ASTROLOGY.md`；不要從 research result docs 反推 current production state。
@@ -217,12 +245,23 @@ explicit Astrology research intent
 → references/astrology/**
 ```
 
-Production reading：
+Production natal reading：
 
 ```text
 explicit Astrology reading intent
 → ASTROLOGY.md
+→ tools/astrology_provider.py when raw birth data is complete
+→ Astrology Fact Bundle
 → Astrology Fact Gate
+```
+
+Production transit reading：
+
+```text
+explicit Astrology transit intent
+→ ASTROLOGY.md
+→ requires supplied / separately verified transit facts
+→ current natal provider does not search transit events
 ```
 
 Ordinary unspecified divination：
