@@ -2,9 +2,9 @@
 
 本檔只負責**明確 research intent 的 owner discovery、authority boundary 與最低載入路徑**。
 
-它不是 production method router，也不把 `references/**` 內的研究線升級成正式占卜方法。
+它不是 production method router，也不把 `references/**` 內的研究線自動升級成正式占卜方法。
 
-目前 production method selection 仍由 `METHOD_ROUTING.md` 單獨負責：
+目前 production method selection 仍由 `METHOD_ROUTING.md` 負責。Astrology 已有 bounded production v1，但只有 explicit-request activation；普通未指定方法的 auto-routing 仍是：
 
 ```text
 Tarot
@@ -19,25 +19,37 @@ Tarot + Meihua（只有既有 canonical reconciliation contract 適用時）
 
 ### Astrology
 
-Owner：[`references/astrology/README.md`](references/astrology/README.md)
+Research owner：[`references/astrology/README.md`](references/astrology/README.md)
 
-Intent examples：
+Production owner：[`ASTROLOGY.md`](ASTROLOGY.md)
 
-```text
-星座／本命星盤
-行運／transit
-宮位／相位／逆行
-Astrology chart facts
-Astrology tradition-specific interpretation research
-```
-
-Current authority：
+Research intent examples：
 
 ```text
-REFERENCE-ONLY / RESEARCH / NOT PRODUCTION-ROUTABLE
+研究星座／本命星盤來源
+維護 Astrology research dossier
+比較不同 engine / house-system / tradition evidence
+檢查 claim registry / source admission
+Astrology chart fact architecture research
 ```
 
-目前已有 deterministic / typed research contracts 與 regression evidence，但沒有 `ASTROLOGY.md` production method owner，也不是 `METHOD_ROUTING.md` 的候選方法。
+Research authority：
+
+```text
+REFERENCE-ONLY / RESEARCH EVIDENCE
+```
+
+Astrology research v1 已完成並保留歷史 evidence。它**不因 production v1 已 admission 就回頭改寫成 production source of truth**；production authority 由 `ASTROLOGY.md` + `ASTROLOGY_PRODUCTION_ADMISSION_V1.json` 另外擁有。
+
+若使用者說：
+
+```text
+用占星幫我看
+看我的本命盤
+看這段行運
+```
+
+這是 production reading intent，**不要進本 research router**，直接交給 `ASTROLOGY.md`。
 
 ### Palmistry
 
@@ -46,8 +58,8 @@ Owner：[`references/palmistry/README.md`](references/palmistry/README.md)
 Intent examples：
 
 ```text
-手相／掌紋
-手掌照片 observation
+手相／掌紋 research
+手掌照片 observation research
 palm geometry / principal lines
 Palmistry source / tradition research
 ```
@@ -64,10 +76,12 @@ REFERENCE-ONLY / DRAFT / NOT PRODUCTION-ROUTABLE
 
 只有下列情形進本 router：
 
-- 使用者明確指定 Astrology／占星／星盤／行運等 research line；
-- 使用者明確指定 Palmistry／手相／掌紋／手掌照片 research line；
+- 使用者明確要求 Astrology **research**、來源／架構／evidence／repo 維護；
+- 使用者明確指定 Palmistry／手相 research line；
 - 使用者要求維護、驗證、比較或繼續上述 research dossier；
 - machine consumer 已由 `PLAYBOOK_INDEX.json` 命中 `research.*` capability。
+
+Astrology production reading 不屬於這個 gate。
 
 最低路徑：
 
@@ -79,7 +93,7 @@ explicit research intent
 → output with research authority preserved
 ```
 
-不得因使用者明確指定 research line，又先把問題改寫成 Tarot / Meihua / Liuyao。
+不得因使用者明確指定 research task，又先把問題改寫成 production Tarot / Meihua / Liuyao / Astrology reading。
 
 ## Ordinary Reading Boundary｜普通占問邊界
 
@@ -92,7 +106,7 @@ explicit research intent
 月底前會不會完成？
 ```
 
-而沒有明確指定 research line 時，**不要**載入本檔來擴張候選方法。
+而沒有指定 Astrology 時，**不要**載入本檔來擴張候選方法。
 
 應直接回到：
 
@@ -102,11 +116,21 @@ CHAT_INIT.md
 → production method owner
 ```
 
-Astrology / Palmistry 不因 repository 已有 research dossier 就成為 ordinary auto-routing candidate。
+Astrology production v1 仍不因 repository 有 research dossier 就成為 ordinary auto-routing candidate。
+
+若使用者明確指定 production Astrology：
+
+```text
+CHAT_INIT.md
+→ ASTROLOGY.md
+→ Astrology Fact Gate
+```
+
+Palmistry 仍不得因有 research dossier而成為 ordinary auto-routing candidate。
 
 ## Research Routing ≠ Production Admission
 
-下列行為一律禁止：
+下列推論一律禁止：
 
 ```text
 research README exists
@@ -121,6 +145,15 @@ research validator/test passes
 research result is detailed
 → therefore may silently create production rule
 ```
+
+Astrology v1 的 production admission 是另外的 explicit decision，記錄於：
+
+```text
+ASTROLOGY.md
+ASTROLOGY_PRODUCTION_ADMISSION_V1.json
+```
+
+它不改變這項原則，也不為其他 research line 建立捷徑。
 
 Research pointer 只代表：
 
@@ -138,14 +171,14 @@ cross-validation authority
 user-facing predictive certainty
 ```
 
-## Explicit User Request with Incomplete Research Capability
+## Explicit Research Request with Incomplete Capability
 
-如果使用者明確要求 Astrology / Palmistry，但目前 research line 尚缺必要 fact / engine / image / permission / validation：
+如果 research line 尚缺必要 fact / engine / image / permission / validation：
 
-1. 保留使用者指定的 research identity；
+1. 保留 research identity；
 2. 依該 research owner fail closed 在缺失層；
 3. 可說明需要的最小 additional evidence；
-4. 不因 research capability gap 就自行改成 Tarot / Meihua / Liuyao；
+4. 不因 research capability gap 就自行改成 production reading；
 5. 若使用者另行要求 production method，才建立新的 distinct reading / task identity。
 
 ## Mixed Production + Research Request
@@ -160,11 +193,18 @@ research analysis
 → RESEARCH_ROUTING.md → research owner
 ```
 
-除非已有獨立 canonical reconciliation contract，否則不得把兩者稱為正式 cross-validation，也不得把 research conclusion 當成 production source fact。
+例如 Astrology：
+
+```text
+production interpretation → ASTROLOGY.md
+source / architecture audit → references/astrology/**
+```
+
+除非已有獨立 canonical reconciliation contract，否則不得把兩者稱為正式 cross-validation，也不得把 research conclusion 未經 admission 直接當成 production source fact。
 
 ## Promotion Boundary
 
-Research line 若未來要進 production，仍必須依 repository governance 走完整 adoption sequence：
+任何尚未 production-admitted 的 research line 未來要進 production，仍必須依 repository governance 走完整 adoption sequence：
 
 ```text
 judgment gap
@@ -177,8 +217,10 @@ judgment gap
 → explicit admission decision
 ```
 
+Astrology v1 是這個 sequence 的一個 bounded implementation，不是繞過 sequence 的例外。
+
 修改本檔或 `PLAYBOOK_INDEX.json` 的 research pointer **不能跳過上述 sequence**。
 
 核心原則：
 
-> **Research routing makes evidence discoverable without making it authoritative beyond its admitted layer. Explicit research intent stays research; ordinary reading stays on the production router.**
+> **Research routing makes evidence discoverable without making it authoritative beyond its admitted layer. Production Astrology and Astrology research are distinct intents; ordinary unspecified readings stay on the ordinary production router.**
