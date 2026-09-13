@@ -10,9 +10,9 @@
   "orchestration": {
     "orchestrator_id": "astrology-production-orchestrator-v1",
     "runtime_owner": "tools/astrology_orchestrator.py",
-    "request_schema": "ASTROLOGY_READING_REQUEST_V1.schema.json",
+    "request_schema": "schemas/astrology/ASTROLOGY_READING_REQUEST_V1.schema.json",
     "request_schema_id": "astrology_reading_request@1.0.0",
-    "run_schema": "ASTROLOGY_READING_RUN_V1.schema.json",
+    "run_schema": "schemas/astrology/ASTROLOGY_READING_RUN_V1.schema.json",
     "run_schema_id": "astrology_reading_run@1.0.0",
     "authority": "composition_only",
     "runtime_gate_required_for_every_generated_bundle": true,
@@ -21,9 +21,9 @@
     "typed_evidence_selection": {
       "selector_id": "astrology-typed-evidence-selector-v1",
       "runtime_owner": "tools/astrology_evidence_selector.py",
-      "request_schema": "ASTROLOGY_TYPED_EVIDENCE_SELECTION_REQUEST_V1.schema.json",
+      "request_schema": "schemas/astrology/ASTROLOGY_TYPED_EVIDENCE_SELECTION_REQUEST_V1.schema.json",
       "request_schema_id": "astrology_typed_evidence_selection_request@1.0.0",
-      "selection_schema": "ASTROLOGY_TYPED_EVIDENCE_SELECTION_V1.schema.json",
+      "selection_schema": "schemas/astrology/ASTROLOGY_TYPED_EVIDENCE_SELECTION_V1.schema.json",
       "selection_schema_id": "astrology_typed_evidence_selection@1.0.0",
       "authority": "deterministic_evidence_selection_only",
       "requires_admitted_reading_run": true,
@@ -40,9 +40,9 @@
     "interpretation_handoff": {
       "adapter_id": "astrology-interpretation-handoff-v1",
       "runtime_owner": "tools/astrology_interpretation_handoff.py",
-      "request_schema": "ASTROLOGY_INTERPRETATION_REQUEST_V1.schema.json",
+      "request_schema": "schemas/astrology/ASTROLOGY_INTERPRETATION_REQUEST_V1.schema.json",
       "request_schema_id": "astrology_interpretation_request@1.0.0",
-      "handoff_schema": "ASTROLOGY_INTERPRETATION_HANDOFF_V1.schema.json",
+      "handoff_schema": "schemas/astrology/ASTROLOGY_INTERPRETATION_HANDOFF_V1.schema.json",
       "handoff_schema_id": "astrology_interpretation_handoff@1.0.0",
       "authority": "evidence_packaging_only",
       "requires_admitted_reading_run": true,
@@ -58,9 +58,9 @@
     "output_delivery": {
       "adapter_id": "astrology-output-guard-v1",
       "runtime_owner": "tools/astrology_output_guard.py",
-      "draft_schema": "ASTROLOGY_OUTPUT_DRAFT_V1.schema.json",
+      "draft_schema": "schemas/astrology/ASTROLOGY_OUTPUT_DRAFT_V1.schema.json",
       "draft_schema_id": "astrology_output_draft@1.0.0",
-      "output_schema": "ASTROLOGY_USER_FACING_OUTPUT_V1.schema.json",
+      "output_schema": "schemas/astrology/ASTROLOGY_USER_FACING_OUTPUT_V1.schema.json",
       "output_schema_id": "astrology_user_facing_output@1.0.0",
       "authority": "provenance_and_pre_send_validation_only",
       "requires_admitted_interpretation_handoff": true,
@@ -76,7 +76,7 @@
     "end_to_end_pipeline": {
       "pipeline_id": "astrology-production-reading-pipeline-v1",
       "runtime_owner": "tools/astrology_reading_pipeline.py",
-      "run_schema": "ASTROLOGY_READING_PIPELINE_RUN_V1.schema.json",
+      "run_schema": "schemas/astrology/ASTROLOGY_READING_PIPELINE_RUN_V1.schema.json",
       "run_schema_id": "astrology_reading_pipeline_run@1.0.0",
       "authority": "composition_only",
       "stages": [
@@ -91,7 +91,7 @@
     "typed_end_to_end_pipeline": {
       "pipeline_id": "astrology-production-typed-reading-pipeline-v1",
       "runtime_owner": "tools/astrology_typed_reading_pipeline.py",
-      "run_schema": "ASTROLOGY_TYPED_READING_PIPELINE_RUN_V1.schema.json",
+      "run_schema": "schemas/astrology/ASTROLOGY_TYPED_READING_PIPELINE_RUN_V1.schema.json",
       "run_schema_id": "astrology_typed_reading_pipeline_run@1.0.0",
       "authority": "composition_only",
       "stages": [
@@ -133,9 +133,9 @@
     "canonical_event_time": "UTC"
   },
   "fact_bundle_schema": "astrology_fact_bundle@1.0.0",
-  "fact_bundle_schema_path": "ASTROLOGY_FACT_BUNDLE_V1.schema.json",
+  "fact_bundle_schema_path": "schemas/astrology/ASTROLOGY_FACT_BUNDLE_V1.schema.json",
   "runtime_gate_result_schema": "astrology_runtime_gate_result@1.0.0",
-  "runtime_gate_result_schema_path": "ASTROLOGY_RUNTIME_GATE_RESULT_V1.schema.json",
+  "runtime_gate_result_schema_path": "schemas/astrology/ASTROLOGY_RUNTIME_GATE_RESULT_V1.schema.json",
   "reading_modes": ["natal", "transit"],
   "configuration_policy": {
     "zodiac_systems": ["tropical"],
