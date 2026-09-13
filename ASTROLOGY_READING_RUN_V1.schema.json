@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ASTROLOGY_READING_RUN_V1.schema.json",
+  "title": "Astrology Production v1 Reading Run",
+  "description": "Closed-world successful composition artifact emitted by tools/astrology_orchestrator.py. Embedded fact bundles and runtime gates retain their own authorities; this schema does not duplicate their full contracts.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_name", "schema_version", "status", "interpretation_allowed", "orchestrator", "normalized_request", "input_resolution", "fact_bundles", "runtime_gates", "reading_record_bridge"],
+  "properties": {
+    "schema_name": {"const": "astrology_reading_run"},
+    "schema_version": {"const": "1.0.0"},
+    "status": {"const": "admitted"},
+    "interpretation_allowed": {"const": true},
+    "orchestrator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["orchestrator_id", "orchestrator_version", "request_schema_path", "authority"],
+      "properties": {
+        "orchestrator_id": {"const": "astrology-production-orchestrator-v1"},
+        "orchestrator_version": {"const": "1.0.0"},
+        "request_schema_path": {"const": "ASTROLOGY_READING_REQUEST_V1.schema.json"},
+        "authority": {"const": "composition_only"}
+      }
+    },
+    "normalized_request": {"type": "object"},
+    "input_resolution": {"type": "object"},
+    "fact_bundles": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["natal"],
+      "properties": {
+        "natal": {"type": "object"},
+        "transit": {"type": "object"}
+      }
+    },
+    "runtime_gates": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["natal"],
+      "properties": {
+        "natal": {"type": "object"},
+        "transit": {"type": "object"}
+      }
+    },
+    "reading_record_bridge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["target_owner", "target_record_schema_version", "complete_reading_record", "storage_policy", "layer_1_method_input", "layer_2b_structured_method_fact", "engine_provenance"],
+      "properties": {
+        "target_owner": {"const": "READING_RECORD.md"},
+        "target_record_schema_version": {"const": "2"},
+        "complete_reading_record": {"const": false},
+        "storage_policy": {"const": "external_only"},
+        "layer_1_method_input": {"type": "object"},
+        "layer_2b_structured_method_fact": {"type": "object"},
+        "engine_provenance": {"type": "object"}
+      }
+    }
+  }
+}

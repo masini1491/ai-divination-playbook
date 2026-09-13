@@ -12,6 +12,7 @@
     "runtime_owner": "tools/astrology_orchestrator.py",
     "request_schema": "ASTROLOGY_READING_REQUEST_V1.schema.json",
     "request_schema_id": "astrology_reading_request@1.0.0",
+    "run_schema": "ASTROLOGY_READING_RUN_V1.schema.json",
     "run_schema_id": "astrology_reading_run@1.0.0",
     "authority": "composition_only",
     "runtime_gate_required_for_every_generated_bundle": true,
@@ -22,6 +23,7 @@
       "runtime_owner": "tools/astrology_interpretation_handoff.py",
       "request_schema": "ASTROLOGY_INTERPRETATION_REQUEST_V1.schema.json",
       "request_schema_id": "astrology_interpretation_request@1.0.0",
+      "handoff_schema": "ASTROLOGY_INTERPRETATION_HANDOFF_V1.schema.json",
       "handoff_schema_id": "astrology_interpretation_handoff@1.0.0",
       "authority": "evidence_packaging_only",
       "requires_admitted_reading_run": true,
@@ -55,6 +57,7 @@
     "end_to_end_pipeline": {
       "pipeline_id": "astrology-production-reading-pipeline-v1",
       "runtime_owner": "tools/astrology_reading_pipeline.py",
+      "run_schema": "ASTROLOGY_READING_PIPELINE_RUN_V1.schema.json",
       "run_schema_id": "astrology_reading_pipeline_run@1.0.0",
       "authority": "composition_only",
       "stages": [
@@ -168,7 +171,7 @@
   "transit_place_admission_baseline": "01a159990d2086f3a47be2e299d2e7f04a0e1758",
   "admission_decision": {
     "decision": "admit_bounded_astrology_v1_with_end_to_end_user_facing_pipeline",
-    "rationale": "Astrology Production v1 admits the existing natal/transit/place-resolution calculation path, composition-only reading orchestration, evidence-packaging interpretation handoff, provenance/pre-send output guard, and one composition-only end-to-end pipeline. The output guard validates only references already selected by the admitted handoff, preserves question identity, unsupported factors, disclosures, conflicts and source provenance, and requires explicit Pre-Send attestations. ASTROLOGY_USER_FACING_OUTPUT_V1.schema.json now declares the successful public artifact shape without granting semantic authority. Semantic interpretation and final wording remain governed by ASTROLOGY.md and CHATGPT_OUTPUT.md; the deterministic adapters gain no independent astrological meaning, final-prose, scientific-validity, or private-storage authority.",
+    "rationale": "Astrology Production v1 admits the existing natal/transit/place-resolution calculation path, composition-only reading orchestration, evidence-packaging interpretation handoff, provenance/pre-send output guard, and one composition-only end-to-end pipeline. Public success-artifact schemas now cover the reading run, interpretation handoff, guarded user-facing output, and complete pipeline envelope without granting any new semantic, calculation, routing, final-prose, or storage authority. Semantic interpretation and final wording remain governed by ASTROLOGY.md and CHATGPT_OUTPUT.md; the deterministic adapters gain no independent astrological meaning, scientific-validity, or private-storage authority.",
     "scientific_predictive_validity_claimed": false
   }
 }
