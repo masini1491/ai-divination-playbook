@@ -1,0 +1,37 @@
+{
+  "schema_name": "astrology_interpretation_request",
+  "schema_version": "1.0.0",
+  "question_id": "fixture-natal-house-question",
+  "question": "What symbolic relationship theme is supported by the admitted seventh-house evidence?",
+  "focus": [
+    "seventh house"
+  ],
+  "exclusions": [
+    "specific partner motives",
+    "guaranteed relationship outcomes"
+  ],
+  "fact_refs": [
+    {
+      "bundle": "natal",
+      "fact_id": "fact:house:7"
+    }
+  ],
+  "claim_requests": [
+    {
+      "registry_record_id": "first-seventh-house-axis-research-v1",
+      "claim_id": "claim:valens-seventh-place-marriage",
+      "fact_refs": [
+        {
+          "bundle": "natal",
+          "fact_id": "fact:house:7"
+        }
+      ]
+    }
+  ],
+  "unsupported_factors": [
+    {
+      "factor": "specific partner motives",
+      "reason": "The admitted house evidence does not establish another person's private motives."
+    }
+  ]
+}
