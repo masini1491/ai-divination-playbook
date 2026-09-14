@@ -1,10 +1,10 @@
 # Randomizer Integration Migration Contract
 
-Status: **PHASES 0–4 COMPLETE / PHASE 5 RETIREMENT READINESS PASS / PHASE 6 PENDING**
+Status: **PHASES 0–6 COMPLETE / REPOSITORY CONSOLIDATION COMPLETE**
 
-This document defines the staged migration contract for consolidating `masini1491/divination-casting-randomizer` into `masini1491/ai-divination-playbook` without changing stochastic semantics, breaking provenance, or coupling migration to immediate retirement of the legacy repository.
+This document defines the staged migration contract for consolidating `masini1491/divination-casting-randomizer` into `masini1491/ai-divination-playbook` without changing stochastic semantics, breaking provenance, or coupling migration to premature retirement of the legacy repository.
 
-Current stochastic runtime and production deployment authority are both in `masini1491/ai-divination-playbook`: runtime authority is `RUNTIME_DRAW.md` + `runtime/casting/randomizer.py`, and Vercel production is sourced from this repository with root directory `runtime/casting`. The legacy repository remains available only for rollback, historical provenance, migration evidence, and Phase 6 compatibility/archive transition.
+Current stochastic runtime and production deployment authority are both in `masini1491/ai-divination-playbook`: runtime authority is `RUNTIME_DRAW.md` + `runtime/casting/randomizer.py`, and Vercel production is sourced from this repository with root directory `runtime/casting`. Phase 6 converted the legacy repository to a compatibility / historical-provenance surface at `dd55452bb9a66f5f50c129422853654a315538f5`; it is no longer a current runtime or production authority.
 
 ## 1. Baseline and scope
 
@@ -323,6 +323,15 @@ Retirement means:
 - existing public URLs are preserved where practical;
 - do not delete the repository merely to reduce repository count.
 
+Completed evidence:
+
+```text
+legacy repository final compatibility-surface commit:
+dd55452bb9a66f5f50c129422853654a315538f5
+```
+
+That commit replaced the README with the canonical Playbook pointer, removed the legacy main-push production-authority smoke, preserved unit/contract validation and historical Git provenance, and passed legacy main-push workflow run #14. Physical GitHub archive mode remains optional; the repository is retired by policy and surface ownership regardless of the archive UI flag.
+
 ## 6. Source-freeze and drift rule
 
 Migration should not race active Randomizer feature work.
@@ -443,7 +452,7 @@ Stop and reassess if any of these occur:
 
 ## 11. Completion definition
 
-Repository consolidation is complete only when all of the following are true:
+Repository consolidation is complete because all of the following are true:
 
 ```text
 stochastic runtime canonical in ai-divination-playbook
@@ -457,4 +466,4 @@ stochastic runtime canonical in ai-divination-playbook
 + legacy repo converted to compatibility/archive surface
 ```
 
-Until Phase 6 completes, describe the work as a migration in progress, not as a completed repository merge.
+The Randomizer repository consolidation is complete. Future Randomizer feature development belongs in `masini1491/ai-divination-playbook` under `runtime/casting/**` and `tests/casting/**`; the legacy repository remains only for compatibility, rollback evidence and historical provenance.
