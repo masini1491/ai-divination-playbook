@@ -178,6 +178,7 @@
       "runner": "tools/build_chatgpt_load_pack.py",
       "benchmark": "tools/chatgpt_load_benchmark.py",
       "budget": "evals/chatgpt_load_budget.json",
+      "range_generator": "tools/build_loader_ranges.py",
       "range_validator": "tools/validate_loader_ranges.py"
     },
     {
@@ -194,9 +195,10 @@
     "benchmark": "tools/chatgpt_load_benchmark.py",
     "budget": "evals/chatgpt_load_budget.json",
     "range_locator_policy": {
-      "kind": "ci-verified-line-range",
+      "kind": "generated-ci-verified-line-range",
+      "generator": "tools/build_loader_ranges.py",
       "validator": "tools/validate_loader_ranges.py",
-      "rule": "Ranges are retrieval hints only; canonical owner content remains authoritative. Recompute/update a range when its heading moves."
+      "rule": "owner/heading/next_heading declare locator identity; start_line/end_line are generated retrieval hints only. Canonical owner content remains authoritative."
     },
     "bounded_ranges": {
       "bootstrap.default_interaction": {

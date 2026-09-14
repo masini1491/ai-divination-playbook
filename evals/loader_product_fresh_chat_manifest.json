@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "authority": "product-observation-status-only",
+  "playbook_sha": null,
+  "change_class": "loader-optimization",
+  "required_scenarios": [
+    "TAROT-BEH-001",
+    "TAROT-BEH-002",
+    "TAROT-BEH-003",
+    "TAROT-BEH-005",
+    "TAROT-BEH-006",
+    "TAROT-BEH-012",
+    "TAROT-BEH-013",
+    "TAROT-BEH-016",
+    "TAROT-BEH-017",
+    "TAROT-BEH-018"
+  ],
+  "evidence_files": [],
+  "product_fresh_chat_executed": false,
+  "strict_p4_complete": false,
+  "rule": "strict_p4_complete may be true only when every required scenario has a valid formal fresh/bounded product run record at one fixed Playbook SHA, with observable response/tool-action evidence and no FAIL or INCONCLUSIVE classification. Repository deterministic contract regression is necessary but not sufficient."
+}
