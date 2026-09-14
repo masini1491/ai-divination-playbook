@@ -29,8 +29,14 @@ jobs:
       - name: Verify ChatGPT load budget
         run: python tools/chatgpt_load_benchmark.py --check
 
+      - name: Verify bounded loader ranges
+        run: python tools/validate_loader_ranges.py
+
       - name: Verify loader behavioral regression selection
         run: python tools/behavioral_eval.py --matrix evals/regression_matrix.json --change-class loader-optimization
+
+      - name: Run loader deterministic contract regression
+        run: python tools/loader_contract_regression.py
 
       - name: Run unit tests
         run: python -m unittest discover -s tests -v
