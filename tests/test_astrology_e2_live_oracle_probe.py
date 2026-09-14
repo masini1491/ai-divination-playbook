@@ -9,6 +9,7 @@ from __future__ import annotations
 import datetime as dt
 import hashlib
 import importlib
+import importlib.resources
 import json
 import re
 import subprocess
@@ -20,7 +21,6 @@ import urllib.request
 from pathlib import Path
 
 
-SWISS_URL = "https://www.astro.com/ftp/swisseph/ephe/seas_18.se1"
 EXPECTED_SWISS_GIT_BLOB = "8f900cab7e557e4c41f758a6bf3a3c3967e7e3db"
 EXPECTED_SWISS_SIZE = 223004
 HORIZONS_URL = "https://ssd.jpl.nasa.gov/api/horizons.api"
@@ -93,8 +93,6 @@ def horizons_triplet(command: str, center: dt.datetime) -> tuple[list[tuple[floa
             token = token.strip()
             if float_re.fullmatch(token):
                 numeric.append(float(token))
-        # Quantity 31 contributes exactly apparent ecliptic longitude + latitude.
-        # Any extra numeric columns would indicate an unexpected output contract.
         if len(numeric) != 2:
             raise AssertionError(
                 f"Unexpected Horizons CSV numeric columns for {command}: {raw!r} -> {numeric!r}"
@@ -108,17 +106,22 @@ def horizons_triplet(command: str, center: dt.datetime) -> tuple[list[tuple[floa
 class E2LiveOracleProbe(unittest.TestCase):
     def test_collect_live_e2_observations(self) -> None:
         subprocess.run(
-            [sys.executable, "-m", "pip", "install", "--quiet", "pyswisseph==2.10.3.2"],
+            [
+                sys.executable,
+                "-m",
+                "pip",
+                "install",
+                "--quiet",
+                "--no-deps",
+                "immanuel==1.6.0",
+                "pyswisseph==2.10.3.2",
+            ],
             check=True,
         )
         swe = importlib.import_module("swisseph")
-
-        request = urllib.request.Request(
-            SWISS_URL,
-            headers={"User-Agent": "ai-divination-playbook-e2-research/1"},
-        )
-        with urllib.request.urlopen(request, timeout=45) as response:
-            swiss_data = response.read()
+        immanuel_root = importlib.resources.files("immanuel")
+        packaged = immanuel_root.joinpath("resources", "ephemeris", "seas_18.se1")
+        swiss_data = packaged.read_bytes()
         self.assertEqual(len(swiss_data), EXPECTED_SWISS_SIZE)
         self.assertEqual(git_blob_sha(swiss_data), EXPECTED_SWISS_GIT_BLOB)
 
@@ -190,7 +193,7 @@ class E2LiveOracleProbe(unittest.TestCase):
                 "source_revision": "91339e55d2351f32548d8a8d5bca6aa93b4f6da7",
                 "ephemeris_blob_sha": EXPECTED_SWISS_GIT_BLOB,
                 "ephemeris_size_bytes": EXPECTED_SWISS_SIZE,
-                "download_origin": SWISS_URL,
+                "binary_carrier": "PyPI immanuel==1.6.0 package data; byte identity verified before use",
                 "python_adapter": "pyswisseph==2.10.3.2",
                 "required_flags": ["FLG_SWIEPH", "FLG_SPEED"],
             },
