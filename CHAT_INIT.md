@@ -80,7 +80,7 @@ contract materially ambiguous
 本節的「GitHub 內容」包括但不限於：
 
 - 本 Repository 的 `main`、branch／tag、commit SHA、diff、tree、canonical files／sections；
-- legacy `masini1491/divination-casting-randomizer` 的歷史 provenance、rollback、migration 或尚未完成 Phase 4 的 deployment-compatibility source／ref／commit evidence；current stochastic runtime source 則由本 Repository 的 `runtime/casting/randomizer.py` 擁有；
+- legacy `masini1491/divination-casting-randomizer` 的歷史 provenance、rollback、migration、compatibility deployment 或 archived runtime evidence；current stochastic runtime source 與 production authority 則由本 Repository 的 `runtime/casting/**` 擁有；
 - Liuyao／Astrology provider／未來 method engine 的 GitHub source、release、license、reference；
 - `references/` 研究需要讀取的任何 GitHub repository；
 - freshness probe、rename reconciliation、external GitHub comparison 或其他 GitHub-hosted evidence。
