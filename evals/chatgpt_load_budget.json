@@ -5,7 +5,8 @@
   "notes": [
     "Historical baseline is the pre-loader main snapshot recorded before this optimization.",
     "Counts repository file reads and UTF-8 bytes only; one cheap HEAD/ref probe is excluded.",
-    "This is not a wall-clock latency benchmark and must not be reported as product latency."
+    "This is not a wall-clock latency benchmark and must not be reported as product latency.",
+    "Explicit research uses Astrology research as the representative named-research owner path."
   ],
   "profiles": {
     "ordinary_tarot": {
@@ -32,11 +33,29 @@
       "max_optimized_file_reads": 3,
       "max_payload_ratio": 0.65
     },
+    "explicit_meihua": {
+      "baseline": {"file_reads": 5, "payload_bytes": 71571},
+      "optimized_paths": ["AGENTS.md", "CHATGPT_LOAD_PACK.json", "MEIHUA.md"],
+      "max_optimized_file_reads": 3,
+      "max_payload_ratio": 0.65
+    },
+    "explicit_liuyao": {
+      "baseline": {"file_reads": 5, "payload_bytes": 73302},
+      "optimized_paths": ["AGENTS.md", "CHATGPT_LOAD_PACK.json", "LIUYAO.md"],
+      "max_optimized_file_reads": 3,
+      "max_payload_ratio": 0.65
+    },
     "explicit_astrology": {
       "baseline": {"file_reads": 4, "payload_bytes": 68540},
       "optimized_paths": ["AGENTS.md", "CHAT_INIT.md", "ASTROLOGY.md", "CHATGPT_OUTPUT.md"],
       "max_optimized_file_reads": 4,
       "max_payload_ratio": 0.85
+    },
+    "explicit_research_astrology": {
+      "baseline": {"file_reads": 4, "payload_bytes": 49650},
+      "optimized_paths": ["AGENTS.md", "CHAT_INIT.md", "RESEARCH_ROUTING.md", "references/astrology/README.md"],
+      "max_optimized_file_reads": 4,
+      "max_payload_ratio": 0.80
     },
     "continuation_tarot": {
       "baseline": {"file_reads": 5, "payload_bytes": 66847},
