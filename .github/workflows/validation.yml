@@ -48,3 +48,128 @@ jobs:
 
       - name: Run Randomizer candidate unit and parity tests
         run: python -m unittest discover -s tests/casting -v
+
+  production-smoke:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [validate, casting-candidate]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Wait for matching Vercel production deployment and smoke-test all methods
+        env:
+          EXPECTED_SHA: ${{ github.sha }}
+          CAST_URL: https://tarot-plum-randomizer-masini1491-9205.vercel.app/api/cast
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import time
+          import urllib.error
+          import urllib.request
+
+          url = os.environ["CAST_URL"]
+          expected = os.environ["EXPECTED_SHA"]
+
+          def post(body):
+              request = urllib.request.Request(
+                  url,
+                  data=json.dumps(body).encode(),
+                  method="POST",
+                  headers={"Content-Type": "application/json"},
+              )
+              try:
+                  with urllib.request.urlopen(request, timeout=10) as response:
+                      raw = response.read()
+                      return response.status, response.headers, json.loads(raw)
+              except urllib.error.HTTPError as exc:
+                  raw = exc.read()
+                  payload = json.loads(raw) if raw else {}
+                  return exc.code, exc.headers, payload
+
+          def valid_contract(body, method, check):
+              status, headers, payload = post(body)
+              cache_control = headers.get("Cache-Control", "")
+              if status != 200:
+                  return False, f"{method}: status={status}"
+              if "no-store" not in cache_control:
+                  return False, f"{method}: cache={cache_control!r}"
+              if payload.get("ai_schema_version") != "1":
+                  return False, f"{method}: ai_schema_version={payload.get('ai_schema_version')!r}"
+              if payload.get("runtime_source_commit") != expected:
+                  return False, f"{method}: commit={payload.get('runtime_source_commit')!r}"
+              results = payload.get("results")
+              if not isinstance(results, list) or len(results) != 1:
+                  return False, f"{method}: result_count={len(results) if isinstance(results, list) else 'invalid'}"
+              result = results[0]
+              if result.get("method") != method:
+                  return False, f"{method}: response_method={result.get('method')!r}"
+              if not check(result):
+                  return False, f"{method}: stochastic fact shape mismatch"
+              return True, f"{method}: ok"
+
+          checks = [
+              (
+                  {"method": "tarot", "count": 3, "repeat": 1},
+                  "tarot",
+                  lambda result: len(result.get("tarot", {}).get("cards", [])) == 3,
+              ),
+              (
+                  {"method": "plum", "repeat": 1},
+                  "plum",
+                  lambda result: (
+                      isinstance(result.get("plum", {}).get("a"), str)
+                      and isinstance(result.get("plum", {}).get("b"), str)
+                      and isinstance(result.get("plum", {}).get("moving_line"), int)
+                  ),
+              ),
+              (
+                  {"method": "liuyao", "repeat": 1},
+                  "liuyao",
+                  lambda result: (
+                      result.get("liuyao", {}).get("line_order") == "bottom-to-top"
+                      and len(result.get("liuyao", {}).get("values", [])) == 6
+                      and len(result.get("liuyao", {}).get("coin_values", [])) == 6
+                  ),
+              ),
+          ]
+
+          last = "no response"
+          for attempt in range(30):
+              failures = []
+              for body, method, check in checks:
+                  try:
+                      ok, detail = valid_contract(body, method, check)
+                  except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as exc:
+                      ok, detail = False, f"{method}: {exc!r}"
+                  if not ok:
+                      failures.append(detail)
+
+              try:
+                  status, headers, payload = post({"method": "unknown"})
+                  invalid_ok = (
+                      status == 400
+                      and "no-store" in headers.get("Cache-Control", "")
+                      and payload.get("error", {}).get("code") == "invalid_request"
+                  )
+                  if not invalid_ok:
+                      failures.append(
+                          f"invalid: status={status} cache={headers.get('Cache-Control', '')!r} "
+                          f"code={payload.get('error', {}).get('code')!r}"
+                      )
+              except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as exc:
+                  failures.append(f"invalid: {exc!r}")
+
+              if not failures:
+                  print(f"production smoke passed for monorepo commit {expected}")
+                  raise SystemExit(0)
+
+              last = "; ".join(failures)
+              print(f"attempt {attempt + 1}/30 not ready: {last}")
+              time.sleep(5)
+
+          raise SystemExit(f"production smoke failed after retries: {last}")
+          PY
