@@ -7,6 +7,7 @@ The pack is a retrieval cache only. Canonical Markdown owners remain authoritati
 from __future__ import annotations
 
 import argparse
+import difflib
 import hashlib
 import json
 import re
@@ -144,6 +145,15 @@ def main() -> int:
             raise SystemExit(f"missing generated load pack: {OUTPUT.relative_to(ROOT)}")
         current = OUTPUT.read_text(encoding="utf-8")
         if current != rendered:
+            diff = "".join(
+                difflib.unified_diff(
+                    current.splitlines(keepends=True),
+                    rendered.splitlines(keepends=True),
+                    fromfile="committed/CHATGPT_LOAD_PACK.json",
+                    tofile="generated/CHATGPT_LOAD_PACK.json",
+                )
+            )
+            print(diff, end="")
             raise SystemExit(
                 "CHATGPT_LOAD_PACK.json is stale; run "
                 "python tools/build_chatgpt_load_pack.py and commit the result"
