@@ -1,6 +1,6 @@
 {
   "schema_name": "astrology_extended_chart_e3_e7_policy_manifest",
-  "schema_version": "0.1.0",
+  "schema_version": "0.2.0",
   "authority": "REFERENCE_ONLY",
   "playbook_baseline": "40d4938bb3f265d332608312463b550fb8b8aa13",
   "production_admission": "NOT_GRANTED",
@@ -18,9 +18,17 @@
     "status": "RESEARCH_COMPLETE_COMPATIBILITY_LABELS_POLICY_GATED",
     "fortune": {
       "policy_id": "fortune-day-night-v1",
+      "sect_policy_id": "sect-geometric-solar-altitude-v1",
       "normalize": "mod_360",
       "diurnal_formula": "ASC + Moon - Sun",
-      "nocturnal_formula": "ASC + Sun - Moon"
+      "nocturnal_formula": "ASC + Sun - Moon",
+      "sect_rule": {
+        "input": "Sun geometric altitude at chart instant and coordinates",
+        "diurnal_when": "altitude_deg > 0",
+        "nocturnal_when": "altitude_deg < 0",
+        "horizon_boundary": "FAIL_CLOSED_AT_EXACT_ZERO",
+        "calculation_failure": "FAIL_CLOSED"
+      }
     },
     "swiss_ascmc": {
       "ascendant": 0,
@@ -49,16 +57,17 @@
     "status": "RESEARCH_COMPLETE_ORB_POLICY_NOT_SELECTED",
     "aspect_types_referenced": ["conjunction", "opposition", "trine", "square", "sextile", "quincunx", "quintile", "biquintile"],
     "topology_templates": {
-      "t_square": ["square", "opposition", "square"],
-      "grand_trine": ["trine", "trine", "trine"],
-      "yod": ["sextile", "quincunx", "quincunx"],
-      "grand_cross": ["square", "square", "square", "square", "opposition", "opposition"],
-      "kite": ["trine", "trine", "trine", "opposition", "sextile", "sextile"],
-      "mystic_rectangle": ["opposition", "opposition", "trine", "trine", "sextile", "sextile"],
-      "cradle": ["opposition", "trine", "trine", "sextile", "sextile"],
-      "grand_sextile": ["sextile", "trine", "opposition"],
-      "grand_quintile": ["quintile", "biquintile"]
+      "t_square": {"vertices": 3, "edge_counts": {"square": 2, "opposition": 1}},
+      "grand_trine": {"vertices": 3, "edge_counts": {"trine": 3}},
+      "yod": {"vertices": 3, "edge_counts": {"sextile": 1, "quincunx": 2}},
+      "grand_cross": {"vertices": 4, "edge_counts": {"square": 4, "opposition": 2}},
+      "kite": {"vertices": 4, "edge_counts": {"trine": 3, "opposition": 1, "sextile": 2}},
+      "mystic_rectangle": {"vertices": 4, "edge_counts": {"opposition": 2, "trine": 2, "sextile": 2}},
+      "cradle": {"vertices": 4, "edge_counts": {"opposition": 1, "trine": 2, "sextile": 3}},
+      "grand_sextile": {"vertices": 6, "edge_counts": {"sextile": 6, "trine": 6, "opposition": 3}},
+      "grand_quintile": {"vertices": 5, "edge_counts": {"quintile": 5, "biquintile": 5}}
     },
+    "conjunction_cluster_handling": "EXPLICIT_POLICY_SURFACE",
     "stellium": {"status": "POLICY_GATED", "reason": "minimum_count/span/sign-boundary/participant definitions vary"},
     "nested_pattern_projection": ["REPORT_ALL_VALID", "SUPPRESS_STRICT_SUBSETS"],
     "exact_consumer_orb_policy": "UNRESOLVED",
