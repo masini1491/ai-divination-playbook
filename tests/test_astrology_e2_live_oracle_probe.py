@@ -35,10 +35,14 @@ OBJECTS = [
     ("Vesta", "VESTA", "4;"),
 ]
 FIXTURES = [
-    ("E2-F01", "2000-01-01T12:00:00Z"),
-    ("E2-F02", "1980-06-01T00:00:00Z"),
-    ("E2-F03", "2026-09-14T00:00:00Z"),
-    ("E2-F04", "2099-12-31T00:00:00Z"),
+    ("E2-F01", "2000-01-01T12:00:00Z", "calibration"),
+    ("E2-F02", "1980-06-01T00:00:00Z", "calibration"),
+    ("E2-F03", "2026-09-14T00:00:00Z", "calibration"),
+    ("E2-F04", "2099-12-31T00:00:00Z", "calibration"),
+    ("E2-H01", "1850-03-20T06:00:00Z", "holdout"),
+    ("E2-H02", "1955-11-05T18:00:00Z", "holdout"),
+    ("E2-H03", "2050-07-01T06:00:00Z", "holdout"),
+    ("E2-H04", "2200-02-28T18:00:00Z", "holdout"),
 ]
 
 
@@ -142,7 +146,7 @@ class E2LiveOracleProbe(unittest.TestCase):
             swe.set_ephe_path(tempdir)
             flags = swe.FLG_SWIEPH | swe.FLG_SPEED
 
-            for fixture_id, utc in FIXTURES:
+            for fixture_id, utc, fixture_role in FIXTURES:
                 when = parse_iso(utc)
                 jd = swe.julday(
                     when.year,
@@ -168,6 +172,7 @@ class E2LiveOracleProbe(unittest.TestCase):
                     observations.append(
                         {
                             "fixture_id": fixture_id,
+                            "fixture_role": fixture_role,
                             "utc": utc,
                             "object_id": object_id,
                             "swiss": {
@@ -192,10 +197,10 @@ class E2LiveOracleProbe(unittest.TestCase):
                     )
         swe.close()
 
-        self.assertEqual(len(observations), 20)
+        self.assertEqual(len(observations), 40)
         output = {
             "schema_name": "astrology_extended_chart_e2_residual_observations",
-            "schema_version": "0.1.0",
+            "schema_version": "0.2.0",
             "authority": "REFERENCE_ONLY",
             "dataset_kind": "measured_oracle",
             "swiss_provenance": {
