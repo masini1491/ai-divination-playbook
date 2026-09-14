@@ -1,0 +1,82 @@
+{
+  "schema_name": "astrology_extended_chart_e2_measured_validation",
+  "schema_version": "0.1.0",
+  "authority": "REFERENCE_ONLY",
+  "playbook_baseline": "ed639c52d64556339e2848dc93ae5722dbc771c1",
+  "production_admission": "NOT_GRANTED",
+  "execution": {
+    "temporary_probe_pr": 62,
+    "calibration_holdout_run": 34825352713,
+    "prospective_validation_run": 34825795943,
+    "swiss_returned_flags": 258,
+    "horizons_observed_signature": {"source": "NASA/JPL Horizons API", "version": "1.2"}
+  },
+  "swiss_binary_identity": {
+    "asteroid": {"path": "ephe/seas_18.se1", "blob_sha": "8f900cab7e557e4c41f758a6bf3a3c3967e7e3db", "size_bytes": 223004},
+    "planetary": {"path": "ephe/sepl_18.se1", "blob_sha": "786702cd04506371ee6223af1ebac02d54c848b8", "size_bytes": 484061}
+  },
+  "calibration": {
+    "samples": 20,
+    "max_longitude_delta_arcsec": 1.2197681700120078,
+    "max_speed_delta_deg_per_day": 0.000005147968841915,
+    "per_object": {
+      "Chiron": {"longitude_mean_arcsec": 0.165404, "longitude_max_arcsec": 0.527381, "speed_max_deg_per_day": 0.000000520285},
+      "Ceres": {"longitude_mean_arcsec": 0.302453, "longitude_max_arcsec": 0.989618, "speed_max_deg_per_day": 0.000005147969},
+      "Pallas": {"longitude_mean_arcsec": 0.345548, "longitude_max_arcsec": 1.219768, "speed_max_deg_per_day": 0.000003353226},
+      "Juno": {"longitude_mean_arcsec": 0.110715, "longitude_max_arcsec": 0.273138, "speed_max_deg_per_day": 0.000001162510},
+      "Vesta": {"longitude_mean_arcsec": 0.253704, "longitude_max_arcsec": 0.585922, "speed_max_deg_per_day": 0.000002602735}
+    }
+  },
+  "holdout": {
+    "samples": 20,
+    "max_longitude_delta_arcsec": 2.9651906808242785,
+    "max_speed_delta_deg_per_day": 0.000005559438,
+    "per_object": {
+      "Chiron": {"longitude_mean_arcsec": 0.398609, "longitude_max_arcsec": 0.843656, "speed_max_deg_per_day": 0.000001158987},
+      "Ceres": {"longitude_mean_arcsec": 0.275253, "longitude_max_arcsec": 0.427708, "speed_max_deg_per_day": 0.000001080178},
+      "Pallas": {"longitude_mean_arcsec": 0.200565, "longitude_max_arcsec": 0.315477, "speed_max_deg_per_day": 0.000005559438},
+      "Juno": {"longitude_mean_arcsec": 0.485682, "longitude_max_arcsec": 1.321154, "speed_max_deg_per_day": 0.000003036337},
+      "Vesta": {"longitude_mean_arcsec": 1.131638, "longitude_max_arcsec": 2.965191, "speed_max_deg_per_day": 0.000002780298}
+    }
+  },
+  "prospective_validation": {
+    "frozen_before_first_execution": {
+      "longitude_tolerance_arcsec": 5.0,
+      "speed_tolerance_deg_per_day": 0.00001
+    },
+    "samples": 20,
+    "status": "FAILED",
+    "passed_samples": 17,
+    "failed_samples": 3,
+    "residuals": [
+      {"fixture_id":"E2-V01","utc":"1825-08-17T03:00:00Z","object_id":"Chiron","longitude_delta_arcsec":0.7873659963252067,"speed_delta_deg_per_day":0.0000006454764234289923,"within_frozen_tolerance":true},
+      {"fixture_id":"E2-V01","utc":"1825-08-17T03:00:00Z","object_id":"Ceres","longitude_delta_arcsec":0.6368724399180792,"speed_delta_deg_per_day":0.0000011377206765028625,"within_frozen_tolerance":true},
+      {"fixture_id":"E2-V01","utc":"1825-08-17T03:00:00Z","object_id":"Pallas","longitude_delta_arcsec":0.2097691179415051,"speed_delta_deg_per_day":0.0000005128519437458401,"within_frozen_tolerance":true},
+      {"fixture_id":"E2-V01","utc":"1825-08-17T03:00:00Z","object_id":"Juno","longitude_delta_arcsec":1.1871620485635503,"speed_delta_deg_per_day":0.0000013530370044888274,"within_frozen_tolerance":true},
+      {"fixture_id":"E2-V01","utc":"1825-08-17T03:00:00Z","object_id":"Vesta","longitude_delta_arcsec":0.9276050527887492,"speed_delta_deg_per_day":0.0000011121464107421986,"within_frozen_tolerance":true},
+      {"fixture_id":"E2-V02","utc":"1925-02-14T15:00:00Z","object_id":"Chiron","longitude_delta_arcsec":0.003551905138010625,"speed_delta_deg_per_day":0.00000007029911530676003,"within_frozen_tolerance":true},
+      {"fixture_id":"E2-V02","utc":"1925-02-14T15:00:00Z","object_id":"Ceres","longitude_delta_arcsec":0.014877826995984833,"speed_delta_deg_per_day":0.0000008809370950491058,"within_frozen_tolerance":true},
+      {"fixture_id":"E2-V02","utc":"1925-02-14T15:00:00Z","object_id":"Pallas","longitude_delta_arcsec":0.10659638005563465,"speed_delta_deg_per_day":0.0000013870352319478307,"within_frozen_tolerance":true},
+      {"fixture_id":"E2-V02","utc":"1925-02-14T15:00:00Z","object_id":"Juno","longitude_delta_arcsec":0.37975869790898287,"speed_delta_deg_per_day":0.0000000861547402863927,"within_frozen_tolerance":true},
+      {"fixture_id":"E2-V02","utc":"1925-02-14T15:00:00Z","object_id":"Vesta","longitude_delta_arcsec":0.6652532979162018,"speed_delta_deg_per_day":0.00000004739085607274873,"within_frozen_tolerance":true},
+      {"fixture_id":"E2-V03","utc":"2075-10-09T09:00:00Z","object_id":"Chiron","longitude_delta_arcsec":0.060030114831022274,"speed_delta_deg_per_day":0.00000040276757913570993,"within_frozen_tolerance":true},
+      {"fixture_id":"E2-V03","utc":"2075-10-09T09:00:00Z","object_id":"Ceres","longitude_delta_arcsec":0.6921347370052899,"speed_delta_deg_per_day":0.0000014950450090561729,"within_frozen_tolerance":true},
+      {"fixture_id":"E2-V03","utc":"2075-10-09T09:00:00Z","object_id":"Pallas","longitude_delta_arcsec":0.06972128612687811,"speed_delta_deg_per_day":0.0000009504664437720578,"within_frozen_tolerance":true},
+      {"fixture_id":"E2-V03","utc":"2075-10-09T09:00:00Z","object_id":"Juno","longitude_delta_arcsec":0.019370516019989736,"speed_delta_deg_per_day":0.00000010793472721148945,"within_frozen_tolerance":true},
+      {"fixture_id":"E2-V03","utc":"2075-10-09T09:00:00Z","object_id":"Vesta","longitude_delta_arcsec":0.6962433906210208,"speed_delta_deg_per_day":0.0000010300484153402678,"within_frozen_tolerance":true},
+      {"fixture_id":"E2-V04","utc":"2350-05-23T21:00:00Z","object_id":"Chiron","longitude_delta_arcsec":2.4259493343834038,"speed_delta_deg_per_day":0.000004269417892538603,"within_frozen_tolerance":true},
+      {"fixture_id":"E2-V04","utc":"2350-05-23T21:00:00Z","object_id":"Ceres","longitude_delta_arcsec":5.790739429880887,"speed_delta_deg_per_day":0.00003195127383710458,"within_frozen_tolerance":false},
+      {"fixture_id":"E2-V04","utc":"2350-05-23T21:00:00Z","object_id":"Pallas","longitude_delta_arcsec":3.700673137427657,"speed_delta_deg_per_day":0.0000002975930351034606,"within_frozen_tolerance":true},
+      {"fixture_id":"E2-V04","utc":"2350-05-23T21:00:00Z","object_id":"Juno","longitude_delta_arcsec":7.8049638984794,"speed_delta_deg_per_day":0.0000001913989557955631,"within_frozen_tolerance":false},
+      {"fixture_id":"E2-V04","utc":"2350-05-23T21:00:00Z","object_id":"Vesta","longitude_delta_arcsec":6.091313401839216,"speed_delta_deg_per_day":0.0000005770566585683312,"within_frozen_tolerance":false}
+    ],
+    "failure_interpretation": "The precommitted universal 5 arcsec / 1e-5 deg/day threshold is empirically rejected over the tested 1825-2350 range. The threshold must not be widened post hoc and described as prospectively validated."
+  },
+  "research_conclusion": {
+    "object_identity": "RESOLVED",
+    "oracle_environment": "RESOLVED",
+    "measured_cross_engine_characterization": "COMPLETE",
+    "universal_numeric_tolerance": "REJECTED_FOR_TESTED_RANGE",
+    "future_gate": "Any production tolerance must explicitly bound epoch/object policy and receive new prospective validation."
+  }
+}
