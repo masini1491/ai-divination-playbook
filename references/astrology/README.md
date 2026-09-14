@@ -20,6 +20,8 @@ Research maturity review: [`ASTROLOGY_RESEARCH_V1_MATURITY_REVIEW.md`](ASTROLOGY
 
 Integrated research execution evidence: [`ASTROLOGY_RESEARCH_V1_COMPLETION_EXECUTION_RESULTS.md`](ASTROLOGY_RESEARCH_V1_COMPLETION_EXECUTION_RESULTS.md)
 
+Post-v1 house-system evidence extension: [`HOUSE_SYSTEM_EVIDENCE.md`](HOUSE_SYSTEM_EVIDENCE.md)
+
 本目錄是 Astrology 的 **historical / ongoing research evidence surface**。Research v1 已完成；current production authority 另由 root owners 明確 admission。兩層不得互相覆蓋：
 
 ```text
@@ -160,6 +162,12 @@ Production raw-birth-data provider因此不以 local noon 取代 unknown birth t
 
 Production v1 沒有把 research schema retroactively 改名升格，而是使用獨立 `astrology_fact_bundle@1.0.0` gate。
 
+### House-system evidence
+
+[`HOUSE_SYSTEM_EVIDENCE.md`](HOUSE_SYSTEM_EVIDENCE.md) 是 Research v1 完成後的 bounded extension，專門整理 Whole Sign / Equal / quadrant-Placidus 的 calculation identity、古代 evidence、Ptolemy historiographic conflict、layered-use hypothesis 與 high-latitude Placidus boundary。
+
+它只補 research evidence，不修改 Production v1 的 house-system admission、Placidus latitude fail-closed 規則或 interpretation policy。
+
 ## 4. Interpretation / claim architecture
 
 Research v1 包含 source admission、v0.2 typed claim registry、tradition taxonomy、query/tradition resolution、conflict preservation、provenance bundle、L5 synthesis contract 與 registry-declared preconditions。
@@ -183,6 +191,8 @@ Essential dignity research涵蓋 domicile、triplicity、exaltation/fall、terms
 Planet/aspect research包含 Saturn–Moon family 與 additional exemplars；REFERENCE_ONLY pair-specific wording不因 deterministic geometry可計算就自動升格。
 
 Transit interpretation research要求 deterministic facts + explicit timing policy，並排除 high-stakes event certainty。
+
+House-system research另外保留 Whole Sign / Equal / quadrant-Placidus 的 historical conflict 與 provenance boundary；它不把「古老／普及／幾何上不同」推論成 predictive superiority，也不 retroactively 改寫 Research v1 completion status。
 
 ## 6. Historical integrated validation
 
