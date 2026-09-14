@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "authority": "derived-retrieval-cache-only",
+  "canonical_rule": "Canonical Markdown owners always win. This file contains only verbatim hot-section excerpts.",
+  "generated_by": "tools/build_chatgpt_load_pack.py",
+  "fallback": "CHAT_INIT.md + task-specific canonical owners",
+  "fragments": {
+    "bootstrap": {
+      "owner": "CHAT_INIT.md",
+      "sections": [
+        "## Default Interaction Profile｜只給 Repo 也能直接使用",
+        "## ChatGPT Load Pack Fast Path｜one retrieval cache"
+      ],
+      "section_sha256": [
+        "5fa88e032ad1447581707390168092075984ca679d0f72f095635273547b3880",
+        "d4235a80ca65a86203d9f81a3028dc72f979465df6a7649f2284605665b8d78a"
+      ],
+      "content": "## Default Interaction Profile｜只給 Repo 也能直接使用\n\n使用者可以直接以自然語言提問；Agent 自行正規化最低必要 contract，不把 schema 當表單。\n\n先判斷是否已有既存 method fact：\n\n```text\n已有實際 Tarot cards / Meihua cast / Liuyao 6-7-8-9 Raw Cast / Astrology structured facts\n→ 保留既有 method identity 與 facts\n→ 不重抽、不重卦、不重算、不換方法\n```\n\n否則依 intent：\n\n```text\nexplicit production Astrology\n→ ASTROLOGY.md\n\nexplicit Astrology research / Palmistry / named research line\n→ RESEARCH_ROUTING.md\n→ named research owner\n\nexplicit Tarot / Meihua / Liuyao\n→ corresponding method owner\n\nordinary reading, method unspecified\n→ METHOD_ROUTING.md Fast Path\n→ high-confidence hit 時立即停止 routing\n```\n\n普通 stochastic reading 若需要 ChatGPT／AI 代抽／代起：\n\n```text\nmethod + minimum question contract fixed\n→ RUNTIME_DRAW.md hot path / verified cache\n→ actual canonical runtime execution\n→ Draw / Cast Fact fixed\n→ method owner interpretation\n```\n\n**Language-model generation ≠ Runtime Draw / Cast。** 模型自行產生牌名、A/B 數字或 6/7/8/9 不算合法 runtime fact。\n\n其他最低規則：\n\n- Astrology v1 是 explicit-request only；不得因題目看起來像星盤題就加入 ordinary auto-routing。\n- Astrology raw birth data 在 interpretation 前必須通過 admitted deterministic Fact Gate；模型不得手算 planets / houses / aspects 冒充 engine facts。\n- Liuyao Raw Cast 與 deterministic Structured Method Fact 分層；engine unavailable 時保留 Raw Cast，不重起、不手算冒充 engine。\n- 只有缺失資訊會 materially 改變 question identity、主要 judgment function、horizon、completion rule、position responsibility、casting/fact source 或 execution viability 時才澄清。\n- `QUESTION_DESIGN.md` 只在真的需要拆題、牌位、條件世界或時間窗設計時讀。\n- `READING_LIFECYCLE.md` 只在承接／補占／重占／Reality Update／completion／backtest 時讀。\n- `READING_RECORD.md` 只在保存／跨聊天室／audit 時讀。\n- 最終輸出先回答原題，再給最低充分 evidence；不因模型能延伸就回答未被問的內容。\n\n## ChatGPT Load Pack Fast Path｜one retrieval cache\n\n`CHATGPT_LOAD_PACK.json` 是由 canonical owner sections deterministic 產生的 **derived retrieval cache**，用來減少 GitHub connector round trips；不是 policy authority。\n\nFresh session 的建議 hot path：\n\n```text\nGitHub Connect resolve requested/current ref → exact commit\n→ read AGENTS.md at that exact commit\n→ ordinary / stochastic eligible profile?\n   ├─ yes → fetch CHATGPT_LOAD_PACK.json once at the same exact commit\n   │        → use covered bootstrap / ordinary routing / runtime fast-path / output-core excerpts\n   └─ no  → bounded-read CHAT_INIT.md only as needed\n→ read selected method owner or named research owner at the same exact commit\n→ only fetch additional canonical sections when the task actually needs them\n→ STOP\n```\n\n目前 pack 主要優化 ordinary Tarot / Meihua / Liuyao、explicit stochastic method 與 stochastic continuation。Explicit Astrology 與 explicit research 若載入整包反而增加無關 payload，可直接 bypass pack，從 bounded `CHAT_INIT.md` 進其 canonical owner。\n\nLoad-pack 使用規則：\n\n1. canonical owner 永遠優先；pack 只能重用其中的 verbatim hot excerpts。\n2. selected method owner / named research owner 在實際 interpretation 或 research judgment 前仍必須讀；pack 不取代它們。\n3. pack 只在與本次 resolved Playbook revision 相同的 revision 使用；CI 以 `tools/build_chatgpt_load_pack.py --check` 保證 excerpts 同步。\n4. pack 缺失、格式不合法、profile 不涵蓋本題、或內容與已讀 canonical owner衝突 → 直接 fallback canonical reads；不得猜。\n5. 同 revision、pack valid 時，不為形式重新抓 pack 已涵蓋的 hot sections；只有 task 超出 fragment coverage 才讀完整 owner。Explicit Astrology / research 等未列入 pack profiles 的 intent 不為形式載入 pack。\n6. `PLAYBOOK_INDEX.json` 可做 machine owner discovery；已知 owner 時不為形式再讀 index。\n7. Load pack 不改變 GitHub-only retrieval、runtime execution、write、Reading Record storage 或 privacy authority。\n"
+    },
+    "ordinary_routing": {
+      "owner": "METHOD_ROUTING.md",
+      "sections": [
+        "## Fast Path｜高信心命中就停止 routing",
+        "## 1. User Method Override｜使用者已指定方法"
+      ],
+      "section_sha256": [
+        "eaac07a695515d7c3e27feef66f526c8a154621425cefed6f7aaefc227050a6b",
+        "e76483538e16c36d5f7c60a224cd56455ee391aa5f2ea474824bf245d430c318"
+      ],
+      "content": "## Fast Path｜高信心命中就停止 routing\n\n普通題先用這個最小路由：\n\n```text\nPsychology / Comparison\n→ Tarot\n\nProcess / Evolution / Structure\n→ Meihua\n\nOutcome / Completion\n→ Liuyao\n```\n\n具體化：\n\n```text\n主要問人物心理、互動、主觀感受、A/B/C 比較\n→ Tarot\n\n主要問事情怎麼變、轉折在哪、主客／體用結構\n→ Meihua\n\n主要問一件具體、外部可驗證的事情是否在 horizon 內完成／成立\n→ Liuyao\n```\n\nAstrology 不在這個 ordinary auto-selection tree。只有使用者明確說「用占星／用星盤／看行運」等 production intent 時，才由 User Method Override 直接交給 `ASTROLOGY.md`。\n\n若只有一個 ordinary 分支高信心命中，**立即選 method，停止讀本檔其餘 sections**；只有出現 collision、ambiguous function、使用者要求多方法或 completion／心理／演化混在同一句時，才繼續讀對應 gate。\n\n## 1. User Method Override｜使用者已指定方法\n\n若使用者已明確指定：\n\n- 「用塔羅」→ 使用 Tarot；\n- 「用梅花」→ 使用 Meihua；\n- 「用六爻」→ 使用 Liuyao；\n- 「用占星／用星盤／看本命盤／看行運」→ 使用 Astrology，讀 `ASTROLOGY.md`；\n- 「兩個都看／交叉看」→ 先進 Cross-validation Responsibility Gate，不預設固定哪兩套。\n\nAstrology 的 override 還需區分 production reading 與 research intent：\n\n```text\n用占星幫我看／看我的本命盤／看這段行運\n→ ASTROLOGY.md\n\n研究占星來源／維護 Astrology research dossier／比較研究架構\n→ RESEARCH_ROUTING.md\n```\n\n原則上尊重使用者選擇，不因 ChatGPT 個人偏好自行換方法。\n\n只有當指定方法與問題功能明顯不合、無法依該方法形成乾淨契約，或方法本身在本次 workflow 不可用時，才應簡短指出限制並推薦更合適方法。\n\n若 Astrology 是指定方法但缺 deterministic chart facts / approved provider，依 `ASTROLOGY.md` fail closed 在 Fact Gate；不得因 Tarot / Meihua / Liuyao 比較容易執行就偷偷換方法。\n\n若使用者已提供實際牌面／卦象／六爻 Cast Fact 或 structured Astrology facts，直接依既有 method fact 處理；不得為了「方法更適合」自行重抽、重卦、重算或改系統。\n"
+    },
+    "runtime_fast_path": {
+      "owner": "RUNTIME_DRAW.md",
+      "sections": [
+        "## Section Router｜最低必要載入",
+        "## Fast Path｜普通占問預設"
+      ],
+      "section_sha256": [
+        "af210305a6b3a6cd2f346dd080f6d0a8312cf8c1a173bce27620da3dc8035cd8",
+        "9ce9eac7277031ed55dc1bcb868f198073b2a782089347f6ff7560cd45c43c79"
+      ],
+      "content": "## Section Router｜最低必要載入\n\n- **普通代抽／代起卦 + verified cache PASS** → `Fast Path` + 對應 Method Contract + `Execution` + `Fact / Fail-Closed`；STOP。\n- **cache FAIL／首次 acquisition** → 再讀 `Acquisition`。\n- **多個合法獨立 readings** → `Automatic Batching`。\n- **完整 provenance／audit／保存** → 再讀 `Provenance` + `READING_RECORD.md`。\n- **補占／重占／copy-ready** → `READING_LIFECYCLE.md`／`CHATGPT_OUTPUT.md`。\n- **維護 Randomizer** → 本檔 `Validation` + `runtime/casting/**` + `tests/casting/**`。\n\n不要為形式載入 acquisition／audit／maintenance sections。**Fast path 已足夠時就 STOP。**\n\n## Fast Path｜普通占問預設\n\n```text\nQuestion Contract fixed\n→ fixed-slot probe\n→ PASS\n→ reuse already-loaded module if available; otherwise import cached module\n→ one direct generate_payload() call\n→ compact_ai_payload()\n→ Draw / Cast Fact fixed\n→ Interpretation\n```\n\n條件：Python 可執行、fixed cache 通過最低 probe、方法已驗證、無 Randomizer-specific refresh trigger。\n\nPASS 後：\n\n- 不抓 GitHub、不重新 materialize、不跑 full smoke；\n- 同一 persistent Python interpreter 若 canonical cached module 已成功 import 且 cache identity 未變，**直接 reuse module object**，不重啟 CLI/subprocess；\n- interpreter/module reuse 不可跨 runtime restart 假設；新 interpreter 只需從 verified fixed cache import；\n- 每個新 question identity 仍 fresh RNG；module reuse **不重用結果或 RNG outcome**；\n- 多個 compatible independent readings 依 `Automatic Batching` 合併成最少 calls；\n- 普通 AI interpretation transport 優先 `compact_ai_payload()`／CLI `--format ai-json`；只有 audit-grade raw metadata 或 compatibility 需要才用 full JSON。\n\n核心：\n\n> **Verify once per runtime state; import once per interpreter; draw fresh per question; batch compatible readings; return only minimum sufficient facts。**\n"
+    },
+    "output_core": {
+      "owner": "CHATGPT_OUTPUT.md",
+      "sections": [
+        "## Section Router｜依任務只讀最低必要段落",
+        "## 1. 原題範圍是輸出硬邊界",
+        "## 2. 區分事實、原始結果、Structured Fact、方法規則與象徵推論",
+        "## 3. 先回答原題，再展開必要證據",
+        "## 4. One Question = One Conclusion Surface",
+        "## 5. 輸出層是按題型啟用，不是固定全部輸出",
+        "## 6. 使用最低充分牌義／卦義／方法事實",
+        "## 7. 信心語言要與證據相稱",
+        "## 13. Pre-Send Gate｜送出前檢查實際最終草稿"
+      ],
+      "section_sha256": [
+        "6aa66fe982bb84e4099607d71aa53966104908d450186415d43960b1cd676bbe",
+        "9031345d38089d0655d821f1670c20b8ab66fbb494ba61fb2ae4bb2470ef4ceb",
+        "d5745607c942991945514ca3d5e1e59a1ac834d0b0e31fae279dc3e7943726fc",
+        "5a7cbd1f57e86683ba584f668aed754182619cc8f37aa55b7280934c2910340c",
+        "14b5afae0d4c51b8c329a9e82ab0ae33c8a380817ddc5c3f79ba07269d361e07",
+        "9a27682a7811709029fbf5c6dca214437491ee8cfd55db51f079196674405204",
+        "45005564de091da4ae45e5f811e708698c75ad420aec5dac68306861fd8d7ced",
+        "df6eeb7b8945850f9fcb26e31e96f49819523488f89530c4ea2ca6fdfaf3efc5",
+        "6198f6743ddecc3cb31ba5f96633d6c5f4d811ae7b910dcd1e033e07a32de860"
+      ],
+      "content": "## Section Router｜依任務只讀最低必要段落\n\n本檔可以按 section 漸進式讀取，不要求每次全文載入：\n\n- **普通 Tarot / Meihua / Liuyao 解讀**：先讀第 1～7 節與第 13 節；若不是完成／命中判定，可略過第 8～9 節；若不需要後續題，可略過第 10～12 節。\n- **只設計／改寫占卜題目**：先讀第 1 節，再讀第 10～13 節；若不是承接題，可略過第 8～9 節。\n- **預測完成／現實驗證**：讀第 1～8 節與第 13 節。\n- **舊占回測**：讀第 1～9 節與第 13 節。\n- **需要補占／連續出題**：讀第 1 節、第 10～13 節，並依需要補讀前述解讀 sections。\n\n若目前 task 已能由 exact section 唯一處理，直接讀該 section；router 用於降低載入成本，不是額外 ceremony。\n\n## 1. 原題範圍是輸出硬邊界\n\n解讀前先鎖定最低必要 contract：\n\n- `question`\n- `subject`\n- `horizon`\n- `completion_rule`\n- method-specific responsibility：Tarot `positions`、Meihua 起卦／體用／視角契約，或 Liuyao primary target / 用神 responsibility + Structured Method Fact boundary\n- `exclusions`\n- 使用者當次明確指定的輸出限制\n\nChatGPT 不得：\n\n- 把「發生可能性」偷換成「情境品質」。\n- 把「何時完成」偷換成「何時開始有跡象」。\n- 因牌／卦出現其他可聯想內容，就擅自回答原題排除的事項。\n- 把一題延伸成數個未被要求的新判斷。\n- 因為某個旁支很有故事性，就讓它取代原本主要判斷功能。\n- 在 Liuyao Structured Method Fact 缺失時，把模型手算結果寫成 engine fact。\n\n`exclusions` 不只是紀錄欄位，而是**輸出禁止區**。若題目明寫「本題不判斷 X」，ChatGPT 即使認為牌／卦可以談 X，也不應輸出對 X 的實質結論。\n\n## 2. 區分事實、原始結果、Structured Fact、方法規則與象徵推論\n\n解讀時至少在語意上區分六層：\n\n- **CONFIRMED FACT｜已確認現實事實**：物流狀態、訊息、正式通知、實際行動等已發生且可確認的資訊。\n- **DRAW / CAST FACT｜抽牌／起卦事實**：實際抽到的牌、正逆位、A／B 原始數字、Liuyao 原始 6/7/8/9 等。\n- **STRUCTURED METHOD FACT｜方法計算事實**：需要 deterministic engine 才成立的本卦／之卦／納甲／六親／世應等；只在實際取得時存在。\n- **METHOD RULE｜方法規則**：原牌位契約、起卦算法、體用分配、用神 responsibility、完成判定等事前固定規則。\n- **SYMBOLIC INFERENCE｜象徵推論**：由牌／卦依契約推得的支持、阻礙、流程、時間或人物動態。\n- **UNRESOLVED｜仍未能判斷**：目前證據不足以可靠區分的部分。\n\n不要求每次都把這六個英文標籤印在答案裡，但語句不得把不同層級混成同一種確定度。\n\n例如：\n\n- 可以說：「這組牌**偏向支持**對方主動聯絡。」\n- 在現實尚未發生前，不應在後續直接改寫成：「既然對方會主動聯絡……」。\n- Liuyao engine 未成功時，可以說 Raw Cast 已固定，但不得把未驗證納甲／六親／世應當成 Structured Method Fact。\n\n象徵推論不會因為在前一輪已經說過，就自動升格成現實事實。\n\n## 3. 先回答原題，再展開必要證據\n\n一般解讀預設順序：\n\n1. **直接結論**：先回答使用者真正問的判斷。\n2. **最低充分證據**：只解釋真正影響該結論的牌位／卦象／Structured Method Fact。\n3. **衝突或不確定性**：若存在混合訊號，明確標示。\n4. 只有題目需要時，再加入時間、人物／心理、行動建議或現實驗證點。\n\n不要先寫一大段牌義／卦義百科，最後才讓使用者找答案。\n\n## 4. One Question = One Conclusion Surface\n\n同一題應有一個清楚的主結論面。\n\n後續段落可以：\n\n- 解釋主結論；\n- 限定主結論的適用條件；\n- 指出次順位；\n- 說明為何仍有不確定性。\n\n但不應在不同段落悄悄產生互相競爭的主答案。\n\n若證據不足以決勝，直接說：\n\n> 「目前足以排除 A，但不足以可靠區分 B 與 C。」\n\n不要只因題目是三選一，就強迫輸出一個虛假的唯一冠軍。\n\n## 5. 輸出層是按題型啟用，不是固定全部輸出\n\n下列都是**可啟用層（eligible layers）**，不是每題必須全部出現：\n\n- **直接結論**：解讀題通常需要。\n- **核心證據**：解讀題通常需要，但只保留最低充分內容。\n- **衝突／不確定**：存在時才需要。\n- **心理／關係動態**：人物／關係題有問或與主要判斷直接相關時才輸出。\n- **時間／應期**：時間題、流程題有問，或主結論確實需要時才輸出。\n- **行動建議**：策略／決策題有問，或使用者明確要求時才輸出。\n- **現實驗證訊號**：預測、追蹤或回測題需要時才輸出。\n- **下一次補占**：只有通過第 10 節的補占輸出關卡才提出。\n\n因此，不應因固定模板而在純時間比較題硬加心理分析，也不應在單純人物反應題硬加精確日期。\n\n## 6. 使用最低充分牌義／卦義／方法事實\n\nChatGPT 不應輸出「牌義字典」「萬物類象清單」或完整六爻術語清單後再任選幾個套進題目。\n\n對每張牌／每一卦象／每個 Liuyao method fact，只取與以下條件直接相關的最低充分意義：\n\n- 原題；\n- 該牌位或卦象證據角色；\n- 正逆位／體用／動爻／世應／用神等已固定契約；\n- 全組真正存在的支持或衝突；\n- 本次真正由 deterministic engine 提供、且被解讀實際使用的 Structured Method Fact。\n\n例如牌位只問「09/03 是否較可能完成」，就優先解讀該牌對「在該窗口完成」的支持、阻礙、延遲或不確定，不必展開與原題無關的家庭、人格、職位或其他常見牌義。\n\nLiuyao 若原題只需要 outcome / obstacle，就不因 engine 提供大量欄位而把所有納甲、六神、伏神資訊逐項輸出。\n\n核心原則：**輸出的是與契約有連結的證據，不是展示所有可能象徵或所有可取得欄位。**\n\n## 7. 信心語言要與證據相稱\n\n若沒有獨立、經驗證的統計模型，不把 Tarot／Meihua／Liuyao 象徵直接轉成：\n\n- 80%、90% 等客觀百分比；\n- 「幾乎確定」「一定會」等超出證據的確定語氣；\n- 由牌面、卦象、旺衰或動變強度推導出的偽精確機率。\n\n比較題可優先使用：\n\n- 強支持\n- 偏支持\n- 混合／中性\n- 偏不支持\n- 強不支持\n\n時間窗／選項排序可使用：\n\n- 第一順位\n- 第二順位\n- 弱分支\n- 無法可靠區分\n\n若百分比來自另外的現實統計資料，應清楚區分那是現實資料，不是牌／卦本身產生的機率。\n\n## 13. Pre-Send Gate｜送出前檢查實際最終草稿\n\n讀過本檔不代表最後輸出一定符合規則。ChatGPT 在送出實質占卜題目或解讀前，應對**實際準備送出的 final draft** 做一次最低充分自檢；不合格時先修正草稿，再送出。\n\n### A. 出題草稿檢查\n\n若本次輸出包含讓使用者實際抽牌／起卦的題目，至少檢查：\n\n1. **Question count check**：使用者要求幾個獨立題目，final draft 是否有相同數量的獨立 copy blocks。\n2. **Name expansion check**：使用者已提供的人物／對象名稱，是否每題都已直接代入；不得留下不必要 placeholder。\n3. **No-manual-edit check**：是否出現「其餘同上」「自行替換名字」「請把 A 換成 B」等需要使用者手動改題的交付。\n4. **Completeness check**：每個 block 是否含完整題幹、必要前提與全部牌位／問題位置。\n5. **Position-count check**：聲稱抽 N 張時，是否真的有 N 個明確且唯一功能的牌位；若有總裁決，也要計入。\n6. **Standalone-copy check**：每題單獨複製後是否能直接使用，不需要把 block 外的必要句子另行拼接。\n7. **Scope check**：題目是否仍守住原本要判斷的功能、時間範圍與 `exclusions`。\n\n### B. 解讀草稿檢查\n\n若本次輸出包含解牌／解卦／交叉驗證／回測，至少檢查：\n\n1. **Direct-answer check**：是否真的回答了原題，而不是只講牌義／卦義／術語。\n2. **Scope check**：是否越過 `exclusions` 或加入沒有被問的判斷。\n3. **Evidence-language check**：象徵推論是否仍使用符合證據層級的語氣，沒有升格成已確認事實。\n4. **Conclusion-consistency check**：同一題前後是否維持同一主結論；若排序改變，必須有明確新證據與說明。\n5. **Unresolved check**：證據不足時是否允許 `UNRESOLVED`／「無法可靠區分」，而不是為了完成回答硬選。\n6. **Eligible-layer check**：心理、時間、建議、補占等是否真的由題型／使用者要求啟用。\n7. **Completion check**：若宣告事件完成／命中，是否真正符合原 `completion_rule`。\n8. **Hindsight check**：回測時是否把事後重讀與當時原始預測清楚分開。\n9. **Structured-fact check**：若使用 Liuyao 等需要 engine 的方法，實際使用的 Structured Method Fact 是否真的取得且 provenance 邊界沒有被模型補寫。\n\n### Fail-closed repair\n\n若上述任一會實質影響使用者操作、題目契約或解讀正確性的檢查不通過，先修正 final draft 並重新檢查；不要把「我知道規則」當成輸出已合格的證據。\n\n本 gate 是最後一哩的輸出 compliance check，不會讓象徵推論取得更高事實或科學權威；內容本身仍受原題、Draw / Cast Fact、Structured Method Fact、現實事實與方法規則約束。\n"
+    }
+  },
+  "profiles": {
+    "ordinary_unspecified": {
+      "fragments": [
+        "bootstrap",
+        "ordinary_routing",
+        "runtime_fast_path",
+        "output_core"
+      ],
+      "required_followup": [
+        "selected method owner"
+      ],
+      "notes": "Use runtime fragment only when ChatGPT/AI actually performs a stochastic draw/cast."
+    },
+    "explicit_tarot": {
+      "fragments": [
+        "bootstrap",
+        "runtime_fast_path",
+        "output_core"
+      ],
+      "required_followup": [
+        "TAROT.md"
+      ]
+    },
+    "explicit_meihua": {
+      "fragments": [
+        "bootstrap",
+        "runtime_fast_path",
+        "output_core"
+      ],
+      "required_followup": [
+        "MEIHUA.md"
+      ]
+    },
+    "explicit_liuyao": {
+      "fragments": [
+        "bootstrap",
+        "runtime_fast_path",
+        "output_core"
+      ],
+      "required_followup": [
+        "LIUYAO.md"
+      ]
+    },
+    "continuation_stochastic": {
+      "fragments": [
+        "bootstrap",
+        "runtime_fast_path",
+        "output_core"
+      ],
+      "required_followup": [
+        "READING_LIFECYCLE.md",
+        "selected method owner"
+      ],
+      "notes": "READING_RECORD.md remains conditional on durable storage/cross-chat/audit intent."
+    }
+  }
+}
