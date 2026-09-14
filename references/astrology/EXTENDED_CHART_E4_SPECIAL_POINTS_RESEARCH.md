@@ -21,7 +21,7 @@ Consumer aliases such as `East Point` are not silently promoted to canonical ide
 Pinned Kerykeion research source `g-battaglia/kerykeion@b18848eb8e1e0a2b09a096dbb9688c8404dfb06b` documents and tests the day/night formulas:
 
 ```text
-diurnal:  Asc + Moon - Sun
+diurnal:   Asc + Moon - Sun
 nocturnal: Asc + Sun - Moon
 ```
 
@@ -40,11 +40,31 @@ ASC longitude
 Sun longitude
 Moon longitude
 diurnal/nocturnal classification
+sect policy id
 formula policy id
 normalized result
 ```
 
-The day/night classification itself must be deterministic and documented; the formula must not be reversed merely to match a consumer output.
+The formula must not be reversed merely to match a consumer output.
+
+### 2.1 Diurnal / nocturnal classification
+
+The same pinned Kerykeion evidence defines a day chart as the Sun above the horizon and a night chart as the Sun below it, and records that its `is_diurnal` classification uses the Sun's **geometric altitude** via Swiss Ephemeris `swe.azalt()`. This makes the classification independent of house system and zodiac mode.
+
+For this research line, freeze the deterministic candidate policy:
+
+```text
+sect-geometric-solar-altitude-v1
+
+Sun geometric altitude > 0° → diurnal
+Sun geometric altitude < 0° → nocturnal
+Sun geometric altitude = 0° → boundary / FAIL CLOSED
+calculation unavailable      → FAIL CLOSED
+```
+
+The upstream package has a defensive fallback behavior when sect calculation fails; this Playbook does **not** inherit that fallback into the research contract. An unavailable classification must remain unavailable rather than silently becoming diurnal.
+
+This policy is still REFERENCE-ONLY; it does not alter Production v1.
 
 ## 3. Vertex
 
@@ -100,14 +120,20 @@ Vertex and Equatorial Ascendant are location/time-derived special points. Their 
 
 They belong in the angle/special-point fact family, not the ephemeris-body family.
 
+Part of Fortune also requires the chart instant/location indirectly through ASC and through the sect classification.
+
 ## 7. House-system independence boundary
 
 These outputs come from a house/angle calculation API, but their identity must not be replaced by convenient house cusps. As established in E1, angle identity and house-cusp identity remain separate even when a particular house system makes them numerically coincide.
+
+The `sect-geometric-solar-altitude-v1` classification is likewise not defined by a house number; it uses geometric horizon altitude explicitly.
 
 ## 8. E4 conclusion
 
 ```text
 Fortune day/night formula          RESOLVED AS fortune-day-night-v1
+sect classification candidate      RESOLVED AS sect-geometric-solar-altitude-v1
+sect failure behavior              FAIL CLOSED
 Vertex identity                    RESOLVED
 Equatorial Ascendant identity      RESOLVED
 “East Point” canonical math name   NOT USED
