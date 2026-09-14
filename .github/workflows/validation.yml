@@ -62,7 +62,7 @@ jobs:
       - name: Wait for matching Vercel production deployment and smoke-test all methods
         env:
           EXPECTED_SHA: ${{ github.sha }}
-          CAST_URL: https://tarot-plum-randomizer-masini1491-9205.vercel.app/api/cast
+          CAST_URL: https://ai-divination-playbook-casting-masini1491-9205.vercel.app/api/cast
         run: |
           python - <<'PY'
           import json
