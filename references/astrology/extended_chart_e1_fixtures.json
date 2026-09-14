@@ -1,0 +1,70 @@
+{
+  "schema_name": "astrology_extended_chart_e1_fixture",
+  "schema_version": "0.1.0",
+  "authority": "REFERENCE_ONLY",
+  "baseline": "9d607a18234d8ec02f354b0919dc3806d4a54846",
+  "rules": {
+    "south_node": "normalize(north_node + 180)",
+    "descendant": "normalize(ascendant + 180)",
+    "imum_coeli": "normalize(midheaven + 180)",
+    "tolerance_deg": 1e-09
+  },
+  "cases": [
+    {
+      "fixture_id": "axis-zero-boundary",
+      "node_definition": "mean",
+      "inputs": {
+        "north_node_deg": 0.0,
+        "ascendant_deg": 90.0,
+        "midheaven_deg": 270.0
+      },
+      "expected": {
+        "south_node_deg": 180.0,
+        "descendant_deg": 270.0,
+        "imum_coeli_deg": 90.0
+      }
+    },
+    {
+      "fixture_id": "axis-wrap-boundary",
+      "node_definition": "mean",
+      "inputs": {
+        "north_node_deg": 180.0,
+        "ascendant_deg": 359.999999,
+        "midheaven_deg": 179.999999
+      },
+      "expected": {
+        "south_node_deg": 0.0,
+        "descendant_deg": 179.999999,
+        "imum_coeli_deg": 359.999999
+      }
+    },
+    {
+      "fixture_id": "axis-arbitrary-decimal",
+      "node_definition": "mean",
+      "inputs": {
+        "north_node_deg": 123.456789,
+        "ascendant_deg": 42.25,
+        "midheaven_deg": 271.875
+      },
+      "expected": {
+        "south_node_deg": 303.456789,
+        "descendant_deg": 222.25,
+        "imum_coeli_deg": 91.875
+      }
+    },
+    {
+      "fixture_id": "axis-arbitrary-wrap",
+      "node_definition": "mean",
+      "inputs": {
+        "north_node_deg": 359.75,
+        "ascendant_deg": 181.25,
+        "midheaven_deg": 0.125
+      },
+      "expected": {
+        "south_node_deg": 179.75,
+        "descendant_deg": 1.25,
+        "imum_coeli_deg": 180.125
+      }
+    }
+  ]
+}
