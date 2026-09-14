@@ -29,7 +29,7 @@ jobs:
       - name: Run structural checker
         run: python tools/playbook_check.py .
 
-  casting-candidate:
+  casting-runtime:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -46,12 +46,12 @@ jobs:
       - name: Validate OpenAPI JSON
         run: python -m json.tool runtime/casting/openapi.json > /dev/null
 
-      - name: Run Randomizer candidate unit and parity tests
+      - name: Run Randomizer runtime unit and contract tests
         run: python -m unittest discover -s tests/casting -v
 
   production-smoke:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: [validate, casting-candidate]
+    needs: [validate, casting-runtime]
     runs-on: ubuntu-latest
     steps:
       - name: Set up Python
@@ -97,8 +97,16 @@ jobs:
                   return False, f"{method}: status={status}"
               if "no-store" not in cache_control:
                   return False, f"{method}: cache={cache_control!r}"
-              if payload.get("ai_schema_version") != "1":
-                  return False, f"{method}: ai_schema_version={payload.get('ai_schema_version')!r}"
+              expected_identity = {
+                  "source": "divination-casting-randomizer-python",
+                  "algorithm_version": "2",
+                  "schema_version": "4",
+                  "ai_schema_version": "1",
+                  "timezone": "Asia/Taipei",
+              }
+              for key, value in expected_identity.items():
+                  if payload.get(key) != value:
+                      return False, f"{method}: {key}={payload.get(key)!r}"
               if payload.get("runtime_source_commit") != expected:
                   return False, f"{method}: commit={payload.get('runtime_source_commit')!r}"
               results = payload.get("results")

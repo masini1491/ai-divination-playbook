@@ -77,9 +77,9 @@ runtime_source_commit:     已知的 canonical randomizer source commit SHA；�
 runtime_generated_at:      tool output timestamp
 ```
 
-上述 provenance 欄位不是每次都必須對使用者完整展示，但若要正式記錄、回測或跨聊天室接續，應盡量保留。Phase 3 之後的新 canonical execution，`runtime_source_commit` 指包含 `runtime/casting/randomizer.py` 的 `masini1491/ai-divination-playbook` commit；既有 legacy-repo commit 仍是有效歷史 provenance，不回頭改寫。
+上述 provenance 欄位不是每次都必須對使用者完整展示，但若要正式記錄、回測或跨聊天室接續，應盡量保留。repository consolidation 後的新 canonical execution，`runtime_source_commit` 指包含 `runtime/casting/randomizer.py` 的 `masini1491/ai-divination-playbook` commit；既有 legacy-repo commit 仍是有效歷史 provenance，不回頭改寫。
 
-`divination-casting-randomizer` 在 `cards_source` / `casting_source` 中保留為既有 logical tool/source label；目前 canonical implementation 是本 Repo 的 `runtime/casting/randomizer.py`。legacy `masini1491/divination-casting-randomizer` 只保留歷史 provenance、rollback 與尚未完成 Phase 4 的 deployment compatibility。若工具未提供 seed 或 draw id，也至少應保存題目、時間與實際 Draw / Cast Fact。
+`divination-casting-randomizer` 在 `cards_source` / `casting_source` 中保留為既有 logical tool/source label；目前 canonical implementation 是本 Repo 的 `runtime/casting/randomizer.py`。legacy `masini1491/divination-casting-randomizer` 只保留歷史 provenance、rollback 與 compatibility / historical deployment reference；current production authority 已切換至 Playbook monorepo deployment。若工具未提供 seed 或 draw id，也至少應保存題目、時間與實際 Draw / Cast Fact。
 
 若 Meihua `casting_source = divination-casting-randomizer` 或 `chatgpt-runtime` 且實際使用其 canonical 雙數工具，應把當次 A、B 原始數字與固定雙數起卦規則一併視為 canonical input；解讀端不應另行取數或切換起卦法。
 

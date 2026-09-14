@@ -34,11 +34,6 @@ DEPRECATED_IDENTIFIERS = (
     "tarot-" + "plum-randomizer",
     "tarot-meihua-" + "question-playbook",
 )
-ALLOWED_LEGACY_DEPLOYMENT_URLS_BY_PATH = {
-    "runtime/casting/openapi.json": (
-        "https://tarot-" + "plum-randomizer-masini1491-9205.vercel.app",
-    ),
-}
 
 
 def outside_fence_lines(text: str):
@@ -169,12 +164,8 @@ def check_deprecated_identifiers(root: Path) -> list[str]:
             text = path.read_text(encoding="utf-8")
         except UnicodeDecodeError:
             continue
-        rel = path.relative_to(root).as_posix()
-        scan_text = text
-        for deployment_url in ALLOWED_LEGACY_DEPLOYMENT_URLS_BY_PATH.get(rel, ()):
-            scan_text = scan_text.replace(deployment_url, "")
         for identifier in DEPRECATED_IDENTIFIERS:
-            if identifier in scan_text:
+            if identifier in text:
                 errors.append(f"{path.relative_to(root)}: deprecated canonical identifier: {identifier}")
     return errors
 

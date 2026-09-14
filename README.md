@@ -238,7 +238,7 @@ Meihua A/B cast
 Liuyao three-coin Raw Cast
 ```
 
-Randomizer 只決定 stochastic raw result，不負責 interpretation。logical runtime identity 仍為 `divination-casting-randomizer-python`；legacy `masini1491/divination-casting-randomizer` 保留歷史 provenance、rollback 與尚未切換的 production deployment compatibility，並不是目前 Runtime Draw 的 canonical source。
+Randomizer 只決定 stochastic raw result，不負責 interpretation。logical runtime identity 仍為 `divination-casting-randomizer-python`；legacy `masini1491/divination-casting-randomizer` 僅保留歷史 provenance、rollback 與 compatibility / historical deployment reference。current Runtime Draw 與 production authority 均位於本 Repo 的 `runtime/casting/**`。
 
 ### Liuyao deterministic engine
 
