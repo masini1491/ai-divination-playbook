@@ -19,15 +19,20 @@ def load_module(path: Path, name: str):
 class LoaderRangeTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        cls.generator = load_module(
+            ROOT / "tools" / "build_loader_ranges.py",
+            "build_loader_ranges",
+        )
         cls.validator = load_module(
             ROOT / "tools" / "validate_loader_ranges.py",
             "validate_loader_ranges",
         )
 
-    def test_current_ranges_are_valid(self):
+    def test_generated_ranges_are_current(self):
+        self.assertEqual(self.generator.validate_generated(ROOT), [])
         self.assertEqual(self.validator.validate(ROOT), [])
 
-    def test_core_bypass_ranges_are_declared(self):
+    def test_core_bypass_ranges_are_generated(self):
         index = json.loads((ROOT / "PLAYBOOK_INDEX.json").read_text(encoding="utf-8"))
         ranges = index["loader"]["bounded_ranges"]
         expected = {
@@ -37,10 +42,15 @@ class LoaderRangeTests(unittest.TestCase):
             "research.astrology.scope",
         }
         self.assertTrue(expected.issubset(ranges))
-        self.assertEqual(
-            index["loader"]["range_locator_policy"]["kind"],
-            "ci-verified-line-range",
-        )
+        policy = index["loader"]["range_locator_policy"]
+        self.assertEqual(policy["kind"], "generated-ci-verified-line-range")
+        self.assertEqual(policy["generator"], "tools/build_loader_ranges.py")
+
+    def test_line_numbers_equal_fresh_derivation(self):
+        index = json.loads((ROOT / "PLAYBOOK_INDEX.json").read_text(encoding="utf-8"))
+        for range_id, committed in index["loader"]["bounded_ranges"].items():
+            derived = self.generator.derive_range(ROOT, committed)
+            self.assertEqual(committed, derived, range_id)
 
 
 if __name__ == "__main__":
