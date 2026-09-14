@@ -177,7 +177,8 @@
       "kind": "validation",
       "runner": "tools/build_chatgpt_load_pack.py",
       "benchmark": "tools/chatgpt_load_benchmark.py",
-      "budget": "evals/chatgpt_load_budget.json"
+      "budget": "evals/chatgpt_load_budget.json",
+      "range_validator": "tools/validate_loader_ranges.py"
     },
     {
       "id": "storage.playbook-boundary",
@@ -192,6 +193,41 @@
     "generator": "tools/build_chatgpt_load_pack.py",
     "benchmark": "tools/chatgpt_load_benchmark.py",
     "budget": "evals/chatgpt_load_budget.json",
+    "range_locator_policy": {
+      "kind": "ci-verified-line-range",
+      "validator": "tools/validate_loader_ranges.py",
+      "rule": "Ranges are retrieval hints only; canonical owner content remains authoritative. Recompute/update a range when its heading moves."
+    },
+    "bounded_ranges": {
+      "bootstrap.default_interaction": {
+        "owner": "CHAT_INIT.md",
+        "heading": "## Default Interaction Profile｜只給 Repo 也能直接使用",
+        "start_line": 5,
+        "end_line": 57,
+        "next_heading": "## ChatGPT Load Pack Fast Path｜one retrieval cache"
+      },
+      "explicit_astrology.routing_scope": {
+        "owner": "ASTROLOGY.md",
+        "heading": "## 1. Routing Scope",
+        "start_line": 44,
+        "end_line": 65,
+        "next_heading": "## 2. Deterministic Fact Boundary"
+      },
+      "explicit_research.intent_gate": {
+        "owner": "RESEARCH_ROUTING.md",
+        "heading": "## Explicit Research Intent Gate｜明確研究意圖",
+        "start_line": 75,
+        "end_line": 97,
+        "next_heading": "## Ordinary Reading Boundary｜普通占問邊界"
+      },
+      "research.astrology.scope": {
+        "owner": "references/astrology/README.md",
+        "heading": "## 1. Scope",
+        "start_line": 42,
+        "end_line": 69,
+        "next_heading": "## 2. Research decomposition"
+      }
+    },
     "profiles": {
       "ordinary_unspecified": {
         "followup": "selected method owner"
