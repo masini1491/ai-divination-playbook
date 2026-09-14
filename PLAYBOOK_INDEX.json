@@ -1,33 +1,228 @@
 {
   "schema_version": 1,
   "authority": "routing-only",
-  "bootstrap": {"path":"CHAT_INIT.md"},
+  "bootstrap": {
+    "path": "CHAT_INIT.md"
+  },
   "capabilities": [
-    {"id":"bootstrap.default-interaction","owner":"CHAT_INIT.md","section":"Default Interaction Profile｜只給 Repo 也能直接使用","kind":"contract"},
-    {"id":"bootstrap.repository-access","owner":"CHAT_INIT.md","section":"Repository Access Policy｜GitHub Connect 為唯一 GitHub 取得路徑","kind":"contract"},
-    {"id":"bootstrap.playbook-freshness","owner":"CHAT_INIT.md","section":"Playbook Freshness Probe｜長聊天室的版本新鮮度","kind":"contract"},
-    {"id":"session.handoff","owner":"CHAT_INIT.md","section":"Session Continuity / Handoff Gate｜長聊天室交接","kind":"contract","adapter":"SESSION_HANDOFF.md"},
-    {"id":"method.routing","owner":"METHOD_ROUTING.md","section":"Fast Path｜高信心命中就停止 routing","kind":"contract"},
-    {"id":"research.routing","owner":"RESEARCH_ROUTING.md","section":"Explicit Research Intent Gate｜明確研究意圖","kind":"research-router"},
-    {"id":"research.astrology","owner":"references/astrology/README.md","section":"1. Scope","kind":"reference"},
-    {"id":"research.palmistry","owner":"references/palmistry/README.md","section":"Authority boundary","kind":"reference"},
-    {"id":"question.input-contract","owner":"INPUT_CONTRACT.md","section":"Section Router｜只讀本題需要的段落","kind":"contract"},
-    {"id":"question.design","owner":"QUESTION_DESIGN.md","kind":"contract"},
-    {"id":"reading.lifecycle","owner":"READING_LIFECYCLE.md","kind":"contract"},
-    {"id":"reading.record","owner":"READING_RECORD.md","kind":"contract"},
-    {"id":"runtime.draw","owner":"RUNTIME_DRAW.md","kind":"contract","implementation":"runtime/casting/randomizer.py"},
-    {"id":"method.tarot","owner":"TAROT.md","kind":"contract"},
-    {"id":"method.meihua","owner":"MEIHUA.md","kind":"contract"},
-    {"id":"method.liuyao","owner":"LIUYAO.md","kind":"contract","casting_implementation":"runtime/casting/randomizer.py","engine":"tools/liuyao_engine.py","calendar_provider":"tools/liuyao_calendar.py","runtime":"tools/liuyao_runtime.py"},
-    {"id":"method.astrology","owner":"ASTROLOGY.md","kind":"contract","activation":"explicit-request-only","request_schema":"schemas/astrology/ASTROLOGY_READING_REQUEST_V1.schema.json","reading_run_schema":"schemas/astrology/ASTROLOGY_READING_RUN_V1.schema.json","orchestrator":"tools/astrology_orchestrator.py","fact_bundle_schema":"schemas/astrology/ASTROLOGY_FACT_BUNDLE_V1.schema.json","runtime_gate_result_schema":"schemas/astrology/ASTROLOGY_RUNTIME_GATE_RESULT_V1.schema.json","typed_evidence_selection_request_schema":"schemas/astrology/ASTROLOGY_TYPED_EVIDENCE_SELECTION_REQUEST_V1.schema.json","typed_evidence_selection_schema":"schemas/astrology/ASTROLOGY_TYPED_EVIDENCE_SELECTION_V1.schema.json","evidence_selector":"tools/astrology_evidence_selector.py","interpretation_request_schema":"schemas/astrology/ASTROLOGY_INTERPRETATION_REQUEST_V1.schema.json","interpretation_handoff_schema":"schemas/astrology/ASTROLOGY_INTERPRETATION_HANDOFF_V1.schema.json","interpretation_handoff":"tools/astrology_interpretation_handoff.py","output_draft_schema":"schemas/astrology/ASTROLOGY_OUTPUT_DRAFT_V1.schema.json","user_facing_output_schema":"schemas/astrology/ASTROLOGY_USER_FACING_OUTPUT_V1.schema.json","output_guard":"tools/astrology_output_guard.py","pipeline_run_schema":"schemas/astrology/ASTROLOGY_READING_PIPELINE_RUN_V1.schema.json","end_to_end_pipeline":"tools/astrology_reading_pipeline.py","typed_pipeline_run_schema":"schemas/astrology/ASTROLOGY_TYPED_READING_PIPELINE_RUN_V1.schema.json","typed_end_to_end_pipeline":"tools/astrology_typed_reading_pipeline.py","place_resolver":"tools/astrology_place_resolver.py","natal_provider":"tools/astrology_provider.py","transit_provider":"tools/astrology_transit_provider.py","runtime":"tools/astrology_runtime.py","place_resolver_admission_manifest":"ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json","natal_provider_admission_manifest":"ASTROLOGY_PROVIDER_ADMISSION_V1.json","transit_provider_admission_manifest":"ASTROLOGY_TRANSIT_PROVIDER_ADMISSION_V1.json","admission_manifest":"ASTROLOGY_PRODUCTION_ADMISSION_V1.json"},
-    {"id":"cross-validation.reconciliation","owner":"CROSS_VALIDATION.md","kind":"contract"},
-    {"id":"cross-validation.evidence-lineage","owner":"CROSS_VALIDATION.md","section":"2.1 Evidence Lineage / Independence Guard｜抽得多不等於證據獨立","kind":"contract"},
-    {"id":"output.chatgpt","owner":"CHATGPT_OUTPUT.md","section":"Section Router｜依任務只讀最低必要段落","kind":"contract"},
-    {"id":"validation.structure","owner":"AGENTS.md","section":"維護風格","kind":"validation","runner":"tools/playbook_check.py"},
-    {"id":"validation.behavioral-eval","owner":"BEHAVIORAL_EVAL.md","kind":"contract","matrix":"evals/regression_matrix.json","runner":"tools/behavioral_eval.py"},
-    {"id":"storage.playbook-boundary","owner":"READING_RECORD.md","section":"11. Storage-Agnostic Boundary｜與私人紀錄庫分離","kind":"contract"}
+    {
+      "id": "bootstrap.default-interaction",
+      "owner": "CHAT_INIT.md",
+      "section": "Default Interaction Profile｜只給 Repo 也能直接使用",
+      "kind": "contract"
+    },
+    {
+      "id": "bootstrap.load-pack",
+      "owner": "CHAT_INIT.md",
+      "section": "ChatGPT Load Pack Fast Path｜one retrieval cache",
+      "kind": "contract",
+      "cache": "CHATGPT_LOAD_PACK.json"
+    },
+    {
+      "id": "bootstrap.repository-access",
+      "owner": "CHAT_INIT.md",
+      "section": "Repository Access Policy｜GitHub Connect only",
+      "kind": "contract"
+    },
+    {
+      "id": "bootstrap.playbook-freshness",
+      "owner": "CHAT_INIT.md",
+      "section": "Playbook Freshness Probe｜只在 material trigger",
+      "kind": "contract"
+    },
+    {
+      "id": "session.handoff",
+      "owner": "CHAT_INIT.md",
+      "section": "Session Continuity / Handoff Gate",
+      "kind": "contract",
+      "adapter": "SESSION_HANDOFF.md"
+    },
+    {
+      "id": "method.routing",
+      "owner": "METHOD_ROUTING.md",
+      "section": "Fast Path｜高信心命中就停止 routing",
+      "kind": "contract"
+    },
+    {
+      "id": "research.routing",
+      "owner": "RESEARCH_ROUTING.md",
+      "section": "Explicit Research Intent Gate｜明確研究意圖",
+      "kind": "research-router"
+    },
+    {
+      "id": "research.astrology",
+      "owner": "references/astrology/README.md",
+      "section": "1. Scope",
+      "kind": "reference"
+    },
+    {
+      "id": "research.palmistry",
+      "owner": "references/palmistry/README.md",
+      "section": "Authority boundary",
+      "kind": "reference"
+    },
+    {
+      "id": "question.input-contract",
+      "owner": "INPUT_CONTRACT.md",
+      "section": "Section Router｜只讀本題需要的段落",
+      "kind": "contract"
+    },
+    {
+      "id": "question.design",
+      "owner": "QUESTION_DESIGN.md",
+      "kind": "contract"
+    },
+    {
+      "id": "reading.lifecycle",
+      "owner": "READING_LIFECYCLE.md",
+      "kind": "contract"
+    },
+    {
+      "id": "reading.record",
+      "owner": "READING_RECORD.md",
+      "kind": "contract"
+    },
+    {
+      "id": "runtime.draw",
+      "owner": "RUNTIME_DRAW.md",
+      "kind": "contract",
+      "implementation": "runtime/casting/randomizer.py"
+    },
+    {
+      "id": "method.tarot",
+      "owner": "TAROT.md",
+      "kind": "contract"
+    },
+    {
+      "id": "method.meihua",
+      "owner": "MEIHUA.md",
+      "kind": "contract"
+    },
+    {
+      "id": "method.liuyao",
+      "owner": "LIUYAO.md",
+      "kind": "contract",
+      "casting_implementation": "runtime/casting/randomizer.py",
+      "engine": "tools/liuyao_engine.py",
+      "calendar_provider": "tools/liuyao_calendar.py",
+      "runtime": "tools/liuyao_runtime.py"
+    },
+    {
+      "id": "method.astrology",
+      "owner": "ASTROLOGY.md",
+      "kind": "contract",
+      "activation": "explicit-request-only",
+      "request_schema": "schemas/astrology/ASTROLOGY_READING_REQUEST_V1.schema.json",
+      "reading_run_schema": "schemas/astrology/ASTROLOGY_READING_RUN_V1.schema.json",
+      "orchestrator": "tools/astrology_orchestrator.py",
+      "fact_bundle_schema": "schemas/astrology/ASTROLOGY_FACT_BUNDLE_V1.schema.json",
+      "runtime_gate_result_schema": "schemas/astrology/ASTROLOGY_RUNTIME_GATE_RESULT_V1.schema.json",
+      "typed_evidence_selection_request_schema": "schemas/astrology/ASTROLOGY_TYPED_EVIDENCE_SELECTION_REQUEST_V1.schema.json",
+      "typed_evidence_selection_schema": "schemas/astrology/ASTROLOGY_TYPED_EVIDENCE_SELECTION_V1.schema.json",
+      "evidence_selector": "tools/astrology_evidence_selector.py",
+      "interpretation_request_schema": "schemas/astrology/ASTROLOGY_INTERPRETATION_REQUEST_V1.schema.json",
+      "interpretation_handoff_schema": "schemas/astrology/ASTROLOGY_INTERPRETATION_HANDOFF_V1.schema.json",
+      "interpretation_handoff": "tools/astrology_interpretation_handoff.py",
+      "output_draft_schema": "schemas/astrology/ASTROLOGY_OUTPUT_DRAFT_V1.schema.json",
+      "user_facing_output_schema": "schemas/astrology/ASTROLOGY_USER_FACING_OUTPUT_V1.schema.json",
+      "output_guard": "tools/astrology_output_guard.py",
+      "pipeline_run_schema": "schemas/astrology/ASTROLOGY_READING_PIPELINE_RUN_V1.schema.json",
+      "end_to_end_pipeline": "tools/astrology_reading_pipeline.py",
+      "typed_pipeline_run_schema": "schemas/astrology/ASTROLOGY_TYPED_READING_PIPELINE_RUN_V1.schema.json",
+      "typed_end_to_end_pipeline": "tools/astrology_typed_reading_pipeline.py",
+      "place_resolver": "tools/astrology_place_resolver.py",
+      "natal_provider": "tools/astrology_provider.py",
+      "transit_provider": "tools/astrology_transit_provider.py",
+      "runtime": "tools/astrology_runtime.py",
+      "place_resolver_admission_manifest": "ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json",
+      "natal_provider_admission_manifest": "ASTROLOGY_PROVIDER_ADMISSION_V1.json",
+      "transit_provider_admission_manifest": "ASTROLOGY_TRANSIT_PROVIDER_ADMISSION_V1.json",
+      "admission_manifest": "ASTROLOGY_PRODUCTION_ADMISSION_V1.json"
+    },
+    {
+      "id": "cross-validation.reconciliation",
+      "owner": "CROSS_VALIDATION.md",
+      "kind": "contract"
+    },
+    {
+      "id": "cross-validation.evidence-lineage",
+      "owner": "CROSS_VALIDATION.md",
+      "section": "2.1 Evidence Lineage / Independence Guard｜抽得多不等於證據獨立",
+      "kind": "contract"
+    },
+    {
+      "id": "output.chatgpt",
+      "owner": "CHATGPT_OUTPUT.md",
+      "section": "Section Router｜依任務只讀最低必要段落",
+      "kind": "contract"
+    },
+    {
+      "id": "validation.structure",
+      "owner": "AGENTS.md",
+      "section": "維護與 validation",
+      "kind": "validation",
+      "runner": "tools/playbook_check.py"
+    },
+    {
+      "id": "validation.behavioral-eval",
+      "owner": "BEHAVIORAL_EVAL.md",
+      "kind": "contract",
+      "matrix": "evals/regression_matrix.json",
+      "runner": "tools/behavioral_eval.py"
+    },
+    {
+      "id": "validation.loader-cache",
+      "owner": "AGENTS.md",
+      "section": "維護與 validation",
+      "kind": "validation",
+      "runner": "tools/build_chatgpt_load_pack.py",
+      "benchmark": "tools/chatgpt_load_benchmark.py",
+      "budget": "evals/chatgpt_load_budget.json"
+    },
+    {
+      "id": "storage.playbook-boundary",
+      "owner": "READING_RECORD.md",
+      "section": "11. Storage-Agnostic Boundary｜與私人紀錄庫分離",
+      "kind": "contract"
+    }
   ],
-  "adapters": {"session_handoff":"SESSION_HANDOFF.md"},
-  "behavioral_regression": {"matrix":"evals/regression_matrix.json","runner":"tools/behavioral_eval.py"},
-  "structural_validation": {"runner":"tools/playbook_check.py","tests":"tests/test_playbook_check.py"}
+  "loader": {
+    "cache_path": "CHATGPT_LOAD_PACK.json",
+    "authority": "derived-retrieval-cache-only",
+    "generator": "tools/build_chatgpt_load_pack.py",
+    "benchmark": "tools/chatgpt_load_benchmark.py",
+    "budget": "evals/chatgpt_load_budget.json",
+    "profiles": {
+      "ordinary_unspecified": {
+        "followup": "selected method owner"
+      },
+      "explicit_tarot": {
+        "followup": "TAROT.md"
+      },
+      "explicit_meihua": {
+        "followup": "MEIHUA.md"
+      },
+      "explicit_liuyao": {
+        "followup": "LIUYAO.md"
+      },
+      "continuation_stochastic": {
+        "followup": "READING_LIFECYCLE.md → selected method owner"
+      }
+    },
+    "bypass_profiles": {
+      "explicit_astrology": "AGENTS.md → CHAT_INIT.md bounded bootstrap → ASTROLOGY.md",
+      "explicit_research": "AGENTS.md → CHAT_INIT.md bounded bootstrap → RESEARCH_ROUTING.md → named research owner"
+    }
+  },
+  "adapters": {
+    "session_handoff": "SESSION_HANDOFF.md"
+  },
+  "behavioral_regression": {
+    "matrix": "evals/regression_matrix.json",
+    "runner": "tools/behavioral_eval.py"
+  },
+  "structural_validation": {
+    "runner": "tools/playbook_check.py",
+    "tests": "tests/test_playbook_check.py"
+  }
 }
