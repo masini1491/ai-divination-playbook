@@ -100,6 +100,8 @@ load pack
 
 明確指定 production Astrology：
 
+直接讀 `ASTROLOGY.md`，不經 ordinary auto-routing。
+
 ```text
 bounded CHAT_INIT bootstrap
 → ASTROLOGY.md
