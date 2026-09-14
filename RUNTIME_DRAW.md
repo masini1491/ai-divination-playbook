@@ -235,11 +235,11 @@ schema_version: 4
 ai_schema_version: 1  # compact transport only
 ```
 
-`source` 是 logical runtime identity；Phase 3 只改 repository/path authority，不改 logical identity 或 algorithm/schema versions。
+`source` 是 logical runtime identity；repository consolidation 只改 repository/path authority，不改 logical identity 或 algorithm/schema versions。
 
 Runtime timestamp：`generated_at_utc` + `generated_at_taipei` + `Asia/Taipei`；GitHub commit time 不是 draw time。普通 `ai-json` 至少傳 Taipei timestamp；正式保存若需要 UTC，從 full canonical payload 取得，不自行捏造。
 
-共同 provenance：source/tool、algorithm/schema、source repository/path/ref/commit（能取得時）、actual draw/cast timestamp/timezone。Phase 3 之後新 execution 的 `runtime_source_commit` 指向包含 `runtime/casting/randomizer.py` 的 `ai-divination-playbook` commit；歷史 legacy-repo commit provenance 保持有效，不重寫。Meihua 另存 A/B；Liuyao 另存 raw six lines + bottom-to-top；deterministic engine provenance 分開保存。
+共同 provenance：source/tool、algorithm/schema、source repository/path/ref/commit（能取得時）、actual draw/cast timestamp/timezone。consolidation 後新 execution 的 `runtime_source_commit` 指向包含 `runtime/casting/randomizer.py` 的 `ai-divination-playbook` commit；歷史 legacy-repo commit provenance 保持有效，不重寫。Meihua 另存 A/B；Liuyao 另存 raw six lines + bottom-to-top；deterministic engine provenance 分開保存。
 
 使用者可見預設只顯示必要結果、實際時間與 `Canonical Randomizer v2`，不要 dump audit metadata。
 
@@ -257,12 +257,4 @@ Common：
 - `--repeat`／batch result count/order/independent identity 正確；
 - GitHub acquisition only through GitHub Connect；
 - `PLAYBOOK_INDEX.json` 與 method owners 都指向 `runtime/casting/randomizer.py`；
-- Phase 2 snapshot parity gate 仍保留 legacy import provenance，直到 migration retirement 完成。
-
-Tarot：78 unique、count boundary、單題無重複、multi-reading independent shuffle、orientation legal。
-
-Meihua：A/B range、moving line 1～6、64 mapping complete。
-
-Liuyao：six bottom-to-top lines、3 coins/line、coin ∈ {2,3}、value ∈ {6,7,8,9}、6/9 changing、7/8 static、theoretical 1/8–3/8–3/8–1/8、Randomizer 不產生納甲 facts。
-
-Implementation tests 現由本 Repo `tests/casting/**` 維護；legacy Randomizer repo 保留 rollback／deployment compatibility，直到後續 retirement gates 完成。
+- `runtime/casting/MIGRATION_SOURCE.json` 永久保存 pinned legacy import provenance；current production files 可在 canonical repo 依正式 contract/version governance 演進，不再要求 byte-for-byte 等於 legacy snapshot。
