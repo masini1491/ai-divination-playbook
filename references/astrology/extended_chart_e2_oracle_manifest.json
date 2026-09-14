@@ -1,0 +1,49 @@
+{
+  "schema_name": "astrology_extended_chart_e2_oracle_manifest",
+  "schema_version": "0.1.0",
+  "authority": "REFERENCE_ONLY",
+  "playbook_baseline": "11a61f628b55f2bb83e2eca9b233eecd0566f03e",
+  "objects": [
+    {"object_id": "Chiron", "swiss_constant": "CHIRON", "horizons_command": "2060;"},
+    {"object_id": "Ceres", "swiss_constant": "CERES", "horizons_command": "1;"},
+    {"object_id": "Pallas", "swiss_constant": "PALLAS", "horizons_command": "2;"},
+    {"object_id": "Juno", "swiss_constant": "JUNO", "horizons_command": "3;"},
+    {"object_id": "Vesta", "swiss_constant": "VESTA", "horizons_command": "4;"}
+  ],
+  "swiss_oracle": {
+    "source_repository": "aloistr/swisseph",
+    "source_revision": "91339e55d2351f32548d8a8d5bca6aa93b4f6da7",
+    "ephemeris_path": "ephe/seas_18.se1",
+    "ephemeris_blob_sha": "8f900cab7e557e4c41f758a6bf3a3c3967e7e3db",
+    "ephemeris_size_bytes": 223004,
+    "python_adapter_repository": "astrorigin/pyswisseph",
+    "python_adapter_revision": "91ec65631badc7faf4a4b913570c944a4c1b101d",
+    "required_flags": ["FLG_SWIEPH", "FLG_SPEED"],
+    "coordinate_contract": "apparent geocentric tropical ecliptic polar coordinates, true equinox of date, with speed",
+    "license_boundary": "AGPL or Swiss Ephemeris Professional License; REFERENCE_ONLY research use here"
+  },
+  "independent_oracle": {
+    "provider": "NASA/JPL Horizons",
+    "api": "Horizons API",
+    "ephem_type": "OBSERVER",
+    "center": "500@399",
+    "quantities": [31],
+    "apparent": "AIRLESS",
+    "time_type": "UT",
+    "extra_precision": true,
+    "csv_format": true,
+    "coordinate_contract": "observer-centered Earth-ecliptic-of-date longitude/latitude"
+  },
+  "fixtures": [
+    {"fixture_id": "E2-F01", "utc": "2000-01-01T12:00:00Z"},
+    {"fixture_id": "E2-F02", "utc": "1980-06-01T00:00:00Z"},
+    {"fixture_id": "E2-F03", "utc": "2026-09-14T00:00:00Z"},
+    {"fixture_id": "E2-F04", "utc": "2099-12-31T00:00:00Z"}
+  ],
+  "comparison_policy": {
+    "longitude_delta": "shortest circular separation in degrees",
+    "horizons_speed_derivation": "central finite difference using t-1h and t+1h",
+    "tolerance_status": "NOT_DEFINED_PENDING_RESIDUAL_COLLECTION"
+  },
+  "binary_commit_policy": "DO_NOT_COMMIT_EPHEMERIS_BINARY"
+}
