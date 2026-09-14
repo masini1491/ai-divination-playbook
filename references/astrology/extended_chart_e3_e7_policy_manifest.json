@@ -1,0 +1,82 @@
+{
+  "schema_name": "astrology_extended_chart_e3_e7_policy_manifest",
+  "schema_version": "0.1.0",
+  "authority": "REFERENCE_ONLY",
+  "playbook_baseline": "40d4938bb3f265d332608312463b550fb8b8aa13",
+  "production_admission": "NOT_GRANTED",
+  "e3_lilith": {
+    "status": "RESEARCH_COMPLETE_DEFAULT_NOT_SELECTED",
+    "models": [
+      {"fact_id": "black_moon_lilith_mean", "swiss_constant": "SE_MEAN_APOG", "common_aliases": ["Mean Lilith", "Mean Black Moon Lilith"]},
+      {"fact_id": "black_moon_lilith_osculating", "swiss_constant": "SE_OSCU_APOG", "common_aliases": ["True Lilith", "Osculating Black Moon Lilith"]},
+      {"fact_id": "black_moon_lilith_interpolated", "swiss_constant": "SE_INTP_APOG", "common_aliases": ["Interpolated Lilith"]}
+    ],
+    "bare_lilith_identity": "AMBIGUOUS_MODEL",
+    "production_default": "NOT_SELECTED"
+  },
+  "e4_special_points": {
+    "status": "RESEARCH_COMPLETE_COMPATIBILITY_LABELS_POLICY_GATED",
+    "fortune": {
+      "policy_id": "fortune-day-night-v1",
+      "normalize": "mod_360",
+      "diurnal_formula": "ASC + Moon - Sun",
+      "nocturnal_formula": "ASC + Sun - Moon"
+    },
+    "swiss_ascmc": {
+      "ascendant": 0,
+      "mc": 1,
+      "armc": 2,
+      "vertex": 3,
+      "equatorial_ascendant": 4
+    },
+    "east_point_alias": {
+      "canonical_candidate": "equatorial_ascendant",
+      "status": "COMPATIBILITY_POLICY_REQUIRES_SOURCE_MATCH"
+    },
+    "production_default_alias_policy": "NOT_SELECTED"
+  },
+  "e5_aspect_participants": {
+    "status": "RESEARCH_COMPLETE_DEFAULT_NOT_SELECTED",
+    "classes": ["planet", "lunar_node", "angle", "asteroid_or_centaur", "lunar_apsis", "lot", "special_point"],
+    "research_policy_ids": [
+      "aspect-participants-core-bodies-v1",
+      "aspect-participants-core-plus-angles-v1",
+      "aspect-participants-extended-points-v1"
+    ],
+    "production_default": "NOT_SELECTED"
+  },
+  "e6_patterns": {
+    "status": "RESEARCH_COMPLETE_ORB_POLICY_NOT_SELECTED",
+    "aspect_types_referenced": ["conjunction", "opposition", "trine", "square", "sextile", "quincunx", "quintile", "biquintile"],
+    "topology_templates": {
+      "t_square": ["square", "opposition", "square"],
+      "grand_trine": ["trine", "trine", "trine"],
+      "yod": ["sextile", "quincunx", "quincunx"],
+      "grand_cross": ["square", "square", "square", "square", "opposition", "opposition"],
+      "kite": ["trine", "trine", "trine", "opposition", "sextile", "sextile"],
+      "mystic_rectangle": ["opposition", "opposition", "trine", "trine", "sextile", "sextile"],
+      "cradle": ["opposition", "trine", "trine", "sextile", "sextile"],
+      "grand_sextile": ["sextile", "trine", "opposition"],
+      "grand_quintile": ["quintile", "biquintile"]
+    },
+    "stellium": {"status": "POLICY_GATED", "reason": "minimum_count/span/sign-boundary/participant definitions vary"},
+    "nested_pattern_projection": ["REPORT_ALL_VALID", "SUPPRESS_STRICT_SUBSETS"],
+    "exact_consumer_orb_policy": "UNRESOLVED",
+    "production_default": "NOT_SELECTED"
+  },
+  "e7_rulership": {
+    "status": "RESEARCH_COMPLETE_DEFAULT_NOT_SELECTED",
+    "policies": {
+      "rulership-traditional-v1": {
+        "Aries": "Mars", "Taurus": "Venus", "Gemini": "Mercury", "Cancer": "Moon", "Leo": "Sun", "Virgo": "Mercury",
+        "Libra": "Venus", "Scorpio": "Mars", "Sagittarius": "Jupiter", "Capricorn": "Saturn", "Aquarius": "Saturn", "Pisces": "Jupiter"
+      },
+      "rulership-modern-v1": {
+        "Aries": "Mars", "Taurus": "Venus", "Gemini": "Mercury", "Cancer": "Moon", "Leo": "Sun", "Virgo": "Mercury",
+        "Libra": "Venus", "Scorpio": "Pluto", "Sagittarius": "Jupiter", "Capricorn": "Saturn", "Aquarius": "Uranus", "Pisces": "Neptune"
+      }
+    },
+    "silent_blending": "PROHIBITED",
+    "production_default": "NOT_SELECTED"
+  }
+}
