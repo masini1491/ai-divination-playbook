@@ -178,3 +178,193 @@ Freshness 只處理規則 identity，不擴張 Runtime、write、Reading Record 
 11. 選到 Liuyao → `LIUYAO.md`；Raw Cast 與 Structured Method Fact 分層處理。
 12. Astrology → `ASTROLOGY.md`；需要解讀前先由 `tools/astrology_runtime.py` 或等價 admitted gate 驗證 structured facts。
 13. 正式保存／跨聊天室／audit → `READING_RECORD.md`。
+14. cold-start／behavioral regression → `BEHAVIORAL_EVAL.md` + scenario 所指 owner。
+15. machine consumer owner discovery → 可選 `PLAYBOOK_INDEX.json`，命中後仍回 canonical Markdown owner。
+16. 先讀最可能否決後續工作的高槓桿前提；若 method、research fact、contract、runtime、engine 或 authority 已不成立，先停在正確 boundary。
+17. 不為「熟悉手冊」掃 full repo、references、cases 或 old readings。
+
+## 最低必要路由
+
+### 明確指定 production Astrology
+
+```text
+ASTROLOGY.md
+→ Astrology Fact Gate / tools/astrology_runtime.py
+→ admitted interpretation scope only
+→ CHATGPT_OUTPUT relevant sections
+```
+
+Fact acquisition unavailable 時保留 Astrology identity並 fail closed；不得自行手算或未經要求換方法。
+
+### 明確指定 research line
+
+```text
+RESEARCH_ROUTING.md
+→ named research README / owner
+→ minimum relevant research contracts / evidence
+→ preserve research authority
+```
+
+Research capability gap 時在該 research owner 的缺失層 fail closed；不得未經使用者要求自行改成 production method。
+
+### 未指定方法
+
+```text
+METHOD_ROUTING.md Fast Path
+→ 若唯一命中：選 method → STOP routing
+→ 若 collision / ambiguity：再讀對應 tie-breaker sections
+→ selected method owner
+```
+
+Astrology v1 不參與此 auto-selection tree。
+
+### 普通清楚的新題
+
+```text
+METHOD_ROUTING Fast Path（若 method 未定）
+→ selected method owner
+→ RUNTIME_DRAW relevant sections（只有 AI 實際抽／起 stochastic method 時）
+→ CHATGPT_OUTPUT relevant sections
+```
+
+不要僅因「新題」固定加入 `INPUT_CONTRACT.md` 或 `QUESTION_DESIGN.md`。
+
+### 需要修題／重寫題目
+
+```text
+INPUT_CONTRACT relevant sections（只有 contract gap）
++ QUESTION_DESIGN relevant sections（只有 design gap）
++ CHATGPT_OUTPUT copy-ready sections（若要交付題目）
+```
+
+### Tarot
+
+```text
+TAROT.md
++ CHATGPT_OUTPUT relevant sections
++ RUNTIME_DRAW relevant sections only if AI draws
+```
+
+### Meihua
+
+```text
+MEIHUA.md
++ CHATGPT_OUTPUT relevant sections
++ RUNTIME_DRAW relevant sections only if AI casts
+```
+
+### Liuyao
+
+```text
+LIUYAO.md
++ CHATGPT_OUTPUT relevant sections
++ RUNTIME_DRAW relevant sections if AI performs three-coin Raw Cast
+```
+
+若完整六爻判斷需要 deterministic chart facts：
+
+```text
+Raw Cast Fact
+→ LIUYAO Structured Method Fact Gate
+→ deterministic engine
+→ Interpretation
+```
+
+Engine unavailable 時保留 Raw Cast，不重起，也不由模型手算後冒充 engine。
+
+### Astrology
+
+```text
+ASTROLOGY.md
++ Astrology Fact Bundle 1.0
++ tools/astrology_runtime.py gate
++ CHATGPT_OUTPUT relevant sections
+```
+
+若只有 raw birth data 且沒有 admitted deterministic provider，停止在 Fact Acquisition boundary；不由模型手算 chart。
+
+### Tarot + Meihua cross-validation
+
+```text
+TAROT.md
++ MEIHUA.md
++ CROSS_VALIDATION.md
++ CHATGPT_OUTPUT relevant sections
+```
+
+目前 Liuyao 或 Astrology 與其他方法可以形成 distinct readings / derived synthesis，但尚未自動套用 `CROSS_VALIDATION.md` 的 Tarot × Meihua semantics。
+
+### Runtime Draw / Cast
+
+```text
+method fixed
+→ minimum contract fixed
+→ RUNTIME_DRAW relevant sections
+→ actual canonical execution
+→ method owner
+→ output
+```
+
+Astrology 不是 stochastic draw/cast method，不進 `RUNTIME_DRAW.md`；它走 deterministic Fact Gate。
+
+### Reading Record / Backtest / continuation
+
+依需要加入：
+
+```text
+READING_RECORD.md relevant sections
+READING_LIFECYCLE.md relevant sections
+RUNTIME_DRAW.md provenance sections（需要時）
+method owner
+```
+
+## Context Admission｜舊占不預設進入當前題
+
+資訊分兩類：
+
+- **Active Context**：本次訊息、confirmed reality、本題 Contract／Draw-Cast Fact／Structured Method Fact／Astrology Fact Bundle、使用者明確指定承接的必要 reading。
+- **Historical Context**：未被本題引用的舊占、舊排序、其他人物／事件、已失效窗口、old memory。
+
+Persistence ≠ default loading。只有使用者明確承接／比較／回看，或本題以舊 reading 作必要條件前提時，才升為 Active。
+
+## Session Continuity / Handoff Gate｜長聊天室交接
+
+聊天室長本身不是 trigger；真正問題是 observable stale-premise / retrieval risk。
+
+Material signals：
+
+- 反覆找錯 reading identity / completion rule / confirmed reality；
+- 使用者重複糾正已明確成立的 material fact；
+- session 跨大量獨立 readings／人物／時間窗，而下一步只需很小 working set；
+- bounded reconciliation 後仍快速出現 stale assumption；
+- 下一步是高影響 Backtest／Record reconciliation／Playbook mutation，而 session risk 已會改變 correctness。
+
+規則：
+
+- 不捏造 context meter；
+- length alone ≠ handoff trigger；
+- 能 bounded reconcile 就先 reconcile；
+- material risk 仍在才建立最低充分 checkpoint；
+- checkpoint 是 retrieval index，不是 reality authority／Reading Record；
+- fresh session 重新確認 current Playbook 與 active reading evidence；
+- handoff 不自動建立新 reading、重抽、補占權或 repository write authority。
+
+需要 checkpoint 時使用 `SESSION_HANDOFF.md`。
+
+## 權威順序
+
+1. 使用者當次明確指示
+2. 已確認現實事實
+3. 抽牌／起卦前固定的 Input Contract
+4. 本 Repository current canonical rules
+5. 實際 Draw / Cast Fact / supplied Astrology Fact Bundle
+6. deterministic Structured Method Fact（若方法需要）
+7. 原始 Interpretation
+8. external references / research evidence（依其 admission boundary）
+9. old chat impression / memory
+
+新的現實事實可以更新下一題前提，但不能回頭修改舊題 Contract、Raw Cast、Astrology Fact Bundle 或當時 interpretation。
+
+核心原則：
+
+> **Natural-language activation → explicit production Astrology or explicit research routing or bounded ordinary production method routing → actual facts → owner-specific interpretation; preserve identity, preserve provenance, fail closed at the exact missing layer。**
