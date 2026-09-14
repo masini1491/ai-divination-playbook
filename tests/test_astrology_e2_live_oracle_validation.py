@@ -38,9 +38,10 @@ def circular_separation_deg(a: float, b: float) -> float:
 
 class E2ProspectiveToleranceValidation(unittest.TestCase):
     def test_prospective_validation(self) -> None:
-        # The tolerance constants above are frozen in this commit before these
-        # validation dates are observed. This is a prospective check, not a
-        # post-hoc envelope fit.
+        # Thresholds and validation dates were frozen before the first prospective
+        # execution. After that execution found a failure, this revision keeps the
+        # thresholds and dates unchanged and only defers the assertion so the full
+        # failure surface is observable. It is characterization, not a new blind pass.
         subprocess.run(
             [
                 sys.executable,
@@ -64,6 +65,7 @@ class E2ProspectiveToleranceValidation(unittest.TestCase):
         self.assertEqual(git_blob_sha(planetary_data), EXPECTED_PLANETARY_GIT_BLOB)
 
         residuals = []
+        failures = []
         with tempfile.TemporaryDirectory(prefix="e2-validation-") as tempdir:
             Path(tempdir, "seas_18.se1").write_bytes(asteroid_data)
             Path(tempdir, "sepl_18.se1").write_bytes(planetary_data)
@@ -89,35 +91,29 @@ class E2ProspectiveToleranceValidation(unittest.TestCase):
                     horizons_speed = (((lon_plus - lon_minus + 180.0) % 360.0) - 180.0) * 12.0
                     longitude_delta = circular_separation_deg(xx[0] % 360.0, lon_mid % 360.0)
                     speed_delta = abs(xx[3] - horizons_speed)
-                    residuals.append(
-                        {
-                            "fixture_id": fixture_id,
-                            "utc": utc,
-                            "object_id": object_id,
-                            "longitude_delta_deg": longitude_delta,
-                            "longitude_delta_arcsec": longitude_delta * 3600.0,
-                            "speed_delta_deg_per_day": speed_delta,
-                        }
-                    )
-                    self.assertLessEqual(
-                        longitude_delta,
-                        LONGITUDE_TOLERANCE_DEG,
-                        f"longitude tolerance exceeded: {fixture_id}/{object_id}",
-                    )
-                    self.assertLessEqual(
-                        speed_delta,
-                        SPEED_TOLERANCE_DEG_PER_DAY,
-                        f"speed tolerance exceeded: {fixture_id}/{object_id}",
-                    )
+                    row = {
+                        "fixture_id": fixture_id,
+                        "utc": utc,
+                        "object_id": object_id,
+                        "longitude_delta_deg": longitude_delta,
+                        "longitude_delta_arcsec": longitude_delta * 3600.0,
+                        "speed_delta_deg_per_day": speed_delta,
+                        "longitude_within_frozen_tolerance": longitude_delta <= LONGITUDE_TOLERANCE_DEG,
+                        "speed_within_frozen_tolerance": speed_delta <= SPEED_TOLERANCE_DEG_PER_DAY,
+                    }
+                    residuals.append(row)
+                    if not row["longitude_within_frozen_tolerance"] or not row["speed_within_frozen_tolerance"]:
+                        failures.append(row)
         swe.close()
         self.assertEqual(len(residuals), 20)
         print("E2_VALIDATION_JSON_BEGIN")
         print(
             json.dumps(
                 {
-                    "status": "PROSPECTIVE_VALIDATION_PASS",
+                    "status": "PROSPECTIVE_VALIDATION_FAILED" if failures else "PROSPECTIVE_VALIDATION_PASS",
                     "longitude_tolerance_arcsec": 5.0,
                     "speed_tolerance_deg_per_day": SPEED_TOLERANCE_DEG_PER_DAY,
+                    "failures": failures,
                     "residuals": residuals,
                 },
                 indent=2,
@@ -125,6 +121,7 @@ class E2ProspectiveToleranceValidation(unittest.TestCase):
             )
         )
         print("E2_VALIDATION_JSON_END")
+        self.assertFalse(failures, f"frozen prospective tolerance failed for {len(failures)} row(s)")
 
 
 if __name__ == "__main__":
