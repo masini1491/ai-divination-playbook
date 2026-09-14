@@ -1,10 +1,14 @@
 # Astrology Extended Chart Facts Phase E2｜Ephemeris-required Objects
 
-Status: **REFERENCE-ONLY / RESEARCH / E2 PARTIAL**
+Status: **REFERENCE-ONLY / RESEARCH COMPLETE WITH REJECTED GLOBAL TOLERANCE / NOT PRODUCTION-ADMITTED**
 
-Reviewed Playbook baseline: `masini1491/ai-divination-playbook@b03c24a57c4ecf711e93d80c9cb49f402308bc75`
+Reviewed Playbook baseline: `masini1491/ai-divination-playbook@ed639c52d64556339e2848dc93ae5722dbc771c1`
 
 Architecture owner: [`EXTENDED_CHART_FACTS_RESEARCH_ARCHITECTURE.md`](EXTENDED_CHART_FACTS_RESEARCH_ARCHITECTURE.md)
+
+Measured oracle contract: [`EXTENDED_CHART_E2_ORACLE_ENVIRONMENT.md`](EXTENDED_CHART_E2_ORACLE_ENVIRONMENT.md)
+
+Machine evidence: [`extended_chart_e2_measured_validation.json`](extended_chart_e2_measured_validation.json)
 
 ## 1. Scope
 
@@ -18,36 +22,23 @@ Juno
 Vesta
 ```
 
-These are not derivable from current Production v1 parent facts. They require an external ephemeris-capable calculation authority or a separately implemented and validated astronomical model.
-
-No production dependency or schema change is admitted by this file.
+These objects are not derivable from current Production v1 parent facts. No production dependency or schema change is admitted by E2.
 
 ## 2. Current Production v1 capability
 
 Current `tools/astrology_provider.py` uses Astronomy Engine for the admitted core object set and does not expose Chiron / Ceres / Pallas / Juno / Vesta.
 
-Repository search of pinned `cosinekitty/astronomy@865d3da7d8112bbc7911238052c6af4aaf877181` found no direct support for these five object names in the reviewed source surface.
-
-Research conclusion:
+The reviewed Astronomy Engine revision does not provide sufficient evidence for these five objects. Therefore:
 
 ```text
-existing Astronomy Engine production core
-→ sufficient for currently admitted bodies
-→ not sufficient evidence for E2 objects
+current production astronomy core
+→ remains unchanged
+→ E2 objects remain unsupported in Production v1
 ```
 
-Do not silently invent these positions from language-model memory.
+## 3. Resolved object identities
 
-## 3. Swiss Ephemeris family evidence
-
-Pinned `astrorigin/pyswisseph@91ec65631badc7faf4a4b913570c944a4c1b101d` documents:
-
-- asteroid/extended-body calculation through Swiss Ephemeris;
-- an explicit ephemeris file path;
-- test-suite dependency on `seas_18.se1` plus other ephemeris resources;
-- AGPL-3.0 for pyswisseph and a dual-license boundary for underlying Swiss Ephemeris.
-
-Pinned `theriftlab/immanuel-python@eba98099b7724598064113ffa1322e78dc4bccf6` explicitly maps:
+Swiss-family mappings independently reviewed through pyswisseph / Immanuel references and then exercised in the live E2 probe:
 
 ```text
 Chiron → swe.CHIRON
@@ -57,56 +48,7 @@ Juno   → swe.JUNO
 Vesta  → swe.VESTA
 ```
 
-and calls `swe.calc_ut()` for their ecliptic positions.
-
-This is strong architecture evidence that the five E2 objects can share one ephemeris-object fact family while retaining distinct object ids.
-
-## 4. Local availability probe
-
-A local research probe using installed `pyswisseph 2.10.03` at synthetic Julian date J2000 attempted:
-
-```text
-swe.CHIRON
-swe.CERES
-swe.PALLAS
-swe.JUNO
-swe.VESTA
-```
-
-All five calls failed closed with the same material dependency error:
-
-```text
-SwissEph file 'seas_18.se1' not found
-```
-
-This is a useful research result, not a defect in the five object identities.
-
-It proves that a future E2 oracle environment must govern not only Python package version but also ephemeris-data availability/provenance.
-
-## 5. Required provenance for E2 facts
-
-A future deterministic object fact should preserve at least:
-
-```text
-object_id
-calculation_provider_id
-provider_version
-provider_source_revision
-ephemeris_data_family / revision when material
-utc instant
-center / coordinate convention
-longitude_deg
-latitude_deg when available
-speed_deg_per_day when available
-motion
-availability
-```
-
-If an external ephemeris file is required, the file/data-family identity belongs to provenance rather than being treated as an invisible machine-local detail.
-
-## 6. Candidate object taxonomy
-
-Recommended research taxonomy:
+Recommended semantic taxonomy remains:
 
 ```text
 Chiron → centaur / special minor body
@@ -116,46 +58,132 @@ Juno   → asteroid
 Vesta  → asteroid
 ```
 
-Do not force all five into `planet` merely because an external astrology package stores them beside planets.
+Do not collapse all five into `planet` merely because a wrapper stores them beside planets.
 
-The production schema may later choose a broader generic type, but semantic identity should remain explicit.
+## 4. Ephemeris dependency characterization
 
-## 7. Cross-engine validation requirement
+Initial local execution established that the objects require Swiss ephemeris data rather than package constants alone.
 
-Production admission should not be based on a single Swiss-family wrapper agreeing with another Swiss-family wrapper because those are not independent numerical authorities.
-
-Preferred evidence pattern:
+Subsequent live execution refined that finding:
 
 ```text
-Swiss Ephemeris result
-+ independent ephemeris / trusted published oracle where feasible
-+ repeatable synthetic/public fixtures
+seas_18.se1 only
+→ insufficient for intended geocentric Swiss-mode result
+→ returned flags showed fallback
+
+seas_18.se1 + matching sepl_18.se1
+→ required Swiss mode retained
+→ returned_flags = 258 (FLG_SWIEPH | FLG_SPEED)
 ```
 
-At minimum, distinguish:
+Pinned data identities:
 
 ```text
-same underlying Swiss engine, different wrapper
-vs
-independent astronomical calculation
+aloistr/swisseph@91339e55d2351f32548d8a8d5bca6aa93b4f6da7
+
+seas_18.se1
+  blob 8f900cab7e557e4c41f758a6bf3a3c3967e7e3db
+  size 223004
+
+sepl_18.se1
+  blob 786702cd04506371ee6223af1ebac02d54c848b8
+  size 484061
 ```
 
-when assigning evidence independence.
+Both file identities are part of the E2 numerical provenance contract.
 
-## 8. Tolerance research
+## 5. Independent numerical oracle
 
-No final E2 tolerance is admitted yet.
-
-Future fixtures should measure angular differences separately for:
+NASA/JPL Horizons was used as the independent comparison source:
 
 ```text
-Chiron
-major asteroids
-speed / retrograde sign
-house-placement boundary sensitivity
+Earth geocenter: 500@399
+EPHEM_TYPE: OBSERVER
+QUANTITIES: 31
+APPARENT: AIRLESS
+TIME_TYPE: UT
+EXTRA_PREC: YES
+CSV_FORMAT: YES
 ```
 
-A generic planet tolerance should not be copied blindly.
+Observed live API signature during the measured runs:
+
+```text
+source: NASA/JPL Horizons API
+version: 1.2
+```
+
+Longitude speed was derived independently with a central finite difference at `t - 1h` and `t + 1h`.
+
+## 6. Measured evidence layers
+
+Three layers were executed with five objects per instant:
+
+```text
+Calibration: 4 instants / 20 object-time rows
+Holdout:     4 instants / 20 object-time rows
+Prospective: 4 instants / 20 object-time rows
+```
+
+Calibration residual envelope:
+
+```text
+max longitude ≈ 1.220 arcsec
+max speed     ≈ 5.148e-6 deg/day
+```
+
+Holdout residual envelope:
+
+```text
+max longitude ≈ 2.965 arcsec
+max speed     ≈ 5.559e-6 deg/day
+```
+
+## 7. Prospective tolerance test
+
+After calibration and holdout characterization, the following candidate threshold was frozen before the prospective dates were executed:
+
+```text
+longitude <= 5 arcsec
+speed     <= 1e-5 deg/day
+```
+
+The candidate failed at the far-future `2350-05-23T21:00:00Z` validation instant:
+
+```text
+Ceres longitude ≈ 5.791 arcsec; speed ≈ 3.195e-5 deg/day
+Juno  longitude ≈ 7.805 arcsec
+Vesta longitude ≈ 6.091 arcsec
+```
+
+The other 17 prospective rows remained inside the frozen candidate threshold.
+
+Research rule:
+
+> Do not widen a failed prospective threshold after seeing its failures and then relabel the wider value as prospectively validated.
+
+Therefore E2 does **not** admit one universal cross-engine numeric tolerance over the full tested 1825–2350 span.
+
+## 8. Required provenance for future E2 facts
+
+Any future deterministic E2 fact needs at least:
+
+```text
+object_id
+calculation_provider_id
+provider_version
+provider_source_revision
+ephemeris file/data identities
+UTC instant
+center / coordinate convention
+longitude_deg
+latitude_deg when available
+speed_deg_per_day when available
+motion
+availability
+```
+
+If a required ephemeris file is missing, mismatched, or calculation flags show fallback, fail closed.
 
 ## 9. License boundary
 
@@ -163,37 +191,41 @@ Current research posture remains:
 
 ```text
 pyswisseph / Swiss Ephemeris
-→ REFERENCE-ONLY validation-oracle candidate
+→ REFERENCE-ONLY validation oracle
 → no production dependency adoption in E2
 ```
 
-Any production adoption requires explicit resolution of AGPL / Professional License consequences and ephemeris-data redistribution/deployment requirements.
+Swiss Ephemeris licensing/deployment consequences require a separate production decision. Kerykeion and Immanuel remain architecture / compatibility references and gain no production authority from feature coverage.
 
-Kerykeion and Immanuel remain architecture / compatibility references and do not gain production authority from feature coverage.
+## 10. E2 exit-criteria assessment
 
-## 10. E2 exit criteria
+1. ephemeris-data-complete research environment — **PASS**
+2. public/synthetic fixtures for all five objects — **PASS**
+3. exact provider/data revisions pinned — **PASS**
+4. independent-oracle comparison executed — **PASS**
+5. numeric tolerance documented — **PASS AS REJECTED GLOBAL HYPOTHESIS; NO UNIVERSAL ADMISSION**
+6. missing/mismatched data failure behavior tested — **PASS**
+7. license/deployment implications recorded — **PASS**
 
-E2 can move from PARTIAL to COMPLETE only after:
+The distinction in item 5 is material: research characterization is complete, but the minimum production gate for an admitted numeric tolerance is still unmet.
 
-1. an ephemeris-data-complete research environment exists;
-2. synthetic/public fixtures are generated for all five objects;
-3. exact provider/data revisions are pinned;
-4. cross-engine or independent-oracle comparison is executed;
-5. longitude/speed tolerance is documented;
-6. failure behavior for missing ephemeris data is tested;
-7. license/deployment implications are recorded.
-
-## 11. Current conclusion
+## 11. E2 conclusion
 
 ```text
-Chiron identity / Swiss mapping: RESOLVED
-Ceres identity / Swiss mapping: RESOLVED
-Pallas identity / Swiss mapping: RESOLVED
-Juno identity / Swiss mapping: RESOLVED
-Vesta identity / Swiss mapping: RESOLVED
-required ephemeris-data dependency: RESOLVED
-numerical fixture validation: BLOCKED pending ephemeris data / independent oracle
-production admission: NOT GRANTED
+Chiron identity / Swiss mapping          RESOLVED
+Ceres identity / Swiss mapping           RESOLVED
+Pallas identity / Swiss mapping          RESOLVED
+Juno identity / Swiss mapping            RESOLVED
+Vesta identity / Swiss mapping           RESOLVED
+asteroid ephemeris dependency            RESOLVED
+planetary ephemeris dependency           RESOLVED
+binary provenance                         RESOLVED
+independent numerical comparison          COMPLETE
+calibration / holdout characterization    COMPLETE
+prospective tolerance experiment          COMPLETE / FAILED AS EVIDENCE
+universal 1825-2350 tolerance             REJECTED
+E2 research characterization              COMPLETE
+production admission                      NOT GRANTED
 ```
 
-Next safe action inside E2 is to establish a research-only ephemeris-data-complete oracle environment or obtain equivalent independent numerical fixtures. Until then, fail closed rather than fabricate values.
+A future production review must choose a bounded epoch/object tolerance policy and validate that policy prospectively. E2 itself does not make that product-policy choice.
