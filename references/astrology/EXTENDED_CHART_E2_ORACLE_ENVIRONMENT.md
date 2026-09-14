@@ -1,34 +1,22 @@
 # Astrology Extended Chart Facts — Phase E2 Oracle Environment
 
-Status: **REFERENCE-ONLY / RESEARCH / NOT PRODUCTION-ADMITTED**
+Status: **REFERENCE-ONLY / RESEARCH CHARACTERIZED / NOT PRODUCTION-ADMITTED**
 
-Playbook baseline reviewed: `masini1491/ai-divination-playbook@11a61f628b55f2bb83e2eca9b233eecd0566f03e`
+Playbook baseline reviewed: `masini1491/ai-divination-playbook@ed639c52d64556339e2848dc93ae5722dbc771c1`
 
-This document continues Phase E2 after `EXTENDED_CHART_E2_EPHEMERIS_OBJECTS_RESEARCH.md`.
+This document freezes the measured Phase E2 oracle environment for Chiron, Ceres, Pallas, Juno and Vesta. It does not add Swiss Ephemeris, pyswisseph, or ephemeris binaries to Production v1.
 
-The purpose is to freeze a reproducible numerical-oracle environment for:
-
-- Chiron
-- Ceres
-- Pallas
-- Juno
-- Vesta
-
-without adding Swiss Ephemeris, pyswisseph, or ephemeris binaries to Production v1.
-
-## 1. Research conclusion
-
-Phase E2 numerical validation needs two distinct roles:
+## 1. Oracle roles
 
 ```text
 Swiss-family oracle
 → primary compatibility oracle for the five extended objects
 
-independent JPL Horizons oracle
+NASA/JPL Horizons
 → independent apparent geocentric ecliptic-of-date cross-check
 ```
 
-Neither becomes production authority merely by appearing in this research contract.
+Neither source becomes production authority merely because it is used here.
 
 ## 2. Swiss oracle identity
 
@@ -37,31 +25,44 @@ Pinned official repository state:
 ```text
 repository: aloistr/swisseph
 revision: 91339e55d2351f32548d8a8d5bca6aa93b4f6da7
-path: ephe/seas_18.se1
-blob_sha: 8f900cab7e557e4c41f758a6bf3a3c3967e7e3db
-size_bytes: 223004
+
+main-asteroid file:
+  path: ephe/seas_18.se1
+  blob_sha: 8f900cab7e557e4c41f758a6bf3a3c3967e7e3db
+  size_bytes: 223004
+
+planetary file:
+  path: ephe/sepl_18.se1
+  blob_sha: 786702cd04506371ee6223af1ebac02d54c848b8
+  size_bytes: 484061
 ```
 
-The official Swiss Ephemeris distribution tree contains this main-asteroid ephemeris file; the reviewed pyswisseph documentation requires `seas_18.se1` in its basic ephemeris test environment. The reviewed Swiss-family object mappings expose Chiron, Ceres, Pallas, Juno and Vesta as ephemeris-calculated objects.
+### 2.1 Important dependency correction from live execution
 
-### 2.1 Calculation contract
+The initial research contract pinned only `seas_18.se1`. Live execution showed that this is insufficient for the intended **geocentric** extended-object calculation.
 
-Use pinned `pyswisseph` behavior as the Python research adapter:
+With only `seas_18.se1`, the calculation returned flags `260`, indicating fallback away from the requested Swiss ephemeris calculation. Once the matching `sepl_18.se1` planetary ephemeris was also supplied, the five-object calculations returned flags `258` (`FLG_SWIEPH | FLG_SPEED`) throughout the measured fixture set.
+
+Therefore the reproducible E2 Swiss oracle is:
+
+```text
+pinned Swiss source revision
++ exact seas_18.se1 identity
++ exact sepl_18.se1 identity
++ FLG_SWIEPH | FLG_SPEED
+```
+
+A future oracle run that cannot prove both binary identities must fail closed.
+
+### 2.2 Python research adapter
 
 ```text
 repository: astrorigin/pyswisseph
 revision: 91ec65631badc7faf4a4b913570c944a4c1b101d
+measured execution version: pyswisseph==2.10.3.2
 ```
 
-Required flags:
-
-```text
-FLG_SWIEPH | FLG_SPEED
-```
-
-The reviewed pyswisseph programmer documentation describes the no-special-coordinate-mode result as apparent geocentric ecliptic polar coordinates relative to the true equinox of date, with tropical coordinates as default; `FLG_SPEED` adds high-precision speed.
-
-Expected output fields retained by research fixtures:
+Expected output retained by research observations:
 
 ```text
 longitude_deg
@@ -73,27 +74,9 @@ distance_speed_au_per_day
 returned_flags
 ```
 
-### 2.2 Ephemeris file is part of provenance
-
-A result is not considered reproducible merely because it says `pyswisseph`.
-
-The fixture must retain:
-
-```text
-pyswisseph revision/version
-Swiss source revision
-seas_18.se1 path
-seas_18.se1 blob SHA
-calculation flags
-input UTC/JD
-object identifier
-```
-
-If the ephemeris file is unavailable or its identity is unknown, the result is `ORACLE_UNAVAILABLE`, not a substitute Moshier/other result.
-
 ## 3. License boundary
 
-The pinned official Swiss Ephemeris license states a dual model:
+Swiss Ephemeris uses the reviewed dual-license model:
 
 ```text
 AGPL
@@ -101,31 +84,24 @@ or
 Swiss Ephemeris Professional License
 ```
 
-Therefore this research contract does not authorize:
+This research contract does **not** authorize:
 
-- committing `seas_18.se1` into this repository;
-- adding pyswisseph or Swiss Ephemeris to the Production v1 dependency set;
-- deploying a public Swiss-backed service under the current production architecture without a separate license decision;
+- committing Swiss ephemeris binaries into this repository;
+- adding pyswisseph / Swiss Ephemeris to Production v1 dependencies;
+- deploying a Swiss-backed public production service without a separate license decision;
 - copying AGPL implementation into project-owned production code.
 
-Allowed research posture:
+The measured probe used `immanuel==1.6.0` package data only as a temporary binary carrier after byte identity was verified against the pinned official Git blobs. That carrier has no authority of its own.
+
+## 4. NASA/JPL Horizons contract
+
+Measured live requests used:
 
 ```text
-pin source/data identity
-+ run temporary/local compatibility oracle where legally appropriate
-+ commit non-identifying numerical fixture results
-+ preserve provenance
-```
-
-## 4. Independent JPL Horizons oracle
-
-NASA/JPL Horizons is selected as an independent cross-check because it provides small-body ephemerides independently of the Swiss calculation library.
-
-Research comparison contract:
-
-```text
-observer center: Earth geocenter = 500@399
+provider: NASA/JPL Horizons API
+observed API signature version: 1.2
 EPHEM_TYPE: OBSERVER
+CENTER: 500@399
 QUANTITIES: 31
 APPARENT: AIRLESS
 TIME_TYPE: UT
@@ -133,11 +109,7 @@ EXTRA_PREC: YES
 CSV_FORMAT: YES
 ```
 
-Horizons quantity 31 is used for observer-centered Earth-ecliptic-of-date longitude/latitude. The comparison intent is to align as closely as practical with Swiss default apparent geocentric ecliptic-of-date coordinates before interpreting residuals.
-
-### 4.1 Unambiguous target selectors
-
-Use numbered-small-body syntax, preserving the semicolon identity:
+Object selectors:
 
 ```text
 Ceres   -> 1;
@@ -147,117 +119,155 @@ Vesta   -> 4;
 Chiron  -> 2060;
 ```
 
-### 4.2 Longitude comparison
+The observed API signature is execution provenance, not a promise that the public API will never change version.
 
-At each fixture time `t`:
+### 4.1 Longitude and speed comparison
+
+Longitude comparison:
 
 ```text
-Swiss apparent geocentric tropical ecliptic longitude at t
+Swiss apparent geocentric tropical ecliptic longitude
 vs
-Horizons quantity 31 observer ecliptic-of-date longitude at t from 500@399
+Horizons quantity 31 observer ecliptic-of-date longitude from 500@399
 ```
 
-Do not compare heliocentric coordinates to Swiss geocentric longitude.
-
-### 4.3 Speed comparison
-
-If the selected Horizons output does not directly expose ecliptic-longitude speed, derive an independent finite-difference speed:
+Horizons longitude speed was independently derived as:
 
 ```text
-lon_before = Horizons observer ecliptic longitude(t - 1 hour)
-lon_after  = Horizons observer ecliptic longitude(t + 1 hour)
+lon_before = ObsEcLon(t - 1 hour)
+lon_after  = ObsEcLon(t + 1 hour)
 signed_delta = shortest_signed_delta(lon_before, lon_after)
-speed_deg_per_day = signed_delta / 2 hours * 24 hours/day
+speed_deg_per_day = signed_delta * 12
 ```
 
-This is research-only comparison logic and is not a production event-search authority.
+## 5. Measured fixture layers
 
-## 5. Fixture design
-
-Phase E2 numerical completion requires multiple public/synthetic times, not one natal chart.
-
-Minimum fixture set:
+Calibration:
 
 ```text
-E2-F01 2000-01-01T12:00:00Z  J2000 neighborhood
-E2-F02 1980-06-01T00:00:00Z  modern historical
-E2-F03 2026-09-14T00:00:00Z  current-era
-E2-F04 2099-12-31T00:00:00Z  future within seas_18 era
+E2-F01 2000-01-01T12:00:00Z
+E2-F02 1980-06-01T00:00:00Z
+E2-F03 2026-09-14T00:00:00Z
+E2-F04 2099-12-31T00:00:00Z
 ```
 
-For each of five objects, record:
+Independent holdout:
 
 ```text
-Swiss longitude / speed / returned flags
-Horizons longitude
-Horizons finite-difference speed
-circular longitude delta
-speed delta
+E2-H01 1850-03-20T06:00:00Z
+E2-H02 1955-11-05T18:00:00Z
+E2-H03 2050-07-01T06:00:00Z
+E2-H04 2200-02-28T18:00:00Z
+```
+
+Prospective validation, selected before its first result was observed:
+
+```text
+E2-V01 1825-08-17T03:00:00Z
+E2-V02 1925-02-14T15:00:00Z
+E2-V03 2075-10-09T09:00:00Z
+E2-V04 2350-05-23T21:00:00Z
+```
+
+Each layer contains five objects per instant.
+
+## 6. Residual characterization
+
+Calibration, 20 samples:
+
+```text
+max longitude residual ≈ 1.220 arcsec
+max speed residual     ≈ 5.148e-6 deg/day
+```
+
+Holdout, 20 samples:
+
+```text
+max longitude residual ≈ 2.965 arcsec
+max speed residual     ≈ 5.559e-6 deg/day
+```
+
+The evidence justified testing the following **prospective**, frozen-before-execution candidate threshold:
+
+```text
+longitude <= 5 arcsec
+speed     <= 1e-5 deg/day
+```
+
+That candidate **failed** prospective validation. At `E2-V04` (`2350-05-23T21:00:00Z`):
+
+```text
+Ceres longitude ≈ 5.791 arcsec; speed ≈ 3.195e-5 deg/day
+Juno  longitude ≈ 7.805 arcsec
+Vesta longitude ≈ 6.091 arcsec
+```
+
+The other 17 prospective object/time rows were within the frozen threshold.
+
+## 7. Tolerance conclusion
+
+The failed threshold is evidence, not something to repair by widening it after seeing the result.
+
+Therefore:
+
+```text
+NO_UNIVERSAL_PROSPECTIVELY_VALIDATED_TOLERANCE_OVER_TESTED_1825_2350_RANGE
+```
+
+A future production threshold must instead name its scope explicitly, for example:
+
+```text
+epoch range
+object set
+coordinate contract
 source revisions
+threshold
+new prospective validation set
 ```
 
-No real person's birth data is required.
+No production threshold is admitted by E2.
 
-## 6. Tolerance policy
-
-No production tolerance is declared in this document.
-
-Reason:
-
-- Swiss and Horizons may use differing small-body orbit solutions and update cadences;
-- both may change their underlying data independently;
-- Chiron and main-belt asteroids should not be assumed to exhibit identical cross-system residuals;
-- an arbitrary tolerance chosen before observing fixtures would manufacture a pass criterion.
-
-Research sequence:
-
-```text
-collect residuals across fixtures
-→ inspect definition/configuration mismatches
-→ characterize stable residual envelope by object
-→ propose bounded research tolerance
-→ rerun on holdout fixtures
-→ only then consider an admission threshold
-```
-
-Until that sequence is complete, comparisons report numeric deltas without PASS/FAIL by tolerance.
-
-## 7. Fail-closed classes
+## 8. Fail-closed classes
 
 ```text
 ORACLE_UNAVAILABLE
-  missing pyswisseph or seas_18.se1
+  missing calculation adapter or required ephemeris data
 
 DATA_IDENTITY_MISMATCH
-  Swiss file/source identity differs from manifest
+  either seas_18 or sepl_18 identity differs from the manifest
+
+EPHEMERIS_FALLBACK
+  returned flags do not retain the required Swiss ephemeris mode
 
 TARGET_IDENTITY_MISMATCH
-  Horizons target selector did not resolve expected numbered object
+  Horizons target selector does not resolve the expected numbered object
 
 CONFIGURATION_MISMATCH
-  center/frame/apparent-vs-geometric/ecliptic mode differs
+  center/frame/apparent/ecliptic mode differs
 
 OUT_OF_COVERAGE
-  requested time falls outside pinned ephemeris-file coverage
+  requested time is outside the admitted research data range
 
 NUMERIC_OBSERVATION
-  both sources returned comparable values; residual retained without premature admission
+  both sources returned comparable values; residual is retained as evidence
 ```
 
-## 8. Current E2 status after this contract
+## 9. E2 research status
 
 ```text
-object identities                 RESOLVED
-Swiss object mappings             RESOLVED
-main asteroid data dependency     RESOLVED
-Swiss file revision/blob identity RESOLVED
-license boundary                  RESOLVED
-independent oracle selection      RESOLVED
-coordinate-comparison contract    RESOLVED
-fixture times                     DEFINED
-numerical residual collection     PENDING
-production tolerance              NOT DEFINED
-production admission              NOT GRANTED
+object identities                    RESOLVED
+Swiss object mappings                RESOLVED
+asteroid data dependency             RESOLVED
+planetary data dependency            RESOLVED
+binary provenance                    RESOLVED
+license boundary                     RESOLVED
+independent oracle                   RESOLVED
+live calibration matrix              COMPLETE
+live holdout matrix                  COMPLETE
+prospective threshold validation     COMPLETE / FAILED AS EVIDENCE
+universal numeric tolerance          REJECTED FOR TESTED RANGE
+research characterization            COMPLETE
+production admission                 NOT GRANTED
 ```
 
-This advances Phase E2 from an environment-unknown block to a reproducible oracle specification. Numerical E2 completion still requires execution with the pinned Swiss binary data and recorded Horizons responses.
+Machine-readable measured evidence is retained in `extended_chart_e2_measured_validation.json`.
