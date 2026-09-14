@@ -1,10 +1,10 @@
 # Randomizer Integration Migration Contract
 
-Status: **APPROVED DESIGN / NOT CURRENT RUNTIME AUTHORITY / IMPLEMENTATION NOT YET STARTED**
+Status: **PHASES 0–3 COMPLETE / RUNTIME AUTHORITY CUT OVER / PHASE 4 PENDING**
 
 This document defines the staged migration contract for consolidating `masini1491/divination-casting-randomizer` into `masini1491/ai-divination-playbook` without changing stochastic semantics, breaking provenance, or coupling migration to immediate retirement of the legacy repository.
 
-It is a migration owner only. Until the authority-cutover gate in this document is completed, current stochastic runtime authority remains `RUNTIME_DRAW.md` + `masini1491/divination-casting-randomizer/randomizer.py`.
+It is a migration owner only. The Phase 3 authority-cutover gate is complete: current stochastic runtime authority is `RUNTIME_DRAW.md` + `runtime/casting/randomizer.py`. The legacy repository remains available for rollback, historical provenance, and production deployment compatibility until later migration gates complete.
 
 ## 1. Baseline and scope
 
