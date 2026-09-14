@@ -2,79 +2,49 @@
 
 Project AI mode: ChatGPT-Only
 
-## 儲存庫用途
+## 儲存庫用途與權威
 
-本儲存庫是一套可重用、公開的 AI 占卜方法與治理 Playbook，用於：
-
-- 自然語言占問 → method routing；
-- 明確 research intent → bounded research-line discovery；
-- 低歧義 Input Contract／Question Design；
-- Tarot／Meihua／Liuyao／Astrology method-specific contract；
-- ChatGPT Runtime Draw / Cast governance；
-- deterministic Astrology place resolution + natal/transit calculation + Fact Gate governance；
-- Reading lifecycle、Reading Record、Reality Update、Backtest；
-- cross-validation／derived synthesis 的 evidence boundary；
-- ChatGPT user-visible output governance。
+本儲存庫是可重用、公開的 AI 占卜方法與治理 Playbook，涵蓋 method routing、Input Contract／Question Design、Tarot／Meihua／Liuyao／Astrology、Runtime Draw / Cast、deterministic fact providers、Reading lifecycle／record、cross-validation 與 ChatGPT output governance。
 
 本儲存庫**不是**私人占卜日誌，也**不是**個人預測資料庫。
 
-## 權威與文件 ownership
+權威原則：
 
-- `main`：目前 canonical source of truth。
-- `CHAT_INIT.md`：fresh-session bootstrap、repository access、Playbook freshness、task routing、session handoff gate。
-- `PLAYBOOK_INDEX.json`：machine-readable routing-only capability／owner index；不是 policy/state authority。
-- `SESSION_HANDOFF.md`：最低充分 handoff checkpoint adapter；不是 Reading Record authority。
-- `METHOD_ROUTING.md`：未指定方法時，依 judgment function 選目前正式支援的方法；Astrology v1 只接受 explicit user override，不參與 ordinary auto-routing。
-- `RESEARCH_ROUTING.md`：使用者明確指定 Astrology research / Palmistry 等已登錄 research line 時的 research owner discovery、authority boundary 與 ordinary-router separation；不是 production method router。
-- `INPUT_CONTRACT.md`：題目、method input 與 provenance contract。
-- `QUESTION_DESIGN.md`：題目拆解、position responsibility、高頻題型。
-- `READING_LIFECYCLE.md`：新題／承接／補占／重占／Reality Update／completion／backtest。
-- `READING_RECORD.md`：durable reading identity、evidence layers、append-only、storage boundary。
-- `RUNTIME_DRAW.md`：ChatGPT／AI stochastic draw/cast 的 runtime capability、canonical source、cache、provenance、fail closed。
-- `runtime/casting/randomizer.py`：Tarot／Meihua／Liuyao three-coin Raw Cast 的 canonical stochastic implementation；不解讀。
-- `TAROT.md`：Tarot-specific contract。
-- `MEIHUA.md`：Meihua-specific contract。
-- `LIUYAO.md`：Liuyao judgment responsibility、Raw Cast → Structured Method Fact、interpretation、engine fail-closed contract。
-- `ASTROLOGY.md`：Astrology Production v1 method owner；explicit-request activation、place resolution、natal/transit providers、Fact Gate、admitted interpretation policy 與 unsupported-factor boundary。
-- `ASTROLOGY_PRODUCTION_ADMISSION_V1.json`：Astrology v1 machine-readable production-admission manifest；不是 research source database。
-- `ASTROLOGY_PROVIDER_ADMISSION_V1.json`：Astrology natal provider 的 dependency/input/calculation/provenance admission manifest。
-- `ASTROLOGY_TRANSIT_PROVIDER_ADMISSION_V1.json`：Astrology transit event-search provider 的 bounded calculation admission manifest。
-- `ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json`：Astrology offline city/locality resolver 的 dependency/data-license/resolution admission manifest。
-- `tools/astrology_place_resolver.py`：offline city/locality → coordinates + IANA timezone input-resolution owner；不取得天文 authority。
-- `tools/astrology_provider.py`：admitted raw-birth-data natal provider；使用 pinned MIT Astronomy Engine + project-owned house/aspect derivation產生 Astrology Fact Bundle 1.0，不解讀。
-- `tools/astrology_transit_provider.py`：admitted bounded transit event-search provider；搜尋 exact transit-to-natal aspects、stations、tropical ingresses/re-ingresses，不解讀。
-- `tools/astrology_runtime.py`：Astrology Fact Bundle 1.0 production gate；驗證 provider/supplied facts 是否可進 interpretation，不重新計算天文位置。
-- `CROSS_VALIDATION.md`：目前正式 Tarot × Meihua reconciliation 與 evidence lineage／independence guard。
-- `CHATGPT_OUTPUT.md`：最終出題、解讀、Copy-ready、Pre-Send output contract。
-- `BEHAVIORAL_EVAL.md`：低頻 cold-start／behavioral regression scenarios。
-- `evals/regression_matrix.json`：change-class → scenario selection metadata。
-- `tools/behavioral_eval.py`：eval run record／matrix deterministic validation；不做 semantic grading。
-- `tools/playbook_check.py`：structure/link/router/index consistency checker。
-- `tests/test_playbook_check.py`：checker unit + repository-root integration tests。
-- `tools/liuyao_engine.py`：zero-dependency deterministic Liuyao structural engine；只產生 Structured Method Fact，不解讀。
-- `tools/liuyao_calendar.py`：zero-dependency Liuyao calendar fact provider；只產生月建／日辰／旬空等 deterministic calendar facts，不解讀。
-- `tools/liuyao_runtime.py`：把已固定 Raw Cast、calendar facts 與 structural engine 組合成完整 deterministic runtime payload，並提供 derived human presentation；不選用神、不解讀。
-- `tools/liuyao_engine_adapter.py`：legacy / fallback external-engine adapter；不是目前 production structural owner。
-- `references/`：Cold external source dossier；不自動取得 policy authority。Astrology research evidence可被 production manifest bounded-admit，但 research 檔案本身不因此改成 production owner。
-- `CASE_STUDIES/`：Cold anonymized failure cases。
+- `main` 是目前 canonical source of truth。
+- 穩定 policy 只保留一個 canonical owner；routing、index、runtime cache 或 generated artifact 不得成為第二份 current-state database。
+- `CHAT_INIT.md` 是 fresh-session bootstrap／repository access／freshness／task routing／handoff owner。
+- `PLAYBOOK_INDEX.json` 是 machine-readable routing-only capability／owner index；不是 policy authority。
+- `CHATGPT_LOAD_PACK.json` 是由 canonical owners 產生的 **derived retrieval cache**；只用來減少 cold-start GitHub reads，不取得 policy authority。若 cache 與 canonical owner 發生任何衝突，以 canonical owner 為準。
+- 詳細 capability → owner mapping 由 `PLAYBOOK_INDEX.json` 維護，`AGENTS.md` 不複製完整 ownership catalogue。
 
-### Runtime / engine boundary
+### 核心 canonical owners
 
-Canonical stochastic implementation 由本 Repo 維護：
+| Responsibility | Owner |
+| --- | --- |
+| Fresh-session bootstrap / GitHub access / freshness / handoff gate | `CHAT_INIT.md` |
+| Ordinary method selection | `METHOD_ROUTING.md` |
+| Explicit research-line routing | `RESEARCH_ROUTING.md` |
+| Input / provenance contract | `INPUT_CONTRACT.md` |
+| Question decomposition / positions | `QUESTION_DESIGN.md` |
+| Tarot / Meihua / Liuyao / Astrology | `TAROT.md` / `MEIHUA.md` / `LIUYAO.md` / `ASTROLOGY.md` |
+| Stochastic Draw / Cast | `RUNTIME_DRAW.md` + `runtime/casting/randomizer.py` |
+| Reading lifecycle / durable record | `READING_LIFECYCLE.md` / `READING_RECORD.md` |
+| Tarot × Meihua reconciliation | `CROSS_VALIDATION.md` |
+| User-visible output | `CHATGPT_OUTPUT.md` |
+| Behavioral regression | `BEHAVIORAL_EVAL.md` + `evals/regression_matrix.json` |
+| Machine routing | `PLAYBOOK_INDEX.json` |
+
+## Runtime / engine boundary
+
+Canonical stochastic implementation：
 
 ```text
 runtime/casting/randomizer.py
 ```
 
-目前擁有：
+目前只擁有 Tarot draw、Meihua A/B cast、Liuyao three-coin Raw Cast；不解讀。
 
-```text
-Tarot draw
-Meihua A/B cast
-Liuyao three-coin Raw Cast
-```
-
-六爻 production deterministic path：
+六爻 deterministic path：
 
 ```text
 fixed Raw Cast
@@ -84,33 +54,12 @@ fixed Raw Cast
 → LIUYAO.md
 ```
 
-Astrology Production v1 natal path：
+Astrology production path：
 
 ```text
-raw birth data
-→ optional tools/astrology_place_resolver.py  # city/locality only; fail closed on ambiguity
-→ explicit local wall time + IANA timezone + coordinates
-→ tools/astrology_provider.py
-→ Astrology Fact Bundle 1.0
-→ tools/astrology_runtime.py
-→ ASTROLOGY.md
-```
-
-Astrology Production v1 transit path：
-
-```text
-admitted natal Astrology Fact Bundle
-+ bounded UTC search window / moving bodies / natal targets / major aspects
-→ tools/astrology_transit_provider.py
-→ transit Astrology Fact Bundle 1.0
-→ tools/astrology_runtime.py
-→ ASTROLOGY.md
-```
-
-Alternative admitted fact path：
-
-```text
-user-supplied structured export / verified existing record
+raw birth data / user-supplied structured facts
+→ optional tools/astrology_place_resolver.py
+→ tools/astrology_provider.py and/or tools/astrology_transit_provider.py
 → Astrology Fact Bundle 1.0
 → tools/astrology_runtime.py
 → ASTROLOGY.md
@@ -119,50 +68,25 @@ user-supplied structured export / verified existing record
 責任邊界：
 
 - Randomizer 只擁有 stochastic Raw Cast authority。
-- `liuyao_calendar.py` 只擁有 calendar fact calculation authority。
-- `liuyao_engine.py` 只擁有 structural chart calculation authority。
-- `liuyao_runtime.py` 只做 deterministic composition 與 derived presentation，不取得 interpretation / yongshen authority。
-- `LIUYAO.md` 才擁有 judgment responsibility、用神 responsibility 與 interpretation governance。
-- `astrology_place_resolver.py` 只做 city/locality input resolution；同名多地、not-found 都 fail closed；不自動挑人口最大地點，也不取得天文 authority。
-- `astrology_provider.py` 擁有 admitted natal astronomical/house/aspect calculation authority；不解讀、不搜尋 transit events。
-- `astrology_transit_provider.py` 擁有 admitted bounded transit exact-event search authority；canonical event time 是 UTC；不做 event-outcome interpretation。
-- `astrology_runtime.py` 只驗證 Astrology facts 與 production config；任何 provider output 也不得繞過它。
-- `ASTROLOGY.md` 擁有 Astrology v1 interpretation / source-admission / unsupported-factor governance。
-- research 階段 `pyswisseph` probes 與 external calculators 不因存在而取得 production authority。
+- Liuyao calendar / engine / runtime 只建立 deterministic method facts／composition；`LIUYAO.md` 擁有 judgment、用神與 interpretation governance。
+- Astrology resolver / providers 只做 admitted deterministic input resolution／calculation；`tools/astrology_runtime.py` 是 Fact Gate，`ASTROLOGY.md` 擁有 interpretation / source-admission / unsupported-factor governance。
+- language model 不得把手算結果冒充 deterministic engine fact。
+- research probe、legacy adapter、external calculator 不因存在而取得 production authority。
 - user-supplied Astrology facts 必須保留 `user_asserted` provenance。
-- `references/ichingshifa.md` 與 `tools/liuyao_engine_adapter.py` 保留作歷史／fallback／reference surface，不覆蓋目前 production lightweight path。
 
-穩定 policy 只保留一個 canonical owner；routing/index/runtime 不複製完整 normative policy，也不得成為第二份 current state database。
-
-## 儲存庫與 Git 身分設定
+## Repository / Git identity
 
 - Repository：`masini1491/ai-divination-playbook`
-- GitHub 帳號：`masini1491`
-- Git commit author name：`masini1491`
-- Git commit author email：`10146979+masini1491@users.noreply.github.com`
+- GitHub account / commit author：`masini1491`
+- Commit email：`10146979+masini1491@users.noreply.github.com`
 
-若 local Git 尚未設定 author identity，只做 repository-local 設定：
+若 local Git 尚未設定 author identity，只做 repository-local 設定；除非使用者明確要求，不修改 global Git identity。不得保存 token、password、API key 或其他 credential。
 
-```bash
-git config user.name "masini1491"
-git config user.email "10146979+masini1491@users.noreply.github.com"
-```
+## GitHub repository retrieval
 
-除非使用者明確要求，不修改 global Git identity；不得保存 token、password、API key 或其他 credential。
+所有 GitHub-hosted repository identity、ref、commit、tree、diff、file、section、workflow、external GitHub reference acquisition 一律使用 GitHub connector / GitHub Connect。
 
-## GitHub Connect 讀取規則
-
-所有 **GitHub-hosted repository retrieval** 一律走 GitHub connector / GitHub Connect。這是 project-wide 規則，不只適用於本 Repository。
-
-包括：
-
-- 本 Repo 的 branch／tag／commit／tree／diff／file／section；
-- `divination-casting-randomizer` 的歷史／rollback／migration provenance；
-- Liuyao／Astrology provider／Qimen／未來 method engine；
-- `references/` 中任何 GitHub external source；
-- repo rename、freshness、comparison、license、release 或 source audit。
-
-禁止把以下當成 GitHub repository retrieval fallback：
+禁止以以下方式替代 GitHub repository retrieval：
 
 ```text
 GitHub public HTML
@@ -171,30 +95,20 @@ generic Web search
 Python direct HTTP / requests / urllib
 curl / wget
 git clone
-memory / stale unverified cache
+memory / stale cache pretending to be current GitHub authority
 ```
 
-若 GitHub connector unavailable，而 current task materially 依賴 GitHub current content：
+若 connector unavailable／permission blocked，而 current task materially 依賴 GitHub current content：
 
 ```text
-minimum connector/read recovery
+minimum exact read recovery
 → still unavailable
 → ACCESS BLOCKED
 ```
 
-不要改走 public/raw/Web。
+已由 canonical owner 專門治理的 local verified runtime reuse（例如 `RUNTIME_DRAW.md` 的 Randomizer fixed cache）不是新的 GitHub acquisition，可依其 owner 規則 reuse。
 
-例外只有已由其他 canonical owner 明確治理的**本地 verified runtime reuse**：例如 `RUNTIME_DRAW.md` 的 Randomizer deterministic cache。這種情況沒有新的 GitHub acquisition，因此可直接 reuse；一旦真的需要重新取得 GitHub source，仍只能走 GitHub connector。
-
-GitHub retrieval capability 不代表 Python execution、repository write 或 Reading Record storage authority。
-
-完整 repository access policy 由 `CHAT_INIT.md` 擁有；AGENTS 只保留 project-wide 摘要，不複製全部 recovery semantics。
-
-## 語言規則
-
-- 正式說明、規則、案例與 reference 摘要預設繁體中文。
-- 程式欄位、檔名、API、GitHub repository、schema key、draw/cast id 等 technical identifiers 保留原文。
-- 外部來源以繁中摘要，不把大段第三方文字直接搬進 canonical rules。
+Connector retrieval capability ≠ Python execution authority ≠ repository write authority ≠ Reading Record storage authority。
 
 ## 隱私與公開安全
 
@@ -210,53 +124,58 @@ GitHub retrieval capability 不代表 Python execution、repository write 或 Re
 
 `SESSION_HANDOFF.md` 只保存模板；真實 Reading Record 永遠不得寫入本公開 Playbook。
 
-## AI 讀取紀律
+正式說明與規則預設繁體中文；technical identifiers 保留原文。
 
-- 實際使用先讀 `CHAT_INIT.md`，再依 task bounded-read minimum canonical owners。
-- 所有 GitHub-hosted repository read/search/ref/diff 只用 GitHub connector；不得改走 public/raw/Web。
-- machine consumer 可選 `PLAYBOOK_INDEX.json` 做 owner discovery；命中後仍回 canonical Markdown owner。
-- 使用者明確要求 production Astrology reading 時讀 `ASTROLOGY.md`；Astrology v1 不參與 ordinary auto-routing。
-- 使用者明確指定 research intent 時讀 `RESEARCH_ROUTING.md` → named research owner；research pointer 不加入 ordinary method auto-selection。
-- 方法未指定且屬 ordinary reading 才讀 `METHOD_ROUTING.md`；若使用者已指定 method 或已有實際 Draw / Cast Fact / Astrology Fact Bundle，不為形式重新 routing。
-- `BEHAVIORAL_EVAL.md`、`references/`、`CASE_STUDIES/`、Historical Context 預設 Cold；明確 research intent 只 bounded-load 對應 research owner與必要 evidence，不因此掃完整 `references/`。
-- AI 要自行抽／起 stochastic method 才載入 `RUNTIME_DRAW.md`。
-- 選到 Liuyao 才載入 `LIUYAO.md`；需要完整 structured chart 時才執行 `tools/liuyao_runtime.py` 的 deterministic path。
-- Astrology raw birth data 若只有 city/locality 名稱，可先用 `tools/astrology_place_resolver.py`；歧義或不支援的地址粒度必須 fail closed，不由模型猜座標或 timezone。
-- Astrology natal raw birth data 有 exact/approximate time、IANA timezone 與 coordinates 時，可交給 `tools/astrology_provider.py`；其輸出仍必須通過 `tools/astrology_runtime.py`。模型本身不得手算。
-- Astrology transit 需要 exact event 時，可由 `tools/astrology_transit_provider.py` 消費 admitted natal bundle；search span 必須在 provider boundary 內，輸出仍須 runtime gate。
-- 只有保存／跨聊天室／Backtest／audit 才載入 `READING_RECORD.md`。
-- 只有 material session-health risk 才載入 `SESSION_HANDOFF.md`。
-- exact section／owner 已唯一時直接讀 target，不為 routing 增加 ceremony。
-- old chat／memory 不得覆蓋 current reality、original Input Contract、Draw/Cast Fact、Astrology Fact Bundle 或 current canonical rule。
+## AI bootstrap / bounded-read discipline
 
-## 維護風格
-
-- 優先修改既有 canonical owner；只有形成獨立 retrieval intent 才新增文件。
-- 新 method 的正確擴充順序：
+Fresh session 依序：
 
 ```text
-judgment gap
-→ method owner
-→ casting / deterministic engine or fact-gate authority
-→ routing
-→ runtime / provenance
-→ behavioral regression
-→ user-facing docs
-→ explicit admission decision
+resolve repository + current ref to exact commit when currentness matters
+→ read AGENTS.md
+→ use CHATGPT_LOAD_PACK.json at the same resolved revision for eligible ordinary/stochastic profiles
+→ read selected method / research canonical owner
+→ load only task-required exceptions
+→ STOP
 ```
 
-- research-line discoverability 不等於 method adoption；`RESEARCH_ROUTING.md` / `PLAYBOOK_INDEX.json` pointer 不得繞過上述順序。
-- 不因 Repo 名稱泛化就宣稱未定義方法已支援。
-- Runtime stochastic implementation 變更優先修改本 Repo 的 `runtime/casting/**`，並同步 `RUNTIME_DRAW.md`／相關 tests；legacy Randomizer repo 只保留 migration／rollback／compatibility responsibility，除非 rollback 階段另有明確授權。
-- deterministic calculation 必須有單一清楚 owner；不得讓 language model 手算結果冒充 engine fact，也不得讓 legacy adapter / research probe 覆蓋 current production owner。
-- External GitHub reference 納入前，一律用 GitHub connector 取得並記錄 source/ref、license、採用範圍、not-adopted boundary。
-- 不在 README、AGENTS、CHAT_INIT、PLAYBOOK_INDEX 與 method owner 間複製完整 normative policy。
-- `CROSS_VALIDATION.md` 目前只擁有已正式定義的 reconciliation；新增 method 或 research line 不代表自動獲得 pairwise cross-validation semantics。
-- 任何改變 `CHAT_INIT.md`、`METHOD_ROUTING.md`、`RESEARCH_ROUTING.md`、`RUNTIME_DRAW.md`、method owner、Reading Record、cross-validation、session continuity 等 Agent behavior 的 contract，依 `BEHAVIORAL_EVAL.md`／`evals/regression_matrix.json` 做最低充分 regression。
-- 任何會修改 canonical owner 名稱／heading、`CHAT_INIT.md` routing、`PLAYBOOK_INDEX.json`、Behavioral Eval scenario ID、regression matrix 或 local Markdown link 的變更，至少執行：
+規則：
+
+1. `CHATGPT_LOAD_PACK.json` 只可作 **derived hot-path cache**。它可以取代 eligible ordinary/stochastic profiles 中重複的 `CHAT_INIT.md` / `METHOD_ROUTING.md` / `RUNTIME_DRAW.md` / `CHATGPT_OUTPUT.md` hot-section retrieval，但不能取代 selected method owner、research owner、Reading Record owner或其他 task-specific canonical authority。Explicit Astrology / research 若不在 pack profile，直接 bounded-read canonical path，不為形式載入 pack。
+2. Load pack 必須從與本次 resolved Playbook revision 相同的 GitHub revision 取得；同 revision 下由 CI 的 generator check 保證 canonical excerpts 同步，不為形式再逐一重抓來源 sections。
+3. Pack 缺失、無法解析、profile 不涵蓋本題、或出現 ambiguity/conflict 時，直接 fallback 到 `CHAT_INIT.md` 與相關 canonical owner；不得猜。
+4. 使用者已指定 method，或已有實際 Draw / Cast Fact / Astrology Fact Bundle 時，不為形式重新 routing、重抽、重卦、重算或換方法。
+5. 未指定 ordinary method 才走 `METHOD_ROUTING.md` Fast Path；production Astrology 只接受 explicit request，不參與 ordinary auto-routing。
+6. explicit research intent 走 `RESEARCH_ROUTING.md` → named research owner；research pointer 不取得 production method authority。
+7. stochastic method 由 AI 代抽／代起才需要 `RUNTIME_DRAW.md` contract；language-model generation ≠ Runtime Draw / Cast。
+8. 只有 material contract gap 才讀 `INPUT_CONTRACT.md`；需要拆題／牌位／時間窗設計才讀 `QUESTION_DESIGN.md`。
+9. 只有承接／補占／重占／Reality Update／completion／backtest 才讀 `READING_LIFECYCLE.md`；只有保存／跨聊天室／audit 才讀 `READING_RECORD.md`。
+10. `BEHAVIORAL_EVAL.md`、`references/`、`CASE_STUDIES/`、Historical Context 預設 Cold。
+11. exact owner／section 已唯一時直接讀 target，不增加 discovery ceremony。
+12. old chat／memory 不得覆蓋 current reality、原始 Input Contract、Draw/Cast Fact、Astrology Fact Bundle 或 current canonical rule。
+
+## 維護與 validation
+
+- 優先修改既有 canonical owner；只有形成獨立 retrieval intent 才新增文件。
+- 不在 README、AGENTS、CHAT_INIT、PLAYBOOK_INDEX、load pack 與 method owner 間人工複製完整 normative policy。
+- `CHATGPT_LOAD_PACK.json` 必須由 `tools/build_chatgpt_load_pack.py` 產生；禁止手動把它提升為 authority。
+- loader performance budget 由 `tools/chatgpt_load_benchmark.py` + `evals/chatgpt_load_budget.json` 驗證；benchmark 是 deterministic retrieval-cost proxy，不宣稱等同產品 wall-clock latency。
+- 新 method / research line discoverability 不等於 production adoption；不得繞過 method owner、runtime/fact gate、behavioral regression 與 explicit admission。
+- Runtime stochastic implementation 變更只在本 Repo `runtime/casting/**` 維護；legacy Randomizer repository 只保留 compatibility / rollback / historical provenance responsibility。
+- External GitHub reference 納入前，使用 GitHub connector 記錄 source/ref、license、adopted scope、not-adopted boundary。
+- 改變 `CHAT_INIT.md`、routing、Runtime、method owner、Reading Record、cross-validation、session continuity 或 loader semantics 時，依 `BEHAVIORAL_EVAL.md` / `evals/regression_matrix.json` 做最低充分 regression。
+- 改變 canonical owner 名稱／heading、routing、`PLAYBOOK_INDEX.json`、Behavioral Eval scenario ID、regression matrix 或 local Markdown link，至少執行：
 
 ```text
 python tools/playbook_check.py .
+```
+
+- 修改 loader cache / profiles / hot-section heading 時至少執行：
+
+```text
+python tools/build_chatgpt_load_pack.py --check
+python tools/chatgpt_load_benchmark.py --check
+python -m unittest tests.test_chatgpt_load_pack tests.test_chatgpt_load_benchmark
 ```
 
 - 修改 checker 本身時至少執行：
@@ -266,9 +185,8 @@ python -m unittest tests.test_playbook_check
 python tools/playbook_check.py .
 ```
 
-- repository CI 應至少執行 full unit-test discovery 與 root structural checker，避免 fixture-only tests 全綠但 canonical root 已漂移。
-- 純 Markdown 修改至少檢查 routing、heading、link、ownership、authority boundary 是否矛盾。
+- repository CI 應執行 full unit-test discovery、root structural checker、load-pack sync check 與 loader budget check。
 
 ## 外部參考
 
-可引用公開 Tarot／Meihua／Liuyao／Astrology／Qimen／AI methodology repository，但所有 GitHub source acquisition 只走 GitHub connector。外部規則不會自動成為本 Repo authority；整併時必須保留 premise、流派差異、license、authority boundary 與 not-adopted items。
+可引用公開 Tarot／Meihua／Liuyao／Astrology／Qimen／AI methodology repository；所有 GitHub source acquisition 仍只走 GitHub connector。外部規則不會自動成為本 Repo authority。
