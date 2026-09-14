@@ -98,7 +98,7 @@ load pack
 → READING_RECORD only on durable storage/audit need
 ```
 
-Explicit Astrology：
+明確指定 production Astrology：
 
 ```text
 bounded CHAT_INIT bootstrap
