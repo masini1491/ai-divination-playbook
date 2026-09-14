@@ -1,0 +1,29 @@
+{
+  "schema_name": "astrology_extended_chart_e2_residual_observations",
+  "schema_version": "0.1.0",
+  "authority": "REFERENCE_ONLY",
+  "dataset_kind": "synthetic_test",
+  "notes": "Synthetic arithmetic-only data. Not astronomical observations.",
+  "observations": [
+    {"fixture_id":"E2-F01","utc":"2000-01-01T12:00:00Z","object_id":"Chiron","swiss":{"longitude_deg":359.9995,"speed_deg_per_day":-0.08},"horizons":{"longitude_deg":0.0005,"speed_deg_per_day":-0.0798}},
+    {"fixture_id":"E2-F01","utc":"2000-01-01T12:00:00Z","object_id":"Ceres","swiss":{"longitude_deg":61.0,"speed_deg_per_day":-0.05},"horizons":{"longitude_deg":61.0002,"speed_deg_per_day":-0.0504}},
+    {"fixture_id":"E2-F01","utc":"2000-01-01T12:00:00Z","object_id":"Pallas","swiss":{"longitude_deg":104.75,"speed_deg_per_day":-0.02},"horizons":{"longitude_deg":104.7503,"speed_deg_per_day":-0.0194}},
+    {"fixture_id":"E2-F01","utc":"2000-01-01T12:00:00Z","object_id":"Juno","swiss":{"longitude_deg":148.5,"speed_deg_per_day":0.01},"horizons":{"longitude_deg":148.5004,"speed_deg_per_day":0.0092}},
+    {"fixture_id":"E2-F01","utc":"2000-01-01T12:00:00Z","object_id":"Vesta","swiss":{"longitude_deg":192.25,"speed_deg_per_day":0.04},"horizons":{"longitude_deg":192.2505,"speed_deg_per_day":0.041}},
+    {"fixture_id":"E2-F02","utc":"1980-06-01T00:00:00Z","object_id":"Chiron","swiss":{"longitude_deg":98.375,"speed_deg_per_day":-0.07},"horizons":{"longitude_deg":98.3749,"speed_deg_per_day":-0.0702}},
+    {"fixture_id":"E2-F02","utc":"1980-06-01T00:00:00Z","object_id":"Ceres","swiss":{"longitude_deg":142.125,"speed_deg_per_day":-0.04},"horizons":{"longitude_deg":142.1248,"speed_deg_per_day":-0.0396}},
+    {"fixture_id":"E2-F02","utc":"1980-06-01T00:00:00Z","object_id":"Pallas","swiss":{"longitude_deg":185.875,"speed_deg_per_day":-0.01},"horizons":{"longitude_deg":185.8747,"speed_deg_per_day":-0.0106}},
+    {"fixture_id":"E2-F02","utc":"1980-06-01T00:00:00Z","object_id":"Juno","swiss":{"longitude_deg":229.625,"speed_deg_per_day":0.02},"horizons":{"longitude_deg":229.6246,"speed_deg_per_day":0.0208}},
+    {"fixture_id":"E2-F02","utc":"1980-06-01T00:00:00Z","object_id":"Vesta","swiss":{"longitude_deg":273.375,"speed_deg_per_day":0.05},"horizons":{"longitude_deg":273.3745,"speed_deg_per_day":0.049}},
+    {"fixture_id":"E2-F03","utc":"2026-09-14T00:00:00Z","object_id":"Chiron","swiss":{"longitude_deg":179.5,"speed_deg_per_day":-0.06},"horizons":{"longitude_deg":179.5001,"speed_deg_per_day":-0.0598}},
+    {"fixture_id":"E2-F03","utc":"2026-09-14T00:00:00Z","object_id":"Ceres","swiss":{"longitude_deg":223.25,"speed_deg_per_day":-0.03},"horizons":{"longitude_deg":223.2502,"speed_deg_per_day":-0.0304}},
+    {"fixture_id":"E2-F03","utc":"2026-09-14T00:00:00Z","object_id":"Pallas","swiss":{"longitude_deg":267.0,"speed_deg_per_day":0.0},"horizons":{"longitude_deg":267.0003,"speed_deg_per_day":0.0006}},
+    {"fixture_id":"E2-F03","utc":"2026-09-14T00:00:00Z","object_id":"Juno","swiss":{"longitude_deg":310.75,"speed_deg_per_day":0.03},"horizons":{"longitude_deg":310.7504,"speed_deg_per_day":0.0292}},
+    {"fixture_id":"E2-F03","utc":"2026-09-14T00:00:00Z","object_id":"Vesta","swiss":{"longitude_deg":354.5,"speed_deg_per_day":0.06},"horizons":{"longitude_deg":354.5005,"speed_deg_per_day":0.061}},
+    {"fixture_id":"E2-F04","utc":"2099-12-31T00:00:00Z","object_id":"Chiron","swiss":{"longitude_deg":260.625,"speed_deg_per_day":-0.05},"horizons":{"longitude_deg":260.6249,"speed_deg_per_day":-0.0502}},
+    {"fixture_id":"E2-F04","utc":"2099-12-31T00:00:00Z","object_id":"Ceres","swiss":{"longitude_deg":304.375,"speed_deg_per_day":-0.02},"horizons":{"longitude_deg":304.3748,"speed_deg_per_day":-0.0196}},
+    {"fixture_id":"E2-F04","utc":"2099-12-31T00:00:00Z","object_id":"Pallas","swiss":{"longitude_deg":348.125,"speed_deg_per_day":0.01},"horizons":{"longitude_deg":348.1247,"speed_deg_per_day":0.0094}},
+    {"fixture_id":"E2-F04","utc":"2099-12-31T00:00:00Z","object_id":"Juno","swiss":{"longitude_deg":31.875,"speed_deg_per_day":0.04},"horizons":{"longitude_deg":31.8746,"speed_deg_per_day":0.0408}},
+    {"fixture_id":"E2-F04","utc":"2099-12-31T00:00:00Z","object_id":"Vesta","swiss":{"longitude_deg":75.625,"speed_deg_per_day":0.07},"horizons":{"longitude_deg":75.6245,"speed_deg_per_day":0.069}}
+  ]
+}
