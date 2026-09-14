@@ -82,7 +82,7 @@ Repo: https://github.com/muyen/meihua-yishu
 
 ## 與配套 Randomizer 的差異
 
-`muyen/meihua-yishu` 是外部方法與研究參考；本手冊目前 canonical 隨機雙數取數 implementation 為 `runtime/casting/randomizer.py`。legacy `masini1491/divination-casting-randomizer` 僅保留 migration provenance、rollback 與尚未切換的 deployment compatibility。
+`muyen/meihua-yishu` 是外部方法與研究參考；本手冊目前 canonical 隨機雙數取數 implementation 為 `runtime/casting/randomizer.py`。legacy `masini1491/divination-casting-randomizer` 僅保留 migration provenance、rollback 與 compatibility / historical deployment reference；current production authority 已切換至 Playbook monorepo deployment。
 
 當 `casting_source = divination-casting-randomizer` 時，該名稱保留為 logical source label；應以 canonical Randomizer 當次產生的 A、B 與其顯示的雙數公式作為 canonical casting input，不因外部參考來源存在其他起卦法而替換。
 
