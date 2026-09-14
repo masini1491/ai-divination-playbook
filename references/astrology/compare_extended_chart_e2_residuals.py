@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compare Phase E2 Swiss/Horizons observations without declaring a tolerance."""
+"""Compare Phase E2 Swiss/Horizons observations under the research oracle contract."""
 from __future__ import annotations
 
 import argparse
@@ -12,6 +12,10 @@ from typing import Any
 
 EXPECTED_MANIFEST_SCHEMA = "astrology_extended_chart_e2_oracle_manifest"
 EXPECTED_OBSERVATION_SCHEMA = "astrology_extended_chart_e2_residual_observations"
+ALLOWED_TOLERANCE_STATUSES = {
+    "NOT_DEFINED_PENDING_RESIDUAL_COLLECTION",
+    "NO_UNIVERSAL_PROSPECTIVELY_VALIDATED_TOLERANCE_OVER_TESTED_1825_2350_RANGE",
+}
 
 
 def circular_separation_deg(a: float, b: float) -> float:
@@ -33,11 +37,9 @@ def validate_manifest(manifest: dict[str, Any]) -> None:
         raise ValueError("unexpected manifest schema")
     if manifest.get("authority") != "REFERENCE_ONLY":
         raise ValueError("manifest authority must remain REFERENCE_ONLY")
-    if (
-        manifest.get("comparison_policy", {}).get("tolerance_status")
-        != "NOT_DEFINED_PENDING_RESIDUAL_COLLECTION"
-    ):
-        raise ValueError("E2 residual harness must not inherit a predeclared tolerance")
+    tolerance_status = manifest.get("comparison_policy", {}).get("tolerance_status")
+    if tolerance_status not in ALLOWED_TOLERANCE_STATUSES:
+        raise ValueError(f"unexpected E2 tolerance status: {tolerance_status}")
 
 
 def validate_provenance(dataset: dict[str, Any], manifest: dict[str, Any]) -> None:
@@ -53,8 +55,16 @@ def validate_provenance(dataset: dict[str, Any], manifest: dict[str, Any]) -> No
         raise ValueError("measured_oracle requires both provenance objects")
 
     expected_swiss = manifest["swiss_oracle"]
-    for key in ("source_revision", "ephemeris_blob_sha", "ephemeris_size_bytes"):
-        if swiss.get(key) != expected_swiss.get(key):
+    if swiss.get("source_revision") != expected_swiss.get("source_revision"):
+        raise ValueError("Swiss provenance mismatch: source_revision")
+    pairs = (
+        ("asteroid_ephemeris_blob_sha", expected_swiss["asteroid_ephemeris"]["blob_sha"]),
+        ("asteroid_ephemeris_size_bytes", expected_swiss["asteroid_ephemeris"]["size_bytes"]),
+        ("planetary_ephemeris_blob_sha", expected_swiss["planetary_ephemeris"]["blob_sha"]),
+        ("planetary_ephemeris_size_bytes", expected_swiss["planetary_ephemeris"]["size_bytes"]),
+    )
+    for key, expected in pairs:
+        if swiss.get(key) != expected:
             raise ValueError(f"Swiss provenance mismatch: {key}")
 
     expected_horizons = manifest["independent_oracle"]
@@ -63,6 +73,23 @@ def validate_provenance(dataset: dict[str, Any], manifest: dict[str, Any]) -> No
             raise ValueError(f"Horizons provenance mismatch: {key}")
     if horizons.get("quantities") != expected_horizons.get("quantities"):
         raise ValueError("Horizons provenance mismatch: quantities")
+
+
+def fixture_rows(manifest: dict[str, Any], dataset: dict[str, Any]) -> list[dict[str, Any]]:
+    group = dataset.get("fixture_group", "calibration")
+    groups = manifest.get("fixture_groups")
+    if isinstance(groups, dict):
+        rows = groups.get(group)
+        if not isinstance(rows, list):
+            raise ValueError(f"unknown fixture_group: {group}")
+        return rows
+    # Backward compatibility for the original research manifest.
+    if group != "calibration":
+        raise ValueError("legacy manifest only supports calibration fixtures")
+    rows = manifest.get("fixtures")
+    if not isinstance(rows, list):
+        raise ValueError("manifest has no fixture definitions")
+    return rows
 
 
 def compare(manifest: dict[str, Any], dataset: dict[str, Any]) -> dict[str, Any]:
@@ -74,7 +101,8 @@ def compare(manifest: dict[str, Any], dataset: dict[str, Any]) -> dict[str, Any]
     validate_provenance(dataset, manifest)
 
     object_ids = [row["object_id"] for row in manifest["objects"]]
-    fixture_times = {row["fixture_id"]: row["utc"] for row in manifest["fixtures"]}
+    fixtures = fixture_rows(manifest, dataset)
+    fixture_times = {row["fixture_id"]: row["utc"] for row in fixtures}
     expected_pairs = {
         (fixture_id, object_id)
         for fixture_id in fixture_times
@@ -102,21 +130,20 @@ def compare(manifest: dict[str, Any], dataset: dict[str, Any]) -> dict[str, Any]
         swiss = row.get("swiss", {})
         horizons = row.get("horizons", {})
         swiss_lon = finite_number(swiss.get("longitude_deg"), "swiss.longitude_deg")
-        horizons_lon = finite_number(
-            horizons.get("longitude_deg"), "horizons.longitude_deg"
-        )
-        swiss_speed = finite_number(
-            swiss.get("speed_deg_per_day"), "swiss.speed_deg_per_day"
-        )
-        horizons_speed = finite_number(
-            horizons.get("speed_deg_per_day"), "horizons.speed_deg_per_day"
-        )
+        horizons_lon = finite_number(horizons.get("longitude_deg"), "horizons.longitude_deg")
+        swiss_speed = finite_number(swiss.get("speed_deg_per_day"), "swiss.speed_deg_per_day")
+        horizons_speed = finite_number(horizons.get("speed_deg_per_day"), "horizons.speed_deg_per_day")
         for name, value in (
             ("swiss.longitude_deg", swiss_lon),
             ("horizons.longitude_deg", horizons_lon),
         ):
             if not 0.0 <= value < 360.0:
                 raise ValueError(f"{name} must be normalized to [0, 360)")
+
+        if dataset["dataset_kind"] == "measured_oracle":
+            expected_flags = manifest["swiss_oracle"].get("expected_returned_flags")
+            if expected_flags is not None and swiss.get("returned_flags") != expected_flags:
+                raise ValueError(f"Swiss returned_flags mismatch for {fixture_id}/{object_id}")
 
         lon_delta = circular_separation_deg(swiss_lon, horizons_lon)
         speed_delta = abs(swiss_speed - horizons_speed)
@@ -129,10 +156,7 @@ def compare(manifest: dict[str, Any], dataset: dict[str, Any]) -> dict[str, Any]
         }
         rows.append(comparison)
         per_object[object_id].append(
-            {
-                "longitude_delta_deg": lon_delta,
-                "speed_delta_deg_per_day": speed_delta,
-            }
+            {"longitude_delta_deg": lon_delta, "speed_delta_deg_per_day": speed_delta}
         )
 
     missing = sorted(expected_pairs - seen)
@@ -146,27 +170,18 @@ def compare(manifest: dict[str, Any], dataset: dict[str, Any]) -> dict[str, Any]
         speed = [v["speed_delta_deg_per_day"] for v in values]
         summaries[object_id] = {
             "samples": len(values),
-            "longitude_delta_deg": {
-                "mean": sum(lon) / len(lon),
-                "max": max(lon),
-            },
-            "speed_delta_deg_per_day": {
-                "mean": sum(speed) / len(speed),
-                "max": max(speed),
-            },
+            "longitude_delta_deg": {"mean": sum(lon) / len(lon), "max": max(lon)},
+            "speed_delta_deg_per_day": {"mean": sum(speed) / len(speed), "max": max(speed)},
         }
 
     return {
         "schema_name": "astrology_extended_chart_e2_residual_report",
-        "schema_version": "0.1.0",
+        "schema_version": "0.2.0",
         "authority": "REFERENCE_ONLY",
         "dataset_kind": dataset["dataset_kind"],
-        "status": (
-            "NUMERIC_OBSERVATION"
-            if dataset["dataset_kind"] == "measured_oracle"
-            else "SYNTHETIC_HARNESS_PASS"
-        ),
-        "tolerance_status": "NOT_DEFINED_PENDING_RESIDUAL_COLLECTION",
+        "fixture_group": dataset.get("fixture_group", "calibration"),
+        "status": "NUMERIC_OBSERVATION" if dataset["dataset_kind"] == "measured_oracle" else "SYNTHETIC_HARNESS_PASS",
+        "tolerance_status": manifest["comparison_policy"]["tolerance_status"],
         "sample_count": len(rows),
         "comparisons": rows,
         "per_object": summaries,
