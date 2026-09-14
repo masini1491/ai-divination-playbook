@@ -1,10 +1,10 @@
 # Randomizer Integration Migration Contract
 
-Status: **PHASES 0–3 COMPLETE / RUNTIME AUTHORITY CUT OVER / PHASE 4 PENDING**
+Status: **PHASES 0–4 COMPLETE / PHASE 5 RETIREMENT READINESS PASS / PHASE 6 PENDING**
 
 This document defines the staged migration contract for consolidating `masini1491/divination-casting-randomizer` into `masini1491/ai-divination-playbook` without changing stochastic semantics, breaking provenance, or coupling migration to immediate retirement of the legacy repository.
 
-It is a migration owner only. The Phase 3 authority-cutover gate is complete: current stochastic runtime authority is `RUNTIME_DRAW.md` + `runtime/casting/randomizer.py`. The legacy repository remains available for rollback, historical provenance, and production deployment compatibility until later migration gates complete.
+Current stochastic runtime and production deployment authority are both in `masini1491/ai-divination-playbook`: runtime authority is `RUNTIME_DRAW.md` + `runtime/casting/randomizer.py`, and Vercel production is sourced from this repository with root directory `runtime/casting`. The legacy repository remains available only for rollback, historical provenance, migration evidence, and Phase 6 compatibility/archive transition.
 
 ## 1. Baseline and scope
 
@@ -308,6 +308,8 @@ Legacy repository can be retired only when all are true:
 9. historical provenance remains readable without rewriting old records;
 10. rollback procedure has been tested conceptually and no required secret/config would be lost by retirement.
 
+Evidence record: `RANDOMIZER_RETIREMENT_READINESS.md`.
+
 Only then may the old repository be converted to a compatibility/archive surface.
 
 ### Phase 6 — Legacy repository retirement
@@ -455,4 +457,4 @@ stochastic runtime canonical in ai-divination-playbook
 + legacy repo converted to compatibility/archive surface
 ```
 
-Until then, describe the work as a migration in progress, not as a completed repository merge.
+Until Phase 6 completes, describe the work as a migration in progress, not as a completed repository merge.

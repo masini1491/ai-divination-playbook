@@ -37,17 +37,19 @@ class MigrationSnapshotParityTests(unittest.TestCase):
     def setUpClass(cls):
         cls.manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
 
-    def test_manifest_preserves_legacy_import_provenance_after_runtime_cutover(self):
+    def test_manifest_preserves_legacy_import_provenance_after_production_cutover(self):
         self.assertEqual(self.manifest["schema_version"], 1)
         self.assertEqual(self.manifest["authority"], "migration-provenance")
         self.assertEqual(self.manifest["source_repository"], "masini1491/divination-casting-randomizer")
         self.assertEqual(self.manifest["source_commit"], PINNED_LEGACY_COMMIT)
         self.assertEqual(self.manifest["source_tree"], PINNED_LEGACY_TREE)
         self.assertEqual(self.manifest["candidate_root"], "runtime/casting")
-        self.assertEqual(self.manifest["cutover_state"], "runtime-authoritative")
+        self.assertEqual(self.manifest["cutover_state"], "production-authoritative")
         self.assertEqual(self.manifest["runtime_repository"], "masini1491/ai-divination-playbook")
         self.assertEqual(self.manifest["runtime_path"], "runtime/casting/randomizer.py")
-        self.assertEqual(self.manifest["production_deployment_source"], "legacy-repository")
+        self.assertEqual(self.manifest["production_deployment_source"], "monorepo")
+        self.assertEqual(self.manifest["production_project"], "ai-divination-playbook-casting")
+        self.assertEqual(self.manifest["production_root_directory"], "runtime/casting")
 
     def test_local_production_files_still_match_pinned_legacy_import_blobs(self):
         expected = self.manifest["production_files"]
