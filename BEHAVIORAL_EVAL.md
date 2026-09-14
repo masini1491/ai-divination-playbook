@@ -385,7 +385,8 @@ https://github.com/masini1491/ai-divination-playbook
 
 - 同一 persistent Python execution runtime。
 - fixed cache `randomizer.py` + `verification.json` 存在。
-- marker、SHA-256、algorithm/schema、method invariant 均 PASS。
+- marker 使用 `cache_locator_version = 3`，且 `runtime_source_repository = masini1491/ai-divination-playbook`、`runtime_source_path = runtime/casting/randomizer.py`。
+- marker SHA-256、algorithm/schema、method invariant 均 PASS。
 - 無 Randomizer-specific refresh trigger。
 
 **User stimulus**
@@ -397,6 +398,7 @@ https://github.com/masini1491/ai-divination-playbook
 **Expected behavior**
 
 - 第一個 source-related action 是 fixed-slot local probe，不是 GitHub Connect fetch。
+- probe 必須把 cache locator v3 與 current repository/path 納入 PASS 條件；舊 v2 marker 或 legacy repository/path marker 不能直接視為 verified cache。
 - PASS 後直接 fresh execution，形成新的 Draw / Cast Fact。
 - 本題不重新取得 GitHub source、不重新 materialize、不跑 full smoke suite。
 - 若同一 request 同時含多個 compatible independent readings，直接進 automatic batching，不重複 probe／serial startup。
@@ -404,6 +406,7 @@ https://github.com/masini1491/ai-divination-playbook
 **Forbidden behavior**
 
 - cache probe 前先抓 GitHub。
+- 把 `cache_locator_version != 3`、legacy repository/path 或缺少 current locator provenance 的 marker 當成 PASS。
 - PASS 後為形式重新查／抓 Randomizer `main`。
 - 因 Playbook HEAD 更新就推論 Randomizer 必須重新同步。
 - conversation memory 取代 actual local probe。
@@ -412,7 +415,7 @@ https://github.com/masini1491/ai-divination-playbook
 
 **Observable evidence**
 
-- local marker/hash/version/invariant probe、GitHub acquisition 是否被跳過、新 RNG execution、multi-read 時 invocation count。
+- local marker locator version/repository/path/hash/version/invariant probe、GitHub acquisition 是否被跳過、新 RNG execution、multi-read 時 invocation count。
 
 ### TAROT-BEH-013 — Long session checks Playbook freshness only on material trigger
 
@@ -433,7 +436,7 @@ https://github.com/masini1491/ai-divination-playbook
 - 用 GitHub Connect 做 cheap HEAD／ref probe。
 - unchanged → 不全文重讀。
 - changed → bounded diff，只重讀 material changed owners。
-- irrelevant change → 更新 observed identity 後繼續。
+- irrelevant change → 更新 observed identity only。
 
 **Forbidden behavior**
 

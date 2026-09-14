@@ -30,6 +30,7 @@ class PlaybookCheckTests(unittest.TestCase):
         write(root, "SESSION_HANDOFF.md", "# Handoff\n")
         write(root, "SCHEMA.json", "{}\n")
         write(root, "tools/behavioral_eval.py", "print('ok')\n")
+        write(root, "runtime/casting/randomizer.py", "print('runtime')\n")
         write(
             root,
             "evals/regression_matrix.json",
@@ -98,6 +99,32 @@ class PlaybookCheckTests(unittest.TestCase):
         (root / "PLAYBOOK_INDEX.json").write_text(json.dumps(data), encoding="utf-8")
         errors = playbook_check.validate(root)
         self.assertTrue(any("MISSING_SCHEMA.json" in error for error in errors))
+
+    def test_cutover_runtime_implementation_local_pointer_passes(self):
+        root = self.make_repo()
+        data = json.loads((root / "PLAYBOOK_INDEX.json").read_text(encoding="utf-8"))
+        data["capabilities"][0]["id"] = "runtime.draw"
+        data["capabilities"][0]["implementation"] = "runtime/casting/randomizer.py"
+        (root / "PLAYBOOK_INDEX.json").write_text(json.dumps(data), encoding="utf-8")
+        self.assertEqual(playbook_check.validate(root), [])
+
+    def test_cutover_runtime_implementation_missing_local_pointer_fails(self):
+        root = self.make_repo()
+        data = json.loads((root / "PLAYBOOK_INDEX.json").read_text(encoding="utf-8"))
+        data["capabilities"][0]["id"] = "runtime.draw"
+        data["capabilities"][0]["implementation"] = "runtime/casting/MISSING.py"
+        (root / "PLAYBOOK_INDEX.json").write_text(json.dumps(data), encoding="utf-8")
+        errors = playbook_check.validate(root)
+        self.assertTrue(any("runtime/casting/MISSING.py" in error for error in errors))
+
+    def test_cutover_liuyao_casting_implementation_missing_local_pointer_fails(self):
+        root = self.make_repo()
+        data = json.loads((root / "PLAYBOOK_INDEX.json").read_text(encoding="utf-8"))
+        data["capabilities"][0]["id"] = "method.liuyao"
+        data["capabilities"][0]["casting_implementation"] = "runtime/casting/MISSING.py"
+        (root / "PLAYBOOK_INDEX.json").write_text(json.dumps(data), encoding="utf-8")
+        errors = playbook_check.validate(root)
+        self.assertTrue(any("runtime/casting/MISSING.py" in error for error in errors))
 
     def test_external_implementation_locator_is_not_treated_as_local_file(self):
         root = self.make_repo()
