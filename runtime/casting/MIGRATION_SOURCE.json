@@ -20,8 +20,10 @@
     "schema_version": "4",
     "ai_schema_version": "1"
   },
-  "cutover_state": "runtime-authoritative",
+  "cutover_state": "production-authoritative",
   "runtime_repository": "masini1491/ai-divination-playbook",
   "runtime_path": "runtime/casting/randomizer.py",
-  "production_deployment_source": "legacy-repository"
+  "production_deployment_source": "monorepo",
+  "production_project": "ai-divination-playbook-casting",
+  "production_root_directory": "runtime/casting"
 }
