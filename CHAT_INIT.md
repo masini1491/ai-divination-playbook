@@ -47,7 +47,7 @@ method + minimum question contract fixed
 其他最低規則：
 
 - Astrology v1 是 explicit-request only；不得因題目看起來像星盤題就加入 ordinary auto-routing。
-- Astrology raw birth data 在 interpretation 前必須通過 admitted deterministic Fact Gate；模型不得手算 planets / houses / aspects 冒充 engine facts。
+- Astrology raw birth data 在 interpretation 前必須通過 admitted deterministic Fact Gate；raw birth data 不授權模型自行手算 planets / houses / aspects 或冒充 engine facts。
 - Liuyao Raw Cast 與 deterministic Structured Method Fact 分層；engine unavailable 時保留 Raw Cast，不重起、不手算冒充 engine。
 - 只有缺失資訊會 materially 改變 question identity、主要 judgment function、horizon、completion rule、position responsibility、casting/fact source 或 execution viability 時才澄清。
 - `QUESTION_DESIGN.md` 只在真的需要拆題、牌位、條件世界或時間窗設計時讀。
