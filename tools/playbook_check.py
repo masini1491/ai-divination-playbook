@@ -23,6 +23,10 @@ INDEX_SCHEMA_VERSION = 1
 INDEX_AUTHORITY = "routing-only"
 INDEX_LOCAL_PATH_SUFFIXES = (".md", ".json", ".py")
 INDEX_EXTERNAL_LOCATOR_KEYS = {"implementation", "casting_implementation"}
+INDEX_REQUIRED_LOCAL_LOCATORS = {
+    "runtime.draw": {"implementation"},
+    "method.liuyao": {"casting_implementation"},
+}
 MATRIX_SCHEMA_VERSION = 1
 MATRIX_AUTHORITY = "selection-only"
 TEXT_SUFFIXES = {".md", ".json", ".py"}
@@ -229,8 +233,11 @@ def check_index(root: Path) -> list[str]:
         if section is not None:
             if not isinstance(section, str) or section not in heading_names((root / owner).read_text(encoding="utf-8")):
                 errors.append(f"{prefix}.section missing in {owner}: {section}")
+        required_local_keys = INDEX_REQUIRED_LOCAL_LOCATORS.get(cap_id, set())
         for key, value in item.items():
-            if key in {"owner", "section"} or key in INDEX_EXTERNAL_LOCATOR_KEYS:
+            if key in {"owner", "section"}:
+                continue
+            if key in INDEX_EXTERNAL_LOCATOR_KEYS and key not in required_local_keys:
                 continue
             errors.extend(check_index_local_file_value(root, f"{prefix}.{key}", value))
 
