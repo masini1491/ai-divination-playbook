@@ -8,7 +8,7 @@ import re
 import sys
 from typing import Any, Iterable
 
-SCENARIO_IDS = {f"TAROT-BEH-{index:03d}" for index in range(1, 16)}
+SCENARIO_IDS = {f"TAROT-BEH-{index:03d}" for index in range(1, 19)}
 CLASSIFICATIONS = {"PASS", "FAIL", "INCONCLUSIVE"}
 RUN_KINDS = {"formal", "retrospective"}
 SHA_RE = re.compile(r"^[0-9a-f]{40}$")
@@ -41,7 +41,9 @@ def validate_record(record: dict[str, Any]) -> list[str]:
             errors.append(f"{field} must be a non-empty string")
 
     actions = record.get("observed_actions")
-    if not isinstance(actions, list) or not actions or not all(isinstance(item, str) and item.strip() for item in actions):
+    if not isinstance(actions, list) or not actions or not all(
+        isinstance(item, str) and item.strip() for item in actions
+    ):
         errors.append("observed_actions must be a non-empty list of strings")
 
     reference = record.get("response_reference")
@@ -52,8 +54,12 @@ def validate_record(record: dict[str, Any]) -> list[str]:
     if run_kind == "retrospective":
         if not isinstance(contract_sha, str) or not SHA_RE.fullmatch(contract_sha):
             errors.append("retrospective runs require scenario_contract_sha")
-    elif contract_sha is not None and (not isinstance(contract_sha, str) or not SHA_RE.fullmatch(contract_sha)):
-        errors.append("scenario_contract_sha must be a 40-character lowercase Git SHA when provided")
+    elif contract_sha is not None and (
+        not isinstance(contract_sha, str) or not SHA_RE.fullmatch(contract_sha)
+    ):
+        errors.append(
+            "scenario_contract_sha must be a 40-character lowercase Git SHA when provided"
+        )
 
     return errors
 
@@ -112,13 +118,21 @@ def load_regression_matrix(path: Path) -> dict[str, Any]:
 def validate_regression_matrix(matrix: dict[str, Any]) -> list[str]:
     errors: list[str] = []
     if matrix.get("schema_version") != MATRIX_SCHEMA_VERSION:
-        errors.append(f"regression matrix schema_version must be {MATRIX_SCHEMA_VERSION}")
+        errors.append(
+            f"regression matrix schema_version must be {MATRIX_SCHEMA_VERSION}"
+        )
     if matrix.get("authority") != MATRIX_AUTHORITY:
         errors.append(f"regression matrix authority must be {MATRIX_AUTHORITY}")
 
     full_baseline = matrix.get("full_baseline")
-    if not isinstance(full_baseline, list) or set(full_baseline) != SCENARIO_IDS or len(full_baseline) != len(SCENARIO_IDS):
-        errors.append("regression matrix full_baseline must contain each current TAROT-BEH scenario exactly once")
+    if (
+        not isinstance(full_baseline, list)
+        or set(full_baseline) != SCENARIO_IDS
+        or len(full_baseline) != len(SCENARIO_IDS)
+    ):
+        errors.append(
+            "regression matrix full_baseline must contain each current TAROT-BEH scenario exactly once"
+        )
 
     change_classes = matrix.get("change_classes")
     if not isinstance(change_classes, dict) or not change_classes:
@@ -127,26 +141,35 @@ def validate_regression_matrix(matrix: dict[str, Any]) -> list[str]:
 
     for change_class, scenario_ids in change_classes.items():
         if not isinstance(change_class, str) or not change_class.strip():
-            errors.append("regression matrix change class names must be non-empty strings")
+            errors.append(
+                "regression matrix change class names must be non-empty strings"
+            )
             continue
         if (
             not isinstance(scenario_ids, list)
             or not scenario_ids
             or not all(isinstance(item, str) for item in scenario_ids)
         ):
-            errors.append(f"regression matrix change class {change_class!r} must contain a non-empty list of scenario IDs")
+            errors.append(
+                f"regression matrix change class {change_class!r} must contain a non-empty list of scenario IDs"
+            )
             continue
         if len(scenario_ids) != len(set(scenario_ids)):
-            errors.append(f"regression matrix change class {change_class!r} contains duplicate scenario IDs")
+            errors.append(
+                f"regression matrix change class {change_class!r} contains duplicate scenario IDs"
+            )
         unknown = sorted(set(scenario_ids) - SCENARIO_IDS)
         if unknown:
             errors.append(
-                f"regression matrix change class {change_class!r} contains unknown scenario IDs: {', '.join(unknown)}"
+                f"regression matrix change class {change_class!r} contains unknown scenario IDs: "
+                + ", ".join(unknown)
             )
     return errors
 
 
-def select_regression_scenarios(matrix: dict[str, Any], change_class: str) -> list[str]:
+def select_regression_scenarios(
+    matrix: dict[str, Any], change_class: str
+) -> list[str]:
     change_classes = matrix.get("change_classes")
     if not isinstance(change_classes, dict) or change_class not in change_classes:
         raise KeyError(change_class)
@@ -158,11 +181,16 @@ def select_regression_scenarios(matrix: dict[str, Any], change_class: str) -> li
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
-        description="Validate Tarot/Meihua Behavioral Evaluation run records and regression-selection metadata."
+        description=(
+            "Validate Behavioral Evaluation run records and regression-selection metadata."
+        )
     )
     parser.add_argument("records", nargs="*", type=Path, help="JSON run-record paths")
     parser.add_argument("--matrix", type=Path, help="Regression matrix JSON path")
-    parser.add_argument("--change-class", help="Print the scenario IDs selected for one regression change class")
+    parser.add_argument(
+        "--change-class",
+        help="Print the scenario IDs selected for one regression change class",
+    )
     args = parser.parse_args(argv)
 
     failed = False
