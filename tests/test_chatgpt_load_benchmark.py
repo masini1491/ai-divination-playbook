@@ -40,6 +40,19 @@ class ChatGPTLoadBenchmarkTests(unittest.TestCase):
                 result["baseline"]["payload_bytes"],
             )
 
+    def test_explicit_method_and_research_profiles_are_covered(self):
+        report = self.benchmark.evaluate(ROOT)
+        required = {
+            "explicit_tarot",
+            "explicit_meihua",
+            "explicit_liuyao",
+            "explicit_astrology",
+            "explicit_research_astrology",
+        }
+        self.assertTrue(required.issubset(report["profiles"]))
+        for name in required:
+            self.assertTrue(report["profiles"][name]["pass"], report["profiles"][name])
+
     def test_benchmark_does_not_claim_wall_clock_latency(self):
         report = self.benchmark.evaluate(ROOT)
         self.assertFalse(report["wall_clock_claim"])
