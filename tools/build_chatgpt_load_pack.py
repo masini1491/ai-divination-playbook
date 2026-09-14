@@ -139,15 +139,21 @@ def main() -> int:
     parser.add_argument("--check", action="store_true", help="fail if committed pack is stale")
     args = parser.parse_args()
 
-    rendered = render_pack(build_pack())
+    expected = build_pack()
+    rendered = render_pack(expected)
     if args.check:
         if not OUTPUT.exists():
             raise SystemExit(f"missing generated load pack: {OUTPUT.relative_to(ROOT)}")
-        current = OUTPUT.read_text(encoding="utf-8")
-        if current != rendered:
+        current_text = OUTPUT.read_text(encoding="utf-8")
+        try:
+            current = json.loads(current_text)
+        except json.JSONDecodeError as exc:
+            raise SystemExit(f"invalid CHATGPT_LOAD_PACK.json: {exc}") from exc
+        if current != expected:
+            canonical_current = render_pack(current)
             diff = "".join(
                 difflib.unified_diff(
-                    current.splitlines(keepends=True),
+                    canonical_current.splitlines(keepends=True),
                     rendered.splitlines(keepends=True),
                     fromfile="committed/CHATGPT_LOAD_PACK.json",
                     tofile="generated/CHATGPT_LOAD_PACK.json",
