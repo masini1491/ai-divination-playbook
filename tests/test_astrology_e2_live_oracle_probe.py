@@ -21,8 +21,10 @@ import urllib.request
 from pathlib import Path
 
 
-EXPECTED_SWISS_GIT_BLOB = "8f900cab7e557e4c41f758a6bf3a3c3967e7e3db"
-EXPECTED_SWISS_SIZE = 223004
+EXPECTED_ASTEROID_GIT_BLOB = "8f900cab7e557e4c41f758a6bf3a3c3967e7e3db"
+EXPECTED_ASTEROID_SIZE = 223004
+EXPECTED_PLANETARY_GIT_BLOB = "786702cd04506371ee6223af1ebac02d54c848b8"
+EXPECTED_PLANETARY_SIZE = 484061
 HORIZONS_URL = "https://ssd.jpl.nasa.gov/api/horizons.api"
 
 OBJECTS = [
@@ -120,16 +122,23 @@ class E2LiveOracleProbe(unittest.TestCase):
         )
         swe = importlib.import_module("swisseph")
         immanuel_root = importlib.resources.files("immanuel")
-        packaged = immanuel_root.joinpath("resources", "ephemeris", "seas_18.se1")
-        swiss_data = packaged.read_bytes()
-        self.assertEqual(len(swiss_data), EXPECTED_SWISS_SIZE)
-        self.assertEqual(git_blob_sha(swiss_data), EXPECTED_SWISS_GIT_BLOB)
+        asteroid_data = immanuel_root.joinpath(
+            "resources", "ephemeris", "seas_18.se1"
+        ).read_bytes()
+        planetary_data = immanuel_root.joinpath(
+            "resources", "ephemeris", "sepl_18.se1"
+        ).read_bytes()
+        self.assertEqual(len(asteroid_data), EXPECTED_ASTEROID_SIZE)
+        self.assertEqual(git_blob_sha(asteroid_data), EXPECTED_ASTEROID_GIT_BLOB)
+        self.assertEqual(len(planetary_data), EXPECTED_PLANETARY_SIZE)
+        self.assertEqual(git_blob_sha(planetary_data), EXPECTED_PLANETARY_GIT_BLOB)
 
         observations = []
         horizons_signature = None
         with tempfile.TemporaryDirectory(prefix="e2-swiss-") as tempdir:
-            ephe = Path(tempdir) / "seas_18.se1"
-            ephe.write_bytes(swiss_data)
+            Path(tempdir, "seas_18.se1").write_bytes(asteroid_data)
+            Path(tempdir, "sepl_18.se1").write_bytes(planetary_data)
+            swe.close()
             swe.set_ephe_path(tempdir)
             flags = swe.FLG_SWIEPH | swe.FLG_SPEED
 
@@ -181,6 +190,7 @@ class E2LiveOracleProbe(unittest.TestCase):
                             },
                         }
                     )
+        swe.close()
 
         self.assertEqual(len(observations), 20)
         output = {
@@ -191,9 +201,13 @@ class E2LiveOracleProbe(unittest.TestCase):
             "swiss_provenance": {
                 "source_repository": "aloistr/swisseph",
                 "source_revision": "91339e55d2351f32548d8a8d5bca6aa93b4f6da7",
-                "ephemeris_blob_sha": EXPECTED_SWISS_GIT_BLOB,
-                "ephemeris_size_bytes": EXPECTED_SWISS_SIZE,
-                "binary_carrier": "PyPI immanuel==1.6.0 package data; byte identity verified before use",
+                "asteroid_ephemeris_path": "ephe/seas_18.se1",
+                "asteroid_ephemeris_blob_sha": EXPECTED_ASTEROID_GIT_BLOB,
+                "asteroid_ephemeris_size_bytes": EXPECTED_ASTEROID_SIZE,
+                "planetary_ephemeris_path": "ephe/sepl_18.se1",
+                "planetary_ephemeris_blob_sha": EXPECTED_PLANETARY_GIT_BLOB,
+                "planetary_ephemeris_size_bytes": EXPECTED_PLANETARY_SIZE,
+                "binary_carrier": "PyPI immanuel==1.6.0 package data; both byte identities verified before use",
                 "python_adapter": "pyswisseph==2.10.3.2",
                 "required_flags": ["FLG_SWIEPH", "FLG_SPEED"],
             },
