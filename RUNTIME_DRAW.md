@@ -154,18 +154,26 @@ GitHub Connect fetch exact runtime/casting/randomizer.py as base64
 
 ### B. Free ChatGPT verified bounded capsule transport
 
-若 GitHub acquisition PASS、Python PASS，但產品沒有完整 connector→Python automatic payload bridge，**不得立刻停止**。先嘗試本 Repo 專為 Free ChatGPT cold start 提供的 bounded capsule：
+若 GitHub acquisition PASS、Python PASS，但產品沒有完整 connector→Python automatic payload bridge，**不得立刻停止**。先嘗試本 Repo 專為 Free ChatGPT cold start 提供的 chunked bounded capsule。Canonical transport contract 是 `chunked-model-mediated-opaque-handoff-v2`：
 
 ```text
 GitHub Connect fetch same exact commit runtime/casting/CHATGPT_RUNTIME_CAPSULE.json
-→ verify manifest authority = derived-transport-cache-only
+→ verify schema_version = 2
+→ verify authority = derived-transport-cache-only
+→ verify transport_contract = chunked-model-mediated-opaque-handoff-v2
 → verify source_path = runtime/casting/core.py
-→ verify payload_encoding = base64+zlib
-→ verify payload length <= 5000 chars and decoded_size <= 8192 bytes
-→ copy only opaque payload + expected decoded_size + expected decoded_sha256 into Python data
+→ verify payload_encoding = base64+zlib and chunk_encoding = ascii
+→ verify chunk_count matches chunks[] and admission bounds
+→ for each chunk in index order:
+     copy only that opaque chunk payload + encoded_length + encoded_sha256 into Python data
+     verify ASCII encoded length
+     verify SHA-256 of the chunk text bytes
+     mismatch ? fresh same-commit capsule read and retry only that failed chunk, up to chunk_retry_limit : accept chunk
+→ after every chunk PASS, concatenate accepted chunks by ascending index
+→ verify concatenated encoded length == manifest encoded_size
 → Python base64.b64decode(..., validate=True)
 → Python zlib.decompress(...)
-→ verify exact decoded byte count
+→ verify exact decoded byte count == decoded_size
 → verify SHA-256 == manifest decoded_sha256
 → only then write bytes as fixed-cache core.py
 → write capsule_verification.json (locator v4)
@@ -173,29 +181,40 @@ GitHub Connect fetch same exact commit runtime/casting/CHATGPT_RUNTIME_CAPSULE.j
 → execute canonical core function
 ```
 
+Admission / retry contract：
+
+- `chunk_size <= 512` chars、`chunk_count <= 16`、`encoded_size <= 5000` chars、`decoded_size <= 8192` bytes；任一超界 → FAIL CLOSED；
+- `chunk_reassembly` 必須是 `index-ascending-concat`；index 必須唯一且完整覆蓋 `0..chunk_count-1`；
+- 每個 chunk 都必須在 Python 端以 `encoded_length` + `encoded_sha256` **個別驗證**，不能只在最後驗整包；
+- chunk mismatch 時，若 manifest `chunk_retry_required_on_mismatch = true`，**不得立即整次 fail closed**；必須從同一 resolved exact commit fresh-read capsule，僅重取失敗 chunk，再驗證；
+- retry 上限使用 manifest `chunk_retry_limit`，目前 canonical v2 為 `2`；超過上限仍 mismatch 才視為 handoff failure；
+- fresh retry 不得改 commit/ref、不得用 memory／舊聊天 payload，也不得重送已 PASS chunks 來覆蓋已驗證資料；
+- 全部 chunks PASS 後仍須做 concatenated `encoded_size`、base64/zlib、`decoded_size` 與 final `decoded_sha256`；per-chunk PASS **不取代** final canonical-byte identity verification；
+- 若所有 chunk hashes PASS、但 final decoded size/hash FAIL，視為 manifest/reassembly/integrity failure，直接 FAIL CLOSED；不得用模型猜哪裡錯、不得改寫 source。
+
 這裡的 model-mediated step 是**明確 admission 的 bounded opaque transport**，不是 source transcription：
 
-- 模型只搬運 capsule manifest 中的 opaque encoded payload／size／hash，不翻譯、不改寫、不補字元；
-- Python 必須在寫入／import 前完成 decode + decompress + size + SHA-256 exact verification；
-- 任一字元在搬運中遺失／改變 → decode、size 或 hash 不一致 → FAIL CLOSED；
-- 不得從 payload 内容「理解後重寫」另一支 Python；
-- manifest 必須由同一 resolved exact commit 的 GitHub Connect retrieval 取得；memory／舊聊天中的 payload 不可代替 current acquisition；
-- `CHATGPT_RUNTIME_CAPSULE.json` 是 derived transport cache，canonical stochastic authority 仍是 `core.py`；CI 必須驗證 capsule 可 exact round-trip 回該 core bytes。
+- 模型只搬運 capsule manifest 中的 opaque chunk payload／length／hash 與 final size／hash metadata，不翻譯、不改寫、不補字元；
+- Python 必須在寫入／import 前完成 per-chunk exact verification、deterministic reassembly、decode + decompress + final size + SHA-256 exact verification；
+- 任一字元在搬運中遺失／改變 → 該 chunk length/hash 不一致；依上述 bounded retry contract 最小重取，而不是默默接受；
+- 不得從 chunk／decoded payload 内容「理解後重寫」另一支 Python；
+- manifest 與 retry 都必須由同一 resolved exact commit 的 GitHub Connect retrieval 取得；memory／舊聊天中的 payload 不可代替 current acquisition；
+- `CHATGPT_RUNTIME_CAPSULE.json` 是 derived transport cache，canonical stochastic authority 仍是 `core.py`；CI 必須驗證 chunks deterministic reassembly 後可 exact round-trip 回該 core bytes。
 
-這條路徑存在的目的就是處理 Free ChatGPT 已實測的 host 限制：GitHub Connect 可讀、Python 可執行，但沒有 connector payload object 可直接注入 Python。**只要 bounded capsule exact verification PASS，這不再是 `MATERIALIZATION HANDOFF CAPABILITY GAP`；它已建立可驗證的 byte-preserving handoff。**
+這條路徑存在的目的就是處理 Free ChatGPT 已實測的 host 限制：GitHub Connect 可讀、Python 可執行，但沒有 connector payload object 可直接注入 Python，而且 monolithic opaque payload 曾實測出現「decoded size PASS、final SHA-256 FAIL」的搬運失真。**只要 v2 chunks 與 final canonical bytes exact verification PASS，這不再是 `MATERIALIZATION HANDOFF CAPABILITY GAP`；它已建立可驗證的 byte-preserving handoff。**
 
 只有以下情況才標記 `MATERIALIZATION HANDOFF CAPABILITY GAP`：
 
 - direct full-runtime bridge 不可用，且同 commit capsule 無法取得；
-- capsule 超過 admission bounds；
-- capsule metadata 不符；
-- opaque payload 無法完整交給 Python；
-- base64／zlib decode、decoded size 或 SHA-256 驗證失敗；
+- capsule／chunk metadata 不符或超過 admission bounds；
+- chunk payload 在 required fresh same-commit retries 後仍無法通過 encoded length/SHA-256；
+- chunks 無法完整、唯一、依 index 重組，或 concatenated encoded_size 不符；
+- base64／zlib decode、decoded size 或 final SHA-256 驗證失敗；
 - Python execution capability 本身不可用。
 
-任何「payload 已交給 Python」claim 都必須有本 session 可觀察的 Python decode／verification evidence。
+任何「payload 已交給 Python」claim 都必須有本 session 可觀察的 **per-chunk verification + final decode/hash** evidence；只有看到 final size/hash PASS 才能宣稱 canonical `core.py` 已 materialize。
 
-**不得只因 connector 與 Python 是不同 capability，就直接推論 canonical source 無法 materialize；也不得只因兩端都存在，就反向推論 handoff 一定可用。** Retrieval、handoff、execution 仍是獨立 capability；capsule 是一條被驗證後才成立的 handoff implementation。
+**不得只因 connector 與 Python 是不同 capability，就直接推論 canonical source 無法 materialize；也不得只因兩端都存在，就反向推論 handoff 一定可用。** Retrieval、handoff、execution 仍是獨立 capability；chunked capsule v2 是一條被逐段與最終驗證後才成立的 handoff implementation。
 
 ### Canonical Execution Identity｜取得哪份 source，就執行哪份 implementation
 
@@ -395,13 +414,14 @@ Common：
 - direct `generate_payload()` 與 CLI contracts parity；
 - UTC/Taipei 同一瞬間、Taipei `+08:00`；
 - full-runtime cache marker/hash/version/invariant reuse；PASS 不重抓 source；
-- capsule artifact 必須 `base64+zlib` exact round-trip 回 current `core.py` bytes，decoded size + SHA-256 exact match；
-- capsule payload ≤ 5000 chars、decoded core ≤ 8192 bytes；超過即需重新檢討 transport admission；
+- capsule artifact 必須以 chunked v2 deterministic index-order reassembly 後 `base64+zlib` exact round-trip 回 current `core.py` bytes；每個 chunk encoded length/SHA-256、concatenated encoded_size、decoded size + final SHA-256 全部 exact match；
+- capsule `chunk_size <= 512`、`chunk_count <= 16`、`encoded_size <= 5000` chars、decoded core ≤ 8192 bytes；超過即需重新檢討 transport admission；
+- chunk mismatch 必須只 fresh-read 同 commit 的失敗 chunk 並依 manifest retry limit bounded retry；不得立即整次 fail closed，也不得覆蓋已 PASS chunks；
 - capsule core marker v4 PASS 後可直接 reuse core，不重新抓 GitHub；new question 仍 fresh RNG；
 - in-memory reuse 不重用結果；new question fresh RNG；
 - `--repeat`／batch／bounded core loop result count/order/independent identity 正確；
 - GitHub acquisition only through GitHub Connect；
-- direct connector→Python handoff capability gate 能區分 PASS 與 gap；direct bridge unavailable 時 verified capsule transport可建立 bounded byte-preserving handoff，且不讓 Python 自己 retrieval GitHub；
-- capsule decode/hash failure 必須 fail closed，不得 fallback 到模型重寫 stochastic core；
+- direct connector→Python handoff capability gate 能區分 PASS 與 gap；direct bridge unavailable 時 verified chunked capsule transport 可建立 bounded byte-preserving handoff，且不讓 Python 自己 retrieval GitHub；
+- capsule per-chunk retry exhausted、reassembly、decode/final hash failure 必須 fail closed，不得 fallback 到模型重寫 stochastic core；
 - `PLAYBOOK_INDEX.json` 與 method owners 的 full Runtime pointer 仍指向 `runtime/casting/randomizer.py`；
 - `runtime/casting/MIGRATION_SOURCE.json` 永久保存 pinned legacy import provenance；current production files 可在 canonical repo 依正式 contract/version governance 演進，不再要求 byte-for-byte 等於 legacy snapshot。
