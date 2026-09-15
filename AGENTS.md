@@ -150,11 +150,12 @@ resolve repository + current ref to exact commit when currentness matters
 5. 未指定 ordinary method 才走 `METHOD_ROUTING.md` Fast Path；production Astrology 只接受 explicit request，不參與 ordinary auto-routing。
 6. explicit research intent 走 `RESEARCH_ROUTING.md` → named research owner；research pointer 不取得 production method authority。
 7. stochastic method 由 AI 代抽／代起才需要 `RUNTIME_DRAW.md` contract；language-model generation ≠ Runtime Draw / Cast。
-8. 只有 material contract gap 才讀 `INPUT_CONTRACT.md`；需要拆題／牌位／時間窗設計才讀 `QUESTION_DESIGN.md`。
-9. 只有承接／補占／重占／Reality Update／completion／backtest 才讀 `READING_LIFECYCLE.md`；只有保存／跨聊天室／audit 才讀 `READING_RECORD.md`。
-10. `BEHAVIORAL_EVAL.md`、`references/`、`CASE_STUDIES/`、Historical Context 預設 Cold。
-11. exact owner／section 已唯一時直接讀 target，不增加 discovery ceremony。
-12. old chat／memory 不得覆蓋 current reality、原始 Input Contract、Draw/Cast Fact、Astrology Fact Bundle 或 current canonical rule。
+8. stochastic runtime fixed-cache probe FAIL／首次 acquisition 時，**必須先讀並嘗試 `RUNTIME_DRAW.md` 的 `Acquisition` admitted path**；在完成該 handoff 前不得宣稱 materialization unavailable、不得先轉 Web／manual fallback，也不得要求使用者自行提供 Tarot／Meihua／Liuyao 隨機結果。只有 Acquisition 明確允許的路徑已實際不可用或失敗，才可依 owner fail closed／fallback。
+9. 只有 material contract gap 才讀 `INPUT_CONTRACT.md`；需要拆題／牌位／時間窗設計才讀 `QUESTION_DESIGN.md`。
+10. 只有承接／補占／重占／Reality Update／completion／backtest 才讀 `READING_LIFECYCLE.md`；只有保存／跨聊天室／audit 才讀 `READING_RECORD.md`。
+11. `BEHAVIORAL_EVAL.md`、`references/`、`CASE_STUDIES/`、Historical Context 預設 Cold。
+12. exact owner／section 已唯一時直接讀 target，不增加 discovery ceremony。
+13. old chat／memory 不得覆蓋 current reality、原始 Input Contract、Draw/Cast Fact、Astrology Fact Bundle 或 current canonical rule。
 
 ## 維護與 validation
 

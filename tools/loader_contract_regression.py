@@ -54,6 +54,16 @@ CONTRACTS: dict[str, list[tuple[str, tuple[str, ...]]]] = {
             ),
         ),
         (
+            "AGENTS.md",
+            (
+                "fixed-cache probe FAIL／首次 acquisition",
+                "必須先讀並嘗試 `RUNTIME_DRAW.md` 的 `Acquisition` admitted path",
+                "不得宣稱 materialization unavailable",
+                "不得先轉 Web／manual fallback",
+                "不得要求使用者自行提供 Tarot／Meihua／Liuyao 隨機結果",
+            ),
+        ),
+        (
             "RUNTIME_DRAW.md",
             (
                 "Language-model generation ≠ random draw / cast",
