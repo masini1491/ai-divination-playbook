@@ -84,6 +84,8 @@ raw birth data / user-supplied structured facts
 
 ## GitHub repository retrieval
 
+**Pre-retrieval invariant：** before any current GitHub repository-content claim, GitHub connector capability must be established. GitHub public page／URL preview／search snippet／raw URL 等 alternate transport 不能 bootstrap 或驗證 current repo authority。若 connector unavailable／permission blocked 且 current content materially required，直接 `ACCESS BLOCKED`；不得先引用、摘要或聲稱已確認 alternate transport 所見的 Repo 規則。
+
 所有 GitHub-hosted repository identity、ref、commit、tree、diff、file、section、workflow、external GitHub reference acquisition 一律使用 GitHub connector / GitHub Connect。
 
 禁止以以下方式替代 GitHub repository retrieval：

@@ -64,15 +64,31 @@ CONTRACTS: dict[str, list[tuple[str, tuple[str, ...]]]] = {
     ],
     "TAROT-BEH-005": [
         (
+            "CHAT_INIT.md",
+            (
+                "Pre-Retrieval Transport Gate",
+                "在第一次 **current GitHub repository-content read**",
+                "先確認 GitHub connector / GitHub Connect capability",
+                "不得聲稱已確認目前 Repo／首頁／最新版規則",
+                "只有成功的 GitHub connector retrieval 才能建立 current GitHub repository-content authority",
+                "GitHub public HTML",
+                "URL preview／snippet",
+                "generic Web search",
+                "raw URL",
+                "ACCESS BLOCKED",
+            ),
+        ),
+        (
             "AGENTS.md",
             (
-                "所有 GitHub-hosted repository identity",
-                "GitHub connector / GitHub Connect",
+                "Pre-retrieval invariant",
+                "before any current GitHub repository-content claim",
+                "GitHub connector capability must be established",
+                "不能 bootstrap 或驗證 current repo authority",
+                "不得先引用、摘要或聲稱已確認 alternate transport 所見的 Repo 規則",
                 "ACCESS BLOCKED",
-                "raw.githubusercontent.com",
-                "git clone",
             ),
-        )
+        ),
     ],
     "TAROT-BEH-006": [
         (

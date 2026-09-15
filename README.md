@@ -19,6 +19,8 @@ Astrology（explicit-request only）
 
 > **AI / ChatGPT 快速入口：** 實際使用本手冊時，直接從 [`CHAT_INIT.md`](CHAT_INIT.md) 開始並依 task routing 只讀最低必要文件／sections；不需要先完整閱讀本 README，也不要為了「熟悉手冊」掃描整個 Repository。
 >
+> **Pre-retrieval warning：** 如果 AI 目前只看得到 GitHub public page、URL preview／snippet 或 search preview，而 GitHub Connect 尚未連上，**不得**把該 public surface 當成 current repository authority，也不得據此聲稱「已確認目前 Repo／最新版規則」。需要 current GitHub content 時先建立 GitHub Connect retrieval；若最低必要 connector/read recovery 仍失敗，停在 `ACCESS BLOCKED`。Canonical policy 仍由 [`CHAT_INIT.md`](CHAT_INIT.md) 擁有，README 不取得 repository-access authority。
+>
 > **GitHub Connect 是本專案唯一 GitHub repository retrieval transport：** 只要需要讀取本 Repo、Randomizer、外部 method engine、GitHub reference、branch／commit／diff／license 等 GitHub-hosted evidence，一律使用 connected GitHub connector。若 connector 不可用而 task materially 依賴 current GitHub content，停在 `ACCESS BLOCKED`；完整規則以 [`CHAT_INIT.md`](CHAT_INIT.md) 為準。
 
 本儲存庫不以整理完整牌義、卦辭、星座關鍵字或宣稱「算得準」為主要目的，而是處理更前面的問題：
