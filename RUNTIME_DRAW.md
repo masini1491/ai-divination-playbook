@@ -101,6 +101,23 @@ Python capability
 → fresh execution
 ```
 
+### Canonical Execution Identity｜取得哪份 source，就執行哪份 implementation
+
+GitHub Connect 取得 `runtime/casting/randomizer.py` 後，**真正被 import／CLI 執行的 stochastic implementation 必須就是該 canonical source 本身（或其 byte-for-byte fixed-cache copy）**。取得 source 只建立 source authority；不授權模型把演算法轉錄成另一支「等價」程式。
+
+允許：
+
+- 將 connector 取得的 canonical source 原樣 materialize 到 fixed cache，驗證 hash／marker 後 import 或直接 CLI 執行；
+- 寫最薄的 caller／wrapper 去 import canonical module、呼叫 `generate_payload()`／`compact_ai_payload()` 或啟動 canonical CLI；wrapper 不得重寫 RNG、牌組、A/B、coin、mapping、schema 或 provenance core。
+
+禁止：
+
+- 讀完 canonical source 後另寫 `/tmp/cast.py`、inline Python、shell heredoc 或其他 transcription／reimplementation，自己重做 stochastic core 再拿結果當 Runtime Draw / Cast；
+- 因「邏輯看起來等價」就以 `secrets`／`random`／手寫 modulo／手寫洗牌／手寫 three-coin 取代 canonical implementation；
+- 自製程式輸出卻標示 canonical `source`、algorithm/schema version、runtime source commit 等 provenance，讓它看起來像 canonical execution。
+
+若 canonical source 已取得，但無法可信 materialize／import／CLI execute 該 source，本次 runtime 必須 fail closed 或走本章明確允許的 runtime fallback；**不得用模型重寫 implementation 來補洞。**
+
 Marker 最低：
 
 ```json
