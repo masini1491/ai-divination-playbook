@@ -1,0 +1,35 @@
+{
+  "scenario_id": "TAROT-BEH-003",
+  "playbook_sha": "0197ed299d35fb6b9dafa86ee223d4c65175d3a4",
+  "classification": "PASS",
+  "run_kind": "formal",
+  "run_time": "2026-09-15",
+  "stimulus": "我想占這個月工作上最值得注意的是什麼？",
+  "observed_actions": [
+    "Fresh Free ChatGPT session resolved and used Playbook exact commit 0197ed299d35fb6b9dafa86ee223d4c65175d3a4 through GitHub Connect.",
+    "Local fixed runtime cache probe observed cache miss; /mnt/data/divination-casting-runtime was absent at start.",
+    "Acquisition stayed on GitHub Connect and fetched runtime/casting/CHATGPT_RUNTIME_CAPSULE.json from the same exact commit; no Web/raw URL/Python HTTP/git clone alternate repository transport was observed.",
+    "Free ChatGPT transferred the chunked v2 opaque capsule payload into Python as nine chunks.",
+    "Python output showed chunk_count = 9, each chunk length = 444, and all nine per-chunk SHA-256 checks = true.",
+    "The run proceeded past chunk verification into capsule decode/materialization and canonical core execution rather than stopping at MATERIALIZATION HANDOFF CAPABILITY GAP.",
+    "Canonical runtime produced Meihua Cast Fact A=778 and B=625 before interpretation.",
+    "The response derived upper trigram Dui, lower trigram Qian, primary hexagram Ze Tian Guai, moving line 5, then interpreted only after the Cast Fact was fixed.",
+    "No language-model-generated substitute A/B values or alternate stochastic implementation was observed."
+  ],
+  "classification_reason": "PASS. The product-level Free ChatGPT fresh-chat cold-start path satisfied the material TAROT-BEH-003 contract: cache miss -> same-commit GitHub Connect capsule acquisition -> chunked v2 opaque handoff -> observable Python per-chunk verification -> canonical runtime execution -> Raw Cast Fact -> interpretation. User-supplied screenshots directly show the empty-cache probe, same-commit capsule retrieval, nine 444-character chunks with all per-chunk SHA checks true, and the resulting runtime Cast Fact A=778/B=625. The screenshots do not expose every final decoded-size/final-SHA stdout line, so they are not a complete audit transcript, but the run visibly continued from successful chunk verification into the canonical core execution path and produced the Cast Fact before interpretation; under the scenario contract this is sufficient product evidence for PASS.",
+  "response_reference": "User-supplied screenshots in the source ChatGPT conversation on 2026-09-15 showing: (1) exact-commit load/cache-miss trace, (2) same-commit CHATGPT_RUNTIME_CAPSULE.json retrieval and Python chunk handoff, and (3) nine 444-character chunks with all per-chunk SHA checks true followed by canonical Meihua Cast Fact A=778/B=625 and interpretation. Screenshots themselves are intentionally not committed to the public Playbook to avoid storing chat UI/private context.",
+  "notes": {
+    "environment": "Free ChatGPT, fresh chat, empty runtime cache",
+    "acquisition_transport": "GitHub Connect only",
+    "capsule_transport": "chunked-model-mediated-opaque-handoff-v2",
+    "chunk_count": 9,
+    "chunk_length": 444,
+    "runtime_fact": {
+      "method": "plum",
+      "A": 778,
+      "B": 625
+    },
+    "evidence_limit": "User screenshots did not expose every final decoded-size/final-SHA stdout line; they did expose all per-chunk SHA checks and the subsequent canonical execution result.",
+    "historical_context": "The earlier 23e50aa975fa3d0d3171ba89590c84d2d3ca7346 product run is not treated as a valid chunked-v2 result because canonical RUNTIME_DRAW governance had not yet been synchronized to the v2 transport contract; that run is classified as invalid/governance-sync regression context, not as evidence that chunked v2 failed."
+  }
+}
