@@ -108,7 +108,7 @@ minimum exact read recovery
 → ACCESS BLOCKED
 ```
 
-已由 canonical owner 專門治理的 local verified runtime reuse（例如 `RUNTIME_DRAW.md` 的 Randomizer fixed cache）不是新的 GitHub acquisition，可依其 owner 規則 reuse。
+已由 canonical owner 專門治理的 local verified runtime reuse（例如 `RUNTIME_DRAW.md` 的 Randomizer fixed cache）不是新的 GitHub acquisition，可依其 owner規則 reuse。
 
 Connector retrieval capability ≠ Python execution authority ≠ repository write authority ≠ Reading Record storage authority。
 
@@ -150,16 +150,17 @@ resolve repository + current ref to exact commit when currentness matters
 5. 未指定 ordinary method 才走 `METHOD_ROUTING.md` Fast Path；production Astrology 只接受 explicit request，不參與 ordinary auto-routing。
 6. explicit research intent 走 `RESEARCH_ROUTING.md` → named research owner；research pointer 不取得 production method authority。
 7. stochastic method 由 AI 代抽／代起才需要 `RUNTIME_DRAW.md` contract；language-model generation ≠ Runtime Draw / Cast。
-8. 只有 material contract gap 才讀 `INPUT_CONTRACT.md`；需要拆題／牌位／時間窗設計才讀 `QUESTION_DESIGN.md`。
-9. 只有承接／補占／重占／Reality Update／completion／backtest 才讀 `READING_LIFECYCLE.md`；只有保存／跨聊天室／audit 才讀 `READING_RECORD.md`。
-10. `BEHAVIORAL_EVAL.md`、`references/`、`CASE_STUDIES/`、Historical Context 預設 Cold。
-11. exact owner／section 已唯一時直接讀 target，不增加 discovery ceremony。
-12. old chat／memory 不得覆蓋 current reality、原始 Input Contract、Draw/Cast Fact、Astrology Fact Bundle 或 current canonical rule。
+8. stochastic runtime fixed-cache probe FAIL／首次 acquisition 時，**必須先讀並嘗試 `RUNTIME_DRAW.md` 的 `Acquisition` admitted path**；在完成該 handoff 前不得宣稱 materialization unavailable、不得先轉 Web／manual fallback，也不得要求使用者自行提供 Tarot／Meihua／Liuyao 隨機結果。只有 Acquisition 明確允許的路徑已實際不可用或失敗，才可依 owner fail closed／fallback。
+9. 只有 material contract gap 才讀 `INPUT_CONTRACT.md`；需要拆題／牌位／時間窗設計才讀 `QUESTION_DESIGN.md`。
+10. 只有承接／補占／重占／Reality Update／completion／backtest 才讀 `READING_LIFECYCLE.md`；只有保存／跨聊天室／audit 才讀 `READING_RECORD.md`。
+11. `BEHAVIORAL_EVAL.md`、`references/`、`CASE_STUDIES/`、Historical Context 預設 Cold。
+12. exact owner／section 已唯一時直接讀 target，不增加 discovery ceremony。
+13. old chat／memory 不得覆蓋 current reality、原始 Input Contract、Draw/Cast Fact、Astrology Fact Bundle 或 current canonical rule。
 
 ## 維護與 validation
 
 - 優先修改既有 canonical owner；只有形成獨立 retrieval intent 才新增文件。
-- 不在 README、AGENTS、CHAT_INIT、PLAYBOOK_INDEX、load pack 與 method owner 間人工複製完整 normative policy。
+- 不在 README、AGENTS、CHAT_INIT、PLAYBOOK_INDEX、load pack 與 method owner間人工複製完整 normative policy。
 - `CHATGPT_LOAD_PACK.json` 必須由 `tools/build_chatgpt_load_pack.py` 產生；禁止手動把它提升為 authority。
 - loader performance budget 由 `tools/chatgpt_load_benchmark.py` + `evals/chatgpt_load_budget.json` 驗證；benchmark 是 deterministic retrieval-cost proxy，不宣稱等同產品 wall-clock latency。
 - 新 method / research line discoverability 不等於 production adoption；不得繞過 method owner、runtime/fact gate、behavioral regression 與 explicit admission。
