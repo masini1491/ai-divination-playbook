@@ -8,11 +8,14 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CASTING_ROOT = ROOT / "runtime" / "casting"
-if str(CASTING_ROOT) not in sys.path:
-    sys.path.insert(0, str(CASTING_ROOT))
+TOOLS_ROOT = ROOT / "tools"
+for path in (CASTING_ROOT, TOOLS_ROOT):
+    if str(path) not in sys.path:
+        sys.path.insert(0, str(path))
 
 import core
 import randomizer
+import build_runtime_capsule
 
 
 class ChatGPTRuntimeCapsuleTests(unittest.TestCase):
@@ -39,6 +42,9 @@ class ChatGPTRuntimeCapsuleTests(unittest.TestCase):
     def test_capsule_stays_bounded_for_model_mediated_transport(self):
         self.assertLessEqual(len(self.capsule["payload"]), 5000)
         self.assertLessEqual(self.capsule["decoded_size"], 8192)
+
+    def test_generator_matches_committed_capsule(self):
+        self.assertEqual(build_runtime_capsule.build_capsule(), self.capsule)
 
     def test_randomizer_reuses_canonical_core_functions(self):
         self.assertIs(randomizer.draw_tarot, core.draw_tarot)
