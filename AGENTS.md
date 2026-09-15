@@ -108,7 +108,7 @@ minimum exact read recovery
 → ACCESS BLOCKED
 ```
 
-已由 canonical owner 專門治理的 local verified runtime reuse（例如 `RUNTIME_DRAW.md` 的 Randomizer fixed cache）不是新的 GitHub acquisition，可依其 owner規則 reuse。
+已由 canonical owner 專門治理的 local verified runtime reuse（例如 `RUNTIME_DRAW.md` 的 Randomizer fixed cache）不是新的 GitHub acquisition，可依其 owner 規則 reuse。
 
 Connector retrieval capability ≠ Python execution authority ≠ repository write authority ≠ Reading Record storage authority。
 
@@ -160,7 +160,7 @@ resolve repository + current ref to exact commit when currentness matters
 ## 維護與 validation
 
 - 優先修改既有 canonical owner；只有形成獨立 retrieval intent 才新增文件。
-- 不在 README、AGENTS、CHAT_INIT、PLAYBOOK_INDEX、load pack 與 method owner間人工複製完整 normative policy。
+- 不在 README、AGENTS、CHAT_INIT、PLAYBOOK_INDEX、load pack 與 method owner 間人工複製完整 normative policy。
 - `CHATGPT_LOAD_PACK.json` 必須由 `tools/build_chatgpt_load_pack.py` 產生；禁止手動把它提升為 authority。
 - loader performance budget 由 `tools/chatgpt_load_benchmark.py` + `evals/chatgpt_load_budget.json` 驗證；benchmark 是 deterministic retrieval-cost proxy，不宣稱等同產品 wall-clock latency。
 - 新 method / research line discoverability 不等於 production adoption；不得繞過 method owner、runtime/fact gate、behavioral regression 與 explicit admission。
