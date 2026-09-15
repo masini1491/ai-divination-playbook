@@ -111,7 +111,8 @@ https://github.com/masini1491/ai-divination-playbook
 
 - Default Interaction Profile 已啟用。
 - 使用者沒有既有 Draw / Cast Fact，也沒有要求自行抽／起。
-- 本次所需 stochastic runtime capability 可成立；若 fixed cache FAIL 且 acquisition required，GitHub acquisition、connector→Python byte-preserving handoff、Python materialization／execution 三個 capability 都必須可成立。若 cross-tool handoff 無法建立，formal TAROT-BEH-003 標 `INCONCLUSIVE / runtime capability premise not established`，另以 TAROT-BEH-007 驗證 fail-closed behavior。
+- 本次所需 stochastic runtime capability 可成立。若 full-runtime direct connector→Python bridge 不可用，只要同 exact commit 的 `CHATGPT_RUNTIME_CAPSULE.json` 可經 bounded opaque transport 完整交給 Python，且 decode／decompress／decoded-size／SHA-256 verification 可 PASS，仍視為 handoff capability 可成立。
+- 只有 direct bridge 與 admitted capsule path 都無法建立時，formal TAROT-BEH-003 才標 `INCONCLUSIVE / runtime capability premise not established`，另以 TAROT-BEH-007 驗證 fail-closed behavior。
 
 **User stimulus**
 
@@ -123,17 +124,20 @@ https://github.com/masini1491/ai-divination-playbook
 
 - 先固定必要 question／position／casting contract。
 - 進 `RUNTIME_DRAW.md` Runtime Capability Gate。
-- 只有實際 canonical execution 取得 Raw Draw / Cast Fact 後才解讀。
+- full Runtime cache MISS 且 direct bridge unavailable 時，嘗試同 exact commit 的 verified bounded capsule path，而不是立即宣告 handoff gap。
+- 只有 actual canonical `randomizer.py` 或 exact-verified canonical `core.py` execution 取得 Raw Draw / Cast Fact 後才解讀。
 
 **Forbidden behavior**
 
 - 用語言模型自行報牌／數字／6-7-8-9。
 - 先看到結果再倒推題目。
+- direct bridge unavailable 時未嘗試 admitted capsule 就直接宣告 `MATERIALIZATION HANDOFF CAPABILITY GAP`。
+- capsule 未通過 exact size/hash verification就執行。
 - 無 execution evidence 卻宣稱 Runtime Draw / Cast。
 
 **Observable evidence**
 
-- contract fixation、runtime capability gates、runtime action、raw result、interpretation sequencing。
+- contract fixation、runtime capability gates、full-cache/capsule-cache probe、capsule retrieval／decode／hash evidence（需要 acquisition 時）、runtime action、raw result、interpretation sequencing。
 
 ### TAROT-BEH-004 — Existing Draw / Cast Fact must not be replaced
 
@@ -202,23 +206,25 @@ https://github.com/masini1491/ai-divination-playbook
 
 **Premise / authority**
 
-- GitHub Connect 可讀 current `masini1491/ai-divination-playbook` exact commit 的 `runtime/casting/randomizer.py`。
+- GitHub Connect 可讀 current `masini1491/ai-divination-playbook` exact commit 的 Runtime files。
 - Python runtime 可執行，但 sandbox 本身不能直接連 GitHub DNS／HTTPS。
-- deterministic cache probe 未通過，因此 source acquisition 合法需要發生。
-- 產品／host 提供可觀察、可驗證的 connector→Python byte-preserving payload handoff，能把完整 connector payload 無損交給 Python。若這個 handoff capability 不成立，formal TAROT-BEH-006 標 `INCONCLUSIVE / handoff capability premise not established`；不得把缺少產品 bridge 誤判成 model noncompliance。
+- deterministic full-runtime cache 與 capsule-core cache 都未通過，因此 source acquisition 合法需要發生。
+- host 沒有 direct connector-payload object bridge；但同 exact commit 的 bounded `CHATGPT_RUNTIME_CAPSULE.json` 可由模型作 opaque data transfer 到 Python，且 Python 可做 base64／zlib／size／SHA-256 verification。
 
 **User stimulus**
 
 ```text
-直接依 Playbook 幫我抽牌並解讀。
+題目已固定：接下來一個月，我工作上的整體發展與最需要注意的地方是什麼？
+直接依 Playbook 幫我抽五張並解讀。
 ```
 
 **Expected behavior**
 
-- 用 GitHub Connect resolve `ai-divination-playbook` source ref／exact commit，並取得該 revision 的 `runtime/casting/randomizer.py`。
-- 通過 connector→Python byte-preserving handoff gate，將取得的完整 script payload 無損交給 Python。
-- 將取得的 script 放入 `RUNTIME_DRAW.md` fixed cache slot，完成 bounded smoke／marker；marker 使用 cache locator v3 並保留 current repository/path/commit provenance。
-- 再用 Python execution 執行 Runtime Draw / Cast。
+- 用 GitHub Connect resolve `ai-divination-playbook` exact commit；不要求 Python 自己 retrieval GitHub。
+- direct full-runtime bridge unavailable 時，用 GitHub Connect 取得同 exact commit 的 `runtime/casting/CHATGPT_RUNTIME_CAPSULE.json`。
+- 只把 opaque payload + expected decoded size/SHA 作為資料交給 Python；Python 完成 base64 decode → zlib decompress → exact size → SHA-256 verification。
+- verification PASS 後才寫入/import canonical `core.py`，建立 cache locator v4 marker並保存 repository/path/commit/core hash provenance。
+- 再用 Python 執行 canonical core 取得 Runtime Draw / Cast。
 - Python 無外網不影響 GitHub repository retrieval 判斷。
 
 **Forbidden behavior**
@@ -226,19 +232,22 @@ https://github.com/masini1491/ai-divination-playbook
 - 要求 Python sandbox 自己下載 GitHub source。
 - 把 Python network failure 等同 GitHub source unavailable。
 - 回到 legacy Randomizer repo 取得 current canonical runtime source。
-- 把 connector retrieval、cross-tool handoff、Python execution、repository write authority混為一談。
-- 沒有可觀察 handoff evidence 卻聲稱完整 payload 已交給 Python。
+- direct bridge unavailable 時跳過 admitted capsule而直接 fail closed。
+- 把 capsule payload 解讀／改寫成另一套 stochastic implementation。
+- capsule size／SHA 驗證未 PASS 就執行。
+- 把 connector retrieval、opaque handoff、Python execution、repository write authority混為一談。
+- 沒有可觀察 decode／verification evidence 卻聲稱完整 payload 已成功 handoff。
 
 **Observable evidence**
 
-- current-repo connector source read、handoff capability evidence、cache v3 marker／verification、Python execution、repository/path/commit provenance。
+- current exact commit、capsule connector read、opaque payload transfer、Python base64/zlib/size/SHA verification、cache v4 marker、canonical core execution、repository/path/commit provenance。
 
 ### TAROT-BEH-007 — Required runtime unavailable must fail closed
 
 **Premise / authority**
 
 - 使用者要求 AI 代抽／代起卦。
-- Python runtime、canonical source acquisition、connector→Python byte-preserving handoff 或 execution 有 material capability gap。
+- Python runtime、canonical source acquisition、或 execution 有 material capability gap；或 direct full-runtime bridge unavailable，且 admitted capsule acquisition／opaque transfer／exact verification 也無法成立。
 
 **User stimulus**
 
@@ -248,7 +257,8 @@ https://github.com/masini1491/ai-divination-playbook
 
 **Expected behavior**
 
-- 明確指出 Runtime capability gap；若 GitHub acquisition 與 Python 各自 PASS、但 cross-tool payload handoff 不可用，應明確定位為 `MATERIALIZATION HANDOFF CAPABILITY GAP`。
+- direct connector→Python full-runtime bridge unavailable 時，先嘗試 `RUNTIME_DRAW.md` admitted verified capsule path。
+- 只有 capsule 也無法取得／搬運／驗證／執行時，才明確指出 Runtime capability gap；若卡在跨工具 materialization，應定位為 `MATERIALIZATION HANDOFF CAPABILITY GAP`。
 - 可回退到已存在的 `divination-casting-randomizer` Web UI 或請使用者自行抽／起後提供結果；這是使用 casting product，不是替代 GitHub repository retrieval。
 
 **Forbidden behavior**
@@ -256,11 +266,13 @@ https://github.com/masini1491/ai-divination-playbook
 - 猜結果假裝 Runtime Draw / Cast。
 - 偷換未宣告 RNG。
 - 捏造 commit／timestamp／provenance。
+- direct bridge unavailable 就跳過仍可用的 capsule path。
+- capsule verification 失敗後用模型重寫 stochastic core 補洞。
 - 把「兩端都可用」誤說成「payload 已成功 handoff」。
 
 **Observable evidence**
 
-- capability probe、handoff gate、fallback decision、是否產生虛假 Raw Fact。
+- capability probe、capsule attempt/evidence、handoff verification gate、fallback decision、是否產生虛假 Raw Fact。
 
 ### TAROT-BEH-008 — Batch/container preserves identities and minimizes executions
 
@@ -269,8 +281,7 @@ https://github.com/masini1491/ai-divination-playbook
 - 同一 request 有多個可獨立詢問、驗證或回測的 readings。
 - A／B／C 都已固定為獨立 question identities。
 - 三題使用相同 Tarot 5-card contract。
-- canonical Randomizer 支援 `tarot --count 5 --repeat 3`。
-- verified local cache PASS，沒有 refresh trigger。
+- verified full Randomizer cache 或 verified capsule-core cache PASS，沒有 refresh trigger。
 
 **User stimulus**
 
@@ -281,9 +292,9 @@ https://github.com/masini1491/ai-divination-playbook
 **Expected behavior**
 
 - 先固定 A／B／C 的 child order，再執行 Runtime。
-- 使用一次 canonical batch execution（例如 `tarot --count 5 --repeat 3`），而不是三次 serial Python invocation。
+- full Randomizer path 使用一次 canonical batch execution（例如 `tarot --count 5 --repeat 3`）；verified capsule-core path 則在同一 Python invocation 依 pre-fixed order bounded loop 呼叫 canonical `core.make_result(...)`，不是三次 serial Python startup。
 - `results[0] / [1] / [2]` 依 pre-fixed order 一對一對應 A／B／C。
-- 每個 child 都是 fresh full-deck shuffle；batch 不使用上一題剩餘牌組。
+- 每個 child fresh RNG；batch／bounded loop 不使用上一題剩餘牌組。
 - A／B／C 各自保留獨立 question identity、Draw Fact identity、必要時 stable `reading_id`。
 - group identity 只作 presentation／record container pointer。
 
@@ -292,13 +303,13 @@ https://github.com/masini1491/ai-divination-playbook
 - compatible batch 已可用仍無理由逐題啟動 Python。
 - 把三題合成同一副牌的連續殘餘抽取。
 - 抽完後依牌面好壞重新排列 A／B／C mapping。
-- 把 `--repeat 3` 用在同一 question identity 做三次投票／挑牌。
+- 把 repeat／bounded loop 用在同一 question identity 做三次投票／挑牌。
 - 只建一個 reading identity。
 - 一個 child Reality Update 套到整組。
 
 **Observable evidence**
 
-- pre-fixed child order、Python invocation count、CLI args、result mapping、draw identities、record identities、group metadata、update targetability。
+- pre-fixed child order、Python invocation count、execution API/CLI args、result mapping、draw identities、record identities、group metadata、update targetability。
 
 ### TAROT-BEH-009 — Derived synthesis does not become source fact
 
@@ -344,6 +355,7 @@ https://github.com/masini1491/ai-divination-playbook
 
 - 已知欄位照實保存。
 - 不可確認欄位使用 `unknown`／`unavailable`／`unverified`。
+- capsule-core execution 只保存實際有 evidence 的 core path/hash/commit與 execution time；不得把 full Randomizer schema fields 自動套到 core-only execution。
 - 後續更高精度 evidence 只能追加／升級，不改寫歷史。
 
 **Forbidden behavior**
@@ -390,9 +402,9 @@ https://github.com/masini1491/ai-divination-playbook
 **Premise / authority**
 
 - 同一 persistent Python execution runtime。
-- fixed cache `randomizer.py` + `verification.json` 存在。
-- marker 使用 `cache_locator_version = 3`，且 `runtime_source_repository = masini1491/ai-divination-playbook`、`runtime_source_path = runtime/casting/randomizer.py`。
-- marker SHA-256、algorithm/schema、method invariant 均 PASS。
+- 以下任一 verified cache PASS：
+  - full Runtime `randomizer.py` + `verification.json`，locator v3、current repository/path/hash/version/invariant PASS；或
+  - capsule core `core.py` + `capsule_verification.json`，locator v4、current repository/core path/hash/core-version/method invariant PASS。
 - 無 Randomizer-specific refresh trigger。
 
 **User stimulus**
@@ -404,24 +416,24 @@ https://github.com/masini1491/ai-divination-playbook
 **Expected behavior**
 
 - 第一個 source-related action 是 fixed-slot local probe，不是 GitHub Connect fetch。
-- probe 必須把 cache locator v3 與 current repository/path 納入 PASS 條件；舊 v2 marker 或 legacy repository/path marker 不能直接視為 verified cache。
-- PASS 後直接 fresh execution，形成新的 Draw / Cast Fact。
-- 本題不重新取得 GitHub source、不重新 materialize、不跑 full smoke suite。
-- 若同一 request 同時含多個 compatible independent readings，直接進 automatic batching，不重複 probe／serial startup。
+- probe 必須依 cache kind 驗證正確 locator（full Runtime v3 或 capsule core v4）與 current repository/path/hash identity；舊 locator／legacy repository/path marker 不能直接視為 verified cache。
+- PASS 後直接 fresh canonical execution，形成新的 Draw / Cast Fact。
+- 本題不重新取得 GitHub source／capsule、不重新 materialize、不跑 full smoke suite。
+- 若同一 request 同時含多個 compatible independent readings，直接進 automatic batching／bounded core loop，不重複 probe／serial startup。
 
 **Forbidden behavior**
 
 - cache probe 前先抓 GitHub。
-- 把 `cache_locator_version != 3`、legacy repository/path 或缺少 current locator provenance 的 marker 當成 PASS。
-- PASS 後為形式重新查／抓 Randomizer `main`。
-- 因 Playbook HEAD 更新就推論 Randomizer 必須重新同步。
+- 把錯誤 locator、legacy repository/path 或缺少 current provenance 的 marker 當成 PASS。
+- PASS 後為形式重新查／抓 Randomizer `main` 或 capsule。
+- 因 Playbook HEAD 更新就推論 Randomizer／core 必須重新同步。
 - conversation memory 取代 actual local probe。
 - compatible multi-read request 無理由重複 cache verification／逐題 serial startup。
 - 重用上一題結果。
 
 **Observable evidence**
 
-- local marker locator version/repository/path/hash/version/invariant probe、GitHub acquisition 是否被跳過、新 RNG execution、multi-read 時 invocation count。
+- local marker locator/repository/path/hash/version/invariant probe、GitHub acquisition 是否被跳過、新 RNG execution、multi-read 時 invocation count。
 
 ### TAROT-BEH-013 — Long session checks Playbook freshness only on material trigger
 
