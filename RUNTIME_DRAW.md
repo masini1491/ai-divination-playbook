@@ -101,6 +101,25 @@ Python capability
 → fresh execution
 ```
 
+### Byte-Preserving Materialization Bridge｜connector source → local fixed cache
+
+若 GitHub Connect 可取得 exact revision source，而 Python runtime 可執行，**preferred materialization transport 是 GitHub Connect base64 → Python decode**：
+
+```text
+GitHub Connect fetch exact runtime/casting/randomizer.py as base64
+→ pass returned base64 payload into Python as data only
+→ Python base64.b64decode(...)
+→ write decoded bytes to fixed cache randomizer.py
+→ SHA-256 / marker / method invariant verification
+→ import or CLI execute that fixed-cache file
+```
+
+這條 bridge 只搬運 canonical bytes，不授權 Python 自己連 GitHub，也不授權模型重建 source。Python 端允許的 materialization logic 只應處理 base64 decode、filesystem write、hash／marker 驗證與 canonical module import／execution；不得在 bridge 中重寫 RNG、牌組、A/B、coin、mapping、schema 或 provenance core。
+
+如果 connector 支援 `encoding=base64` 或等價 byte-preserving payload，應優先使用；只有 connector 無法提供完整 byte-preserving source、decode／write／hash 驗證失敗，或 Python execution capability 本身不可用時，才可判定 materialization capability gap。
+
+**不得只因 connector 與 Python 是不同 capability，就直接推論 canonical source 無法 materialize。** Retrieval 與 execution authority 雖分離，但 connector output 可以作為 data 被 Python decode/write；這不等於 Python repository retrieval。
+
 ### Canonical Execution Identity｜取得哪份 source，就執行哪份 implementation
 
 GitHub Connect 取得 `runtime/casting/randomizer.py` 後，**真正被 import／CLI 執行的 stochastic implementation 必須就是該 canonical source 本身（或其 byte-for-byte fixed-cache copy）**。取得 source 只建立 source authority；不授權模型把演算法轉錄成另一支「等價」程式。
@@ -273,5 +292,6 @@ Common：
 - in-memory reuse 不重用結果；new question fresh RNG；
 - `--repeat`／batch result count/order/independent identity 正確；
 - GitHub acquisition only through GitHub Connect；
+- connector base64 materialization → Python decode/write → fixed-cache hash verification 可成立，且不讓 Python 自己 retrieval GitHub；
 - `PLAYBOOK_INDEX.json` 與 method owners 都指向 `runtime/casting/randomizer.py`；
 - `runtime/casting/MIGRATION_SOURCE.json` 永久保存 pinned legacy import provenance；current production files 可在 canonical repo 依正式 contract/version governance 演進，不再要求 byte-for-byte 等於 legacy snapshot。

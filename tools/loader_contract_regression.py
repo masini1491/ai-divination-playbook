@@ -59,6 +59,8 @@ CONTRACTS: dict[str, list[tuple[str, tuple[str, ...]]]] = {
                 "Language-model generation ≠ random draw / cast",
                 "Question Contract fixed",
                 "Draw / Cast Fact fixed",
+                "GitHub Connect base64 → Python decode",
+                "不得只因 connector 與 Python 是不同 capability",
             ),
         ),
     ],
@@ -95,6 +97,8 @@ CONTRACTS: dict[str, list[tuple[str, tuple[str, ...]]]] = {
             "RUNTIME_DRAW.md",
             (
                 "GitHub Connect acquire exact revision runtime/casting/randomizer.py",
+                "GitHub Connect base64 → Python decode",
+                "base64.b64decode",
                 "GitHub retrieval capability ≠ Python execution ≠ repository write authority",
                 "cache_locator_version\":3",
                 "runtime_source_repository\":\"masini1491/ai-divination-playbook",
