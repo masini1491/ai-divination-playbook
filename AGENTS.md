@@ -150,7 +150,7 @@ resolve repository + current ref to exact commit when currentness matters
 5. 未指定 ordinary method 才走 `METHOD_ROUTING.md` Fast Path；production Astrology 只接受 explicit request，不參與 ordinary auto-routing。
 6. explicit research intent 走 `RESEARCH_ROUTING.md` → named research owner；research pointer 不取得 production method authority。
 7. stochastic method 由 AI 代抽／代起才需要 `RUNTIME_DRAW.md` contract；language-model generation ≠ Runtime Draw / Cast。
-8. stochastic runtime fixed-cache probe FAIL／首次 acquisition 時，**必須先讀並嘗試 `RUNTIME_DRAW.md` 的 `Acquisition` admitted path**；在完成該 handoff 前不得宣稱 materialization unavailable、不得先轉 Web／manual fallback，也不得要求使用者自行提供 Tarot／Meihua／Liuyao 隨機結果。只有 Acquisition 明確允許的路徑已實際不可用或失敗，才可依 owner fail closed／fallback。
+8. stochastic runtime fixed-cache probe FAIL／首次 acquisition 時，**必須先讀並實際嘗試 `RUNTIME_DRAW.md` 的 `Acquisition` admitted path**；取得 canonical source 本身不等於 acquisition complete。若 Python capability 可用且 GitHub Connect 可提供 byte-preserving payload，必須實際嘗試 connector payload → decode/write → hash／marker verify → import／CLI execute，再判定 materialization／execution 是否 blocked；不得僅因 connector 與 Python capability 分離、或尚未嘗試 bridge，就宣稱 materialization unavailable。任何「已取得 canonical source」claim 必須有本 session 可觀察的 connector retrieval evidence。只有 Acquisition 明確允許的路徑已實際不可用或失敗，才可依 owner fail closed／fallback；在此之前也不得先轉 Web／manual fallback，或要求使用者自行提供 Tarot／Meihua／Liuyao 隨機結果。
 9. 只有 material contract gap 才讀 `INPUT_CONTRACT.md`；需要拆題／牌位／時間窗設計才讀 `QUESTION_DESIGN.md`。
 10. 只有承接／補占／重占／Reality Update／completion／backtest 才讀 `READING_LIFECYCLE.md`；只有保存／跨聊天室／audit 才讀 `READING_RECORD.md`。
 11. `BEHAVIORAL_EVAL.md`、`references/`、`CASE_STUDIES/`、Historical Context 預設 Cold。
