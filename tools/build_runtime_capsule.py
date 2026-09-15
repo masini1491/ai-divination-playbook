@@ -15,6 +15,23 @@ CORE = ROOT / "runtime" / "casting" / "core.py"
 OUTPUT = ROOT / "runtime" / "casting" / "CHATGPT_RUNTIME_CAPSULE.json"
 MAX_PAYLOAD_CHARS = 5000
 MAX_DECODED_BYTES = 8192
+CHUNK_CHARS = 444
+MAX_CHUNK_CHARS = 512
+
+
+def _chunk_payload(payload: str) -> list[dict[str, object]]:
+    chunks: list[dict[str, object]] = []
+    for start in range(0, len(payload), CHUNK_CHARS):
+        chunk = payload[start : start + CHUNK_CHARS]
+        chunks.append(
+            {
+                "index": len(chunks),
+                "encoded_length": len(chunk),
+                "encoded_sha256": hashlib.sha256(chunk.encode("ascii")).hexdigest(),
+                "payload": chunk,
+            }
+        )
+    return chunks
 
 
 def build_capsule() -> dict:
@@ -25,25 +42,34 @@ def build_capsule() -> dict:
     if len(payload) > MAX_PAYLOAD_CHARS:
         raise ValueError(f"capsule payload exceeds {MAX_PAYLOAD_CHARS}-character admission bound")
 
+    chunks = _chunk_payload(payload)
+    if any(chunk["encoded_length"] > MAX_CHUNK_CHARS for chunk in chunks):
+        raise ValueError(f"capsule chunk exceeds {MAX_CHUNK_CHARS}-character admission bound")
+
     namespace: dict[str, object] = {}
     exec(compile(data, str(CORE), "exec"), namespace)
     return {
-        "schema_version": 1,
+        "schema_version": 2,
         "authority": "derived-transport-cache-only",
-        "transport_contract": "bounded-model-mediated-opaque-handoff-v1",
+        "transport_contract": "chunked-model-mediated-opaque-handoff-v2",
         "automatic_object_bridge_required": False,
         "must_attempt_when_python_available": True,
         "same_turn_attempt_required": True,
         "missing_automatic_bridge_is_not_gap": True,
+        "chunk_retry_required_on_mismatch": True,
         "source_repository": "masini1491/ai-divination-playbook",
         "source_path": "runtime/casting/core.py",
         "payload_encoding": "base64+zlib",
+        "chunk_encoding": "ascii",
+        "chunk_size": CHUNK_CHARS,
+        "chunk_count": len(chunks),
+        "encoded_size": len(payload),
         "decoded_size": len(data),
         "decoded_sha256": hashlib.sha256(data).hexdigest(),
         "core_version": namespace["CORE_VERSION"],
         "algorithm_version": namespace["ALGORITHM_VERSION"],
         "supported_methods": list(namespace["SUPPORTED_METHODS"]),
-        "payload": payload,
+        "chunks": chunks,
     }
 
 
