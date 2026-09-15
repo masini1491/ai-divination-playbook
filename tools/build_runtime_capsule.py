@@ -17,6 +17,7 @@ MAX_PAYLOAD_CHARS = 5000
 MAX_DECODED_BYTES = 8192
 CHUNK_CHARS = 444
 MAX_CHUNK_CHARS = 512
+CHUNK_RETRY_LIMIT = 2
 
 
 def _chunk_payload(payload: str) -> list[dict[str, object]]:
@@ -57,6 +58,9 @@ def build_capsule() -> dict:
         "same_turn_attempt_required": True,
         "missing_automatic_bridge_is_not_gap": True,
         "chunk_retry_required_on_mismatch": True,
+        "chunk_reassembly": "index-ascending-concat",
+        "chunk_retry_limit": CHUNK_RETRY_LIMIT,
+        "chunk_retry_source": "fresh-same-commit-capsule-read",
         "source_repository": "masini1491/ai-divination-playbook",
         "source_path": "runtime/casting/core.py",
         "payload_encoding": "base64+zlib",
@@ -70,6 +74,9 @@ def build_capsule() -> dict:
         "algorithm_version": namespace["ALGORITHM_VERSION"],
         "supported_methods": list(namespace["SUPPORTED_METHODS"]),
         "chunks": chunks,
+        "legacy": {
+            "transport_contract": "bounded-model-mediated-opaque-handoff-v1",
+        },
     }
 
 
