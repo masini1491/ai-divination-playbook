@@ -108,9 +108,9 @@ minimum exact read recovery
 → ACCESS BLOCKED
 ```
 
-已由 canonical owner 專門治理的 local verified runtime reuse（例如 `RUNTIME_DRAW.md` 的 Randomizer fixed cache）不是新的 GitHub acquisition，可依其 owner 規則 reuse。
+已由 canonical owner 專門治理的 local verified runtime reuse（例如 `RUNTIME_DRAW.md` 的 Randomizer fixed cache）不是新的 GitHub acquisition，可依其 owner規則 reuse。
 
-Connector retrieval capability ≠ Python execution authority ≠ repository write authority ≠ Reading Record storage authority。
+Connector retrieval capability ≠ connector→runtime byte-preserving handoff capability ≠ Python execution authority ≠ repository write authority ≠ Reading Record storage authority。
 
 ## 隱私與公開安全
 
@@ -150,7 +150,7 @@ resolve repository + current ref to exact commit when currentness matters
 5. 未指定 ordinary method 才走 `METHOD_ROUTING.md` Fast Path；production Astrology 只接受 explicit request，不參與 ordinary auto-routing。
 6. explicit research intent 走 `RESEARCH_ROUTING.md` → named research owner；research pointer 不取得 production method authority。
 7. stochastic method 由 AI 代抽／代起才需要 `RUNTIME_DRAW.md` contract；language-model generation ≠ Runtime Draw / Cast。
-8. stochastic runtime fixed-cache probe FAIL／首次 acquisition 時，**必須先讀並實際嘗試 `RUNTIME_DRAW.md` 的 `Acquisition` admitted path**；取得 canonical source 本身不等於 acquisition complete。若 Python capability 可用且 GitHub Connect 可提供 byte-preserving payload，必須實際嘗試 connector payload → decode/write → hash／marker verify → import／CLI execute，再判定 materialization／execution 是否 blocked；不得僅因 connector 與 Python capability 分離、或尚未嘗試 bridge，就宣稱 materialization unavailable。任何「已取得 canonical source」claim 必須有本 session 可觀察的 connector retrieval evidence。只有 Acquisition 明確允許的路徑已實際不可用或失敗，才可依 owner fail closed／fallback；在此之前也不得先轉 Web／manual fallback，或要求使用者自行提供 Tarot／Meihua／Liuyao 隨機結果。
+8. stochastic runtime fixed-cache probe FAIL／首次 acquisition 時，**必須先讀並實際走 `RUNTIME_DRAW.md` 的 `Acquisition` capability gates**。取得 canonical source 本身不等於 acquisition complete；GitHub Connect source acquisition、connector→Python byte-preserving handoff、Python materialization／execution 是三個獨立 capability。只有 handoff capability 有本 session 可觀察 evidence，且 Python capability 可用、GitHub Connect 可提供完整 byte-preserving payload 時，才必須實際嘗試 payload → decode/write → hash／marker verify → import／CLI execute。若兩端各自可用但產品沒有可證明完整 payload 無損傳遞到 Python 的機制，應明確記為 `MATERIALIZATION HANDOFF CAPABILITY GAP` 並 fail closed／走 owner fallback，不得假裝 bridge 已發生，也不得用模型轉錄 source 補洞。任何「已取得 canonical source／payload 已交給 Python」claim 都必須有本 session 可觀察 evidence。只有 Acquisition 明確允許的路徑已實際不可用、失敗或 handoff gate 不成立，才可依 owner fail closed／fallback；在此之前不得先轉 Web／manual fallback。
 9. 只有 material contract gap 才讀 `INPUT_CONTRACT.md`；需要拆題／牌位／時間窗設計才讀 `QUESTION_DESIGN.md`。
 10. 只有承接／補占／重占／Reality Update／completion／backtest 才讀 `READING_LIFECYCLE.md`；只有保存／跨聊天室／audit 才讀 `READING_RECORD.md`。
 11. `BEHAVIORAL_EVAL.md`、`references/`、`CASE_STUDIES/`、Historical Context 預設 Cold。
