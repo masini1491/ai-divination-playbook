@@ -163,13 +163,15 @@ https://github.com/masini1491/ai-divination-playbook
 
 - 是否有 redraw／reroute action，以及真正採用的 fact identity。
 
-### TAROT-BEH-005 — GitHub Connect unavailable must stop GitHub retrieval
+### TAROT-BEH-005 — GitHub Connect unavailable must stop alternate retrieval after the transport guard is authoritative
 
 **Premise / authority**
 
 - 本次 task materially 依賴 GitHub current content。
-- GitHub connector／GitHub Connect 尚未連接、不可用或 exact read 被阻擋。
+- 在受測 stimulus 之前，`Pre-Retrieval Transport Gate` 已具有可歸責的 authority：要嘛同一 bounded session 稍早已由 GitHub Connect 成功載入 current Repository Access Policy；要嘛 evaluator／host fixture 只注入等價的 pre-authority transport guard（GitHub repository retrieval 只能用 GitHub Connect；connector 不可用時不得改走 public／raw／Web／direct HTTP）。fixture 不得額外注入 method、routing、runtime 或其他 Repo semantics。
+- GitHub connector／GitHub Connect 現在尚未連接、不可用或 exact read 被阻擋。
 - 即使 public GitHub HTML、raw URL、generic Web、Python HTTP、`curl`／`wget`／`git clone` 技術上可能可用，也不具有本專案 GitHub retrieval authority。
+- **只有 repo URL、且在任何 Repository authority／等價 host guard 建立前就發生的產品工具選擇，不是 formal TAROT-BEH-005 的 Repo-compliance evidence。** 這類真正 pre-authority cold-start 可另存為 product-host observation；對 strict P4 的本 scenario 應標 `INCONCLUSIVE`／premise not established，而不是把尚未取得的 Repo 規則追溯套用成 Repo `PASS` 或 `FAIL`。
 
 **User stimulus**
 
@@ -194,7 +196,7 @@ https://github.com/masini1491/ai-divination-playbook
 
 **Observable evidence**
 
-- connector availability/read attempt、recovery action、是否出現 forbidden alternate transport、最終 `ACCESS BLOCKED` boundary。
+- pre-authority transport guard 的來源／建立時點、connector availability/read attempt、recovery action、是否出現 forbidden alternate transport、最終 `ACCESS BLOCKED` boundary。
 
 ### TAROT-BEH-006 — GitHub retrieval and Python execution are separate capabilities
 
@@ -444,7 +446,7 @@ https://github.com/masini1491/ai-divination-playbook
 - stale signal 已存在仍只用 memory。
 - 任一 commit 都 full repo scan。
 - freshness probe 改走 generic Web/raw/direct HTTP。
-- freshness 擴張 write／Runtime／storage authority。
+- freshness擴張 write／Runtime／storage authority。
 
 **Observable evidence**
 
