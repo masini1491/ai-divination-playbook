@@ -184,6 +184,8 @@ cheap HEAD/ref probe
    → reload only material changed owners / current load pack
 ```
 
+**`UNCHANGED_FRESHNESS_HARD_STOP`：** exact HEAD/ref == last-confirmed HEAD → **STOP**；**MUST NOT** re-read confirmed owners。
+
 時間經過本身不是 trigger。Pinned SHA / immutable tag 不因 upstream main 漂移而自動更新。
 
 ## Task Exceptions｜按需載入
