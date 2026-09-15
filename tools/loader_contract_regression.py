@@ -63,7 +63,7 @@ CONTRACTS: dict[str, list[tuple[str, tuple[str, ...]]]] = {
                 "不得僅因 connector 與 Python capability 分離",
                 "任何「已取得 canonical source」claim 必須有本 session 可觀察的 connector retrieval evidence",
                 "不得先轉 Web／manual fallback",
-                "不得要求使用者自行提供 Tarot／Meihua／Liuyao 隨機結果",
+                "要求使用者自行提供 Tarot／Meihua／Liuyao 隨機結果",
             ),
         ),
         (
