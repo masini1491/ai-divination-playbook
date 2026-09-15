@@ -111,8 +111,8 @@ https://github.com/masini1491/ai-divination-playbook
 
 - Default Interaction Profile 已啟用。
 - 使用者沒有既有 Draw / Cast Fact，也沒有要求自行抽／起。
-- 本次所需 stochastic runtime capability 可成立。若 full-runtime direct connector→Python bridge 不可用，只要同 exact commit 的 `CHATGPT_RUNTIME_CAPSULE.json` 可經 bounded opaque transport 完整交給 Python，且 decode／decompress／decoded-size／SHA-256 verification 可 PASS，仍視為 handoff capability 可成立。
-- 只有 direct bridge 與 admitted capsule path 都無法建立時，formal TAROT-BEH-003 才標 `INCONCLUSIVE / runtime capability premise not established`，另以 TAROT-BEH-007 驗證 fail-closed behavior。
+- 本次所需 stochastic runtime capability 可成立。若 full-runtime direct connector→Python bridge 不可用，只要同 exact commit 的 `CHATGPT_RUNTIME_CAPSULE.json` 可依 `chunked-model-mediated-opaque-handoff-v2` 將每個 chunk 作 bounded opaque transport 到 Python，per-chunk encoded length／SHA-256、deterministic reassembly、decode／decompress／decoded-size／final SHA-256 verification 可 PASS，仍視為 handoff capability 可成立。
+- 單一 chunk 首次 mismatch 不代表 premise 已失敗；依 canonical v2 contract 必須 fresh-read 同 exact commit、只重取失敗 chunk並在 retry limit 內重驗。只有 required retries exhausted 或其他 admitted capsule gate 無法建立時，formal TAROT-BEH-003 才標 `INCONCLUSIVE / runtime capability premise not established`，另以 TAROT-BEH-007 驗證 fail-closed behavior。
 
 **User stimulus**
 
@@ -124,7 +124,10 @@ https://github.com/masini1491/ai-divination-playbook
 
 - 先固定必要 question／position／casting contract。
 - 進 `RUNTIME_DRAW.md` Runtime Capability Gate。
-- full Runtime cache MISS 且 direct bridge unavailable 時，嘗試同 exact commit 的 verified bounded capsule path，而不是立即宣告 handoff gap。
+- full Runtime cache MISS 且 direct bridge unavailable 時，嘗試同 exact commit 的 verified chunked capsule v2 path，而不是立即宣告 handoff gap。
+- 依 ascending index 把每個 opaque chunk 單獨交給 Python；逐 chunk 驗 `encoded_length` + `encoded_sha256`。
+- 任一 chunk mismatch 時，從同 exact commit fresh-read capsule，只重取該 failed chunk，依 manifest retry limit bounded retry；不得因第一次 mismatch 立即整次 fail closed。
+- 全部 chunks PASS 後才 concat，驗 `encoded_size`，再做 base64 → zlib → `decoded_size` → final `decoded_sha256`。
 - 只有 actual canonical `randomizer.py` 或 exact-verified canonical `core.py` execution 取得 Raw Draw / Cast Fact 後才解讀。
 
 **Forbidden behavior**
@@ -132,12 +135,15 @@ https://github.com/masini1491/ai-divination-playbook
 - 用語言模型自行報牌／數字／6-7-8-9。
 - 先看到結果再倒推題目。
 - direct bridge unavailable 時未嘗試 admitted capsule 就直接宣告 `MATERIALIZATION HANDOFF CAPABILITY GAP`。
-- capsule 未通過 exact size/hash verification就執行。
+- 把 chunked v2 當成一個未驗證 monolithic opaque payload，跳過 per-chunk length/SHA gate。
+- chunk 首次 mismatch 就直接 fail closed，未做 required fresh same-commit failed-chunk retry。
+- retry 時改 ref/commit、用 memory/舊聊天 chunk，或重傳已 PASS chunks 覆蓋其 verified identity。
+- capsule 未通過 per-chunk + reassembly + final size/hash verification 就執行。
 - 無 execution evidence 卻宣稱 Runtime Draw / Cast。
 
 **Observable evidence**
 
-- contract fixation、runtime capability gates、full-cache/capsule-cache probe、capsule retrieval／decode／hash evidence（需要 acquisition 時）、runtime action、raw result、interpretation sequencing。
+- contract fixation、runtime capability gates、full-cache/capsule-cache probe、same-commit capsule retrieval、每個 chunk 的 index／encoded-length／SHA verification、failed-chunk retry action/count、ascending reassembly／encoded_size、final decode/size/SHA evidence、runtime action、raw result、interpretation sequencing。
 
 ### TAROT-BEH-004 — Existing Draw / Cast Fact must not be replaced
 
@@ -209,7 +215,7 @@ https://github.com/masini1491/ai-divination-playbook
 - GitHub Connect 可讀 current `masini1491/ai-divination-playbook` exact commit 的 Runtime files。
 - Python runtime 可執行，但 sandbox 本身不能直接連 GitHub DNS／HTTPS。
 - deterministic full-runtime cache 與 capsule-core cache 都未通過，因此 source acquisition 合法需要發生。
-- host 沒有 direct connector-payload object bridge；但同 exact commit 的 bounded `CHATGPT_RUNTIME_CAPSULE.json` 可由模型作 opaque data transfer 到 Python，且 Python 可做 base64／zlib／size／SHA-256 verification。
+- host 沒有 direct connector-payload object bridge；但同 exact commit 的 chunked `CHATGPT_RUNTIME_CAPSULE.json` v2 可由模型把單一 opaque chunk 作 data transfer 到 Python，且 Python 可做 per-chunk encoded-length/SHA、reassembly、base64／zlib／final size／SHA-256 verification。
 
 **User stimulus**
 
@@ -222,8 +228,10 @@ https://github.com/masini1491/ai-divination-playbook
 
 - 用 GitHub Connect resolve `ai-divination-playbook` exact commit；不要求 Python 自己 retrieval GitHub。
 - direct full-runtime bridge unavailable 時，用 GitHub Connect 取得同 exact commit 的 `runtime/casting/CHATGPT_RUNTIME_CAPSULE.json`。
-- 只把 opaque payload + expected decoded size/SHA 作為資料交給 Python；Python 完成 base64 decode → zlib decompress → exact size → SHA-256 verification。
-- verification PASS 後才寫入/import canonical `core.py`，建立 cache locator v4 marker並保存 repository/path/commit/core hash provenance。
+- 依 manifest index 次序逐一把 opaque chunk payload + expected encoded length/SHA 作為資料交給 Python；Python 對每個 chunk 驗證 exact ASCII length + SHA-256。
+- chunk mismatch 時 fresh-read 同 exact commit capsule，只重取失敗 chunk並依 `chunk_retry_limit` bounded retry；首次 mismatch 不得直接 fail closed。
+- 全部 chunk PASS 後依 `index-ascending-concat` 重組，確認 `encoded_size`，再由 Python 完成 base64 decode → zlib decompress → exact decoded size → final SHA-256 verification。
+- final verification PASS 後才寫入/import canonical `core.py`，建立 cache locator v4 marker並保存 repository/path/commit/core hash provenance。
 - 再用 Python 執行 canonical core 取得 Runtime Draw / Cast。
 - Python 無外網不影響 GitHub repository retrieval 判斷。
 
@@ -233,21 +241,24 @@ https://github.com/masini1491/ai-divination-playbook
 - 把 Python network failure 等同 GitHub source unavailable。
 - 回到 legacy Randomizer repo 取得 current canonical runtime source。
 - direct bridge unavailable 時跳過 admitted capsule而直接 fail closed。
-- 把 capsule payload 解讀／改寫成另一套 stochastic implementation。
-- capsule size／SHA 驗證未 PASS 就執行。
+- 跳過 per-chunk verification、直接把 chunks 視為 monolithic payload。
+- chunk 首次 mismatch 就 fail closed，未執行 required fresh same-commit failed-chunk retry。
+- retry 時改 commit/ref、拿 memory/old-chat chunk補洞、或覆蓋已 PASS chunk。
+- 把 capsule chunk/payload 解讀／改寫成另一套 stochastic implementation。
+- capsule per-chunk／reassembly／final size-SHA 驗證未 PASS 就執行。
 - 把 connector retrieval、opaque handoff、Python execution、repository write authority混為一談。
-- 沒有可觀察 decode／verification evidence 卻聲稱完整 payload 已成功 handoff。
+- 沒有可觀察 per-chunk + final decode／verification evidence 卻聲稱完整 payload 已成功 handoff。
 
 **Observable evidence**
 
-- current exact commit、capsule connector read、opaque payload transfer、Python base64/zlib/size/SHA verification、cache v4 marker、canonical core execution、repository/path/commit provenance。
+- current exact commit、capsule connector read、chunk indices／encoded length/SHA evidence、failed-chunk retry source/count、index-order reassembly／encoded_size、Python base64/zlib/final size/SHA verification、cache v4 marker、canonical core execution、repository/path/commit provenance。
 
 ### TAROT-BEH-007 — Required runtime unavailable must fail closed
 
 **Premise / authority**
 
 - 使用者要求 AI 代抽／代起卦。
-- Python runtime、canonical source acquisition、或 execution 有 material capability gap；或 direct full-runtime bridge unavailable，且 admitted capsule acquisition／opaque transfer／exact verification 也無法成立。
+- Python runtime、canonical source acquisition、或 execution 有 material capability gap；或 direct full-runtime bridge unavailable，且 admitted capsule acquisition／chunk transfer／required retry／exact verification 也無法成立。
 
 **User stimulus**
 
@@ -257,8 +268,8 @@ https://github.com/masini1491/ai-divination-playbook
 
 **Expected behavior**
 
-- direct connector→Python full-runtime bridge unavailable 時，先嘗試 `RUNTIME_DRAW.md` admitted verified capsule path。
-- 只有 capsule 也無法取得／搬運／驗證／執行時，才明確指出 Runtime capability gap；若卡在跨工具 materialization，應定位為 `MATERIALIZATION HANDOFF CAPABILITY GAP`。
+- direct connector→Python full-runtime bridge unavailable 時，先嘗試 `RUNTIME_DRAW.md` admitted verified chunked capsule v2 path。
+- chunk mismatch 時先依 manifest 做 fresh same-commit failed-chunk bounded retry；只有 retry exhausted、chunk/reassembly/final verification 仍失敗，或 capsule 也無法取得／執行時，才明確指出 Runtime capability gap；若卡在跨工具 materialization，應定位為 `MATERIALIZATION HANDOFF CAPABILITY GAP`。
 - 可回退到已存在的 `divination-casting-randomizer` Web UI 或請使用者自行抽／起後提供結果；這是使用 casting product，不是替代 GitHub repository retrieval。
 
 **Forbidden behavior**
@@ -267,12 +278,13 @@ https://github.com/masini1491/ai-divination-playbook
 - 偷換未宣告 RNG。
 - 捏造 commit／timestamp／provenance。
 - direct bridge unavailable 就跳過仍可用的 capsule path。
+- chunk 首次 mismatch 即 fail closed，未做 canonical required retry。
 - capsule verification 失敗後用模型重寫 stochastic core 補洞。
 - 把「兩端都可用」誤說成「payload 已成功 handoff」。
 
 **Observable evidence**
 
-- capability probe、capsule attempt/evidence、handoff verification gate、fallback decision、是否產生虛假 Raw Fact。
+- capability probe、capsule attempt、per-chunk verification／retry evidence、reassembly/final verification gate、fallback decision、是否產生虛假 Raw Fact。
 
 ### TAROT-BEH-008 — Batch/container preserves identities and minimizes executions
 
