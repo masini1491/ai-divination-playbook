@@ -2,11 +2,20 @@
 
 本章是 ChatGPT／AI 自行執行 stochastic draw / cast 的 canonical runtime authority。
 
-Canonical implementation：
+Canonical stochastic core 與完整 Runtime adapter：
 
 ```text
-runtime/casting/randomizer.py
+runtime/casting/core.py        # canonical stochastic core
+runtime/casting/randomizer.py  # full API / CLI adapter，直接重用 core.py
 ```
+
+Free ChatGPT cold-start transport artifact：
+
+```text
+runtime/casting/CHATGPT_RUNTIME_CAPSULE.json
+```
+
+`CHATGPT_RUNTIME_CAPSULE.json` 只是由 `core.py` 產生的 derived byte-transport cache，不取得 stochastic policy／algorithm authority；解碼後 bytes 必須以 size + SHA-256 驗證等於 canonical `core.py` 才可執行。
 
 支援：Tarot、Meihua、Liuyao three-coin raw cast。六爻 deterministic structured facts 由 `LIUYAO.md` 治理。
 
@@ -53,28 +62,43 @@ PASS 後：
 
 ## Cache Probe｜先本地、後 GitHub
 
-固定位置：
+完整 Runtime fixed cache：
 
 ```text
 /mnt/data/divination-casting-runtime/randomizer.py
 /mnt/data/divination-casting-runtime/verification.json
 ```
 
+Free ChatGPT capsule core cache（只在完整 Runtime cache FAIL 後於 `Acquisition` probe）：
+
+```text
+/mnt/data/divination-casting-runtime/core.py
+/mnt/data/divination-casting-runtime/capsule_verification.json
+```
+
 `/mnt/data` 不可寫時唯一 fallback：
 
 ```text
-<runtime-workspace>/.divination-casting-runtime/randomizer.py
-<runtime-workspace>/.divination-casting-runtime/verification.json
+<runtime-workspace>/.divination-casting-runtime/<same filenames>
 ```
 
 不 broad filesystem search，不靠 memory 猜第三個位置。
 
-最低 probe：
+完整 Runtime 最低 probe：
 
-- script + marker 存在可解析；
+- `randomizer.py` + `verification.json` 存在可解析；
 - marker SHA-256 與 script 一致；
 - source repository / path / commit 符合 marker；
 - algorithm/schema 與 script 一致；
+- 本次方法最低 invariant PASS。
+
+Capsule core 最低 probe：
+
+- `core.py` + `capsule_verification.json` 存在可解析；
+- marker `cache_locator_version = 4`；
+- marker SHA-256 與 `core.py` 一致；
+- source repository / `runtime/casting/core.py` / commit 符合 marker；
+- `core_version`／algorithm version／supported methods 與 module 一致；
 - 本次方法最低 invariant PASS。
 
 Method invariants：
@@ -85,7 +109,7 @@ Meihua → A/B + 8×8 mapping
 Liuyao → six 6/7/8/9 lines, bottom-to-top, 6/9 changing, 7/8 static
 ```
 
-PASS → Fast Path。只有以下 trigger 才重新確認 Randomizer source：使用者要求最新版／重新同步、concrete source-update evidence、audit 需要 marker 沒有的 provenance、probe FAIL。
+完整 Runtime probe PASS → Fast Path。Capsule core probe PASS → `Execution` 的 `D. Verified capsule core`。只有以下 trigger 才重新確認 source：使用者要求最新版／重新同步、concrete source-update evidence、audit 需要 marker 沒有的 provenance、相關 probe FAIL。
 
 **Playbook HEAD 更新本身不是 Randomizer refresh trigger。Fresh question means fresh RNG, not fresh program acquisition。**
 
@@ -93,16 +117,19 @@ PASS → Fast Path。只有以下 trigger 才重新確認 Randomizer source：�
 
 ```text
 Python capability
+→ full Runtime fixed-cache probe FAIL
+→ capsule-core cache probe
+→ PASS ? execute verified core : continue
 → GitHub Connect resolve ai-divination-playbook ref → exact commit
-→ GitHub Connect acquire exact revision runtime/casting/randomizer.py
-→ connector→Python byte-preserving handoff capability gate
-→ write fixed cache + verification marker
+→ preferred: exact full-runtime handoff when product bridge exists
+→ otherwise: verified bounded capsule transport
+→ write verified cache + marker
 → bounded smoke
 → import
 → fresh execution
 ```
 
-### Byte-Preserving Materialization Bridge｜connector source → local fixed cache
+### A. Preferred full-runtime byte-preserving bridge
 
 這條路徑由三個彼此獨立的 capability 組成：
 
@@ -112,7 +139,7 @@ GitHub source acquisition
 → Python materialization / verification / execution
 ```
 
-GitHub Connect 可取得 source、Python 也可執行，**不代表中間的 cross-tool payload handoff 一定存在**。在 cache FAIL／首次 acquisition 時，先確認產品是否能把 connector 回傳的完整 byte-preserving payload 以可驗證方式交給 Python；只有這個 handoff gate PASS，才進 preferred transport：
+若產品能把 GitHub Connect 回傳的完整 payload 直接、可觀察、可驗證地交給 Python，優先使用完整 Runtime：
 
 ```text
 GitHub Connect fetch exact runtime/casting/randomizer.py as base64
@@ -125,42 +152,85 @@ GitHub Connect fetch exact runtime/casting/randomizer.py as base64
 
 這條 bridge 只搬運 canonical bytes，不授權 Python 自己連 GitHub，也不授權模型重建 source。Python 端允許的 materialization logic 只應處理 base64 decode、filesystem write、hash／marker 驗證與 canonical module import／execution；不得在 bridge 中重寫 RNG、牌組、A/B、coin、mapping、schema 或 provenance core。
 
-Capability 判定：
+### B. Free ChatGPT verified bounded capsule transport
 
-- connector 可提供完整 byte-preserving source；
-- cross-tool handoff 能把**完整 payload 無損交給 Python**；
-- Python 可 decode／write／hash／import 或 CLI execute。
+若 GitHub acquisition PASS、Python PASS，但產品沒有完整 connector→Python automatic payload bridge，**不得立刻停止**。先嘗試本 Repo 專為 Free ChatGPT cold start 提供的 bounded capsule：
 
-三者都成立才可要求 canonical materialization。若 connector 與 Python 兩端各自可用，但產品沒有可觀察／可驗證的完整 payload handoff 機制，明確標記 `MATERIALIZATION HANDOFF CAPABILITY GAP`，fail closed 或走本章允許的 runtime fallback；**不得假裝 payload 已傳遞，也不得把模型看到的 source 轉錄進 Python 當作 bridge。**
+```text
+GitHub Connect fetch same exact commit runtime/casting/CHATGPT_RUNTIME_CAPSULE.json
+→ verify manifest authority = derived-transport-cache-only
+→ verify source_path = runtime/casting/core.py
+→ verify payload_encoding = base64+zlib
+→ verify payload length <= 5000 chars and decoded_size <= 8192 bytes
+→ copy only opaque payload + expected decoded_size + expected decoded_sha256 into Python data
+→ Python base64.b64decode(..., validate=True)
+→ Python zlib.decompress(...)
+→ verify exact decoded byte count
+→ verify SHA-256 == manifest decoded_sha256
+→ only then write bytes as fixed-cache core.py
+→ write capsule_verification.json (locator v4)
+→ import that verified core.py
+→ execute canonical core function
+```
 
-只有 connector 無法提供完整 byte-preserving source、cross-tool handoff capability 不成立、decode／write／hash 驗證失敗，或 Python execution capability 本身不可用時，才可判定 materialization capability gap。任何「payload 已交給 Python」claim 都必須有本 session 可觀察 evidence。
+這裡的 model-mediated step 是**明確 admission 的 bounded opaque transport**，不是 source transcription：
 
-**不得只因 connector 與 Python 是不同 capability，就直接推論 canonical source 無法 materialize；也不得只因兩端都存在，就反向推論 handoff 一定可用。** Retrieval、handoff、execution 是三個獨立 capability。
+- 模型只搬運 capsule manifest 中的 opaque encoded payload／size／hash，不翻譯、不改寫、不補字元；
+- Python 必須在寫入／import 前完成 decode + decompress + size + SHA-256 exact verification；
+- 任一字元在搬運中遺失／改變 → decode、size 或 hash 不一致 → FAIL CLOSED；
+- 不得從 payload 内容「理解後重寫」另一支 Python；
+- manifest 必須由同一 resolved exact commit 的 GitHub Connect retrieval 取得；memory／舊聊天中的 payload 不可代替 current acquisition；
+- `CHATGPT_RUNTIME_CAPSULE.json` 是 derived transport cache，canonical stochastic authority 仍是 `core.py`；CI 必須驗證 capsule 可 exact round-trip 回該 core bytes。
+
+這條路徑存在的目的就是處理 Free ChatGPT 已實測的 host 限制：GitHub Connect 可讀、Python 可執行，但沒有 connector payload object 可直接注入 Python。**只要 bounded capsule exact verification PASS，這不再是 `MATERIALIZATION HANDOFF CAPABILITY GAP`；它已建立可驗證的 byte-preserving handoff。**
+
+只有以下情況才標記 `MATERIALIZATION HANDOFF CAPABILITY GAP`：
+
+- direct full-runtime bridge 不可用，且同 commit capsule 無法取得；
+- capsule 超過 admission bounds；
+- capsule metadata 不符；
+- opaque payload 無法完整交給 Python；
+- base64／zlib decode、decoded size 或 SHA-256 驗證失敗；
+- Python execution capability 本身不可用。
+
+任何「payload 已交給 Python」claim 都必須有本 session 可觀察的 Python decode／verification evidence。
+
+**不得只因 connector 與 Python 是不同 capability，就直接推論 canonical source 無法 materialize；也不得只因兩端都存在，就反向推論 handoff 一定可用。** Retrieval、handoff、execution 仍是獨立 capability；capsule 是一條被驗證後才成立的 handoff implementation。
 
 ### Canonical Execution Identity｜取得哪份 source，就執行哪份 implementation
 
-GitHub Connect 取得 `runtime/casting/randomizer.py` 後，**真正被 import／CLI 執行的 stochastic implementation 必須就是該 canonical source 本身（或其 byte-for-byte fixed-cache copy）**。取得 source 只建立 source authority；不授權模型把演算法轉錄成另一支「等價」程式。
+完整 Runtime 路徑真正被 import／CLI 執行的 stochastic implementation 必須是 canonical `randomizer.py`（及其 import 的 canonical core）或 byte-for-byte verified copy。
+
+Capsule 路徑真正被執行的 stochastic implementation必須是 capsule exact 解碼、size/hash 驗證後得到的 canonical `core.py` bytes。`randomizer.py` production adapter 也直接 import 同一份 `core.py`，因此**不存在第二套 stochastic implementation**。
 
 允許：
 
-- 將 connector 取得的 canonical source 原樣 materialize 到 fixed cache，驗證 hash／marker 後 import 或直接 CLI 執行；
-- 寫最薄的 caller／wrapper 去 import canonical module、呼叫 `generate_payload()`／`compact_ai_payload()` 或啟動 canonical CLI；wrapper 不得重寫 RNG、牌組、A/B、coin、mapping、schema 或 provenance core。
+- 將 connector 取得的完整 Runtime canonical source 原樣 materialize 到 fixed cache，驗證後執行；
+- 將 admitted capsule 的 opaque payload exact 解碼回 canonical `core.py`，驗證後執行；
+- 寫最薄 caller／wrapper 去 import verified canonical module、呼叫 canonical function；wrapper 不得重寫 RNG、牌組、A/B、coin、mapping 或 method core。
 
 禁止：
 
-- 讀完 canonical source 後另寫 `/tmp/cast.py`、inline Python、shell heredoc 或其他 transcription／reimplementation，自己重做 stochastic core 再拿結果當 Runtime Draw / Cast；
+- 讀完 canonical source 後另寫 `/tmp/cast.py`、inline Python、shell heredoc 或其他 transcription／reimplementation，自己重做 stochastic core再拿結果當 Runtime Draw / Cast；
 - 因「邏輯看起來等價」就以 `secrets`／`random`／手寫 modulo／手寫洗牌／手寫 three-coin 取代 canonical implementation；
+- 未通過 capsule exact size/hash verification 就 import／execute；
 - 自製程式輸出卻標示 canonical `source`、algorithm/schema version、runtime source commit 等 provenance，讓它看起來像 canonical execution。
 
-若 canonical source 已取得，但無法可信 materialize／import／CLI execute 該 source，本次 runtime 必須 fail closed 或走本章明確允許的 runtime fallback；**不得用模型重寫 implementation 來補洞。**
+若所有 admitted canonical materialization／capsule 路徑都無法可信執行，本次 runtime 必須 fail closed 或走本章明確允許的 runtime fallback；**不得用模型重寫 implementation 來補洞。**
 
-Marker 最低：
+完整 Runtime marker 最低（既有 locator v3）：
 
 ```json
 {"verified":true,"cache_locator_version":3,"runtime_source_repository":"masini1491/ai-divination-playbook","runtime_source_path":"runtime/casting/randomizer.py","runtime_source_ref":"main","runtime_source_commit":"<SHA or unknown>","runtime_copy_sha256":"<sha256>","algorithm_version":"<version>","schema_version":"<version>","supported_methods":["tarot","plum","liuyao"],"tarot_deck_size":78}
 ```
 
-`cache_locator_version = 3` 是 repository/path authority cutover 的 locator revision；**不是** Randomizer algorithm/schema revision。
+Capsule core marker 最低（locator v4）：
+
+```json
+{"verified":true,"cache_locator_version":4,"runtime_source_repository":"masini1491/ai-divination-playbook","runtime_source_path":"runtime/casting/core.py","capsule_path":"runtime/casting/CHATGPT_RUNTIME_CAPSULE.json","runtime_source_ref":"main","runtime_source_commit":"<SHA>","runtime_copy_sha256":"<decoded_sha256>","core_version":"1","algorithm_version":"2","supported_methods":["tarot","plum","liuyao"],"tarot_deck_size":78}
+```
+
+`cache_locator_version = 3` 是 full-runtime repository/path authority locator；`cache_locator_version = 4` 是 verified capsule-core locator。兩者都不是 Randomizer algorithm/schema revision。
 
 GitHub repository acquisition **只走 GitHub Connect**。connector unavailable／blocked 且無 verified cache → `ACCESS BLOCKED`。禁止 public HTML、raw URL、generic Web、Python HTTP、curl/wget/git clone。
 
@@ -196,7 +266,7 @@ Raw Cast Fact 至少保留 six values；需要 audit／engine 時保留 coin val
 
 ### A. In-memory direct API｜最快
 
-同一 persistent Python interpreter 且 verified module 已 import：
+同一 persistent Python interpreter 且 verified full Runtime module 已 import：
 
 ```python
 payload = randomizer.generate_payload("tarot", count=5, repeat=4, source_commit=SHA)
@@ -236,12 +306,29 @@ python /mnt/data/divination-casting-runtime/randomizer.py batch --counts 5,3,6,5
 - 保留 source、algorithm/schema、source commit、Taipei timestamp/timezone；
 - 省略可由 canonical contract 推回或普通 interpretation 不需要的重複 descriptive fields。
 
+### D. Verified capsule core｜Free ChatGPT cold-start path
+
+當 capsule-core marker v4 PASS，或本次 acquisition 剛完成 exact capsule verification，可直接 import verified `core.py`：
+
+```python
+# Tarot
+result = core.make_result("tarot", 5)
+
+# Meihua
+result = core.make_result("plum")
+
+# Liuyao
+result = core.make_result("liuyao")
+```
+
+這些回傳值就是 canonical stochastic Raw Draw / Cast Fact。`runtime_source_commit`、capsule/core SHA、執行時間等 provenance 由 caller 依實際 tool evidence另外保存；不得由 core 內不存在的欄位捏造。多個已合法固定的 independent readings 可用最薄 caller 對 `core.make_result(...)` 做 bounded loop；不得在 caller 重寫 stochastic core。
+
 ## Automatic Batching｜一次執行，多個獨立 Fact
 
 同一 request 有多個**已合法成立且 contract 已固定**的 independent question identities 時，優先最少 execution calls。
 
-- 同方法同 contract → `--repeat N`／direct API `repeat=N`；
-- Tarot 張數不同 → `batch --counts ...`／direct API batch；
+- full Runtime：同方法同 contract → `--repeat N`／direct API `repeat=N`；Tarot 張數不同 → `batch --counts ...`／direct API batch；
+- verified capsule core：允許在同一 Python invocation 依 pre-fixed child order bounded loop 呼叫 `core.make_result(...)`；每個 call 仍 fresh RNG；
 - mixed methods → 依 method 分組，各自最少 calls；不要濫用 legacy `both`。
 
 Batching Contract：
@@ -249,7 +336,7 @@ Batching Contract：
 1. 先固定 child order／contracts，才 execution。
 2. `results[0..N-1]` 依 pre-fixed order mapping；抽後不得重排。
 3. 每個 child fresh RNG；batch 不使用上一題剩餘牌組。
-4. `repeat=N` 代表 N 個合法獨立 readings；不得拿同題 N 抽投票／挑最好。
+4. `repeat=N` 或 bounded core loop 代表 N 個合法獨立 readings；不得拿同題 N 抽投票／挑最好。
 5. execution envelope 可共享 timestamp，但 question／Draw-Cast Fact／Reading Record／Reality Update identities 分離。
 6. compatible batch 可用時，無理由逐題啟動 Python 屬不必要 overhead。
 7. output count/order/mapping 無法可信確認 → fail closed；不盲目重跑整批。
@@ -273,7 +360,7 @@ Contract fixed
 
 若 batch 部分 child 已可信固定、其他 child failure，不得重跑整批覆蓋已固定 facts；保留可信 child，對 unresolved child 最小修復或 fail closed。
 
-若 canonical source 已取得但 Python 不可用，或 connector→Python byte-preserving handoff capability 不成立，可改用仍在線的 deployed Randomizer Web UI 或使用者自行抽／起；這是 runtime fallback，不改變 GitHub repository authority。若 GitHub source acquisition 本身被阻擋，仍遵守 `ACCESS BLOCKED`。
+若 direct connector→Python full-runtime handoff unavailable，**先嘗試本章 admitted verified capsule path**。只有 capsule 也無法取得／搬運／exact 驗證／執行，或 Python 不可用時，才可改用仍在線的 deployed Randomizer Web UI 或使用者自行抽／起；這是 runtime fallback，不改變 GitHub repository authority。若 GitHub source acquisition 本身被阻擋，仍遵守 `ACCESS BLOCKED`。
 
 Runtime 快、batch 方便都不創造補占 authority；同題／新題／補占仍由 `READING_LIFECYCLE.md` 決定。
 
@@ -286,13 +373,14 @@ source: divination-casting-randomizer-python
 algorithm_version: 2
 schema_version: 4
 ai_schema_version: 1  # compact transport only
+core_version: 1      # stochastic core transport identity, not algorithm version
 ```
 
-`source` 是 logical runtime identity；repository consolidation 只改 repository/path authority，不改 logical identity 或 algorithm/schema versions。
+`source` 是 logical runtime identity；repository consolidation 或 wrapper/core split 不改 logical identity 或 algorithm/schema versions。
 
-Runtime timestamp：`generated_at_utc` + `generated_at_taipei` + `Asia/Taipei`；GitHub commit time 不是 draw time。普通 `ai-json` 至少傳 Taipei timestamp；正式保存若需要 UTC，從 full canonical payload 取得，不自行捏造。
+Runtime timestamp：full Runtime payload 提供 `generated_at_utc` + `generated_at_taipei` + `Asia/Taipei`；GitHub commit time 不是 draw time。Capsule core direct execution的 caller 必須以實際 execution clock 保存時間；不可拿 commit time 冒充 draw time。
 
-共同 provenance：source/tool、algorithm/schema、source repository/path/ref/commit（能取得時）、actual draw/cast timestamp/timezone。consolidation 後新 execution 的 `runtime_source_commit` 指向包含 `runtime/casting/randomizer.py` 的 `ai-divination-playbook` commit；歷史 legacy-repo commit provenance 保持有效，不重寫。Meihua 另存 A/B；Liuyao 另存 raw six lines + bottom-to-top；deterministic engine provenance 分開保存。
+共同 provenance：source/tool、algorithm、source repository/path/ref/commit（能取得時）、actual draw/cast timestamp/timezone。full Runtime execution 的 source path 是 `runtime/casting/randomizer.py`；capsule core execution 的 canonical source path 是 `runtime/casting/core.py`，並可另記 capsule path／decoded SHA。歷史 legacy-repo commit provenance 保持有效，不重寫。Meihua 另存 A/B；Liuyao 另存 raw six lines + bottom-to-top；deterministic engine provenance 分開保存。
 
 使用者可見預設只顯示必要結果、實際時間與 `Canonical Randomizer v2`，不要 dump audit metadata。
 
@@ -300,15 +388,20 @@ Runtime timestamp：`generated_at_utc` + `generated_at_taipei` + `Asia/Taipei`�
 
 Common：
 
+- `randomizer.py` stochastic functions 必須直接重用 `core.py`，不可保留第二套 RNG／牌組／A/B／coin implementation；
 - full JSON 與 `ai-json` 都可解析；
 - compact projection 與同一次 full payload 的 stochastic facts exact parity；
 - `ai-json` 不改 RNG／algorithm version，`ai_schema_version` 獨立；
 - direct `generate_payload()` 與 CLI contracts parity；
 - UTC/Taipei 同一瞬間、Taipei `+08:00`；
-- cache marker/hash/version/invariant reuse；PASS 不重抓 source；
+- full-runtime cache marker/hash/version/invariant reuse；PASS 不重抓 source；
+- capsule artifact 必須 `base64+zlib` exact round-trip 回 current `core.py` bytes，decoded size + SHA-256 exact match；
+- capsule payload ≤ 5000 chars、decoded core ≤ 8192 bytes；超過即需重新檢討 transport admission；
+- capsule core marker v4 PASS 後可直接 reuse core，不重新抓 GitHub；new question 仍 fresh RNG；
 - in-memory reuse 不重用結果；new question fresh RNG；
-- `--repeat`／batch result count/order/independent identity 正確；
+- `--repeat`／batch／bounded core loop result count/order/independent identity 正確；
 - GitHub acquisition only through GitHub Connect；
-- connector→Python handoff capability gate 能區分 PASS 與 `MATERIALIZATION HANDOFF CAPABILITY GAP`；gate PASS 時 base64 materialization → Python decode/write → fixed-cache hash verification 可成立，且不讓 Python 自己 retrieval GitHub；
-- `PLAYBOOK_INDEX.json` 與 method owners 都指向 `runtime/casting/randomizer.py`；
+- direct connector→Python handoff capability gate 能區分 PASS 與 gap；direct bridge unavailable 時 verified capsule transport可建立 bounded byte-preserving handoff，且不讓 Python 自己 retrieval GitHub；
+- capsule decode/hash failure 必須 fail closed，不得 fallback 到模型重寫 stochastic core；
+- `PLAYBOOK_INDEX.json` 與 method owners 的 full Runtime pointer 仍指向 `runtime/casting/randomizer.py`；
 - `runtime/casting/MIGRATION_SOURCE.json` 永久保存 pinned legacy import provenance；current production files 可在 canonical repo 依正式 contract/version governance 演進，不再要求 byte-for-byte 等於 legacy snapshot。
