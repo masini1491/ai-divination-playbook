@@ -27,30 +27,48 @@ class ChatGPTRuntimeCapsuleTests(unittest.TestCase):
         cls.capsule = json.loads(cls.capsule_path.read_text(encoding="utf-8"))
 
     def test_capsule_is_derived_transport_only(self):
-        self.assertEqual(self.capsule["schema_version"], 1)
+        self.assertEqual(self.capsule["schema_version"], 2)
         self.assertEqual(self.capsule["authority"], "derived-transport-cache-only")
         self.assertEqual(self.capsule["source_repository"], "masini1491/ai-divination-playbook")
         self.assertEqual(self.capsule["source_path"], "runtime/casting/core.py")
         self.assertEqual(self.capsule["payload_encoding"], "base64+zlib")
+        self.assertEqual(self.capsule["chunk_encoding"], "ascii")
 
-    def test_capsule_declares_same_turn_must_attempt_contract(self):
+    def test_capsule_declares_same_turn_chunked_retry_contract(self):
         self.assertEqual(
             self.capsule["transport_contract"],
-            "bounded-model-mediated-opaque-handoff-v1",
+            "chunked-model-mediated-opaque-handoff-v2",
         )
         self.assertFalse(self.capsule["automatic_object_bridge_required"])
         self.assertTrue(self.capsule["must_attempt_when_python_available"])
         self.assertTrue(self.capsule["same_turn_attempt_required"])
         self.assertTrue(self.capsule["missing_automatic_bridge_is_not_gap"])
+        self.assertTrue(self.capsule["chunk_retry_required_on_mismatch"])
+
+    def test_each_chunk_has_exact_length_and_hash(self):
+        chunks = self.capsule["chunks"]
+        self.assertEqual(len(chunks), self.capsule["chunk_count"])
+        self.assertEqual([chunk["index"] for chunk in chunks], list(range(len(chunks))))
+        for chunk in chunks:
+            payload = chunk["payload"]
+            self.assertEqual(len(payload), chunk["encoded_length"])
+            self.assertLessEqual(len(payload), build_runtime_capsule.MAX_CHUNK_CHARS)
+            self.assertEqual(
+                hashlib.sha256(payload.encode("ascii")).hexdigest(),
+                chunk["encoded_sha256"],
+            )
 
     def test_capsule_round_trips_exact_core_bytes(self):
-        decoded = zlib.decompress(base64.b64decode(self.capsule["payload"], validate=True))
+        payload = "".join(chunk["payload"] for chunk in self.capsule["chunks"])
+        self.assertEqual(len(payload), self.capsule["encoded_size"])
+        decoded = zlib.decompress(base64.b64decode(payload, validate=True))
         self.assertEqual(decoded, self.core_bytes)
         self.assertEqual(len(decoded), self.capsule["decoded_size"])
         self.assertEqual(hashlib.sha256(decoded).hexdigest(), self.capsule["decoded_sha256"])
 
     def test_capsule_stays_bounded_for_model_mediated_transport(self):
-        self.assertLessEqual(len(self.capsule["payload"]), 5000)
+        self.assertLessEqual(self.capsule["encoded_size"], 5000)
+        self.assertLessEqual(self.capsule["chunk_size"], build_runtime_capsule.MAX_CHUNK_CHARS)
         self.assertLessEqual(self.capsule["decoded_size"], 8192)
 
     def test_generator_matches_committed_capsule(self):
