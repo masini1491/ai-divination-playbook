@@ -2,6 +2,22 @@
 
 本檔只負責 fresh-session bootstrap、repository access / freshness、task routing 與 handoff gate；方法細節仍由各 canonical owner 負責。
 
+## Pre-Retrieval Transport Gate｜先建立 current repository authority
+
+在第一次 **current GitHub repository-content read** 或任何「已確認目前 Repo／首頁／最新版規則」之類的 current-content claim 之前，先確認 GitHub connector / GitHub Connect capability。
+
+若 GitHub connector 尚未連接、不可用或 exact read 權限不足，而本次 task materially 依賴 current GitHub content：
+
+```text
+minimum connector/read recovery
+→ still unavailable
+→ ACCESS BLOCKED
+```
+
+在 connector retrieval 成功前，不得以 GitHub public HTML、URL preview／snippet、generic Web search、raw URL、Python HTTP、`curl`／`wget`／`git clone` 或其他 alternate transport 來 bootstrap、確認或摘要 current repository authority，也不得聲稱已確認目前 Repo／首頁／最新版規則。
+
+**只有成功的 GitHub connector retrieval 才能建立 current GitHub repository-content authority。** Public page／preview 即使可見，也不能先替代 connector 建立 authority，再事後套用本 Repo 規則。
+
 ## Default Interaction Profile｜只給 Repo 也能直接使用
 
 使用者可以直接以自然語言提問；Agent 自行正規化最低必要 contract，不把 schema 當表單。
