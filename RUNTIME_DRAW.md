@@ -95,19 +95,28 @@ PASS → Fast Path。只有以下 trigger 才重新確認 Randomizer source：�
 Python capability
 → GitHub Connect resolve ai-divination-playbook ref → exact commit
 → GitHub Connect acquire exact revision runtime/casting/randomizer.py
-→ bounded smoke
+→ connector→Python byte-preserving handoff capability gate
 → write fixed cache + verification marker
+→ bounded smoke
 → import
 → fresh execution
 ```
 
 ### Byte-Preserving Materialization Bridge｜connector source → local fixed cache
 
-若 GitHub Connect 可取得 exact revision source，而 Python runtime 可執行，**preferred materialization transport 是 GitHub Connect base64 → Python decode**：
+這條路徑由三個彼此獨立的 capability 組成：
+
+```text
+GitHub source acquisition
+→ connector→Python byte-preserving payload handoff
+→ Python materialization / verification / execution
+```
+
+GitHub Connect 可取得 source、Python 也可執行，**不代表中間的 cross-tool payload handoff 一定存在**。在 cache FAIL／首次 acquisition 時，先確認產品是否能把 connector 回傳的完整 byte-preserving payload 以可驗證方式交給 Python；只有這個 handoff gate PASS，才進 preferred transport：
 
 ```text
 GitHub Connect fetch exact runtime/casting/randomizer.py as base64
-→ pass returned base64 payload into Python as data only
+→ pass returned complete base64 payload into Python as data only
 → Python base64.b64decode(...)
 → write decoded bytes to fixed cache randomizer.py
 → SHA-256 / marker / method invariant verification
@@ -116,9 +125,17 @@ GitHub Connect fetch exact runtime/casting/randomizer.py as base64
 
 這條 bridge 只搬運 canonical bytes，不授權 Python 自己連 GitHub，也不授權模型重建 source。Python 端允許的 materialization logic 只應處理 base64 decode、filesystem write、hash／marker 驗證與 canonical module import／execution；不得在 bridge 中重寫 RNG、牌組、A/B、coin、mapping、schema 或 provenance core。
 
-如果 connector 支援 `encoding=base64` 或等價 byte-preserving payload，應優先使用；只有 connector 無法提供完整 byte-preserving source、decode／write／hash 驗證失敗，或 Python execution capability 本身不可用時，才可判定 materialization capability gap。
+Capability 判定：
 
-**不得只因 connector 與 Python 是不同 capability，就直接推論 canonical source 無法 materialize。** Retrieval 與 execution authority 雖分離，但 connector output 可以作為 data 被 Python decode/write；這不等於 Python repository retrieval。
+- connector 可提供完整 byte-preserving source；
+- cross-tool handoff 能把**完整 payload 無損交給 Python**；
+- Python 可 decode／write／hash／import 或 CLI execute。
+
+三者都成立才可要求 canonical materialization。若 connector 與 Python 兩端各自可用，但產品沒有可觀察／可驗證的完整 payload handoff 機制，明確標記 `MATERIALIZATION HANDOFF CAPABILITY GAP`，fail closed 或走本章允許的 runtime fallback；**不得假裝 payload 已傳遞，也不得把模型看到的 source 轉錄進 Python 當作 bridge。**
+
+只有 connector 無法提供完整 byte-preserving source、cross-tool handoff capability 不成立、decode／write／hash 驗證失敗，或 Python execution capability 本身不可用時，才可判定 materialization capability gap。任何「payload 已交給 Python」claim 都必須有本 session 可觀察 evidence。
+
+**不得只因 connector 與 Python 是不同 capability，就直接推論 canonical source 無法 materialize；也不得只因兩端都存在，就反向推論 handoff 一定可用。** Retrieval、handoff、execution 是三個獨立 capability。
 
 ### Canonical Execution Identity｜取得哪份 source，就執行哪份 implementation
 
@@ -147,7 +164,7 @@ Marker 最低：
 
 GitHub repository acquisition **只走 GitHub Connect**。connector unavailable／blocked 且無 verified cache → `ACCESS BLOCKED`。禁止 public HTML、raw URL、generic Web、Python HTTP、curl/wget/git clone。
 
-GitHub retrieval capability ≠ Python execution ≠ repository write authority。
+GitHub retrieval capability ≠ connector→Python byte-preserving handoff capability ≠ Python execution ≠ repository write authority。
 
 ## Method Contracts
 
@@ -256,7 +273,7 @@ Contract fixed
 
 若 batch 部分 child 已可信固定、其他 child failure，不得重跑整批覆蓋已固定 facts；保留可信 child，對 unresolved child 最小修復或 fail closed。
 
-若 canonical source 已取得但 Python 不可用，可改用仍在線的 deployed Randomizer Web UI 或使用者自行抽／起；這是 runtime fallback，不改變 GitHub repository authority。若 GitHub source acquisition 本身被阻擋，仍遵守 `ACCESS BLOCKED`。
+若 canonical source 已取得但 Python 不可用，或 connector→Python byte-preserving handoff capability 不成立，可改用仍在線的 deployed Randomizer Web UI 或使用者自行抽／起；這是 runtime fallback，不改變 GitHub repository authority。若 GitHub source acquisition 本身被阻擋，仍遵守 `ACCESS BLOCKED`。
 
 Runtime 快、batch 方便都不創造補占 authority；同題／新題／補占仍由 `READING_LIFECYCLE.md` 決定。
 
@@ -292,6 +309,6 @@ Common：
 - in-memory reuse 不重用結果；new question fresh RNG；
 - `--repeat`／batch result count/order/independent identity 正確；
 - GitHub acquisition only through GitHub Connect；
-- connector base64 materialization → Python decode/write → fixed-cache hash verification 可成立，且不讓 Python 自己 retrieval GitHub；
+- connector→Python handoff capability gate 能區分 PASS 與 `MATERIALIZATION HANDOFF CAPABILITY GAP`；gate PASS 時 base64 materialization → Python decode/write → fixed-cache hash verification 可成立，且不讓 Python 自己 retrieval GitHub；
 - `PLAYBOOK_INDEX.json` 與 method owners 都指向 `runtime/casting/randomizer.py`；
 - `runtime/casting/MIGRATION_SOURCE.json` 永久保存 pinned legacy import provenance；current production files 可在 canonical repo 依正式 contract/version governance 演進，不再要求 byte-for-byte 等於 legacy snapshot。
