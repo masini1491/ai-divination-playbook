@@ -44,6 +44,12 @@ class ChatGPTRuntimeCapsuleTests(unittest.TestCase):
         self.assertTrue(self.capsule["same_turn_attempt_required"])
         self.assertTrue(self.capsule["missing_automatic_bridge_is_not_gap"])
         self.assertTrue(self.capsule["chunk_retry_required_on_mismatch"])
+        self.assertEqual(self.capsule["chunk_reassembly"], "index-ascending-concat")
+        self.assertEqual(self.capsule["chunk_retry_limit"], build_runtime_capsule.CHUNK_RETRY_LIMIT)
+        self.assertEqual(
+            self.capsule["chunk_retry_source"],
+            "fresh-same-commit-capsule-read",
+        )
 
     def test_each_chunk_has_exact_length_and_hash(self):
         chunks = self.capsule["chunks"]
