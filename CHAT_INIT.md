@@ -184,6 +184,8 @@ cheap HEAD/ref probe
    → reload only material changed owners / current load pack
 ```
 
+**`UNCHANGED_FRESHNESS_HARD_STOP`：** 若 cheap probe 回傳的 exact HEAD／ref identity 與 last-confirmed HEAD 完全相同，freshness check **立即結束**。此分支 **MUST NOT** 因 stale signal 本身再次 fetch／re-read `AGENTS.md`、`CHAT_INIT.md`、`METHOD_ROUTING.md`、`CHATGPT_LOAD_PACK.json`、selected method owner 或其他已確認 owner；直接 reuse confirmed working contract。只有同一 request 另外出現獨立、material 的 owner gap 時，才可針對該 gap 讀取最低必要 owner，且不得把那次讀取宣稱成 freshness reload。
+
 時間經過本身不是 trigger。Pinned SHA / immutable tag 不因 upstream main 漂移而自動更新。
 
 ## Task Exceptions｜按需載入
