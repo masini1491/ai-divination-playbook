@@ -184,7 +184,7 @@ cheap HEAD/ref probe
    → reload only material changed owners / current load pack
 ```
 
-**`UNCHANGED_FRESHNESS_HARD_STOP`：** exact HEAD／ref == last-confirmed HEAD → freshness 立即結束。此分支 **MUST NOT** freshness-reload 已確認 owner（`AGENTS.md`、`CHAT_INIT.md`、`METHOD_ROUTING.md`、load pack、selected method owner）；直接 reuse confirmed working contract。只有獨立 material owner gap 可觸發其最低必要 read，且不算 freshness reload。
+**`UNCHANGED_FRESHNESS_HARD_STOP`：** exact HEAD/ref == last-confirmed HEAD → **STOP**；reuse confirmed working contract。此 freshness branch **MUST NOT** re-read confirmed owners。
 
 時間經過本身不是 trigger。Pinned SHA / immutable tag 不因 upstream main 漂移而自動更新。
 
