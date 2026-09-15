@@ -30,7 +30,6 @@ def build_capsule() -> dict:
     return {
         "schema_version": 1,
         "authority": "derived-transport-cache-only",
-        "generated_by": "tools/build_runtime_capsule.py",
         "source_repository": "masini1491/ai-divination-playbook",
         "source_path": "runtime/casting/core.py",
         "payload_encoding": "base64+zlib",
