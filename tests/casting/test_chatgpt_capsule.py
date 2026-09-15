@@ -33,6 +33,16 @@ class ChatGPTRuntimeCapsuleTests(unittest.TestCase):
         self.assertEqual(self.capsule["source_path"], "runtime/casting/core.py")
         self.assertEqual(self.capsule["payload_encoding"], "base64+zlib")
 
+    def test_capsule_declares_same_turn_must_attempt_contract(self):
+        self.assertEqual(
+            self.capsule["transport_contract"],
+            "bounded-model-mediated-opaque-handoff-v1",
+        )
+        self.assertFalse(self.capsule["automatic_object_bridge_required"])
+        self.assertTrue(self.capsule["must_attempt_when_python_available"])
+        self.assertTrue(self.capsule["same_turn_attempt_required"])
+        self.assertTrue(self.capsule["missing_automatic_bridge_is_not_gap"])
+
     def test_capsule_round_trips_exact_core_bytes(self):
         decoded = zlib.decompress(base64.b64decode(self.capsule["payload"], validate=True))
         self.assertEqual(decoded, self.core_bytes)

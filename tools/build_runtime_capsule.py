@@ -30,6 +30,11 @@ def build_capsule() -> dict:
     return {
         "schema_version": 1,
         "authority": "derived-transport-cache-only",
+        "transport_contract": "bounded-model-mediated-opaque-handoff-v1",
+        "automatic_object_bridge_required": False,
+        "must_attempt_when_python_available": True,
+        "same_turn_attempt_required": True,
+        "missing_automatic_bridge_is_not_gap": True,
         "source_repository": "masini1491/ai-divination-playbook",
         "source_path": "runtime/casting/core.py",
         "payload_encoding": "base64+zlib",

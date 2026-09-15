@@ -135,6 +135,11 @@ CONTRACTS: dict[str, list[tuple[str, tuple[str, ...]]]] = {
             "runtime/casting/CHATGPT_RUNTIME_CAPSULE.json",
             (
                 '"authority":"derived-transport-cache-only"',
+                '"transport_contract":"bounded-model-mediated-opaque-handoff-v1"',
+                '"automatic_object_bridge_required":false',
+                '"must_attempt_when_python_available":true',
+                '"same_turn_attempt_required":true',
+                '"missing_automatic_bridge_is_not_gap":true',
                 '"source_path":"runtime/casting/core.py"',
                 '"payload_encoding":"base64+zlib"',
                 '"decoded_size":',
