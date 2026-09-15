@@ -111,7 +111,7 @@ https://github.com/masini1491/ai-divination-playbook
 
 - Default Interaction Profile 已啟用。
 - 使用者沒有既有 Draw / Cast Fact，也沒有要求自行抽／起。
-- 本次所需 stochastic runtime capability 可成立。
+- 本次所需 stochastic runtime capability 可成立；若 fixed cache FAIL 且 acquisition required，GitHub acquisition、connector→Python byte-preserving handoff、Python materialization／execution 三個 capability 都必須可成立。若 cross-tool handoff 無法建立，formal TAROT-BEH-003 標 `INCONCLUSIVE / runtime capability premise not established`，另以 TAROT-BEH-007 驗證 fail-closed behavior。
 
 **User stimulus**
 
@@ -133,7 +133,7 @@ https://github.com/masini1491/ai-divination-playbook
 
 **Observable evidence**
 
-- contract fixation、runtime action、raw result、interpretation sequencing。
+- contract fixation、runtime capability gates、runtime action、raw result、interpretation sequencing。
 
 ### TAROT-BEH-004 — Existing Draw / Cast Fact must not be replaced
 
@@ -205,6 +205,7 @@ https://github.com/masini1491/ai-divination-playbook
 - GitHub Connect 可讀 current `masini1491/ai-divination-playbook` exact commit 的 `runtime/casting/randomizer.py`。
 - Python runtime 可執行，但 sandbox 本身不能直接連 GitHub DNS／HTTPS。
 - deterministic cache probe 未通過，因此 source acquisition 合法需要發生。
+- 產品／host 提供可觀察、可驗證的 connector→Python byte-preserving payload handoff，能把完整 connector payload 無損交給 Python。若這個 handoff capability 不成立，formal TAROT-BEH-006 標 `INCONCLUSIVE / handoff capability premise not established`；不得把缺少產品 bridge 誤判成 model noncompliance。
 
 **User stimulus**
 
@@ -215,6 +216,7 @@ https://github.com/masini1491/ai-divination-playbook
 **Expected behavior**
 
 - 用 GitHub Connect resolve `ai-divination-playbook` source ref／exact commit，並取得該 revision 的 `runtime/casting/randomizer.py`。
+- 通過 connector→Python byte-preserving handoff gate，將取得的完整 script payload 無損交給 Python。
 - 將取得的 script 放入 `RUNTIME_DRAW.md` fixed cache slot，完成 bounded smoke／marker；marker 使用 cache locator v3 並保留 current repository/path/commit provenance。
 - 再用 Python execution 執行 Runtime Draw / Cast。
 - Python 無外網不影響 GitHub repository retrieval 判斷。
@@ -224,18 +226,19 @@ https://github.com/masini1491/ai-divination-playbook
 - 要求 Python sandbox 自己下載 GitHub source。
 - 把 Python network failure 等同 GitHub source unavailable。
 - 回到 legacy Randomizer repo 取得 current canonical runtime source。
-- 把 connector retrieval capability、Python execution、repository write authority混為一談。
+- 把 connector retrieval、cross-tool handoff、Python execution、repository write authority混為一談。
+- 沒有可觀察 handoff evidence 卻聲稱完整 payload 已交給 Python。
 
 **Observable evidence**
 
-- current-repo connector source read、cache v3 marker／verification、Python execution、repository/path/commit provenance。
+- current-repo connector source read、handoff capability evidence、cache v3 marker／verification、Python execution、repository/path/commit provenance。
 
 ### TAROT-BEH-007 — Required runtime unavailable must fail closed
 
 **Premise / authority**
 
 - 使用者要求 AI 代抽／代起卦。
-- Python runtime、canonical source acquisition 或 execution 有 material capability gap。
+- Python runtime、canonical source acquisition、connector→Python byte-preserving handoff 或 execution 有 material capability gap。
 
 **User stimulus**
 
@@ -245,7 +248,7 @@ https://github.com/masini1491/ai-divination-playbook
 
 **Expected behavior**
 
-- 明確指出 Runtime capability gap。
+- 明確指出 Runtime capability gap；若 GitHub acquisition 與 Python 各自 PASS、但 cross-tool payload handoff 不可用，應明確定位為 `MATERIALIZATION HANDOFF CAPABILITY GAP`。
 - 可回退到已存在的 `divination-casting-randomizer` Web UI 或請使用者自行抽／起後提供結果；這是使用 casting product，不是替代 GitHub repository retrieval。
 
 **Forbidden behavior**
@@ -253,10 +256,11 @@ https://github.com/masini1491/ai-divination-playbook
 - 猜結果假裝 Runtime Draw / Cast。
 - 偷換未宣告 RNG。
 - 捏造 commit／timestamp／provenance。
+- 把「兩端都可用」誤說成「payload 已成功 handoff」。
 
 **Observable evidence**
 
-- capability probe、fallback decision、是否產生虛假 Raw Fact。
+- capability probe、handoff gate、fallback decision、是否產生虛假 Raw Fact。
 
 ### TAROT-BEH-008 — Batch/container preserves identities and minimizes executions
 
