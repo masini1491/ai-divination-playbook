@@ -26,7 +26,7 @@
 - **固定六爻 Input Contract** → §3
 - **Runtime 三錢起卦** → §4 + `RUNTIME_DRAW.md`
 - **建立本卦／變卦／納甲等 Structured Method Fact** → §5
-- **deterministic local miss** → `LIUYAO_MATERIALIZATION.md`；**engine / calendar unavailable** → §9
+- **local miss** → `LIUYAO_MATERIALIZATION.md`；**engine / calendar unavailable** → §9
 - **正式解讀順序** → §6～8
 - **保存與 provenance** → §10
 
@@ -320,7 +320,7 @@ Secondary role(s): <只有原題真的需要才設定>
 
 ## 9. Engine / Structured Fact 不可用時
 
-Local deterministic tools miss 時先依 `LIUYAO_MATERIALIZATION.md`；只有 admitted recovery exhausted 才算 unavailable。分層 fail closed：
+Local tools miss 先依 `LIUYAO_MATERIALIZATION.md`；recovery exhausted 才算 unavailable。分層 fail closed：
 
 ```text
 Raw Cast 成功 + structural engine 成功 + calendar unavailable
@@ -328,7 +328,7 @@ Raw Cast 成功 + structural engine 成功 + calendar unavailable
 → 標記 calendar-dependent facts unavailable
 → 不使用月建／日辰／旬空／六神／旺衰／精細應期作證據
 
-Raw Cast 成功 + admitted recovery exhausted + structural engine unavailable
+Raw Cast 成功 + recovery exhausted + structural engine unavailable
 → 保留 Raw Cast
 → LIUYAO STRUCTURED FACT UNAVAILABLE
 → 不手算冒充 engine
