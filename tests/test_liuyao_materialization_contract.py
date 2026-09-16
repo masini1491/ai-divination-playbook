@@ -16,7 +16,7 @@ class LiuyaoMaterializationContractTests(unittest.TestCase):
 
     def test_hot_owner_routes_local_miss_to_task_specific_contract(self) -> None:
         self.assertIn("LIUYAO_MATERIALIZATION.md", self.owner)
-        self.assertIn("Local deterministic tools miss 時先依", self.owner)
+        self.assertIn("Local tools miss 先依", self.owner)
         self.assertIn(
             "Local deterministic-tool miss ≠ deterministic source unavailable",
             self.materialization,
@@ -47,7 +47,7 @@ class LiuyaoMaterializationContractTests(unittest.TestCase):
 
     def test_unavailable_requires_exhausted_materialization_paths(self) -> None:
         self.assertIn(
-            "admitted recovery exhausted + structural engine unavailable",
+            "recovery exhausted + structural engine unavailable",
             self.owner,
         )
         self.assertIn(
