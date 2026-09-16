@@ -10,6 +10,10 @@ This file provides Claude Code repository bootstrap compatibility only. It is no
 - If multiple agent-instruction surfaces are loaded, treat overlapping bootstrap text as compatibility handoff only, never as parallel authority.
 - This adapter does not grant repository write, runtime execution, provider, Reading Record, storage, or completion authority.
 
+## Host authority boundary
+
+This compatibility adapter does not alter the repository's `Project AI mode: ChatGPT-Only`. Its presence allows this host to discover, read, and follow the repository's canonical governance for compatibility and advisory use, but it does not by itself grant this host canonical Playbook execution authority.
+
 ## Authority boundary
 
-If this file conflicts with current repository canonical governance, the current canonical governance wins. Narrow or stop rather than inventing an adapter fallback, and do not maintain duplicated method, runtime, retrieval, storage, or regression policy here.
+If this file or the host's native behavior conflicts with current repository canonical governance, the current canonical governance wins. Narrow or stop rather than inventing an adapter fallback, and do not maintain duplicated method, runtime, retrieval, storage, or regression policy here.

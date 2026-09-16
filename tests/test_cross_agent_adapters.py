@@ -36,6 +36,22 @@ class CrossAgentAdapterTests(unittest.TestCase):
             errors = validator.validate(root)
             self.assertTrue(any("duplicated normative policy token" in error for error in errors))
 
+    def test_host_execution_admission_boundary_is_required(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            for relative in validator.ADAPTERS:
+                path = root / relative
+                path.parent.mkdir(parents=True, exist_ok=True)
+                text = (ROOT / relative).read_text(encoding="utf-8")
+                if relative == "CLAUDE.md":
+                    text = text.replace(
+                        "does not by itself grant this host canonical Playbook execution authority",
+                        "is compatible with the repository",
+                    )
+                path.write_text(text, encoding="utf-8")
+            errors = validator.validate(root)
+            self.assertTrue(any("authority boundary missing phrase" in error for error in errors))
+
     def test_adapter_drift_fails(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
