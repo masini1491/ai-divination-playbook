@@ -26,8 +26,8 @@
 - **固定六爻 Input Contract** → §3
 - **Runtime 三錢起卦** → §4 + `RUNTIME_DRAW.md`
 - **建立本卦／變卦／納甲等 Structured Method Fact** → §5
+- **local miss** → `LIUYAO_MATERIALIZATION.md`；**engine / calendar unavailable** → §9
 - **正式解讀順序** → §6～8
-- **engine / calendar fact unavailable** → §9
 - **保存與 provenance** → §10
 
 ## 1. Judgment Responsibility｜六爻主要回答什麼
@@ -320,7 +320,7 @@ Secondary role(s): <只有原題真的需要才設定>
 
 ## 9. Engine / Structured Fact 不可用時
 
-分層 fail closed：
+Local tools miss 先依 `LIUYAO_MATERIALIZATION.md`；recovery exhausted 才算 unavailable。分層 fail closed：
 
 ```text
 Raw Cast 成功 + structural engine 成功 + calendar unavailable
@@ -328,7 +328,7 @@ Raw Cast 成功 + structural engine 成功 + calendar unavailable
 → 標記 calendar-dependent facts unavailable
 → 不使用月建／日辰／旬空／六神／旺衰／精細應期作證據
 
-Raw Cast 成功 + structural engine unavailable
+Raw Cast 成功 + recovery exhausted + structural engine unavailable
 → 保留 Raw Cast
 → LIUYAO STRUCTURED FACT UNAVAILABLE
 → 不手算冒充 engine
@@ -336,7 +336,7 @@ Raw Cast 成功 + structural engine unavailable
 
 共同規則：
 
-- Raw Cast Fact 仍然有效，不重起；
+- Raw Cast Fact 仍然有效，不重起；deterministic recovery 沿用原 `cast_timestamp`；
 - 不得由語言模型手算納甲、六親、世應等再冒充 engine output；
 - 若使用者只要求不依賴完整納甲的基礎《周易》卦義分析，可以在**明確降級並取得使用者意圖一致**的前提下處理；不得把降級分析叫做完整六爻納甲解讀；
 - 不得因某 layer unavailable 就偷偷改成 Tarot／Meihua。若要改方法，必須清楚說明是 fallback，並建立新的 method/cast identity。
