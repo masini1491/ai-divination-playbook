@@ -26,6 +26,7 @@
 - **固定六爻 Input Contract** → §3
 - **Runtime 三錢起卦** → §4 + `RUNTIME_DRAW.md`
 - **建立本卦／變卦／納甲等 Structured Method Fact** → §5
+- **deterministic tools local miss / materialization recovery** → `LIUYAO_MATERIALIZATION.md`
 - **正式解讀順序** → §6～8
 - **engine / calendar fact unavailable** → §9
 - **保存與 provenance** → §10
@@ -256,67 +257,15 @@ bopo/najia
 
 Reference 自己標示 draft／unaudited 的資料不得因 test parity 就升格為唯一真理；重要 facts 仍應維持多來源或傳統規則交叉驗證。
 
-### 5D. Deterministic Tool Acquisition / Materialization Gate
+### 5D. Deterministic Tool Acquisition Gate
 
-Raw Cast 已固定且本題需要 Structured Method Fact 時，**local filesystem / cache miss 本身不等於 engine unavailable**。若 GitHub Connect exact-commit retrieval 與 Python execution capability 都可用，必須先嘗試 canonical deterministic tools 的 byte-preserving materialization，再決定是否進 §9 fail-closed。
+若 Raw Cast 已固定、需要 Structured Method Fact，但 local `liuyao_*.py` cache 缺失／失效，**local miss 不等於 engine unavailable**。在宣告 `LIUYAO STRUCTURED FACT UNAVAILABLE` 前，若 GitHub Connect exact-source retrieval 與 Python execution 可用，必須讀並執行 `LIUYAO_MATERIALIZATION.md` 的按需 acquisition / verification gate。
 
-Canonical deterministic tool set：
-
-```text
-tools/liuyao_calendar.py
-tools/liuyao_engine.py
-tools/liuyao_runtime.py
-```
-
-最低流程：
-
-```text
-fixed Raw Cast + original cast_timestamp
-→ probe verified local Liuyao deterministic-tool cache if present
-→ cache MISS / invalid
-   → GitHub Connect resolve the same Playbook revision to exact commit
-   → retrieve canonical Liuyao tool source from that exact commit
-   → materialize byte-for-byte into one local directory
-   → verify each reconstructed file against GitHub canonical blob identity
-   → only after verification import / execute canonical tool
-→ tools/liuyao_runtime.py composes calendar + structural facts
-→ Structured Method Fact fixed
-→ interpretation
-```
-
-若 host 有可觀察、byte-preserving 的 connector→Python full-file bridge，可直接傳完整 canonical file。若沒有 automatic object bridge，但 GitHub Connect 可做 bounded exact line reads，允許**model-mediated bounded source transport**，條件是：
-
-- 來源固定在同一 resolved exact commit；
-- 只搬運 canonical source text，不理解後重寫、不翻譯、不補 code；
-- chunks 必須依原始行序完整重組，不得省略中段；
-- 重組後以 Git blob identity 驗證 canonical bytes；必要時可再加 SHA-256／byte-count 驗證；
-- hash / blob identity 未 PASS 前不得 import 或執行；
-- mismatch 時只 fresh-read 同 commit 的失敗 chunk／range；不得改用 memory、舊聊天室、其他 ref 或模型重寫 source 補洞。
-
-`liuyao_runtime.py` 會從同一目錄載入 `liuyao_calendar.py` 與 `liuyao_engine.py`；因此若要執行 integrated runtime，三支檔案必須共同 materialize。若 integrated runtime materialization 不可行，但 `liuyao_engine.py` 已被 byte-for-byte 驗證且 Python 可執行，仍應先產生不依賴 calendar 的 structural facts；calendar-dependent layer 再獨立 fail closed。
-
-允許 verified local cache reuse；cache marker 至少應能綁定 source repository、source path(s)、exact source commit、canonical file hash/blob identity 與本地 copy identity。不得因聊天重開就假設舊 cache 仍有效，也不得因 local cache 不存在就直接宣告 source 不存在。
-
-只有以下情況才可把 deterministic layer 判定為 unavailable：
-
-- GitHub Connect 無法取得所需 exact-commit canonical source；
-- Python execution capability 不可用；
-- host 無法建立任何 admitted byte-preserving handoff，而 bounded exact source transport亦不可行；
-- bounded retries 後仍無法通過完整 source reassembly / canonical blob-hash verification；
-- canonical source實際 import / execution 失敗，且失敗不是可用同一 source bounded recover 的暫時 materialization錯誤。
-
-不得把下列情況單獨當成 unavailable：
-
-```text
-/mnt/data 當下沒有 liuyao_*.py
-沒有 automatic connector object bridge
-Python sandbox 不能自己連 GitHub
-上一輪只 materialize 了 Randomizer core.py
-```
+該 recovery 必須沿用**原 Raw Cast + 原 cast_timestamp**，不得重抽、重卦或換成現在時間。
 
 核心原則：
 
-> **Local deterministic-tool miss ≠ deterministic source unavailable。先完成可驗證 acquisition / handoff / execution capability gate，再決定 fail closed。**
+> **Local deterministic-tool miss ≠ deterministic source unavailable。**
 
 ### Authority boundary
 
@@ -382,7 +331,7 @@ Secondary role(s): <只有原題真的需要才設定>
 
 ## 9. Engine / Structured Fact 不可用時
 
-**進本節之前，若 GitHub Connect exact source retrieval 與 Python execution 都可用，必須先完成 §5D 的 deterministic acquisition / materialization gate。Local file/cache miss 不能直接觸發本節。**
+若是 local deterministic-tool miss，先依 §5D / `LIUYAO_MATERIALIZATION.md` 完成 admitted recovery gate；**local file/cache miss 不能直接觸發本節。**
 
 分層 fail closed：
 
@@ -392,7 +341,7 @@ Raw Cast 成功 + structural engine 成功 + calendar unavailable
 → 標記 calendar-dependent facts unavailable
 → 不使用月建／日辰／旬空／六神／旺衰／精細應期作證據
 
-Raw Cast 成功 + §5D admitted materialization/execution paths exhausted + structural engine unavailable
+Raw Cast 成功 + admitted materialization/execution paths exhausted + structural engine unavailable
 → 保留 Raw Cast
 → LIUYAO STRUCTURED FACT UNAVAILABLE
 → 記錄實際 acquisition / verification / execution gap
@@ -444,7 +393,7 @@ original interpretation
 - [ ] 原題是一個清楚、可驗證的事件 judgment node。
 - [ ] Raw Cast 是既有 fact 或由 canonical Runtime 產生，不是模型自創。
 - [ ] line order 明確為 bottom-to-top。
-- [ ] 若 local deterministic tools 缺失但 GitHub exact source + Python 可用，已先走 §5D，而不是直接宣告 engine unavailable。
+- [ ] 若 local deterministic tools 缺失但 GitHub exact source + Python 可用，已先走 §5D / `LIUYAO_MATERIALIZATION.md`，而不是直接宣告 engine unavailable。
 - [ ] 本卦／動爻／之卦／納甲等使用到的 structural facts 有 deterministic engine provenance。
 - [ ] calendar-dependent evidence 只有在 calendar facts 已驗證時才使用。
 - [ ] 用神 responsibility 在看結果前由 question contract 決定，不由 engine category mapping 代替。
