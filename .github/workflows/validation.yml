@@ -38,6 +38,12 @@ jobs:
       - name: Run loader deterministic contract regression
         run: python tools/loader_contract_regression.py
 
+      - name: Validate Agent Skills gateway
+        run: python tools/validate_agent_skills.py
+
+      - name: Verify Agent Skills behavioral regression selection
+        run: python tools/behavioral_eval.py --matrix evals/regression_matrix.json --change-class agent-skills-adapter
+
       - name: Run unit tests
         run: python -m unittest discover -s tests -v
 
