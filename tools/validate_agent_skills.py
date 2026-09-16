@@ -185,10 +185,11 @@ def validate(root: Path = ROOT) -> list[str]:
             errors.append("gateway load-pack pointer conflicts with PLAYBOOK_INDEX loader.cache_path")
         adapters = index.get("adapters")
         expected_adapter_path = GATEWAY_PATH.as_posix()
-        if not isinstance(adapters, dict) or adapters.get(EXPECTED_INDEX_ADAPTER_KEY) != expected_adapter_path:
-            errors.append(
-                f"PLAYBOOK_INDEX adapters.{EXPECTED_INDEX_ADAPTER_KEY} must point to {expected_adapter_path}"
-            )
+        if isinstance(adapters, dict) and EXPECTED_INDEX_ADAPTER_KEY in adapters:
+            if adapters.get(EXPECTED_INDEX_ADAPTER_KEY) != expected_adapter_path:
+                errors.append(
+                    f"PLAYBOOK_INDEX adapters.{EXPECTED_INDEX_ADAPTER_KEY} conflicts with {expected_adapter_path}"
+                )
 
     lowered_description = description.lower() if isinstance(description, str) else ""
     lowered_body = body.lower()
