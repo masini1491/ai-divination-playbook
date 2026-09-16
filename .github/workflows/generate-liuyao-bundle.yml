@@ -26,7 +26,7 @@ jobs:
 
       - name: Commit generated bundle when changed
         run: |
-          if git diff --quiet -- runtime/liuyao/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json; then
+          if [ -z "$(git status --porcelain -- runtime/liuyao/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json)" ]; then
             echo "bundle already current"
             exit 0
           fi
