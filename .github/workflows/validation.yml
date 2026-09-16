@@ -38,6 +38,9 @@ jobs:
       - name: Run loader deterministic contract regression
         run: python tools/loader_contract_regression.py
 
+      - name: Verify Liuyao deterministic tool bundle
+        run: python tools/build_liuyao_tool_bundle.py --check
+
       - name: Validate Agent Skills gateway
         run: python tools/validate_agent_skills.py
 

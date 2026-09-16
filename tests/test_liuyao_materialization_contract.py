@@ -33,10 +33,10 @@ class LiuyaoMaterializationContractTests(unittest.TestCase):
 
     def test_exact_commit_and_byte_identity_are_required(self) -> None:
         required = (
-            "same Playbook revision to exact commit",
+            "同一 resolved exact commit",
             "byte-for-byte",
-            "GitHub canonical blob identity",
-            "hash / blob identity 未 PASS 前不得 import 或執行",
+            "Git blob identity",
+            "identity 未 PASS 前不得 write-as-verified、import 或 execute",
         )
         for phrase in required:
             self.assertIn(phrase, self.materialization)
