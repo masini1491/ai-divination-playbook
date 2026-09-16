@@ -18,6 +18,22 @@ MAX_DECODED_BYTES = 8192
 CHUNK_CHARS = 444
 MAX_CHUNK_CHARS = 512
 CHUNK_RETRY_LIMIT = 2
+CACHE_LOCATOR_VERSION = 4
+CACHE_MARKER_FILENAME = "capsule_verification.json"
+CACHE_REQUIRED_MARKER_FIELDS = [
+    "verified",
+    "cache_locator_version",
+    "runtime_source_repository",
+    "runtime_source_path",
+    "capsule_path",
+    "runtime_source_ref",
+    "runtime_source_commit",
+    "runtime_copy_sha256",
+    "core_version",
+    "algorithm_version",
+    "supported_methods",
+    "tarot_deck_size",
+]
 
 
 def _chunk_payload(payload: str) -> list[dict[str, object]]:
@@ -73,6 +89,14 @@ def build_capsule() -> dict:
         "core_version": namespace["CORE_VERSION"],
         "algorithm_version": namespace["ALGORITHM_VERSION"],
         "supported_methods": list(namespace["SUPPORTED_METHODS"]),
+        "cache_contract": {
+            "marker_filename": CACHE_MARKER_FILENAME,
+            "cache_locator_version": CACHE_LOCATOR_VERSION,
+            "marker_write_required_before_execution": True,
+            "marker_readback_required_before_execution": True,
+            "post_write_probe_required_before_execution": True,
+            "required_marker_fields": CACHE_REQUIRED_MARKER_FIELDS,
+        },
         "chunks": chunks,
         "legacy": {
             "transport_contract": "bounded-model-mediated-opaque-handoff-v1",

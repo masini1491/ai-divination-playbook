@@ -51,6 +51,41 @@ class ChatGPTRuntimeCapsuleTests(unittest.TestCase):
             "fresh-same-commit-capsule-read",
         )
 
+    def test_capsule_declares_machine_visible_cache_contract(self):
+        contract = self.capsule["cache_contract"]
+        self.assertEqual(
+            contract["marker_filename"],
+            build_runtime_capsule.CACHE_MARKER_FILENAME,
+        )
+        self.assertEqual(
+            contract["cache_locator_version"],
+            build_runtime_capsule.CACHE_LOCATOR_VERSION,
+        )
+        self.assertTrue(contract["marker_write_required_before_execution"])
+        self.assertTrue(contract["marker_readback_required_before_execution"])
+        self.assertTrue(contract["post_write_probe_required_before_execution"])
+        self.assertEqual(
+            contract["required_marker_fields"],
+            build_runtime_capsule.CACHE_REQUIRED_MARKER_FIELDS,
+        )
+        self.assertEqual(
+            set(contract["required_marker_fields"]),
+            {
+                "verified",
+                "cache_locator_version",
+                "runtime_source_repository",
+                "runtime_source_path",
+                "capsule_path",
+                "runtime_source_ref",
+                "runtime_source_commit",
+                "runtime_copy_sha256",
+                "core_version",
+                "algorithm_version",
+                "supported_methods",
+                "tarot_deck_size",
+            },
+        )
+
     def test_each_chunk_has_exact_length_and_hash(self):
         chunks = self.capsule["chunks"]
         self.assertEqual(len(chunks), self.capsule["chunk_count"])
