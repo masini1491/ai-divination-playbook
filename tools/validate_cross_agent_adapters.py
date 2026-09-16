@@ -18,6 +18,8 @@ REQUIRED_PHRASES = (
     "does not create a second current-state policy source",
     "current canonical governance wins",
     "compatibility handoff only, never as parallel authority",
+    "does not alter the repository's `Project AI mode: ChatGPT-Only`",
+    "does not by itself grant this host canonical Playbook execution authority",
 )
 FORBIDDEN_POLICY_TOKENS = (
     "Psychology → Tarot",
