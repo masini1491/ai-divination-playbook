@@ -26,9 +26,8 @@
 - **固定六爻 Input Contract** → §3
 - **Runtime 三錢起卦** → §4 + `RUNTIME_DRAW.md`
 - **建立本卦／變卦／納甲等 Structured Method Fact** → §5
-- **deterministic tools local miss / materialization recovery** → `LIUYAO_MATERIALIZATION.md`
+- **deterministic local miss** → `LIUYAO_MATERIALIZATION.md`；**engine / calendar unavailable** → §9
 - **正式解讀順序** → §6～8
-- **engine / calendar fact unavailable** → §9
 - **保存與 provenance** → §10
 
 ## 1. Judgment Responsibility｜六爻主要回答什麼
@@ -257,16 +256,6 @@ bopo/najia
 
 Reference 自己標示 draft／unaudited 的資料不得因 test parity 就升格為唯一真理；重要 facts 仍應維持多來源或傳統規則交叉驗證。
 
-### 5D. Deterministic Tool Acquisition Gate
-
-若 Raw Cast 已固定、需要 Structured Method Fact，但 local `liuyao_*.py` cache 缺失／失效，**local miss 不等於 engine unavailable**。在宣告 `LIUYAO STRUCTURED FACT UNAVAILABLE` 前，若 GitHub Connect exact-source retrieval 與 Python execution 可用，必須讀並執行 `LIUYAO_MATERIALIZATION.md` 的按需 acquisition / verification gate。
-
-該 recovery 必須沿用**原 Raw Cast + 原 cast_timestamp**，不得重抽、重卦或換成現在時間。
-
-核心原則：
-
-> **Local deterministic-tool miss ≠ deterministic source unavailable。**
-
 ### Authority boundary
 
 ```text
@@ -331,9 +320,7 @@ Secondary role(s): <只有原題真的需要才設定>
 
 ## 9. Engine / Structured Fact 不可用時
 
-若是 local deterministic-tool miss，先依 §5D / `LIUYAO_MATERIALIZATION.md` 完成 admitted recovery gate；**local file/cache miss 不能直接觸發本節。**
-
-分層 fail closed：
+Local deterministic tools miss 時先依 `LIUYAO_MATERIALIZATION.md`；只有 admitted recovery exhausted 才算 unavailable。分層 fail closed：
 
 ```text
 Raw Cast 成功 + structural engine 成功 + calendar unavailable
@@ -341,24 +328,22 @@ Raw Cast 成功 + structural engine 成功 + calendar unavailable
 → 標記 calendar-dependent facts unavailable
 → 不使用月建／日辰／旬空／六神／旺衰／精細應期作證據
 
-Raw Cast 成功 + admitted materialization/execution paths exhausted + structural engine unavailable
+Raw Cast 成功 + admitted recovery exhausted + structural engine unavailable
 → 保留 Raw Cast
 → LIUYAO STRUCTURED FACT UNAVAILABLE
-→ 記錄實際 acquisition / verification / execution gap
 → 不手算冒充 engine
 ```
 
 共同規則：
 
-- Raw Cast Fact 仍然有效，不重起；
-- deterministic recovery 使用**原起卦時間**與原 Raw Cast，不得另取現在時間、不重抽、不重卦；
+- Raw Cast Fact 仍然有效，不重起；deterministic recovery 沿用原 `cast_timestamp`；
 - 不得由語言模型手算納甲、六親、世應等再冒充 engine output；
 - 若使用者只要求不依賴完整納甲的基礎《周易》卦義分析，可以在**明確降級並取得使用者意圖一致**的前提下處理；不得把降級分析叫做完整六爻納甲解讀；
 - 不得因某 layer unavailable 就偷偷改成 Tarot／Meihua。若要改方法，必須清楚說明是 fallback，並建立新的 method/cast identity。
 
 核心原則：
 
-> **Cast succeeded ≠ every Liuyao layer succeeded。Preserve every verified fact; attempt admitted deterministic recovery before declaring a layer missing; fail closed only at the actually unavailable layer。**
+> **Cast succeeded ≠ every Liuyao layer succeeded。Preserve every verified fact; fail closed only at the missing layer。**
 
 ## 10. Provenance / Reading Record
 
@@ -393,7 +378,6 @@ original interpretation
 - [ ] 原題是一個清楚、可驗證的事件 judgment node。
 - [ ] Raw Cast 是既有 fact 或由 canonical Runtime 產生，不是模型自創。
 - [ ] line order 明確為 bottom-to-top。
-- [ ] 若 local deterministic tools 缺失但 GitHub exact source + Python 可用，已先走 §5D / `LIUYAO_MATERIALIZATION.md`，而不是直接宣告 engine unavailable。
 - [ ] 本卦／動爻／之卦／納甲等使用到的 structural facts 有 deterministic engine provenance。
 - [ ] calendar-dependent evidence 只有在 calendar facts 已驗證時才使用。
 - [ ] 用神 responsibility 在看結果前由 question contract 決定，不由 engine category mapping 代替。
