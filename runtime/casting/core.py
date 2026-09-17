@@ -3,12 +3,17 @@
 
 from __future__ import annotations
 
+from datetime import datetime, timezone
 import secrets
 from typing import Any
+from zoneinfo import ZoneInfo
 
-CORE_VERSION = "1"
+CORE_VERSION = "2"
 ALGORITHM_VERSION = "2"
+SCHEMA_VERSION = "4"
+SOURCE = "divination-casting-randomizer-python"
 SUPPORTED_METHODS = ("tarot", "plum", "liuyao")
+TAIPEI_TZ = ZoneInfo("Asia/Taipei")
 
 MAJORS = [
     "愚者", "魔術師", "女祭司", "女皇", "皇帝", "教皇", "戀人", "戰車", "力量", "隱者",
@@ -79,7 +84,7 @@ def short_name(name: str) -> str:
     return name
 
 
-def draw_tarot(count: int) -> dict[str, Any]:
+def _draw_tarot_raw(count: int) -> dict[str, Any]:
     if not 1 <= count <= 24:
         raise ValueError("Tarot count must be between 1 and 24.")
     chosen = fisher_yates(DECK)[:count]
@@ -97,7 +102,7 @@ def draw_tarot(count: int) -> dict[str, Any]:
     return {"count": count, "cards": cards}
 
 
-def cast_plum() -> dict[str, Any]:
+def _cast_plum_raw() -> dict[str, Any]:
     a, b = randbelow(1000), randbelow(1000)
     upper, lower = TRIGRAM[a % 8], TRIGRAM[b % 8]
     rem = (a + b) % 6
@@ -130,7 +135,7 @@ def resolve_liuyao_coin_values(coin_values: list[int] | tuple[int, int, int]) ->
     }
 
 
-def cast_liuyao_coins() -> dict[str, Any]:
+def _cast_liuyao_raw() -> dict[str, Any]:
     """Cast six lines bottom-to-top with three independent fair coins per line."""
     lines = []
     for position, position_name in enumerate(LIUYAO_POSITION_NAMES, start=1):
@@ -147,14 +152,52 @@ def cast_liuyao_coins() -> dict[str, Any]:
     }
 
 
-def make_result(method: str, count: int | None = None) -> dict[str, Any]:
+def _make_result_raw(method: str, count: int | None = None) -> dict[str, Any]:
     result: dict[str, Any] = {"method": method}
     if method in {"tarot", "both"}:
         if count is None:
             raise ValueError("Tarot count is required.")
-        result["tarot"] = draw_tarot(count)
+        result["tarot"] = _draw_tarot_raw(count)
     if method in {"plum", "both"}:
-        result["plum"] = cast_plum()
+        result["plum"] = _cast_plum_raw()
     if method == "liuyao":
-        result["liuyao"] = cast_liuyao_coins()
+        result["liuyao"] = _cast_liuyao_raw()
     return result
+
+
+def execute_stochastic(
+    command: str,
+    *,
+    count: int = 3,
+    repeat: int = 1,
+    counts: list[int] | None = None,
+    method: str = "tarot",
+    source_commit: str | None = None,
+) -> dict[str, Any]:
+    """Only canonical public stochastic API; timestamp and result are atomic."""
+    if repeat < 1 or repeat > 100:
+        raise ValueError("repeat must be between 1 and 100")
+    utc = datetime.now(timezone.utc)
+    if command in {"tarot", "plum", "liuyao", "both"}:
+        results = [_make_result_raw(command, count) for _ in range(repeat)]
+    elif command == "batch":
+        if not counts or method not in {"tarot", "both"}:
+            raise ValueError("batch requires counts and method tarot or both")
+        if any(value < 1 or value > 24 for value in counts):
+            raise ValueError("each count must be between 1 and 24")
+        results = [_make_result_raw(method, value) for value in counts]
+    else:
+        raise ValueError(f"unsupported command: {command}")
+    taipei = utc.astimezone(TAIPEI_TZ)
+    return {
+        "source": SOURCE,
+        "algorithm_version": ALGORITHM_VERSION,
+        "schema_version": SCHEMA_VERSION,
+        "supported_methods": list(SUPPORTED_METHODS),
+        "runtime_source_commit": source_commit or "unknown",
+        "generated_at_utc": utc.isoformat(timespec="seconds"),
+        "generated_at_taipei": taipei.isoformat(timespec="seconds"),
+        "timezone": "Asia/Taipei",
+        "rng": "secrets.randbits(32) + rejection sampling",
+        "results": results,
+    }
