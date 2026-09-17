@@ -1,0 +1,51 @@
+name: Temporary finish atomic stochastic envelope
+on:
+  push:
+    branches: [fix/atomic-stochastic-timestamp-envelope]
+permissions:
+  contents: write
+jobs:
+  finish:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/atomic-stochastic-timestamp-envelope
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Patch governance, rebuild capsule, test, commit
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('RUNTIME_DRAW.md')
+          s = p.read_text(encoding='utf-8')
+          old = 'Runtime timestamp：full Runtime payload 提供 `generated_at_utc` + `generated_at_taipei` + `Asia/Taipei`；GitHub commit time 不是 draw time。Capsule core direct execution的 caller 必須以實際 execution clock 保存時間；不可拿 commit time 冒充 draw time。'
+          new = 'Runtime timestamp：**timestamp capture 是 canonical stochastic runtime responsibility，不是 caller responsibility。** Full Runtime 與 capsule core 都必須透過 `core.execute_stochastic()` 原子產生 stochastic result + `generated_at_utc` + `generated_at_taipei` + `Asia/Taipei`；GitHub commit time 不是 draw time。任何只有牌面／A-B／6-7-8-9、卻缺 execution timestamp 的新 stochastic output，都是 `STOCHASTIC EXECUTION FACT INVALID`，不得進 interpretation、deterministic downstream、Reading Record 或 Vault，也不得事後補時間冒充同一次 execution。'
+          if old not in s:
+              raise SystemExit('timestamp anchor missing')
+          s = s.replace(old, new, 1)
+          gate_anchor = '## Fast Path｜普通占問預設\n'
+          gate = '''## Stochastic Fact Completeness Gate｜不可跳過\n\n任何 **AI／Runtime 新產生** 的 Tarot／Meihua／Liuyao stochastic result，只有在同一 canonical execution envelope 同時具備 stochastic result、`generated_at_utc`、`generated_at_taipei`、`timezone = Asia/Taipei` 與 runtime/source provenance 時，才成立為 Raw Draw / Cast Fact。\n\n缺任一項 → `STOCHASTIC EXECUTION FACT INVALID` → **立即停止 interpretation / deterministic downstream / record / Vault write**。不得拿聊天室時間、commit time、事後 `now()` 或估計值補成原 execution timestamp；需要正式 reading 時只能重新執行 canonical stochastic API，形成新的 execution identity。\n\n正式 stochastic execution API 只有 `core.execute_stochastic()`；full `randomizer.generate_payload()` 必須 delegate 到它。`core.py` 內 `_..._raw` helper 只是 implementation detail，其 bare return value永遠不是有效 Reading Fact。\n\n'''
+          if '## Stochastic Fact Completeness Gate｜不可跳過' not in s:
+              if gate_anchor not in s:
+                  raise SystemExit('fast path anchor missing')
+              s = s.replace(gate_anchor, gate + gate_anchor, 1)
+          s = s.replace('→ execute canonical core function', '→ execute canonical `core.execute_stochastic()`; bare raw helpers are not valid reading execution', 1)
+          old2 = '- 寫最薄 caller／wrapper 去 import verified canonical module、呼叫 canonical function；wrapper 不得重寫 RNG、牌組、A/B、coin、mapping 或 method core。'
+          new2 = '- 寫最薄 caller／wrapper 去 import verified canonical module、呼叫 **唯一正式 stochastic entrypoint `core.execute_stochastic()`**；wrapper 不得直接把 `_draw_tarot_raw()`／`_cast_plum_raw()`／`_cast_liuyao_raw()` 的 bare output 當 Raw Draw / Cast Fact，也不得重寫 RNG、牌組、A/B、coin、mapping 或 method core。'
+          if old2 in s:
+              s = s.replace(old2, new2, 1)
+          p.write_text(s, encoding='utf-8')
+          PY
+          python tools/build_runtime_capsule.py
+          python -m unittest discover -s tests/casting -p 'test_*.py'
+          python tools/build_runtime_capsule.py --check
+          git config user.name "masini1491"
+          git config user.email "10146979+masini1491@users.noreply.github.com"
+          git add RUNTIME_DRAW.md runtime/casting/CHATGPT_RUNTIME_CAPSULE.json
+          git commit -m "Enforce stochastic timestamp completeness gate"
+          git push origin HEAD:fix/atomic-stochastic-timestamp-envelope
