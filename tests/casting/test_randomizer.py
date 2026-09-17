@@ -17,18 +17,14 @@ class RandomizerTests(unittest.TestCase):
         self.assertEqual(len(set(randomizer.DECK)), 78)
 
     def test_tarot_draw_has_no_duplicates(self):
-        result = randomizer.draw_tarot(24)
-        cards = result["cards"]
+        payload = randomizer.generate_payload("tarot", count=24)
+        cards = payload["results"][0]["tarot"]["cards"]
         self.assertEqual(len(cards), 24)
         self.assertEqual(len({card["full_name"] for card in cards}), 24)
         self.assertTrue(all(card["orientation"] in {"正", "逆"} for card in cards))
 
     def test_each_question_draw_is_independent_shape(self):
-        payload = randomizer.package([
-            randomizer.make_result("tarot", 5),
-            randomizer.make_result("tarot", 5),
-            randomizer.make_result("tarot", 6),
-        ])
+        payload = randomizer.generate_payload("batch", counts=[5, 5, 6], method="tarot")
         self.assertEqual([r["tarot"]["count"] for r in payload["results"]], [5, 5, 6])
         for result in payload["results"]:
             cards = result["tarot"]["cards"]
@@ -36,7 +32,7 @@ class RandomizerTests(unittest.TestCase):
 
     def test_plum_contract(self):
         for _ in range(100):
-            result = randomizer.cast_plum()
+            result = randomizer.generate_payload("plum")["results"][0]["plum"]
             self.assertRegex(result["a"], r"^\d{3}$")
             self.assertRegex(result["b"], r"^\d{3}$")
             self.assertIn(result["upper_trigram"], set(randomizer.TRIGRAM.values()))
@@ -62,7 +58,7 @@ class RandomizerTests(unittest.TestCase):
             self.assertEqual(sum(result["coin_values"]), result["value"])
 
     def test_liuyao_cast_has_six_bottom_to_top_lines(self):
-        result = randomizer.cast_liuyao_coins()
+        result = randomizer.generate_payload("liuyao")["results"][0]["liuyao"]
         self.assertEqual(result["cast_method"], "three-coins")
         self.assertEqual(result["line_order"], "bottom-to-top")
         self.assertEqual(len(result["lines"]), 6)
@@ -76,8 +72,8 @@ class RandomizerTests(unittest.TestCase):
             self.assertEqual(line["changing"], line["value"] in {6, 9})
             self.assertEqual(line["yin_yang"], "yin" if line["value"] in {6, 8} else "yang")
 
-    def test_package_declares_supported_methods_and_versions(self):
-        payload = randomizer.package([randomizer.make_result("liuyao")])
+    def test_payload_declares_supported_methods_and_versions(self):
+        payload = randomizer.generate_payload("liuyao")
         self.assertEqual(payload["source"], "divination-casting-randomizer-python")
         self.assertEqual(payload["algorithm_version"], "2")
         self.assertEqual(payload["schema_version"], "4")
@@ -93,18 +89,33 @@ class RandomizerTests(unittest.TestCase):
             self.assertEqual(len(cards), 5)
             self.assertEqual(len({card["full_name"] for card in cards}), 5)
 
+    def test_stochastic_execution_is_atomic_with_timestamp_and_timezone(self):
+        for method in ("tarot", "plum", "liuyao"):
+            kwargs = {"count": 3} if method == "tarot" else {}
+            payload = randomizer.generate_payload(method, **kwargs)
+            self.assertTrue(payload["generated_at_utc"].endswith("+00:00"))
+            self.assertTrue(payload["generated_at_taipei"].endswith("+08:00"))
+            self.assertEqual(payload["timezone"], "Asia/Taipei")
+            self.assertEqual(payload["results"][0]["method"], method)
+
+    def test_randomizer_exposes_no_bare_stochastic_primitive(self):
+        for name in ("draw_tarot", "cast_plum", "cast_liuyao_coins", "make_result", "package"):
+            self.assertFalse(hasattr(randomizer, name), name)
+
     def test_compact_ai_payload_preserves_tarot_fact(self):
-        full = randomizer.package([randomizer.make_result("tarot", 5)], source_commit="abc123")
+        full = randomizer.generate_payload("tarot", count=5, source_commit="abc123")
         compact = randomizer.compact_ai_payload(full)
         self.assertEqual(compact["algorithm_version"], full["algorithm_version"])
         self.assertEqual(compact["schema_version"], full["schema_version"])
         self.assertEqual(compact["ai_schema_version"], "1")
         self.assertEqual(compact["runtime_source_commit"], "abc123")
+        self.assertEqual(compact["generated_at_taipei"], full["generated_at_taipei"])
+        self.assertEqual(compact["timezone"], "Asia/Taipei")
         expected = [[card["full_name"], card["orientation"]] for card in full["results"][0]["tarot"]["cards"]]
         self.assertEqual(compact["results"][0]["tarot"]["cards"], expected)
 
     def test_compact_ai_payload_preserves_plum_fact(self):
-        full = randomizer.package([randomizer.make_result("plum")])
+        full = randomizer.generate_payload("plum")
         compact = randomizer.compact_ai_payload(full)
         source = full["results"][0]["plum"]
         projected = compact["results"][0]["plum"]
@@ -114,7 +125,7 @@ class RandomizerTests(unittest.TestCase):
         self.assertEqual(projected["moving_line"], source["moving_line"])
 
     def test_compact_ai_payload_preserves_liuyao_raw_fact(self):
-        full = randomizer.package([randomizer.make_result("liuyao")])
+        full = randomizer.generate_payload("liuyao")
         compact = randomizer.compact_ai_payload(full)
         source_lines = full["results"][0]["liuyao"]["lines"]
         projected = compact["results"][0]["liuyao"]
@@ -127,6 +138,7 @@ class RandomizerTests(unittest.TestCase):
         payload = json.loads(completed.stdout)
         self.assertEqual(payload["ai_schema_version"], "1")
         self.assertEqual(len(payload["results"]), 3)
+        self.assertTrue(payload["generated_at_taipei"].endswith("+08:00"))
         self.assertNotIn("\n", completed.stdout.strip())
         self.assertNotIn("rng", payload)
         self.assertNotIn("supported_methods", payload)
@@ -136,14 +148,15 @@ class RandomizerTests(unittest.TestCase):
         payload = json.loads(completed.stdout)
         self.assertEqual(payload["results"][0]["method"], "liuyao")
         self.assertEqual(len(payload["results"][0]["liuyao"]["lines"]), 6)
+        self.assertTrue(payload["generated_at_taipei"].endswith("+08:00"))
 
     def test_invalid_liuyao_coin_values_rejected(self):
         with self.assertRaises(ValueError): randomizer.resolve_liuyao_coin_values([2, 3])
         with self.assertRaises(ValueError): randomizer.resolve_liuyao_coin_values([2, 3, 4])
 
     def test_invalid_tarot_count_rejected(self):
-        with self.assertRaises(ValueError): randomizer.draw_tarot(0)
-        with self.assertRaises(ValueError): randomizer.draw_tarot(25)
+        with self.assertRaises(ValueError): randomizer.generate_payload("tarot", count=0)
+        with self.assertRaises(ValueError): randomizer.generate_payload("tarot", count=25)
 
 
 if __name__ == "__main__":

@@ -5,9 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
-from datetime import datetime, timezone
 from typing import Any
-from zoneinfo import ZoneInfo
 
 from core import (
     ALGORITHM_VERSION,
@@ -19,49 +17,24 @@ from core import (
     MAJOR_SHORT,
     MAJORS,
     RANKS,
+    SCHEMA_VERSION,
+    SOURCE,
     SUITS,
     SUPPORTED_METHODS,
     TRIGRAM,
     UINT32_RANGE,
-    cast_liuyao_coins,
-    cast_plum,
-    draw_tarot,
+    execute_stochastic,
     fisher_yates,
-    make_result,
     randbelow,
     resolve_liuyao_coin_values,
     short_name,
 )
 
-SOURCE = "divination-casting-randomizer-python"
-SCHEMA_VERSION = "4"
 AI_SCHEMA_VERSION = "1"
-TAIPEI_TZ = ZoneInfo("Asia/Taipei")
-
-
-def package(results: list[dict[str, Any]], source_commit: str | None = None) -> dict[str, Any]:
-    utc = datetime.now(timezone.utc)
-    taipei = utc.astimezone(TAIPEI_TZ)
-    return {
-        "source": SOURCE,
-        "algorithm_version": ALGORITHM_VERSION,
-        "schema_version": SCHEMA_VERSION,
-        "supported_methods": list(SUPPORTED_METHODS),
-        "runtime_source_commit": source_commit or "unknown",
-        "generated_at_utc": utc.isoformat(timespec="seconds"),
-        "generated_at_taipei": taipei.isoformat(timespec="seconds"),
-        "timezone": "Asia/Taipei",
-        "rng": "secrets.randbits(32) + rejection sampling",
-        "results": results,
-    }
 
 
 def compact_ai_payload(payload: dict[str, Any]) -> dict[str, Any]:
-    """Project a full canonical payload into a low-token AI transport shape.
-
-    This does not change stochastic results. It intentionally omits redundant
-    descriptive fields; use full JSON when audit-grade raw metadata is needed.
-    """
+    """Project a full canonical payload into a low-token AI transport shape."""
     compact_results: list[dict[str, Any]] = []
     for result in payload["results"]:
         compact: dict[str, Any] = {"method": result["method"]}
@@ -102,11 +75,6 @@ def compact_ai_payload(payload: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def validate_repeat(repeat: int) -> None:
-    if repeat < 1 or repeat > 100:
-        raise ValueError("--repeat must be between 1 and 100")
-
-
 def generate_payload(
     command: str,
     *,
@@ -116,30 +84,15 @@ def generate_payload(
     method: str = "tarot",
     source_commit: str | None = None,
 ) -> dict[str, Any]:
-    """Import-friendly execution API that avoids CLI/subprocess overhead."""
-    if command == "tarot":
-        validate_repeat(repeat)
-        results = [make_result("tarot", count) for _ in range(repeat)]
-    elif command == "plum":
-        validate_repeat(repeat)
-        results = [make_result("plum") for _ in range(repeat)]
-    elif command == "liuyao":
-        validate_repeat(repeat)
-        results = [make_result("liuyao") for _ in range(repeat)]
-    elif command == "both":
-        validate_repeat(repeat)
-        results = [make_result("both", count) for _ in range(repeat)]
-    elif command == "batch":
-        if not counts:
-            raise ValueError("counts are required for batch")
-        if method not in {"tarot", "both"}:
-            raise ValueError("batch method must be tarot or both")
-        if any(value < 1 or value > 24 for value in counts):
-            raise ValueError("each count must be between 1 and 24")
-        results = [make_result(method, value) for value in counts]
-    else:
-        raise ValueError(f"unsupported command: {command}")
-    return package(results, source_commit=source_commit)
+    """Canonical import API; timestamp and RNG result are one atomic core execution."""
+    return execute_stochastic(
+        command,
+        count=count,
+        repeat=repeat,
+        counts=counts,
+        method=method,
+        source_commit=source_commit,
+    )
 
 
 def render_text(payload: dict[str, Any]) -> str:

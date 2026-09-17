@@ -32,6 +32,14 @@ runtime/casting/CHATGPT_RUNTIME_CAPSULE.json
 
 不要為形式載入 acquisition／audit／maintenance sections。**Fast path 已足夠時就 STOP。**
 
+## Stochastic Fact Completeness Gate｜不可跳過
+
+任何 **AI／Runtime 新產生** 的 Tarot／Meihua／Liuyao stochastic result，只有在同一 canonical execution envelope 同時具備 stochastic result、`generated_at_utc`、`generated_at_taipei`、`timezone = Asia/Taipei` 與 runtime/source provenance 時，才成立為 Raw Draw / Cast Fact。
+
+缺任一項 → `STOCHASTIC EXECUTION FACT INVALID` → **立即停止 interpretation / deterministic downstream / record / Vault write**。不得拿聊天室時間、commit time、事後 `now()` 或估計值補成原 execution timestamp；需要正式 reading 時只能重新執行 canonical stochastic API，形成新的 execution identity。
+
+正式 stochastic execution API 只有 `core.execute_stochastic()`；full `randomizer.generate_payload()` 必須 delegate 到它。`core.py` 內 `_..._raw` helper 只是 implementation detail，其 bare return value永遠不是有效 Reading Fact。
+
 ## Fast Path｜普通占問預設
 
 ```text
@@ -178,7 +186,7 @@ GitHub Connect fetch same exact commit runtime/casting/CHATGPT_RUNTIME_CAPSULE.j
 → only then write bytes as fixed-cache core.py
 → write capsule_verification.json (locator v4)
 → import that verified core.py
-→ execute canonical core function
+→ execute canonical `core.execute_stochastic()`; bare raw helpers are not valid reading execution
 ```
 
 Admission / retry contract：
@@ -226,7 +234,7 @@ Capsule 路徑真正被執行的 stochastic implementation必須是 capsule exac
 
 - 將 connector 取得的完整 Runtime canonical source 原樣 materialize 到 fixed cache，驗證後執行；
 - 將 admitted capsule 的 opaque payload exact 解碼回 canonical `core.py`，驗證後執行；
-- 寫最薄 caller／wrapper 去 import verified canonical module、呼叫 canonical function；wrapper 不得重寫 RNG、牌組、A/B、coin、mapping 或 method core。
+- 寫最薄 caller／wrapper 去 import verified canonical module、呼叫 **唯一正式 stochastic entrypoint `core.execute_stochastic()`**；wrapper 不得直接把 `_draw_tarot_raw()`／`_cast_plum_raw()`／`_cast_liuyao_raw()` 的 bare output 當 Raw Draw / Cast Fact，也不得重寫 RNG、牌組、A/B、coin、mapping 或 method core。
 
 禁止：
 
@@ -397,7 +405,7 @@ core_version: 1      # stochastic core transport identity, not algorithm version
 
 `source` 是 logical runtime identity；repository consolidation 或 wrapper/core split 不改 logical identity 或 algorithm/schema versions。
 
-Runtime timestamp：full Runtime payload 提供 `generated_at_utc` + `generated_at_taipei` + `Asia/Taipei`；GitHub commit time 不是 draw time。Capsule core direct execution的 caller 必須以實際 execution clock 保存時間；不可拿 commit time 冒充 draw time。
+Runtime timestamp：**timestamp capture 是 canonical stochastic runtime responsibility，不是 caller responsibility。** Full Runtime 與 capsule core 都必須透過 `core.execute_stochastic()` 原子產生 stochastic result + `generated_at_utc` + `generated_at_taipei` + `Asia/Taipei`；GitHub commit time 不是 draw time。任何只有牌面／A-B／6-7-8-9、卻缺 execution timestamp 的新 stochastic output，都是 `STOCHASTIC EXECUTION FACT INVALID`，不得進 interpretation、deterministic downstream、Reading Record 或 Vault，也不得事後補時間冒充同一次 execution。
 
 共同 provenance：source/tool、algorithm、source repository/path/ref/commit（能取得時）、actual draw/cast timestamp/timezone。full Runtime execution 的 source path 是 `runtime/casting/randomizer.py`；capsule core execution 的 canonical source path 是 `runtime/casting/core.py`，並可另記 capsule path／decoded SHA。歷史 legacy-repo commit provenance 保持有效，不重寫。Meihua 另存 A/B；Liuyao 另存 raw six lines + bottom-to-top；deterministic engine provenance 分開保存。
 

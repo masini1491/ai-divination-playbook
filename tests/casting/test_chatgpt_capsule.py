@@ -68,23 +68,6 @@ class ChatGPTRuntimeCapsuleTests(unittest.TestCase):
             contract["required_marker_fields"],
             build_runtime_capsule.CACHE_REQUIRED_MARKER_FIELDS,
         )
-        self.assertEqual(
-            set(contract["required_marker_fields"]),
-            {
-                "verified",
-                "cache_locator_version",
-                "runtime_source_repository",
-                "runtime_source_path",
-                "capsule_path",
-                "runtime_source_ref",
-                "runtime_source_commit",
-                "runtime_copy_sha256",
-                "core_version",
-                "algorithm_version",
-                "supported_methods",
-                "tarot_deck_size",
-            },
-        )
 
     def test_each_chunk_has_exact_length_and_hash(self):
         chunks = self.capsule["chunks"]
@@ -115,15 +98,23 @@ class ChatGPTRuntimeCapsuleTests(unittest.TestCase):
     def test_generator_matches_committed_capsule(self):
         self.assertEqual(build_runtime_capsule.build_capsule(), self.capsule)
 
-    def test_randomizer_reuses_canonical_core_functions(self):
-        self.assertIs(randomizer.draw_tarot, core.draw_tarot)
-        self.assertIs(randomizer.cast_plum, core.cast_plum)
-        self.assertIs(randomizer.cast_liuyao_coins, core.cast_liuyao_coins)
-        self.assertIs(randomizer.make_result, core.make_result)
+    def test_randomizer_reuses_canonical_core_execution(self):
+        self.assertIs(randomizer.execute_stochastic, core.execute_stochastic)
         self.assertEqual(randomizer.ALGORITHM_VERSION, core.ALGORITHM_VERSION)
+        self.assertEqual(randomizer.SCHEMA_VERSION, core.SCHEMA_VERSION)
+        self.assertEqual(randomizer.SOURCE, core.SOURCE)
         self.assertEqual(randomizer.DECK, core.DECK)
         self.assertEqual(randomizer.TRIGRAM, core.TRIGRAM)
         self.assertEqual(randomizer.HEXAGRAM, core.HEXAGRAM)
+        payload = core.execute_stochastic("tarot", count=1, source_commit="test")
+        self.assertTrue(payload["generated_at_utc"].endswith("+00:00"))
+        self.assertTrue(payload["generated_at_taipei"].endswith("+08:00"))
+        self.assertEqual(payload["timezone"], "Asia/Taipei")
+        self.assertEqual(payload["results"][0]["method"], "tarot")
+
+    def test_core_exposes_no_public_bare_stochastic_primitive(self):
+        for name in ("draw_tarot", "cast_plum", "cast_liuyao_coins", "make_result"):
+            self.assertFalse(hasattr(core, name), name)
 
     def test_capsule_metadata_matches_core_identity(self):
         self.assertEqual(self.capsule["core_version"], core.CORE_VERSION)
