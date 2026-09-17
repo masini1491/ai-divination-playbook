@@ -105,7 +105,11 @@
       "casting_implementation": "runtime/casting/randomizer.py",
       "engine": "tools/liuyao_engine.py",
       "calendar_provider": "tools/liuyao_calendar.py",
-      "runtime": "tools/liuyao_runtime.py"
+      "runtime": "tools/liuyao_runtime.py",
+      "materialization_contract": "LIUYAO_MATERIALIZATION.md",
+      "deterministic_transport_bundle": "runtime/liuyao/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json",
+      "transport_generator": "tools/build_liuyao_tool_bundle.py",
+      "materialization_product_scenario": "evals/LIUYAO_MATERIALIZATION_PRODUCT_SCENARIO.md"
     },
     {
       "id": "method.astrology",
