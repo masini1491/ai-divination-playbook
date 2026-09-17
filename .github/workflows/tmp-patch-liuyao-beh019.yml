@@ -1,9 +1,0 @@
-name: Temporary patch Liuyao BEH-019
-on:
-  push:
-    branches: [chore/liuyao-materialization-discoverability-eval]
-jobs:
-  patch:
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo ok
