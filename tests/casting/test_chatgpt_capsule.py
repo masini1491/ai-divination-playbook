@@ -121,6 +121,21 @@ class ChatGPTRuntimeCapsuleTests(unittest.TestCase):
         self.assertEqual(self.capsule["algorithm_version"], core.ALGORITHM_VERSION)
         self.assertEqual(self.capsule["supported_methods"], list(core.SUPPORTED_METHODS))
 
+    def test_capsule_publishes_stable_post_write_probe(self):
+        expected = {
+            "supported_methods": ["tarot", "plum", "liuyao"],
+            "tarot_deck_size": 78,
+            "tarot_unique_cards": 78,
+            "meihua_trigram_count": 8,
+            "meihua_hexagram_pairs": 64,
+            "liuyao_line_count": 6,
+            "liuyao_line_values": [6, 7, 8, 9],
+            "execution_entrypoint": "execute_stochastic",
+        }
+        self.assertEqual(core.runtime_invariants(), expected)
+        self.assertEqual(randomizer.runtime_invariants(), expected)
+        self.assertEqual(self.capsule["runtime_invariants"], expected)
+
 
 if __name__ == "__main__":
     unittest.main()

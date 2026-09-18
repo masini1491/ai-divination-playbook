@@ -106,6 +106,7 @@ Capsule core 最低 probe：
 - marker SHA-256 與 `core.py` 一致；
 - source repository / `runtime/casting/core.py` / commit 符合 marker；
 - `core_version`／algorithm version／supported methods 與 module 一致；
+- import 後呼叫穩定公開 probe `core.runtime_invariants()`，結果須與同 commit capsule 的 `runtime_invariants` 完全一致；不得自行猜 `TAROT_DECK`、`DECK` 等 implementation symbol；
 - 本次方法最低 invariant PASS。
 
 Method invariants：
@@ -185,6 +186,7 @@ GitHub Connect fetch same exact commit runtime/casting/CHATGPT_RUNTIME_CAPSULE.j
 → only then write bytes as fixed-cache core.py
 → write capsule_verification.json (locator v4)
 → import that verified core.py
+→ `core.runtime_invariants()` == manifest `runtime_invariants`
 → execute canonical `core.execute_stochastic()`; bare raw helpers are not valid reading execution
 ```
 

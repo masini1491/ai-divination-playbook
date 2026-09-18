@@ -89,6 +89,7 @@ def build_capsule() -> dict:
         "core_version": namespace["CORE_VERSION"],
         "algorithm_version": namespace["ALGORITHM_VERSION"],
         "supported_methods": list(namespace["SUPPORTED_METHODS"]),
+        "runtime_invariants": namespace["runtime_invariants"](),
         "cache_contract": {
             "marker_filename": CACHE_MARKER_FILENAME,
             "cache_locator_version": CACHE_LOCATOR_VERSION,
