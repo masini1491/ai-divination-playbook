@@ -55,17 +55,7 @@ Question Contract fixed
 
 條件：Python 可執行、fixed cache 通過最低 probe、方法已驗證、無 Randomizer-specific refresh trigger。
 
-### User-visible execution time｜固定顯示格式
-
-只要本輪由 AI／Runtime **新產生** stochastic result，對使用者顯示該牌面／A-B／六爻 Raw Cast 時，必須在同一結果區塊、結果內容之前顯示 execution time；不得省略或移到只有 audit 才會看到的位置。
-
-固定顯示格式：
-
-```text
-YYYY-MM-DD HH:mm:ss（Asia/Taipei）
-```
-
-Tarot 可標示「抽牌時間」，Meihua／Liuyao 可標示「起卦時間」。顯示層不得再附加 `+08:00`；canonical machine provenance 仍保留 `generated_at_utc`、ISO-8601 `generated_at_taipei`（含 `+08:00`）與 `timezone = Asia/Taipei`，不得用 display string 取代 machine timestamp。
+- 新 stochastic result 對外顯示時，必須在牌面／A-B／Raw Cast 前列 `YYYY-MM-DD HH:mm:ss（Asia/Taipei）`；不得省略或再顯示 `+08:00`。Machine provenance 仍保留原 ISO timestamp + timezone。
 
 PASS 後：
 
