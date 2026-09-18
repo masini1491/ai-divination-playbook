@@ -63,7 +63,7 @@ PASS 後：
 - runtime restart 後不得假設 module reuse；新 interpreter 從 verified cache import；
 - 新 question identity 仍 fresh RNG；不得重用 outcome；
 - compatible independent readings 依 `Automatic Batching` 合併 calls；
-- 普通 AI 用 `compact_ai_payload()`／`ai-json`；新 stochastic result 必在牌／卦前列 `YYYY-MM-DD HH:mm:ss（Asia/Taipei）`，不顯示 `+08:00`；audit 才用 full JSON。
+- AI 用 `compact_ai_payload()`／`ai-json`；新 stochastic result 須在牌／卦前列 `YYYY-MM-DD HH:mm:ss（Asia/Taipei）`，不顯示 `+08:00`；audit 才用 full JSON。
 
 核心：**verify runtime once；fresh draw per question；只回最低充分 facts。**
 
