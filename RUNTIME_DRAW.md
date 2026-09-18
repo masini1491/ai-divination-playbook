@@ -55,7 +55,6 @@ Question Contract fixed
 
 條件：Python 可執行、fixed cache 通過最低 probe、方法已驗證、無 Randomizer-specific refresh trigger。
 
-- 新 stochastic result 對外顯示時，必須在牌面／A-B／Raw Cast 前列 `YYYY-MM-DD HH:mm:ss（Asia/Taipei）`；不得省略或再顯示 `+08:00`。Machine provenance 仍保留原 ISO timestamp + timezone。
 
 PASS 後：
 
@@ -64,7 +63,7 @@ PASS 後：
 - interpreter/module reuse 不可跨 runtime restart 假設；新 interpreter 只需從 verified fixed cache import；
 - 每個新 question identity 仍 fresh RNG；module reuse **不重用結果或 RNG outcome**；
 - 多個 compatible independent readings 依 `Automatic Batching` 合併成最少 calls；
-- 普通 AI interpretation transport 優先 `compact_ai_payload()`／CLI `--format ai-json`；只有 audit-grade raw metadata 或 compatibility 需要才用 full JSON。
+- 普通 AI 優先 `compact_ai_payload()`／`ai-json`；新 stochastic result 必在牌／卦前列 `YYYY-MM-DD HH:mm:ss（Asia/Taipei）`，不顯示 `+08:00`；audit 才用 full JSON。
 
 核心：
 
