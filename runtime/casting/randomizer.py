@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+from datetime import datetime
 import json
 from typing import Any
 
@@ -31,6 +32,12 @@ from core import (
 )
 
 AI_SCHEMA_VERSION = "1"
+
+
+def format_display_time(payload: dict[str, Any]) -> str:
+    """Render canonical Taipei execution time for user-visible output."""
+    taipei = datetime.fromisoformat(payload["generated_at_taipei"])
+    return f"{taipei.strftime('%Y-%m-%d %H:%M:%S')}（{payload['timezone']}）"
 
 
 def compact_ai_payload(payload: dict[str, Any]) -> dict[str, Any]:
@@ -98,7 +105,7 @@ def generate_payload(
 def render_text(payload: dict[str, Any]) -> str:
     lines = [
         f"來源：{payload['source']} v{payload['algorithm_version']}",
-        f"時間：{payload['generated_at_taipei']}",
+        f"時間：{format_display_time(payload)}",
     ]
     results = payload["results"]
     for idx, result in enumerate(results, start=1):

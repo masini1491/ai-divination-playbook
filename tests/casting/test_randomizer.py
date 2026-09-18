@@ -102,6 +102,23 @@ class RandomizerTests(unittest.TestCase):
         for name in ("draw_tarot", "cast_plum", "cast_liuyao_coins", "make_result", "package"):
             self.assertFalse(hasattr(randomizer, name), name)
 
+    def test_user_visible_time_uses_taipei_name_without_offset_suffix(self):
+        payload = randomizer.generate_payload("tarot", count=3)
+        display = randomizer.format_display_time(payload)
+        self.assertRegex(display, r"^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}（Asia/Taipei）$")
+        self.assertNotIn("+08:00", display)
+        self.assertTrue(payload["generated_at_taipei"].endswith("+08:00"))
+
+    def test_text_output_places_visible_time_before_stochastic_result(self):
+        payload = randomizer.generate_payload("tarot", count=3)
+        rendered = randomizer.render_text(payload)
+        lines = rendered.splitlines()
+        time_index = next(i for i, line in enumerate(lines) if line.startswith("時間："))
+        tarot_index = next(i for i, line in enumerate(lines) if line.startswith("塔羅（"))
+        self.assertLess(time_index, tarot_index)
+        self.assertRegex(lines[time_index], r"^時間：\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}（Asia/Taipei）$")
+        self.assertNotIn("+08:00", lines[time_index])
+
     def test_compact_ai_payload_preserves_tarot_fact(self):
         full = randomizer.generate_payload("tarot", count=5, source_commit="abc123")
         compact = randomizer.compact_ai_payload(full)
