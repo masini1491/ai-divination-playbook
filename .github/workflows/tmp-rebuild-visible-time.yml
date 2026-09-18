@@ -1,0 +1,35 @@
+name: Temporary rebuild visible time artifacts
+
+on:
+  push:
+    branches: [fix/stochastic-visible-time-format]
+
+permissions:
+  contents: write
+
+jobs:
+  rebuild:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/stochastic-visible-time-format
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Rebuild and validate
+        run: |
+          python tools/build_chatgpt_load_pack.py
+          python tools/chatgpt_load_benchmark.py --check
+          python tools/validate_loader_ranges.py
+          python -m unittest discover -s tests/casting -v
+          python -m unittest discover -s tests -v
+          python tools/playbook_check.py .
+          git config user.name 'masini1491'
+          git config user.email '10146979+masini1491@users.noreply.github.com'
+          git rm .github/workflows/tmp-rebuild-visible-time.yml
+          git add CHATGPT_LOAD_PACK.json
+          git commit -am 'Rebuild visible stochastic time artifacts'
+          git push origin HEAD:fix/stochastic-visible-time-format
