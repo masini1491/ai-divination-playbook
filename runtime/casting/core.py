@@ -35,6 +35,10 @@ LIUYAO_POSITION_NAMES=("初爻","二爻","三爻","四爻","五爻","上爻")
 LIUYAO_LINE_META={6:("yin",True,"老陰"),7:("yang",False,"少陽"),8:("yin",False,"少陰"),9:("yang",True,"老陽")}
 UINT32_RANGE=1<<32
 
+def runtime_invariants()->dict[str,Any]:
+    """Stable non-stochastic probe surface for verified runtime materialization."""
+    return {"supported_methods":list(SUPPORTED_METHODS),"tarot_deck_size":len(DECK),"tarot_unique_cards":len(set(DECK)),"meihua_trigram_count":len(set(TRIGRAM.values())),"meihua_hexagram_pairs":len(HEXAGRAM),"liuyao_line_count":len(LIUYAO_POSITION_NAMES),"liuyao_line_values":sorted(LIUYAO_LINE_META),"execution_entrypoint":"execute_stochastic"}
+
 def randbelow(max_value:int)->int:
     if max_value<=0: raise ValueError("max_value must be > 0")
     if max_value==1: return 0
