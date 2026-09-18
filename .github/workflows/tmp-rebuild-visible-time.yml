@@ -19,6 +19,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Install validation dependency
+        run: python -m pip install --disable-pip-version-check -r requirements-astrology-provider.txt
       - name: Rebuild and validate
         run: |
           python tools/build_chatgpt_load_pack.py
