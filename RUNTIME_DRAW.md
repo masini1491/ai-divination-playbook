@@ -58,16 +58,14 @@ Question Contract fixed
 
 PASS 後：
 
-- 不抓 GitHub、不重新 materialize、不跑 full smoke；
-- 同一 persistent Python interpreter 若 canonical cached module 已成功 import 且 cache identity 未變，**直接 reuse module object**，不重啟 CLI/subprocess；
-- interpreter/module reuse 不可跨 runtime restart 假設；新 interpreter 只需從 verified fixed cache import；
-- 每個新 question identity 仍 fresh RNG；module reuse **不重用結果或 RNG outcome**；
-- 多個 compatible independent readings 依 `Automatic Batching` 合併成最少 calls；
-- 普通 AI 優先 `compact_ai_payload()`／`ai-json`；新 stochastic result 必在牌／卦前列 `YYYY-MM-DD HH:mm:ss（Asia/Taipei）`，不顯示 `+08:00`；audit 才用 full JSON。
+- 不抓 GitHub、不重 materialize、不跑 full smoke；
+- 同 interpreter 且 cache identity 未變 → reuse imported module；不重啟 CLI/subprocess；
+- runtime restart 後不得假設 module reuse；新 interpreter 從 verified cache import；
+- 新 question identity 仍 fresh RNG；不得重用 outcome；
+- compatible independent readings 依 `Automatic Batching` 合併 calls；
+- 普通 AI 用 `compact_ai_payload()`／`ai-json`；新 stochastic result 必在牌／卦前列 `YYYY-MM-DD HH:mm:ss（Asia/Taipei）`，不顯示 `+08:00`；audit 才用 full JSON。
 
-核心：
-
-> **Verify once per runtime state; import once per interpreter; draw fresh per question; batch compatible readings; return only minimum sufficient facts。**
+核心：**verify runtime once；fresh draw per question；只回最低充分 facts。**
 
 ## Cache Probe｜先本地、後 GitHub
 
