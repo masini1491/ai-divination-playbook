@@ -66,7 +66,7 @@ ChatGPT 不得：
 
 一般解讀預設順序：
 
-若本輪 AI／Runtime 有新產生 stochastic result，該 Draw / Cast Fact 的可見結果區塊必須先列 execution time，格式固定為 `YYYY-MM-DD HH:mm:ss（Asia/Taipei）`；不得顯示 `+08:00`，也不得只在內部 payload 保留時間卻對使用者省略。既有使用者提供的 Draw / Cast Fact 不因此補造時間。
+若本輪 AI／Runtime 新產生 stochastic result，牌面／A-B／Raw Cast 前必須顯示 `YYYY-MM-DD HH:mm:ss（Asia/Taipei）`；不得省略或另顯示 `+08:00`。
 
 1. **直接結論**：先回答使用者真正問的判斷。
 2. **最低充分證據**：只解釋真正影響該結論的牌位／卦象／Structured Method Fact。
@@ -292,7 +292,7 @@ ChatGPT 不應在每次解讀結束後自動創造一串下一題。
 7. **Completion check**：若宣告事件完成／命中，是否真正符合原 `completion_rule`。
 8. **Hindsight check**：回測時是否把事後重讀與當時原始預測清楚分開。
 9. **Structured-fact check**：若使用 Liuyao 等需要 engine 的方法，實際使用的 Structured Method Fact 是否真的取得且 provenance 邊界沒有被模型補寫。
-10. **Stochastic-time visibility check**：若本輪由 AI／Runtime 新產生 stochastic result，final draft 是否在該可見結果區塊、牌面／A-B／Raw Cast 之前列出 `YYYY-MM-DD HH:mm:ss（Asia/Taipei）`，且沒有重複顯示 `+08:00`。
+10. **Stochastic-time check**：新 stochastic result 是否在結果前顯示 `YYYY-MM-DD HH:mm:ss（Asia/Taipei）`，且無 `+08:00`。
 
 ### Fail-closed repair
 
