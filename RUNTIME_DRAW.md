@@ -58,12 +58,12 @@ Question Contract fixed
 
 PASS 後：
 
-- 不抓 GitHub、不重 materialize、不跑 full smoke；
+- 不抓 GitHub、不重新 materialize、不跑 full smoke；
 - 同 interpreter 且 cache identity 未變 → reuse imported module；不重啟 CLI/subprocess；
 - runtime restart 後不得假設 module reuse；新 interpreter 從 verified cache import；
 - 新 question identity 仍 fresh RNG；不得重用 outcome；
 - compatible independent readings 依 `Automatic Batching` 合併 calls；
-- AI 用 `compact_ai_payload()`／`ai-json`；新 stochastic result 須在牌／卦前列 `YYYY-MM-DD HH:mm:ss（Asia/Taipei）`，不顯示 `+08:00`；audit→full JSON。
+- 用 `compact_ai_payload()`／`ai-json`；新 stochastic result 須在牌／卦前列 `YYYY-MM-DD HH:mm:ss（Asia/Taipei）`，不顯示 `+08:00`；audit→full JSON。
 
 核心：**verified runtime；每題 fresh draw；最低充分 facts。**
 
