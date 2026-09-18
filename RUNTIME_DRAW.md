@@ -65,7 +65,7 @@ PASS 後：
 - compatible independent readings 依 `Automatic Batching` 合併 calls；
 - AI 用 `compact_ai_payload()`／`ai-json`；新 stochastic result 須在牌／卦前列 `YYYY-MM-DD HH:mm:ss（Asia/Taipei）`，不顯示 `+08:00`；audit→full JSON。
 
-核心：**verify runtime once；fresh draw per question；只回最低充分 facts。**
+核心：**verified runtime；每題 fresh draw；最低充分 facts。**
 
 ## Cache Probe｜先本地、後 GitHub
 
