@@ -31,7 +31,7 @@ Astrology（explicit-request only）
 
 ## 與 AI 開發手冊的關係
 
-本 Repository 的**工程維護與 AI-assisted development 治理**參考並採用 [`masini1491/ai-development-playbook`](https://github.com/masini1491/ai-development-playbook) 的通用方法，例如 repository authority、bounded retrieval、scope control、evidence / validation boundary、AI actor topology 與 mutation discipline。
+本 Repository 的**工程維護與 AI-assisted development 治理設計**參考並經調整吸收 [`masini1491/ai-development-playbook`](https://github.com/masini1491/ai-development-playbook) 的通用方法，例如 repository authority、bounded retrieval、scope control、evidence / validation boundary、AI actor topology 與 mutation discipline。這是一個經本 Repo 明確採納後才生效的 reference / adapted source，**不代表本 Repo 自動追隨該手冊最新 `main`，也不讓外部 Playbook 覆蓋本 Repo current canonical governance**。
 
 目前本專案在 [`AGENTS.md`](AGENTS.md) 明確宣告：
 
@@ -53,6 +53,7 @@ ai-divination-playbook
 ```
 
 因此，AI 開發手冊**不是** Tarot、Meihua、Liuyao 或 Astrology 的方法權威，也不會覆蓋本 Repo 的 method owners、runtime contracts 或 reading governance。詳細的採用範圍與未採用邊界見 [`references/ai-development-playbook.md`](references/ai-development-playbook.md)。
+
 ## 快速安裝／第一次使用
 
 第一次使用時，不需要下載整個 Repository、複製大段 Prompt 或先學會選方法。
