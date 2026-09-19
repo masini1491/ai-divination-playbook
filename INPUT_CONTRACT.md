@@ -73,13 +73,14 @@ Runtime 建議額外保存：
 runtime_tool:              divination-casting-randomizer-python
 runtime_algorithm_version: tool output 中的 algorithm_version
 runtime_schema_version:    tool output 中的 schema_version
-runtime_source_commit:     已知的 canonical randomizer source commit SHA；未知時明確寫 unknown
+runtime_source_path:       實際 execution source path；full Runtime 通常為 runtime/casting/randomizer.py，capsule core 為 runtime/casting/core.py
+runtime_source_commit:     已知的 canonical runtime source commit SHA；未知時明確寫 unknown
 runtime_generated_at:      tool output timestamp
 ```
 
-上述 provenance 欄位不是每次都必須對使用者完整展示，但若要正式記錄、回測或跨聊天室接續，應盡量保留。repository consolidation 後的新 canonical execution，`runtime_source_commit` 指包含 `runtime/casting/randomizer.py` 的 `masini1491/ai-divination-playbook` commit；既有 legacy-repo commit 仍是有效歷史 provenance，不回頭改寫。
+上述 provenance 欄位不是每次都必須對使用者完整展示，但若要正式記錄、回測或跨聊天室接續，應盡量保留。repository consolidation 後的新 canonical execution，`runtime_source_commit` 指包含實際 execution source 的 `masini1491/ai-divination-playbook` commit；full Runtime provenance 可記 `runtime/casting/randomizer.py`，verified capsule-core execution 則記 `runtime/casting/core.py`。既有 legacy-repo commit 仍是有效歷史 provenance，不回頭改寫。
 
-`divination-casting-randomizer` 在 `cards_source` / `casting_source` 中保留為既有 logical tool/source label；目前 canonical implementation 是本 Repo 的 `runtime/casting/randomizer.py`。legacy `masini1491/divination-casting-randomizer` 只保留歷史 provenance、rollback 與 compatibility / historical deployment reference；current production authority 已切換至 Playbook monorepo deployment。若工具未提供 seed 或 draw id，也至少應保存題目、時間與實際 Draw / Cast Fact。
+`divination-casting-randomizer` 在 `cards_source` / `casting_source` 中保留為既有 logical tool/source label；目前 canonical stochastic core 是本 Repo 的 `runtime/casting/core.py`，`runtime/casting/randomizer.py` 是 full API / CLI adapter，兩者共用同一 stochastic authority。legacy `masini1491/divination-casting-randomizer` 只保留歷史 provenance、rollback 與 compatibility / historical deployment reference；current production authority 已切換至 Playbook monorepo deployment。若工具未提供 seed 或 draw id，也至少應保存題目、時間與實際 Draw / Cast Fact。
 
 若 Meihua `casting_source = divination-casting-randomizer` 或 `chatgpt-runtime` 且實際使用其 canonical 雙數工具，應把當次 A、B 原始數字與固定雙數起卦規則一併視為 canonical input；解讀端不應另行取數或切換起卦法。
 
@@ -219,6 +220,7 @@ tarot:
   runtime_tool: divination-casting-randomizer-python
   runtime_algorithm_version: "2"
   runtime_schema_version: "4"
+  runtime_source_path: "runtime/casting/core.py"
   runtime_source_commit: "unknown"
 ```
 
@@ -254,6 +256,7 @@ liuyao:
   runtime_tool: divination-casting-randomizer-python
   runtime_algorithm_version: "2"
   runtime_schema_version: "4"
+  runtime_source_path: "runtime/casting/core.py"
   runtime_source_commit: "unknown"
   engine_name: "..."
   engine_ref: "unknown"
