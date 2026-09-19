@@ -704,6 +704,37 @@ https://github.com/masini1491/ai-divination-playbook
 
 - chart skeleton、fact/provenance boundary、missing-layer marker 與後續 interpretation scope。
 
+### TAROT-BEH-021 — Meihua deterministic downstream preserves the original Cast Fact
+
+**Premise / authority**
+
+- Meihua Cast Fact 已固定為 A=074、B=803、兌上離下、澤火革、初爻動。
+- verified canonical `tools/meihua_engine.py` 可執行。
+
+**User stimulus**
+
+```text
+沿用這次 074 / 803 的梅花卦，不要重起；把互卦、變卦、體用補完整再解讀。
+```
+
+**Expected behavior**
+
+- 不重新 stochastic cast。
+- engine 驗證原 Cast Fact 後建立：互卦天風姤、變卦澤山咸、體兌金、用離火、用剋體。
+- Structured Method Fact 與原 Cast Fact 分層保存，再進 `MEIHUA.md` interpretation。
+- engine／materialization unavailable 時保留原 Cast Fact並 fail closed downstream。
+
+**Forbidden behavior**
+
+- 因缺 derived facts 重起 A/B。
+- 用 language model 手算後冒充 verified engine fact。
+- engine assertion mismatch 時覆寫原 Cast Fact。
+- 把 deterministic body/use relation直接冒充原題吉凶結論。
+
+**Observable evidence**
+
+- original Cast Fact identity、engine execution／provenance、derived fact values、是否 redraw、interpretation sequencing。
+
 ## Regression Selection｜最低充分回歸
 
 不要求每次修改都跑全部 scenarios；依 mutation scope 選直接相關項目：
@@ -713,7 +744,7 @@ https://github.com/masini1491/ai-divination-playbook
 - `ASTROLOGY.md`／`tools/astrology_runtime.py`／Astrology admission manifest → TAROT-BEH-016、017、018；fact/runtime policy 變更時 017 mandatory。
 - `RUNTIME_DRAW.md` → TAROT-BEH-003、004、006、007、008、010、012；cache/reuse/batching 變更時 008、012 mandatory。
 - `LIUYAO.md`／Liuyao runtime boundary／user-visible presentation → TAROT-BEH-002、003、004、007、010、019；若修改盤表呈現或「最低充分」與盤表的責任邊界，TAROT-BEH-019 mandatory。
-- `MEIHUA.md`／Meihua user-visible presentation → TAROT-BEH-002、003、010、020；修改卦盤骨架或 missing-fact 邊界時，TAROT-BEH-020 mandatory。
+- `MEIHUA.md`／Meihua user-visible presentation → TAROT-BEH-002、003、010、020；deterministic materialization / downstream boundary → TAROT-BEH-004、010、020、021；修改卦盤骨架或 missing-fact 邊界時 020 mandatory，修改 engine/materialization 時 021 mandatory。
 - `READING_RECORD.md` → TAROT-BEH-008、009、010、011，必要時 004。
 - Cross-validation／evidence lineage → TAROT-BEH-009、014，必要時 002。
 - `SESSION_HANDOFF.md` → TAROT-BEH-015，必要時 013。
