@@ -36,7 +36,7 @@
     "loader-optimization": ["TAROT-BEH-001", "TAROT-BEH-002", "TAROT-BEH-003", "TAROT-BEH-005", "TAROT-BEH-006", "TAROT-BEH-012", "TAROT-BEH-013", "TAROT-BEH-016", "TAROT-BEH-017", "TAROT-BEH-018"],
     "agent-skills-adapter": ["TAROT-BEH-001", "TAROT-BEH-002", "TAROT-BEH-005", "TAROT-BEH-006", "TAROT-BEH-011", "TAROT-BEH-012", "TAROT-BEH-016", "TAROT-BEH-017", "TAROT-BEH-018"],
     "cross-agent-bootstrap-adapters": ["TAROT-BEH-001", "TAROT-BEH-002", "TAROT-BEH-005", "TAROT-BEH-006", "TAROT-BEH-011", "TAROT-BEH-012", "TAROT-BEH-016", "TAROT-BEH-017", "TAROT-BEH-018"],
-    "liuyao-deterministic-materialization": ["TAROT-BEH-004", "TAROT-BEH-006", "TAROT-BEH-007", "TAROT-BEH-012", "TAROT-BEH-019"]
+    "liuyao-deterministic-materialization": ["TAROT-BEH-004", "TAROT-BEH-006", "TAROT-BEH-007", "TAROT-BEH-012"]
   },
   "supporting_product_scenarios": {
     "liuyao-deterministic-materialization": "evals/LIUYAO_MATERIALIZATION_PRODUCT_SCENARIO.md"
