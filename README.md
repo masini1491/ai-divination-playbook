@@ -29,6 +29,31 @@ Astrology（explicit-request only）
 
 本手冊把占卜視為**象徵性、反思性與結構化推理工具**；現實決策仍應以可驗證資訊、專業意見與實際條件為優先。
 
+## 與 AI 開發手冊的關係
+
+本 Repository 的**工程維護與 AI-assisted development 治理設計**參考並經調整吸收 [`masini1491/ai-development-playbook`](https://github.com/masini1491/ai-development-playbook) 的通用方法，例如 repository authority、bounded retrieval、scope control、evidence / validation boundary、AI actor topology 與 mutation discipline。這是一個經本 Repo 明確採納後才生效的 reference / adapted source，**不代表本 Repo 自動追隨該手冊最新 `main`，也不讓外部 Playbook 覆蓋本 Repo current canonical governance**。
+
+目前本專案在 [`AGENTS.md`](AGENTS.md) 明確宣告：
+
+```text
+Project AI mode: ChatGPT-Only
+```
+
+這表示 ChatGPT 是本 Repository 的主要 AI maintainer；是否能執行某項修改、測試、runtime 或 Git 操作，仍必須同時符合本 Repo current governance、當次 Task / Stage、permission 與實際 capability，不能僅因工具可用就自行擴張權限。
+
+兩個 Playbook 的責任是分開的：
+
+```text
+ai-development-playbook
+→ AI-assisted development / repository maintenance governance
+
+ai-divination-playbook
+→ divination method routing / stochastic & deterministic facts /
+   interpretation / reading lifecycle / record governance
+```
+
+因此，AI 開發手冊**不是** Tarot、Meihua、Liuyao 或 Astrology 的方法權威，也不會覆蓋本 Repo 的 method owners、runtime contracts 或 reading governance。詳細的採用範圍與未採用邊界見 [`references/ai-development-playbook.md`](references/ai-development-playbook.md)。
+
 ## 快速安裝／第一次使用
 
 第一次使用時，不需要下載整個 Repository、複製大段 Prompt 或先學會選方法。
