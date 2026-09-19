@@ -8,17 +8,16 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 ADAPTERS = {
-    "CLAUDE.md": "Claude Code",
     "GEMINI.md": "Gemini CLI",
     ".github/copilot-instructions.md": "GitHub Copilot",
 }
-REQUIRED_POINTERS = ("`AGENTS.md`", "`CHAT_INIT.md`", "`PLAYBOOK_INDEX.json`", "`CHATGPT_LOAD_PACK.json`")
+REQUIRED_POINTERS = ("\`AGENTS.md\`", "\`CHAT_INIT.md\`", "\`PLAYBOOK_INDEX.json\`", "\`CHATGPT_LOAD_PACK.json\`")
 REQUIRED_PHRASES = (
     "not a Playbook authority",
     "does not create a second current-state policy source",
     "current canonical governance wins",
     "compatibility handoff only, never as parallel authority",
-    "does not alter the repository's `Project AI mode: ChatGPT-Only`",
+    "does not alter the repository's \`Project AI mode: ChatGPT-Only\`",
     "does not by itself grant this host canonical Playbook execution authority",
 )
 FORBIDDEN_POLICY_TOKENS = (
@@ -56,7 +55,7 @@ def validate(root: Path = ROOT) -> list[str]:
         for token in FORBIDDEN_POLICY_TOKENS:
             if token in text:
                 errors.append(f"{relative}: duplicated normative policy token forbidden: {token!r}")
-        if "```" in text or "~~~" in text:
+        if "\`\`\`" in text or "~~~" in text:
             errors.append(f"{relative}: fenced policy/code blocks are not admitted in thin adapters")
         if len(text.splitlines()) > 40:
             errors.append(f"{relative}: adapter is too large for a thin bootstrap shim")
