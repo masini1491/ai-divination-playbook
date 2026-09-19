@@ -21,24 +21,129 @@
     "TAROT-BEH-017",
     "TAROT-BEH-018",
     "TAROT-BEH-019",
-    "TAROT-BEH-020"
+    "TAROT-BEH-020",
+    "TAROT-BEH-021"
   ],
   "change_classes": {
-    "bootstrap-access": ["TAROT-BEH-001", "TAROT-BEH-005", "TAROT-BEH-013", "TAROT-BEH-016", "TAROT-BEH-018"],
-    "method-routing": ["TAROT-BEH-002", "TAROT-BEH-001", "TAROT-BEH-016", "TAROT-BEH-018"],
-    "astrology-production": ["TAROT-BEH-016", "TAROT-BEH-017", "TAROT-BEH-018", "TAROT-BEH-002"],
-    "runtime-draw": ["TAROT-BEH-003", "TAROT-BEH-004", "TAROT-BEH-006", "TAROT-BEH-007", "TAROT-BEH-008", "TAROT-BEH-010", "TAROT-BEH-012"],
-    "liuyao-presentation": ["TAROT-BEH-019", "TAROT-BEH-004", "TAROT-BEH-010"],
-    "meihua-presentation": ["TAROT-BEH-020", "TAROT-BEH-003", "TAROT-BEH-010"],
-    "reading-record": ["TAROT-BEH-008", "TAROT-BEH-009", "TAROT-BEH-010", "TAROT-BEH-011"],
-    "cross-validation": ["TAROT-BEH-009", "TAROT-BEH-014", "TAROT-BEH-002"],
-    "session-continuity": ["TAROT-BEH-013", "TAROT-BEH-015", "TAROT-BEH-001"],
-    "machine-routing": ["TAROT-BEH-001", "TAROT-BEH-013", "TAROT-BEH-015", "TAROT-BEH-016", "TAROT-BEH-018"],
-    "cold-start-architecture": ["TAROT-BEH-001", "TAROT-BEH-002", "TAROT-BEH-003", "TAROT-BEH-005", "TAROT-BEH-013", "TAROT-BEH-015", "TAROT-BEH-016", "TAROT-BEH-017", "TAROT-BEH-018"],
-    "loader-optimization": ["TAROT-BEH-001", "TAROT-BEH-002", "TAROT-BEH-003", "TAROT-BEH-005", "TAROT-BEH-006", "TAROT-BEH-012", "TAROT-BEH-013", "TAROT-BEH-016", "TAROT-BEH-017", "TAROT-BEH-018"],
-    "agent-skills-adapter": ["TAROT-BEH-001", "TAROT-BEH-002", "TAROT-BEH-005", "TAROT-BEH-006", "TAROT-BEH-011", "TAROT-BEH-012", "TAROT-BEH-016", "TAROT-BEH-017", "TAROT-BEH-018"],
-    "cross-agent-bootstrap-adapters": ["TAROT-BEH-001", "TAROT-BEH-002", "TAROT-BEH-005", "TAROT-BEH-006", "TAROT-BEH-011", "TAROT-BEH-012", "TAROT-BEH-016", "TAROT-BEH-017", "TAROT-BEH-018"],
-    "liuyao-deterministic-materialization": ["TAROT-BEH-004", "TAROT-BEH-006", "TAROT-BEH-007", "TAROT-BEH-012"]
+    "bootstrap-access": [
+      "TAROT-BEH-001",
+      "TAROT-BEH-005",
+      "TAROT-BEH-013",
+      "TAROT-BEH-016",
+      "TAROT-BEH-018"
+    ],
+    "method-routing": [
+      "TAROT-BEH-002",
+      "TAROT-BEH-001",
+      "TAROT-BEH-016",
+      "TAROT-BEH-018"
+    ],
+    "astrology-production": [
+      "TAROT-BEH-016",
+      "TAROT-BEH-017",
+      "TAROT-BEH-018",
+      "TAROT-BEH-002"
+    ],
+    "runtime-draw": [
+      "TAROT-BEH-003",
+      "TAROT-BEH-004",
+      "TAROT-BEH-006",
+      "TAROT-BEH-007",
+      "TAROT-BEH-008",
+      "TAROT-BEH-010",
+      "TAROT-BEH-012"
+    ],
+    "liuyao-presentation": [
+      "TAROT-BEH-019",
+      "TAROT-BEH-004",
+      "TAROT-BEH-010"
+    ],
+    "meihua-presentation": [
+      "TAROT-BEH-020",
+      "TAROT-BEH-003",
+      "TAROT-BEH-010",
+      "TAROT-BEH-021"
+    ],
+    "reading-record": [
+      "TAROT-BEH-008",
+      "TAROT-BEH-009",
+      "TAROT-BEH-010",
+      "TAROT-BEH-011"
+    ],
+    "cross-validation": [
+      "TAROT-BEH-009",
+      "TAROT-BEH-014",
+      "TAROT-BEH-002"
+    ],
+    "session-continuity": [
+      "TAROT-BEH-013",
+      "TAROT-BEH-015",
+      "TAROT-BEH-001"
+    ],
+    "machine-routing": [
+      "TAROT-BEH-001",
+      "TAROT-BEH-013",
+      "TAROT-BEH-015",
+      "TAROT-BEH-016",
+      "TAROT-BEH-018"
+    ],
+    "cold-start-architecture": [
+      "TAROT-BEH-001",
+      "TAROT-BEH-002",
+      "TAROT-BEH-003",
+      "TAROT-BEH-005",
+      "TAROT-BEH-013",
+      "TAROT-BEH-015",
+      "TAROT-BEH-016",
+      "TAROT-BEH-017",
+      "TAROT-BEH-018"
+    ],
+    "loader-optimization": [
+      "TAROT-BEH-001",
+      "TAROT-BEH-002",
+      "TAROT-BEH-003",
+      "TAROT-BEH-005",
+      "TAROT-BEH-006",
+      "TAROT-BEH-012",
+      "TAROT-BEH-013",
+      "TAROT-BEH-016",
+      "TAROT-BEH-017",
+      "TAROT-BEH-018"
+    ],
+    "agent-skills-adapter": [
+      "TAROT-BEH-001",
+      "TAROT-BEH-002",
+      "TAROT-BEH-005",
+      "TAROT-BEH-006",
+      "TAROT-BEH-011",
+      "TAROT-BEH-012",
+      "TAROT-BEH-016",
+      "TAROT-BEH-017",
+      "TAROT-BEH-018"
+    ],
+    "cross-agent-bootstrap-adapters": [
+      "TAROT-BEH-001",
+      "TAROT-BEH-002",
+      "TAROT-BEH-005",
+      "TAROT-BEH-006",
+      "TAROT-BEH-011",
+      "TAROT-BEH-012",
+      "TAROT-BEH-016",
+      "TAROT-BEH-017",
+      "TAROT-BEH-018"
+    ],
+    "liuyao-deterministic-materialization": [
+      "TAROT-BEH-004",
+      "TAROT-BEH-006",
+      "TAROT-BEH-007",
+      "TAROT-BEH-012"
+    ],
+    "meihua-deterministic-materialization": [
+      "TAROT-BEH-004",
+      "TAROT-BEH-010",
+      "TAROT-BEH-020",
+      "TAROT-BEH-021"
+    ]
   },
   "supporting_product_scenarios": {
     "liuyao-deterministic-materialization": "evals/LIUYAO_MATERIALIZATION_PRODUCT_SCENARIO.md"

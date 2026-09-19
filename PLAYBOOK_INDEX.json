@@ -98,7 +98,11 @@
     {
       "id": "method.meihua",
       "owner": "MEIHUA.md",
-      "kind": "contract"
+      "kind": "contract",
+      "engine": "tools/meihua_engine.py",
+      "materialization_contract": "MEIHUA_MATERIALIZATION.md",
+      "deterministic_transport_bundle": "runtime/meihua/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json",
+      "transport_generator": "tools/build_meihua_tool_bundle.py"
     },
     {
       "id": "method.liuyao",

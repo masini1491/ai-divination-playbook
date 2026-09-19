@@ -41,6 +41,12 @@ jobs:
       - name: Verify Liuyao deterministic tool bundle
         run: python tools/build_liuyao_tool_bundle.py --check
 
+      - name: Verify Meihua deterministic tool bundle
+        run: python tools/build_meihua_tool_bundle.py --check
+
+      - name: Verify Meihua deterministic regression selection
+        run: python tools/behavioral_eval.py --matrix evals/regression_matrix.json --change-class meihua-deterministic-materialization
+
       - name: Validate Agent Skills gateway
         run: python tools/validate_agent_skills.py
 
