@@ -56,16 +56,7 @@
 
 ## 4A. Deterministic downstream｜互卦／變卦／體用
 
-有效 Cast Fact 固定後，互卦／變卦／體用優先由 `tools/meihua_engine.py` 依 `MEIHUA_MATERIALIZATION.md` 建立 Structured Method Fact。engine 只接受同一 Cast Fact 的 A/B，並驗證上／下卦、本卦、動爻 assertions；不一致時 fail closed，保留原 Cast Fact，不重卦。
-
-Canonical deterministic convention：
-
-- 互卦：二三四爻成下互、三四五爻成上互；
-- 變卦：只翻轉既有動爻；
-- 體用：動爻所在經卦為用、另一靜卦為體；
-- 五行：乾兌金、震巽木、坎水、離火、坤艮土。
-
-engine unavailable／verification fail 時才維持 `—（未取得）`；不得因 downstream gap 重起卦或用 language model 手算冒充 verified fact。
+有效 Cast Fact 固定後，互卦／變卦／體用由 `tools/meihua_engine.py` 依 `MEIHUA_MATERIALIZATION.md` 建立；engine 驗證 A/B 與既有卦象一致後才產生 Structured Method Fact。失敗時保留原 Cast Fact、不重卦、不以模型手算冒充 verified fact。
 
 ## 5. 主／互／變／體用／動爻的證據角色要固定
 
@@ -109,7 +100,7 @@ A：...｜B：...
 體：...｜用：...
 ```
 
-A/B、上下卦、本卦、動爻只用既有 Cast Fact。互卦／變卦／體用優先使用 verified `tools/meihua_engine.py` Structured Method Fact；只有 materialization / execution 最終 unavailable 才寫 `—（未取得）`。不得為填版型把模型手算冒充 runtime／verified fact，也不得因 downstream unavailable 重起卦。使用者提供既有卦時保留原 provenance，不補造 runtime 時間。卦盤後按 §6 最低充分解讀；應期仍依 §9 eligibility。
+A/B、上下卦、本卦、動爻只用既有 Cast Fact。互卦／變卦／體用優先使用 verified `tools/meihua_engine.py`；最終 unavailable 才寫 `—（未取得）`，且不得重卦或以模型手算補成 verified fact。使用者提供既有卦時保留原 provenance，不補造 runtime 時間。卦盤後按 §6 最低充分解讀；應期仍依 §9 eligibility。
 
 ## 7. 外應只能細化，不應無證據翻盤
 
