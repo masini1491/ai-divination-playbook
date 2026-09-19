@@ -2,6 +2,9 @@
 
 Project AI mode: ChatGPT-Only
 
+Maintenance boundary：ChatGPT 是主要 AI maintainer，但 direct mutation 仍須符合 current writable target、current task / governance、permission 與 actual capability；host / connector / runtime capability 不單獨建立 write authority。
+Inference boundary：execution authority 不等於 data-egress authority；model／provider／router destination materially 改變時，私人 reading／birth／palm／company Context 不自動沿用舊 disclosure permission。細節與 adapted source 邊界見 `references/ai-development-playbook.md`。
+
 ## 儲存庫用途與權威
 
 本儲存庫是可重用、公開的 AI 占卜方法與治理 Playbook，涵蓋 method routing、Input Contract／Question Design、Tarot／Meihua／Liuyao／Astrology、Runtime Draw / Cast、deterministic fact providers、Reading lifecycle／record、cross-validation 與 ChatGPT output governance。
@@ -75,10 +78,6 @@ raw birth data / user-supplied structured facts
 - research probe、legacy adapter、external calculator 不因存在而取得 production authority。
 - user-supplied Astrology facts 必須保留 `user_asserted` provenance。
 
-## Maintenance ownership / mutation boundary
-
-`Project AI mode: ChatGPT-Only` 只決定 AI actor topology，不等於 unrestricted write authority。ChatGPT 是本 Repo 的主要 AI maintainer；直接 mutation 仍須同時符合 **current writable target ∩ current task / Stage ∩ repository governance ∩ permission ∩ actual capability**。Host compatibility、connector write capability 或 runtime capability 都不單獨建立 mutation authority；完成 claim 需有相稱的 canonical read-back／CI evidence。工程治理的 adapted source 與未採用邊界見 `references/ai-development-playbook.md`。
-
 ## Repository / Git identity
 
 - Repository：`masini1491/ai-divination-playbook`
@@ -130,10 +129,6 @@ Connector retrieval capability ≠ connector→runtime byte-preserving handoff c
 - 未授權第三方內容的大段複製。
 
 `SESSION_HANDOFF.md` 只保存模板；真實 Reading Record 永遠不得寫入本公開 Playbook。
-
-### External inference / data-egress boundary
-
-**Execution authority ≠ inference data-egress authority。** model／provider／router 切換若 materially 改變資料接收者或 disclosure condition，真實 birth data、relationship／health／sexual context、private company information、private Reading Record 或 palm images 在送出前須重新判斷 destination；無法建立最低充分允許範圍時縮小／去識別化 Context，否則 STOP。Public repository source、synthetic fixtures 與公開 references 若無額外 restriction，不增加形式化 provider audit。詳細 adopted boundary 見 `references/ai-development-playbook.md`。
 
 正式說明與規則預設繁體中文；technical identifiers 保留原文。
 
