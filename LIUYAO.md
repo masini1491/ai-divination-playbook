@@ -304,7 +304,7 @@ Secondary role(s): <只有原題真的需要才設定>
 8. 最後才形成 outcome / obstacle / timing judgment
 ```
 
-內部判斷可以完整；若 runtime 有 `presentation.markdown_table`，詳細解讀前須完整呈現一次且不得由模型重建；其餘輸出只保留與原題相關的 evidence path。
+若 runtime 有 `presentation.markdown_table`，詳細解讀前須完整呈現一次且不得由模型重建；其餘只保留與原題相關的 evidence path。
 
 ## 8. Outcome / Obstacle / Timing 要分層
 
