@@ -26,7 +26,6 @@
 - **固定六爻 Input Contract** → §3
 - **Runtime 三錢起卦** → §4 + `RUNTIME_DRAW.md`
 - **建立本卦／變卦／納甲等 Structured Method Fact** → §5
-- **完整盤表呈現** → §5D + `CHATGPT_OUTPUT.md`
 - **local miss** → `LIUYAO_MATERIALIZATION.md`；**engine / calendar unavailable** → §9
 - **正式解讀順序** → §6～8
 - **保存與 provenance** → §10
@@ -275,15 +274,6 @@ LIUYAO.md
 
 不得把 engine 自己的隨機起卦拿來覆蓋 Randomizer 已固定的 Raw Cast Fact；也不得讓 engine 的 category mapping 取代 Playbook 的 question contract。
 
-### 5D. User-visible Chart Presentation｜完整盤表
-
-若 canonical Liuyao runtime 已產生完整 Structured Method Fact 並提供 `presentation.markdown_table`：
-
-- final answer 可先給直接結論，但**詳細解讀前必須完整呈現該 runtime table 一次**；
-- 不得由模型改欄、重排、重算或另做替代表；
-- 「最低充分」只限制後續 interpretation prose，不得用來省略 verified chart；
-- table 不存在或 fact layer fail closed 時，不得自行補造完整盤表。
-
 ## 6. Interpretation Gate｜先定用神責任，再看吉凶
 
 正式納甲解讀前，先依**原題的 judgment function**固定本題主要觀察對象／用神 responsibility；不要看到哪一個六親旺、哪個動爻漂亮後，才反過來挑最有利的用神。
@@ -315,6 +305,8 @@ Secondary role(s): <只有原題真的需要才設定>
 ```
 
 不是每題都必須把所有術語印給使用者；內部判斷可以完整，使用者輸出只保留與原題相關的 evidence path。
+
+若 runtime 已提供 `presentation.markdown_table`，詳細解讀前必須完整呈現該表一次；「最低充分」只限制後續 prose，不得省略、改欄或由模型重建；table 不存在時也不得補造。
 
 ## 8. Outcome / Obstacle / Timing 要分層
 
@@ -389,7 +381,6 @@ original interpretation
 - [ ] Raw Cast 是既有 fact 或由 canonical Runtime 產生，不是模型自創。
 - [ ] line order 明確為 bottom-to-top。
 - [ ] 本卦／動爻／之卦／納甲等使用到的 structural facts 有 deterministic engine provenance。
-- [ ] runtime 有 `presentation.markdown_table` 時，final answer 已在詳細解讀前完整呈現一次且未自行重建。
 - [ ] calendar-dependent evidence 只有在 calendar facts 已驗證時才使用。
 - [ ] 用神 responsibility 在看結果前由 question contract 決定，不由 engine category mapping 代替。
 - [ ] 沒有因不喜歡結果而重起。
