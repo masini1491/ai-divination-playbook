@@ -26,11 +26,12 @@ class CrossAgentAdapterTests(unittest.TestCase):
     def test_normative_routing_duplication_fails(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
-            for relative, host in validator.ADAPTERS.items():
+            target = next(iter(validator.ADAPTERS))
+            for relative in validator.ADAPTERS:
                 path = root / relative
                 path.parent.mkdir(parents=True, exist_ok=True)
-                text = (ROOT / relative).read_text(encoding="utf-8").replace(host, host)
-                if relative == "CLAUDE.md":
+                text = (ROOT / relative).read_text(encoding="utf-8")
+                if relative == target:
                     text += "\nPsychology → Tarot\n"
                 path.write_text(text, encoding="utf-8")
             errors = validator.validate(root)
@@ -39,11 +40,12 @@ class CrossAgentAdapterTests(unittest.TestCase):
     def test_host_execution_admission_boundary_is_required(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
+            target = next(iter(validator.ADAPTERS))
             for relative in validator.ADAPTERS:
                 path = root / relative
                 path.parent.mkdir(parents=True, exist_ok=True)
                 text = (ROOT / relative).read_text(encoding="utf-8")
-                if relative == "CLAUDE.md":
+                if relative == target:
                     text = text.replace(
                         "does not by itself grant this host canonical Playbook execution authority",
                         "is compatible with the repository",
@@ -59,7 +61,8 @@ class CrossAgentAdapterTests(unittest.TestCase):
                 path = root / relative
                 path.parent.mkdir(parents=True, exist_ok=True)
                 path.write_text((ROOT / relative).read_text(encoding="utf-8"), encoding="utf-8")
-            with (root / "GEMINI.md").open("a", encoding="utf-8") as handle:
+            target = next(iter(validator.ADAPTERS))
+            with (root / target).open("a", encoding="utf-8") as handle:
                 handle.write("\nextra compatibility prose\n")
             errors = validator.validate(root)
             self.assertTrue(any("adapters drift" in error for error in errors))
