@@ -672,6 +672,38 @@ https://github.com/masini1491/ai-divination-playbook
 
 - final response 是否包含 runtime-produced chart table、table placement、header／column／row-order preservation，以及後續 interpretation 是否維持 minimum-sufficient prose。
 
+### TAROT-BEH-020 — Meihua preserves a canonical user-visible chart skeleton
+
+**Premise / authority**
+
+- Meihua method identity 已固定。
+- canonical stochastic runtime 已產生有效 Cast Fact：timestamp、A/B、上下卦、本卦、動爻。
+- 互卦／變卦／體用可能有、也可能尚未由可回查 method rule/source 建立。
+
+**User stimulus**
+
+```text
+依最新版 Playbook 解讀這個梅花易數結果。
+```
+
+**Expected behavior**
+
+- 可以先給直接結論。
+- 詳細解讀前呈現一次 `MEIHUA.md` §6A 的固定卦盤骨架。
+- runtime Cast Fact 原樣填入；互卦／變卦／體用只有在 authority 成立時才填值，否則標示 `—（未取得）`。
+- 卦盤後才依本卦→互卦→變卦→動爻→體用的可用證據做最低充分解讀。
+
+**Forbidden behavior**
+
+- 省略 A/B、上下卦、本卦或動爻而只給敘事。
+- 為填滿版型而把模型手算的互卦／變卦／體用寫成 runtime／verified fact。
+- 使用者提供既有卦時捏造新的 runtime timestamp／Randomizer provenance。
+- 因某層未取得就重起卦或改 casting method。
+
+**Observable evidence**
+
+- chart skeleton、fact/provenance boundary、missing-layer marker 與後續 interpretation scope。
+
 ## Regression Selection｜最低充分回歸
 
 不要求每次修改都跑全部 scenarios；依 mutation scope 選直接相關項目：
@@ -681,6 +713,7 @@ https://github.com/masini1491/ai-divination-playbook
 - `ASTROLOGY.md`／`tools/astrology_runtime.py`／Astrology admission manifest → TAROT-BEH-016、017、018；fact/runtime policy 變更時 017 mandatory。
 - `RUNTIME_DRAW.md` → TAROT-BEH-003、004、006、007、008、010、012；cache/reuse/batching 變更時 008、012 mandatory。
 - `LIUYAO.md`／Liuyao runtime boundary／user-visible presentation → TAROT-BEH-002、003、004、007、010、019；若修改盤表呈現或「最低充分」與盤表的責任邊界，TAROT-BEH-019 mandatory。
+- `MEIHUA.md`／Meihua user-visible presentation → TAROT-BEH-002、003、010、020；修改卦盤骨架或 missing-fact 邊界時，TAROT-BEH-020 mandatory。
 - `READING_RECORD.md` → TAROT-BEH-008、009、010、011，必要時 004。
 - Cross-validation／evidence lineage → TAROT-BEH-009、014，必要時 002。
 - `SESSION_HANDOFF.md` → TAROT-BEH-015，必要時 013。
