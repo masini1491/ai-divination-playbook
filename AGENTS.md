@@ -2,8 +2,8 @@
 
 Project AI mode: ChatGPT-Only
 
-Maintenance boundary：ChatGPT 是主要 AI maintainer，但 direct mutation 仍須符合 current writable target、current task / governance、permission 與 actual capability；host / connector / runtime capability 不單獨建立 write authority。
-Inference boundary：execution authority 不等於 data-egress authority；model／provider／router destination materially 改變時，私人 reading／birth／palm／company Context 不自動沿用舊 disclosure permission。細節與 adapted source 邊界見 `references/ai-development-playbook.md`。
+Maintenance boundary：ChatGPT 是主要 AI maintainer；direct mutation 仍須符合 writable target、task / governance、permission 與 capability。Host / tool capability 不建立 write authority。
+Inference boundary：provider／router destination 改變時，private reading／birth／palm／company Context 不自動沿用 disclosure permission；不確定則 sanitize 或 STOP。細節見 `references/ai-development-playbook.md`。
 
 ## 儲存庫用途與權威
 
