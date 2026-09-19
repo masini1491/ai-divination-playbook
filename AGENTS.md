@@ -27,7 +27,7 @@ Project AI mode: ChatGPT-Only
 | Input / provenance contract | `INPUT_CONTRACT.md` |
 | Question decomposition / positions | `QUESTION_DESIGN.md` |
 | Tarot / Meihua / Liuyao / Astrology | `TAROT.md` / `MEIHUA.md` / `LIUYAO.md` / `ASTROLOGY.md` |
-| Stochastic Draw / Cast | `RUNTIME_DRAW.md` + `runtime/casting/randomizer.py` |
+| Stochastic Draw / Cast | `RUNTIME_DRAW.md` + `runtime/casting/core.py`（canonical stochastic core）+ `runtime/casting/randomizer.py`（full API / CLI adapter） |
 | Reading lifecycle / durable record | `READING_LIFECYCLE.md` / `READING_RECORD.md` |
 | Tarot × Meihua reconciliation | `CROSS_VALIDATION.md` |
 | User-visible output | `CHATGPT_OUTPUT.md` |
@@ -36,13 +36,14 @@ Project AI mode: ChatGPT-Only
 
 ## Runtime / engine boundary
 
-Canonical stochastic implementation：
+Canonical stochastic core 與完整 Runtime adapter：
 
 ```text
-runtime/casting/randomizer.py
+runtime/casting/core.py        # canonical stochastic core
+runtime/casting/randomizer.py  # full API / CLI adapter，delegate to core.py
 ```
 
-目前只擁有 Tarot draw、Meihua A/B cast、Liuyao three-coin Raw Cast；不解讀。
+正式 stochastic execution entrypoint 是 `core.execute_stochastic()`。目前 stochastic core 只擁有 Tarot draw、Meihua A/B cast、Liuyao three-coin Raw Cast；不解讀。
 
 六爻 deterministic path：
 
@@ -73,6 +74,18 @@ raw birth data / user-supplied structured facts
 - language model 不得把手算結果冒充 deterministic engine fact。
 - research probe、legacy adapter、external calculator 不因存在而取得 production authority。
 - user-supplied Astrology facts 必須保留 `user_asserted` provenance。
+
+## Maintenance ownership / mutation boundary
+
+本 Repository 的 Project AI mode 是 `ChatGPT-Only`，但 **Project AI mode 只決定 AI actor topology，不等於 unrestricted write authority**。
+
+- ChatGPT 是本 Repo 的主要 AI maintainer；只有在本 Repository 是當前聊天室明確的 writable target，且 current task / Stage、repository governance、permission 與實際 capability 同時允許時，才可直接維護 canonical docs、runtime、tools、tests、validation 或 workflow。
+- Repository access、connector write capability、runtime capability 或 host compatibility **都不會單獨建立 mutation authority**。
+- Claude／Gemini／Copilot 或其他 host 即使可讀取 `AGENTS.md`／`CHAT_INIT.md`，也不因此取得本 Repo 的 canonical implementation／maintenance authority；若未另有 current governance 明確授權，維持 compatibility / advisory boundary。
+- Mutation 完成後必須取得與 claim 相稱的 canonical read-back／CI evidence；高 blast-radius replacement 或 transport bridge 另需確認 final diff／tree 沒有 unintended truncation、額外檔案或 temporary transport artifact。
+- 發現其他 repository 也需要同步時，只形成 read-only analysis／handoff；不得因此把第二個 repository 變成同聊天室 writable target。
+
+核心原則：**Capability ≠ authority；ChatGPT-Only ≠ unrestricted mutation。**
 
 ## Repository / Git identity
 
@@ -125,6 +138,17 @@ Connector retrieval capability ≠ connector→runtime byte-preserving handoff c
 - 未授權第三方內容的大段複製。
 
 `SESSION_HANDOFF.md` 只保存模板；真實 Reading Record 永遠不得寫入本公開 Playbook。
+
+### External inference / data-egress boundary
+
+把 repository source、reading context、出生資料、真實手掌影像、tool／connector output、logs 或其他 project / user information 傳送到另一個 inference model、router 或 provider，是獨立的資料揭露／egress operation。
+
+- **Execution / maintenance authority ≠ inference data-egress authority**；某模型或 host 能執行工作，不代表所有 Context 都可自動送往該 destination。
+- model／provider／router 切換若 materially 改變資料接收者或 retention／training／logging／jurisdiction 等 disclosure condition，受限制 Context 在送出前必須重新判斷 destination 是否 admitted；無法建立最低充分 evidence 時，縮小／去識別化 Context，否則 STOP。
+- 舊 destination 可讀的私人資料，不代表新 destination 也可讀。尤其真實 birth data、relationship／health／sexual context、private company information、private Reading Record 與真實 palm images 不得因 fallback model 可用就自動外送。
+- public repository source、synthetic fixtures、公開 references 若沒有額外 provider restriction，不為形式增加 provider-audit ceremony。
+
+核心原則：**Model availability creates capability, not disclosure authority。**
 
 正式說明與規則預設繁體中文；technical identifiers 保留原文。
 
