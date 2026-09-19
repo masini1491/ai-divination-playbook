@@ -30,6 +30,18 @@ class BehavioralEvalLoaderSelectionTests(unittest.TestCase):
         )
         self.assertEqual(self.behavioral_eval.validate_regression_matrix(matrix), [])
 
+    def test_meihua_presentation_change_class_includes_dedicated_regression(self):
+        matrix = json.loads(
+            (ROOT / "evals" / "regression_matrix.json").read_text(encoding="utf-8")
+        )
+        selected = set(
+            self.behavioral_eval.select_regression_scenarios(
+                matrix,
+                "meihua-presentation",
+            )
+        )
+        self.assertIn("TAROT-BEH-020", selected)
+
     def test_loader_change_class_covers_cold_start_runtime_freshness_and_astrology(self):
         matrix = json.loads(
             (ROOT / "evals" / "regression_matrix.json").read_text(encoding="utf-8")

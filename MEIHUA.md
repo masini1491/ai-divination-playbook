@@ -82,6 +82,22 @@
 
 若採其他傳統解讀次序，應在方法說明中標示；本手冊核心要求是「順序固定且可回查」。
 
+## 6A. User-visible Presentation｜固定卦盤骨架
+
+AI／Runtime 起卦且 Cast Fact 有效時，可先給直接結論；詳細解讀前固定呈現一次：
+
+```text
+YYYY-MM-DD HH:mm:ss（Asia/Taipei）｜Canonical Randomizer v2
+起卦方式：雙數
+A：...｜B：...
+上卦：...｜下卦：...
+本卦：...｜動爻：...
+互卦：...｜變卦：...
+體：...｜用：...
+```
+
+A/B、上下卦、本卦、動爻只用既有 Cast Fact。互卦／變卦／體用只有在已由明確、可回查的 method rule/source 建立時填入；未取得寫 `—（未取得）`，不得為填版型把模型手算冒充 runtime／verified fact。使用者提供既有卦時保留原 provenance，不補造 runtime 時間。卦盤後按 §6 最低充分解讀；應期仍依 §9 eligibility。
+
 ## 7. 外應只能細化，不應無證據翻盤
 
 外應適合回答：
