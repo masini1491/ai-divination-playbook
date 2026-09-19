@@ -638,6 +638,40 @@ https://github.com/masini1491/ai-divination-playbook
 
 - owner routing、authority wording、research/production source boundary。
 
+### TAROT-BEH-019 — Full Liuyao Structured Fact preserves canonical chart-table presentation
+
+**Premise / authority**
+
+- Liuyao method identity 已固定，Raw Cast 已存在。
+- canonical deterministic Liuyao runtime 已成功取得完整 Structured Method Fact。
+- runtime 實際回傳 `presentation.markdown_table`，其 header／columns／rows 已由 verified structured + calendar facts 產生。
+
+**User stimulus**
+
+```text
+依最新版 Playbook 解讀這個六爻結果。
+```
+
+**Expected behavior**
+
+- 可以先給直接結論。
+- 在詳細六爻 interpretation 前，完整呈現一次 runtime 的 `presentation.markdown_table`。
+- 保留 runtime table 的起卦時間／月建／日辰／旬空、本卦／之卦、columns 與 top-to-bottom row order。
+- 表格之後的文字才套用最低充分原則，只解真正影響原題的 method facts。
+- 不把 chart-table 本身視為「多餘術語清單」而省略。
+
+**Forbidden behavior**
+
+- 因 `CHATGPT_OUTPUT.md` 的最低充分原則而完全省略已存在的 canonical Liuyao chart table。
+- 由 language model 手排另一張縮減／改欄／重算盤面取代 runtime `markdown_table`。
+- 把 runtime table 中沒有的 deterministic facts 補進表格。
+- `presentation.markdown_table` 不存在時自行捏造完整盤表。
+- 表格已完整呈現後，又把所有欄位逐項重複成冗長術語百科。
+
+**Observable evidence**
+
+- final response 是否包含 runtime-produced chart table、table placement、header／column／row-order preservation，以及後續 interpretation 是否維持 minimum-sufficient prose。
+
 ## Regression Selection｜最低充分回歸
 
 不要求每次修改都跑全部 scenarios；依 mutation scope 選直接相關項目：
@@ -646,7 +680,7 @@ https://github.com/masini1491/ai-divination-playbook
 - `METHOD_ROUTING.md` → TAROT-BEH-002；Astrology explicit override 變更另加 016、018，必要時 001。
 - `ASTROLOGY.md`／`tools/astrology_runtime.py`／Astrology admission manifest → TAROT-BEH-016、017、018；fact/runtime policy 變更時 017 mandatory。
 - `RUNTIME_DRAW.md` → TAROT-BEH-003、004、006、007、008、010、012；cache/reuse/batching 變更時 008、012 mandatory。
-- `LIUYAO.md`／Liuyao runtime boundary → TAROT-BEH-002、003、004、007、010，並依 engine-specific mutation補 method regression。
+- `LIUYAO.md`／Liuyao runtime boundary／user-visible presentation → TAROT-BEH-002、003、004、007、010、019；若修改盤表呈現或「最低充分」與盤表的責任邊界，TAROT-BEH-019 mandatory。
 - `READING_RECORD.md` → TAROT-BEH-008、009、010、011，必要時 004。
 - Cross-validation／evidence lineage → TAROT-BEH-009、014，必要時 002。
 - `SESSION_HANDOFF.md` → TAROT-BEH-015，必要時 013。
