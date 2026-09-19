@@ -1,0 +1,33 @@
+name: One-time generate Meihua deterministic bundle
+
+on:
+  push:
+    branches:
+      - feat/meihua-deterministic-materialization
+    paths:
+      - .github/workflows/generate-meihua-bundle-once.yml
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/meihua-deterministic-materialization
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build bundle
+        run: python tools/build_meihua_tool_bundle.py
+      - name: Commit generated bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add runtime/meihua/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json
+          git commit -m "Generate Meihua deterministic tool bundle"
+          git push origin HEAD:feat/meihua-deterministic-materialization
