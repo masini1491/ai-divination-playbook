@@ -251,11 +251,14 @@ Production owner：[`ASTROLOGY.md`](ASTROLOGY.md)。
 
 ### Divination Casting Randomizer
 
-Canonical implementation：
+Canonical stochastic core 與 full Runtime adapter：
 
 ```text
-runtime/casting/randomizer.py
+runtime/casting/core.py        # canonical stochastic core
+runtime/casting/randomizer.py  # full API / CLI adapter，delegate to core.py
 ```
+
+正式 stochastic execution entrypoint 是 `core.execute_stochastic()`。
 
 目前負責：
 
@@ -265,7 +268,7 @@ Meihua A/B cast
 Liuyao three-coin Raw Cast
 ```
 
-Randomizer 只決定 stochastic raw result，不負責 interpretation。logical runtime identity 仍為 `divination-casting-randomizer-python`；legacy `masini1491/divination-casting-randomizer` 僅保留歷史 provenance、rollback 與 compatibility / historical deployment reference。current Runtime Draw 與 production authority 均位於本 Repo 的 `runtime/casting/**`。
+`core.py` 決定 canonical stochastic raw result；`randomizer.py` 提供 full API / CLI transport 並 delegate 到同一 core，不負責 interpretation。logical runtime identity 仍為 `divination-casting-randomizer-python`；legacy `masini1491/divination-casting-randomizer` 僅保留歷史 provenance、rollback 與 compatibility / historical deployment reference。current Runtime Draw 與 production authority 均位於本 Repo 的 `runtime/casting/**`。
 
 ### Liuyao deterministic engine
 
@@ -309,8 +312,8 @@ tools/astrology_output_guard.py
 
 | 方法 | 主要 responsibility | Fact acquisition / calculation | method owner |
 | --- | --- | --- | --- |
-| Tarot | 人物心理／互動、選項比較、主觀適配、牌位拆解 | Canonical Randomizer (`runtime/casting/randomizer.py`) | [`TAROT.md`](TAROT.md) |
-| Meihua | 事件演化、主客／體用、轉折、節奏與象徵應期 | Canonical Randomizer (`runtime/casting/randomizer.py`) | [`MEIHUA.md`](MEIHUA.md) |
+| Tarot | 人物心理／互動、選項比較、主觀適配、牌位拆解 | Canonical stochastic core (`runtime/casting/core.py`) via full Runtime adapter (`runtime/casting/randomizer.py`) | [`TAROT.md`](TAROT.md) |
+| Meihua | 事件演化、主客／體用、轉折、節奏與象徵應期 | Canonical stochastic core (`runtime/casting/core.py`) via full Runtime adapter (`runtime/casting/randomizer.py`) | [`MEIHUA.md`](MEIHUA.md) |
 | Liuyao | 單一具體事件是否成立、阻礙來源、較具體 outcome / timing | local Randomizer three-coin Raw Cast + local deterministic engine/calendar/runtime | [`LIUYAO.md`](LIUYAO.md) |
 | Astrology | 本命盤、行運與 admitted natal/transit factors；explicit-request only | local deterministic place resolver + natal/transit providers + Fact Gate | [`ASTROLOGY.md`](ASTROLOGY.md) |
 
