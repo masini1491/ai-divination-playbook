@@ -8,7 +8,6 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 ADAPTERS = {
-    "CLAUDE.md": "Claude Code",
     "GEMINI.md": "Gemini CLI",
     ".github/copilot-instructions.md": "GitHub Copilot",
 }
