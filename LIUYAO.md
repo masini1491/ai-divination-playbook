@@ -26,6 +26,7 @@
 - **固定六爻 Input Contract** → §3
 - **Runtime 三錢起卦** → §4 + `RUNTIME_DRAW.md`
 - **建立本卦／變卦／納甲等 Structured Method Fact** → §5
+- **完整 Structured Method Fact 的使用者可見盤表** → §5D + `CHATGPT_OUTPUT.md`
 - **local miss** → `LIUYAO_MATERIALIZATION.md`；**engine / calendar unavailable** → §9
 - **正式解讀順序** → §6～8
 - **保存與 provenance** → §10
@@ -274,6 +275,35 @@ LIUYAO.md
 
 不得把 engine 自己的隨機起卦拿來覆蓋 Randomizer 已固定的 Raw Cast Fact；也不得讓 engine 的 category mapping 取代 Playbook 的 question contract。
 
+### 5D. User-visible Chart Presentation｜完整盤表輸出契約
+
+當 canonical deterministic runtime 已成功產生完整 Structured Method Fact，且 `tools/liuyao_runtime.py` 回傳 `presentation.markdown_table` 時，該表格是**已驗證盤面 facts 的 canonical derived display surface**。它不是新的 interpretation layer，也不會擴張原題 scope。
+
+最終回答必須：
+
+1. 可先依 `CHATGPT_OUTPUT.md` 給直接結論，但在進入詳細解讀前，**必須完整呈現一次 `presentation.markdown_table`**。
+2. 表格直接使用 runtime 產生的 header、columns、top-to-bottom row order 與內容；不得由 language model 重新手排、重算、縮成另一張「看起來差不多」的盤。
+3. 「最低充分 evidence / prose」限制的是**解讀文字與延伸術語**，不是授權省略這個 compact chart surface。表格呈現後，解讀仍只挑真正影響原題的世應、用神、動變、合沖、生剋、空破／伏神等訊號。
+4. 若 `presentation.markdown_table` 沒有實際產生，或 structured / calendar layer fail closed，則不得自行補造完整盤表；只呈現已驗證 facts，並明確標示缺失 layer。
+
+因此：
+
+```text
+full Structured Method Fact + presentation.markdown_table available
+→ direct conclusion may come first
+→ render markdown_table once
+→ minimum-sufficient interpretation
+→ outcome / obstacle / timing as eligible
+
+presentation unavailable
+→ do not fabricate table
+→ preserve verified facts + explicit missing-layer boundary
+```
+
+核心原則：
+
+> **盤表是 verified facts 的呈現面；最低充分原則用來壓縮解讀，不用來把盤表省略掉。**
+
 ## 6. Interpretation Gate｜先定用神責任，再看吉凶
 
 正式納甲解讀前，先依**原題的 judgment function**固定本題主要觀察對象／用神 responsibility；不要看到哪一個六親旺、哪個動爻漂亮後，才反過來挑最有利的用神。
@@ -379,6 +409,7 @@ original interpretation
 - [ ] Raw Cast 是既有 fact 或由 canonical Runtime 產生，不是模型自創。
 - [ ] line order 明確為 bottom-to-top。
 - [ ] 本卦／動爻／之卦／納甲等使用到的 structural facts 有 deterministic engine provenance。
+- [ ] 若 runtime 已提供 `presentation.markdown_table`，final answer 已在詳細解讀前完整呈現一次，沒有因「最低充分」省略或由模型另行重建。
 - [ ] calendar-dependent evidence 只有在 calendar facts 已驗證時才使用。
 - [ ] 用神 responsibility 在看結果前由 question contract 決定，不由 engine category mapping 代替。
 - [ ] 沒有因不喜歡結果而重起。
