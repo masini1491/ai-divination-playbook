@@ -2,6 +2,8 @@
 
 Project AI mode: ChatGPT-Only
 
+AI maintenance boundary：ChatGPT 是主要 AI maintainer；mutation 仍須符合 writable target、task / governance、permission / capability。Inference destination 改變時，private Context 不自動沿用 disclosure permission。細節見 `references/ai-development-playbook.md`。
+
 ## 儲存庫用途與權威
 
 本儲存庫是可重用、公開的 AI 占卜方法與治理 Playbook，涵蓋 method routing、Input Contract／Question Design、Tarot／Meihua／Liuyao／Astrology、Runtime Draw / Cast、deterministic fact providers、Reading lifecycle／record、cross-validation 與 ChatGPT output governance。
@@ -27,7 +29,7 @@ Project AI mode: ChatGPT-Only
 | Input / provenance contract | `INPUT_CONTRACT.md` |
 | Question decomposition / positions | `QUESTION_DESIGN.md` |
 | Tarot / Meihua / Liuyao / Astrology | `TAROT.md` / `MEIHUA.md` / `LIUYAO.md` / `ASTROLOGY.md` |
-| Stochastic Draw / Cast | `RUNTIME_DRAW.md` + `runtime/casting/randomizer.py` |
+| Stochastic Draw / Cast | `RUNTIME_DRAW.md` |
 | Reading lifecycle / durable record | `READING_LIFECYCLE.md` / `READING_RECORD.md` |
 | Tarot × Meihua reconciliation | `CROSS_VALIDATION.md` |
 | User-visible output | `CHATGPT_OUTPUT.md` |
@@ -36,43 +38,12 @@ Project AI mode: ChatGPT-Only
 
 ## Runtime / engine boundary
 
-Canonical stochastic implementation：
+Implementation topology 由 direct owners 維護，`AGENTS.md` 只保留最低 routing boundary：
 
-```text
-runtime/casting/randomizer.py
-```
-
-目前只擁有 Tarot draw、Meihua A/B cast、Liuyao three-coin Raw Cast；不解讀。
-
-六爻 deterministic path：
-
-```text
-fixed Raw Cast
-→ tools/liuyao_calendar.py
-→ tools/liuyao_engine.py
-→ tools/liuyao_runtime.py
-→ LIUYAO.md
-```
-
-Astrology production path：
-
-```text
-raw birth data / user-supplied structured facts
-→ optional tools/astrology_place_resolver.py
-→ tools/astrology_provider.py and/or tools/astrology_transit_provider.py
-→ Astrology Fact Bundle 1.0
-→ tools/astrology_runtime.py
-→ ASTROLOGY.md
-```
-
-責任邊界：
-
-- Randomizer 只擁有 stochastic Raw Cast authority。
-- Liuyao calendar / engine / runtime 只建立 deterministic method facts／composition；`LIUYAO.md` 擁有 judgment、用神與 interpretation governance。
-- Astrology resolver / providers 只做 admitted deterministic input resolution／calculation；`tools/astrology_runtime.py` 是 Fact Gate，`ASTROLOGY.md` 擁有 interpretation / source-admission / unsupported-factor governance。
-- language model 不得把手算結果冒充 deterministic engine fact。
-- research probe、legacy adapter、external calculator 不因存在而取得 production authority。
-- user-supplied Astrology facts 必須保留 `user_asserted` provenance。
+- stochastic → `RUNTIME_DRAW.md`；`runtime/casting/core.py` 是 canonical core，`runtime/casting/randomizer.py` 是 full API / CLI adapter，正式 entrypoint 為 `core.execute_stochastic()`。
+- Liuyao deterministic facts → `LIUYAO.md` + `tools/liuyao_calendar.py` / `tools/liuyao_engine.py` / `tools/liuyao_runtime.py`。
+- Astrology deterministic facts → `ASTROLOGY.md` + admitted resolver / provider / Fact Gate。
+- language model 不得把手算冒充 deterministic engine/provider fact；research probe、legacy adapter、external calculator 不因存在而取得 production authority；user-supplied Astrology facts 保留 `user_asserted` provenance。
 
 ## Repository / Git identity
 

@@ -4,6 +4,10 @@ Repo: https://github.com/masini1491/ai-development-playbook
 
 授權：MIT（以來源 Repo 當下 LICENSE 為準）
 
+Last reviewed source revision：`50c16aa7cf3c497ed7e0099a006f49acbd07956d`
+
+Relationship：`reference / adapted source`；不是 live moving-policy dependency。本 Repo 只有在 current governance 明確採納後才吸收上游規則，不因來源 `main` 前進而自動改變本 Repo authority。
+
 ## 類型
 
 ChatGPT＋Codex＋GitHub 的 AI 協作開發方法論。其主要價值不在占卜內容，而在 **authority、routing、最低充分上下文、scope control、completion evidence、輸出交付與 policy ownership** 等治理設計。
@@ -17,6 +21,20 @@ ChatGPT＋Codex＋GitHub 的 AI 協作開發方法論。其主要價值不在占
 - Codex、Git、CI、Repository mutation、模型成本等工程專屬規則不移植到占卜方法論。
 
 ## 值得吸收
+
+### ADAPTED｜調整後採用 — Project AI mode 與 lower-level authority 分離
+
+來源把 Project AI mode 視為 actor topology，而不是 path/action write permission。本 Repo 因此以 `Project AI mode: ChatGPT-Only` 宣告主要 AI actor，同時在 `AGENTS.md` 另外維護 current task / writable target / permission / capability 的 mutation boundary。
+
+### ADAPTED｜調整後採用 — Capability ≠ authority
+
+connector、runtime、write-capable tool 或 host compatibility 只證明 capability；不單獨建立 repository mutation、Reading Record storage 或其他 durable authority。
+
+### ADAPTED｜調整後採用 — External inference / data-egress boundary
+
+來源把 model／provider／router 切換視為可能的 disclosure boundary change。本 Repo 只吸收其中與私人 reading context、birth data、palm images、private company information 等敏感 Context 有關的最低充分原則；不建立通用企業資料分類框架。
+
+
 
 ### ADAPTED｜調整後採用 — Canonical policy owner
 
@@ -83,6 +101,18 @@ ChatGPT＋Codex＋GitHub 的 AI 協作開發方法論。其主要價值不在占
 - 不輸出牌義字典或萬物類象清單後再任意套用；
 - 只解與原題及牌位／卦象證據角色直接相關的最低充分內容；
 - 心理、時間、建議、補占等輸出層按題型啟用，不固定全部輸出。
+
+## Not adopted as divination workflow
+
+下列工程／coding-agent 機制不因本次 review 自動移植為占卜方法或 reading workflow：
+
+- Codex root / child model ladder、delegation、parallel-agent routing；
+- usage-budget scheduling；
+- `Resource-Exhaustion Root Fallback` 作為 Codex workflow；
+- external-service deployment / credential operation rules；
+- AI 開發手冊自身的 TASKS / BACKLOG maintenance model。
+
+若未來本 Repo 真正需要 alternate inference provider，先處理 current capability、user choice 與 data-egress boundary；不因此建立 Codex execution policy。
 
 ## Do not assume
 
