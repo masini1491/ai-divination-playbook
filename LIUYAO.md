@@ -304,9 +304,7 @@ Secondary role(s): <只有原題真的需要才設定>
 8. 最後才形成 outcome / obstacle / timing judgment
 ```
 
-不是每題都必須把所有術語印給使用者；內部判斷可以完整，使用者輸出只保留與原題相關的 evidence path。
-
-若 runtime 已提供 `presentation.markdown_table`，詳細解讀前必須完整呈現該表一次；「最低充分」只限制後續 prose，不得省略、改欄或由模型重建；table 不存在時也不得補造。
+內部判斷可以完整；若 runtime 有 `presentation.markdown_table`，詳細解讀前須完整呈現一次且不得由模型重建；其餘輸出只保留與原題相關的 evidence path。
 
 ## 8. Outcome / Obstacle / Timing 要分層
 
