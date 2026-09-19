@@ -71,9 +71,7 @@ ChatGPT 不得：
 3. **衝突或不確定性**：若存在混合訊號，明確標示。
 4. 只有題目需要時，再加入時間、人物／心理、行動建議或現實驗證點。
 
-不要先寫一大段牌義／卦義百科，最後才讓使用者找答案。
-
-Liuyao 例外：若 canonical deterministic runtime 已提供完整 `presentation.markdown_table`，可先給直接結論，但在詳細解讀前必須完整呈現該盤表一次。這張 compact chart 是 verified Structured Method Fact 的 derived display，不是「牌義／卦義百科」。
+不要先寫一大段牌義／卦義百科，最後才讓使用者找答案。Liuyao 若 runtime 已提供 `presentation.markdown_table`，可先給結論，但詳細解讀前必須完整呈現該表一次。
 
 ## 4. One Question = One Conclusion Surface
 
@@ -123,11 +121,9 @@ ChatGPT 不應輸出「牌義字典」「萬物類象清單」或完整六爻術
 
 例如牌位只問「09/03 是否較可能完成」，就優先解讀該牌對「在該窗口完成」的支持、阻礙、延遲或不確定，不必展開與原題無關的家庭、人格、職位或其他常見牌義。
 
-Liuyao 若原題只需要 outcome / obstacle，就不因 engine 提供大量欄位而在**解讀 prose**逐項重複所有納甲、六神、伏神資訊。
+Liuyao 若原題只需要 outcome / obstacle，就不在解讀 prose 逐項重複 engine 欄位；但已存在的 `presentation.markdown_table` 不得因「最低充分」被省略或由模型自行重建。
 
-但若 runtime 已成功產生完整 Structured Method Fact 並提供 `presentation.markdown_table`，該 compact chart-table 應完整呈現一次。**最低充分原則限制的是後續解讀文字，不是授權省略已存在的 canonical chart surface。** ChatGPT 不得自行重排、縮欄或手算另一張表取代 runtime output。
-
-核心原則：**輸出的是與契約有連結的證據；完整 verified Liuyao chart 可作一次 compact fact surface，後續 prose 才維持最低充分。**
+核心原則：**完整 verified Liuyao chart 可呈現一次；後續解讀仍只保留與契約有連結的最低充分證據。**
 
 ## 7. 信心語言要與證據相稱
 
@@ -293,8 +289,7 @@ ChatGPT 不應在每次解讀結束後自動創造一串下一題。
 6. **Eligible-layer check**：心理、時間、建議、補占等是否真的由題型／使用者要求啟用。
 7. **Completion check**：若宣告事件完成／命中，是否真正符合原 `completion_rule`。
 8. **Hindsight check**：回測時是否把事後重讀與當時原始預測清楚分開。
-9. **Structured-fact check**：若使用 Liuyao 等需要 engine 的方法，實際使用的 Structured Method Fact 是否真的取得且 provenance 邊界沒有被模型補寫。
-10. **Liuyao-presentation check**：若 runtime 已提供 `presentation.markdown_table`，final draft 是否在詳細解讀前完整呈現一次；是否避免因最低充分原則省略、改欄、重算或自行重建盤表。
+9. **Structured-fact check**：若使用 Liuyao 等需要 engine 的方法，實際使用的 Structured Method Fact 是否真的取得且 provenance 邊界沒有被模型補寫；若有 `presentation.markdown_table`，是否已在詳細解讀前完整呈現且未自行重建。
 
 ### Fail-closed repair
 
