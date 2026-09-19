@@ -77,15 +77,7 @@ raw birth data / user-supplied structured facts
 
 ## Maintenance ownership / mutation boundary
 
-本 Repository 的 Project AI mode 是 `ChatGPT-Only`，但 **Project AI mode 只決定 AI actor topology，不等於 unrestricted write authority**。
-
-- ChatGPT 是本 Repo 的主要 AI maintainer；只有在本 Repository 是當前聊天室明確的 writable target，且 current task / Stage、repository governance、permission 與實際 capability 同時允許時，才可直接維護 canonical docs、runtime、tools、tests、validation 或 workflow。
-- Repository access、connector write capability、runtime capability 或 host compatibility **都不會單獨建立 mutation authority**。
-- Claude／Gemini／Copilot 或其他 host 即使可讀取 `AGENTS.md`／`CHAT_INIT.md`，也不因此取得本 Repo 的 canonical implementation／maintenance authority；若未另有 current governance 明確授權，維持 compatibility / advisory boundary。
-- Mutation 完成後必須取得與 claim 相稱的 canonical read-back／CI evidence；高 blast-radius replacement 或 transport bridge 另需確認 final diff／tree 沒有 unintended truncation、額外檔案或 temporary transport artifact。
-- 發現其他 repository 也需要同步時，只形成 read-only analysis／handoff；不得因此把第二個 repository 變成同聊天室 writable target。
-
-核心原則：**Capability ≠ authority；ChatGPT-Only ≠ unrestricted mutation。**
+`Project AI mode: ChatGPT-Only` 只決定 AI actor topology，不等於 unrestricted write authority。ChatGPT 是本 Repo 的主要 AI maintainer；直接 mutation 仍須同時符合 **current writable target ∩ current task / Stage ∩ repository governance ∩ permission ∩ actual capability**。Host compatibility、connector write capability 或 runtime capability 都不單獨建立 mutation authority；完成 claim 需有相稱的 canonical read-back／CI evidence。工程治理的 adapted source 與未採用邊界見 `references/ai-development-playbook.md`。
 
 ## Repository / Git identity
 
@@ -141,14 +133,7 @@ Connector retrieval capability ≠ connector→runtime byte-preserving handoff c
 
 ### External inference / data-egress boundary
 
-把 repository source、reading context、出生資料、真實手掌影像、tool／connector output、logs 或其他 project / user information 傳送到另一個 inference model、router 或 provider，是獨立的資料揭露／egress operation。
-
-- **Execution / maintenance authority ≠ inference data-egress authority**；某模型或 host 能執行工作，不代表所有 Context 都可自動送往該 destination。
-- model／provider／router 切換若 materially 改變資料接收者或 retention／training／logging／jurisdiction 等 disclosure condition，受限制 Context 在送出前必須重新判斷 destination 是否 admitted；無法建立最低充分 evidence 時，縮小／去識別化 Context，否則 STOP。
-- 舊 destination 可讀的私人資料，不代表新 destination 也可讀。尤其真實 birth data、relationship／health／sexual context、private company information、private Reading Record 與真實 palm images 不得因 fallback model 可用就自動外送。
-- public repository source、synthetic fixtures、公開 references 若沒有額外 provider restriction，不為形式增加 provider-audit ceremony。
-
-核心原則：**Model availability creates capability, not disclosure authority。**
+**Execution authority ≠ inference data-egress authority。** model／provider／router 切換若 materially 改變資料接收者或 disclosure condition，真實 birth data、relationship／health／sexual context、private company information、private Reading Record 或 palm images 在送出前須重新判斷 destination；無法建立最低充分允許範圍時縮小／去識別化 Context，否則 STOP。Public repository source、synthetic fixtures 與公開 references 若無額外 restriction，不增加形式化 provider audit。詳細 adopted boundary 見 `references/ai-development-playbook.md`。
 
 正式說明與規則預設繁體中文；technical identifiers 保留原文。
 
