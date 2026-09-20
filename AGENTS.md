@@ -2,16 +2,14 @@
 
 ## Common AI Development Playbook｜共通上位規則
 
-This project uses `masini1491/ai-development-playbook` as a common AI engineering baseline.
+This project uses `masini1491/ai-development-playbook` as the common AI engineering baseline.
 
 ```text
 Playbook baseline: main
 Project AI mode: ChatGPT-Only
 ```
 
-Activation 是 conditional：普通占卜、既有 reading 承接、方法解讀與不涉及 repository maintenance 的使用維持 project-native hot path，**不得只因已採用 shared Playbook 就額外載入它**；repository governance／adoption／AI workflow、source/tests/tooling/workflow mutation、GitHub branch/PR/release 或 validation architecture 才依 `CHAT_INIT.md` 的 Shared Development Playbook Activation Gate 啟動 declared baseline。
-
-Project-specific governance 與 divination technical source of truth 仍較高；本 Repo 的 **GitHub Connect-only** repository-authority policy 是 shared acquisition default 的 stricter local override。跨專案共通 engineering policy 由 shared baseline 擁有，本 Repo 不重複保存，除非是 project-specific override／mapping。
+Activation 依 `CHAT_INIT.md`：ordinary divination/use stays project-native；repository maintenance / governance / AI engineering activates the declared baseline. Project-specific authority remains higher；**GitHub Connect-only** is a stricter local override. 詳細 adoption / override record 見 `references/ai-development-playbook.md`。
 
 ## 儲存庫用途與權威
 
@@ -115,7 +113,7 @@ Fresh session 依序：
 ```text
 resolve repository + current ref to exact commit when currentness matters
 → read AGENTS.md
-→ ordinary divination/use? stay project-native; repository-maintenance/governance? activate declared shared baseline
+→ apply project-native shared-baseline activation gate
 → use CHATGPT_LOAD_PACK.json at the same resolved revision for eligible ordinary/stochastic profiles
 → read selected method / research canonical owner
 → load only task-required exceptions
