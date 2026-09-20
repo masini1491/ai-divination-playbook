@@ -20,9 +20,9 @@ minimum connector/read recovery
 
 ## Shared Development Playbook Activation Gate｜共通上位規則啟用條件
 
-- ordinary use → **project-native; no shared load**。
-- maintenance / governance / GitHub / validation → resolve declared baseline exact；shared `CHAT_INIT.md` minimum owner。
-- **GitHub Connect-only** remains local override。
+- ordinary use → **project-native; no extra load**。
+- maintenance / governance / GitHub / validation → resolve baseline exact；shared `CHAT_INIT.md` minimum owner。
+- **GitHub Connect-only** is local override。
 
 ## Default Interaction Profile｜只給 Repo 也能直接使用
 
