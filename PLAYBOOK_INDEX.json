@@ -256,7 +256,7 @@
       },
       "explicit_astrology.routing_scope": {
         "owner": "ASTROLOGY.md",
-        "heading": "## 1. Routing Scope",
+        "heading": "## 1. Activation / Routing",
         "start_line": 44,
         "end_line": 65,
         "next_heading": "## 2. Deterministic Fact Boundary"
@@ -274,6 +274,20 @@
         "start_line": 42,
         "end_line": 69,
         "next_heading": "## 2. Research decomposition"
+      },
+      "explicit_astrology.natal_entry": {
+        "owner": "ASTROLOGY_NATAL.md",
+        "heading": "## 1. Entry / Inputs",
+        "start_line": 1,
+        "end_line": 1,
+        "next_heading": "## 2. Natal Interpretation Scope"
+      },
+      "explicit_astrology.transit_entry": {
+        "owner": "ASTROLOGY_TRANSIT.md",
+        "heading": "## 1. Entry / Baseline",
+        "start_line": 1,
+        "end_line": 1,
+        "next_heading": "## 2. Transit Interpretation Scope"
       }
     },
     "profiles": {
