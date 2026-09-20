@@ -72,6 +72,11 @@ PROFILES = {
         "fragments": ["bootstrap", "runtime_fast_path", "output_core"],
         "required_followup": ["LIUYAO.md"],
     },
+    "explicit_astrology": {
+        "fragments": ["bootstrap", "output_core"],
+        "required_followup": ["ASTROLOGY.md"],
+        "notes": "Production Astrology only; research intent continues to bypass the pack.",
+    },
     "continuation_stochastic": {
         "fragments": ["bootstrap", "runtime_fast_path", "output_core"],
         "required_followup": ["READING_LIFECYCLE.md", "selected method owner"],
