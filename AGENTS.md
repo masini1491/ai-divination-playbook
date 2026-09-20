@@ -1,8 +1,17 @@
 # AGENTS.md
 
-Project AI mode: ChatGPT-Only
+## Common AI Development Playbook｜共通上位規則
 
-AI maintenance boundary：ChatGPT 是主要 AI maintainer；mutation 仍須符合 writable target、task / governance、permission / capability。Inference destination 改變時，private Context 不自動沿用 disclosure permission。細節見 `references/ai-development-playbook.md`。
+This project uses `masini1491/ai-development-playbook` as a common AI engineering baseline.
+
+```text
+Playbook baseline: main
+Project AI mode: ChatGPT-Only
+```
+
+Activation 是 conditional：普通占卜、既有 reading 承接、方法解讀與不涉及 repository maintenance 的使用維持 project-native hot path，**不得只因已採用 shared Playbook 就額外載入它**；repository governance／adoption／AI workflow、source/tests/tooling/workflow mutation、GitHub branch/PR/release 或 validation architecture 才依 `CHAT_INIT.md` 的 Shared Development Playbook Activation Gate 啟動 declared baseline。
+
+Project-specific governance 與 divination technical source of truth 仍較高；本 Repo 的 **GitHub Connect-only** repository-authority policy 是 shared acquisition default 的 stricter local override。跨專案共通 engineering policy 由 shared baseline 擁有，本 Repo 不重複保存，除非是 project-specific override／mapping。
 
 ## 儲存庫用途與權威
 
@@ -106,6 +115,7 @@ Fresh session 依序：
 ```text
 resolve repository + current ref to exact commit when currentness matters
 → read AGENTS.md
+→ ordinary divination/use? stay project-native; repository-maintenance/governance? activate declared shared baseline
 → use CHATGPT_LOAD_PACK.json at the same resolved revision for eligible ordinary/stochastic profiles
 → read selected method / research canonical owner
 → load only task-required exceptions
@@ -163,4 +173,4 @@ python tools/playbook_check.py .
 
 ## 外部參考
 
-可引用公開 Tarot／Meihua／Liuyao／Astrology／Qimen／AI methodology repository；所有 GitHub source acquisition 仍只走 GitHub connector。外部規則不會自動成為本 Repo authority。
+Declared `masini1491/ai-development-playbook` common baseline 依上方 adoption／activation contract 處理。其他公開 Tarot／Meihua／Liuyao／Astrology／Qimen／AI methodology repository 仍只是 external references；所有 GitHub source acquisition 只走 GitHub connector，其他外部規則不會自動成為本 Repo authority。
