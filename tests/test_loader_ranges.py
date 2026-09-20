@@ -38,6 +38,8 @@ class LoaderRangeTests(unittest.TestCase):
         expected = {
             "bootstrap.default_interaction",
             "explicit_astrology.routing_scope",
+            "explicit_astrology.natal_entry",
+            "explicit_astrology.transit_entry",
             "explicit_research.intent_gate",
             "research.astrology.scope",
         }

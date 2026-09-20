@@ -308,7 +308,6 @@
       }
     },
     "bypass_profiles": {
-      "explicit_astrology": "AGENTS.md → CHAT_INIT.md bounded bootstrap → ASTROLOGY.md",
       "explicit_research": "AGENTS.md → CHAT_INIT.md bounded bootstrap → RESEARCH_ROUTING.md → named research owner"
     }
   },

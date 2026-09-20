@@ -6,7 +6,8 @@
     "Historical baseline is the pre-loader main snapshot recorded before this optimization.",
     "Counts repository file reads and UTF-8 bytes only; one cheap HEAD/ref probe is excluded.",
     "This is not a wall-clock latency benchmark and must not be reported as product latency.",
-    "Explicit research uses Astrology research as the representative named-research owner path."
+    "Explicit research uses Astrology research as the representative named-research owner path.",
+    "Profile explicit_astrology is the representative Natal production path; explicit_astrology_transit is measured separately."
   ],
   "profiles": {
     "ordinary_tarot": {

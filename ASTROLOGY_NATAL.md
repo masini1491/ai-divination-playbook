@@ -36,8 +36,7 @@ Production v1 在 admitted facts / claims存在時可解讀：
 ## 3. House Policy
 
 ```text
-explicit house system required
-→ Whole Sign or Placidus
+explicit admitted house system
 → preserve configuration provenance
 → no cross-system averaging
 ```
@@ -46,18 +45,9 @@ explicit house system required
 
 ## 4. Essential Dignity Policy
 
-Production v1 admitted：
+只使用 `ASTROLOGY_PRODUCTION_ADMISSION_V1.json` 當前 admitted 的 dignity categories；本 mode owner不重複保存 exact enum。
 
-```text
-domicile
-exaltation
-detriment
-fall
-```
-
-Dignity描述 condition / resources / friction，不是道德好壞；不做 numeric scoring。
-
-Triplicity、terms/bounds、face/decan、peregrine/full reception scoring等未由 production admission另行啟用前，不得自行補入。
+Dignity描述 condition / resources / friction，不是道德好壞；不做 numeric scoring。未由 production admission啟用的 dignity layer不得自行補入。
 
 ## 5. Natal Aspect Use
 

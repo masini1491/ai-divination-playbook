@@ -88,10 +88,12 @@ class AstrologyProductionContractTests(unittest.TestCase):
         self.assertIn("Astrology 不在這個 ordinary auto-selection tree", text)
         self.assertIn("用占星／用星盤／看本命盤／看行運", text)
 
-    def test_chat_init_routes_production_astrology_to_astrology_owner(self):
+    def test_chat_init_routes_production_astrology_through_root_and_mode_owner(self):
         text = (ROOT / "CHAT_INIT.md").read_text(encoding="utf-8")
         self.assertIn("明確指定 production Astrology", text)
-        self.assertIn("直接讀 `ASTROLOGY.md`", text)
+        self.assertIn("先讀 root `ASTROLOGY.md`", text)
+        self.assertIn("`ASTROLOGY_NATAL.md` 或 `ASTROLOGY_TRANSIT.md`", text)
+        self.assertIn("selected Astrology mode owner", text)
         self.assertIn("raw birth data 不授權模型自行手算", text)
 
     def test_research_router_keeps_astrology_research_separate(self):
@@ -114,6 +116,7 @@ class AstrologyProductionContractTests(unittest.TestCase):
         self.assertEqual("ASTROLOGY_TRANSIT.md", row["transit_owner"])
         self.assertEqual("ASTROLOGY_NATAL.md", rows["method.astrology.natal"]["owner"])
         self.assertEqual("ASTROLOGY_TRANSIT.md", rows["method.astrology.transit"]["owner"])
+        self.assertNotIn("explicit_astrology", data["loader"]["bypass_profiles"])
 
     def test_astrology_root_owner_keeps_common_boundary_and_routes_mode_owners(self):
         text = (ROOT / "ASTROLOGY.md").read_text(encoding="utf-8")
@@ -129,7 +132,10 @@ class AstrologyProductionContractTests(unittest.TestCase):
         self.assertIn("ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json", natal)
         self.assertIn("ASTROLOGY_TRANSIT_PROVIDER_ADMISSION_V1.json", transit)
         self.assertNotIn("astronomy-engine==", natal)
+        self.assertNotIn("Whole Sign or Placidus", natal)
+        self.assertNotIn("\ndomicile\nexaltation\ndetriment\nfall\n", natal)
         self.assertNotIn("root tolerance =", transit)
+        self.assertIn("production orchestrator / admitted natal provider", transit)
 
 
 if __name__ == "__main__":
