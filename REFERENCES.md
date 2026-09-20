@@ -20,15 +20,15 @@
 - [`references/metaphysics-synthesis-skill.md`](references/metaphysics-synthesis-skill.md) — 輸入檢查、證據角色、外應與應期約束。
 - [`references/plum-yi.md`](references/plum-yi.md) — 工具化取卦介面參考。
 
-### AI／ChatGPT 方法治理
+### 共通 AI 開發治理 baseline
 
-- [`references/ai-development-playbook.md`](references/ai-development-playbook.md) — ChatGPT scope control、canonical policy owner、Progressive Reading、Completion Evidence Guard、最低充分輸出與可直接複製題目交付。
+- [`references/ai-development-playbook.md`](references/ai-development-playbook.md) — `masini1491/ai-development-playbook` 的 declared baseline、conditional activation 與本 Repo local overrides；不是 ordinary divination reference。
 
 完整索引與採用標記見 [`references/README.md`](references/README.md)。
 
 ## 權威原則
 
-外部來源只提供研究證據與可借鑑方法；本 Repo 的正式規則仍以根目錄主文件為準。
+Declared common AI engineering baseline 依 `AGENTS.md` / `CHAT_INIT.md` 的 adoption 與 activation contract處理；其餘外部來源只提供研究證據與可借鑑方法。本 Repo 的 project-specific正式規則仍以本地 canonical owners為準。
 
 來源更新時：
 
