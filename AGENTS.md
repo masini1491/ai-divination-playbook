@@ -2,12 +2,8 @@
 
 ## Common AI Development Playbook｜共通上位規則
 
-```text
-Common baseline: masini1491/ai-development-playbook@main
-Project AI mode: ChatGPT-Only
-```
-
-Activation / local overrides → `CHAT_INIT.md`；adoption record → `references/ai-development-playbook.md`。
+`masini1491/ai-development-playbook@main`；Project AI mode：`ChatGPT-Only`。
+Activation / overrides → `CHAT_INIT.md`；record → `references/ai-development-playbook.md`。
 
 ## 儲存庫用途與權威
 
