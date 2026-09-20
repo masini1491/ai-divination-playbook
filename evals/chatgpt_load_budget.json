@@ -95,10 +95,11 @@
       "optimized_paths": [
         "AGENTS.md",
         "CHATGPT_LOAD_PACK.json",
-        "ASTROLOGY.md"
+        "ASTROLOGY.md",
+        "ASTROLOGY_NATAL.md"
       ],
-      "max_optimized_file_reads": 3,
-      "max_payload_ratio": 0.85
+      "max_optimized_file_reads": 4,
+      "max_payload_ratio": 0.75
     },
     "explicit_research_astrology": {
       "baseline": {
@@ -127,6 +128,20 @@
       ],
       "max_optimized_file_reads": 4,
       "max_payload_ratio": 0.82
+    },
+    "explicit_astrology_transit": {
+      "baseline": {
+        "file_reads": 4,
+        "payload_bytes": 68540
+      },
+      "optimized_paths": [
+        "AGENTS.md",
+        "CHATGPT_LOAD_PACK.json",
+        "ASTROLOGY.md",
+        "ASTROLOGY_TRANSIT.md"
+      ],
+      "max_optimized_file_reads": 4,
+      "max_payload_ratio": 0.75
     }
   }
 }
