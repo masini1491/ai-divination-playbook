@@ -19,6 +19,17 @@
       "cache": "CHATGPT_LOAD_PACK.json"
     },
     {
+      "id": "bootstrap.shared-development-baseline",
+      "owner": "CHAT_INIT.md",
+      "section": "Shared Development Playbook Activation Gate｜共通上位規則啟用條件",
+      "kind": "contract",
+      "adoption_record": "references/ai-development-playbook.md",
+      "external_repository": "masini1491/ai-development-playbook",
+      "declared_baseline": "main",
+      "project_ai_mode": "ChatGPT-Only",
+      "activation": "conditional"
+    },
+    {
       "id": "bootstrap.repository-access",
       "owner": "CHAT_INIT.md",
       "section": "Repository Access Policy｜GitHub Connect only",
