@@ -56,14 +56,9 @@ CONTRACTS: dict[str, list[tuple[str, tuple[str, ...]]]] = {
         (
             "AGENTS.md",
             (
-                "fixed-cache probe FAIL／首次 acquisition",
-                "必須先讀並實際走 `RUNTIME_DRAW.md` 的 `Acquisition` capability gates",
-                "取得 canonical source 本身不等於 acquisition complete",
-                "GitHub Connect source acquisition、connector→Python byte-preserving handoff、Python materialization／execution 是三個獨立 capability",
-                "MATERIALIZATION HANDOFF CAPABILITY GAP",
-                "任何「已取得 canonical source／payload 已交給 Python」claim 都必須有本 session 可觀察 evidence",
-                "不得用模型轉錄 source 補洞",
-                "不得先轉 Web／manual fallback",
+                "AI 代抽／代起才進 `RUNTIME_DRAW.md`",
+                "cache/acquisition/materialization/handoff細節只由該 owner決定",
+                "language-model generation ≠ Runtime fact",
             ),
         ),
         (
@@ -120,12 +115,9 @@ CONTRACTS: dict[str, list[tuple[str, tuple[str, ...]]]] = {
         (
             "AGENTS.md",
             (
-                "Pre-retrieval invariant",
-                "before any current GitHub repository-content claim",
-                "GitHub connector capability must be established",
-                "不能 bootstrap 或驗證 current repo authority",
-                "不得先引用、摘要或聲稱已確認 alternate transport 所見的 Repo 規則",
-                "ACCESS BLOCKED",
+                "Current GitHub repository authority is **GitHub Connect-only**",
+                "bootstrap／access／freshness細節由 `CHAT_INIT.md` 擁有",
+                "required connector authority無法建立時 fail closed",
             ),
         ),
     ],

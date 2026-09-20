@@ -49,33 +49,9 @@ Implementation topology 由 direct owners 維護，`AGENTS.md` 只保留最低 r
 
 ## GitHub repository retrieval
 
-**Pre-retrieval invariant：** before any current GitHub repository-content claim, GitHub connector capability must be established. GitHub public page／URL preview／search snippet／raw URL 等 alternate transport 不能 bootstrap 或驗證 current repo authority。若 connector unavailable／permission blocked 且 current content materially required，直接 `ACCESS BLOCKED`；不得先引用、摘要或聲稱已確認 alternate transport 所見的 Repo 規則。
+Current GitHub repository authority is **GitHub Connect-only**；bootstrap／access／freshness細節由 `CHAT_INIT.md` 擁有。Alternate public/raw/Web/HTTP/clone transport不得取代 current Repo authority；required connector authority無法建立時 fail closed。
 
-所有 GitHub-hosted repository identity、ref、commit、tree、diff、file、section、workflow、external GitHub reference acquisition 一律使用 GitHub connector / GitHub Connect。
-
-禁止以以下方式替代 GitHub repository retrieval：
-
-```text
-GitHub public HTML
-raw.githubusercontent.com
-generic Web search
-Python direct HTTP / requests / urllib
-curl / wget
-git clone
-memory / stale cache pretending to be current GitHub authority
-```
-
-若 connector unavailable／permission blocked，而 current task materially 依賴 GitHub current content：
-
-```text
-minimum exact read recovery
-→ still unavailable
-→ ACCESS BLOCKED
-```
-
-已由 canonical owner 專門治理的 local verified runtime reuse（例如 `RUNTIME_DRAW.md` 的 Randomizer fixed cache）不是新的 GitHub acquisition，可依其 owner規則 reuse。
-
-Connector retrieval capability ≠ connector→runtime byte-preserving handoff capability ≠ Python execution authority ≠ repository write authority ≠ Reading Record storage authority。
+Retrieval capability ≠ connector→runtime handoff ≠ Python execution ≠ repository write ≠ Reading Record storage authority。
 
 ## 隱私與公開安全
 
@@ -97,66 +73,34 @@ Connector retrieval capability ≠ connector→runtime byte-preserving handoff c
 
 ## AI bootstrap / bounded-read discipline
 
-Fresh session 依序：
+Fresh session：
 
 ```text
-resolve repository + current ref to exact commit when currentness matters
+resolve repo/ref when currentness matters
 → read AGENTS.md
-→ apply project-native shared-baseline activation gate
-→ use CHATGPT_LOAD_PACK.json at the same resolved revision for eligible ordinary/stochastic profiles
-→ read selected method / research canonical owner
-→ load only task-required exceptions
+→ apply CHAT_INIT.md activation / load-pack gate
+→ same-revision CHATGPT_LOAD_PACK.json when eligible
+→ selected method / research owner
+→ task-required exceptions only
 → STOP
 ```
 
-規則：
+最低 invariants：
 
-1. `CHATGPT_LOAD_PACK.json` 只可作 **derived hot-path cache**。它可以取代 eligible ordinary/stochastic profiles 中重複的 `CHAT_INIT.md` / `METHOD_ROUTING.md` / `RUNTIME_DRAW.md` / `CHATGPT_OUTPUT.md` hot-section retrieval，但不能取代 selected method owner、research owner、Reading Record owner或其他 task-specific canonical authority。Explicit Astrology / research 若不在 pack profile，直接 bounded-read canonical path，不為形式載入 pack。
-2. Load pack 必須從與本次 resolved Playbook revision 相同的 GitHub revision 取得；同 revision 下由 CI 的 generator check 保證 canonical excerpts 同步，不為形式再逐一重抓來源 sections。
-3. Pack 缺失、無法解析、profile 不涵蓋本題、或出現 ambiguity/conflict 時，直接 fallback 到 `CHAT_INIT.md` 與相關 canonical owner；不得猜。
-4. 使用者已指定 method，或已有實際 Draw / Cast Fact / Astrology Fact Bundle 時，不為形式重新 routing、重抽、重卦、重算或換方法。
-5. 未指定 ordinary method 才走 `METHOD_ROUTING.md` Fast Path；production Astrology 只接受 explicit request，不參與 ordinary auto-routing。
-6. explicit research intent 走 `RESEARCH_ROUTING.md` → named research owner；research pointer 不取得 production method authority。
-7. stochastic method 由 AI 代抽／代起才需要 `RUNTIME_DRAW.md` contract；language-model generation ≠ Runtime Draw / Cast。
-8. stochastic runtime fixed-cache probe FAIL／首次 acquisition 時，**必須先讀並實際走 `RUNTIME_DRAW.md` 的 `Acquisition` capability gates**。取得 canonical source 本身不等於 acquisition complete；GitHub Connect source acquisition、connector→Python byte-preserving handoff、Python materialization／execution 是三個獨立 capability。只有 handoff capability 有本 session 可觀察 evidence，且 Python capability 可用、GitHub Connect 可提供完整 byte-preserving payload 時，才必須實際嘗試 payload → decode/write → hash／marker verify → import／CLI execute。若兩端各自可用但產品沒有可證明完整 payload 無損傳遞到 Python 的機制，應明確記為 `MATERIALIZATION HANDOFF CAPABILITY GAP` 並 fail closed／走 owner fallback，不得假裝 bridge 已發生，也不得用模型轉錄 source 補洞。任何「已取得 canonical source／payload 已交給 Python」claim 都必須有本 session 可觀察 evidence。只有 Acquisition 明確允許的路徑已實際不可用、失敗或 handoff gate 不成立，才可依 owner fail closed／fallback；在此之前不得先轉 Web／manual fallback。
-9. 只有 material contract gap 才讀 `INPUT_CONTRACT.md`；需要拆題／牌位／時間窗設計才讀 `QUESTION_DESIGN.md`。
-10. 只有承接／補占／重占／Reality Update／completion／backtest 才讀 `READING_LIFECYCLE.md`；只有保存／跨聊天室／audit 才讀 `READING_RECORD.md`。
-11. `BEHAVIORAL_EVAL.md`、`references/`、`CASE_STUDIES/`、Historical Context 預設 Cold。
-12. exact owner／section 已唯一時直接讀 target，不增加 discovery ceremony。
-13. old chat／memory 不得覆蓋 current reality、原始 Input Contract、Draw/Cast Fact、Astrology Fact Bundle 或 current canonical rule。
+1. `CHATGPT_LOAD_PACK.json` 只是 derived cache；canonical owner 永遠優先。Pack miss／conflict／profile不涵蓋時 fallback `CHAT_INIT.md` + task owner。
+2. 已指定 method或已有 Draw/Cast/Astrology facts時，保留既有 identity/facts；不為形式 reroute、redraw、recast、recompute。
+3. AI 代抽／代起才進 `RUNTIME_DRAW.md`；cache/acquisition/materialization/handoff細節只由該 owner決定，language-model generation ≠ Runtime fact。
+4. material/question/lifecycle/record需求才載 `INPUT_CONTRACT.md`／`QUESTION_DESIGN.md`／`READING_LIFECYCLE.md`／`READING_RECORD.md`。
+5. `BEHAVIORAL_EVAL.md`、`references/`、`CASE_STUDIES/`預設 Cold；exact owner已知就直讀。
+6. old chat／memory 不得覆蓋 current reality、原始 Input Contract、method facts或 current canonical rule。
 
 ## 維護與 validation
 
-- 優先修改既有 canonical owner；只有形成獨立 retrieval intent 才新增文件。
-- 不在 README、AGENTS、CHAT_INIT、PLAYBOOK_INDEX、load pack 與 method owner 間人工複製完整 normative policy。
-- `CHATGPT_LOAD_PACK.json` 必須由 `tools/build_chatgpt_load_pack.py` 產生；禁止手動把它提升為 authority。
-- loader performance budget 由 `tools/chatgpt_load_benchmark.py` + `evals/chatgpt_load_budget.json` 驗證；benchmark 是 deterministic retrieval-cost proxy，不宣稱等同產品 wall-clock latency。
-- 新 method / research line discoverability 不等於 production adoption；不得繞過 method owner、runtime/fact gate、behavioral regression 與 explicit admission。
-- Runtime stochastic implementation 變更只在本 Repo `runtime/casting/**` 維護；legacy Randomizer repository 只保留 compatibility / rollback / historical provenance responsibility。
-- External GitHub reference 納入前，使用 GitHub connector 記錄 source/ref、license、adopted scope、not-adopted boundary。
-- 改變 `CHAT_INIT.md`、routing、Runtime、method owner、Reading Record、cross-validation、session continuity 或 loader semantics 時，依 `BEHAVIORAL_EVAL.md` / `evals/regression_matrix.json` 做最低充分 regression。
-- 改變 canonical owner 名稱／heading、routing、`PLAYBOOK_INDEX.json`、Behavioral Eval scenario ID、regression matrix 或 local Markdown link，至少執行：
-
-```text
-python tools/playbook_check.py .
-```
-
-- 修改 loader cache / profiles / hot-section heading 時至少執行：
-
-```text
-python tools/build_chatgpt_load_pack.py --check
-python tools/chatgpt_load_benchmark.py --check
-python -m unittest tests.test_chatgpt_load_pack tests.test_chatgpt_load_benchmark
-```
-
-- 修改 checker 本身時至少執行：
-
-```text
-python -m unittest tests.test_playbook_check
-python tools/playbook_check.py .
-```
-
-- repository CI 應執行 full unit-test discovery、root structural checker、load-pack sync check 與 loader budget check。
+- 優先修改既有 canonical owner；不在 README／AGENTS／CHAT_INIT／index／load pack／method owner間複製完整 normative policy。
+- Generated artifacts（含 `CHATGPT_LOAD_PACK.json`）只由 canonical generator產生；loader budget是 repository-payload proxy，不等同 wall-clock latency。
+- Runtime stochastic implementation只在 `runtime/casting/**` 維護；external references仍需 source/ref/license/adopted-scope boundary。
+- 變更 bootstrap／routing／Runtime／method owner／Reading lifecycle/record／output或 loader semantics時，依 `BEHAVIORAL_EVAL.md` + regression matrix選最低充分 regression。
+- Repository maintenance的 generic GitHub operation、Action Contract Closure與validation procedure由已啟動的 shared development baseline + canonical CI workflow擁有；project-specific local overrides仍優先。
 
 ## 外部參考
 

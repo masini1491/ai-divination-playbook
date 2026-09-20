@@ -164,6 +164,13 @@
     "privacy-inference-egress": [
       "TAROT-BEH-022",
       "TAROT-BEH-024"
+    ],
+    "output-core-refactor": [
+      "TAROT-BEH-004",
+      "TAROT-BEH-009",
+      "TAROT-BEH-010",
+      "TAROT-BEH-019",
+      "TAROT-BEH-020"
     ]
   },
   "supporting_product_scenarios": {

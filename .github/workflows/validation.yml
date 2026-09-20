@@ -35,6 +35,9 @@ jobs:
       - name: Verify loader behavioral regression selection
         run: python tools/behavioral_eval.py --matrix evals/regression_matrix.json --change-class loader-optimization
 
+      - name: Verify output-core regression selection
+        run: python tools/behavioral_eval.py --matrix evals/regression_matrix.json --change-class output-core-refactor
+
       - name: Verify shared development baseline regression selection
         run: python tools/behavioral_eval.py --matrix evals/regression_matrix.json --change-class shared-development-baseline
 
