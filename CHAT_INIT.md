@@ -20,33 +20,12 @@ minimum connector/read recovery
 
 ## Shared Development Playbook Activation Gate｜共通上位規則啟用條件
 
-本 Repo 已採用 `masini1491/ai-development-playbook`，declared baseline 為 `main`，Project AI mode 為 `ChatGPT-Only`。**Adoption ≠ unconditional activation。**
+Declared shared baseline：`masini1491/ai-development-playbook@main`；Project AI mode：`ChatGPT-Only`。
 
-Project-native path（不啟動 shared Playbook）：
+- ordinary reading／continuation／method interpretation／non-maintenance research → **stay project-native; do not probe or load shared Playbook**。
+- repository governance／AI workflow、source/tests/tooling/workflow mutation、GitHub operations 或 validation architecture → resolve declared `main` to exact revision，enter that revision's shared `CHAT_INIT.md`，只讀本 action最低充分 owner。
 
-- ordinary Tarot／Meihua／Liuyao reading；
-- explicit Astrology production reading；
-- 既有 reading continuation／Reality Update／backtest 的方法層工作；
-- 不涉及 repository maintenance／AI engineering governance 的 method interpretation 或 bounded research use。
-
-需要 activate shared Playbook：
-
-- repository governance／adoption／Project AI mode／AI workflow 判斷；
-- source／tests／tooling／workflow 的 maintenance mutation；
-- GitHub branch／PR／Actions／release／cleanup 等 repository operations；
-- validation architecture、completion-evidence 或其他跨專案 AI engineering governance。
-
-Activation 時：
-
-```text
-declared baseline main
-→ 以本 Repo 允許的 GitHub Connect-only read route resolve exact immutable revision
-→ 進入該 revision 的 shared CHAT_INIT.md
-→ 只載本 action 最低充分 canonical owner
-→ 回到本 Repo project-specific authority / technical truth 執行
-```
-
-Shared Playbook 的 generic repository-read recovery ladder **不會放寬**本 Repo 的 GitHub Connect-only local override；connector 無法建立 required GitHub authority時仍依下方 Repository Access Policy fail closed。普通占卜不得為形式 probe shared baseline、讀 shared README 或載入 shared governance。
+本 Repo 的 **GitHub Connect-only** repository-authority rule remains a stricter local override；shared generic fallback不得放寬。詳細 adoption / override record見 `references/ai-development-playbook.md`。
 
 ## Default Interaction Profile｜只給 Repo 也能直接使用
 
