@@ -1,0 +1,39 @@
+name: One-time rebuild Astrology layering metadata
+
+on:
+  push:
+    branches:
+      - refactor/astrology-rule-layering
+    paths:
+      - .github/workflows/rebuild-astrology-layering-metadata-once.yml
+
+permissions:
+  contents: write
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: refactor/astrology-rule-layering
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Rebuild derived loader artifacts
+        run: |
+          python tools/build_chatgpt_load_pack.py
+          python tools/build_loader_ranges.py
+      - name: Commit generated artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add CHATGPT_LOAD_PACK.json PLAYBOOK_INDEX.json
+          if git diff --cached --quiet; then
+            echo "No generated changes"
+            exit 0
+          fi
+          git commit -m "Regenerate Astrology layering loader metadata"
+          git push origin HEAD:refactor/astrology-rule-layering
