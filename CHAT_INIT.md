@@ -20,9 +20,9 @@ minimum connector/read recovery
 
 ## Shared Development Playbook Activation Gate｜共通上位規則啟用條件
 
-- ordinary reading／continuation／method interpretation／non-maintenance research → **stay project-native; do not load shared Playbook**。
-- repository maintenance／governance／AI workflow／GitHub operations／validation architecture → resolve `masini1491/ai-development-playbook@main` to exact revision，enter its `CHAT_INIT.md`，只讀最低充分 owner。
-- 本 Repo 的 **GitHub Connect-only** repository-authority rule remains a stricter local override。
+- ordinary reading / continuation / interpretation / non-maintenance research → **project-native; no shared load**。
+- repository maintenance / governance / AI workflow / GitHub operations / validation → resolve `masini1491/ai-development-playbook@main` exact revision，then shared `CHAT_INIT.md` minimum owner。
+- **GitHub Connect-only** remains the stricter local repository-authority override。
 
 ## Default Interaction Profile｜只給 Repo 也能直接使用
 
