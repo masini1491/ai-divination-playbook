@@ -45,11 +45,7 @@ Implementation topology 由 direct owners 維護，`AGENTS.md` 只保留最低 r
 
 ## Repository / Git identity
 
-- Repository：`masini1491/ai-divination-playbook`
-- GitHub account / commit author：`masini1491`
-- Commit email：`10146979+masini1491@users.noreply.github.com`
-
-若 local Git 尚未設定 author identity，只做 repository-local 設定；除非使用者明確要求，不修改 global Git identity。不得保存 token、password、API key 或其他 credential。
+`masini1491/ai-divination-playbook`；author：`masini1491`。其餘 Git identity 只於 maintenance 依 shared baseline處理。
 
 ## GitHub repository retrieval
 
@@ -94,6 +90,8 @@ Connector retrieval capability ≠ connector→runtime byte-preserving handoff c
 - 未授權第三方內容的大段複製。
 
 `SESSION_HANDOFF.md` 只保存模板；真實 Reading Record 永遠不得寫入本公開 Playbook。
+
+**Private inference egress：** private Context 的 disclosure permission 不隨 model／provider／router 或 Task 自動轉移；destination materially 改變時重新核准 disclosure scope，否則 minimize／redact 或 STOP。
 
 正式說明與規則預設繁體中文；technical identifiers 保留原文。
 

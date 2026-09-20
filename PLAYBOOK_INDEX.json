@@ -94,6 +94,13 @@
       "kind": "contract"
     },
     {
+      "id": "privacy.inference-egress",
+      "owner": "AGENTS.md",
+      "section": "隱私與公開安全",
+      "kind": "contract",
+      "scope": "project-native-cross-cutting"
+    },
+    {
       "id": "runtime.draw",
       "owner": "RUNTIME_DRAW.md",
       "kind": "contract",
