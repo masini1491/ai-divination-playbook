@@ -95,7 +95,7 @@ GitHub Connect resolve requested/current ref → exact commit
 → STOP
 ```
 
-目前 pack 主要優化 ordinary Tarot / Meihua / Liuyao、explicit stochastic method 與 stochastic continuation。Explicit Astrology 與 explicit research 若載入整包反而增加無關 payload，可直接 bypass pack，從 bounded `CHAT_INIT.md` 進其 canonical owner。
+目前 pack 主要優化 ordinary Tarot / Meihua / Liuyao、explicit stochastic method、explicit Astrology production 與 stochastic continuation。Explicit Astrology production 可用 pack 的 bootstrap + output-core 後直接讀 `ASTROLOGY.md`；explicit research 仍 bypass pack，從 bounded `CHAT_INIT.md` 進 named research owner。
 
 Load-pack 使用規則：
 
@@ -103,7 +103,7 @@ Load-pack 使用規則：
 2. selected method owner / named research owner 在實際 interpretation 或 research judgment 前仍必須讀；pack 不取代它們。
 3. pack 只在與本次 resolved Playbook revision 相同的 revision 使用；CI 以 `tools/build_chatgpt_load_pack.py --check` 保證 excerpts 同步。
 4. pack 缺失、格式不合法、profile 不涵蓋本題、或內容與已讀 canonical owner衝突 → 直接 fallback canonical reads；不得猜。
-5. 同 revision、pack valid 時，不為形式重新抓 pack 已涵蓋的 hot sections；只有 task 超出 fragment coverage 才讀完整 owner。Explicit Astrology / research 等未列入 pack profiles 的 intent 不為形式載入 pack。
+5. 同 revision、pack valid 時，不為形式重新抓 pack 已涵蓋的 hot sections；只有 task 超出 fragment coverage 才讀完整 owner。Explicit Astrology production 依 pack profile處理；explicit research 等未列入 pack profiles 的 intent 不為形式載入 pack。
 6. `PLAYBOOK_INDEX.json` 可做 machine owner discovery；已知 owner 時不為形式再讀 index。
 7. Load pack 不改變 GitHub-only retrieval、runtime execution、write、Reading Record storage 或 privacy authority。
 
