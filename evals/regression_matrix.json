@@ -24,7 +24,8 @@
     "TAROT-BEH-020",
     "TAROT-BEH-021",
     "TAROT-BEH-022",
-    "TAROT-BEH-023"
+    "TAROT-BEH-023",
+    "TAROT-BEH-024"
   ],
   "change_classes": {
     "bootstrap-access": [
@@ -157,7 +158,12 @@
       "TAROT-BEH-005",
       "TAROT-BEH-013",
       "TAROT-BEH-022",
-      "TAROT-BEH-023"
+      "TAROT-BEH-023",
+      "TAROT-BEH-024"
+    ],
+    "privacy-inference-egress": [
+      "TAROT-BEH-022",
+      "TAROT-BEH-024"
     ]
   },
   "supporting_product_scenarios": {
