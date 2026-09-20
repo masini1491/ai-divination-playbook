@@ -1,9 +1,10 @@
 # AGENTS.md
 
-## Common AI Development Playbook｜共通上位規則
+## Shared AI baseline
 
-`masini1491/ai-development-playbook@main`；Project AI mode：`ChatGPT-Only`。
-Activation / overrides → `CHAT_INIT.md`；record → `references/ai-development-playbook.md`。
+Shared baseline: `masini1491/ai-development-playbook@main`
+Project AI mode: `ChatGPT-Only`
+Gate / overrides: `CHAT_INIT.md`; record: `references/ai-development-playbook.md`.
 
 ## 儲存庫用途與權威
 
