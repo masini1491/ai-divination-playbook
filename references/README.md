@@ -34,9 +34,12 @@
 - [`metaphysics-synthesis-skill.md`](metaphysics-synthesis-skill.md) — 梅花輸入檢查、證據階層、外應與應期約束。
 - [`plum-yi.md`](plum-yi.md) — 簡化取卦 App 的工具化方向。
 
-### AI／ChatGPT 方法治理
+### 共通 AI 開發治理 baseline
 
-- [`ai-development-playbook.md`](ai-development-playbook.md) — canonical policy owner、Progressive Reading、scope control、Completion Evidence Guard、證據層級、最低充分輸出與 One Question = One Copy Surface。
+- [`ai-development-playbook.md`](ai-development-playbook.md) — declared shared engineering baseline 的 adoption / activation / local-override record；不屬於 ordinary divination reference loading。
+
+### AI／ChatGPT 方法參考
+
 - [`yifortune.md`](yifortune.md) — 單一入口、progressive disclosure、Agent 主動 routing 與最小必要提問。
 - [`t-ai-skills.md`](t-ai-skills.md) — truth layer／interpretation layer 分離、統一 machine envelope 與 unavailable/graceful degradation。
 - [`metaphysics-synthesis-skill.md`](metaphysics-synthesis-skill.md) — 多方法 router、輸入完整度與系統間邊界。
@@ -54,4 +57,4 @@
 - **REFERENCE-ONLY｜僅供參考**：保留參考，不直接成為規則。
 - **REJECTED｜不採用**：明確不採用，並記錄原因。
 
-若來源日後更新，不應自動覆寫本手冊；先比較差異，再決定是否修改主規則。
+上述 ADOPTED／ADAPTED／REFERENCE-ONLY／REJECTED 標記適用一般 external references。Declared `ai-development-playbook` shared baseline 另依其 adoption record與 project-native activation gate處理；project-specific governance仍可明確縮窄 shared default。

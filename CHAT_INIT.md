@@ -18,6 +18,12 @@ minimum connector/read recovery
 
 **只有成功的 GitHub connector retrieval 才能建立 current GitHub repository-content authority。** Public page／preview 即使可見，也不能先替代 connector 建立 authority，再事後套用本 Repo 規則。
 
+## Shared Development Playbook Activation Gate｜共通上位規則啟用條件
+
+- ordinary use → **project-native; no extra load**。
+- maintenance / governance / GitHub / validation → resolve baseline exact；shared `CHAT_INIT.md` minimum owner。
+- **GitHub Connect-only** override。
+
 ## Default Interaction Profile｜只給 Repo 也能直接使用
 
 使用者可以直接以自然語言提問；Agent 自行正規化最低必要 contract，不把 schema 當表單。
@@ -75,7 +81,7 @@ method + minimum question contract fixed
 
 `CHATGPT_LOAD_PACK.json` 是由 canonical owner sections deterministic 產生的 **derived retrieval cache**，用來減少 GitHub connector round trips；不是 policy authority。
 
-Fresh session 的建議 hot path：
+Fresh session 的 ordinary-reading hot path（shared development baseline 不啟動）：
 
 ```text
 GitHub Connect resolve requested/current ref → exact commit

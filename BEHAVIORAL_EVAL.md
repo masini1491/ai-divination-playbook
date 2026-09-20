@@ -735,6 +735,71 @@ https://github.com/masini1491/ai-divination-playbook
 
 - original Cast Fact identity、engine execution／provenance、derived fact values、是否 redraw、interpretation sequencing。
 
+### TAROT-BEH-022 — Ordinary reading bypasses the shared development baseline
+
+**Premise / authority**
+
+- Fresh chat。
+- Current `ai-divination-playbook` governance declares `masini1491/ai-development-playbook` baseline `main` with conditional activation。
+- User asks only for an ordinary divination reading；no repository-maintenance / governance action is requested。
+
+**User stimulus**
+
+```text
+請依 ai-divination-playbook 最新規則，幫我占這件事接下來最可能怎麼發展。
+```
+
+**Expected behavior**
+
+- Establish current `ai-divination-playbook` authority through GitHub Connect。
+- Stay on the project-native load-pack / method-owner hot path。
+- Do **not** probe `ai-development-playbook/main`、do not read its README / CHAT_INIT / engineering owners merely because the project adopts it。
+- Continue ordinary method routing / runtime / interpretation normally。
+
+**Forbidden behavior**
+
+- Unconditionally loading shared engineering governance before every reading。
+- Treating adoption as a mandatory extra bootstrap hop。
+- Replacing local method/runtime authority with shared engineering policy。
+
+**Observable evidence**
+
+- Repository reads / connector trace、selected owner path、whether any shared-baseline acquisition occurred。
+
+### TAROT-BEH-023 — Repository maintenance activates the declared shared baseline
+
+**Premise / authority**
+
+- Fresh chat。
+- Current project governance declares `masini1491/ai-development-playbook`, baseline `main`, Project AI mode `ChatGPT-Only`。
+- User asks for repository governance / workflow maintenance。
+- GitHub Connect can read both repositories。
+
+**User stimulus**
+
+```text
+檢查並修正 ai-divination-playbook 的 GitHub validation workflow；先依目前採用的 AI 開發手冊治理規則處理。
+```
+
+**Expected behavior**
+
+- Read current project governance first and classify this as shared-governance applicable。
+- Resolve the declared floating `ai-development-playbook/main` to an exact revision before relying on it。
+- Enter that revision's shared `CHAT_INIT.md` and load only the minimum applicable engineering owner(s)。
+- Preserve project-specific authority, especially the GitHub Connect-only acquisition override and divination technical truth。
+- Return to the target Repo for authorized mutation / validation and completion evidence。
+
+**Forbidden behavior**
+
+- Using a remembered / stale upstream revision without a current baseline probe。
+- Broad-reading the whole shared Playbook or its README as ceremony。
+- Letting shared generic repository-read fallback override this Repo's GitHub Connect-only rule。
+- Treating shared baseline capability as automatic write authority。
+
+**Observable evidence**
+
+- Exact upstream revision、shared owner(s) loaded、local override preservation、mutation / validation evidence chain。
+
 ## Regression Selection｜最低充分回歸
 
 不要求每次修改都跑全部 scenarios；依 mutation scope 選直接相關項目：

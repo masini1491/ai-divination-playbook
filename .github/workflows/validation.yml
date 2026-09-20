@@ -35,6 +35,9 @@ jobs:
       - name: Verify loader behavioral regression selection
         run: python tools/behavioral_eval.py --matrix evals/regression_matrix.json --change-class loader-optimization
 
+      - name: Verify shared development baseline regression selection
+        run: python tools/behavioral_eval.py --matrix evals/regression_matrix.json --change-class shared-development-baseline
+
       - name: Run loader deterministic contract regression
         run: python tools/loader_contract_regression.py
 

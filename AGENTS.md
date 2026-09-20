@@ -1,9 +1,7 @@
 # AGENTS.md
-
+## Baseline
+`masini1491/ai-development-playbook@main`
 Project AI mode: ChatGPT-Only
-
-AI maintenance boundary：ChatGPT 是主要 AI maintainer；mutation 仍須符合 writable target、task / governance、permission / capability。Inference destination 改變時，private Context 不自動沿用 disclosure permission。細節見 `references/ai-development-playbook.md`。
-
 ## 儲存庫用途與權威
 
 本儲存庫是可重用、公開的 AI 占卜方法與治理 Playbook，涵蓋 method routing、Input Contract／Question Design、Tarot／Meihua／Liuyao／Astrology、Runtime Draw / Cast、deterministic fact providers、Reading lifecycle／record、cross-validation 與 ChatGPT output governance。
@@ -106,6 +104,7 @@ Fresh session 依序：
 ```text
 resolve repository + current ref to exact commit when currentness matters
 → read AGENTS.md
+→ apply project-native shared-baseline activation gate
 → use CHATGPT_LOAD_PACK.json at the same resolved revision for eligible ordinary/stochastic profiles
 → read selected method / research canonical owner
 → load only task-required exceptions
@@ -163,4 +162,4 @@ python tools/playbook_check.py .
 
 ## 外部參考
 
-可引用公開 Tarot／Meihua／Liuyao／Astrology／Qimen／AI methodology repository；所有 GitHub source acquisition 仍只走 GitHub connector。外部規則不會自動成為本 Repo authority。
+Declared `masini1491/ai-development-playbook` common baseline 依上方 adoption／activation contract 處理。其他公開 Tarot／Meihua／Liuyao／Astrology／Qimen／AI methodology repository 仍只是 external references；所有 GitHub source acquisition 只走 GitHub connector，其他外部規則不會自動成為本 Repo authority。

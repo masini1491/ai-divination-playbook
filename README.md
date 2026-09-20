@@ -31,28 +31,27 @@ Astrology（explicit-request only）
 
 ## 與 AI 開發手冊的關係
 
-本 Repository 的**工程維護與 AI-assisted development 治理設計**參考並經調整吸收 [`masini1491/ai-development-playbook`](https://github.com/masini1491/ai-development-playbook) 的通用方法，例如 repository authority、bounded retrieval、scope control、evidence / validation boundary、AI actor topology 與 mutation discipline。這是一個經本 Repo 明確採納後才生效的 reference / adapted source，**不代表本 Repo 自動追隨該手冊最新 `main`，也不讓外部 Playbook 覆蓋本 Repo current canonical governance**。
-
-目前本專案在 [`AGENTS.md`](AGENTS.md) 明確宣告：
+本 Repository 正式採用 [`masini1491/ai-development-playbook`](https://github.com/masini1491/ai-development-playbook) 作為 **common AI engineering baseline**：
 
 ```text
+Playbook baseline: main
 Project AI mode: ChatGPT-Only
 ```
 
-這表示 ChatGPT 是本 Repository 的主要 AI maintainer；是否能執行某項修改、測試、runtime 或 Git 操作，仍必須同時符合本 Repo current governance、當次 Task / Stage、permission 與實際 capability，不能僅因工具可用就自行擴張權限。
-
-兩個 Playbook 的責任是分開的：
+這是規則分層，不是把兩個 Repository 合併成同一份 authority：
 
 ```text
 ai-development-playbook
-→ AI-assisted development / repository maintenance governance
+→ 跨專案共通 AI / repository engineering governance
 
 ai-divination-playbook
-→ divination method routing / stochastic & deterministic facts /
-   interpretation / reading lifecycle / record governance
+→ project-native bootstrap + divination methods / runtime /
+   deterministic facts / interpretation / reading lifecycle
 ```
 
-因此，AI 開發手冊**不是** Tarot、Meihua、Liuyao 或 Astrology 的方法權威，也不會覆蓋本 Repo 的 method owners、runtime contracts 或 reading governance。詳細的採用範圍與未採用邊界見 [`references/ai-development-playbook.md`](references/ai-development-playbook.md)。
+**Adoption ≠ unconditional activation。** 普通 Tarot／Meihua／Liuyao／Astrology 使用、reading continuation 與方法解讀維持本 Repo 的短 hot path，不為形式載入 shared Playbook；只有 repository maintenance、governance／AI workflow、GitHub operations、source/tests/tooling/workflow mutation 或 validation architecture 等工程工作才解析 declared baseline、進入其 `CHAT_INIT.md` 並載入最低充分 owner。
+
+本 Repo 的 project-specific governance 與 technical source of truth 仍優先；尤其 **GitHub Connect-only** repository authority、公開 Repo privacy、Reading Record storage boundary 與各 divination method/runtime owner 都是 local rules／overrides，不因 shared baseline 的 generic default 而放寬。採用與 override 紀錄見 [`references/ai-development-playbook.md`](references/ai-development-playbook.md)。
 
 ## 快速安裝／第一次使用
 
