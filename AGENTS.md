@@ -1,6 +1,5 @@
 # AGENTS.md
-
-## AI baseline
+## Baseline
 `masini1491/ai-development-playbook@main`
 Project AI mode: ChatGPT-Only
 ## 儲存庫用途與權威
