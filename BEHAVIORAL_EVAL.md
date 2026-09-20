@@ -846,6 +846,7 @@ https://github.com/masini1491/ai-divination-playbook
 - `MEIHUA.md`／Meihua user-visible presentation → TAROT-BEH-002、003、010、020；deterministic materialization / downstream boundary → TAROT-BEH-004、010、020、021；修改卦盤骨架或 missing-fact 邊界時 020 mandatory，修改 engine/materialization 時 021 mandatory。
 - `READING_RECORD.md` → TAROT-BEH-008、009、010、011，必要時 004。
 - project-native privacy / private-context inference-egress → TAROT-BEH-022、024；shared-baseline boundary 同時變更時另加 023。
+- `CHATGPT_OUTPUT.md` / output-core / Pre-Send Gate → TAROT-BEH-004、009、010、019、020；若同時修改 question-delivery copy surface，另加 001／002。
 - Cross-validation／evidence lineage → TAROT-BEH-009、014，必要時 002。
 - `SESSION_HANDOFF.md` → TAROT-BEH-015，必要時 013。
 - `PLAYBOOK_INDEX.json`／machine routing → 先驗證 owner pointer，再依受影響 owner 選 scenario；Astrology capability 需 016、018。
