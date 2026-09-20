@@ -124,11 +124,12 @@ load pack
 
 明確指定 production Astrology：
 
-直接讀 `ASTROLOGY.md`，不經 ordinary auto-routing；raw birth data 不授權模型自行手算。
+先讀 root `ASTROLOGY.md`，再依 reading_mode 讀 `ASTROLOGY_NATAL.md` 或 `ASTROLOGY_TRANSIT.md`；不經 ordinary auto-routing，raw birth data 不授權模型自行手算。
 
 ```text
 bounded CHAT_INIT bootstrap
 → ASTROLOGY.md
+→ selected Astrology mode owner
 → Astrology deterministic Fact Gate
 → only required provider / schema / evidence owner
 → output
