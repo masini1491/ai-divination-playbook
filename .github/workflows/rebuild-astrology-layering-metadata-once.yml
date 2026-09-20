@@ -37,3 +37,5 @@ jobs:
           fi
           git commit -m "Regenerate Astrology layering loader metadata"
           git push origin HEAD:refactor/astrology-rule-layering
+
+# retry after layered range identity update
