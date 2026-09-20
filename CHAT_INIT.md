@@ -18,6 +18,36 @@ minimum connector/read recovery
 
 **只有成功的 GitHub connector retrieval 才能建立 current GitHub repository-content authority。** Public page／preview 即使可見，也不能先替代 connector 建立 authority，再事後套用本 Repo 規則。
 
+## Shared Development Playbook Activation Gate｜共通上位規則啟用條件
+
+本 Repo 已採用 `masini1491/ai-development-playbook`，declared baseline 為 `main`，Project AI mode 為 `ChatGPT-Only`。**Adoption ≠ unconditional activation。**
+
+Project-native path（不啟動 shared Playbook）：
+
+- ordinary Tarot／Meihua／Liuyao reading；
+- explicit Astrology production reading；
+- 既有 reading continuation／Reality Update／backtest 的方法層工作；
+- 不涉及 repository maintenance／AI engineering governance 的 method interpretation 或 bounded research use。
+
+需要 activate shared Playbook：
+
+- repository governance／adoption／Project AI mode／AI workflow 判斷；
+- source／tests／tooling／workflow 的 maintenance mutation；
+- GitHub branch／PR／Actions／release／cleanup 等 repository operations；
+- validation architecture、completion-evidence 或其他跨專案 AI engineering governance。
+
+Activation 時：
+
+```text
+declared baseline main
+→ 以本 Repo 允許的 GitHub Connect-only read route resolve exact immutable revision
+→ 進入該 revision 的 shared CHAT_INIT.md
+→ 只載本 action 最低充分 canonical owner
+→ 回到本 Repo project-specific authority / technical truth 執行
+```
+
+Shared Playbook 的 generic repository-read recovery ladder **不會放寬**本 Repo 的 GitHub Connect-only local override；connector 無法建立 required GitHub authority時仍依下方 Repository Access Policy fail closed。普通占卜不得為形式 probe shared baseline、讀 shared README 或載入 shared governance。
+
 ## Default Interaction Profile｜只給 Repo 也能直接使用
 
 使用者可以直接以自然語言提問；Agent 自行正規化最低必要 contract，不把 schema 當表單。
@@ -75,7 +105,7 @@ method + minimum question contract fixed
 
 `CHATGPT_LOAD_PACK.json` 是由 canonical owner sections deterministic 產生的 **derived retrieval cache**，用來減少 GitHub connector round trips；不是 policy authority。
 
-Fresh session 的建議 hot path：
+Fresh session 的 ordinary-reading hot path（shared development baseline 不啟動）：
 
 ```text
 GitHub Connect resolve requested/current ref → exact commit
