@@ -39,6 +39,14 @@ class ChatGPTLoadPackTests(unittest.TestCase):
             pack["profiles"]["ordinary_unspecified"]["required_followup"],
         )
 
+    def test_explicit_astrology_profile_reuses_only_nonstochastic_shared_fragments(self):
+        pack = self.builder.build_pack(ROOT)
+        profile = pack["profiles"]["explicit_astrology"]
+        self.assertEqual(profile["fragments"], ["bootstrap", "output_core"])
+        self.assertIn("ASTROLOGY.md", profile["required_followup"])
+        self.assertNotIn("runtime_fast_path", profile["fragments"])
+        self.assertNotIn("ordinary_routing", profile["fragments"])
+
     def test_pack_contains_verbatim_sections_not_generated_policy(self):
         pack = self.builder.build_pack(ROOT)
         for fragment in pack["fragments"].values():
