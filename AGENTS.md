@@ -91,7 +91,7 @@ Connector retrieval capability ≠ connector→runtime byte-preserving handoff c
 
 `SESSION_HANDOFF.md` 只保存模板；真實 Reading Record 永遠不得寫入本公開 Playbook。
 
-**Private-context inference egress：** birth／relationship／health／sexual／palm／private-company 等私人 Context 的 disclosure permission 不會因 model／provider／router 可用、同一 Task 或 shared baseline 未啟動而自動轉移；inference destination materially 改變時，先建立 project-approved destination／disclosure scope，否則縮小／去識別化 Context 或 STOP。
+**Private inference egress：** private Context 的 disclosure permission 不隨 model／provider／router 或 Task 自動轉移；destination materially 改變時重新核准 disclosure scope，否則 minimize／redact 或 STOP。
 
 正式說明與規則預設繁體中文；technical identifiers 保留原文。
 
