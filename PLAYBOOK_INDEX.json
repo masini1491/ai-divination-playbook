@@ -227,8 +227,8 @@
       "bootstrap.default_interaction": {
         "owner": "CHAT_INIT.md",
         "heading": "## Default Interaction Profile｜只給 Repo 也能直接使用",
-        "start_line": 21,
-        "end_line": 73,
+        "start_line": 51,
+        "end_line": 103,
         "next_heading": "## ChatGPT Load Pack Fast Path｜one retrieval cache"
       },
       "explicit_astrology.routing_scope": {
