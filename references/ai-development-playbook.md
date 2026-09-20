@@ -27,8 +27,9 @@ Declared baseline 是 floating `main`。只有 Shared Development Playbook Activ
 
 1. **GitHub Connect-only repository authority**：本 Repo 對 GitHub-hosted repository identity／content／diff／workflow／reference acquisition 只接受 GitHub connector / GitHub Connect。Shared Playbook 的 generic public-read recovery ladder不會放寬這個 local restriction。
 2. **Public-repository privacy boundary**：真實 Reading Record、可識別 birth / relationship / health / sexual / private-company context 不得寫入本公開 Repo。
-3. **Divination method authority**：Tarot／Meihua／Liuyao／Astrology、stochastic runtime、deterministic engines、Question / Input Contract、Reading lifecycle與 cross-validation 仍由本 Repo canonical owners負責。
-4. **Project-native hot path**：ordinary reading／continuation／method interpretation 不啟動 shared Playbook；repository maintenance／AI engineering governance 才 activate。
+3. **Private-context inference-egress boundary**：ordinary reading 不啟動 shared Playbook，因此私人 reading Context 的 disclosure permission 必須由 project-native governance 持續有效；model／provider／router 或 destination materially 改變時不得自動沿用既有 permission。
+4. **Divination method authority**：Tarot／Meihua／Liuyao／Astrology、stochastic runtime、deterministic engines、Question / Input Contract、Reading lifecycle與 cross-validation 仍由本 Repo canonical owners負責。
+5. **Project-native hot path**：ordinary reading／continuation／method interpretation 不啟動 shared Playbook；repository maintenance／AI engineering governance 才 activate。
 
 ## Shared engineering rules｜不在本 Repo 複製第二份
 
@@ -39,7 +40,7 @@ Declared baseline 是 floating `main`。只有 Shared Development Playbook Activ
 - GitHub operation response-shape、mutation/read-back、workflow-trigger evidence、terminal residue cleanup；
 - repository-level absence-claim coverage；
 - AI Context / hot-cold / retrieval-cost governance；
-- shared actor / host-adapter / inference-egress engineering semantics。
+- shared actor / host-adapter engineering semantics；generic inference-egress mechanics仍由 upstream說明，但本 Repo的 private-context disclosure boundary由 local governance直接擁有。
 
 若本 Repo需要更嚴限制或 project-specific mapping，才在 local governance明確寫 override；未寫 override的共通 engineering rule在 shared activation scope內依 declared baseline處理。
 
