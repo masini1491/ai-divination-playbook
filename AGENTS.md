@@ -2,14 +2,12 @@
 
 ## Common AI Development Playbook｜共通上位規則
 
-This project uses `masini1491/ai-development-playbook` as the common AI engineering baseline.
-
 ```text
-Playbook baseline: main
+Common baseline: masini1491/ai-development-playbook@main
 Project AI mode: ChatGPT-Only
 ```
 
-Activation 依 `CHAT_INIT.md`：ordinary divination/use stays project-native；repository maintenance / governance / AI engineering activates the declared baseline. Project-specific authority remains higher；**GitHub Connect-only** is a stricter local override. 詳細 adoption / override record 見 `references/ai-development-playbook.md`。
+Activation / local overrides → `CHAT_INIT.md`；adoption record → `references/ai-development-playbook.md`。
 
 ## 儲存庫用途與權威
 
