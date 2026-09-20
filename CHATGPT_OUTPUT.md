@@ -263,36 +263,21 @@ ChatGPT 不應在每次解讀結束後自動創造一串下一題。
 
 ## 13. Pre-Send Gate｜送出前檢查實際最終草稿
 
-讀過本檔不代表最後輸出一定符合規則。ChatGPT 在送出實質占卜題目或解讀前，應對**實際準備送出的 final draft** 做一次最低充分自檢；不合格時先修正草稿，再送出。
+送出實質題目或解讀前，對**實際 final draft**做最後檢查；任一 materially relevant check失敗就先修正再送出。
 
-### A. 出題草稿檢查
+### Question delivery
 
-若本次輸出包含讓使用者實際抽牌／起卦的題目，至少檢查：
+- 題目數量與 copy blocks一致；
+- 已知名稱直接展開，不留不必要 placeholder／手動替換；
+- 每個 block可單獨使用，題幹、必要前提、牌位／問題位置與宣稱數量完整；
+- scope／horizon／exclusions仍符合原 contract。
 
-1. **Question count check**：使用者要求幾個獨立題目，final draft 是否有相同數量的獨立 copy blocks。
-2. **Name expansion check**：使用者已提供的人物／對象名稱，是否每題都已直接代入；不得留下不必要 placeholder。
-3. **No-manual-edit check**：是否出現「其餘同上」「自行替換名字」「請把 A 換成 B」等需要使用者手動改題的交付。
-4. **Completeness check**：每個 block 是否含完整題幹、必要前提與全部牌位／問題位置。
-5. **Position-count check**：聲稱抽 N 張時，是否真的有 N 個明確且唯一功能的牌位；若有總裁決，也要計入。
-6. **Standalone-copy check**：每題單獨複製後是否能直接使用，不需要把 block 外的必要句子另行拼接。
-7. **Scope check**：題目是否仍守住原本要判斷的功能、時間範圍與 `exclusions`。
+### Interpretation
 
-### B. 解讀草稿檢查
+- 先直接回答原題，且不越過 exclusions；
+- fact／Structured Fact／symbolic inference語氣層級正確；
+- 同題維持單一主結論；證據不足可 `UNRESOLVED`；
+- 額外心理／時間／建議／補占層只有在 eligible 時出現；
+- completion／hindsight／engine-derived fact只有在其 owner contract成立時使用。
 
-若本次輸出包含解牌／解卦／交叉驗證／回測，至少檢查：
-
-1. **Direct-answer check**：是否真的回答了原題，而不是只講牌義／卦義／術語。
-2. **Scope check**：是否越過 `exclusions` 或加入沒有被問的判斷。
-3. **Evidence-language check**：象徵推論是否仍使用符合證據層級的語氣，沒有升格成已確認事實。
-4. **Conclusion-consistency check**：同一題前後是否維持同一主結論；若排序改變，必須有明確新證據與說明。
-5. **Unresolved check**：證據不足時是否允許 `UNRESOLVED`／「無法可靠區分」，而不是為了完成回答硬選。
-6. **Eligible-layer check**：心理、時間、建議、補占等是否真的由題型／使用者要求啟用。
-7. **Completion check**：若宣告事件完成／命中，是否真正符合原 `completion_rule`。
-8. **Hindsight check**：回測時是否把事後重讀與當時原始預測清楚分開。
-9. **Structured-fact check**：若使用 Liuyao 等需要 engine 的方法，實際使用的 Structured Method Fact 是否真的取得且 provenance 邊界沒有被模型補寫。
-
-### Fail-closed repair
-
-若上述任一會實質影響使用者操作、題目契約或解讀正確性的檢查不通過，先修正 final draft 並重新檢查；不要把「我知道規則」當成輸出已合格的證據。
-
-本 gate 是最後一哩的輸出 compliance check，不會讓象徵推論取得更高事實或科學權威；內容本身仍受原題、Draw / Cast Fact、Structured Method Fact、現實事實與方法規則約束。
+本 gate只驗 final-draft compliance，不創造新的事實、authority或方法結論；細節仍由本檔前述 sections與 task-specific owner擁有。
