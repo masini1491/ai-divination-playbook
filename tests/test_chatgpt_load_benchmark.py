@@ -47,6 +47,7 @@ class ChatGPTLoadBenchmarkTests(unittest.TestCase):
             "explicit_meihua",
             "explicit_liuyao",
             "explicit_astrology",
+            "explicit_astrology_transit",
             "explicit_research_astrology",
         }
         self.assertTrue(required.issubset(report["profiles"]))

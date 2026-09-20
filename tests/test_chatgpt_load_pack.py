@@ -44,6 +44,7 @@ class ChatGPTLoadPackTests(unittest.TestCase):
         profile = pack["profiles"]["explicit_astrology"]
         self.assertEqual(profile["fragments"], ["bootstrap", "output_core"])
         self.assertIn("ASTROLOGY.md", profile["required_followup"])
+        self.assertIn("selected Astrology mode owner", profile["required_followup"])
         self.assertNotIn("runtime_fast_path", profile["fragments"])
         self.assertNotIn("ordinary_routing", profile["fragments"])
 

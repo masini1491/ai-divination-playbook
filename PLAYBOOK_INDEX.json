@@ -167,7 +167,23 @@
       "place_resolver_admission_manifest": "ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json",
       "natal_provider_admission_manifest": "ASTROLOGY_PROVIDER_ADMISSION_V1.json",
       "transit_provider_admission_manifest": "ASTROLOGY_TRANSIT_PROVIDER_ADMISSION_V1.json",
-      "admission_manifest": "ASTROLOGY_PRODUCTION_ADMISSION_V1.json"
+      "admission_manifest": "ASTROLOGY_PRODUCTION_ADMISSION_V1.json",
+      "natal_owner": "ASTROLOGY_NATAL.md",
+      "transit_owner": "ASTROLOGY_TRANSIT.md"
+    },
+    {
+      "id": "method.astrology.natal",
+      "owner": "ASTROLOGY_NATAL.md",
+      "parent": "method.astrology",
+      "kind": "contract",
+      "reading_mode": "natal"
+    },
+    {
+      "id": "method.astrology.transit",
+      "owner": "ASTROLOGY_TRANSIT.md",
+      "parent": "method.astrology",
+      "kind": "contract",
+      "reading_mode": "transit"
     },
     {
       "id": "cross-validation.reconciliation",
@@ -235,14 +251,14 @@
         "owner": "CHAT_INIT.md",
         "heading": "## Default Interaction Profile｜只給 Repo 也能直接使用",
         "start_line": 27,
-        "end_line": 79,
+        "end_line": 81,
         "next_heading": "## ChatGPT Load Pack Fast Path｜one retrieval cache"
       },
       "explicit_astrology.routing_scope": {
         "owner": "ASTROLOGY.md",
-        "heading": "## 1. Routing Scope",
-        "start_line": 44,
-        "end_line": 65,
+        "heading": "## 1. Activation / Routing",
+        "start_line": 7,
+        "end_line": 30,
         "next_heading": "## 2. Deterministic Fact Boundary"
       },
       "explicit_research.intent_gate": {
@@ -258,6 +274,20 @@
         "start_line": 42,
         "end_line": 69,
         "next_heading": "## 2. Research decomposition"
+      },
+      "explicit_astrology.natal_entry": {
+        "owner": "ASTROLOGY_NATAL.md",
+        "heading": "## 1. Entry / Inputs",
+        "start_line": 7,
+        "end_line": 24,
+        "next_heading": "## 2. Natal Interpretation Scope"
+      },
+      "explicit_astrology.transit_entry": {
+        "owner": "ASTROLOGY_TRANSIT.md",
+        "heading": "## 1. Entry / Baseline",
+        "start_line": 7,
+        "end_line": 20,
+        "next_heading": "## 2. Transit Interpretation Scope"
       }
     },
     "profiles": {

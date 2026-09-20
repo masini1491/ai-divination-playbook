@@ -110,17 +110,26 @@ class AstrologyProductionContractTests(unittest.TestCase):
         self.assertEqual("tools/astrology_provider.py", row["natal_provider"])
         self.assertEqual("tools/astrology_transit_provider.py", row["transit_provider"])
         self.assertEqual("tools/astrology_runtime.py", row["runtime"])
+        self.assertEqual("ASTROLOGY_NATAL.md", row["natal_owner"])
+        self.assertEqual("ASTROLOGY_TRANSIT.md", row["transit_owner"])
+        self.assertEqual("ASTROLOGY_NATAL.md", rows["method.astrology.natal"]["owner"])
+        self.assertEqual("ASTROLOGY_TRANSIT.md", rows["method.astrology.transit"]["owner"])
 
-    def test_astrology_method_owner_forbids_model_calculation_and_names_all_providers(self):
+    def test_astrology_root_owner_keeps_common_boundary_and_routes_mode_owners(self):
         text = (ROOT / "ASTROLOGY.md").read_text(encoding="utf-8")
         self.assertIn("model freehand calculation", text)
-        self.assertIn("tools/astrology_place_resolver.py", text)
-        self.assertIn("tools/astrology_provider.py", text)
-        self.assertIn("tools/astrology_transit_provider.py", text)
-        self.assertIn("astronomy-engine-natal-v1", text)
-        self.assertIn("astronomy-engine-transit-v1", text)
-        self.assertIn("geonamescache-city-v1", text)
-        self.assertIn("max search span", text)
+        self.assertIn("ASTROLOGY_NATAL.md", text)
+        self.assertIn("ASTROLOGY_TRANSIT.md", text)
+        self.assertIn("final_method_owner = ASTROLOGY.md", text)
+
+    def test_astrology_mode_owners_point_to_machine_truth_without_copying_provider_specs(self):
+        natal = (ROOT / "ASTROLOGY_NATAL.md").read_text(encoding="utf-8")
+        transit = (ROOT / "ASTROLOGY_TRANSIT.md").read_text(encoding="utf-8")
+        self.assertIn("ASTROLOGY_PROVIDER_ADMISSION_V1.json", natal)
+        self.assertIn("ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json", natal)
+        self.assertIn("ASTROLOGY_TRANSIT_PROVIDER_ADMISSION_V1.json", transit)
+        self.assertNotIn("astronomy-engine==", natal)
+        self.assertNotIn("root tolerance =", transit)
 
 
 if __name__ == "__main__":

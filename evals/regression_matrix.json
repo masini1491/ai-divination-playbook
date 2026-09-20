@@ -171,6 +171,11 @@
       "TAROT-BEH-010",
       "TAROT-BEH-019",
       "TAROT-BEH-020"
+    ],
+    "astrology-rule-layering": [
+      "TAROT-BEH-016",
+      "TAROT-BEH-017",
+      "TAROT-BEH-018"
     ]
   },
   "supporting_product_scenarios": {

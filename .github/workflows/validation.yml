@@ -35,6 +35,9 @@ jobs:
       - name: Verify loader behavioral regression selection
         run: python tools/behavioral_eval.py --matrix evals/regression_matrix.json --change-class loader-optimization
 
+      - name: Verify Astrology rule-layering regression selection
+        run: python tools/behavioral_eval.py --matrix evals/regression_matrix.json --change-class astrology-rule-layering
+
       - name: Verify output-core regression selection
         run: python tools/behavioral_eval.py --matrix evals/regression_matrix.json --change-class output-core-refactor
 

@@ -540,7 +540,7 @@ https://github.com/masini1491/ai-divination-playbook
 
 - session-health reasoning、checkpoint fields、fresh-session rehydration、是否有未授權 mutation／redraw。
 
-### TAROT-BEH-016 — Explicit Astrology production request routes to ASTROLOGY.md
+### TAROT-BEH-016 — Explicit Astrology production routes through root and mode owner
 
 **Premise / authority**
 
@@ -557,7 +557,7 @@ https://github.com/masini1491/ai-divination-playbook
 **Expected behavior**
 
 - `CHAT_INIT.md` 辨識 explicit production Astrology intent。
-- 直接載入 `ASTROLOGY.md`；不進 ordinary Tarot / Meihua / Liuyao Fast Path。
+- 先載入 root `ASTROLOGY.md`，再依 reading_mode載入 `ASTROLOGY_NATAL.md` 或 `ASTROLOGY_TRANSIT.md`；不進 ordinary Tarot / Meihua / Liuyao Fast Path。
 - 不把 production reading 誤送 `RESEARCH_ROUTING.md`。
 - 在 interpretation 前要求／驗證 Astrology Fact Bundle 或 user-supplied structured chart facts。
 
@@ -616,7 +616,7 @@ https://github.com/masini1491/ai-divination-playbook
 
 **Expected A**
 
-- production → `ASTROLOGY.md`。
+- production → `ASTROLOGY.md` → matching mode owner。
 
 **User stimulus B**
 
@@ -847,6 +847,7 @@ https://github.com/masini1491/ai-divination-playbook
 - `READING_RECORD.md` → TAROT-BEH-008、009、010、011，必要時 004。
 - project-native privacy / private-context inference-egress → TAROT-BEH-022、024；shared-baseline boundary 同時變更時另加 023。
 - `CHATGPT_OUTPUT.md` / output-core / Pre-Send Gate → TAROT-BEH-004、009、010、019、020；若同時修改 question-delivery copy surface，另加 001／002。
+- Astrology rule layering / mode-owner normalization → TAROT-BEH-016、017、018；若同時修改 loader，再加 loader-optimization。
 - Cross-validation／evidence lineage → TAROT-BEH-009、014，必要時 002。
 - `SESSION_HANDOFF.md` → TAROT-BEH-015，必要時 013。
 - `PLAYBOOK_INDEX.json`／machine routing → 先驗證 owner pointer，再依受影響 owner 選 scenario；Astrology capability 需 016、018。

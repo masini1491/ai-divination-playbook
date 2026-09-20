@@ -41,6 +41,8 @@ minimum connector/read recovery
 ```text
 explicit production Astrology
 → ASTROLOGY.md
+→ natal → ASTROLOGY_NATAL.md
+→ transit → ASTROLOGY_TRANSIT.md
 
 explicit Astrology research / Palmistry / named research line
 → RESEARCH_ROUTING.md
@@ -95,7 +97,7 @@ GitHub Connect resolve requested/current ref → exact commit
 → STOP
 ```
 
-目前 pack 主要優化 ordinary Tarot / Meihua / Liuyao、explicit stochastic method、explicit Astrology production 與 stochastic continuation。Explicit Astrology production 可用 pack 的 bootstrap + output-core 後直接讀 `ASTROLOGY.md`；explicit research 仍 bypass pack，從 bounded `CHAT_INIT.md` 進 named research owner。
+目前 pack 主要優化 ordinary Tarot / Meihua / Liuyao、explicit stochastic method、explicit Astrology production 與 stochastic continuation。Explicit Astrology production 可用 pack 的 bootstrap + output-core 後讀 `ASTROLOGY.md`，再依 reading_mode讀 `ASTROLOGY_NATAL.md` 或 `ASTROLOGY_TRANSIT.md`；explicit research 仍 bypass pack，從 bounded `CHAT_INIT.md` 進 named research owner。
 
 Load-pack 使用規則：
 
