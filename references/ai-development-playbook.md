@@ -1,131 +1,69 @@
-# 參考來源｜masini1491/ai-development-playbook
+# Common AI Development Playbook Adoption Record
 
-Repo: https://github.com/masini1491/ai-development-playbook
+Upstream：`masini1491/ai-development-playbook`
 
-授權：MIT（以來源 Repo 當下 LICENSE 為準）
+Declared baseline：`main`
 
-Last reviewed source revision：`50c16aa7cf3c497ed7e0099a006f49acbd07956d`
+Project AI mode：`ChatGPT-Only`
 
-Relationship：`reference / adapted source`；不是 live moving-policy dependency。本 Repo 只有在 current governance 明確採納後才吸收上游規則，不因來源 `main` 前進而自動改變本 Repo authority。
+Last reviewed source revision：`58de1925f799e2ee8b5f85de55587c361095e69c`
 
-## 類型
+Relationship：**common AI engineering baseline + conditional activation**。這不是 divination method authority，也不是要求 ordinary reading 每次載入 shared Playbook。
 
-ChatGPT＋Codex＋GitHub 的 AI 協作開發方法論。其主要價值不在占卜內容，而在 **authority、routing、最低充分上下文、scope control、completion evidence、輸出交付與 policy ownership** 等治理設計。
+## Adoption contract
 
-## Authority boundary
+本 Repo 把跨專案共通的 AI／repository engineering governance 上移到 `masini1491/ai-development-playbook`，本地只保留：
 
-本來源只作為 **AI／ChatGPT 行為治理方法論** 參考：
+- project-native bootstrap / activation routing；
+- project-specific governance / stricter overrides；
+- divination technical truth、runtime、method、Reading lifecycle / record；
+- shared rule 在本 Repo 的必要 mapping。
 
-- 不提供塔羅牌義、梅花卦義或術數權威。
-- 不覆蓋本 Repo 的 `INPUT_CONTRACT.md`、`QUESTION_DESIGN.md`、`TAROT.md`、`MEIHUA.md`、`CROSS_VALIDATION.md`。
-- Codex、Git、CI、Repository mutation、模型成本等工程專屬規則不移植到占卜方法論。
+Declared baseline 是 floating `main`。只有 Shared Development Playbook Activation Gate 判定本次工作需要共通 engineering governance 時，才用本 Repo admitted GitHub route把 `main` resolve成 exact immutable revision，再進該 revision 的 `CHAT_INIT.md`；普通 reading 不 probe、不載入。
 
-## 值得吸收
+## Project-specific authority / overrides
 
-### ADAPTED｜調整後採用 — Project AI mode 與 lower-level authority 分離
+下列規則留在本 Repo，且在各自 scope 內高於 shared generic default：
 
-來源把 Project AI mode 視為 actor topology，而不是 path/action write permission。本 Repo 因此以 `Project AI mode: ChatGPT-Only` 宣告主要 AI actor，同時在 `AGENTS.md` 另外維護 current task / writable target / permission / capability 的 mutation boundary。
+1. **GitHub Connect-only repository authority**：本 Repo 對 GitHub-hosted repository identity／content／diff／workflow／reference acquisition 只接受 GitHub connector / GitHub Connect。Shared Playbook 的 generic public-read recovery ladder不會放寬這個 local restriction。
+2. **Public-repository privacy boundary**：真實 Reading Record、可識別 birth / relationship / health / sexual / private-company context 不得寫入本公開 Repo。
+3. **Divination method authority**：Tarot／Meihua／Liuyao／Astrology、stochastic runtime、deterministic engines、Question / Input Contract、Reading lifecycle與 cross-validation 仍由本 Repo canonical owners負責。
+4. **Project-native hot path**：ordinary reading／continuation／method interpretation 不啟動 shared Playbook；repository maintenance／AI engineering governance 才 activate。
 
-### ADAPTED｜調整後採用 — Capability ≠ authority
+## Shared engineering rules｜不在本 Repo 複製第二份
 
-connector、runtime、write-capable tool 或 host compatibility 只證明 capability；不單獨建立 repository mutation、Reading Record storage 或其他 durable authority。
+當 shared baseline 被 activate 時，下列跨專案 engineering semantics 直接由 upstream current resolved revision 擁有，本 Repo不再為了同步而另存完整副本：
 
-### ADAPTED｜調整後採用 — External inference / data-egress boundary
+- capability / permission / authority layering；
+- Action Contract Closure 與 completion-evidence closure；
+- GitHub operation response-shape、mutation/read-back、workflow-trigger evidence、terminal residue cleanup；
+- repository-level absence-claim coverage；
+- AI Context / hot-cold / retrieval-cost governance；
+- shared actor / host-adapter / inference-egress engineering semantics。
 
-來源把 model／provider／router 切換視為可能的 disclosure boundary change。本 Repo 只吸收其中與私人 reading context、birth data、palm images、private company information 等敏感 Context 有關的最低充分原則；不建立通用企業資料分類框架。
+若本 Repo需要更嚴限制或 project-specific mapping，才在 local governance明確寫 override；未寫 override的共通 engineering rule在 shared activation scope內依 declared baseline處理。
 
+## Divination-specific adaptations retained locally
 
+部分概念已轉化成占卜 domain contract，這些 local semantics 不因共通規則上移而消失：
 
-### ADAPTED｜調整後採用 — Canonical policy owner
+- **One Question = One Copy Surface**；
+- Draw / Cast Fact、Structured Method Fact、Symbolic Inference 等 evidence roles；
+- Reality Update 不回寫 Original Interpretation；
+- prediction `completion_rule` / backtest completion evidence；
+- lowest-sufficient user-facing interpretation。
 
-來源將不同責任分配到不同 canonical 文件，其他文件只 routing，避免同一規則重複造成 drift。
+它們現在已由本 Repo method／lifecycle／output owners直接擁有，不需要每次回讀 upstream來源。
 
-本手冊吸收為：
+## Not automatically applicable
 
-- `CHATGPT_OUTPUT.md` 專門控制 ChatGPT 出題與解讀輸出。
-- `TAROT.md`／`MEIHUA.md` 專注證據如何判讀。
-- `CHAT_INIT.md` 只負責最低必要 routing。
+目前 `ChatGPT-Only` mode 下，不因 shared baseline存在就自動啟用：
 
-### ADAPTED｜調整後採用 — Progressive Reading
+- Codex root / child delegation、child profile override、usage-budget routing；
+- TASKS / BACKLOG / coordination surfaces（除非本 Repo未來另行 opt-in）；
+- Codex-specific resource-exhaustion fallback；
+- 任何會覆蓋本 Repo GitHub Connect-only、privacy、method/runtime 或 Reading Record boundary 的 generic default。
 
-來源要求先辨識任務，再只讀最低必要主題文件，不為「熟悉手冊」完整掃描所有內容。
+## Review / update rule
 
-本手冊吸收為 `CHAT_INIT.md` 的任務路由，降低舊規則、無關 reference 或過多上下文干擾當次題目。
-
-### ADAPTED｜調整後採用 — Scope expansion guard
-
-來源禁止 ChatGPT／agent 因為「順便發現」其他問題就自動擴張目前 Stage。
-
-本手冊吸收為：
-
-> 原題、牌位／起卦契約與 `exclusions` 是 ChatGPT 輸出硬邊界；模型能聯想到的旁支，不因此取得輸出權限。
-
-### ADAPTED｜調整後採用 — Completion Evidence Guard
-
-來源要求 completion claim 必須由 canonical evidence 支持，不能只接受自然語言聲稱「已完成」。
-
-本手冊吸收為：
-
-> 預測題只有在現實事件真正符合事前 `completion_rule` 時，才能宣告完成或用於完整命中評估；前置信號不能替代完成事實。
-
-### ADAPTED｜調整後採用 — Evidence levels
-
-來源強調 evidence 與 inference 分離，以及證據不足時允許 `INSUFFICIENT OBSERVABILITY`，不為了完成回答而硬猜。
-
-本手冊吸收為：
-
-- `CONFIRMED FACT`
-- `DRAW / CAST FACT`
-- `METHOD RULE`
-- `SYMBOLIC INFERENCE`
-- `UNRESOLVED`
-
-並要求 ChatGPT 的語氣與證據層級相稱。
-
-### ADAPTED｜調整後採用 — One Prompt = One Copy Surface
-
-來源要求一份真正要交給 Codex 執行的 Prompt 必須能一次完整複製，不讓使用者重新拼接散落內容。
-
-本手冊轉化為：
-
-> **One Question = One Copy Surface。**
-
-當 ChatGPT 產生讓使用者自己抽牌／起卦的正式題目時，每題各自一個 fenced code block；連續多題不得塞在同一個 block。
-
-### ADAPTED｜調整後採用 — Lowest-sufficient output
-
-來源不以 Prompt／Context 長度作為品質指標，而要求只帶完成任務的最低充分內容。
-
-本手冊吸收為：
-
-- 不輸出牌義字典或萬物類象清單後再任意套用；
-- 只解與原題及牌位／卦象證據角色直接相關的最低充分內容；
-- 心理、時間、建議、補占等輸出層按題型啟用，不固定全部輸出。
-
-## Not adopted as divination workflow
-
-下列工程／coding-agent 機制不因本次 review 自動移植為占卜方法或 reading workflow：
-
-- Codex root / child model ladder、delegation、parallel-agent routing；
-- usage-budget scheduling；
-- `Resource-Exhaustion Root Fallback` 作為 Codex workflow；
-- external-service deployment / credential operation rules；
-- AI 開發手冊自身的 TASKS / BACKLOG maintenance model。
-
-若未來本 Repo 真正需要 alternate inference provider，先處理 current capability、user choice 與 data-egress boundary；不因此建立 Codex execution policy。
-
-## Do not assume
-
-不得因採用此來源而推定：
-
-- 工程開發的 authority hierarchy 可以逐字套用到占卜；本手冊已改寫成符合現實事實、Input Contract、牌／卦資料與 references 的權威順序。
-- Codex Prompt、TASKS、CI、Git validation 或 model-cost 規則與塔羅／梅花方法本身有直接關係。
-- 「evidence」一詞會讓象徵推論自動取得科學或統計驗證地位；本手冊仍把占卜視為象徵性、結構化推理工具。
-
-## 已影響主文件
-
-- `CHAT_INIT.md`
-- `CHATGPT_OUTPUT.md`
-- `AGENTS.md`
-- `TAROT.md`
-- `CROSS_VALIDATION.md`
+Upstream `main` 前進不等於 ordinary reading立即增加 Context。只有 shared activation 成立時才 resolve current baseline；本檔的 Last reviewed revision 只是最近一次 governance review evidence，不把 floating `main`偷偷改成 pinned SHA，也不讓 shared engineering rule直接覆蓋 project-specific authority。
