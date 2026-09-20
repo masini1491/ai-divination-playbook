@@ -10,56 +10,121 @@
   ],
   "profiles": {
     "ordinary_tarot": {
-      "baseline": {"file_reads": 6, "payload_bytes": 81052},
-      "optimized_paths": ["AGENTS.md", "CHATGPT_LOAD_PACK.json", "TAROT.md"],
+      "baseline": {
+        "file_reads": 6,
+        "payload_bytes": 81052
+      },
+      "optimized_paths": [
+        "AGENTS.md",
+        "CHATGPT_LOAD_PACK.json",
+        "TAROT.md"
+      ],
       "max_optimized_file_reads": 3,
-      "max_payload_ratio": 0.60
+      "max_payload_ratio": 0.6
     },
     "ordinary_meihua": {
-      "baseline": {"file_reads": 6, "payload_bytes": 85781},
-      "optimized_paths": ["AGENTS.md", "CHATGPT_LOAD_PACK.json", "MEIHUA.md"],
+      "baseline": {
+        "file_reads": 6,
+        "payload_bytes": 85781
+      },
+      "optimized_paths": [
+        "AGENTS.md",
+        "CHATGPT_LOAD_PACK.json",
+        "MEIHUA.md"
+      ],
       "max_optimized_file_reads": 3,
-      "max_payload_ratio": 0.60
+      "max_payload_ratio": 0.6
     },
     "ordinary_liuyao": {
-      "baseline": {"file_reads": 6, "payload_bytes": 87512},
-      "optimized_paths": ["AGENTS.md", "CHATGPT_LOAD_PACK.json", "LIUYAO.md"],
+      "baseline": {
+        "file_reads": 6,
+        "payload_bytes": 87512
+      },
+      "optimized_paths": [
+        "AGENTS.md",
+        "CHATGPT_LOAD_PACK.json",
+        "LIUYAO.md"
+      ],
       "max_optimized_file_reads": 3,
-      "max_payload_ratio": 0.60
+      "max_payload_ratio": 0.6
     },
     "explicit_tarot": {
-      "baseline": {"file_reads": 5, "payload_bytes": 66842},
-      "optimized_paths": ["AGENTS.md", "CHATGPT_LOAD_PACK.json", "TAROT.md"],
+      "baseline": {
+        "file_reads": 5,
+        "payload_bytes": 66842
+      },
+      "optimized_paths": [
+        "AGENTS.md",
+        "CHATGPT_LOAD_PACK.json",
+        "TAROT.md"
+      ],
       "max_optimized_file_reads": 3,
       "max_payload_ratio": 0.65
     },
     "explicit_meihua": {
-      "baseline": {"file_reads": 5, "payload_bytes": 71571},
-      "optimized_paths": ["AGENTS.md", "CHATGPT_LOAD_PACK.json", "MEIHUA.md"],
+      "baseline": {
+        "file_reads": 5,
+        "payload_bytes": 71571
+      },
+      "optimized_paths": [
+        "AGENTS.md",
+        "CHATGPT_LOAD_PACK.json",
+        "MEIHUA.md"
+      ],
       "max_optimized_file_reads": 3,
       "max_payload_ratio": 0.65
     },
     "explicit_liuyao": {
-      "baseline": {"file_reads": 5, "payload_bytes": 73302},
-      "optimized_paths": ["AGENTS.md", "CHATGPT_LOAD_PACK.json", "LIUYAO.md"],
+      "baseline": {
+        "file_reads": 5,
+        "payload_bytes": 73302
+      },
+      "optimized_paths": [
+        "AGENTS.md",
+        "CHATGPT_LOAD_PACK.json",
+        "LIUYAO.md"
+      ],
       "max_optimized_file_reads": 3,
       "max_payload_ratio": 0.65
     },
     "explicit_astrology": {
-      "baseline": {"file_reads": 4, "payload_bytes": 68540},
-      "optimized_paths": ["AGENTS.md", "CHAT_INIT.md", "ASTROLOGY.md", "CHATGPT_OUTPUT.md"],
-      "max_optimized_file_reads": 4,
+      "baseline": {
+        "file_reads": 4,
+        "payload_bytes": 68540
+      },
+      "optimized_paths": [
+        "AGENTS.md",
+        "CHATGPT_LOAD_PACK.json",
+        "ASTROLOGY.md"
+      ],
+      "max_optimized_file_reads": 3,
       "max_payload_ratio": 0.85
     },
     "explicit_research_astrology": {
-      "baseline": {"file_reads": 4, "payload_bytes": 49650},
-      "optimized_paths": ["AGENTS.md", "CHAT_INIT.md", "RESEARCH_ROUTING.md", "references/astrology/README.md"],
+      "baseline": {
+        "file_reads": 4,
+        "payload_bytes": 49650
+      },
+      "optimized_paths": [
+        "AGENTS.md",
+        "CHAT_INIT.md",
+        "RESEARCH_ROUTING.md",
+        "references/astrology/README.md"
+      ],
       "max_optimized_file_reads": 4,
-      "max_payload_ratio": 0.80
+      "max_payload_ratio": 0.8
     },
     "continuation_tarot": {
-      "baseline": {"file_reads": 5, "payload_bytes": 66847},
-      "optimized_paths": ["AGENTS.md", "CHATGPT_LOAD_PACK.json", "READING_LIFECYCLE.md", "TAROT.md"],
+      "baseline": {
+        "file_reads": 5,
+        "payload_bytes": 66847
+      },
+      "optimized_paths": [
+        "AGENTS.md",
+        "CHATGPT_LOAD_PACK.json",
+        "READING_LIFECYCLE.md",
+        "TAROT.md"
+      ],
       "max_optimized_file_reads": 4,
       "max_payload_ratio": 0.82
     }
