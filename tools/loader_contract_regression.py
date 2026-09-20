@@ -216,8 +216,10 @@ CONTRACTS: dict[str, list[tuple[str, tuple[str, ...]]]] = {
             "ASTROLOGY.md",
             (
                 "PRODUCTION V1 / EXPLICIT-REQUEST ONLY",
-                "Astrology **不參與 ordinary auto-routing**",
-                "若使用者明確指定 Astrology，不得因 provider unavailable 就偷偷改用 Tarot / Meihua / Liuyao",
+                "Astrology 不參與 ordinary auto-routing",
+                "ASTROLOGY_NATAL.md",
+                "ASTROLOGY_TRANSIT.md",
+                "不得因 provider unavailable 就偷偷改用 Tarot / Meihua / Liuyao",
             ),
         ),
     ],
