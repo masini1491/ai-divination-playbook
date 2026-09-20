@@ -45,7 +45,7 @@ Implementation topology 由 direct owners 維護，`AGENTS.md` 只保留最低 r
 
 ## Repository / Git identity
 
-`masini1491/ai-divination-playbook`；author `masini1491 <10146979+masini1491@users.noreply.github.com>`。只做 repository-local Git identity；不得保存 credential。
+`masini1491/ai-divination-playbook`；GitHub author：`masini1491`。Git identity 細節只在 maintenance session 依 shared baseline處理。
 
 ## GitHub repository retrieval
 
