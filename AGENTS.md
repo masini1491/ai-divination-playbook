@@ -1,10 +1,8 @@
 # AGENTS.md
 
-## Shared baseline
+## AI baseline
 `masini1491/ai-development-playbook@main`
 Project AI mode: ChatGPT-Only
-Gate: `CHAT_INIT.md`
-
 ## 儲存庫用途與權威
 
 本儲存庫是可重用、公開的 AI 占卜方法與治理 Playbook，涵蓋 method routing、Input Contract／Question Design、Tarot／Meihua／Liuyao／Astrology、Runtime Draw / Cast、deterministic fact providers、Reading lifecycle／record、cross-validation 與 ChatGPT output governance。
