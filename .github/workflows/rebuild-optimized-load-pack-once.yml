@@ -1,0 +1,37 @@
+name: One-time rebuild optimized ChatGPT load pack
+
+on:
+  push:
+    branches:
+      - refactor/ai-readability-loader-headroom
+    paths:
+      - .github/workflows/rebuild-optimized-load-pack-once.yml
+
+permissions:
+  contents: write
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: refactor/ai-readability-loader-headroom
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Rebuild load pack
+        run: python tools/build_chatgpt_load_pack.py
+      - name: Commit generated pack
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add CHATGPT_LOAD_PACK.json
+          if git diff --cached --quiet; then
+            echo "No generated changes"
+            exit 0
+          fi
+          git commit -m "Regenerate optimized ChatGPT load pack"
+          git push origin HEAD:refactor/ai-readability-loader-headroom
