@@ -16,18 +16,13 @@ ASTROLOGY.md
 
 Transit calculation由 `tools/astrology_transit_provider.py` 執行；exact search span、root tolerance、scan steps、station/ingress algorithms、supported scopes與not-admitted boundary以 `ASTROLOGY_TRANSIT_PROVIDER_ADMISSION_V1.json` 為 machine truth。
 
-沒有 admitted natal baseline時，不得從零用模型心算 transit-to-natal geometry。
+若 request提供 admitted raw birth input但尚無 natal baseline，先由 production orchestrator / admitted natal provider建立 natal bundle並通過 natal runtime Fact Gate，再進 transit provider；不得從零用模型心算 transit-to-natal geometry。
 
 ## 2. Transit Interpretation Scope
 
-Production v1可解讀 admitted：
+只解讀 `ASTROLOGY_TRANSIT_PROVIDER_ADMISSION_V1.json` 與 production manifest當前 admitted 的 transit event facts；本 mode owner不重複保存 exact event-family enum。
 
-- exact transit-to-natal major-aspect events；
-- station events；
-- tropical ingress / retrograde return / re-ingress；
-- repeated exact passages及其 sequence。
-
-能算出 exact event不等於 pair-specific meaning已 admitted；semantic admission仍由 root source policy與 production manifest決定。
+能算出 admitted event不等於 pair-specific meaning已 admitted；semantic admission仍由 root source policy與 production manifest決定。
 
 ## 3. Exactness / Motion / Repetition
 
