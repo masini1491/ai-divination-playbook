@@ -111,24 +111,38 @@
     "provider_id": "astronomy-engine-natal-v1",
     "admission_manifest": "ASTROLOGY_PROVIDER_ADMISSION_V1.json",
     "runtime_owner": "tools/astrology_provider.py",
-    "scope": ["natal"],
+    "scope": [
+      "natal",
+      "natal_unknown_time_invariant_signs"
+    ],
     "raw_birth_data_supported": true,
     "requires_explicit_coordinates": true,
-    "requires_iana_timezone": true
+    "requires_iana_timezone": true,
+    "unknown_birth_time_supported": "invariant_sign_only",
+    "unknown_time_requires_exact_coordinates": false,
+    "unknown_time_requires_iana_timezone": true
   },
   "place_resolver": {
     "resolver_id": "geonamescache-city-v1",
     "admission_manifest": "ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json",
     "runtime_owner": "tools/astrology_place_resolver.py",
-    "scope": ["city_or_locality_name_to_coordinates_and_iana_timezone"],
+    "scope": [
+      "city_or_locality_name_to_coordinates_and_iana_timezone",
+      "country_name_or_code_to_unique_iana_timezone"
+    ],
     "network_required": false,
-    "ambiguous_name": "fail_closed"
+    "ambiguous_name": "fail_closed",
+    "country_multiple_timezones": "fail_closed"
   },
   "transit_provider": {
     "provider_id": "astronomy-engine-transit-v1",
     "admission_manifest": "ASTROLOGY_TRANSIT_PROVIDER_ADMISSION_V1.json",
     "runtime_owner": "tools/astrology_transit_provider.py",
-    "scope": ["transit_to_natal_exact_aspects", "stations", "tropical_ingresses"],
+    "scope": [
+      "transit_to_natal_exact_aspects",
+      "stations",
+      "tropical_ingresses"
+    ],
     "max_search_days": 400,
     "canonical_event_time": "UTC"
   },
@@ -136,32 +150,64 @@
   "fact_bundle_schema_path": "schemas/astrology/ASTROLOGY_FACT_BUNDLE_V1.schema.json",
   "runtime_gate_result_schema": "astrology_runtime_gate_result@1.0.0",
   "runtime_gate_result_schema_path": "schemas/astrology/ASTROLOGY_RUNTIME_GATE_RESULT_V1.schema.json",
-  "reading_modes": ["natal", "transit"],
+  "reading_modes": [
+    "natal",
+    "transit"
+  ],
   "configuration_policy": {
-    "zodiac_systems": ["tropical"],
-    "centers": ["geocentric"],
-    "house_systems": ["Whole Sign", "Placidus"],
+    "zodiac_systems": [
+      "tropical"
+    ],
+    "centers": [
+      "geocentric"
+    ],
+    "house_systems": [
+      "Whole Sign",
+      "Placidus"
+    ],
     "unknown_birth_time_houses_angles": "forbidden",
-    "provider_unknown_birth_time": "not_admitted",
-    "placidus_provider_max_abs_latitude": 66.0
+    "provider_unknown_birth_time": "admitted_invariant_sign_only",
+    "placidus_provider_max_abs_latitude": 66,
+    "unknown_time_exact_longitude": "forbidden",
+    "unknown_time_natal_aspects": "forbidden"
   },
   "dignity_policy": {
-    "admitted": ["domicile", "exaltation", "detriment", "fall"],
-    "not_admitted": ["triplicity", "terms", "bounds", "face", "decan", "peregrine_scoring", "numeric_dignity_scoring"]
+    "admitted": [
+      "domicile",
+      "exaltation",
+      "detriment",
+      "fall"
+    ],
+    "not_admitted": [
+      "triplicity",
+      "terms",
+      "bounds",
+      "face",
+      "decan",
+      "peregrine_scoring",
+      "numeric_dignity_scoring"
+    ]
   },
   "aspect_policy": {
     "major_only": true,
     "max_orb_degrees": {
-      "conjunction": 8.0,
-      "opposition": 8.0,
-      "trine": 7.0,
-      "square": 7.0,
-      "sextile": 5.0
+      "conjunction": 8,
+      "opposition": 8,
+      "trine": 7,
+      "square": 7,
+      "sextile": 5
     }
   },
   "source_policy": {
-    "required_source_admission_any": ["CLAIM_ELIGIBLE", "POLICY_PROVENANCE_ELIGIBLE"],
-    "forbidden_source_admission": ["REFERENCE_ONLY", "REJECTED", "UNVERIFIED_WEB_SOURCE"],
+    "required_source_admission_any": [
+      "CLAIM_ELIGIBLE",
+      "POLICY_PROVENANCE_ELIGIBLE"
+    ],
+    "forbidden_source_admission": [
+      "REFERENCE_ONLY",
+      "REJECTED",
+      "UNVERIFIED_WEB_SOURCE"
+    ],
     "preserve_conflicts": true,
     "no_research_status_mutation": true
   },
@@ -174,7 +220,9 @@
     "transit-interpretation-research-v1",
     "saturn-moon-major-aspects-research-v1"
   ],
-  "qualified_only_registries": ["high-value-planet-aspects-research-v1"],
+  "qualified_only_registries": [
+    "high-value-planet-aspects-research-v1"
+  ],
   "qualified_registry_policy": {
     "production_pair_specific_meaning": "not_admitted_until_claim_sources_are_independently_admitted",
     "general_aspect_geometry": "admitted_when_supplied_as_deterministic_fact"

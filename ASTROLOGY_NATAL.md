@@ -20,7 +20,7 @@ Raw birth data 的 calculation 由 `tools/astrology_provider.py` 執行；若只
 
 為 machine truth。不得在本檔或模型中另造 calculation rule。
 
-Unknown birth time 不得以 local noon 等 placeholder 冒充 exact chart；若缺失 materially 影響 angles / houses，依 provider/runtime contract fail closed或縮小解讀範圍。
+Unknown birth time 不得以 local noon 等 placeholder 冒充 exact chart。Production provider 可走 machine-admitted 的 invariant-only path：以本地出生日期 + IANA timezone 建立完整 local-date window，只輸出整個 window 都能 deterministic 保持的 tropical planet/luminary sign facts；不輸出 exact longitude degree、Asc/MC、houses 或 natal aspects。若只有 country-level location，只有在 admitted offline resolver 能唯一解析 IANA timezone 時才可使用；多時區國家 fail closed。
 
 ## 2. Natal Interpretation Scope
 
@@ -80,7 +80,8 @@ Interpretation：
 - 無 house fact → 不從 Sun sign猜 house；
 - 無 source-backed planet/sign或pair claim → 不輸出固定人格模板；
 - `user_asserted` chart facts要標示未獨立重算；
-- birth-time uncertainty materially影響 house/angle時必須揭露；
+- birth-time uncertainty materially影響 house/angle時必須揭露；unknown-time invariant-only bundle不得被描述成完整星盤；
+- unknown-time 被 provider省略的天體代表該 local-date window 內 sign 無法達到 admission certainty，不得由模型補猜；
 - provider不支援的 scope不得由模型補算。
 
 共通 safety / source / recording rule回到 `ASTROLOGY.md`。

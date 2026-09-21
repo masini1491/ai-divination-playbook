@@ -124,6 +124,66 @@ def resolve_place(
     }
 
 
+
+def resolve_country_timezone(
+    name: str | None = None,
+    *,
+    country_code: str | None = None,
+    min_city_population: int = 500,
+) -> dict[str, Any]:
+    if not name and not country_code:
+        raise PlaceResolutionError("country name or country_code is required")
+    if min_city_population not in {500, 1000, 5000, 15000}:
+        raise PlaceResolutionError("min_city_population must be one of 500, 1000, 5000, 15000")
+
+    cache = geonamescache.GeonamesCache(min_city_population=min_city_population)
+    countries = cache.get_countries()
+    normalized_code = country_code.upper() if country_code else None
+    normalized_name = name.strip().casefold() if name else None
+    matches = []
+    for code, row in countries.items():
+        if normalized_code and code.upper() != normalized_code:
+            continue
+        if normalized_name and str(row.get("name", "")).casefold() != normalized_name:
+            continue
+        matches.append(row)
+
+    if not matches:
+        raise PlaceResolutionError("country not found in offline GeoNames country dataset")
+    if len(matches) != 1:
+        raise PlaceResolutionError("country identity is ambiguous; provide ISO alpha-2 country_code")
+
+    country = matches[0]
+    code = str(country.get("iso", normalized_code or "")).upper()
+    timezones = sorted({
+        str(row.get("timezone", "")).strip()
+        for row in cache.get_cities().values()
+        if str(row.get("countrycode", "")).upper() == code and str(row.get("timezone", "")).strip()
+    })
+    if len(timezones) != 1:
+        raise PlaceResolutionError(
+            "country does not resolve to one unique IANA timezone in the admitted offline dataset; "
+            f"country_code={code} timezone_count={len(timezones)} timezones={timezones[:10]}"
+        )
+
+    return {
+        "resolver": {
+            "resolver_id": RESOLVER_ID,
+            "resolver_version": RESOLVER_VERSION,
+            "package": f"geonamescache=={GEONAMESCACHE_VERSION}",
+            "source_revision": GEONAMESCACHE_SOURCE_REVISION,
+            "dataset_origin": "GeoNames",
+            "dataset_license": "CC-BY-4.0",
+        },
+        "query": {"name": name, "country_code": country_code},
+        "resolved": {
+            "name": country.get("name"),
+            "country_code": code,
+            "timezone_name": timezones[0],
+        },
+    }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Resolve a city/locality to Astrology production coordinates/timezone.")
     parser.add_argument("name")

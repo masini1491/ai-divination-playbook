@@ -91,6 +91,53 @@ class AstrologyOrchestratorTests(unittest.TestCase):
         self.assertNotIn("resolver", result["input_resolution"])
         self.assertNotIn("transit", result["fact_bundles"])
 
+    def test_unknown_time_country_only_natal_emits_invariant_signs(self):
+        request = {
+            "schema_name": "astrology_reading_request",
+            "schema_version": "1.0.0",
+            "reading_mode": "natal",
+            "subject_ref": "fixture-date-only-taiwan",
+            "birth": {
+                "local_date": "2006-03-14",
+                "birth_time_certainty": "unknown",
+                "house_system": None,
+                "location": {"country": {"name": "Taiwan", "country_code": "TW"}},
+            },
+        }
+        result = run_request(request)
+        self.assertEqual("admitted", result["status"])
+        self.assertEqual("offline_country_timezone_resolver", result["input_resolution"]["resolution_mode"])
+        natal = result["fact_bundles"]["natal"]
+        self.assertEqual("unknown", natal["birth_time_certainty"])
+        self.assertIsNone(natal["configuration"]["house_system"])
+        self.assertEqual([], natal["facts"]["houses"])
+        self.assertEqual([], natal["facts"]["aspects"])
+        objects = {row["object_id"]: row for row in natal["facts"]["objects"]}
+        self.assertEqual("Pisces", objects["Sun"]["sign"])
+
+    def test_unknown_time_is_not_admitted_for_transit(self):
+        request = {
+            "schema_name": "astrology_reading_request",
+            "schema_version": "1.0.0",
+            "reading_mode": "transit",
+            "subject_ref": "fixture-date-only-transit",
+            "birth": {
+                "local_date": "2006-03-14",
+                "birth_time_certainty": "unknown",
+                "house_system": None,
+                "location": {"country": {"country_code": "TW"}},
+            },
+            "transit": {
+                "start_utc": "2026-06-01T00:00:00Z",
+                "end_utc": "2026-07-01T00:00:00Z",
+                "moving_bodies": ["Sun"],
+                "natal_targets": ["Sun"],
+                "aspects": ["conjunction"],
+            },
+        }
+        with self.assertRaisesRegex(OrchestrationInputError, "only for natal"):
+            normalize_request(request)
+
     def test_ambiguous_place_fails_closed(self):
         request = {
             "schema_name": "astrology_reading_request",

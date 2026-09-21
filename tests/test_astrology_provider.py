@@ -8,6 +8,7 @@ from tools.astrology_provider import (
     ProviderInputError,
     _resolve_local_time,
     build_natal_bundle,
+    build_unknown_time_natal_bundle,
 )
 from tools.astrology_runtime import gate_bundle
 
@@ -121,7 +122,7 @@ class AstrologyProviderTests(unittest.TestCase):
                 subject_ref="subject:synthetic-high-latitude",
             )
 
-    def test_unknown_birth_time_is_not_silently_noon_substituted(self):
+    def test_known_time_provider_still_rejects_unknown_birth_time(self):
         with self.assertRaisesRegex(ProviderInputError, "exact or approximate"):
             build_natal_bundle(
                 local_datetime="1990-06-15T12:00:00",
@@ -132,6 +133,27 @@ class AstrologyProviderTests(unittest.TestCase):
                 subject_ref="subject:synthetic-unknown-time",
                 birth_time_certainty="unknown",
             )
+
+    def test_unknown_time_provider_emits_invariant_signs_without_noon_substitution(self):
+        bundle = build_unknown_time_natal_bundle(
+            local_date="2006-03-14",
+            timezone_name="Asia/Taipei",
+            subject_ref="subject:synthetic-date-only",
+        )
+        self.assertEqual("unknown", bundle["birth_time_certainty"])
+        self.assertIsNone(bundle["configuration"]["house_system"])
+        self.assertEqual([], bundle["facts"]["houses"])
+        self.assertEqual([], bundle["facts"]["aspects"])
+        self.assertFalse(bundle["provider"]["noon_substitution"])
+        objects = _objects_by_id(bundle)
+        self.assertIn("Sun", objects)
+        self.assertEqual("Pisces", objects["Sun"]["sign"])
+        for row in objects.values():
+            self.assertNotIn("longitude_deg", row)
+            self.assertNotIn("sign_degree", row)
+            self.assertNotIn("house_number", row)
+            self.assertNotIn(row.get("object_type"), {"angle", "cusp"})
+        self.assertTrue(gate_bundle(bundle)["interpretation_allowed"])
 
     def test_aspects_reference_existing_object_facts_and_obey_runtime_orbs(self):
         object_ids = {row["fact_id"] for row in self.bundle["facts"]["objects"]}

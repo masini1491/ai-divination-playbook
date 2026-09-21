@@ -4,7 +4,10 @@
   "resolver_id": "geonamescache-city-v1",
   "resolver_version": "1.0.0",
   "status": "PRODUCTION_ADMITTED",
-  "scope": ["city_or_locality_name_to_coordinates_and_iana_timezone"],
+  "scope": [
+    "city_or_locality_name_to_coordinates_and_iana_timezone",
+    "country_name_or_code_to_unique_iana_timezone"
+  ],
   "runtime_owner": "tools/astrology_place_resolver.py",
   "dependency": {
     "package": "geonamescache",
@@ -19,17 +22,38 @@
   "resolution_policy": {
     "network_required": false,
     "default_min_city_population": 500,
-    "supported_population_datasets": [500, 1000, 5000, 15000],
+    "supported_population_datasets": [
+      500,
+      1000,
+      5000,
+      15000
+    ],
     "exact_name_or_alternate_name_match": true,
     "country_code_filter": "optional ISO alpha-2 disambiguator",
     "ambiguous_name": "fail_closed_with_candidates",
     "not_found": "fail_closed",
-    "auto_pick_largest_population_when_ambiguous": false
+    "auto_pick_largest_population_when_ambiguous": false,
+    "country_timezone": "admit only when offline country city dataset resolves to exactly one IANA timezone",
+    "country_multiple_timezones": "fail_closed"
   },
-  "output": ["geoname_id", "name", "country_code", "admin1_code", "latitude", "longitude", "timezone_name", "population"],
+  "output": [
+    "geoname_id",
+    "name",
+    "country_code",
+    "admin1_code",
+    "latitude",
+    "longitude",
+    "timezone_name",
+    "population",
+    "country-only: name, country_code, timezone_name"
+  ],
   "validation": {
     "production_tests": "tests/test_astrology_place_resolver.py",
-    "fixtures": ["Tokyo, JP", "Taipei, TW", "Springfield ambiguity"]
+    "fixtures": [
+      "Tokyo, JP",
+      "Taipei, TW",
+      "Springfield ambiguity"
+    ]
   },
   "not_admitted": [
     "street_address geocoding",
