@@ -139,8 +139,17 @@
                 "place"
               ],
               "not": {
-                "required": [
-                  "coordinates"
+                "anyOf": [
+                  {
+                    "required": [
+                      "coordinates"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "country"
+                    ]
+                  }
                 ]
               }
             },
@@ -149,8 +158,17 @@
                 "coordinates"
               ],
               "not": {
-                "required": [
-                  "place"
+                "anyOf": [
+                  {
+                    "required": [
+                      "place"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "country"
+                    ]
+                  }
                 ]
               }
             },
@@ -354,6 +372,67 @@
           "required": [
             "transit"
           ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "birth": {
+            "properties": {
+              "birth_time_certainty": {
+                "const": "unknown"
+              }
+            },
+            "required": [
+              "birth_time_certainty"
+            ]
+          }
+        },
+        "required": [
+          "birth"
+        ]
+      },
+      "then": {
+        "properties": {
+          "reading_mode": {
+            "const": "natal"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "birth": {
+            "properties": {
+              "location": {
+                "required": [
+                  "country"
+                ]
+              }
+            },
+            "required": [
+              "location"
+            ]
+          }
+        },
+        "required": [
+          "birth"
+        ]
+      },
+      "then": {
+        "properties": {
+          "reading_mode": {
+            "const": "natal"
+          },
+          "birth": {
+            "properties": {
+              "birth_time_certainty": {
+                "const": "unknown"
+              }
+            }
+          }
         }
       }
     }

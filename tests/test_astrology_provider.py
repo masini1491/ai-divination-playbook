@@ -3,10 +3,12 @@ from __future__ import annotations
 import json
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from tools.astrology_provider import (
     ProviderInputError,
     _resolve_local_time,
+    _unknown_time_invariant_sign,
     build_natal_bundle,
     build_unknown_time_natal_bundle,
 )
@@ -154,6 +156,16 @@ class AstrologyProviderTests(unittest.TestCase):
             self.assertNotIn("house_number", row)
             self.assertNotIn(row.get("object_type"), {"angle", "cusp"})
         self.assertTrue(gate_bundle(bundle)["interpretation_allowed"])
+
+    def test_unknown_time_cross_sign_window_is_omitted(self):
+        import datetime as dt
+
+        start = dt.datetime(2006, 3, 14, 0, 0, tzinfo=dt.timezone.utc)
+        end = start + dt.timedelta(minutes=10)
+        samples = iter([29.0, 29.5, 30.1])
+        with patch("tools.astrology_provider._ecliptic_longitude", side_effect=lambda *_: next(samples)):
+            result = _unknown_time_invariant_sign("Moon", start, end)
+        self.assertIsNone(result)
 
     def test_aspects_reference_existing_object_facts_and_obey_runtime_orbs(self):
         object_ids = {row["fact_id"] for row in self.bundle["facts"]["objects"]}
