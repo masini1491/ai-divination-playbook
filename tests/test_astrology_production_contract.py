@@ -49,6 +49,11 @@ class AstrologyProductionContractTests(unittest.TestCase):
         self.assertEqual("2.1.19", data["dependency"]["version"])
         self.assertEqual("MIT", data["dependency"]["license"])
         self.assertEqual("fail_closed", data["calculation_policy"]["dst_ambiguous_wall_time"])
+        self.assertIn("unknown", data["input_contract"]["birth_time_certainty"])
+        self.assertEqual(
+            "admitted_invariant_sign_only_no_noon_substitution",
+            data["calculation_policy"]["unknown_birth_time"],
+        )
 
     def test_transit_provider_admission_manifest_is_pinned_and_bounded(self):
         data = json.loads((ROOT / "ASTROLOGY_TRANSIT_PROVIDER_ADMISSION_V1.json").read_text(encoding="utf-8"))
@@ -73,6 +78,8 @@ class AstrologyProductionContractTests(unittest.TestCase):
         self.assertTrue(data["dependency"]["attribution_required"])
         self.assertFalse(data["resolution_policy"]["network_required"])
         self.assertFalse(data["resolution_policy"]["auto_pick_largest_population_when_ambiguous"])
+        self.assertIn("country_name_or_code_to_unique_iana_timezone", data["scope"])
+        self.assertEqual("fail_closed", data["resolution_policy"]["country_multiple_timezones"])
 
     def test_manifest_keeps_reference_only_pair_registry_qualified(self):
         data = json.loads((ROOT / "ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))

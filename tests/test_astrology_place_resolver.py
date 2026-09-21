@@ -4,6 +4,7 @@ import unittest
 
 from tools.astrology_place_resolver import (
     PlaceResolutionError,
+    resolve_country_timezone,
     resolve_place,
     search_place_candidates,
 )
@@ -27,6 +28,14 @@ class AstrologyPlaceResolverTests(unittest.TestCase):
         self.assertEqual("Asia/Taipei", row["timezone_name"])
         self.assertAlmostEqual(25.0478, row["latitude"], delta=0.35)
         self.assertAlmostEqual(121.5319, row["longitude"], delta=0.35)
+
+    def test_taiwan_country_resolves_unique_timezone_without_coordinates(self):
+        result = resolve_country_timezone("Taiwan", country_code="TW")
+        row = result["resolved"]
+        self.assertEqual("TW", row["country_code"])
+        self.assertEqual("Asia/Taipei", row["timezone_name"])
+        self.assertNotIn("latitude", row)
+        self.assertNotIn("longitude", row)
 
     def test_ambiguous_name_fails_closed(self):
         candidates = search_place_candidates("Springfield", min_city_population=500)

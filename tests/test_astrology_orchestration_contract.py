@@ -15,9 +15,15 @@ class AstrologyOrchestrationContractTests(unittest.TestCase):
         self.assertFalse(data["additionalProperties"])
         self.assertEqual(["natal", "transit"], data["properties"]["reading_mode"]["enum"])
         self.assertEqual(
-            ["Whole Sign", "Placidus"],
+            ["Whole Sign", "Placidus", None],
             data["properties"]["birth"]["properties"]["house_system"]["enum"],
         )
+        self.assertEqual(
+            ["exact", "approximate", "unknown"],
+            data["properties"]["birth"]["properties"]["birth_time_certainty"]["enum"],
+        )
+        self.assertIn("local_date", data["properties"]["birth"]["properties"])
+        self.assertIn("country", data["properties"]["birth"]["properties"]["location"]["properties"])
         self.assertNotIn("synastry", json.dumps(data))
         self.assertNotIn("solar_return", json.dumps(data))
 
