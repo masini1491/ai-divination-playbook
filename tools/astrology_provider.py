@@ -3,10 +3,13 @@
 
 This provider converts raw birth data into ``astrology_fact_bundle@1.0.0``
 using the MIT-licensed Astronomy Engine for geocentric tropical longitudes and
-project-owned house/aspect derivation.
+project-owned house/aspect derivation. It also exposes a separate unknown-time
+path that admits only full-local-date invariant tropical sign facts; it never
+substitutes noon or another invented birth time.
 
-The provider intentionally does not geocode place names. Callers must supply
-explicit latitude, longitude, and an IANA timezone identifier.
+The provider intentionally does not geocode place names. Known-time callers must
+supply explicit latitude, longitude, and an IANA timezone identifier; the
+unknown-time invariant path needs only the local date plus IANA timezone.
 """
 from __future__ import annotations
 
@@ -49,6 +52,8 @@ SUPPORTED_HOUSE_SYSTEMS = {"Whole Sign", "Placidus"}
 D2R = math.pi / 180.0
 R2D = 180.0 / math.pi
 PLACIDUS_MAX_ABS_LATITUDE = 66.0
+UNKNOWN_TIME_SCAN_MINUTES = 5
+UNKNOWN_TIME_BOUNDARY_GUARD_DEG = 2.0
 
 
 class ProviderInputError(ValueError):
@@ -400,6 +405,131 @@ def build_natal_bundle(
             "objects": objects,
             "houses": houses,
             "aspects": aspects,
+            "events": [],
+        },
+    }
+
+    gate = gate_bundle(bundle)
+    if not gate["interpretation_allowed"]:
+        raise RuntimeError(f"provider generated a bundle rejected by runtime gate: {gate['errors']}")
+    return bundle
+
+
+
+def _parse_local_date(value: str) -> dt.date:
+    try:
+        return dt.date.fromisoformat(value)
+    except ValueError as exc:
+        raise ProviderInputError("local_date must be ISO-8601 YYYY-MM-DD") from exc
+
+
+def _unknown_time_date_window_utc(local_date: str, timezone_name: str) -> tuple[dt.datetime, dt.datetime]:
+    day = _parse_local_date(local_date)
+    next_day = day + dt.timedelta(days=1)
+    _, start_utc, _ = _resolve_local_time(f"{day.isoformat()}T00:00:00", timezone_name)
+    _, end_utc, _ = _resolve_local_time(f"{next_day.isoformat()}T00:00:00", timezone_name)
+    if end_utc <= start_utc:
+        raise ProviderInputError("resolved local-date window must have positive duration")
+    return start_utc, end_utc
+
+
+def _unknown_time_invariant_sign(
+    body: str,
+    start_utc: dt.datetime,
+    end_utc: dt.datetime,
+) -> dict[str, Any] | None:
+    step = dt.timedelta(minutes=UNKNOWN_TIME_SCAN_MINUTES)
+    when = start_utc
+    sign_index: int | None = None
+    min_boundary_distance = 30.0
+    samples = 0
+    while True:
+        lon = _ecliptic_longitude(body, _astronomy_time(when))
+        fields = _sign_fields(lon)
+        current_index = int(fields["sign_index"])
+        if sign_index is None:
+            sign_index = current_index
+        elif current_index != sign_index:
+            return None
+        degree = float(fields["sign_degree"])
+        min_boundary_distance = min(min_boundary_distance, degree, 30.0 - degree)
+        samples += 1
+        if when >= end_utc:
+            break
+        when = min(when + step, end_utc)
+
+    if min_boundary_distance <= UNKNOWN_TIME_BOUNDARY_GUARD_DEG:
+        return None
+    assert sign_index is not None
+    return {
+        "sign_index": sign_index,
+        "sign": SIGNS[sign_index],
+        "uncertainty_scope": "full_local_date_window",
+        "window_scan_minutes": UNKNOWN_TIME_SCAN_MINUTES,
+        "minimum_sampled_boundary_distance_deg": min_boundary_distance,
+        "sample_count": samples,
+    }
+
+
+def build_unknown_time_natal_bundle(
+    *,
+    local_date: str,
+    timezone_name: str,
+    subject_ref: str,
+) -> dict[str, Any]:
+    if not subject_ref or not subject_ref.strip():
+        raise ProviderInputError("subject_ref is required")
+
+    start_utc, end_utc = _unknown_time_date_window_utc(local_date, timezone_name)
+    objects: list[dict[str, Any]] = []
+    omitted: list[str] = []
+    for body in BODY_NAMES:
+        invariant = _unknown_time_invariant_sign(body, start_utc, end_utc)
+        if invariant is None:
+            omitted.append(body)
+            continue
+        objects.append(
+            {
+                "fact_id": f"fact:object:{body.lower()}",
+                "object_type": "point" if body == "NorthNode" else "planet",
+                "object_id": body,
+                **invariant,
+            }
+        )
+
+    bundle = {
+        "schema_name": "astrology_fact_bundle",
+        "schema_version": "1.0.0",
+        "method": "Astrology",
+        "reading_mode": "natal",
+        "fact_source": "approved_provider",
+        "calculation_verification": "verified_provider",
+        "subject_ref": subject_ref,
+        "birth_time_certainty": "unknown",
+        "configuration": {
+            "zodiac_system": "tropical",
+            "center": "geocentric",
+            "house_system": None,
+        },
+        "provider": {
+            "provider_id": PROVIDER_ID,
+            "provider_version": PROVIDER_VERSION,
+            "astronomy_engine_package": f"astronomy-engine=={ASTRONOMY_ENGINE_PACKAGE_VERSION}",
+            "astronomy_engine_source_revision": ASTRONOMY_ENGINE_SOURCE_REVISION,
+            "mode": "unknown_time_invariant_signs",
+            "local_date": local_date,
+            "timezone_name": timezone_name,
+            "window_start_utc_iso": start_utc.isoformat(),
+            "window_end_utc_iso": end_utc.isoformat(),
+            "window_scan_minutes": UNKNOWN_TIME_SCAN_MINUTES,
+            "boundary_guard_deg": UNKNOWN_TIME_BOUNDARY_GUARD_DEG,
+            "omitted_object_ids": omitted,
+            "noon_substitution": False,
+        },
+        "facts": {
+            "objects": objects,
+            "houses": [],
+            "aspects": [],
             "events": [],
         },
     }

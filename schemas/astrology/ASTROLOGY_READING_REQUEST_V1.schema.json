@@ -33,9 +33,7 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "local_datetime",
         "birth_time_certainty",
-        "house_system",
         "location"
       ],
       "properties": {
@@ -47,13 +45,19 @@
         "birth_time_certainty": {
           "enum": [
             "exact",
-            "approximate"
+            "approximate",
+            "unknown"
           ]
         },
         "house_system": {
+          "type": [
+            "string",
+            "null"
+          ],
           "enum": [
             "Whole Sign",
-            "Placidus"
+            "Placidus",
+            null
           ]
         },
         "location": {
@@ -101,6 +105,32 @@
                   "minLength": 1
                 }
               }
+            },
+            "country": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "country_code": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z]{2}$"
+                }
+              },
+              "anyOf": [
+                {
+                  "required": [
+                    "name"
+                  ]
+                },
+                {
+                  "required": [
+                    "country_code"
+                  ]
+                }
+              ]
             }
           },
           "oneOf": [
@@ -123,10 +153,89 @@
                   "place"
                 ]
               }
+            },
+            {
+              "required": [
+                "country"
+              ],
+              "not": {
+                "anyOf": [
+                  {
+                    "required": [
+                      "place"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "coordinates"
+                    ]
+                  }
+                ]
+              }
             }
           ]
+        },
+        "local_date": {
+          "type": "string",
+          "minLength": 1,
+          "description": "ISO-8601 local calendar date YYYY-MM-DD, admitted only when birth_time_certainty=unknown."
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "birth_time_certainty": {
+                "const": "unknown"
+              }
+            },
+            "required": [
+              "birth_time_certainty"
+            ]
+          },
+          "then": {
+            "required": [
+              "local_date"
+            ],
+            "properties": {
+              "house_system": {
+                "const": null
+              }
+            },
+            "not": {
+              "required": [
+                "local_datetime"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "birth_time_certainty": {
+                "enum": [
+                  "exact",
+                  "approximate"
+                ]
+              }
+            },
+            "required": [
+              "birth_time_certainty"
+            ]
+          },
+          "then": {
+            "required": [
+              "local_datetime",
+              "house_system"
+            ],
+            "not": {
+              "required": [
+                "local_date"
+              ]
+            }
+          }
+        }
+      ]
     },
     "transit": {
       "type": "object",

@@ -14,12 +14,13 @@ import json
 from pathlib import Path
 from typing import Any
 
-from tools.astrology_place_resolver import PlaceResolutionError, resolve_place
+from tools.astrology_place_resolver import PlaceResolutionError, resolve_country_timezone, resolve_place
 from tools.astrology_provider import (
     BODY_NAMES,
     SUPPORTED_HOUSE_SYSTEMS,
     ProviderInputError,
     build_natal_bundle,
+    build_unknown_time_natal_bundle,
 )
 from tools.astrology_runtime import MAJOR_ASPECT_ORBS, gate_bundle
 from tools.astrology_transit_provider import TransitProviderInputError, build_transit_bundle
@@ -83,12 +84,32 @@ def _normalize_location(data: Any) -> dict[str, Any]:
     location = _object(data, "$.birth.location")
     _exact_keys(
         location,
-        allowed={"place", "coordinates"},
+        allowed={"place", "coordinates", "country"},
         required=set(),
         path="$.birth.location",
     )
-    if set(location) not in ({"place"}, {"coordinates"}):
-        raise OrchestrationInputError("$.birth.location must contain exactly one of place or coordinates")
+    if set(location) not in ({"place"}, {"coordinates"}, {"country"}):
+        raise OrchestrationInputError("$.birth.location must contain exactly one of place, coordinates, or country")
+
+    if "country" in location:
+        country = _object(location["country"], "$.birth.location.country")
+        _exact_keys(
+            country,
+            allowed={"name", "country_code"},
+            required=set(),
+            path="$.birth.location.country",
+        )
+        if not country:
+            raise OrchestrationInputError("$.birth.location.country requires name or country_code")
+        normalized_country: dict[str, Any] = {}
+        if country.get("name") is not None:
+            normalized_country["name"] = _non_empty_string(country["name"], "$.birth.location.country.name")
+        if country.get("country_code") is not None:
+            code = _non_empty_string(country["country_code"], "$.birth.location.country.country_code").upper()
+            if len(code) != 2 or not code.isalpha():
+                raise OrchestrationInputError("$.birth.location.country.country_code must be ISO alpha-2")
+            normalized_country["country_code"] = code
+        return {"country": normalized_country}
 
     if "place" in location:
         place = _object(location["place"], "$.birth.location.place")
@@ -206,30 +227,54 @@ def normalize_request(data: Any) -> dict[str, Any]:
     birth = _object(root["birth"], "$.birth")
     _exact_keys(
         birth,
-        allowed={"local_datetime", "birth_time_certainty", "house_system", "location"},
-        required={"local_datetime", "birth_time_certainty", "house_system", "location"},
+        allowed={"local_datetime", "local_date", "birth_time_certainty", "house_system", "location"},
+        required={"birth_time_certainty", "location"},
         path="$.birth",
     )
     certainty = _non_empty_string(birth["birth_time_certainty"], "$.birth.birth_time_certainty")
-    if certainty not in {"exact", "approximate"}:
-        raise OrchestrationInputError("$.birth.birth_time_certainty must be exact or approximate")
-    house_system = _non_empty_string(birth["house_system"], "$.birth.house_system")
-    if house_system not in SUPPORTED_HOUSE_SYSTEMS:
-        raise OrchestrationInputError(
-            f"$.birth.house_system must be one of {sorted(SUPPORTED_HOUSE_SYSTEMS)}"
+    if certainty not in {"exact", "approximate", "unknown"}:
+        raise OrchestrationInputError("$.birth.birth_time_certainty must be exact, approximate, or unknown")
+
+    normalized_birth: dict[str, Any] = {
+        "birth_time_certainty": certainty,
+        "location": _normalize_location(birth["location"]),
+    }
+    if certainty == "unknown":
+        if reading_mode != "natal":
+            raise OrchestrationInputError("unknown birth time is admitted only for natal invariant-only readings")
+        if "local_date" not in birth:
+            raise OrchestrationInputError("$.birth.local_date is required when birth_time_certainty=unknown")
+        if "local_datetime" in birth:
+            raise OrchestrationInputError("$.birth.local_datetime must not be supplied when birth_time_certainty=unknown")
+        if birth.get("house_system") not in (None,):
+            raise OrchestrationInputError("$.birth.house_system must be null or omitted when birth_time_certainty=unknown")
+        normalized_birth["local_date"] = _non_empty_string(birth["local_date"], "$.birth.local_date")
+        normalized_birth["house_system"] = None
+    else:
+        if "local_datetime" not in birth:
+            raise OrchestrationInputError("$.birth.local_datetime is required for exact/approximate birth time")
+        if "local_date" in birth:
+            raise OrchestrationInputError("$.birth.local_date is only allowed when birth_time_certainty=unknown")
+        house_system = _non_empty_string(birth.get("house_system"), "$.birth.house_system")
+        if house_system not in SUPPORTED_HOUSE_SYSTEMS:
+            raise OrchestrationInputError(
+                f"$.birth.house_system must be one of {sorted(SUPPORTED_HOUSE_SYSTEMS)}"
+            )
+        if "country" in normalized_birth["location"]:
+            raise OrchestrationInputError(
+                "$.birth.location.country is admitted only for unknown-time invariant-only natal readings"
+            )
+        normalized_birth["local_datetime"] = _non_empty_string(
+            birth["local_datetime"], "$.birth.local_datetime"
         )
+        normalized_birth["house_system"] = house_system
 
     normalized: dict[str, Any] = {
         "schema_name": REQUEST_SCHEMA_NAME,
         "schema_version": REQUEST_SCHEMA_VERSION,
         "reading_mode": reading_mode,
         "subject_ref": _non_empty_string(root["subject_ref"], "$.subject_ref"),
-        "birth": {
-            "local_datetime": _non_empty_string(birth["local_datetime"], "$.birth.local_datetime"),
-            "birth_time_certainty": certainty,
-            "house_system": house_system,
-            "location": _normalize_location(birth["location"]),
-        },
+        "birth": normalized_birth,
     }
     if reading_mode == "transit":
         normalized["transit"] = _normalize_transit(root["transit"])
@@ -238,6 +283,15 @@ def normalize_request(data: Any) -> dict[str, Any]:
 
 def _resolve_location(normalized: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
     location = normalized["birth"]["location"]
+    if "country" in location:
+        country = location["country"]
+        result = resolve_country_timezone(country.get("name"), country_code=country.get("country_code"))
+        resolved = result["resolved"]
+        return (
+            {"timezone_name": resolved["timezone_name"]},
+            {"resolution_mode": "offline_country_timezone_resolver", **result},
+        )
+
     if "place" in location:
         place = location["place"]
         result = resolve_place(place["name"], country_code=place.get("country_code"))
@@ -303,15 +357,22 @@ def run_request(data: Any) -> dict[str, Any]:
     resolved, input_resolution = _resolve_location(normalized)
     birth = normalized["birth"]
 
-    natal_bundle = build_natal_bundle(
-        local_datetime=birth["local_datetime"],
-        timezone_name=resolved["timezone_name"],
-        latitude=resolved["latitude"],
-        longitude=resolved["longitude"],
-        house_system=birth["house_system"],
-        subject_ref=normalized["subject_ref"],
-        birth_time_certainty=birth["birth_time_certainty"],
-    )
+    if birth["birth_time_certainty"] == "unknown":
+        natal_bundle = build_unknown_time_natal_bundle(
+            local_date=birth["local_date"],
+            timezone_name=resolved["timezone_name"],
+            subject_ref=normalized["subject_ref"],
+        )
+    else:
+        natal_bundle = build_natal_bundle(
+            local_datetime=birth["local_datetime"],
+            timezone_name=resolved["timezone_name"],
+            latitude=resolved["latitude"],
+            longitude=resolved["longitude"],
+            house_system=birth["house_system"],
+            subject_ref=normalized["subject_ref"],
+            birth_time_certainty=birth["birth_time_certainty"],
+        )
     natal_gate = _admit_bundle(natal_bundle, "natal")
 
     transit_bundle: dict[str, Any] | None = None

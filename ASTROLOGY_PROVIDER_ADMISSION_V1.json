@@ -4,7 +4,10 @@
   "provider_id": "astronomy-engine-natal-v1",
   "provider_version": "1.0.0",
   "status": "PRODUCTION_ADMITTED",
-  "scope": ["natal"],
+  "scope": [
+    "natal",
+    "natal_unknown_time_invariant_signs"
+  ],
   "output_schema": "astrology_fact_bundle@1.0.0",
   "runtime_owner": "tools/astrology_provider.py",
   "dependency": {
@@ -26,22 +29,55 @@
     "timezone_name": "IANA timezone required",
     "latitude": "decimal degrees [-90,90]",
     "longitude": "decimal degrees [-180,180]",
-    "house_systems": ["Whole Sign", "Placidus"],
-    "birth_time_certainty": ["exact", "approximate"],
-    "geocoding": "not_owned_by_provider"
+    "house_systems": [
+      "Whole Sign",
+      "Placidus"
+    ],
+    "birth_time_certainty": [
+      "exact",
+      "approximate",
+      "unknown"
+    ],
+    "geocoding": "not_owned_by_provider",
+    "local_date": "ISO-8601 YYYY-MM-DD for unknown-time invariant-only path",
+    "unknown_time_location": "IANA timezone required; latitude/longitude and house system not required"
   },
   "calculation_policy": {
     "zodiac_system": "tropical",
     "center": "geocentric",
-    "bodies": ["Sun", "Moon", "Mercury", "Venus", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto", "NorthNode"],
-    "angles": ["Ascendant", "Midheaven"],
-    "major_aspects": ["conjunction", "opposition", "trine", "square", "sextile"],
+    "bodies": [
+      "Sun",
+      "Moon",
+      "Mercury",
+      "Venus",
+      "Mars",
+      "Jupiter",
+      "Saturn",
+      "Uranus",
+      "Neptune",
+      "Pluto",
+      "NorthNode"
+    ],
+    "angles": [
+      "Ascendant",
+      "Midheaven"
+    ],
+    "major_aspects": [
+      "conjunction",
+      "opposition",
+      "trine",
+      "square",
+      "sextile"
+    ],
     "aspect_orbs_owner": "tools/astrology_runtime.py",
-    "placidus_max_abs_latitude": 66.0,
+    "placidus_max_abs_latitude": 66,
     "dst_nonexistent_wall_time": "fail_closed",
     "dst_ambiguous_wall_time": "fail_closed",
-    "unknown_birth_time": "not_admitted_for_raw-birth-data provider",
-    "fixed_offset_as_timezone_identity": "not_admitted"
+    "unknown_birth_time": "admitted_invariant_sign_only_no_noon_substitution",
+    "fixed_offset_as_timezone_identity": "not_admitted",
+    "unknown_time_scan_minutes": 5,
+    "unknown_time_boundary_guard_deg": 2,
+    "unknown_time_output": "only full-local-date invariant tropical sign facts; no longitude degree, house, angle, or natal aspect"
   },
   "provenance": {
     "fact_source": "approved_provider",
