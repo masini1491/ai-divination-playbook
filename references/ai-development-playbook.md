@@ -6,7 +6,7 @@ Declared baseline：`main`
 
 Project AI mode：`ChatGPT-Only`
 
-Last reviewed source revision：`a7f3e7c80f33f67e9819d0d20404905bcc794a2a`
+Last reviewed source revision：`178a8d7d7d1d289c16434af80f21bdc5ab71496b`
 
 Relationship：**common AI engineering baseline + conditional activation**。這不是 divination method authority，也不是要求 ordinary reading 每次載入 shared Playbook。
 
@@ -20,6 +20,8 @@ Relationship：**common AI engineering baseline + conditional activation**。這
 - shared rule 在本 Repo 的必要 mapping。
 
 Declared baseline 是 floating `main`。只有 Shared Development Playbook Activation Gate 判定本次工作需要共通 engineering governance 時，才用本 Repo admitted GitHub route把 `main` resolve成 exact immutable revision，再進該 revision 的 `CHAT_INIT.md`；普通 reading 不 probe、不載入。
+
+Shared `REPORTING.md` 是窄化的 adoption-level exception：substantive user-facing engineering／repository-maintenance reply 依 declared baseline 的 reporting contract呈現，即使其他 shared governance 未 activation也適用；為 reporting 只 direct-leaf 到 `REPORTING.md`，不因此載入 `CHAT_INIT.md` 或其他 shared owners。這個 mapping只影響工程狀態／review／validation／completion 等 reporting，不取代本 Repo `CHATGPT_OUTPUT.md` 對占卜題目交付、解讀、完成／回測與方法輸出的 authority。
 
 ## Project-specific authority / overrides
 
@@ -40,7 +42,9 @@ Declared baseline 是 floating `main`。只有 Shared Development Playbook Activ
 - GitHub operation response-shape、mutation/read-back、workflow-trigger evidence、terminal residue cleanup；
 - repository-level absence-claim coverage；
 - AI Context / hot-cold / retrieval-cost governance；
-- shared actor / host-adapter engineering semantics；generic inference-egress mechanics仍由 upstream說明，但本 Repo的 private-context disclosure boundary由 local governance直接擁有。
+- shared actor / host-adapter engineering semantics；
+- substantive engineering reporting presentation / timestamp / pre-send contract → upstream `REPORTING.md`；
+- generic inference-egress mechanics仍由 upstream說明，但本 Repo的 private-context disclosure boundary由 local governance直接擁有。
 
 若本 Repo需要更嚴限制或 project-specific mapping，才在 local governance明確寫 override；未寫 override的共通 engineering rule在 shared activation scope內依 declared baseline處理。
 
