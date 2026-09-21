@@ -24,6 +24,13 @@ class AstrologyOrchestrationContractTests(unittest.TestCase):
         )
         self.assertIn("local_date", data["properties"]["birth"]["properties"])
         self.assertIn("country", data["properties"]["birth"]["properties"]["location"]["properties"])
+        location_branches = data["properties"]["birth"]["properties"]["location"]["oneOf"]
+        self.assertEqual(3, len(location_branches))
+        self.assertTrue(all("not" in branch for branch in location_branches))
+        serialized_rules = json.dumps(data["allOf"], sort_keys=True)
+        self.assertIn('"birth_time_certainty": {"const": "unknown"}', serialized_rules)
+        self.assertIn('"reading_mode": {"const": "natal"}', serialized_rules)
+        self.assertIn('"required": ["country"]', serialized_rules)
         self.assertNotIn("synastry", json.dumps(data))
         self.assertNotIn("solar_return", json.dumps(data))
 

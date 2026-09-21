@@ -134,11 +134,27 @@ def validate_bundle(data: Any) -> list[dict[str, str]]:
     events = facts.get("events", []) if isinstance(facts.get("events"), list) else []
 
     if certainty == "unknown":
+        if data.get("reading_mode") != "natal":
+            _error(errors, "UNKNOWN_TIME_TRANSIT_FORBIDDEN", "$.reading_mode", "unknown birth time is admitted only for natal invariant-sign facts")
         if houses:
             _error(errors, "UNKNOWN_TIME_HOUSES_FORBIDDEN", "$.facts.houses", "unknown birth time cannot supply production house facts")
+        if aspects:
+            _error(errors, "UNKNOWN_TIME_ASPECTS_FORBIDDEN", "$.facts.aspects", "unknown birth time cannot supply production natal aspect facts")
+        forbidden_object_fields = {
+            "longitude_deg", "sign_degree", "speed_deg_per_day", "motion", "house_number", "cusp_longitude_deg"
+        }
         for i, row in enumerate(objects):
-            if isinstance(row, dict) and row.get("object_type") in {"angle", "cusp"}:
+            if not isinstance(row, dict):
+                continue
+            if row.get("object_type") in {"angle", "cusp"}:
                 _error(errors, "UNKNOWN_TIME_ANGLE_FORBIDDEN", f"$.facts.objects[{i}]", "unknown birth time cannot supply angle/cusp facts")
+            for field in sorted(forbidden_object_fields & row.keys()):
+                _error(
+                    errors,
+                    "UNKNOWN_TIME_POSITION_DETAIL_FORBIDDEN",
+                    f"$.facts.objects[{i}].{field}",
+                    "unknown birth time invariant-only facts cannot supply exact/time-sensitive position detail",
+                )
 
     if houses and house_system is None:
         _error(errors, "HOUSE_SYSTEM_REQUIRED", "$.configuration.house_system", "house facts require an explicit admitted house system")

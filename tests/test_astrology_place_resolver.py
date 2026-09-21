@@ -37,6 +37,10 @@ class AstrologyPlaceResolverTests(unittest.TestCase):
         self.assertNotIn("latitude", row)
         self.assertNotIn("longitude", row)
 
+    def test_multi_timezone_country_fails_closed(self):
+        with self.assertRaisesRegex(PlaceResolutionError, "unique IANA timezone"):
+            resolve_country_timezone("United States", country_code="US")
+
     def test_ambiguous_name_fails_closed(self):
         candidates = search_place_candidates("Springfield", min_city_population=500)
         self.assertGreater(len(candidates), 1)

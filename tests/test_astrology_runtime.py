@@ -76,10 +76,41 @@ class AstrologyRuntimeTests(unittest.TestCase):
         data = natal_bundle()
         data["birth_time_certainty"] = "unknown"
         data["facts"]["houses"] = []
+        data["facts"]["aspects"] = []
         data["configuration"]["house_system"] = None
         data["facts"]["objects"].append({"fact_id": "fact:asc", "object_type": "angle", "object_id": "Ascendant"})
         codes = {e["code"] for e in validate_bundle(data)}
         self.assertIn("UNKNOWN_TIME_ANGLE_FORBIDDEN", codes)
+
+    def test_unknown_birth_time_forbids_exact_position_detail(self):
+        data = natal_bundle()
+        data["birth_time_certainty"] = "unknown"
+        data["facts"]["houses"] = []
+        data["facts"]["aspects"] = []
+        data["configuration"]["house_system"] = None
+        data["facts"]["objects"][0]["longitude_deg"] = 353.5
+        data["facts"]["objects"][0]["sign_degree"] = 23.5
+        codes = {e["code"] for e in validate_bundle(data)}
+        self.assertIn("UNKNOWN_TIME_POSITION_DETAIL_FORBIDDEN", codes)
+
+    def test_unknown_birth_time_forbids_natal_aspects(self):
+        data = natal_bundle()
+        data["birth_time_certainty"] = "unknown"
+        data["facts"]["houses"] = []
+        data["configuration"]["house_system"] = None
+        codes = {e["code"] for e in validate_bundle(data)}
+        self.assertIn("UNKNOWN_TIME_ASPECTS_FORBIDDEN", codes)
+
+    def test_unknown_birth_time_is_natal_only_at_runtime_gate(self):
+        data = natal_bundle()
+        data["birth_time_certainty"] = "unknown"
+        data["reading_mode"] = "transit"
+        data["facts"]["houses"] = []
+        data["facts"]["aspects"] = []
+        data["configuration"]["house_system"] = None
+        data["facts"]["events"] = [{"fact_id": "fact:station", "event_kind": "station"}]
+        codes = {e["code"] for e in validate_bundle(data)}
+        self.assertIn("UNKNOWN_TIME_TRANSIT_FORBIDDEN", codes)
 
     def test_house_facts_require_explicit_house_system(self):
         data = natal_bundle()
