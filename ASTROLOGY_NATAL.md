@@ -78,7 +78,7 @@ Interpretation：
 ## 7. Natal Unsupported / Uncertainty
 
 - 無 house fact → 不從 Sun sign猜 house；
-- planet-in-sign interpretation 優先組合 production-admitted 的 planet-function + sign-style claims；不得把兩者合成固定人格診斷。Exact planet/sign pair meaning只有在另有 pair-specific admitted claim時才可使用；無 source-backed claim（包含目前未另行 admission 的 North Node sign semantics）→ `unsupported_factor`；
+- planet-in-sign interpretation 優先組合 production-admitted 的 planet-function + sign-style claims；該 composable semantics registry 必須由 typed request 明確選擇 production manifest 所列 semantic profile，不得在 tradition / framework 未指定時 silent-default。此 profile 是 project semantic profile，不得冒充 canonical astrology school。不得把兩者合成固定人格診斷。Exact planet/sign pair meaning只有在另有 pair-specific admitted claim時才可使用；無 source-backed claim（包含目前未另行 admission 的 North Node sign semantics）→ `unsupported_factor`；
 - `user_asserted` chart facts要標示未獨立重算；
 - birth-time uncertainty materially影響 house/angle時必須揭露；unknown-time invariant-only bundle不得被描述成完整星盤；
 - unknown-time 被 provider省略的天體代表該 local-date window 內 sign 無法達到 admission certainty，不得由模型補猜；

@@ -152,6 +152,7 @@ class AstrologyEvidenceSelectorTests(unittest.TestCase):
                 {
                     "selector_id": "sun-core",
                     "registry_record_id": "planet-sign-composable-semantics-research-v1",
+                    "semantic_profile": "composable-symbolic-modern-v1",
                     "claim_type": "planet_function",
                     "applicability_scope": "object_core",
                     "applies_to_all": ["natal"],
@@ -186,6 +187,7 @@ class AstrologyEvidenceSelectorTests(unittest.TestCase):
                 {
                     "selector_id": "sun-sign-style",
                     "registry_record_id": "planet-sign-composable-semantics-research-v1",
+                    "semantic_profile": "composable-symbolic-modern-v1",
                     "claim_type": "sign_style",
                     "applicability_scope": "sign_style",
                     "applies_to_all": ["natal"],
@@ -220,6 +222,7 @@ class AstrologyEvidenceSelectorTests(unittest.TestCase):
                 {
                     "selector_id": "wrong-sign",
                     "registry_record_id": "planet-sign-composable-semantics-research-v1",
+                    "semantic_profile": "composable-symbolic-modern-v1",
                     "claim_type": "sign_style",
                     "applicability_scope": "sign_style",
                     "applies_to_all": ["natal", wrong],
@@ -251,6 +254,7 @@ class AstrologyEvidenceSelectorTests(unittest.TestCase):
                 {
                     "selector_id": "node-sign",
                     "registry_record_id": "planet-sign-composable-semantics-research-v1",
+                    "semantic_profile": "composable-symbolic-modern-v1",
                     "claim_type": "sign_style",
                     "applicability_scope": "sign_style",
                     "applies_to_all": ["natal"],
@@ -259,6 +263,101 @@ class AstrologyEvidenceSelectorTests(unittest.TestCase):
             ],
         }
         with self.assertRaisesRegex(AstrologyEvidenceSelectionError, "requires planet object facts"):
+            select_evidence(run, typed, repo_root=ROOT)
+
+    def test_unknown_time_taiwan_sun_pisces_semantics_reaches_handoff(self):
+        reading = {
+            "schema_name": "astrology_reading_request",
+            "schema_version": "1.0.0",
+            "reading_mode": "natal",
+            "subject_ref": "fixture-date-only-taiwan-semantics",
+            "birth": {
+                "local_date": "2006-03-14",
+                "birth_time_certainty": "unknown",
+                "house_system": None,
+                "location": {"country": {"name": "Taiwan", "country_code": "TW"}},
+            },
+        }
+        run = run_request(reading)
+        sun = next(row for row in run["fact_bundles"]["natal"]["facts"]["objects"] if row.get("object_id") == "Sun")
+        self.assertEqual("Pisces", sun["sign"])
+
+        typed = {
+            "schema_name": "astrology_typed_evidence_selection_request",
+            "schema_version": "1.0.0",
+            "question_id": "typed-date-only-sun-pisces",
+            "question": "What bounded symbolic interpretation is supported for the admitted Sun-in-Pisces fact?",
+            "fact_selectors": [
+                {
+                    "selector_id": "sun",
+                    "selector_kind": "object",
+                    "bundle": "natal",
+                    "cardinality": "exactly_one",
+                    "object_id": "Sun",
+                    "object_type": "planet",
+                }
+            ],
+            "claim_selectors": [
+                {
+                    "selector_id": "sun-core",
+                    "registry_record_id": "planet-sign-composable-semantics-research-v1",
+                    "semantic_profile": "composable-symbolic-modern-v1",
+                    "claim_type": "planet_function",
+                    "applicability_scope": "object_core",
+                    "applies_to_all": ["natal"],
+                    "fact_selector_ids": ["sun"],
+                },
+                {
+                    "selector_id": "sun-sign",
+                    "registry_record_id": "planet-sign-composable-semantics-research-v1",
+                    "semantic_profile": "composable-symbolic-modern-v1",
+                    "claim_type": "sign_style",
+                    "applicability_scope": "sign_style",
+                    "applies_to_all": ["natal"],
+                    "fact_selector_ids": ["sun"],
+                },
+            ],
+            "unsupported_factors": [],
+        }
+        selection = select_evidence(run, typed, repo_root=ROOT)
+        claim_ids = {row["claim_id"] for row in selection["claim_requests"]}
+        self.assertEqual({"claim:planet-function:sun", "claim:sign-style:pisces"}, claim_ids)
+
+        handoff = build_handoff(run, selection_to_interpretation_request(selection), repo_root=ROOT)
+        self.assertEqual("ready_for_bounded_interpretation", handoff["status"])
+        self.assertEqual(2, len(handoff["selected_claims"]))
+        for claim in handoff["selected_claims"]:
+            self.assertEqual(["context:modern_contemporary"], claim["historical_context_refs"])
+
+    def test_planet_sign_registry_requires_explicit_semantic_profile(self):
+        run = run_request(load(NATAL_READING))
+        typed = {
+            "schema_name": "astrology_typed_evidence_selection_request",
+            "schema_version": "1.0.0",
+            "question_id": "typed-missing-semantic-profile",
+            "question": "Do not silently choose a planet-sign interpretation framework.",
+            "fact_selectors": [
+                {
+                    "selector_id": "sun",
+                    "selector_kind": "object",
+                    "bundle": "natal",
+                    "cardinality": "exactly_one",
+                    "object_id": "Sun",
+                    "object_type": "planet",
+                }
+            ],
+            "claim_selectors": [
+                {
+                    "selector_id": "sun-core",
+                    "registry_record_id": "planet-sign-composable-semantics-research-v1",
+                    "claim_type": "planet_function",
+                    "applicability_scope": "object_core",
+                    "applies_to_all": ["natal"],
+                    "fact_selector_ids": ["sun"],
+                }
+            ],
+        }
+        with self.assertRaisesRegex(AstrologyEvidenceSelectionError, "requires semantic_profile=composable-symbolic-modern-v1"):
             select_evidence(run, typed, repo_root=ROOT)
 
     def test_ambiguous_claim_selector_fails_closed(self):

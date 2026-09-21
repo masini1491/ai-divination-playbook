@@ -317,6 +317,8 @@ def _admit_claim(
         "normalized_statement": claim.get("normalized_statement"),
         "tradition_tags": claim.get("tradition_tags", []),
         "tradition_context_refs": claim.get("tradition_context_refs", []),
+        "historical_context_refs": claim.get("historical_context_refs", []),
+        "meta_context_refs": claim.get("meta_context_refs", []),
         "applies_to": claim.get("applies_to", []),
         "scope": claim.get("scope"),
         "confidence_status": claim.get("confidence_status"),

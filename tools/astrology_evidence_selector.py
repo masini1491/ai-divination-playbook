@@ -146,7 +146,7 @@ def _validate_request(data: Any) -> dict[str, Any]:
             raise AstrologyEvidenceSelectionError(f"{path} must be an object")
         _exact_keys(
             raw,
-            allowed={"selector_id", "registry_record_id", "claim_type", "applies_to_all", "tradition_context_refs_any", "fact_selector_ids", "applicability_scope"},
+            allowed={"selector_id", "registry_record_id", "claim_type", "applies_to_all", "tradition_context_refs_any", "fact_selector_ids", "applicability_scope", "semantic_profile"},
             required={"selector_id", "claim_type", "applies_to_all", "fact_selector_ids"},
             path=path,
         )
@@ -168,6 +168,7 @@ def _validate_request(data: Any) -> dict[str, Any]:
             "selector_id": selector_id,
             "claim_type": _text(raw["claim_type"], f"{path}.claim_type"),
             "applicability_scope": applicability_scope,
+            "semantic_profile": _text(raw["semantic_profile"], f"{path}.semantic_profile") if raw.get("semantic_profile") is not None else None,
             "applies_to_all": _string_list(raw["applies_to_all"], f"{path}.applies_to_all", allow_empty=False),
             "tradition_context_refs_any": _string_list(raw.get("tradition_context_refs_any", []), f"{path}.tradition_context_refs_any"),
             "fact_selector_ids": linked,
@@ -361,8 +362,21 @@ def _select_claims(registry_index: dict[str, dict[str, Any]], selector: dict[str
         candidates = [(requested_registry, registry_index[requested_registry])]
     else:
         candidates = sorted(registry_index.items())
+
+    requested_profile = selector.get("semantic_profile")
     matches: list[dict[str, str]] = []
     for registry_id, registry in candidates:
+        policy = registry.get("selection_policy", {})
+        required_profile = policy.get("required_semantic_profile") if isinstance(policy, dict) else None
+        if isinstance(required_profile, str) and required_profile:
+            if requested_profile != required_profile:
+                if requested_registry == registry_id:
+                    raise AstrologyEvidenceSelectionError(
+                        f"claim selector {selector['selector_id']} requires semantic_profile={required_profile} for registry {registry_id}"
+                    )
+                continue
+        elif requested_profile is not None:
+            continue
         for claim in registry.get("claims", []):
             if isinstance(claim, dict) and isinstance(claim.get("claim_id"), str) and _claim_matches(claim, selector, required_applicability):
                 matches.append({"registry_record_id": registry_id, "claim_id": claim["claim_id"]})

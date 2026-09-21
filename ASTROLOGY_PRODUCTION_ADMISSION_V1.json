@@ -268,6 +268,16 @@
     "exact_planet_sign_pair_meaning": "requires_separately_admitted_pair_specific_claim",
     "fixed_personality_template": "forbidden",
     "north_node_sign_interpretation": "not_admitted_without_separate_claim_family",
-    "source_binding": "typed_fact_applicability_required"
+    "source_binding": "typed_fact_applicability_required",
+    "semantic_profile_required_for_planet_sign_registry": "composable-symbolic-modern-v1",
+    "silent_default_semantic_profile": "forbidden",
+    "semantic_profiles": {
+      "composable-symbolic-modern-v1": {
+        "scope": "bounded composable planet-function + sign-style symbolic interpretation",
+        "historical_context": "context:modern_contemporary",
+        "doctrine_status": "project semantic profile, not a canonical astrology school",
+        "scientific_or_psychometric_validity": false
+      }
+    }
   }
 }
