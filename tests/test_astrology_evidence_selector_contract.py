@@ -30,6 +30,10 @@ class AstrologyEvidenceSelectorContractTests(unittest.TestCase):
         self.assertIn("claim_selectors", schema["required"])
         self.assertNotIn("fact_refs", schema["properties"])
         self.assertNotIn("claim_id", schema["properties"])
+        self.assertEqual(
+            ["selector_shape", "object_core", "sign_style", "object_sign_pair"],
+            schema["$defs"]["claim_selector"]["properties"]["applicability_scope"]["enum"],
+        )
 
     def test_selection_schema_declares_narrow_authority(self):
         schema = load(SELECTION_SCHEMA)
@@ -54,6 +58,15 @@ class AstrologyEvidenceSelectorContractTests(unittest.TestCase):
         self.assertFalse(selector["source_admission_authority"])
         self.assertFalse(selector["final_prose_authority"])
         self.assertFalse(selector["research_routing_contract_promoted"])
+        self.assertIn("planet-sign-composable-semantics-research-v1", manifest["admitted_research_registries"])
+        self.assertEqual(
+            "compose_admitted_planet_function_plus_sign_style_claims",
+            manifest["natal_semantic_policy"]["planet_sign_interpretation"],
+        )
+        self.assertEqual(
+            "not_admitted_without_separate_claim_family",
+            manifest["natal_semantic_policy"]["north_node_sign_interpretation"],
+        )
 
         research = RESEARCH_QUERY_CONTRACT.read_text(encoding="utf-8")
         self.assertIn("REFERENCE-ONLY", research)

@@ -218,7 +218,8 @@
     "remaining-house-axes-research-v1",
     "essential-dignity-expansion-research-v1",
     "transit-interpretation-research-v1",
-    "saturn-moon-major-aspects-research-v1"
+    "saturn-moon-major-aspects-research-v1",
+    "planet-sign-composable-semantics-research-v1"
   ],
   "qualified_only_registries": [
     "high-value-planet-aspects-research-v1"
@@ -261,5 +262,12 @@
     "decision": "admit_bounded_astrology_v1_with_typed_evidence_pipeline",
     "rationale": "Astrology Production v1 retains the existing natal/transit/place-resolution calculation path, runtime gates, exact-reference pipeline, interpretation handoff and output guard. It additionally admits a composition-only typed pipeline that inserts the bounded deterministic evidence selector between the admitted reading run and the existing handoff. The typed pipeline preserves explicit selection provenance and legacy exact-reference compatibility, while granting no free-text NLU, astrological-meaning, source-admission, final-prose, scientific-validity, or storage authority. The REFERENCE-ONLY query-resolution research stack remains non-production.",
     "scientific_predictive_validity_claimed": false
+  },
+  "natal_semantic_policy": {
+    "planet_sign_interpretation": "compose_admitted_planet_function_plus_sign_style_claims",
+    "exact_planet_sign_pair_meaning": "requires_separately_admitted_pair_specific_claim",
+    "fixed_personality_template": "forbidden",
+    "north_node_sign_interpretation": "not_admitted_without_separate_claim_family",
+    "source_binding": "typed_fact_applicability_required"
   }
 }

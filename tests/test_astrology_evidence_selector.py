@@ -131,6 +131,136 @@ class AstrologyEvidenceSelectorTests(unittest.TestCase):
             selection["claim_requests"][0]["claim_id"],
         )
 
+    def test_object_core_claim_binds_planet_identity_from_matched_fact(self):
+        run = run_request(load(NATAL_READING))
+        typed = {
+            "schema_name": "astrology_typed_evidence_selection_request",
+            "schema_version": "1.0.0",
+            "question_id": "typed-sun-core",
+            "question": "What bounded symbolic function is admitted for the Sun?",
+            "fact_selectors": [
+                {
+                    "selector_id": "sun",
+                    "selector_kind": "object",
+                    "bundle": "natal",
+                    "cardinality": "exactly_one",
+                    "object_id": "Sun",
+                    "object_type": "planet",
+                }
+            ],
+            "claim_selectors": [
+                {
+                    "selector_id": "sun-core",
+                    "registry_record_id": "planet-sign-composable-semantics-research-v1",
+                    "claim_type": "planet_function",
+                    "applicability_scope": "object_core",
+                    "applies_to_all": ["natal"],
+                    "fact_selector_ids": ["sun"],
+                }
+            ],
+        }
+        selection = select_evidence(run, typed, repo_root=ROOT)
+        self.assertEqual("claim:planet-function:sun", selection["claim_requests"][0]["claim_id"])
+        handoff = build_handoff(run, selection_to_interpretation_request(selection), repo_root=ROOT)
+        self.assertEqual("ready_for_bounded_interpretation", handoff["status"])
+
+    def test_sign_style_claim_binds_actual_sign_without_caller_copying_it(self):
+        run = run_request(load(NATAL_READING))
+        sun = next(row for row in run["fact_bundles"]["natal"]["facts"]["objects"] if row.get("object_id") == "Sun")
+        typed = {
+            "schema_name": "astrology_typed_evidence_selection_request",
+            "schema_version": "1.0.0",
+            "question_id": "typed-sun-sign",
+            "question": "What bounded sign style is admitted for the Sun's actual sign?",
+            "fact_selectors": [
+                {
+                    "selector_id": "sun",
+                    "selector_kind": "object",
+                    "bundle": "natal",
+                    "cardinality": "exactly_one",
+                    "object_id": "Sun",
+                    "object_type": "planet",
+                }
+            ],
+            "claim_selectors": [
+                {
+                    "selector_id": "sun-sign-style",
+                    "registry_record_id": "planet-sign-composable-semantics-research-v1",
+                    "claim_type": "sign_style",
+                    "applicability_scope": "sign_style",
+                    "applies_to_all": ["natal"],
+                    "fact_selector_ids": ["sun"],
+                }
+            ],
+        }
+        selection = select_evidence(run, typed, repo_root=ROOT)
+        expected = "claim:sign-style:" + sun["sign"].lower()
+        self.assertEqual(expected, selection["claim_requests"][0]["claim_id"])
+
+    def test_sign_style_cannot_be_redirected_to_wrong_sign_by_caller(self):
+        run = run_request(load(NATAL_READING))
+        sun = next(row for row in run["fact_bundles"]["natal"]["facts"]["objects"] if row.get("object_id") == "Sun")
+        wrong = next(sign for sign in ["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"] if sign != sun["sign"])
+        typed = {
+            "schema_name": "astrology_typed_evidence_selection_request",
+            "schema_version": "1.0.0",
+            "question_id": "typed-wrong-sign",
+            "question": "Try to bind the Sun to a wrong sign meaning.",
+            "fact_selectors": [
+                {
+                    "selector_id": "sun",
+                    "selector_kind": "object",
+                    "bundle": "natal",
+                    "cardinality": "exactly_one",
+                    "object_id": "Sun",
+                    "object_type": "planet",
+                }
+            ],
+            "claim_selectors": [
+                {
+                    "selector_id": "wrong-sign",
+                    "registry_record_id": "planet-sign-composable-semantics-research-v1",
+                    "claim_type": "sign_style",
+                    "applicability_scope": "sign_style",
+                    "applies_to_all": ["natal", wrong],
+                    "fact_selector_ids": ["sun"],
+                }
+            ],
+        }
+        with self.assertRaisesRegex(AstrologyEvidenceSelectionError, "matched no admitted claims"):
+            select_evidence(run, typed, repo_root=ROOT)
+
+    def test_north_node_does_not_inherit_planet_sign_semantics(self):
+        run = run_request(load(NATAL_READING))
+        typed = {
+            "schema_name": "astrology_typed_evidence_selection_request",
+            "schema_version": "1.0.0",
+            "question_id": "typed-node-sign",
+            "question": "Do not silently treat the North Node as a planet semantic claim.",
+            "fact_selectors": [
+                {
+                    "selector_id": "node",
+                    "selector_kind": "object",
+                    "bundle": "natal",
+                    "cardinality": "exactly_one",
+                    "object_id": "NorthNode",
+                    "object_type": "point",
+                }
+            ],
+            "claim_selectors": [
+                {
+                    "selector_id": "node-sign",
+                    "registry_record_id": "planet-sign-composable-semantics-research-v1",
+                    "claim_type": "sign_style",
+                    "applicability_scope": "sign_style",
+                    "applies_to_all": ["natal"],
+                    "fact_selector_ids": ["node"],
+                }
+            ],
+        }
+        with self.assertRaisesRegex(AstrologyEvidenceSelectionError, "requires planet object facts"):
+            select_evidence(run, typed, repo_root=ROOT)
+
     def test_ambiguous_claim_selector_fails_closed(self):
         run = run_request(load(NATAL_READING))
         typed = natal_typed_request()
