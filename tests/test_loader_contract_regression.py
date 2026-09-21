@@ -30,7 +30,7 @@ class LoaderContractRegressionTests(unittest.TestCase):
         selected = set(self.regression.selected_scenarios(ROOT))
         declared = set(self.regression.CONTRACTS)
         self.assertEqual(selected, declared)
-        self.assertEqual(len(selected), 10)
+        self.assertEqual(len(selected), 11)
 
 
 if __name__ == "__main__":
