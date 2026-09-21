@@ -78,3 +78,22 @@ All claims retain cautions:
 Companion registry:
 
 `planet_sign_composable_semantics_claim_family_registry.json`
+
+
+## Corrective production selection boundary
+
+The reviewed modules are a modern/contemporary reference implementation with blended source-local tags. The project taxonomy intentionally does **not** treat broad `modern` or `blended` labels as a canonical doctrine.
+
+Therefore production use of this registry requires an explicit project semantic profile:
+
+```text
+semantic_profile = composable-symbolic-modern-v1
+```
+
+This profile is a bounded project synthesis setting, **not** a named astrology school and not a scientific/psychometric model. Every claim is additionally scoped with:
+
+```text
+historical_context_refs = [context:modern_contemporary]
+```
+
+A typed request that omits or mismatches the required profile fails closed. This prevents the registry from becoming a silent default tradition when the user has not selected an interpretive framework.

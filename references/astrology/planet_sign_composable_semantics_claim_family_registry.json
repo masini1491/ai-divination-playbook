@@ -115,7 +115,10 @@
         "Symbolic interpretation is not scientific personality measurement or diagnosis.",
         "Do not turn a planet function into a fixed trait without the admitted sign fact and the user's question."
       ],
-      "storage_origin": "project-authored normalized paraphrase"
+      "storage_origin": "project-authored normalized paraphrase",
+      "historical_context_refs": [
+        "context:modern_contemporary"
+      ]
     },
     {
       "claim_id": "claim:planet-function:moon",
@@ -146,7 +149,10 @@
         "Symbolic interpretation is not scientific personality measurement or diagnosis.",
         "Do not turn a planet function into a fixed trait without the admitted sign fact and the user's question."
       ],
-      "storage_origin": "project-authored normalized paraphrase"
+      "storage_origin": "project-authored normalized paraphrase",
+      "historical_context_refs": [
+        "context:modern_contemporary"
+      ]
     },
     {
       "claim_id": "claim:planet-function:mercury",
@@ -177,7 +183,10 @@
         "Symbolic interpretation is not scientific personality measurement or diagnosis.",
         "Do not turn a planet function into a fixed trait without the admitted sign fact and the user's question."
       ],
-      "storage_origin": "project-authored normalized paraphrase"
+      "storage_origin": "project-authored normalized paraphrase",
+      "historical_context_refs": [
+        "context:modern_contemporary"
+      ]
     },
     {
       "claim_id": "claim:planet-function:venus",
@@ -208,7 +217,10 @@
         "Symbolic interpretation is not scientific personality measurement or diagnosis.",
         "Do not turn a planet function into a fixed trait without the admitted sign fact and the user's question."
       ],
-      "storage_origin": "project-authored normalized paraphrase"
+      "storage_origin": "project-authored normalized paraphrase",
+      "historical_context_refs": [
+        "context:modern_contemporary"
+      ]
     },
     {
       "claim_id": "claim:planet-function:mars",
@@ -239,7 +251,10 @@
         "Symbolic interpretation is not scientific personality measurement or diagnosis.",
         "Do not turn a planet function into a fixed trait without the admitted sign fact and the user's question."
       ],
-      "storage_origin": "project-authored normalized paraphrase"
+      "storage_origin": "project-authored normalized paraphrase",
+      "historical_context_refs": [
+        "context:modern_contemporary"
+      ]
     },
     {
       "claim_id": "claim:planet-function:jupiter",
@@ -270,7 +285,10 @@
         "Symbolic interpretation is not scientific personality measurement or diagnosis.",
         "Do not turn a planet function into a fixed trait without the admitted sign fact and the user's question."
       ],
-      "storage_origin": "project-authored normalized paraphrase"
+      "storage_origin": "project-authored normalized paraphrase",
+      "historical_context_refs": [
+        "context:modern_contemporary"
+      ]
     },
     {
       "claim_id": "claim:planet-function:saturn",
@@ -301,7 +319,10 @@
         "Symbolic interpretation is not scientific personality measurement or diagnosis.",
         "Do not turn a planet function into a fixed trait without the admitted sign fact and the user's question."
       ],
-      "storage_origin": "project-authored normalized paraphrase"
+      "storage_origin": "project-authored normalized paraphrase",
+      "historical_context_refs": [
+        "context:modern_contemporary"
+      ]
     },
     {
       "claim_id": "claim:planet-function:uranus",
@@ -332,7 +353,10 @@
         "Symbolic interpretation is not scientific personality measurement or diagnosis.",
         "Do not turn a planet function into a fixed trait without the admitted sign fact and the user's question."
       ],
-      "storage_origin": "project-authored normalized paraphrase"
+      "storage_origin": "project-authored normalized paraphrase",
+      "historical_context_refs": [
+        "context:modern_contemporary"
+      ]
     },
     {
       "claim_id": "claim:planet-function:neptune",
@@ -363,7 +387,10 @@
         "Symbolic interpretation is not scientific personality measurement or diagnosis.",
         "Do not turn a planet function into a fixed trait without the admitted sign fact and the user's question."
       ],
-      "storage_origin": "project-authored normalized paraphrase"
+      "storage_origin": "project-authored normalized paraphrase",
+      "historical_context_refs": [
+        "context:modern_contemporary"
+      ]
     },
     {
       "claim_id": "claim:planet-function:pluto",
@@ -394,7 +421,10 @@
         "Symbolic interpretation is not scientific personality measurement or diagnosis.",
         "Do not turn a planet function into a fixed trait without the admitted sign fact and the user's question."
       ],
-      "storage_origin": "project-authored normalized paraphrase"
+      "storage_origin": "project-authored normalized paraphrase",
+      "historical_context_refs": [
+        "context:modern_contemporary"
+      ]
     },
     {
       "claim_id": "claim:sign-style:aries",
@@ -425,7 +455,10 @@
         "A sign style is not a complete personality template.",
         "Avoid stereotype substitution; combine only with the actual admitted planet fact and other available evidence."
       ],
-      "storage_origin": "project-authored normalized paraphrase"
+      "storage_origin": "project-authored normalized paraphrase",
+      "historical_context_refs": [
+        "context:modern_contemporary"
+      ]
     },
     {
       "claim_id": "claim:sign-style:taurus",
@@ -456,7 +489,10 @@
         "A sign style is not a complete personality template.",
         "Avoid stereotype substitution; combine only with the actual admitted planet fact and other available evidence."
       ],
-      "storage_origin": "project-authored normalized paraphrase"
+      "storage_origin": "project-authored normalized paraphrase",
+      "historical_context_refs": [
+        "context:modern_contemporary"
+      ]
     },
     {
       "claim_id": "claim:sign-style:gemini",
@@ -487,7 +523,10 @@
         "A sign style is not a complete personality template.",
         "Avoid stereotype substitution; combine only with the actual admitted planet fact and other available evidence."
       ],
-      "storage_origin": "project-authored normalized paraphrase"
+      "storage_origin": "project-authored normalized paraphrase",
+      "historical_context_refs": [
+        "context:modern_contemporary"
+      ]
     },
     {
       "claim_id": "claim:sign-style:cancer",
@@ -518,7 +557,10 @@
         "A sign style is not a complete personality template.",
         "Avoid stereotype substitution; combine only with the actual admitted planet fact and other available evidence."
       ],
-      "storage_origin": "project-authored normalized paraphrase"
+      "storage_origin": "project-authored normalized paraphrase",
+      "historical_context_refs": [
+        "context:modern_contemporary"
+      ]
     },
     {
       "claim_id": "claim:sign-style:leo",
@@ -549,7 +591,10 @@
         "A sign style is not a complete personality template.",
         "Avoid stereotype substitution; combine only with the actual admitted planet fact and other available evidence."
       ],
-      "storage_origin": "project-authored normalized paraphrase"
+      "storage_origin": "project-authored normalized paraphrase",
+      "historical_context_refs": [
+        "context:modern_contemporary"
+      ]
     },
     {
       "claim_id": "claim:sign-style:virgo",
@@ -580,7 +625,10 @@
         "A sign style is not a complete personality template.",
         "Avoid stereotype substitution; combine only with the actual admitted planet fact and other available evidence."
       ],
-      "storage_origin": "project-authored normalized paraphrase"
+      "storage_origin": "project-authored normalized paraphrase",
+      "historical_context_refs": [
+        "context:modern_contemporary"
+      ]
     },
     {
       "claim_id": "claim:sign-style:libra",
@@ -611,7 +659,10 @@
         "A sign style is not a complete personality template.",
         "Avoid stereotype substitution; combine only with the actual admitted planet fact and other available evidence."
       ],
-      "storage_origin": "project-authored normalized paraphrase"
+      "storage_origin": "project-authored normalized paraphrase",
+      "historical_context_refs": [
+        "context:modern_contemporary"
+      ]
     },
     {
       "claim_id": "claim:sign-style:scorpio",
@@ -642,7 +693,10 @@
         "A sign style is not a complete personality template.",
         "Avoid stereotype substitution; combine only with the actual admitted planet fact and other available evidence."
       ],
-      "storage_origin": "project-authored normalized paraphrase"
+      "storage_origin": "project-authored normalized paraphrase",
+      "historical_context_refs": [
+        "context:modern_contemporary"
+      ]
     },
     {
       "claim_id": "claim:sign-style:sagittarius",
@@ -673,7 +727,10 @@
         "A sign style is not a complete personality template.",
         "Avoid stereotype substitution; combine only with the actual admitted planet fact and other available evidence."
       ],
-      "storage_origin": "project-authored normalized paraphrase"
+      "storage_origin": "project-authored normalized paraphrase",
+      "historical_context_refs": [
+        "context:modern_contemporary"
+      ]
     },
     {
       "claim_id": "claim:sign-style:capricorn",
@@ -704,7 +761,10 @@
         "A sign style is not a complete personality template.",
         "Avoid stereotype substitution; combine only with the actual admitted planet fact and other available evidence."
       ],
-      "storage_origin": "project-authored normalized paraphrase"
+      "storage_origin": "project-authored normalized paraphrase",
+      "historical_context_refs": [
+        "context:modern_contemporary"
+      ]
     },
     {
       "claim_id": "claim:sign-style:aquarius",
@@ -735,7 +795,10 @@
         "A sign style is not a complete personality template.",
         "Avoid stereotype substitution; combine only with the actual admitted planet fact and other available evidence."
       ],
-      "storage_origin": "project-authored normalized paraphrase"
+      "storage_origin": "project-authored normalized paraphrase",
+      "historical_context_refs": [
+        "context:modern_contemporary"
+      ]
     },
     {
       "claim_id": "claim:sign-style:pisces",
@@ -766,7 +829,10 @@
         "A sign style is not a complete personality template.",
         "Avoid stereotype substitution; combine only with the actual admitted planet fact and other available evidence."
       ],
-      "storage_origin": "project-authored normalized paraphrase"
+      "storage_origin": "project-authored normalized paraphrase",
+      "historical_context_refs": [
+        "context:modern_contemporary"
+      ]
     }
   ],
   "conflict_groups": [],
@@ -784,5 +850,11 @@
   "privacy": {
     "contains_real_birth_data": false,
     "fixture_type": "source-evidence registry only"
+  },
+  "selection_policy": {
+    "required_semantic_profile": "composable-symbolic-modern-v1",
+    "silent_default_allowed": false,
+    "profile_kind": "project_semantic_profile_not_tradition",
+    "rationale": "The reviewed source is a modern/blended reference implementation; broad modern/blended tags are not canonical doctrine selectors."
   }
 }

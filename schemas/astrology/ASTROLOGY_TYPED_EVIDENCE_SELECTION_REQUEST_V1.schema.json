@@ -358,6 +358,11 @@
           ],
           "default": "selector_shape",
           "description": "Controls which applicability tags are derived deterministically from matched facts. object_core binds object_id; sign_style binds the admitted sign from a planet fact; object_sign_pair binds both. Omitted preserves legacy selector-shape binding."
+        },
+        "semantic_profile": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Explicit project semantic profile required by registries that forbid silent default interpretation frameworks."
         }
       }
     },
