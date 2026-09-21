@@ -26,6 +26,7 @@ SELECTION_SCHEMA_VERSION = "1.0.0"
 SELECTOR_ID = "astrology-typed-evidence-selector-v1"
 SELECTOR_VERSION = "1.0.0"
 PRODUCTION_MANIFEST_PATH = "ASTROLOGY_PRODUCTION_ADMISSION_V1.json"
+APPLICABILITY_SCOPES = {"selector_shape", "object_core", "sign_style", "object_sign_pair"}
 HOUSE_NAMES = {
     1: "first house", 2: "second house", 3: "third house", 4: "fourth house",
     5: "fifth house", 6: "sixth house", 7: "seventh house", 8: "eighth house",
@@ -145,7 +146,7 @@ def _validate_request(data: Any) -> dict[str, Any]:
             raise AstrologyEvidenceSelectionError(f"{path} must be an object")
         _exact_keys(
             raw,
-            allowed={"selector_id", "registry_record_id", "claim_type", "applies_to_all", "tradition_context_refs_any", "fact_selector_ids"},
+            allowed={"selector_id", "registry_record_id", "claim_type", "applies_to_all", "tradition_context_refs_any", "fact_selector_ids", "applicability_scope"},
             required={"selector_id", "claim_type", "applies_to_all", "fact_selector_ids"},
             path=path,
         )
@@ -154,6 +155,11 @@ def _validate_request(data: Any) -> dict[str, Any]:
             raise AstrologyEvidenceSelectionError(f"duplicate claim selector_id: {selector_id}")
         claim_selector_ids.add(selector_id)
         linked = _string_list(raw["fact_selector_ids"], f"{path}.fact_selector_ids", allow_empty=False)
+        applicability_scope = raw.get("applicability_scope", "selector_shape")
+        if applicability_scope not in APPLICABILITY_SCOPES:
+            raise AstrologyEvidenceSelectionError(
+                f"{path}.applicability_scope must be one of {sorted(APPLICABILITY_SCOPES)}"
+            )
         unknown = sorted(set(linked) - fact_selector_ids)
         if unknown:
             raise AstrologyEvidenceSelectionError(f"{path}.fact_selector_ids contains unknown selector(s): {', '.join(unknown)}")
@@ -161,6 +167,7 @@ def _validate_request(data: Any) -> dict[str, Any]:
             **raw,
             "selector_id": selector_id,
             "claim_type": _text(raw["claim_type"], f"{path}.claim_type"),
+            "applicability_scope": applicability_scope,
             "applies_to_all": _string_list(raw["applies_to_all"], f"{path}.applies_to_all", allow_empty=False),
             "tradition_context_refs_any": _string_list(raw.get("tradition_context_refs_any", []), f"{path}.tradition_context_refs_any"),
             "fact_selector_ids": linked,
@@ -258,6 +265,55 @@ def _selector_applicability(selector: dict[str, Any]) -> set[str]:
         tags.add({"transit_to_natal": "transit-to-natal", "station": "station", "ingress": "ingress"}[event_kind])
         if event_kind == "transit_to_natal":
             tags.add("exact passage")
+    return tags
+
+
+def _fact_bound_applicability(
+    run: dict[str, Any],
+    selector: dict[str, Any],
+    refs: list[dict[str, str]],
+    applicability_scope: str,
+) -> set[str]:
+    if applicability_scope == "selector_shape":
+        return _selector_applicability(selector)
+    if selector["selector_kind"] != "object":
+        raise AstrologyEvidenceSelectionError(
+            f"applicability_scope={applicability_scope} requires object fact selectors"
+        )
+
+    bundle = selector["bundle"]
+    rows_by_id = {
+        row["fact_id"]: row
+        for row in _bundle_rows(run, bundle, "objects")
+        if isinstance(row.get("fact_id"), str)
+    }
+    rows = [rows_by_id.get(ref["fact_id"]) for ref in refs]
+    if not rows or any(not isinstance(row, dict) for row in rows):
+        raise AstrologyEvidenceSelectionError(
+            f"object applicability binding could not resolve matched facts for selector {selector['selector_id']}"
+        )
+
+    tags = {bundle}
+    if applicability_scope in {"object_core", "object_sign_pair"}:
+        object_ids = {row.get("object_id") for row in rows if isinstance(row.get("object_id"), str)}
+        if len(object_ids) != 1:
+            raise AstrologyEvidenceSelectionError(
+                f"object applicability binding requires one stable object_id for selector {selector['selector_id']}"
+            )
+        tags.update(object_ids)
+
+    if applicability_scope in {"sign_style", "object_sign_pair"}:
+        if any(row.get("object_type") != "planet" for row in rows):
+            raise AstrologyEvidenceSelectionError(
+                f"applicability_scope={applicability_scope} requires planet object facts"
+            )
+        signs = {row.get("sign") for row in rows if isinstance(row.get("sign"), str) and row.get("sign")}
+        if len(signs) != 1:
+            raise AstrologyEvidenceSelectionError(
+                f"sign applicability binding requires one admitted sign for selector {selector['selector_id']}"
+            )
+        tags.update(signs)
+
     return tags
 
 
@@ -370,8 +426,16 @@ def select_evidence(reading_run: Any, typed_request: Any, *, repo_root: Path | N
         linked_ids = selector["fact_selector_ids"]
         linked_refs = _dedupe_fact_refs([ref for selector_id in linked_ids for ref in refs_by_selector[selector_id]])
         required_applicability: set[str] = set()
+        applicability_scope = selector["applicability_scope"]
         for selector_id in linked_ids:
-            required_applicability.update(_selector_applicability(selectors_by_id[selector_id]))
+            required_applicability.update(
+                _fact_bound_applicability(
+                    run,
+                    selectors_by_id[selector_id],
+                    refs_by_selector[selector_id],
+                    applicability_scope,
+                )
+            )
         matches = _select_claims(registries, selector, required_applicability)
         provenance_refs: list[dict[str, str]] = []
         for match in matches:

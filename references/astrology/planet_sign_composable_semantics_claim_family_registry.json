@@ -1,0 +1,788 @@
+{
+  "schema_name": "interpretation_claim_registry",
+  "schema_version": "0.2.0-research",
+  "record_status": "REFERENCE-ONLY",
+  "record_kind": "interpretation_claim_family_registry",
+  "record_id": "planet-sign-composable-semantics-research-v1",
+  "claim_family": "composable planet functions and sign styles",
+  "production_routable": false,
+  "retrieval_preconditions": {
+    "requires_l2_facts": true,
+    "requires_l3_policy": true
+  },
+  "sources": [
+    {
+      "source_id": "source:wvanderen-planet-sign-bounded-modules",
+      "title": "Bounded planet and sign interpretation modules",
+      "author_or_org": "wvanderen/astrology-skill contributors",
+      "source_role": "REFERENCE_IMPLEMENTATION",
+      "source_kind": "repository",
+      "tradition_tags": [
+        "retrieval_first",
+        "classical",
+        "modern",
+        "blended"
+      ],
+      "immutable_revision": "a9339b3c7151313530aa5002572c6612a2cfd59f",
+      "locator": [
+        "references/planets/sun.md",
+        "references/planets/moon.md",
+        "references/planets/mercury.md",
+        "references/planets/venus.md",
+        "references/planets/mars.md",
+        "references/planets/jupiter.md",
+        "references/planets/saturn.md",
+        "references/planets/uranus.md",
+        "references/planets/neptune.md",
+        "references/planets/pluto.md",
+        "references/signs/aries.md",
+        "references/signs/taurus.md",
+        "references/signs/gemini.md",
+        "references/signs/cancer.md",
+        "references/signs/leo.md",
+        "references/signs/virgo.md",
+        "references/signs/libra.md",
+        "references/signs/scorpio.md",
+        "references/signs/sagittarius.md",
+        "references/signs/capricorn.md",
+        "references/signs/aquarius.md",
+        "references/signs/pisces.md"
+      ],
+      "language": "English",
+      "license_status": "verified_permissive",
+      "license_identifier": "MIT",
+      "copyright_status": "copyrighted",
+      "storage_mode": [
+        "metadata_plus_locator",
+        "normalized_paraphrase"
+      ],
+      "verification_status": [
+        "identity_verified",
+        "revision_verified",
+        "license_verified",
+        "locator_verified"
+      ],
+      "admission_status": [
+        "CLAIM_ELIGIBLE"
+      ],
+      "admission_scope": [
+        "bounded planet core symbolic functions",
+        "bounded sign-expression styles",
+        "retrieval-first compositional interpretation architecture"
+      ],
+      "excluded_scope": [
+        "scientific predictive validity",
+        "clinical or psychometric personality assessment",
+        "fixed personality templates",
+        "North Node sign interpretation",
+        "automatic promotion of the external repository as project policy authority"
+      ],
+      "independence_status": "derivative_practitioner_synthesis",
+      "derivative_relationship": "Reviewed modules combine historical source notes with implementation-authored synthesis; this registry stores only project-authored normalized paraphrases.",
+      "notes": [
+        "The external repository remains REFERENCE-ONLY at repository level; CLAIM_ELIGIBLE here is limited to the reviewed bounded claims and locators.",
+        "Exact planet-in-sign pair modules are not promoted wholesale; pair-specific meaning requires separate admission."
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "claim:planet-function:sun",
+      "layer": "L4",
+      "claim_type": "planet_function",
+      "normalized_statement": "The Sun is used as a symbolic function for conscious purpose, visibility, creative agency, leadership, and the organizing center of identity.",
+      "source_refs": [
+        "source:wvanderen-planet-sign-bounded-modules"
+      ],
+      "source_locator_refs": [
+        "references/planets/sun.md"
+      ],
+      "tradition_tags": [
+        "retrieval_first",
+        "symbolic",
+        "modern_or_blended"
+      ],
+      "tradition_context_refs": [],
+      "applies_to": [
+        "natal",
+        "Sun"
+      ],
+      "scope": "bounded symbolic planet function for natal interpretation",
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": [],
+      "cautions": [
+        "Symbolic interpretation is not scientific personality measurement or diagnosis.",
+        "Do not turn a planet function into a fixed trait without the admitted sign fact and the user's question."
+      ],
+      "storage_origin": "project-authored normalized paraphrase"
+    },
+    {
+      "claim_id": "claim:planet-function:moon",
+      "layer": "L4",
+      "claim_type": "planet_function",
+      "normalized_statement": "The Moon is used as a symbolic function for needs, emotional responsiveness, habit, memory, care, belonging, and felt regulation.",
+      "source_refs": [
+        "source:wvanderen-planet-sign-bounded-modules"
+      ],
+      "source_locator_refs": [
+        "references/planets/moon.md"
+      ],
+      "tradition_tags": [
+        "retrieval_first",
+        "symbolic",
+        "modern_or_blended"
+      ],
+      "tradition_context_refs": [],
+      "applies_to": [
+        "natal",
+        "Moon"
+      ],
+      "scope": "bounded symbolic planet function for natal interpretation",
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": [],
+      "cautions": [
+        "Symbolic interpretation is not scientific personality measurement or diagnosis.",
+        "Do not turn a planet function into a fixed trait without the admitted sign fact and the user's question."
+      ],
+      "storage_origin": "project-authored normalized paraphrase"
+    },
+    {
+      "claim_id": "claim:planet-function:mercury",
+      "layer": "L4",
+      "claim_type": "planet_function",
+      "normalized_statement": "Mercury is used as a symbolic function for thinking, communication, learning, exchange, interpretation, comparison, and technical mediation.",
+      "source_refs": [
+        "source:wvanderen-planet-sign-bounded-modules"
+      ],
+      "source_locator_refs": [
+        "references/planets/mercury.md"
+      ],
+      "tradition_tags": [
+        "retrieval_first",
+        "symbolic",
+        "modern_or_blended"
+      ],
+      "tradition_context_refs": [],
+      "applies_to": [
+        "natal",
+        "Mercury"
+      ],
+      "scope": "bounded symbolic planet function for natal interpretation",
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": [],
+      "cautions": [
+        "Symbolic interpretation is not scientific personality measurement or diagnosis.",
+        "Do not turn a planet function into a fixed trait without the admitted sign fact and the user's question."
+      ],
+      "storage_origin": "project-authored normalized paraphrase"
+    },
+    {
+      "claim_id": "claim:planet-function:venus",
+      "layer": "L4",
+      "claim_type": "planet_function",
+      "normalized_statement": "Venus is used as a symbolic function for attraction, values, affection, harmony, aesthetics, pleasure, and relational bonding.",
+      "source_refs": [
+        "source:wvanderen-planet-sign-bounded-modules"
+      ],
+      "source_locator_refs": [
+        "references/planets/venus.md"
+      ],
+      "tradition_tags": [
+        "retrieval_first",
+        "symbolic",
+        "modern_or_blended"
+      ],
+      "tradition_context_refs": [],
+      "applies_to": [
+        "natal",
+        "Venus"
+      ],
+      "scope": "bounded symbolic planet function for natal interpretation",
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": [],
+      "cautions": [
+        "Symbolic interpretation is not scientific personality measurement or diagnosis.",
+        "Do not turn a planet function into a fixed trait without the admitted sign fact and the user's question."
+      ],
+      "storage_origin": "project-authored normalized paraphrase"
+    },
+    {
+      "claim_id": "claim:planet-function:mars",
+      "layer": "L4",
+      "claim_type": "planet_function",
+      "normalized_statement": "Mars is used as a symbolic function for assertion, action, desire, defense, competition, conflict, pressure, and directed effort.",
+      "source_refs": [
+        "source:wvanderen-planet-sign-bounded-modules"
+      ],
+      "source_locator_refs": [
+        "references/planets/mars.md"
+      ],
+      "tradition_tags": [
+        "retrieval_first",
+        "symbolic",
+        "modern_or_blended"
+      ],
+      "tradition_context_refs": [],
+      "applies_to": [
+        "natal",
+        "Mars"
+      ],
+      "scope": "bounded symbolic planet function for natal interpretation",
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": [],
+      "cautions": [
+        "Symbolic interpretation is not scientific personality measurement or diagnosis.",
+        "Do not turn a planet function into a fixed trait without the admitted sign fact and the user's question."
+      ],
+      "storage_origin": "project-authored normalized paraphrase"
+    },
+    {
+      "claim_id": "claim:planet-function:jupiter",
+      "layer": "L4",
+      "claim_type": "planet_function",
+      "normalized_statement": "Jupiter is used as a symbolic function for growth, perspective, belief, teaching, generosity, protection, opportunity, and meaningful expansion.",
+      "source_refs": [
+        "source:wvanderen-planet-sign-bounded-modules"
+      ],
+      "source_locator_refs": [
+        "references/planets/jupiter.md"
+      ],
+      "tradition_tags": [
+        "retrieval_first",
+        "symbolic",
+        "modern_or_blended"
+      ],
+      "tradition_context_refs": [],
+      "applies_to": [
+        "natal",
+        "Jupiter"
+      ],
+      "scope": "bounded symbolic planet function for natal interpretation",
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": [],
+      "cautions": [
+        "Symbolic interpretation is not scientific personality measurement or diagnosis.",
+        "Do not turn a planet function into a fixed trait without the admitted sign fact and the user's question."
+      ],
+      "storage_origin": "project-authored normalized paraphrase"
+    },
+    {
+      "claim_id": "claim:planet-function:saturn",
+      "layer": "L4",
+      "claim_type": "planet_function",
+      "normalized_statement": "Saturn is used as a symbolic function for limits, responsibility, discipline, endurance, structure, consequence, maturity, and long-range work.",
+      "source_refs": [
+        "source:wvanderen-planet-sign-bounded-modules"
+      ],
+      "source_locator_refs": [
+        "references/planets/saturn.md"
+      ],
+      "tradition_tags": [
+        "retrieval_first",
+        "symbolic",
+        "modern_or_blended"
+      ],
+      "tradition_context_refs": [],
+      "applies_to": [
+        "natal",
+        "Saturn"
+      ],
+      "scope": "bounded symbolic planet function for natal interpretation",
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": [],
+      "cautions": [
+        "Symbolic interpretation is not scientific personality measurement or diagnosis.",
+        "Do not turn a planet function into a fixed trait without the admitted sign fact and the user's question."
+      ],
+      "storage_origin": "project-authored normalized paraphrase"
+    },
+    {
+      "claim_id": "claim:planet-function:uranus",
+      "layer": "L4",
+      "claim_type": "planet_function",
+      "normalized_statement": "Within modern astrology, Uranus is used as a symbolic function for disruption, liberation, experimentation, originality, independence, and breaks with established patterns.",
+      "source_refs": [
+        "source:wvanderen-planet-sign-bounded-modules"
+      ],
+      "source_locator_refs": [
+        "references/planets/uranus.md"
+      ],
+      "tradition_tags": [
+        "retrieval_first",
+        "symbolic",
+        "modern_or_blended"
+      ],
+      "tradition_context_refs": [],
+      "applies_to": [
+        "natal",
+        "Uranus"
+      ],
+      "scope": "bounded symbolic planet function for natal interpretation",
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": [],
+      "cautions": [
+        "Symbolic interpretation is not scientific personality measurement or diagnosis.",
+        "Do not turn a planet function into a fixed trait without the admitted sign fact and the user's question."
+      ],
+      "storage_origin": "project-authored normalized paraphrase"
+    },
+    {
+      "claim_id": "claim:planet-function:neptune",
+      "layer": "L4",
+      "claim_type": "planet_function",
+      "normalized_statement": "Within modern astrology, Neptune is used as a symbolic function for imagination, permeability, idealization, compassion, longing, dissolution, and sensitivity to diffuse or collective material.",
+      "source_refs": [
+        "source:wvanderen-planet-sign-bounded-modules"
+      ],
+      "source_locator_refs": [
+        "references/planets/neptune.md"
+      ],
+      "tradition_tags": [
+        "retrieval_first",
+        "symbolic",
+        "modern_or_blended"
+      ],
+      "tradition_context_refs": [],
+      "applies_to": [
+        "natal",
+        "Neptune"
+      ],
+      "scope": "bounded symbolic planet function for natal interpretation",
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": [],
+      "cautions": [
+        "Symbolic interpretation is not scientific personality measurement or diagnosis.",
+        "Do not turn a planet function into a fixed trait without the admitted sign fact and the user's question."
+      ],
+      "storage_origin": "project-authored normalized paraphrase"
+    },
+    {
+      "claim_id": "claim:planet-function:pluto",
+      "layer": "L4",
+      "claim_type": "planet_function",
+      "normalized_statement": "Within modern astrology, Pluto is used as a symbolic function for intensity, hidden power, compulsion, survival, exposure, control, regeneration, and deep transformation.",
+      "source_refs": [
+        "source:wvanderen-planet-sign-bounded-modules"
+      ],
+      "source_locator_refs": [
+        "references/planets/pluto.md"
+      ],
+      "tradition_tags": [
+        "retrieval_first",
+        "symbolic",
+        "modern_or_blended"
+      ],
+      "tradition_context_refs": [],
+      "applies_to": [
+        "natal",
+        "Pluto"
+      ],
+      "scope": "bounded symbolic planet function for natal interpretation",
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": [],
+      "cautions": [
+        "Symbolic interpretation is not scientific personality measurement or diagnosis.",
+        "Do not turn a planet function into a fixed trait without the admitted sign fact and the user's question."
+      ],
+      "storage_origin": "project-authored normalized paraphrase"
+    },
+    {
+      "claim_id": "claim:sign-style:aries",
+      "layer": "L4",
+      "claim_type": "sign_style",
+      "normalized_statement": "Aries is used as an initiating, direct, heated and action-oriented style of expression; it describes style, not a complete personality.",
+      "source_refs": [
+        "source:wvanderen-planet-sign-bounded-modules"
+      ],
+      "source_locator_refs": [
+        "references/signs/aries.md"
+      ],
+      "tradition_tags": [
+        "retrieval_first",
+        "symbolic",
+        "modern_or_blended"
+      ],
+      "tradition_context_refs": [],
+      "applies_to": [
+        "natal",
+        "Aries"
+      ],
+      "scope": "bounded sign-expression style for natal interpretation",
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": [],
+      "cautions": [
+        "A sign style is not a complete personality template.",
+        "Avoid stereotype substitution; combine only with the actual admitted planet fact and other available evidence."
+      ],
+      "storage_origin": "project-authored normalized paraphrase"
+    },
+    {
+      "claim_id": "claim:sign-style:taurus",
+      "layer": "L4",
+      "claim_type": "sign_style",
+      "normalized_statement": "Taurus is used as a steady, conserving, embodied and sustaining style of expression; it describes style, not a complete personality.",
+      "source_refs": [
+        "source:wvanderen-planet-sign-bounded-modules"
+      ],
+      "source_locator_refs": [
+        "references/signs/taurus.md"
+      ],
+      "tradition_tags": [
+        "retrieval_first",
+        "symbolic",
+        "modern_or_blended"
+      ],
+      "tradition_context_refs": [],
+      "applies_to": [
+        "natal",
+        "Taurus"
+      ],
+      "scope": "bounded sign-expression style for natal interpretation",
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": [],
+      "cautions": [
+        "A sign style is not a complete personality template.",
+        "Avoid stereotype substitution; combine only with the actual admitted planet fact and other available evidence."
+      ],
+      "storage_origin": "project-authored normalized paraphrase"
+    },
+    {
+      "claim_id": "claim:sign-style:gemini",
+      "layer": "L4",
+      "claim_type": "sign_style",
+      "normalized_statement": "Gemini is used as a mobile, connective, comparative, linguistic and information-oriented style of expression; it describes style, not a complete personality.",
+      "source_refs": [
+        "source:wvanderen-planet-sign-bounded-modules"
+      ],
+      "source_locator_refs": [
+        "references/signs/gemini.md"
+      ],
+      "tradition_tags": [
+        "retrieval_first",
+        "symbolic",
+        "modern_or_blended"
+      ],
+      "tradition_context_refs": [],
+      "applies_to": [
+        "natal",
+        "Gemini"
+      ],
+      "scope": "bounded sign-expression style for natal interpretation",
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": [],
+      "cautions": [
+        "A sign style is not a complete personality template.",
+        "Avoid stereotype substitution; combine only with the actual admitted planet fact and other available evidence."
+      ],
+      "storage_origin": "project-authored normalized paraphrase"
+    },
+    {
+      "claim_id": "claim:sign-style:cancer",
+      "layer": "L4",
+      "claim_type": "sign_style",
+      "normalized_statement": "Cancer is used as a protective, responsive, memory-oriented and care-centered style of expression; it describes style, not a complete personality.",
+      "source_refs": [
+        "source:wvanderen-planet-sign-bounded-modules"
+      ],
+      "source_locator_refs": [
+        "references/signs/cancer.md"
+      ],
+      "tradition_tags": [
+        "retrieval_first",
+        "symbolic",
+        "modern_or_blended"
+      ],
+      "tradition_context_refs": [],
+      "applies_to": [
+        "natal",
+        "Cancer"
+      ],
+      "scope": "bounded sign-expression style for natal interpretation",
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": [],
+      "cautions": [
+        "A sign style is not a complete personality template.",
+        "Avoid stereotype substitution; combine only with the actual admitted planet fact and other available evidence."
+      ],
+      "storage_origin": "project-authored normalized paraphrase"
+    },
+    {
+      "claim_id": "claim:sign-style:leo",
+      "layer": "L4",
+      "claim_type": "sign_style",
+      "normalized_statement": "Leo is used as an expressive, sustained, visible and creatively self-authoring style of expression; it describes style, not a complete personality.",
+      "source_refs": [
+        "source:wvanderen-planet-sign-bounded-modules"
+      ],
+      "source_locator_refs": [
+        "references/signs/leo.md"
+      ],
+      "tradition_tags": [
+        "retrieval_first",
+        "symbolic",
+        "modern_or_blended"
+      ],
+      "tradition_context_refs": [],
+      "applies_to": [
+        "natal",
+        "Leo"
+      ],
+      "scope": "bounded sign-expression style for natal interpretation",
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": [],
+      "cautions": [
+        "A sign style is not a complete personality template.",
+        "Avoid stereotype substitution; combine only with the actual admitted planet fact and other available evidence."
+      ],
+      "storage_origin": "project-authored normalized paraphrase"
+    },
+    {
+      "claim_id": "claim:sign-style:virgo",
+      "layer": "L4",
+      "claim_type": "sign_style",
+      "normalized_statement": "Virgo is used as a discriminating, practical, refining, analytical and technique-oriented style of expression; it describes style, not a complete personality.",
+      "source_refs": [
+        "source:wvanderen-planet-sign-bounded-modules"
+      ],
+      "source_locator_refs": [
+        "references/signs/virgo.md"
+      ],
+      "tradition_tags": [
+        "retrieval_first",
+        "symbolic",
+        "modern_or_blended"
+      ],
+      "tradition_context_refs": [],
+      "applies_to": [
+        "natal",
+        "Virgo"
+      ],
+      "scope": "bounded sign-expression style for natal interpretation",
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": [],
+      "cautions": [
+        "A sign style is not a complete personality template.",
+        "Avoid stereotype substitution; combine only with the actual admitted planet fact and other available evidence."
+      ],
+      "storage_origin": "project-authored normalized paraphrase"
+    },
+    {
+      "claim_id": "claim:sign-style:libra",
+      "layer": "L4",
+      "claim_type": "sign_style",
+      "normalized_statement": "Libra is used as a relational, evaluative, balancing, diplomatic and proportion-seeking style of expression; it describes style, not a complete personality.",
+      "source_refs": [
+        "source:wvanderen-planet-sign-bounded-modules"
+      ],
+      "source_locator_refs": [
+        "references/signs/libra.md"
+      ],
+      "tradition_tags": [
+        "retrieval_first",
+        "symbolic",
+        "modern_or_blended"
+      ],
+      "tradition_context_refs": [],
+      "applies_to": [
+        "natal",
+        "Libra"
+      ],
+      "scope": "bounded sign-expression style for natal interpretation",
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": [],
+      "cautions": [
+        "A sign style is not a complete personality template.",
+        "Avoid stereotype substitution; combine only with the actual admitted planet fact and other available evidence."
+      ],
+      "storage_origin": "project-authored normalized paraphrase"
+    },
+    {
+      "claim_id": "claim:sign-style:scorpio",
+      "layer": "L4",
+      "claim_type": "sign_style",
+      "normalized_statement": "Scorpio is used as a concentrated, protective, intense, depth-oriented and consequence-aware style of expression; it describes style, not a complete personality.",
+      "source_refs": [
+        "source:wvanderen-planet-sign-bounded-modules"
+      ],
+      "source_locator_refs": [
+        "references/signs/scorpio.md"
+      ],
+      "tradition_tags": [
+        "retrieval_first",
+        "symbolic",
+        "modern_or_blended"
+      ],
+      "tradition_context_refs": [],
+      "applies_to": [
+        "natal",
+        "Scorpio"
+      ],
+      "scope": "bounded sign-expression style for natal interpretation",
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": [],
+      "cautions": [
+        "A sign style is not a complete personality template.",
+        "Avoid stereotype substitution; combine only with the actual admitted planet fact and other available evidence."
+      ],
+      "storage_origin": "project-authored normalized paraphrase"
+    },
+    {
+      "claim_id": "claim:sign-style:sagittarius",
+      "layer": "L4",
+      "claim_type": "sign_style",
+      "normalized_statement": "Sagittarius is used as an expansive, exploratory, meaning-seeking, teaching and horizon-oriented style of expression; it describes style, not a complete personality.",
+      "source_refs": [
+        "source:wvanderen-planet-sign-bounded-modules"
+      ],
+      "source_locator_refs": [
+        "references/signs/sagittarius.md"
+      ],
+      "tradition_tags": [
+        "retrieval_first",
+        "symbolic",
+        "modern_or_blended"
+      ],
+      "tradition_context_refs": [],
+      "applies_to": [
+        "natal",
+        "Sagittarius"
+      ],
+      "scope": "bounded sign-expression style for natal interpretation",
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": [],
+      "cautions": [
+        "A sign style is not a complete personality template.",
+        "Avoid stereotype substitution; combine only with the actual admitted planet fact and other available evidence."
+      ],
+      "storage_origin": "project-authored normalized paraphrase"
+    },
+    {
+      "claim_id": "claim:sign-style:capricorn",
+      "layer": "L4",
+      "claim_type": "sign_style",
+      "normalized_statement": "Capricorn is used as a structured, strategic, disciplined, responsibility-oriented and constraint-aware style of expression; it describes style, not a complete personality.",
+      "source_refs": [
+        "source:wvanderen-planet-sign-bounded-modules"
+      ],
+      "source_locator_refs": [
+        "references/signs/capricorn.md"
+      ],
+      "tradition_tags": [
+        "retrieval_first",
+        "symbolic",
+        "modern_or_blended"
+      ],
+      "tradition_context_refs": [],
+      "applies_to": [
+        "natal",
+        "Capricorn"
+      ],
+      "scope": "bounded sign-expression style for natal interpretation",
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": [],
+      "cautions": [
+        "A sign style is not a complete personality template.",
+        "Avoid stereotype substitution; combine only with the actual admitted planet fact and other available evidence."
+      ],
+      "storage_origin": "project-authored normalized paraphrase"
+    },
+    {
+      "claim_id": "claim:sign-style:aquarius",
+      "layer": "L4",
+      "claim_type": "sign_style",
+      "normalized_statement": "Aquarius is used as a conceptual, systemic, principled, network-oriented and pattern-focused style of expression; it describes style, not a complete personality.",
+      "source_refs": [
+        "source:wvanderen-planet-sign-bounded-modules"
+      ],
+      "source_locator_refs": [
+        "references/signs/aquarius.md"
+      ],
+      "tradition_tags": [
+        "retrieval_first",
+        "symbolic",
+        "modern_or_blended"
+      ],
+      "tradition_context_refs": [],
+      "applies_to": [
+        "natal",
+        "Aquarius"
+      ],
+      "scope": "bounded sign-expression style for natal interpretation",
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": [],
+      "cautions": [
+        "A sign style is not a complete personality template.",
+        "Avoid stereotype substitution; combine only with the actual admitted planet fact and other available evidence."
+      ],
+      "storage_origin": "project-authored normalized paraphrase"
+    },
+    {
+      "claim_id": "claim:sign-style:pisces",
+      "layer": "L4",
+      "claim_type": "sign_style",
+      "normalized_statement": "Pisces is used as a porous, imaginal, compassionate, adaptive and boundary-sensitive style of expression; it describes style, not a complete personality.",
+      "source_refs": [
+        "source:wvanderen-planet-sign-bounded-modules"
+      ],
+      "source_locator_refs": [
+        "references/signs/pisces.md"
+      ],
+      "tradition_tags": [
+        "retrieval_first",
+        "symbolic",
+        "modern_or_blended"
+      ],
+      "tradition_context_refs": [],
+      "applies_to": [
+        "natal",
+        "Pisces"
+      ],
+      "scope": "bounded sign-expression style for natal interpretation",
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": [],
+      "cautions": [
+        "A sign style is not a complete personality template.",
+        "Avoid stereotype substitution; combine only with the actual admitted planet fact and other available evidence."
+      ],
+      "storage_origin": "project-authored normalized paraphrase"
+    }
+  ],
+  "conflict_groups": [],
+  "lineage_rules": [
+    "Fact geometry and sign assignment remain owned by the deterministic Astrology provider/runtime.",
+    "Planet-function and sign-style claims are composed only after typed fact applicability binding.",
+    "A retrieval miss never permits model-memory invention.",
+    "North Node semantics remain unsupported until separately sourced and admitted."
+  ],
+  "research_result": {
+    "production_authority_granted": false,
+    "scientific_predictive_validity_claimed": false,
+    "architecture_reference": "wvanderen/astrology-skill uses planet modules plus sign modules with sparse exact-placement modules; immanuel-python and tri-horoscope keep chart facts structurally separate from interpretation."
+  },
+  "privacy": {
+    "contains_real_birth_data": false,
+    "fixture_type": "source-evidence registry only"
+  }
+}
