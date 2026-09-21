@@ -48,6 +48,18 @@ class ChatGPTLoadPackTests(unittest.TestCase):
         self.assertNotIn("runtime_fast_path", profile["fragments"])
         self.assertNotIn("ordinary_routing", profile["fragments"])
 
+    def test_bootstrap_fragment_contains_shared_activation_gate(self):
+        pack = self.builder.build_pack(ROOT)
+        bootstrap = pack["fragments"]["bootstrap"]
+        self.assertIn(
+            "## Shared Development Playbook Activation Gate｜共通上位規則啟用條件",
+            bootstrap["sections"],
+        )
+        self.assertIn(
+            "ordinary use → **project-native; no extra load**",
+            bootstrap["content"],
+        )
+
     def test_pack_contains_verbatim_sections_not_generated_policy(self):
         pack = self.builder.build_pack(ROOT)
         for fragment in pack["fragments"].values():

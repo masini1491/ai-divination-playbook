@@ -20,6 +20,7 @@ FRAGMENT_SPECS = {
     "bootstrap": {
         "owner": "CHAT_INIT.md",
         "sections": [
+            "## Shared Development Playbook Activation Gate｜共通上位規則啟用條件",
             "## Default Interaction Profile｜只給 Repo 也能直接使用",
             "## ChatGPT Load Pack Fast Path｜one retrieval cache",
         ],
