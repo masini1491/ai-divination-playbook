@@ -235,6 +235,29 @@ CONTRACTS: dict[str, list[tuple[str, tuple[str, ...]]]] = {
             ),
         )
     ],
+    "TAROT-BEH-022": [
+        (
+            "CHAT_INIT.md",
+            (
+                "Shared Development Playbook Activation Gate｜共通上位規則啟用條件",
+                "ordinary use → **project-native; no extra load**",
+                "maintenance / governance / GitHub / validation → resolve baseline exact",
+            ),
+        ),
+        (
+            "tools/build_chatgpt_load_pack.py",
+            (
+                "## Shared Development Playbook Activation Gate｜共通上位規則啟用條件",
+            ),
+        ),
+        (
+            "CHATGPT_LOAD_PACK.json",
+            (
+                "Shared Development Playbook Activation Gate｜共通上位規則啟用條件",
+                "ordinary use → **project-native; no extra load**",
+            ),
+        ),
+    ],
     "TAROT-BEH-018": [
         (
             "RESEARCH_ROUTING.md",
