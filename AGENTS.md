@@ -1,7 +1,11 @@
 # AGENTS.md
 ## Baseline
-`masini1491/ai-development-playbook@main`
+Shared AI Development Playbook: `masini1491/ai-development-playbook`
+Playbook baseline: `main`
 Project AI mode: ChatGPT-Only
+
+Shared reporting contract: declared Playbook baseline → `REPORTING.md`
+Applicability: substantive user-facing engineering / repository-maintenance replies only; activation-independent and does not replace `CHATGPT_OUTPUT.md` for divination question delivery or interpretation output.
 ## 儲存庫用途與權威
 
 本儲存庫是可重用、公開的 AI 占卜方法與治理 Playbook，涵蓋 method routing、Input Contract／Question Design、Tarot／Meihua／Liuyao／Astrology、Runtime Draw / Cast、deterministic fact providers、Reading lifecycle／record、cross-validation 與 ChatGPT output governance。
