@@ -44,7 +44,7 @@ class AstrologyProductionContractTests(unittest.TestCase):
         data = json.loads((ROOT / "ASTROLOGY_PROVIDER_ADMISSION_V1.json").read_text(encoding="utf-8"))
         self.assertEqual("astrology_provider_admission", data["schema_name"])
         self.assertEqual("PRODUCTION_ADMITTED", data["status"])
-        self.assertEqual(["natal"], data["scope"])
+        self.assertEqual(["natal", "natal_unknown_time_invariant_signs"], data["scope"])
         self.assertEqual("astronomy-engine", data["dependency"]["package"])
         self.assertEqual("2.1.19", data["dependency"]["version"])
         self.assertEqual("MIT", data["dependency"]["license"])
