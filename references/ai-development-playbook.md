@@ -6,7 +6,7 @@ Declared baseline：`main`
 
 Project AI mode：`ChatGPT-Only`
 
-Last reviewed source revision：`178a8d7d7d1d289c16434af80f21bdc5ab71496b`
+Last reviewed source revision：`433270d0d6c4a0ed993f6bd547e01e5538ae8731`
 
 Relationship：**common AI engineering baseline + conditional activation**。這不是 divination method authority，也不是要求 ordinary reading 每次載入 shared Playbook。
 
@@ -44,6 +44,7 @@ Shared `REPORTING.md` 是窄化的 adoption-level exception：substantive user-f
 - AI Context / hot-cold / retrieval-cost governance；
 - shared actor / host-adapter engineering semantics；
 - substantive engineering reporting presentation / timestamp / pre-send contract → upstream `REPORTING.md`；
+- cross-boundary revision continuity / consumer-side revision reconciliation → upstream `AI_CONTEXT.md` → `Cross-boundary Revision Continuity`；本 Repo `SESSION_HANDOFF.md` 只作 project-native session-handoff adapter，保存 `observed_head`／current-HEAD rehydration 等最低充分 mapping，不重定義 generic revision-continuity semantics；
 - generic inference-egress mechanics仍由 upstream說明，但本 Repo的 private-context disclosure boundary由 local governance直接擁有。
 
 若本 Repo需要更嚴限制或 project-specific mapping，才在 local governance明確寫 override；未寫 override的共通 engineering rule在 shared activation scope內依 declared baseline處理。
