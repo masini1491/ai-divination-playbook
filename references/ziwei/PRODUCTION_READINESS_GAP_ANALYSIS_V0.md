@@ -113,13 +113,14 @@ Production admission is a separate explicit decision after evidence from precedi
 
 ## ChatGPT-direct continuation
 
-Under current ChatGPT-Only mode, the following readiness work can proceed without crossing production authority:
+The currently admitted ChatGPT-direct readiness closures are complete:
 
-1. readiness matrix reconciliation after each closure.
+- G2 production-schema candidate design — **CLOSED — RESEARCH**;
+- G5 executable behavioral validation — **CLOSED — RESEARCH**;
+- G6 uncertainty/safety delivery contract — **CLOSED — RESEARCH**;
+- readiness owner reconciliation — **CLOSED — RESEARCH**.
 
-Production-schema candidate design and uncertainty/safety delivery contract are **CLOSED — RESEARCH**.
-
-Executable behavioral validation over the admitted fixtures is **CLOSED — RESEARCH**.
+There is no remaining automatically admitted ChatGPT-direct readiness Stage. Further work requires a new current-scope decision rather than continuing by inertia.
 
 The following remain separate gates:
 
@@ -128,3 +129,15 @@ The following remain separate gates:
 - admitting dynamic calculation/claims;
 - production implementation/admission;
 - ordinary routing integration.
+
+## Next decision gate
+
+Before production-oriented implementation can continue, the project must explicitly choose the intended minimum product scope:
+
+```text
+A. bounded natal first layer only
+B. broader contextual natal interpretation
+C. natal + dynamic interpretation
+```
+
+That choice determines whether G3 claim expansion and dynamic runtime are material blockers. Regardless of A/B/C, G1 still requires an admitted calculation runtime/provider; brightness profile selection is required only when admitted behavior depends on brightness-sensitive facts. Production admission and ordinary routing remain separate later gates.
