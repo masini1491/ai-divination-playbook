@@ -21,6 +21,9 @@ Brightness interpretation responsibility  CLOSED — RESEARCH
 Project-wide brightness table             NOT SELECTED
 Four-Transformation interpretation         CLOSED — RESEARCH
 Minor-star admission taxonomy              CLOSED — RESEARCH
+Temporal-context interpretation             CLOSED — RESEARCH
+Dynamic calculation/runtime                NOT ADMITTED
+Dynamic claim corpus                       NOT ADMITTED
 Production runtime                        NOT ADMITTED
 Production routing                        NOT ADMITTED
 Scientific validity                       NOT CLAIMED
@@ -97,6 +100,10 @@ The current first-layer closure does not make every deferred interpretation item
 ## Minor-star taxonomy follow-up
 
 `MINOR_STAR_ADMISSION_TAXONOMY_V0.md` closes auxiliary-star prioritization without pretending the full long-tail corpus is admitted. 左輔／右弼／文昌／文曲 are the first eligible auxiliary subjects; higher-impact modifier candidates still require source/profile closure, and cycle/flow identities remain owned by temporal/dynamic research.
+
+## Temporal-context follow-up
+
+`TEMPORAL_CONTEXT_INTERPRETATION_RESEARCH_V0.md` closes scope/provenance responsibilities for natal, decadal, yearly, monthly, daily and hourly interpretation. It does not admit a dynamic chart runtime or flow claim corpus. Existing `natal_baseline` claims must not be silently promoted into current-period forecasts.
 
 ## Batch 1 follow-up
 

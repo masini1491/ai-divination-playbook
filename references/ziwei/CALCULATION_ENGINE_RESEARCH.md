@@ -24,7 +24,7 @@ D13 Interpretation claims
 D14 Validation / admission
 ```
 
-第一階段以 D0–D6、D10、D12、D14 為主。D13 的 architecture / source-policy / runtime-facing contracts v0 已完成 research admission；完整 claim corpus 仍未 admission。D9 的 interpretation responsibility 已 research-closed，但 project-wide brightness table/profile 尚未選定；D7/D11 保持後續研究。
+第一階段以 D0–D6、D10、D12、D14 為主。D13 的 architecture / source-policy / runtime-facing contracts v0 已完成 research admission；完整 claim corpus 仍未 admission。D9 的 interpretation responsibility 已 research-closed，但 project-wide brightness table/profile 尚未選定；D7 依 bounded taxonomy 路由。D11 的 interpretation responsibility 已 research-closed，但 deterministic dynamic-chart runtime/provider 尚未 admission。
 
 ## Normalized architecture
 
@@ -172,6 +172,20 @@ iztro 已分 `yearDivide` / `horoscopeDivide`；ziwei-lite 再細分 palace-stem
 
 分類：`PROFILE_VARIANT`；future schema 應 per-subsystem。
 
+### Temporal / dynamic context
+
+Interpretation responsibility is owned by `TEMPORAL_CONTEXT_INTERPRETATION_RESEARCH_V0.md`. Current reference implementations demonstrate distinct natal/decadal/yearly/monthly/daily/hourly scopes and configurable flow boundaries, but implementation capability is not itself project admission.
+
+Research contract：
+
+```text
+natal / decadal / yearly / monthly / daily / hourly = distinct scopes
+dynamic fact = profile/boundary/provenance bound
+missing dynamic layer = do not infer
+natal claim != automatic flow prediction
+dynamic calculation runtime/provider = not admitted
+```
+
 ### Decadal
 
 Implementation convergence 與 historical witness agreement 必須分開。
@@ -257,10 +271,11 @@ Canonical owners：
 
 ## Remaining research gaps
 
-1. dynamic charts；
-2. auxiliary-star source/claim admission by the bounded taxonomy when materially needed；
-3. project-wide brightness table/profile selection（only after source/profile reconciliation or explicit project design decision）；
-4. machine-readable full claim registry and source-normalized claim admission；
-5. 上述兩個明確 image gaps（只有取得可驗證 facsimile 時才重開）。
+1. deterministic dynamic-chart calculation/runtime admission；
+2. dynamic source-normalized claim admission when materially needed；
+3. auxiliary-star source/claim admission by the bounded taxonomy when materially needed；
+4. project-wide brightness table/profile selection（only after source/profile reconciliation or explicit project design decision）；
+5. machine-readable full claim registry and source-normalized claim admission；
+6. 上述兩個明確 image gaps（只有取得可驗證 facsimile 時才重開）。
 
 Interpretation Architecture v0 的完成不建立 production provider、production runtime、ordinary routing 或 canonical production profile。
