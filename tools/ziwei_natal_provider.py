@@ -125,7 +125,7 @@ def calculate_scope_a_natal(data: NormalizedNatalInput) -> dict[str,Any]:
     facts.extend(f"star_present:{s}" for s in MAJOR_STARS)
     return {
         "schema_version":"0.1.0",
-        "provider":{"id":PROVIDER_ID,"version":PROVIDER_VERSION,"authority":"SCOPE-A G1 NATAL CANDIDATE"},
+        "provider":{"id":PROVIDER_ID,"version":PROVIDER_VERSION,"authority":"G1 ADMITTED — SCOPE-A NATAL / NOT G7 PRODUCTION ADMISSION"},
         "calculation_profile":{
             "profile_id":PROFILE_ID,
             "research_parent":RESEARCH_PROFILE,
