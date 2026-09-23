@@ -144,6 +144,19 @@
       "casting_entrypoint": "core.execute_stochastic"
     },
     {
+      "id": "method.ziwei",
+      "owner": "ZIWEI.md",
+      "kind": "contract",
+      "activation": "explicit-request-only",
+      "scope": "natal_baseline",
+      "pipeline": "tools/ziwei_scope_a_pipeline.py",
+      "natal_provider": "tools/ziwei_natal_provider.py",
+      "admission_manifest": "ZIWEI_PRODUCTION_ADMISSION_V1.json",
+      "interpretation_profile": "ziwei.interpretation.tw_v1",
+      "claim_count": 52,
+      "research_owner": "references/ziwei/README.md"
+    },
+    {
       "id": "method.astrology",
       "owner": "ASTROLOGY.md",
       "kind": "contract",
@@ -257,7 +270,7 @@
         "owner": "CHAT_INIT.md",
         "heading": "## Default Interaction Profile｜只給 Repo 也能直接使用",
         "start_line": 27,
-        "end_line": 81,
+        "end_line": 85,
         "next_heading": "## ChatGPT Load Pack Fast Path｜one retrieval cache"
       },
       "explicit_astrology.routing_scope": {
@@ -270,8 +283,8 @@
       "explicit_research.intent_gate": {
         "owner": "RESEARCH_ROUTING.md",
         "heading": "## Explicit Research Intent Gate｜明確研究意圖",
-        "start_line": 98,
-        "end_line": 121,
+        "start_line": 102,
+        "end_line": 125,
         "next_heading": "## Ordinary Reading Boundary｜普通占問邊界"
       },
       "research.astrology.scope": {
@@ -311,6 +324,9 @@
       },
       "continuation_stochastic": {
         "followup": "READING_LIFECYCLE.md → selected method owner"
+      },
+      "explicit_ziwei": {
+        "followup": "ZIWEI.md"
       }
     },
     "bypass_profiles": {
