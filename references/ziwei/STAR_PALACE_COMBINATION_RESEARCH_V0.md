@@ -82,8 +82,8 @@ Decision:
 star×palace research policy = CLOSED — RESEARCH
 exhaustive matrix = NOT REQUIRED
 sparse source-explicit override families = FUTURE ON-DEMAND
-executable retrieval/composition = SEPARATE GATE
+executable retrieval/composition = ADMITTED — RESEARCH-ONLY V0
 production authority = false
 ```
 
-This does not establish scientific predictive validity or production interpretation authority.
+`EXECUTABLE_RETRIEVAL_COMPOSITION_V0.md` subsequently admitted a bounded research-only selector/composer over the first-layer corpus. This does not establish scientific predictive validity or production interpretation authority.

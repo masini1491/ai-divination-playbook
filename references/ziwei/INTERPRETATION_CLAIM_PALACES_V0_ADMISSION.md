@@ -72,4 +72,4 @@ palaces     = 12 subjects / 24 claims
 combined    = 26 subjects / 52 claims
 ```
 
-This closes first-layer star + palace coverage only. It does not complete star×palace combinations, brightness, minor stars, Four-Transformation interpretation families, dynamic timing, or production runtime.
+This closes first-layer star + palace coverage only. At this Stage, star×palace policy, brightness, minor-star, Four-Transformation, temporal-context and executable-composition follow-ups were not yet closed. Subsequent research closed those responsibility/taxonomy questions and admitted bounded natal first-layer executable retrieval/composition; auxiliary-star claims, dynamic claims/runtime and production remain unadmitted.

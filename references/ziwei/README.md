@@ -151,7 +151,7 @@ named school / preset 可以組合 components，但 component identity 與 prove
 combined = 52 first-layer claims
 ```
 
-在目前 `Project AI mode: ChatGPT-Only` 下，下列 deferred 項目屬於可由 ChatGPT 直接承接的 **research / evidence / schema / admission candidates**：
+在目前 `Project AI mode: ChatGPT-Only` 下，以下清單保存曾由 ChatGPT 直接承接的 **research / evidence / schema / admission continuation stages**；目前均已 closure：
 
 1. `star×palace` combination-family research — **CLOSED — RESEARCH**；
 2. brightness interpretation-family research — **CLOSED — RESEARCH**；
@@ -161,7 +161,7 @@ combined = 52 first-layer claims
 
 這份清單目前已全部完成 research closure。它只保存 **eligible continuation candidates 與 actor suitability**，不是自動啟動的 roadmap、Hot backlog 或 production commitment。只有使用者明確要求繼續 Zi Wei research line，或 current canonical trigger 另行 admission 該 scope 時，才開始其中一項；每個新 Stage 仍須依 current work 重新判斷最低充分 actor，不得因前一 Stage 曾使用其他 actor 而慣性 handoff。
 
-上述 ChatGPT-side research 可做 source reconciliation、claim normalization、conflict preservation、schema/admission design 與 bounded fixture/evidence work；不得由此推導為已取得 executable 或 production authority。
+上述 ChatGPT-side research 可做 source reconciliation、claim normalization、conflict preservation、schema/admission design 與 bounded fixture/evidence work。Executable retrieval/composition 已另行取得 **RESEARCH-ONLY V0** admission；不得由此推導為 production authority。
 
 仍需分開 gate 的後續包括：
 

@@ -99,8 +99,8 @@ scope taxonomy                           = CLOSED — RESEARCH
 dynamic fact provenance contract         = CLOSED — RESEARCH
 dynamic calculation runtime/provider     = NOT ADMITTED
 dynamic claim corpus                     = NOT ADMITTED
-executable retrieval/composition         = SEPARATE GATE
+executable retrieval/composition         = ADMITTED — RESEARCH-ONLY V0
 production authority                     = false
 ```
 
-This closes the ChatGPT-side research continuation list without creating a Zi Wei production runtime or executable interpretation engine.
+This closes the ChatGPT-side temporal research continuation without creating a Zi Wei production runtime or dynamic interpretation corpus. A bounded natal first-layer executable selector/composer was subsequently admitted by `EXECUTABLE_RETRIEVAL_COMPOSITION_V0.md`; it does not admit dynamic claims.
