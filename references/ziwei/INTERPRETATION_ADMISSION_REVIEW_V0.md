@@ -50,7 +50,7 @@ This is a source-policy preset, not a claim that one school is objectively corre
 
 ## What is not admitted
 
-The bounded fourteen-star and twelve-palace prototypes were sufficient to test schema/composition behavior. They are not a canonical machine-readable claim registry. Do not infer `prototype discussed → claim admitted`, `source found → project default`, or `benchmark answer → doctrine truth`.
+The earlier fourteen-star and twelve-palace prototypes were sufficient to test schema/composition behavior. Their first-layer star and palace subsets are now admitted as machine-readable research registries, but the full contextual claim corpus remains incomplete. Do not infer `prototype discussed → all claims admitted`, `source found → project default`, or `benchmark answer → doctrine truth`.
 
 ## Material conflict identities
 
