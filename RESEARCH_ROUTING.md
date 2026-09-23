@@ -51,6 +51,29 @@ Astrology research v1 已完成並保留歷史 evidence。它**不因 production
 
 這是 production reading intent，**不要進本 research router**，直接交給 `ASTROLOGY.md`。
 
+### Zi Wei Dou Shu / 紫微斗數
+
+Owner：[`references/ziwei/README.md`](references/ziwei/README.md)
+
+Intent examples：
+
+```text
+紫微斗數 calculation / source / tradition research
+比較不同排盤 engine / 四化 / 閏月 / 子時 / 年界規則
+維護 Zi Wei evidence / profile / validation architecture
+研究一般使用者載入 ChatGPT 後的 default profile
+```
+
+Current authority：
+
+```text
+REFERENCE-ONLY / RESEARCH-ONLY / NOT PRODUCTION-ROUTABLE
+```
+
+目前只建立 deterministic calculation、source/tradition、profile divergence 與 future admission 的研究架構。研究 default candidate 以「一般使用者載入 ChatGPT 後的主觀貼合／命中感」為產品目標之一，但 Tarot 覆核只屬 research decision evidence；**不等於科學驗證、客觀預測效度或唯一正統來源**。
+
+不得因本 research line 已有 default candidate，就加入 `METHOD_ROUTING.md`、ordinary auto-selection、production cross-validation 或 production runtime。
+
 ### Palmistry
 
 Owner：[`references/palmistry/README.md`](references/palmistry/README.md)
@@ -77,6 +100,7 @@ REFERENCE-ONLY / DRAFT / NOT PRODUCTION-ROUTABLE
 只有下列情形進本 router：
 
 - 使用者明確要求 Astrology **research**、來源／架構／evidence／repo 維護；
+- 使用者明確指定 Zi Wei Dou Shu／紫微斗數 research line；
 - 使用者明確指定 Palmistry／手相 research line；
 - 使用者要求維護、驗證、比較或繼續上述 research dossier；
 - machine consumer 已由 `PLAYBOOK_INDEX.json` 命中 `research.*` capability。
@@ -126,7 +150,7 @@ CHAT_INIT.md
 → Astrology Fact Gate
 ```
 
-Palmistry 仍不得因有 research dossier而成為 ordinary auto-routing candidate。
+Zi Wei Dou Shu 與 Palmistry 仍不得因有 research dossier而成為 ordinary auto-routing candidate。
 
 ## Research Routing ≠ Production Admission
 
