@@ -1,0 +1,58 @@
+{
+  "schema_name": "ziwei_brightness_production_admission",
+  "schema_version": "1.0.0",
+  "method": "ZiWei",
+  "module": "brightness_v1",
+  "status": "PRODUCTION_ADMITTED_OPTIONAL",
+  "activation": "explicit_brightness_or_dignity_request_only",
+  "default_scope_unchanged": true,
+  "parent_admission": "ZIWEI_PRODUCTION_ADMISSION_V1.json",
+  "scope": {
+    "temporal_scope": "natal_baseline",
+    "major_star_subjects": 14,
+    "admitted_claims_added": 0,
+    "behavior": "unlock existing admitted dignity-dependent claim applicability only"
+  },
+  "calculation": {
+    "provider_id": "ziwei-brightness-iztro-python",
+    "provider_version": "1.0.0",
+    "runtime_owner": "tools/ziwei_brightness_provider.py",
+    "profile_id": "ziwei.brightness.iztro_v1",
+    "profile_kind": "named_implementation_profile",
+    "source_repository": "SylarLong/iztro",
+    "source_revision": "2c7ef9be669df7b19d1799f4dce335fed3794f78",
+    "source_path": "src/data/stars.ts",
+    "historical_uniqueness_claimed": false
+  },
+  "pipeline": {
+    "pipeline_id": "ziwei-scope-a-brightness-production-pipeline-v1",
+    "pipeline_version": "1.0.0",
+    "runtime_owner": "tools/ziwei_brightness_pipeline.py",
+    "parent_pipeline": "tools/ziwei_scope_a_pipeline.py"
+  },
+  "interpretation": {
+    "new_claim_corpus": false,
+    "brightness_only_doctrine": false,
+    "generic_miao_good_xian_bad_rule": false,
+    "admitted_behavior": "existing Scope-A claims only"
+  },
+  "fail_closed": [
+    "explicit_optional_activation_required",
+    "profile_identity_and_provenance_required",
+    "unknown_brightness_omits_dependent_claim",
+    "no_model_memory_brightness_table",
+    "no_cross_profile_averaging",
+    "no_new_doctrine_from_label_only"
+  ],
+  "unsupported_scopes": [
+    "auxiliary_minor_star_interpretation",
+    "four_transformation_interpretation",
+    "decadal",
+    "yearly",
+    "monthly",
+    "daily",
+    "hourly",
+    "dynamic_prediction"
+  ],
+  "scientific_predictive_validity_claimed": false
+}

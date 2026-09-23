@@ -154,7 +154,17 @@
       "admission_manifest": "ZIWEI_PRODUCTION_ADMISSION_V1.json",
       "interpretation_profile": "ziwei.interpretation.tw_v1",
       "claim_count": 52,
-      "research_owner": "references/ziwei/README.md"
+      "research_owner": "references/ziwei/README.md",
+      "optional_modules": {
+        "brightness_v1": {
+          "activation": "explicit-brightness-or-dignity-request-only",
+          "pipeline": "tools/ziwei_brightness_pipeline.py",
+          "provider": "tools/ziwei_brightness_provider.py",
+          "admission_manifest": "ZIWEI_BRIGHTNESS_ADMISSION_V1.json",
+          "profile_id": "ziwei.brightness.iztro_v1",
+          "admitted_claims_added": 0
+        }
+      }
     },
     {
       "id": "method.astrology",
