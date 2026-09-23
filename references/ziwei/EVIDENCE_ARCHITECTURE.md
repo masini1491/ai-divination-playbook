@@ -71,7 +71,7 @@ Baseline Core Fact Set 在 matched profile 下目前可研究：
 - subsystem year boundaries
 - Heaven / Earth / Human chart mode
 - many auxiliary/minor stars — route through `MINOR_STAR_ADMISSION_TAXONOMY_V0.md`; taxonomy does not itself admit facts/claims
-- dynamic month/day/hour charts
+- dynamic month/day/hour charts — interpretation responsibility is closed by `TEMPORAL_CONTEXT_INTERPRETATION_RESEARCH_V0.md`; deterministic dynamic facts/runtime remain separate admission work
 - first decadal palace / start-age convention
 
 ### L4 — interpretation claims
@@ -121,7 +121,7 @@ validated fact packet
 → user-facing rendering
 ```
 
-Retrieval failure、unknown fact、not-computed brightness 或 missing tradition coverage 都不得啟用 model-memory fallback。
+Retrieval failure、unknown fact、not-computed brightness、missing dynamic temporal facts 或 missing tradition coverage 都不得啟用 model-memory fallback。
 
 L5 可以組合 L2/L3/L4，但不得：
 

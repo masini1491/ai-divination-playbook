@@ -137,6 +137,7 @@ named school / preset 可以組合 components，但 component identity 與 prove
 - [`BRIGHTNESS_INTERPRETATION_RESEARCH_V0.md`](BRIGHTNESS_INTERPRETATION_RESEARCH_V0.md)
 - [`FOUR_TRANSFORMATION_INTERPRETATION_RESEARCH_V0.md`](FOUR_TRANSFORMATION_INTERPRETATION_RESEARCH_V0.md)
 - [`MINOR_STAR_ADMISSION_TAXONOMY_V0.md`](MINOR_STAR_ADMISSION_TAXONOMY_V0.md)
+- [`TEMPORAL_CONTEXT_INTERPRETATION_RESEARCH_V0.md`](TEMPORAL_CONTEXT_INTERPRETATION_RESEARCH_V0.md)
 
 ## Research continuation contract
 
@@ -154,9 +155,9 @@ combined = 52 first-layer claims
 2. brightness interpretation-family research — **CLOSED — RESEARCH**；
 3. Four-Transformation interpretation-family research — **CLOSED — RESEARCH**；
 4. bounded minor-star admission taxonomy — **CLOSED — RESEARCH**；
-5. temporal-context interpretation research。
+5. temporal-context interpretation research — **CLOSED — RESEARCH**。
 
-這份清單只保存 **eligible continuation candidates 與 actor suitability**，不是自動啟動的 roadmap、Hot backlog 或 production commitment。只有使用者明確要求繼續 Zi Wei research line，或 current canonical trigger 另行 admission 該 scope 時，才開始其中一項；每個新 Stage 仍須依 current work 重新判斷最低充分 actor，不得因前一 Stage 曾使用其他 actor 而慣性 handoff。
+這份清單目前已全部完成 research closure。它只保存 **eligible continuation candidates 與 actor suitability**，不是自動啟動的 roadmap、Hot backlog 或 production commitment。只有使用者明確要求繼續 Zi Wei research line，或 current canonical trigger 另行 admission 該 scope 時，才開始其中一項；每個新 Stage 仍須依 current work 重新判斷最低充分 actor，不得因前一 Stage 曾使用其他 actor 而慣性 handoff。
 
 上述 ChatGPT-side research 可做 source reconciliation、claim normalization、conflict preservation、schema/admission design 與 bounded fixture/evidence work；不得由此推導為已取得 executable 或 production authority。
 
@@ -176,8 +177,8 @@ star×palace
 → brightness
 → Four-Transformation interpretation
 → bounded minor-star taxonomy
-→ temporal context  # next open ChatGPT-side research stage
-→ executable retrieval/composition only after its separate gate
+→ temporal context
+→ executable retrieval/composition  # separate explicit gate; not auto-started
 ```
 
 ## Promotion boundary
@@ -195,6 +196,6 @@ research judgment gap closed
 → explicit production admission
 ```
 
-目前已 admission 14 顆主星 / 28 條與十二宮 / 24 條 source-normalized machine-readable research claims，完成 `major-star + palace` 第一層共 52 條 coverage；star×palace composition policy、brightness interpretation responsibility 與 Four-Transformation interpretation responsibility 已 research-closed。Project-wide brightness table 仍未選定；minor-star admission taxonomy 已 research-closed，但 auxiliary-star claim corpus 尚未 admission；temporal interpretation 與 production interpretation 仍未 admission。
+目前已 admission 14 顆主星 / 28 條與十二宮 / 24 條 source-normalized machine-readable research claims，完成 `major-star + palace` 第一層共 52 條 coverage；star×palace composition policy、brightness interpretation responsibility 與 Four-Transformation interpretation responsibility 已 research-closed。Project-wide brightness table 仍未選定；minor-star admission taxonomy 與 temporal-context interpretation responsibility 已 research-closed；auxiliary-star claim corpus、dynamic claim corpus、executable retrieval/composition 與 production interpretation 仍未 admission。
 
 建立本 research dossier 不構成 production admission。

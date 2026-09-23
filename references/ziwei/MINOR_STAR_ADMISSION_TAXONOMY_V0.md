@@ -75,7 +75,7 @@ owner = temporal/dynamic research
 admission = DEFER
 ```
 
-They require temporal scope, boundary/profile identity and dynamic calculation provenance before interpretation admission.
+They require temporal scope, boundary/profile identity and dynamic calculation provenance before interpretation admission. The owning interpretation contract is `TEMPORAL_CONTEXT_INTERPRETATION_RESEARCH_V0.md`; that owner does not itself admit their calculation or claims.
 
 ## Admission gate
 

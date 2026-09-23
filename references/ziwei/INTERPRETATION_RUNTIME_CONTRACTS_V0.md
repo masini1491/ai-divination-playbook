@@ -32,6 +32,12 @@ input_provenance
 chart
 topology
 temporal_context?
+  scope
+  target_identity
+  parent_scope_ids?
+  boundary_profile
+  calculation_profile
+  provenance
 facts[]
 ambiguity[]
 validation
@@ -40,7 +46,7 @@ provenance_map
 
 Fact state must be explicit: `known`, `unknown`, `not_computed`, `ambiguous`, `not_applicable`. Absence must not silently mean false. If brightness is not computed/admitted, brightness-dependent claims are skipped.
 
-Profile-sensitive facts retain `profile_scope` and provenance. A bare profile-dependent fact without identity is insufficient. For brightness this includes `brightness_profile` plus rule/engine provenance; a label such as `廟` or `陷` without that identity is not a sufficient research fact.
+Profile-sensitive facts retain `profile_scope` and provenance. A bare profile-dependent fact without identity is insufficient. For brightness this includes `brightness_profile` plus rule/engine provenance; a label such as `廟` or `陷` without that identity is not a sufficient research fact. Temporal facts additionally require exact scope plus target/boundary provenance.
 
 ## 2. Claim Retrieval v0
 
@@ -58,7 +64,7 @@ safety_context
 
 Retrieval performs fact matching + profile/source gating + applicability matching + specificity ordering + conflict detection. It is not fuzzy prose search and does not allow LLM-memory fallback.
 
-Future claim applicability should be machine-matchable for star-in-palace, dignity, transformations, same-palace, benefics/malefics, opposite, sanfang, body overlay and temporal scope. A transformation-dependent match additionally requires the transformed-star fact's `sihua_profile_id`; the label alone is insufficient.
+Future claim applicability should be machine-matchable for star-in-palace, dignity, transformations, same-palace, benefics/malefics, opposite, sanfang, body overlay and temporal scope. A transformation-dependent match additionally requires the transformed-star fact's `sihua_profile_id`; the label alone is insufficient. A temporal match must not widen `natal_baseline` into decadal/yearly/monthly/daily/hourly applicability without an admitted rule.
 
 Each selected claim should preserve claim ID, matched fact IDs, applicability result, specificity level, source, tradition, assertion class, conflict group, adoption state and provenance.
 
@@ -97,6 +103,7 @@ Use qualitative research states such as `source_backed`, `project_adopted`, `pro
 
 ```text
 missing fact → skip dependent claim
+missing temporal layer → do not infer a finer scope
 not_computed → do not guess
 no supported claim → no generic horoscope filler
 missing requested tradition → do not substitute another tradition
