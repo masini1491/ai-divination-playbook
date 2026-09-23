@@ -7,6 +7,7 @@ Status：
 ```text
 ARCHITECTURE RESEARCH-ADOPTED
 FULL CLAIM CORPUS NOT ADMITTED
+BATCH1 MACHINE-READABLE CLAIMS ADMITTED
 ```
 
 ## Decision
@@ -106,7 +107,7 @@ star_core
 × temporal context
 ```
 
-The fourteen-star and twelve-palace prototypes validated the architecture. They are not yet a fully admitted source-normalized claim corpus.
+The fourteen-star and twelve-palace prototypes validated the architecture. Batch 1 now admits 12 source-normalized machine-readable claims for 紫微、天機、太陽、武曲、天同、廉貞；the remaining stars and palace corpora are not yet admitted.
 
 ## Specificity
 
@@ -151,3 +152,14 @@ Historical claims about disease, death, imprisonment, financial ruin or similar 
 ## Non-goals
 
 This document does not establish scientific predictive validity, a complete claim corpus, production routing, a Zi Wei runtime/provider, or blanket project adoption of Zhongzhou/Nihai doctrine.
+
+## Machine-readable registry status
+
+Canonical batch-1 owners:
+
+- `INTERPRETATION_CLAIM_REGISTRY_SCHEMA_V0.md`
+- `ziwei_interpretation_claim_registry_batch1.json`
+- `validate_interpretation_claim_registry.py`
+- `INTERPRETATION_CLAIM_BATCH1_ADMISSION.md`
+
+Batch 1 is research-only and does not change production routing.

@@ -52,7 +52,8 @@ Zhongzhou modern                  REFERENCE-ONLY / named-tradition comparator
 nihai-tianji-corpus               REFERENCE-ONLY / practitioner projection + conflict detection
 MingLi-Bench                      EVALUATION-ONLY / reasoning benchmark
 Source Reconciliation v1          CLOSED WITH EXPLICIT IMAGE GAPS
-Interpretation Architecture v0    RESEARCH-ADOPTED architecture / claim corpus not admitted
+Interpretation Architecture v0    RESEARCH-ADOPTED architecture
+Zi Wei Claim Registry Batch 1      RESEARCH-ADMITTED / 6 stars / 12 claims
 ```
 
 任何 upstream rule 只有在本 research owner 明確採用後，才成為本研究線的 candidate contract；仍不因此取得 production authority。
