@@ -60,6 +60,12 @@ User-perceived fit should come from real chart differentiation, not stronger cer
 
 These fixtures test whether contextual composition reacts to material conditions. They do not admit dedicated star×palace L4 claims. Under `STAR_PALACE_COMBINATION_RESEARCH_V0.md`, first-layer star and palace evidence may be jointly synthesized at L5 with provenance preserved; any dedicated combination override still requires explicit source/admission evidence.
 
+## Executable-v0 follow-up
+
+`interpretation_retrieval_v0.py` now provides a bounded research-only selector/composer over the admitted 52 first-layer claims. This does not retroactively make every fixture executable: several fixtures assume brightness, auxiliary, malefic or dedicated contextual claims that remain outside the admitted first-layer corpus.
+
+Executable behavioral validation must therefore treat correct omission/fail-closed behavior as a valid outcome where the fixture dependency is unavailable.
+
 ## Limitations
 
-Fixtures are synthetic; no production selector/composer exists. Major-star and twelve-palace first-layer registries are admitted, while later contextual claim families remain incomplete.
+Fixtures are synthetic; no production selector/composer exists. A bounded research-only selector/composer exists, but major-star and twelve-palace first-layer registries remain the admitted claim boundary while later contextual claim families are incomplete.
