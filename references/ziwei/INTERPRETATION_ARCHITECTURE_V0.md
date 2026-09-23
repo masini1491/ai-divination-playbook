@@ -107,7 +107,11 @@ star_core
 × temporal context
 ```
 
-The fourteen-star and twelve-palace prototypes validated the architecture. Batch 1 + Batch 2 now admit 28 first-layer major-star claims, and Twelve Palaces v0 admits 24 first-layer palace claims. Star×palace combination families and other contextual layers remain incomplete.
+The fourteen-star and twelve-palace prototypes validated the architecture. Batch 1 + Batch 2 now admit 28 first-layer major-star claims, and Twelve Palaces v0 admits 24 first-layer palace claims. Star×palace composition policy is research-closed: exhaustive 14×12 dictionary expansion is rejected, while sparse source-explicit overrides remain future on-demand evidence work. Other contextual layers remain incomplete.
+
+## Star × palace composition policy
+
+`STAR_PALACE_COMBINATION_RESEARCH_V0.md` admits bounded composition of separately sourced star and palace evidence at L5 while forbidding that synthesis from being relabeled as a new L4 historical claim. Dedicated star×palace L4 overrides require source-explicit or separately admitted project/named-tradition evidence; exhaustive Cartesian coverage is not required.
 
 ## Specificity
 
