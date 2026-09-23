@@ -168,6 +168,10 @@ A bare fact such as：
 
 without profile identity is insufficient.
 
+## Interpretation handoff
+
+Transformation table identity is a calculation/profile responsibility. Interpretation responsibility is owned by `FOUR_TRANSFORMATION_INTERPRETATION_RESEARCH_V0.md`: a transformation fact must preserve `sihua_profile_id`; generic 祿／權／科／忌 outcome guarantees are rejected; dedicated transformed-star L4 claims require separate source/admission evidence.
+
 ## Update rule
 
 - New website repetition does not create a new variant.

@@ -19,6 +19,7 @@ Batch 2: 8 stars / 16 claims              ADMITTED — RESEARCH
 Star×palace composition policy            CLOSED — RESEARCH
 Brightness interpretation responsibility  CLOSED — RESEARCH
 Project-wide brightness table             NOT SELECTED
+Four-Transformation interpretation         CLOSED — RESEARCH
 Production runtime                        NOT ADMITTED
 Production routing                        NOT ADMITTED
 Scientific validity                       NOT CLAIMED
@@ -87,6 +88,10 @@ The current first-layer closure does not make every deferred interpretation item
 ## Brightness follow-up
 
 `BRIGHTNESS_INTERPRETATION_RESEARCH_V0.md` closes brightness interpretation responsibility as a profile-bound modifier contract. Existing sourced claims may depend on brightness/dignity facts, but brightness alone does not create generic L4 doctrine. A project-wide brightness table/profile remains unselected and requires separate source/profile reconciliation or an explicit project design decision.
+
+## Four-Transformation interpretation follow-up
+
+`FOUR_TRANSFORMATION_INTERPRETATION_RESEARCH_V0.md` closes interpretation responsibility without reselecting `sihua.default_v1`. Profile-scoped transformed-star facts may gate separately sourced L4 claims; generic 祿／權／科／忌 outcome guarantees are rejected, and cross-profile doctrine must not be averaged.
 
 ## Batch 1 follow-up
 
