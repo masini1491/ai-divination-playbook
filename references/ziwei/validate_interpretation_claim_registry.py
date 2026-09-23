@@ -7,11 +7,14 @@ from pathlib import Path
 from typing import Any
 
 SCHEMA_NAME = 'ziwei_interpretation_claim_registry'
-SCHEMA_VERSION = '0.1.0-research'
+SUPPORTED_SCHEMA_VERSIONS = {'0.1.0-research','0.2.0-research'}
 SOURCE_ROLES = {'PRIMARY_TEXT','SCHOLARLY_SECONDARY','PRACTITIONER_REFERENCE','REFERENCE_IMPLEMENTATION','PROJECT_SYNTHESIS'}
 ADMISSION = {'REFERENCE_ONLY','CLAIM_ELIGIBLE','EVALUATION_ONLY','REJECTED'}
 LAYERS = {'L4'}
-CLAIM_TYPES = {'star_core','star_conditional','methodology'}
+CLAIM_TYPES_BY_VERSION = {
+    '0.1.0-research': {'star_core','star_conditional','methodology'},
+    '0.2.0-research': {'star_core','star_conditional','palace_domain','palace_conditional','methodology'},
+}
 ASSERTION_CLASSES = {'historical_core','historical_conditional','named_tradition','practitioner_heuristic','case_inference','project_adoption'}
 CONFIDENCE = {'supported','qualified','provisional','conflicted','unsupported'}
 SUPPORT = {'single_source_supported','multi_source_supported','tradition_bounded','qualified','conflicted','historical_only','architecture_only','unsupported'}
@@ -34,7 +37,9 @@ def validate(data:Any)->list[dict[str,str]]:
     for key in required:
         if key not in data: err(errors,'REQUIRED_FIELD_MISSING',f'$.{key}','required field missing')
     if data.get('schema_name')!=SCHEMA_NAME: err(errors,'SCHEMA_NAME_INVALID','$.schema_name',f'must equal {SCHEMA_NAME}')
-    if data.get('schema_version')!=SCHEMA_VERSION: err(errors,'SCHEMA_VERSION_INVALID','$.schema_version',f'must equal {SCHEMA_VERSION}')
+    schema_version=data.get('schema_version')
+    if schema_version not in SUPPORTED_SCHEMA_VERSIONS: err(errors,'SCHEMA_VERSION_INVALID','$.schema_version',f'must be one of {sorted(SUPPORTED_SCHEMA_VERSIONS)}')
+    claim_types=CLAIM_TYPES_BY_VERSION.get(schema_version,set())
     if data.get('record_status')!='REFERENCE-ONLY': err(errors,'RECORD_STATUS_INVALID','$.record_status','must be REFERENCE-ONLY')
     if data.get('record_kind')!='ziwei_interpretation_claim_family_registry': err(errors,'RECORD_KIND_INVALID','$.record_kind','invalid record kind')
     if data.get('production_routable') is not False: err(errors,'PRODUCTION_ROUTABLE_FORBIDDEN','$.production_routable','must be false')
@@ -77,7 +82,7 @@ def validate(data:Any)->list[dict[str,str]]:
         elif cid in claim_ids: err(errors,'CLAIM_ID_DUPLICATE',p+'.claim_id','must be unique')
         else: claim_ids.add(cid)
         if c.get('layer') not in LAYERS: err(errors,'LAYER_INVALID',p+'.layer','must be L4')
-        if c.get('claim_type') not in CLAIM_TYPES: err(errors,'CLAIM_TYPE_INVALID',p+'.claim_type','unsupported')
+        if c.get('claim_type') not in claim_types: err(errors,'CLAIM_TYPE_INVALID',p+'.claim_type',f'unsupported for schema {schema_version}')
         if c.get('assertion_class') not in ASSERTION_CLASSES: err(errors,'ASSERTION_CLASS_INVALID',p+'.assertion_class','unsupported')
         if not nonempty_str(c.get('subject')): err(errors,'SUBJECT_REQUIRED',p+'.subject','required')
         if not nonempty_str(c.get('normalized_statement')): err(errors,'STATEMENT_REQUIRED',p+'.normalized_statement','required')
@@ -106,7 +111,9 @@ def validate(data:Any)->list[dict[str,str]]:
         if not nonempty_str(gid): err(errors,'CONFLICT_ID_REQUIRED',p+'.conflict_group_id','required'); continue
         if gid in conflict_ids: err(errors,'CONFLICT_ID_DUPLICATE',p+'.conflict_group_id','must be unique')
         conflict_ids.add(gid)
-        if g.get('resolution_status') not in {'PRESERVE_CONFLICT','RESOLVED_BY_PROFILE'}: err(errors,'CONFLICT_RESOLUTION_INVALID',p+'.resolution_status','unsupported')
+        allowed_resolutions={'PRESERVE_CONFLICT','RESOLVED_BY_PROFILE'}
+        if schema_version=='0.2.0-research': allowed_resolutions.add('PRESERVE_SCOPE_DIFFERENCE')
+        if g.get('resolution_status') not in allowed_resolutions: err(errors,'CONFLICT_RESOLUTION_INVALID',p+'.resolution_status',f'unsupported for schema {schema_version}')
         refs=g.get('claim_refs')
         if not isinstance(refs,list): err(errors,'CONFLICT_CLAIM_REFS_REQUIRED',p+'.claim_refs','array required'); refs=[]
         for ref in refs:

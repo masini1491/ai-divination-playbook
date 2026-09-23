@@ -4,9 +4,14 @@ Authority：`REFERENCE-ONLY / RESEARCH SCHEMA / NOT PRODUCTION-ROUTABLE`
 
 Schema name：`ziwei_interpretation_claim_registry`
 
-Current version：`0.1.0-research`
+Supported versions：
 
-This schema adapts the repository's proven Astrology claim-registry pattern to Zi Wei domain semantics. It does not reuse Astrology doctrine fields or grant production authority.
+```text
+0.1.0-research  major-star first-layer registries
+0.2.0-research  adds palace-domain claim families
+```
+
+`0.2.0-research` is backward-compatible at the validator level: existing v0.1 Batch 1/2 registries remain valid and are not rewritten.
 
 ## Top-level contract
 
@@ -27,11 +32,10 @@ privacy
 research_result
 ```
 
-Required guards：
+Required guards for all supported versions：
 
 ```text
 schema_name = ziwei_interpretation_claim_registry
-schema_version = 0.1.0-research
 record_status = REFERENCE-ONLY
 record_kind = ziwei_interpretation_claim_family_registry
 production_routable = false
@@ -39,6 +43,28 @@ privacy.contains_real_birth_data = false
 research_result.production_authority_granted = false
 research_result.scientific_predictive_validity_claimed = false
 ```
+
+## Versioned claim types
+
+### v0.1
+
+```text
+star_core
+star_conditional
+methodology
+```
+
+### v0.2
+
+```text
+star_core
+star_conditional
+palace_domain
+palace_conditional
+methodology
+```
+
+A v0.1 registry must not use palace claim types. Palace registries must declare `0.2.0-research`.
 
 ## Source record
 
@@ -72,7 +98,7 @@ EVALUATION_ONLY
 REJECTED
 ```
 
-`REFERENCE_ONLY` and `EVALUATION_ONLY` sources cannot be the sole authority of an admitted claim.
+`REFERENCE_ONLY` and `EVALUATION_ONLY` sources cannot be the sole authority of a research-admitted claim.
 
 ## Claim record
 
@@ -94,7 +120,7 @@ conflict_group_ids[]
 adoption_state
 ```
 
-Allowed layers：`L4` only for this first interpretation registry.
+Allowed layer：`L4`.
 
 Allowed assertion classes：
 
@@ -107,15 +133,7 @@ case_inference
 project_adoption
 ```
 
-Allowed claim types for batch 1：
-
-```text
-star_core
-star_conditional
-methodology
-```
-
-Applicability is structured data, not prose inference. Supported batch-1 fields may include：
+Applicability is structured data rather than prose inference. Fields may include：
 
 ```text
 requires[]
@@ -126,11 +144,17 @@ topology_scope[]
 temporal_scope
 ```
 
+## Palace semantics
+
+`palace_domain` records bounded historical domain scope. `palace_conditional` records topology, empty-palace handling, dignity/benefic/malefic conditions, safety requirements, or source-profile scope differences.
+
+Historical labels and modern aliases must remain distinguishable. In particular, historical `奴僕宮` must not silently become universal `交友宮` semantics.
+
+Body Palace is an overlay and is not admitted as a thirteenth ordinary palace claim family by this schema revision.
+
 ## Conflict groups
 
-A conflict group preserves incompatible source/tradition claims. It must not average them into consensus.
-
-Conflict record fields：
+Conflict records：
 
 ```text
 conflict_group_id
@@ -141,12 +165,25 @@ external_claim_refs[]
 notes[]
 ```
 
-`external_claim_refs[]` may point to bounded evidence that is intentionally not copied into the registry because of license/admission boundaries.
+v0.1 resolution statuses：
+
+```text
+PRESERVE_CONFLICT
+RESOLVED_BY_PROFILE
+```
+
+v0.2 additionally permits：
+
+```text
+PRESERVE_SCOPE_DIFFERENCE
+```
+
+`PRESERVE_SCOPE_DIFFERENCE` means historical and modern source scopes overlap only partially and must not be collapsed into one universal semantic domain.
 
 ## Provenance and storage
 
-This registry stores normalized project-authored paraphrases plus locators. It does not vendor full source text. Every claim must resolve all `source_refs[]`, and every `source_locators[]` entry must be non-empty.
+Registries store normalized project-authored paraphrases plus source locators. They do not vendor full historical or practitioner text. Every claim must resolve all `source_refs[]`; every source locator must be non-empty.
 
 ## Research / production boundary
 
-Registry validation proves only structural research safety. It does not prove doctrine truth, scientific validity, predictive validity, user-perceived accuracy, or production readiness.
+Structural validation does not prove doctrine truth, scientific validity, predictive validity, user-perceived accuracy, or production readiness.

@@ -11,11 +11,11 @@ Default source policy                     ADMIT — RESEARCH CANDIDATE
 Runtime-facing contracts v0               ADMIT — RESEARCH
 Fixture validation v0                     ADMIT — RESEARCH
 
-Full claim registry                       PARTIAL — MAJOR-STAR LAYER COMPLETE
+Full claim registry                       PARTIAL — STAR + PALACE FIRST LAYERS COMPLETE
 Batch 1: 6 stars / 12 claims              ADMITTED — RESEARCH
 Batch 2: 8 stars / 16 claims              ADMITTED — RESEARCH
 14-major-star first-layer coverage        CLOSED — RESEARCH
-Full 12-palace knowledge admission        DEFER
+12-palace first-layer coverage            CLOSED — RESEARCH
 Production runtime                        NOT ADMITTED
 Production routing                        NOT ADMITTED
 Scientific validity                       NOT CLAIMED
@@ -50,7 +50,7 @@ This is a source-policy preset, not a claim that one school is objectively corre
 
 ## What is not admitted
 
-The bounded fourteen-star and twelve-palace prototypes were sufficient to test schema/composition behavior. They are not a canonical machine-readable claim registry. Do not infer `prototype discussed → claim admitted`, `source found → project default`, or `benchmark answer → doctrine truth`.
+The earlier fourteen-star and twelve-palace prototypes were sufficient to test schema/composition behavior. Their first-layer star and palace subsets are now admitted as machine-readable research registries, but the full contextual claim corpus remains incomplete. Do not infer `prototype discussed → all claims admitted`, `source found → project default`, or `benchmark answer → doctrine truth`.
 
 ## Material conflict identities
 
@@ -81,3 +81,8 @@ The first source-normalized machine-readable claim batch is admitted separately 
 ## Batch 2 follow-up
 
 `INTERPRETATION_CLAIM_BATCH2_ADMISSION.md` admits the remaining eight major stars as 16 source-normalized machine-readable claims. Across Batch 1 + Batch 2, all fourteen major stars now have a first-layer `historical core + representative conditional` pair. This closes major-star first-layer coverage only; the twelve-palace registry, complete combination families, executable retrieval/composition and production interpretation remain deferred.
+
+
+## Twelve-palace follow-up
+
+`INTERPRETATION_CLAIM_PALACES_V0_ADMISSION.md` admits 24 source-normalized palace claims under schema `0.2.0-research`. The validator remains backward-compatible with the existing v0.1 major-star registries. `CG-FUDE-SCOPE-001` and `CG-NUPU-SCOPE-001` preserve historical-vs-modern scope differences. Major-star + palace first-layer coverage is now 52 claims total; combination families and production remain deferred.
