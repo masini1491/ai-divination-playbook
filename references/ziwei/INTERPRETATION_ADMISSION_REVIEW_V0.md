@@ -11,8 +11,9 @@ Default source policy                     ADMIT — RESEARCH CANDIDATE
 Runtime-facing contracts v0               ADMIT — RESEARCH
 Fixture validation v0                     ADMIT — RESEARCH
 
-Full claim registry                       DEFER
-Full 14-star knowledge admission          DEFER
+Full claim registry                       PARTIAL — BATCH1 ADMITTED
+First 6-star / 12-claim batch             ADMITTED — RESEARCH
+Remaining 8-star knowledge admission      DEFER
 Full 12-palace knowledge admission        DEFER
 Production runtime                        NOT ADMITTED
 Production routing                        NOT ADMITTED
@@ -70,3 +71,7 @@ A production phase must be a separate explicit decision. It still needs a frozen
 ## Research maturity conclusion
 
 Interpretation Research v0 is architecture-complete enough to stop broad exploratory expansion. Reopen only when a material source-policy premise changes, fixtures expose a new architecture failure class, project objectives change, or production admission reveals a missing contract requirement.
+
+## Batch 1 follow-up
+
+The first source-normalized machine-readable claim batch is admitted separately in `INTERPRETATION_CLAIM_BATCH1_ADMISSION.md`. This narrows the earlier `Full claim registry = DEFER` state to `PARTIAL`; it does not admit the remaining stars, twelve-palace corpus, retrieval runtime or production interpretation.

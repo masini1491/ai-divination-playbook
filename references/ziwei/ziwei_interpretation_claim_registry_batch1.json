@@ -1,0 +1,554 @@
+{
+  "schema_name": "ziwei_interpretation_claim_registry",
+  "schema_version": "0.1.0-research",
+  "record_status": "REFERENCE-ONLY",
+  "record_kind": "ziwei_interpretation_claim_family_registry",
+  "record_id": "ziwei-major-stars-batch1-v0",
+  "production_routable": false,
+  "interpretation_profile": "ziwei.interpretation.tw_v1",
+  "claim_family": "major_stars_batch1",
+  "subjects": [
+    "紫微",
+    "天機",
+    "太陽",
+    "武曲",
+    "天同",
+    "廉貞"
+  ],
+  "retrieval_preconditions": {
+    "requires_l2_facts": true,
+    "requires_l3_policy": true
+  },
+  "sources": [
+    {
+      "source_id": "SRC-NANYANG-QUANSHU-STARS",
+      "source_role": "PRIMARY_TEXT",
+      "admission_status": [
+        "CLAIM_ELIGIBLE"
+      ],
+      "storage_mode": [
+        "metadata_locator_normalized_paraphrase"
+      ],
+      "independence_status": "primary_witness",
+      "title": "新鋟希夷陳先生紫微斗數全書",
+      "witness_identity": "Nanyang-Hall / National Archives of Japan identified witness family",
+      "locator": "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzoopnqo0t6",
+      "language": "zh-Hant",
+      "verification_status": [
+        "digital_text_witness_research"
+      ],
+      "admission_scope": [
+        "bounded star core and conditional interpretation claims"
+      ],
+      "excluded_scope": [
+        "unverified glyph-level variants",
+        "production doctrine authority"
+      ],
+      "notes": [
+        "Normalized paraphrases only; locator retained for source verification."
+      ]
+    },
+    {
+      "source_id": "SRC-NIHAI-TIANJI",
+      "source_role": "PRACTITIONER_REFERENCE",
+      "admission_status": [
+        "REFERENCE_ONLY"
+      ],
+      "storage_mode": [
+        "metadata_plus_locator"
+      ],
+      "independence_status": "derivative_practitioner_synthesis",
+      "title": "倪海廈《天紀》結構化語料庫",
+      "immutable_revision": "c90006168195c0650328b7199669eb6a2d0cac93",
+      "locator": "https://github.com/Renhuai123/nihai-tianji-corpus",
+      "license_status": "data/docs CC BY-NC-SA 4.0; original course rights separately retained",
+      "admission_scope": [
+        "conflict detection",
+        "modern practitioner comparison"
+      ],
+      "excluded_scope": [
+        "direct claim admission in batch1",
+        "corpus vendoring"
+      ],
+      "notes": [
+        "REFERENCE_ONLY. Opposing Tianji relief evidence is tracked by conflict metadata without copying corpus text."
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "ZW-B1-ZIWEI-CORE-001",
+      "layer": "L4",
+      "claim_type": "star_core",
+      "subject": "紫微",
+      "assertion_class": "historical_core",
+      "normalized_statement": "紫微的歷史核心語義偏向中樞、統攝、權位與主導性；其實際表現仍須依同宮、會照與其他條件修正。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-STARS"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzoopnqo0t6"
+      ],
+      "applicability": {
+        "requires": [
+          "star_present:紫微"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "dignity",
+          "supporting_stars",
+          "malefic_stars",
+          "sanfang_sizheng"
+        ],
+        "palace_scope": [
+          "any"
+        ],
+        "topology_scope": [
+          "self",
+          "opposite",
+          "sanfang"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "supported",
+      "support_status": "single_source_supported",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-B1-ZIWEI-COND-002",
+      "layer": "L4",
+      "claim_type": "star_conditional",
+      "subject": "紫微",
+      "assertion_class": "historical_conditional",
+      "normalized_statement": "紫微的正向權位表現會受到左輔、右弼等輔助條件影響；缺乏輔助或受煞曜干擾時，不應沿用同一強度的正向結論。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-STARS"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzoopnqo0t6"
+      ],
+      "applicability": {
+        "requires": [
+          "star_present:紫微"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "左輔",
+          "右弼",
+          "malefic_stars"
+        ],
+        "palace_scope": [
+          "any"
+        ],
+        "topology_scope": [
+          "self",
+          "sanfang"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "supported",
+      "support_status": "single_source_supported",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-B1-TIANJI-CORE-001",
+      "layer": "L4",
+      "claim_type": "star_core",
+      "subject": "天機",
+      "assertion_class": "historical_core",
+      "normalized_statement": "天機的歷史核心語義偏向機變、思慮、策劃與善性，其表現具有明顯的條件依賴。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-STARS"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzoopnqo0t6"
+      ],
+      "applicability": {
+        "requires": [
+          "star_present:天機"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "dignity",
+          "same_palace",
+          "sanfang_sizheng"
+        ],
+        "palace_scope": [
+          "any"
+        ],
+        "topology_scope": [
+          "self",
+          "sanfang"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "supported",
+      "support_status": "single_source_supported",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-B1-TIANJI-COND-002",
+      "layer": "L4",
+      "claim_type": "star_conditional",
+      "subject": "天機",
+      "assertion_class": "historical_conditional",
+      "normalized_statement": "南陽堂系歷史文本賦予天機一定的化善與緩解凶逆語義；此點與部分現代 practitioner 體系存在直接分歧，必須按 interpretation profile 保留衝突。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-STARS"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzoopnqo0t6"
+      ],
+      "applicability": {
+        "requires": [
+          "star_present:天機"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "tradition_profile"
+        ],
+        "palace_scope": [
+          "any"
+        ],
+        "topology_scope": [
+          "self"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "conflicted",
+      "support_status": "conflicted",
+      "conflict_group_ids": [
+        "CG-TIANJI-RELIEF-001"
+      ],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-B1-TAIYANG-CORE-001",
+      "layer": "L4",
+      "claim_type": "star_core",
+      "subject": "太陽",
+      "assertion_class": "historical_core",
+      "normalized_statement": "太陽的歷史核心語義與貴顯、公開性、職位責任及父系象義相關，但不能脫離得地失輝條件單獨判斷。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-STARS"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzoopnqo0t6"
+      ],
+      "applicability": {
+        "requires": [
+          "star_present:太陽"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "dignity",
+          "palace",
+          "sanfang_sizheng"
+        ],
+        "palace_scope": [
+          "any"
+        ],
+        "topology_scope": [
+          "self",
+          "sanfang"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "supported",
+      "support_status": "single_source_supported",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-B1-TAIYANG-COND-002",
+      "layer": "L4",
+      "claim_type": "star_conditional",
+      "subject": "太陽",
+      "assertion_class": "historical_conditional",
+      "normalized_statement": "太陽得地與失輝是實質修飾條件；同樣的宮位配置在亮度條件不同時，不應生成相同強度或方向的解讀。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-STARS"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzoopnqo0t6"
+      ],
+      "applicability": {
+        "requires": [
+          "star_present:太陽",
+          "fact_available:dignity"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "dignity"
+        ],
+        "palace_scope": [
+          "any"
+        ],
+        "topology_scope": [
+          "self"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "supported",
+      "support_status": "single_source_supported",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-B1-WUQU-CORE-001",
+      "layer": "L4",
+      "claim_type": "star_core",
+      "subject": "武曲",
+      "assertion_class": "historical_core",
+      "normalized_statement": "武曲的歷史核心語義與財務、資源、執行與剛決性相關；財星身份不等於無條件富裕。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-STARS"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzoopnqo0t6"
+      ],
+      "applicability": {
+        "requires": [
+          "star_present:武曲"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "palace",
+          "same_palace",
+          "benefics",
+          "malefics"
+        ],
+        "palace_scope": [
+          "any"
+        ],
+        "topology_scope": [
+          "self",
+          "sanfang"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "supported",
+      "support_status": "single_source_supported",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-B1-WUQU-COND-002",
+      "layer": "L4",
+      "claim_type": "star_conditional",
+      "subject": "武曲",
+      "assertion_class": "historical_conditional",
+      "normalized_statement": "武曲的財務表現會因祿馬、破軍、七殺、羊陀等同會條件改變取得、流動、保留或耗散方式，因此不能由武曲單星直接推出財富結果。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-STARS"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzoopnqo0t6"
+      ],
+      "applicability": {
+        "requires": [
+          "star_present:武曲"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "祿存",
+          "天馬",
+          "破軍",
+          "七殺",
+          "擎羊",
+          "陀羅"
+        ],
+        "palace_scope": [
+          "any"
+        ],
+        "topology_scope": [
+          "self",
+          "sanfang"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "supported",
+      "support_status": "single_source_supported",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-B1-TIANTONG-CORE-001",
+      "layer": "L4",
+      "claim_type": "star_core",
+      "subject": "天同",
+      "assertion_class": "historical_core",
+      "normalized_statement": "天同的歷史核心語義偏向福、和緩、柔順與福德性質，但仍受宮位、吉煞與其他條件限制。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-STARS"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzoopnqo0t6"
+      ],
+      "applicability": {
+        "requires": [
+          "star_present:天同"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "palace",
+          "benefics",
+          "malefics"
+        ],
+        "palace_scope": [
+          "any"
+        ],
+        "topology_scope": [
+          "self",
+          "sanfang"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "supported",
+      "support_status": "single_source_supported",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-B1-TIANTONG-COND-002",
+      "layer": "L4",
+      "claim_type": "star_conditional",
+      "subject": "天同",
+      "assertion_class": "historical_conditional",
+      "normalized_statement": "天同的福性不能直接等同於現代 practitioner 所稱的特定『人和』或合作結果；若採現代擴張語義，必須保留其來源與 profile。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-STARS"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzoopnqo0t6"
+      ],
+      "applicability": {
+        "requires": [
+          "star_present:天同"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "tradition_profile"
+        ],
+        "palace_scope": [
+          "any"
+        ],
+        "topology_scope": [
+          "self"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "qualified",
+      "support_status": "historical_only",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-B1-LIANZHEN-CORE-001",
+      "layer": "L4",
+      "claim_type": "star_core",
+      "subject": "廉貞",
+      "assertion_class": "historical_core",
+      "normalized_statement": "廉貞的歷史核心語義兼具權令、約束、欲望與次桃花等面向，不能壓縮成單一吉凶或單一桃花標籤。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-STARS"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzoopnqo0t6"
+      ],
+      "applicability": {
+        "requires": [
+          "star_present:廉貞"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "palace",
+          "dignity",
+          "same_palace",
+          "transformations"
+        ],
+        "palace_scope": [
+          "any"
+        ],
+        "topology_scope": [
+          "self",
+          "sanfang"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "supported",
+      "support_status": "single_source_supported",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-B1-LIANZHEN-COND-002",
+      "layer": "L4",
+      "claim_type": "star_conditional",
+      "subject": "廉貞",
+      "assertion_class": "historical_conditional",
+      "normalized_statement": "廉貞對廟陷、刑忌及與武曲、火曜等組合高度敏感；條件不同時其權令、桃花或約束語義可能轉向，必須以組合 claim 限定 core claim。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-STARS"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzoopnqo0t6"
+      ],
+      "applicability": {
+        "requires": [
+          "star_present:廉貞"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "dignity",
+          "刑",
+          "化忌",
+          "武曲",
+          "火星"
+        ],
+        "palace_scope": [
+          "any"
+        ],
+        "topology_scope": [
+          "self",
+          "sanfang"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "supported",
+      "support_status": "single_source_supported",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    }
+  ],
+  "conflict_groups": [
+    {
+      "conflict_group_id": "CG-TIANJI-RELIEF-001",
+      "conflict_class": "cross_tradition_capability_conflict",
+      "resolution_status": "PRESERVE_CONFLICT",
+      "claim_refs": [
+        "ZW-B1-TIANJI-COND-002"
+      ],
+      "external_claim_refs": [
+        "SRC-NIHAI-TIANJI#天機解厄否定"
+      ],
+      "notes": [
+        "Nihai evidence remains REFERENCE_ONLY and is not copied into the claim registry. Retrieval must not average the positions."
+      ]
+    }
+  ],
+  "privacy": {
+    "contains_real_birth_data": false
+  },
+  "research_result": {
+    "batch": "major-stars-batch1",
+    "claim_count": 12,
+    "subjects_covered": 6,
+    "architecture_validation_target": "source-normalized machine-readable claims",
+    "production_authority_granted": false,
+    "scientific_predictive_validity_claimed": false
+  }
+}
