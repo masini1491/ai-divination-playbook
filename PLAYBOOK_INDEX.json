@@ -270,7 +270,7 @@
         "owner": "CHAT_INIT.md",
         "heading": "## Default Interaction Profile｜只給 Repo 也能直接使用",
         "start_line": 27,
-        "end_line": 81,
+        "end_line": 85,
         "next_heading": "## ChatGPT Load Pack Fast Path｜one retrieval cache"
       },
       "explicit_astrology.routing_scope": {
@@ -283,8 +283,8 @@
       "explicit_research.intent_gate": {
         "owner": "RESEARCH_ROUTING.md",
         "heading": "## Explicit Research Intent Gate｜明確研究意圖",
-        "start_line": 98,
-        "end_line": 121,
+        "start_line": 102,
+        "end_line": 125,
         "next_heading": "## Ordinary Reading Boundary｜普通占問邊界"
       },
       "research.astrology.scope": {
