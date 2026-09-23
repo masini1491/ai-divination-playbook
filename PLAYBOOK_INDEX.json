@@ -270,8 +270,8 @@
       "explicit_research.intent_gate": {
         "owner": "RESEARCH_ROUTING.md",
         "heading": "## Explicit Research Intent Gate｜明確研究意圖",
-        "start_line": 75,
-        "end_line": 97,
+        "start_line": 98,
+        "end_line": 121,
         "next_heading": "## Ordinary Reading Boundary｜普通占問邊界"
       },
       "research.astrology.scope": {
