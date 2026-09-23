@@ -58,8 +58,7 @@ Baseline Core Fact Set 在 matched profile 下目前可研究：
 - fourteen major stars
 - 左輔／右弼／文昌／文曲
 - opposition / Sanfang-Sizheng topology
-- decadal direction
-- first decadal start age
+- decadal direction under explicit decadal profile
 
 ### L3 — tradition / school projection
 
@@ -73,6 +72,7 @@ Baseline Core Fact Set 在 matched profile 下目前可研究：
 - Heaven / Earth / Human chart mode
 - many auxiliary/minor stars
 - dynamic month/day/hour charts
+- first decadal palace / start-age convention
 
 ### L4 — interpretation claims
 

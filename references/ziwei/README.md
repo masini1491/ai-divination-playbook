@@ -56,8 +56,10 @@ life_body = standard_month_hour_rule
 five_element_bureau = standard_ming_palace_ganzhi
 ziwei_start = standard_bureau_day_rule
 major_star_placement = standard_fourteen_major
-decadal_direction = yang_male_yin_female_forward_else_reverse
-decadal_start_age = five_element_bureau_number
+decadal_profile = decadal.quanji_common_v1
+  direction = yang_male_yin_female_forward_else_reverse
+  first_palace = life_palace
+  first_start_age = five_element_bureau_number
 
 sihua_profile = sihua.default_v1
   戊 = 貪狼化祿 / 太陰化權 / 右弼化科 / 天機化忌
@@ -72,7 +74,7 @@ true_solar_time = disabled
 
 ### Why this is only a candidate
 
-- 核心命身宮、五行局、紫微起星、十四主星與大限基本方向在多個 implementation 中高度一致，但仍需逐項補 primary-source reconciliation。
+- 命身宮、五行局、紫微生日定位結果、十四主星與部分輔星已取得不同程度的 historical/source support；但大限第一宮／起歲、四化、閏月等已確認存在 witness/profile 差異，不能再以 implementation convergence 代替 historical agreement。
 - 四化、閏月、晚子時、年界、天／地／人盤、亮度與部分輔雜星存在流派或 boundary 差異。
 - `sihua.default_v1` 的「戊右／庚府／壬左」不是目前網路最普及的單一 named-school table；它是本研究線針對 **user-perceived fit** 做 Tarot 比較後保留的 default candidate。
 - Tarot selection evidence 只代表本專案的象徵性設計覆核，不證明客觀預測效度，也不取代 source evidence。
@@ -109,6 +111,8 @@ named school / preset 可以組合 components，但 component identity 與 prove
 - [`EVIDENCE_ARCHITECTURE.md`](EVIDENCE_ARCHITECTURE.md)
 - [`CALCULATION_ENGINE_RESEARCH.md`](CALCULATION_ENGINE_RESEARCH.md)
 - [`SOURCE_REGISTRY.md`](SOURCE_REGISTRY.md)
+- [`SOURCE_RECONCILIATION_V1.md`](SOURCE_RECONCILIATION_V1.md)
+- [`FOUR_TRANSFORMATION_VARIANT_REGISTRY.md`](FOUR_TRANSFORMATION_VARIANT_REGISTRY.md)
 
 ## Promotion boundary
 
