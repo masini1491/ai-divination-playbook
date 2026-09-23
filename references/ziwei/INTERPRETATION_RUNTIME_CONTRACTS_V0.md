@@ -58,7 +58,7 @@ safety_context
 
 Retrieval performs fact matching + profile/source gating + applicability matching + specificity ordering + conflict detection. It is not fuzzy prose search and does not allow LLM-memory fallback.
 
-Future claim applicability should be machine-matchable for star-in-palace, dignity, transformations, same-palace, benefics/malefics, opposite, sanfang, body overlay and temporal scope.
+Future claim applicability should be machine-matchable for star-in-palace, dignity, transformations, same-palace, benefics/malefics, opposite, sanfang, body overlay and temporal scope. A transformation-dependent match additionally requires the transformed-star fact's `sihua_profile_id`; the label alone is insufficient.
 
 Each selected claim should preserve claim ID, matched fact IDs, applicability result, specificity level, source, tradition, assertion class, conflict group, adoption state and provenance.
 
