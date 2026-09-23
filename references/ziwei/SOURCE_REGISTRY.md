@@ -24,7 +24,9 @@ Authority：`REFERENCE-ONLY / RESEARCH EVIDENCE`
 
 | Source | Identity | Role | Boundary |
 | --- | --- | --- | --- |
-| National Archives of Japan scan | `新鋟希夷陳先生紫微斗数全書１`，collection entry `4468520`（由 matharts research dossier定位） | 十四主星、左輔右弼、文昌文曲 placement 的 primary-scan evidence candidate | 目前只採已明確辨識的 scan glyph；不以 Wikisource 補不可辨字，不外推 edition genealogy |
+| National Archives of Japan / Nanyang-Hall witness | `新鋟希夷陳先生紫微斗数全書１`，collection entry `4468520` | 命／身宮、納音定局、紫微生日配置、十四主星、左右昌曲、大限方向與四化 witness research | 已鎖定具體 witness；不同規則的 evidence level 分開記錄，四化／大限不得因館藏 identity 已確立就自動宣稱 image-verified |
+| Toyo Bunko Quanji witness | `新刊希夷陳先生紫微斗數全集`，call mark `VII-3-157`，1冊100張 | 《全集》系四化／大限起歲 witness identity |館藏 identity 已 cross-catalog verified；四化與大限規則頁仍 `IMAGE GAP OPEN`，目前只到 witness-identified transcription support |
+| Wenguang-Hall early Quanshu collation | 明末清初文光堂木刻本（敦化堂／繼述堂系，依現代影印校勘說明） | 庚干四化異文 witness family | 目前只有 publisher/editorial collation claim；原頁 facsimile 尚未取得，保持 `IMAGE GAP OPEN` |
 | `kanripo/KR5h0055` | revision `86d036859da6d0352b0fc1d6edf46eb5745759d2` | historical text candidate：`紫微鬥數` / DZ1485 | 與現代十四主星／四化體系的 lineage 尚未解決，不得因同名就直接當 modern-rule proof |
 
 ## Current adoption map
@@ -37,6 +39,7 @@ ziwei-lite                        REFERENCE-ONLY / profile & validation architec
 BingerYuan/zwds                   REFERENCE-ONLY / comparator; license unresolved
 ziwei_core                        REFERENCE-ONLY / derived-lineage parity evidence
 historical / primary candidates   REFERENCE-ONLY / rule-specific source evidence
+Source Reconciliation v1          CLOSED WITH EXPLICIT IMAGE GAPS
 ```
 
 任何 upstream rule 只有在本 research owner 明確採用後，才成為本研究線的 candidate contract；仍不因此取得 production authority。

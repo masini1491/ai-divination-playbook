@@ -67,7 +67,7 @@ matharts、iztro、Fortel、ziwei-lite 可對到同一 5×6 bureau mapping。Bin
 
 matharts / iztro / ziwei-lite 使用等價 quotient/remainder parity formula；Fortel / Binger 以 table 表達。Binger 的 5×30 / 150 entries 已在研究過程與 formula 做 deterministic comparison，結果一致。
 
-分類：`SAME_RULE`；primary textual evidence 仍開放。
+分類：`SAME_RULE`。Historical/source reconciliation 已找到傳統生日配置表／歌訣支持 placement outcome；現代 quotient/remainder closed-form 應標成等價 algorithmic reconstruction，不冒充古籍原文公式。
 
 ### Fourteen major stars
 
@@ -81,36 +81,48 @@ common placement rule 在多個 engines 一致，matharts primary-scan research 
 
 ### Four Transformations
 
-不能視為 universal Core Fact。
+不能視為 universal Core Fact，也不能再用單一「《全書》表」代表所有 historical witnesses。
 
-目前至少三個 relevant families：
+目前至少要分：
 
 ```text
-Taiwan/common implementation family
-  戊 貪陰右機
-  庚 陽武陰同
-  壬 梁紫左武
+QUANSHU-NANYANG
+  戊 貪陰弼機
+  庚 日武同相
+  壬 梁紫府武
+  evidence = witness-identified transcription / rule-specific source research
 
-Zhongzhou family
+QUANSHU-WENGUANG-EARLY
+  庚 日武同陰
+  evidence = editorial collation claim
+  facsimile = open
+
+QUANJI-COMMON
+  戊 貪陰弼機
+  庚 日武陰同
+  壬 梁紫左武
+  evidence = witness-identified transcription support
+  facsimile = open
+
+ZHONGZHOU-MODERN
   戊 貪陰陽機
-  庚 陽武府同
+  庚 日武府同
   壬 梁紫府武
 
-Research default candidate
-  戊 貪陰右機
-  庚 陽武府同
+PROJECT-DEFAULT-V1
+  戊 貪陰弼機
+  庚 日武府同
   壬 梁紫左武
+  selection_basis = user_perceived_fit_research
 ```
 
-第三組在網路／實務可找到採用例，但不是目前最普及的單一 named-school whole-table。故使用中性 identity：
+詳細身份與 evidence level 由 `FOUR_TRANSFORMATION_VARIANT_REGISTRY.md` 擁有。
 
-`sihua.default_v1`
-
-而不是強行命名為「全書版」或其他 lineage。
-
-選它作 `ziwei.baseline.tw_v1` 的原因是 user-perceived-fit Tarot research decision，不是 engine majority 或古籍唯一性證明。
+`PROJECT-DEFAULT-V1` 使用中性 identity `sihua.default_v1`；它不是已證實的古籍單一 lineage。選它作 `ziwei.baseline.tw_v1` 的理由是 user-perceived-fit Tarot design review，不是 engine majority、古籍唯一性或科學效度證明。
 
 ### Leap month
+
+Historical witness research 已確認 Nanyang-Hall witness 的 rule 接近「閏月視作次月」；這與目前 project default `split_after_day_15` 不同，因此閏月必須保留 profile identity。
 
 已知至少存在：
 
@@ -139,15 +151,26 @@ iztro 已分 `yearDivide` / `horoscopeDivide`；ziwei-lite 再細分 palace-stem
 
 ### Decadal
 
-基本方向與 first start age 在 matharts / iztro / Fortel / Binger 高度一致：
+Implementation convergence 與 historical witness agreement 必須分開。
+
+多個現代 engines 常見：
 
 ```text
+first palace = Life Palace
+first start age = bureau number
 陽男陰女順
 陰男陽女逆
-first start age = bureau number
 ```
 
-更細的 transition / childhood / boundary semantics 仍保留 profile。
+但 source reconciliation 已顯示：Nanyang-Hall《全書》witness 的大限文字直接支持順逆方向，且描述第一限宮位從命宮相鄰宮（父母／兄弟）起；Quanji lineage 的流傳轉錄則支持「命宮先起局數歲、每十年一宮」。因此：
+
+- `decadal direction`：source-backed，但仍需記錄 witness/profile；
+- `first palace`：`DOCUMENTED PROFILE / WITNESS VARIANT`；
+- `first start age = bureau number`：`STRONG QUANJI WITNESS-IDENTIFIED TRANSCRIPTION SUPPORT`，原頁 image 尚 open。
+
+Project default 改用明確 profile identity：
+
+`decadal.quanji_common_v1 = Life Palace start + bureau-number start age + standard direction`。
 
 ## Research default candidate v1
 
@@ -159,7 +182,7 @@ ziwei.baseline.tw_v1
 ├─ life_body.standard
 ├─ bureau.standard
 ├─ major_stars.standard_14
-├─ decadal.standard_direction_start
+├─ decadal.quanji_common_v1
 ├─ sihua.default_v1 = 戊右 / 庚府 / 壬左
 ├─ leap.split_after_15
 ├─ rat_hour.next_day_23
@@ -169,16 +192,29 @@ ziwei.baseline.tw_v1
 
 這是一個 **componentized research preset**。任何 component 的未來 evidence 更新，都可個別 revision，不應把整套 preset當成單一不可拆 doctrine。
 
-## Open evidence gaps
+## Source Reconciliation v1 status
 
-優先順序：
+```text
+Life / Body                          SUBSTANTIALLY CLOSED
+Five-Element Bureau                 SUBSTANTIALLY CLOSED (conceptual source chain)
+Zi Wei birthday placement outcome   SOURCE-BACKED
+modern closed-form formula          ALGORITHMIC RECONSTRUCTION
+Fourteen major / selected assistants STRONG SOURCE SUPPORT
+Decadal direction                   SOURCE-BACKED
+Decadal first palace                DOCUMENTED VARIANT
+Decadal bureau-number start age     STRONG QUANJI TRANSCRIPTION SUPPORT / IMAGE OPEN
+Four Transformations                VERSIONED WITNESS / TRADITION VARIANT REGISTRY
+Leap month                          DOCUMENTED PROFILE VARIANT
+Quanji rule-page facsimile          IMAGE GAP OPEN
+Wenguang rule-page facsimile        IMAGE GAP OPEN
+```
 
-1. Life / Body original or early textual evidence；
-2. Five-Element Bureau primary / historical evidence；
-3. Zi Wei birthday-placement primary evidence；
-4. decadal direction / start-age source evidence；
-5. Four-Transformation variant/source registry；
-6. brightness、minor stars、dynamic charts；
-7. interpretation claim source architecture。
+因此 Source Reconciliation v1 可標記 `CLOSED WITH EXPLICIT IMAGE GAPS`。未來只有取得 material 新 facsimile／witness evidence 時才 reopen 對應 item；不以一般網頁數量重跑同一研究。
 
-在上述 gap 關閉前，不建立 production provider selection 或 canonical production profile。
+## Remaining research gaps
+
+1. brightness、minor stars、dynamic charts；
+2. interpretation claim source architecture；
+3. 上述兩個明確 image gaps（只有取得可驗證 facsimile 時才重開）。
+
+在 interpretation/source architecture 與 deterministic prototype/fixture 還未完成前，不建立 production provider selection 或 canonical production profile。
