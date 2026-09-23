@@ -11,7 +11,7 @@ Default source policy                     ADMIT — RESEARCH CANDIDATE
 Runtime-facing contracts v0               ADMIT — RESEARCH
 Fixture validation v0                     ADMIT — RESEARCH
 
-Full claim registry                       PARTIAL — STAR + PALACE FIRST LAYERS COMPLETE
+Full claim registry                       SCOPE-A COMPLETE — 52 NATAL FIRST-LAYER CLAIMS
 Batch 1: 6 stars / 12 claims              ADMITTED — RESEARCH
 Batch 2: 8 stars / 16 claims              ADMITTED — RESEARCH
 14-major-star first-layer coverage        CLOSED — RESEARCH
@@ -28,6 +28,7 @@ Executable retrieval/composition          ADMITTED — RESEARCH-ONLY V0
 Production schema candidates              CLOSED — RESEARCH
 Executable behavioral validation          CLOSED — RESEARCH
 Uncertainty / safety delivery contract     CLOSED — RESEARCH
+Production Scope A                        SELECTED — BOUNDED NATAL FIRST LAYER
 Production runtime                        NOT ADMITTED
 Production routing                        NOT ADMITTED
 Scientific validity                       NOT CLAIMED
@@ -84,7 +85,7 @@ Conceptually admitted: Zi Wei Fact Packet v0, Claim Retrieval v0, Interpretation
 
 ## Production gate
 
-A production phase must be a separate explicit decision. Research-only executable retrieval/composition now exists; versioned fail-closed schema candidates, executable-v0 behavioral validation, and uncertainty/safety delivery contract are also research-closed. Production still needs a frozen/admitted calculation runtime, an explicit minimum product scope decision, production binding of the schema candidates, production-bound dependency/behavioral validation, renderer/API binding of the uncertainty/safety contract, and explicit production admission before any METHOD_ROUTING integration.
+A production phase must be a separate explicit decision. Research-only executable retrieval/composition now exists; versioned fail-closed schema candidates, executable-v0 behavioral validation, and uncertainty/safety delivery contract are also research-closed. Production Scope A is now selected: bounded natal first layer only. Its 52 admitted claims satisfy the required interpretation coverage; broader contextual, auxiliary, brightness-conditioned and dynamic interpretation are not Scope-A blockers. Production still needs an admitted natal calculation runtime/provider for the facts Scope A consumes, production binding of the schema candidates, production-bound dependency/behavioral validation, renderer/API binding of the uncertainty/safety contract, and explicit production admission before any METHOD_ROUTING integration.
 
 ## Research maturity conclusion
 

@@ -269,13 +269,17 @@ Canonical owners：
 - `INTERPRETATION_FIXTURE_VALIDATION_V0.md`
 - `INTERPRETATION_ADMISSION_REVIEW_V0.md`
 
-## Remaining research gaps
+## Scope-A production calculation gap
+
+`PRODUCTION_SCOPE_A_NATAL_FIRST_V0.md` selects bounded natal first layer as the minimum product scope. For that scope, the active calculation blocker is an admitted deterministic **natal-only** runtime/provider for the facts consumed by the 52-claim first layer: normalized input provenance, natal palace geometry, Five-Element Bureau, fourteen-major-star placement, required structural topology, and explicit calculation/profile provenance.
+
+The following remain research gaps or future expansion candidates, but are **not Scope-A production blockers** unless a later requirement reopens them:
 
 1. deterministic dynamic-chart calculation/runtime admission；
-2. dynamic source-normalized claim admission when materially needed；
-3. auxiliary-star source/claim admission by the bounded taxonomy when materially needed；
-4. project-wide brightness table/profile selection（only after source/profile reconciliation or explicit project design decision）；
-5. machine-readable full claim registry and source-normalized claim admission；
+2. dynamic source-normalized claim admission；
+3. auxiliary-star source/claim admission；
+4. project-wide brightness table/profile selection；
+5. broader contextual claim expansion；
 6. 上述兩個明確 image gaps（只有取得可驗證 facsimile 時才重開）。
 
 Interpretation Architecture v0 的完成不建立 production provider、production runtime、ordinary routing 或 canonical production profile。
