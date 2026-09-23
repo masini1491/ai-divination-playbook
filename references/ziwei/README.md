@@ -140,6 +140,7 @@ named school / preset 可以組合 components，但 component identity 與 prove
 - [`TEMPORAL_CONTEXT_INTERPRETATION_RESEARCH_V0.md`](TEMPORAL_CONTEXT_INTERPRETATION_RESEARCH_V0.md)
 - [`EXECUTABLE_RETRIEVAL_COMPOSITION_V0.md`](EXECUTABLE_RETRIEVAL_COMPOSITION_V0.md)
 - [`interpretation_retrieval_v0.py`](interpretation_retrieval_v0.py)
+- [`PRODUCTION_READINESS_GAP_ANALYSIS_V0.md`](PRODUCTION_READINESS_GAP_ANALYSIS_V0.md)
 
 ## Research continuation contract
 
@@ -162,6 +163,8 @@ combined = 52 first-layer claims
 這份清單目前已全部完成 research closure。它只保存 **eligible continuation candidates 與 actor suitability**，不是自動啟動的 roadmap、Hot backlog 或 production commitment。只有使用者明確要求繼續 Zi Wei research line，或 current canonical trigger 另行 admission 該 scope 時，才開始其中一項；每個新 Stage 仍須依 current work 重新判斷最低充分 actor，不得因前一 Stage 曾使用其他 actor 而慣性 handoff。
 
 上述 ChatGPT-side research 可做 source reconciliation、claim normalization、conflict preservation、schema/admission design 與 bounded fixture/evidence work。Executable retrieval/composition 已另行取得 **RESEARCH-ONLY V0** admission；不得由此推導為 production authority。
+
+Production-readiness blocker inventory 由 `PRODUCTION_READINESS_GAP_ANALYSIS_V0.md` 擁有；它只盤點 gate，不授予 production authority。
 
 仍需分開 gate 的後續包括：
 
