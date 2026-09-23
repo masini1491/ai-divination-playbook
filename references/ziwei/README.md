@@ -138,6 +138,8 @@ named school / preset 可以組合 components，但 component identity 與 prove
 - [`FOUR_TRANSFORMATION_INTERPRETATION_RESEARCH_V0.md`](FOUR_TRANSFORMATION_INTERPRETATION_RESEARCH_V0.md)
 - [`MINOR_STAR_ADMISSION_TAXONOMY_V0.md`](MINOR_STAR_ADMISSION_TAXONOMY_V0.md)
 - [`TEMPORAL_CONTEXT_INTERPRETATION_RESEARCH_V0.md`](TEMPORAL_CONTEXT_INTERPRETATION_RESEARCH_V0.md)
+- [`EXECUTABLE_RETRIEVAL_COMPOSITION_V0.md`](EXECUTABLE_RETRIEVAL_COMPOSITION_V0.md)
+- [`interpretation_retrieval_v0.py`](interpretation_retrieval_v0.py)
 
 ## Research continuation contract
 
@@ -163,7 +165,7 @@ combined = 52 first-layer claims
 
 仍需分開 gate 的後續包括：
 
-- executable claim retrieval / composition；
+- executable claim retrieval / composition — **ADMITTED — RESEARCH-ONLY V0**；
 - deterministic production runtime / provider；
 - production `ZIWEI.md`；
 - `METHOD_ROUTING.md` integration / unspecified-user auto-routing；
@@ -178,7 +180,7 @@ star×palace
 → Four-Transformation interpretation
 → bounded minor-star taxonomy
 → temporal context
-→ executable retrieval/composition  # separate explicit gate; not auto-started
+→ executable retrieval/composition  # ADMITTED — RESEARCH-ONLY V0
 ```
 
 ## Promotion boundary
@@ -196,6 +198,6 @@ research judgment gap closed
 → explicit production admission
 ```
 
-目前已 admission 14 顆主星 / 28 條與十二宮 / 24 條 source-normalized machine-readable research claims，完成 `major-star + palace` 第一層共 52 條 coverage；star×palace composition policy、brightness interpretation responsibility 與 Four-Transformation interpretation responsibility 已 research-closed。Project-wide brightness table 仍未選定；minor-star admission taxonomy 與 temporal-context interpretation responsibility 已 research-closed；auxiliary-star claim corpus、dynamic claim corpus、executable retrieval/composition 與 production interpretation 仍未 admission。
+目前已 admission 14 顆主星 / 28 條與十二宮 / 24 條 source-normalized machine-readable research claims，完成 `major-star + palace` 第一層共 52 條 coverage；star×palace composition policy、brightness interpretation responsibility 與 Four-Transformation interpretation responsibility 已 research-closed。Project-wide brightness table 仍未選定；minor-star admission taxonomy 與 temporal-context interpretation responsibility 已 research-closed；auxiliary-star claim corpus、dynamic claim corpus 與 production interpretation 仍未 admission；bounded executable retrieval/composition v0 已 research-only admission。
 
 建立本 research dossier 不構成 production admission。

@@ -2,7 +2,7 @@
 
 Authority：`REFERENCE-ONLY / RESEARCH CONTRACT / NOT PRODUCTION-ROUTABLE`
 
-This document defines research-facing handoff contracts. It does not create executable production schemas or runtime authority.
+This document defines research-facing handoff contracts. It does not create executable production schemas or runtime authority. A bounded research-only executable realization of Claim Retrieval v0 + L5 frame composition is owned by `EXECUTABLE_RETRIEVAL_COMPOSITION_V0.md` and `interpretation_retrieval_v0.py`.
 
 ## Pipeline
 
@@ -120,4 +120,4 @@ Default prose is conditional and context-aware. The renderer improves readabilit
 
 ## 11. Production boundary
 
-Production still requires versioned machine-readable schemas, executable validators/selectors/composers, a canonical calculation runtime, fixtures/regressions, explicit source/claim admission and explicit production admission.
+Production still requires production-grade versioned request/fact/frame schemas, a canonical calculation runtime, broader admitted contextual claims, dependency/behavioral validation, user-facing uncertainty/safety integration and explicit production admission. The bounded research selector/composer does not satisfy those production gates.

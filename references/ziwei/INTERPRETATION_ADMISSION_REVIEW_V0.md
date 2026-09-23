@@ -24,6 +24,7 @@ Minor-star admission taxonomy              CLOSED — RESEARCH
 Temporal-context interpretation             CLOSED — RESEARCH
 Dynamic calculation/runtime                NOT ADMITTED
 Dynamic claim corpus                       NOT ADMITTED
+Executable retrieval/composition          ADMITTED — RESEARCH-ONLY V0
 Production runtime                        NOT ADMITTED
 Production routing                        NOT ADMITTED
 Scientific validity                       NOT CLAIMED
@@ -74,9 +75,13 @@ These preserve disagreement and block implicit synthesis. They do not resolve tr
 
 Conceptually admitted: Zi Wei Fact Packet v0, Claim Retrieval v0, Interpretation Frame/Synthesis Output v0, explicit fact state, provenance trace, specificity within one authority chain, conflict gate, no model-memory fallback, and pre-render safety gate.
 
+## Executable retrieval/composition follow-up
+
+`EXECUTABLE_RETRIEVAL_COMPOSITION_V0.md` admits a bounded deterministic research implementation over the currently admitted 52 natal first-layer claims. It performs exact requires/forbids matching, source gating, specificity ordering, conflict preservation and L5 frame construction. It does not calculate charts, invent missing contextual claims, render doctrine prose, admit dynamic claims or grant production authority.
+
 ## Production gate
 
-A production phase must be a separate explicit decision. It still needs a frozen calculation runtime, machine-readable schemas, source-normalized claim registry, executable retrieval/composition, dependency validation, behavioral regression, user-facing uncertainty/safety contract and explicit production admission before any METHOD_ROUTING integration.
+A production phase must be a separate explicit decision. Research-only executable retrieval/composition now exists, but production still needs a frozen calculation runtime, production-grade request/fact/frame schemas, broader source-normalized contextual claims, dependency validation, behavioral regression, user-facing uncertainty/safety contract and explicit production admission before any METHOD_ROUTING integration.
 
 ## Research maturity conclusion
 
@@ -108,14 +113,14 @@ The current first-layer closure does not make every deferred interpretation item
 
 ## Batch 1 follow-up
 
-The first source-normalized machine-readable claim batch is admitted separately in `INTERPRETATION_CLAIM_BATCH1_ADMISSION.md`. This narrows the earlier `Full claim registry = DEFER` state to `PARTIAL`; it does not admit the remaining stars, twelve-palace corpus, retrieval runtime or production interpretation.
+The first source-normalized machine-readable claim batch was admitted separately in `INTERPRETATION_CLAIM_BATCH1_ADMISSION.md`, narrowing the earlier `Full claim registry = DEFER` state to `PARTIAL`. Subsequent stages admitted the remaining major-star and twelve-palace first layers plus bounded research-only executable retrieval/composition; production interpretation remains unadmitted.
 
 
 ## Batch 2 follow-up
 
-`INTERPRETATION_CLAIM_BATCH2_ADMISSION.md` admits the remaining eight major stars as 16 source-normalized machine-readable claims. Across Batch 1 + Batch 2, all fourteen major stars now have a first-layer `historical core + representative conditional` pair. This closes major-star first-layer coverage only. The twelve-palace first layer is now separately admitted; star×palace composition policy is research-closed without an exhaustive matrix. Executable retrieval/composition and production interpretation remain deferred.
+`INTERPRETATION_CLAIM_BATCH2_ADMISSION.md` admits the remaining eight major stars as 16 source-normalized machine-readable claims. Across Batch 1 + Batch 2, all fourteen major stars now have a first-layer `historical core + representative conditional` pair. This closes major-star first-layer coverage only. The twelve-palace first layer is separately admitted and star×palace composition policy is research-closed without an exhaustive matrix. Bounded executable retrieval/composition is now research-only admitted; production interpretation remains deferred.
 
 
 ## Twelve-palace follow-up
 
-`INTERPRETATION_CLAIM_PALACES_V0_ADMISSION.md` admits 24 source-normalized palace claims under schema `0.2.0-research`. The validator remains backward-compatible with the existing v0.1 major-star registries. `CG-FUDE-SCOPE-001` and `CG-NUPU-SCOPE-001` preserve historical-vs-modern scope differences. Major-star + palace first-layer coverage is now 52 claims total. The star×palace composition policy is research-closed without requiring an exhaustive matrix; sparse source-explicit overrides, later contextual layers, executable composition, and production remain deferred.
+`INTERPRETATION_CLAIM_PALACES_V0_ADMISSION.md` admits 24 source-normalized palace claims under schema `0.2.0-research`. The validator remains backward-compatible with the existing v0.1 major-star registries. `CG-FUDE-SCOPE-001` and `CG-NUPU-SCOPE-001` preserve historical-vs-modern scope differences. Major-star + palace first-layer coverage is now 52 claims total. The star×palace composition policy is research-closed without requiring an exhaustive matrix; sparse source-explicit overrides and later contextual claim families remain on-demand/deferred. Bounded executable retrieval/composition is research-only admitted; production remains deferred.
