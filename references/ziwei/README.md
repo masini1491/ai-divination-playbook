@@ -141,6 +141,7 @@ named school / preset 可以組合 components，但 component identity 與 prove
 - [`EXECUTABLE_RETRIEVAL_COMPOSITION_V0.md`](EXECUTABLE_RETRIEVAL_COMPOSITION_V0.md)
 - [`interpretation_retrieval_v0.py`](interpretation_retrieval_v0.py)
 - [`PRODUCTION_READINESS_GAP_ANALYSIS_V0.md`](PRODUCTION_READINESS_GAP_ANALYSIS_V0.md)
+- [`PRODUCTION_SCOPE_A_NATAL_FIRST_V0.md`](PRODUCTION_SCOPE_A_NATAL_FIRST_V0.md)
 - [`PRODUCTION_SCHEMA_CANDIDATES_V0.md`](PRODUCTION_SCHEMA_CANDIDATES_V0.md)
 - [`UNCERTAINTY_SAFETY_DELIVERY_CONTRACT_V0.md`](UNCERTAINTY_SAFETY_DELIVERY_CONTRACT_V0.md)
 - [`ziwei_executable_behavioral_fixtures_v0.json`](ziwei_executable_behavioral_fixtures_v0.json)
@@ -167,7 +168,7 @@ combined = 52 first-layer claims
 
 上述 ChatGPT-side research 可做 source reconciliation、claim normalization、conflict preservation、schema/admission design 與 bounded fixture/evidence work。Executable retrieval/composition 已另行取得 **RESEARCH-ONLY V0** admission；不得由此推導為 production authority。
 
-Production-readiness blocker inventory 由 `PRODUCTION_READINESS_GAP_ANALYSIS_V0.md` 擁有；G2 schema candidates、G5 executable behavioral validation、G6 uncertainty/safety delivery contract 已完成 **RESEARCH-CLOSED**。這些 closure 不授予 production authority。
+Production-readiness blocker inventory 由 `PRODUCTION_READINESS_GAP_ANALYSIS_V0.md` 擁有；minimum product scope 由 `PRODUCTION_SCOPE_A_NATAL_FIRST_V0.md` 固定為 **Scope A — bounded natal first layer only**。G2 schema candidates、G5 executable behavioral validation、G6 uncertainty/safety delivery contract 已完成 **RESEARCH-CLOSED**；52 claims 已滿足 Scope-A interpretation coverage。這些 closure 與 scope decision 都不授予 production authority。
 
 仍需分開 gate 的後續包括：
 
@@ -206,6 +207,6 @@ research judgment gap closed
 → routing
 ```
 
-目前已 admission 14 顆主星 / 28 條與十二宮 / 24 條 source-normalized machine-readable research claims，完成 `major-star + palace` 第一層共 52 條 coverage；star×palace composition policy、brightness interpretation responsibility 與 Four-Transformation interpretation responsibility 已 research-closed。Project-wide brightness table 仍未選定；minor-star admission taxonomy 與 temporal-context interpretation responsibility 已 research-closed；auxiliary-star claim corpus、dynamic claim corpus 與 production interpretation 仍未 admission；bounded executable retrieval/composition v0 已 research-only admission。
+目前已 admission 14 顆主星 / 28 條與十二宮 / 24 條 source-normalized machine-readable research claims，完成 `major-star + palace` 第一層共 52 條 coverage；**Scope A 已選定並以這 52 條作為完整必要 interpretation corpus**。star×palace composition policy、brightness interpretation responsibility 與 Four-Transformation interpretation responsibility 已 research-closed；project-wide brightness table、auxiliary-star claim corpus、dynamic claim corpus 均不屬 Scope-A blocker；bounded executable retrieval/composition v0 已 research-only admission。
 
 建立本 research dossier 不構成 production admission。

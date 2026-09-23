@@ -25,7 +25,7 @@ production routing                  = NOT ADMITTED
 | --- | --- | --- | --- |
 | G1 Calculation authority | Matched-profile research exists; baseline is componentized; brightness table open; dynamic runtime unadmitted | BLOCKED | source/profile + implementation gate |
 | G2 Production request/fact/frame schemas | versioned fail-closed schema candidates + validator regressions | RESEARCH-CLOSED | production binding remains separate |
-| G3 Claim coverage | 52 natal first-layer claims; contextual/dynamic/auxiliary corpora incomplete | PARTIAL | evidence/admission, on material need |
+| G3 Claim coverage | Scope A selects the admitted 52 natal first-layer claims as the complete required interpretation corpus | SATISFIED — SCOPE A | reopen only if product scope expands |
 | G4 Executable retrieval/composition | deterministic research-only v0 + unit regressions | RESEARCH-CLOSED | production hardening requires separate gate |
 | G5 Dependency / behavioral validation | architecture fixtures + machine-readable executable mapping + regressions | RESEARCH-CLOSED | production dependency validation remains separate |
 | G6 User-facing uncertainty / safety | bounded delivery contract + deterministic action regressions | RESEARCH-CLOSED | production renderer binding remains separate |
@@ -65,17 +65,15 @@ Unavailable facts remain explicit states and cannot be treated as computable. G2
 
 The admitted 52 claims are sufficient for bounded first-layer research behavior, not for a claim of complete Zi Wei interpretation coverage.
 
-Production admission must explicitly decide whether minimum viable scope is:
+Production scope has now explicitly selected:
 
 ```text
-A. bounded natal first layer only
-or
+A. bounded natal first layer only  ← SELECTED
 B. broader contextual natal interpretation
-or
 C. natal + dynamic interpretation
 ```
 
-Do not silently treat B/C as required merely because the domain can support them.
+For Scope A, the admitted 52 claims satisfy G3. B/C capabilities are not blockers and must not be silently pulled into the production path.
 
 ## G4 — executable retrieval/composition
 
@@ -132,12 +130,12 @@ The following remain separate gates:
 
 ## Next decision gate
 
-Before production-oriented implementation can continue, the project must explicitly choose the intended minimum product scope:
+The minimum product scope decision is now:
 
 ```text
-A. bounded natal first layer only
+A. bounded natal first layer only  ← SELECTED
 B. broader contextual natal interpretation
 C. natal + dynamic interpretation
 ```
 
-That choice determines whether G3 claim expansion and dynamic runtime are material blockers. Regardless of A/B/C, G1 still requires an admitted calculation runtime/provider; brightness profile selection is required only when admitted behavior depends on brightness-sensitive facts. Production admission and ordinary routing remain separate later gates.
+`PRODUCTION_SCOPE_A_NATAL_FIRST_V0.md` owns this decision. G3 claim expansion, project-wide brightness selection, auxiliary claim expansion and dynamic runtime are not Scope-A blockers. G1 is narrowed to an admitted natal calculation runtime/provider for the facts Scope A actually consumes. Production binding/admission and ordinary routing remain separate later gates.
