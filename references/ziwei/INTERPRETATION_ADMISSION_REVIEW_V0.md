@@ -29,7 +29,8 @@ Production schema candidates              CLOSED — RESEARCH
 Executable behavioral validation          CLOSED — RESEARCH
 Uncertainty / safety delivery contract     CLOSED — RESEARCH
 Production Scope A                        SELECTED — BOUNDED NATAL FIRST LAYER
-Production runtime                        NOT ADMITTED
+Scope-A natal calculation provider        ADMITTED — G1 ONLY
+Production runtime / method                NOT ADMITTED — G7
 Production routing                        NOT ADMITTED
 Scientific validity                       NOT CLAIMED
 ```
@@ -85,7 +86,7 @@ Conceptually admitted: Zi Wei Fact Packet v0, Claim Retrieval v0, Interpretation
 
 ## Production gate
 
-A production phase must be a separate explicit decision. Research-only executable retrieval/composition now exists; versioned fail-closed schema candidates, executable-v0 behavioral validation, and uncertainty/safety delivery contract are also research-closed. Production Scope A is now selected: bounded natal first layer only. Its 52 admitted claims satisfy the required interpretation coverage; broader contextual, auxiliary, brightness-conditioned and dynamic interpretation are not Scope-A blockers. Production still needs an admitted natal calculation runtime/provider for the facts Scope A consumes, production binding of the schema candidates, production-bound dependency/behavioral validation, renderer/API binding of the uncertainty/safety contract, and explicit production admission before any METHOD_ROUTING integration.
+A production phase must be a separate explicit decision. Research-only executable retrieval/composition now exists; versioned fail-closed schema candidates, executable-v0 behavioral validation, and uncertainty/safety delivery contract are also research-closed. Production Scope A is now selected: bounded natal first layer only. Its 52 admitted claims satisfy the required interpretation coverage; broader contextual, auxiliary, brightness-conditioned and dynamic interpretation are not Scope-A blockers. Scope-A natal calculation authority is now admitted at G1. Production still needs production binding of the schema candidates, production-bound dependency/behavioral validation, renderer/API binding of the uncertainty/safety contract, and explicit production admission before any METHOD_ROUTING integration.
 
 ## Research maturity conclusion
 
