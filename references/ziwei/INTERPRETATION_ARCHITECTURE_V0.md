@@ -107,7 +107,7 @@ star_core
 × temporal context
 ```
 
-The fourteen-star and twelve-palace prototypes validated the architecture. Batch 1 + Batch 2 now admit 28 first-layer major-star claims, and Twelve Palaces v0 admits 24 first-layer palace claims. Star×palace composition policy is research-closed: exhaustive 14×12 dictionary expansion is rejected, while sparse source-explicit overrides remain future on-demand evidence work. Brightness interpretation responsibility is also research-closed as a profile-bound modifier contract; the project-wide brightness table remains unselected. Four-Transformation interpretation responsibility is also research-closed as a profile-preserving modifier/claim gate; source-explicit transformed-star overrides remain on-demand. Other contextual layers remain incomplete.
+The fourteen-star and twelve-palace prototypes validated the architecture. Batch 1 + Batch 2 now admit 28 first-layer major-star claims, and Twelve Palaces v0 admits 24 first-layer palace claims. Star×palace composition policy is research-closed: exhaustive 14×12 dictionary expansion is rejected, while sparse source-explicit overrides remain future on-demand evidence work. Brightness interpretation responsibility is also research-closed as a profile-bound modifier contract; the project-wide brightness table remains unselected. Four-Transformation interpretation responsibility is also research-closed as a profile-preserving modifier/claim gate; source-explicit transformed-star overrides remain on-demand. Minor-star admission taxonomy is research-closed without mass claim expansion; auxiliary claim admission remains evidence-driven by tier. Other contextual layers remain incomplete.
 
 ## Star × palace composition policy
 
@@ -120,6 +120,10 @@ The fourteen-star and twelve-palace prototypes validated the architecture. Batch
 ## Four-Transformation interpretation policy
 
 `FOUR_TRANSFORMATION_INTERPRETATION_RESEARCH_V0.md` keeps calculation-table identity separate from interpretation doctrine. Transformation facts retain `sihua_profile_id`; generic transformation labels do not create guaranteed outcome claims; dedicated transformed-star L4 claims require explicit source/admission support.
+
+## Minor-star admission policy
+
+`MINOR_STAR_ADMISSION_TAXONOMY_V0.md` separates strongly supported selected assistants, high-impact candidates, long-tail auxiliaries and temporal/cycle stars. Implementation availability is not admission evidence; cycle/flow identities route to temporal/dynamic research rather than the natal auxiliary corpus.
 
 ## Specificity
 

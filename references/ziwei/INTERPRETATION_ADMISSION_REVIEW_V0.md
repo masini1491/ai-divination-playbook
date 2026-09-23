@@ -20,6 +20,7 @@ Star×palace composition policy            CLOSED — RESEARCH
 Brightness interpretation responsibility  CLOSED — RESEARCH
 Project-wide brightness table             NOT SELECTED
 Four-Transformation interpretation         CLOSED — RESEARCH
+Minor-star admission taxonomy              CLOSED — RESEARCH
 Production runtime                        NOT ADMITTED
 Production routing                        NOT ADMITTED
 Scientific validity                       NOT CLAIMED
@@ -92,6 +93,10 @@ The current first-layer closure does not make every deferred interpretation item
 ## Four-Transformation interpretation follow-up
 
 `FOUR_TRANSFORMATION_INTERPRETATION_RESEARCH_V0.md` closes interpretation responsibility without reselecting `sihua.default_v1`. Profile-scoped transformed-star facts may gate separately sourced L4 claims; generic 祿／權／科／忌 outcome guarantees are rejected, and cross-profile doctrine must not be averaged.
+
+## Minor-star taxonomy follow-up
+
+`MINOR_STAR_ADMISSION_TAXONOMY_V0.md` closes auxiliary-star prioritization without pretending the full long-tail corpus is admitted. 左輔／右弼／文昌／文曲 are the first eligible auxiliary subjects; higher-impact modifier candidates still require source/profile closure, and cycle/flow identities remain owned by temporal/dynamic research.
 
 ## Batch 1 follow-up
 

@@ -61,6 +61,7 @@ Star + palace first-layer coverage  CLOSED / 26 subjects / 52 claims
 Star×palace composition policy       CLOSED — RESEARCH / exhaustive matrix rejected; sparse source-explicit overrides only
 Brightness interpretation policy      CLOSED — RESEARCH / profile-bound modifier; default table not selected
 Four-Transformation interpretation    CLOSED — RESEARCH / profile-preserving claim gate; transformed-star overrides source-gated
+Minor-star admission taxonomy          CLOSED — RESEARCH / M0 assistants first eligible; M1 source closure required; long-tail/flow deferred
 ```
 
 任何 upstream rule 只有在本 research owner 明確採用後，才成為本研究線的 candidate contract；仍不因此取得 production authority。
