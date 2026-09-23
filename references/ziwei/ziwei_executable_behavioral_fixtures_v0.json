@@ -1,0 +1,209 @@
+{
+  "schema_version": "0.1.0-research",
+  "authority": "REFERENCE-ONLY / RESEARCH VALIDATION / NOT PRODUCTION-ROUTABLE",
+  "interpretation_profile": "ziwei.interpretation.tw_v1",
+  "temporal_scope": "natal_baseline",
+  "fixtures": [
+    {
+      "id": "F1",
+      "facts": [
+        "star_present:紫微",
+        "palace_present:命宮"
+      ],
+      "requested_subjects": [
+        "紫微",
+        "命宮"
+      ],
+      "expected_selected": [
+        "ZW-B1-ZIWEI-CORE-001",
+        "ZW-B1-ZIWEI-COND-002",
+        "ZW-PAL-MING-DOM-001",
+        "ZW-PAL-MING-COND-002"
+      ],
+      "classification": "PARTIAL_EXECUTABLE_CONTEXT_BLOCKED",
+      "blocked_dependencies": [
+        "auxiliary_claims:左輔/右弼"
+      ]
+    },
+    {
+      "id": "F2",
+      "facts": [
+        "star_present:紫微",
+        "palace_present:命宮"
+      ],
+      "requested_subjects": [
+        "紫微",
+        "命宮"
+      ],
+      "expected_selected": [
+        "ZW-B1-ZIWEI-CORE-001",
+        "ZW-B1-ZIWEI-COND-002",
+        "ZW-PAL-MING-DOM-001",
+        "ZW-PAL-MING-COND-002"
+      ],
+      "classification": "PARTIAL_EXECUTABLE_CONTEXT_BLOCKED",
+      "blocked_dependencies": [
+        "malefic_context_claims"
+      ]
+    },
+    {
+      "id": "F3",
+      "facts": [
+        "star_present:太陽",
+        "palace_present:官祿宮"
+      ],
+      "requested_subjects": [
+        "太陽",
+        "官祿宮"
+      ],
+      "expected_selected": [
+        "ZW-B1-TAIYANG-CORE-001",
+        "ZW-PAL-CAREER-DOM-001",
+        "ZW-PAL-CAREER-COND-002"
+      ],
+      "expected_omitted": [
+        "ZW-B1-TAIYANG-COND-002"
+      ],
+      "classification": "FAIL_CLOSED_PROFILE_BLOCKED",
+      "blocked_dependencies": [
+        "project_brightness_profile"
+      ]
+    },
+    {
+      "id": "F4",
+      "facts": [
+        "star_present:太陽",
+        "palace_present:官祿宮"
+      ],
+      "requested_subjects": [
+        "太陽",
+        "官祿宮"
+      ],
+      "expected_selected": [
+        "ZW-B1-TAIYANG-CORE-001",
+        "ZW-PAL-CAREER-DOM-001",
+        "ZW-PAL-CAREER-COND-002"
+      ],
+      "expected_omitted": [
+        "ZW-B1-TAIYANG-COND-002"
+      ],
+      "classification": "FAIL_CLOSED_PROFILE_BLOCKED",
+      "blocked_dependencies": [
+        "project_brightness_profile"
+      ]
+    },
+    {
+      "id": "F5",
+      "facts": [
+        "star_present:武曲",
+        "palace_present:財帛宮"
+      ],
+      "requested_subjects": [
+        "武曲",
+        "財帛宮"
+      ],
+      "expected_selected": [
+        "ZW-B1-WUQU-CORE-001",
+        "ZW-B1-WUQU-COND-002",
+        "ZW-PAL-WEALTH-DOM-001",
+        "ZW-PAL-WEALTH-COND-002"
+      ],
+      "classification": "PARTIAL_EXECUTABLE_CONTEXT_BLOCKED",
+      "blocked_dependencies": [
+        "祿馬_claim_family"
+      ]
+    },
+    {
+      "id": "F6",
+      "facts": [
+        "star_present:武曲",
+        "palace_present:財帛宮"
+      ],
+      "requested_subjects": [
+        "武曲",
+        "財帛宮"
+      ],
+      "expected_selected": [
+        "ZW-B1-WUQU-CORE-001",
+        "ZW-B1-WUQU-COND-002",
+        "ZW-PAL-WEALTH-DOM-001",
+        "ZW-PAL-WEALTH-COND-002"
+      ],
+      "classification": "PARTIAL_EXECUTABLE_CONTEXT_BLOCKED",
+      "blocked_dependencies": [
+        "破軍_combination_claim",
+        "malefic_context_claims"
+      ]
+    },
+    {
+      "id": "F7",
+      "facts": [
+        "star_present:巨門",
+        "palace_present:夫妻宮"
+      ],
+      "requested_subjects": [
+        "巨門",
+        "夫妻宮"
+      ],
+      "expected_selected": [
+        "ZW-B2-JUMEN-CORE-001",
+        "ZW-B2-JUMEN-COND-002",
+        "ZW-PAL-SPOUSE-DOM-001",
+        "ZW-PAL-SPOUSE-COND-002"
+      ],
+      "classification": "PARTIAL_EXECUTABLE_CONTEXT_BLOCKED",
+      "blocked_dependencies": [
+        "favorable_modifier_claims"
+      ]
+    },
+    {
+      "id": "F8",
+      "facts": [
+        "star_present:天府",
+        "palace_present:福德宮"
+      ],
+      "requested_subjects": [
+        "天府",
+        "福德宮"
+      ],
+      "expected_selected": [
+        "ZW-B2-TIANFU-CORE-001",
+        "ZW-B2-TIANFU-COND-002",
+        "ZW-PAL-FORTUNE-DOM-001",
+        "ZW-PAL-FORTUNE-COND-002"
+      ],
+      "expected_conflicts": [
+        "CG-TIANFU-RELIEF-001",
+        "CG-FUDE-SCOPE-001"
+      ],
+      "classification": "PARTIAL_EXECUTABLE_CONFLICT_PRESERVED",
+      "blocked_dependencies": [
+        "malefic_context_claims"
+      ]
+    },
+    {
+      "id": "F9",
+      "facts": [
+        "star_present:天相",
+        "palace_present:官祿宮"
+      ],
+      "requested_subjects": [
+        "天相",
+        "官祿宮"
+      ],
+      "expected_selected": [
+        "ZW-B2-TIANXIANG-CORE-001",
+        "ZW-B2-TIANXIANG-COND-002",
+        "ZW-PAL-CAREER-DOM-001",
+        "ZW-PAL-CAREER-COND-002"
+      ],
+      "expected_conflicts": [
+        "CG-TIANXIANG-AUTHORITY-001"
+      ],
+      "classification": "PARTIAL_EXECUTABLE_CONFLICT_PRESERVED",
+      "blocked_dependencies": [
+        "favorable_support_claims"
+      ]
+    }
+  ]
+}
