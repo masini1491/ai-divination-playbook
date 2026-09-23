@@ -144,6 +144,19 @@
       "casting_entrypoint": "core.execute_stochastic"
     },
     {
+      "id": "method.ziwei",
+      "owner": "ZIWEI.md",
+      "kind": "contract",
+      "activation": "explicit-request-only",
+      "scope": "natal_baseline",
+      "pipeline": "tools/ziwei_scope_a_pipeline.py",
+      "natal_provider": "tools/ziwei_natal_provider.py",
+      "admission_manifest": "ZIWEI_PRODUCTION_ADMISSION_V1.json",
+      "interpretation_profile": "ziwei.interpretation.tw_v1",
+      "claim_count": 52,
+      "research_owner": "references/ziwei/README.md"
+    },
+    {
       "id": "method.astrology",
       "owner": "ASTROLOGY.md",
       "kind": "contract",
@@ -311,6 +324,9 @@
       },
       "continuation_stochastic": {
         "followup": "READING_LIFECYCLE.md → selected method owner"
+      },
+      "explicit_ziwei": {
+        "followup": "ZIWEI.md"
       }
     },
     "bypass_profiles": {

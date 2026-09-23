@@ -4,7 +4,7 @@
 
 它不是 production method router，也不把 `references/**` 內的研究線自動升級成正式占卜方法。
 
-目前 production method selection 仍由 `METHOD_ROUTING.md` 負責。Astrology 已有 bounded production v1，但只有 explicit-request activation；普通未指定方法的 auto-routing 仍是：
+目前 production method selection 仍由 `METHOD_ROUTING.md` 負責。Astrology 與 Zi Wei Scope-A 已有 bounded production v1，但都只有 explicit-request activation；普通未指定方法的 auto-routing 仍是：
 
 ```text
 Tarot
@@ -53,7 +53,9 @@ Astrology research v1 已完成並保留歷史 evidence。它**不因 production
 
 ### Zi Wei Dou Shu / 紫微斗數
 
-Owner：[`references/ziwei/README.md`](references/ziwei/README.md)
+Research owner：[`references/ziwei/README.md`](references/ziwei/README.md)
+
+Production owner：[`ZIWEI.md`](ZIWEI.md)
 
 Intent examples：
 
@@ -64,15 +66,17 @@ Intent examples：
 研究一般使用者載入 ChatGPT 後的 default profile
 ```
 
-Current authority：
+Research authority：
 
 ```text
-REFERENCE-ONLY / RESEARCH-ONLY / NOT PRODUCTION-ROUTABLE
+REFERENCE-ONLY / RESEARCH-ONLY
 ```
+
+Research history remains non-production-routable by itself. Bounded production authority is separately owned by `ZIWEI.md` + `ZIWEI_PRODUCTION_ADMISSION_V1.json`.
 
 目前已建立 deterministic calculation、source/tradition、profile divergence，以及 interpretation architecture / provenance-preserving composition / future admission 的研究架構。研究 default candidate 以「一般使用者載入 ChatGPT 後的主觀貼合／命中感」為產品目標之一，但 Tarot 覆核只屬 research decision evidence；**不等於科學驗證、客觀預測效度或唯一正統來源**。
 
-不得因本 research line 已有 default candidate，就加入 `METHOD_ROUTING.md`、ordinary auto-selection、production cross-validation 或 production runtime。
+不得因 research dossier 本身而取得 production authority。Scope-A production v1 是另外的 explicit admission；它仍不加入 ordinary auto-selection，也不建立 production cross-validation。
 
 ### Palmistry
 
@@ -105,7 +109,7 @@ REFERENCE-ONLY / DRAFT / NOT PRODUCTION-ROUTABLE
 - 使用者要求維護、驗證、比較或繼續上述 research dossier；
 - machine consumer 已由 `PLAYBOOK_INDEX.json` 命中 `research.*` capability。
 
-Astrology production reading 不屬於這個 gate。
+Astrology 與 Zi Wei production reading 都不屬於這個 gate。
 
 最低路徑：
 
@@ -130,7 +134,7 @@ explicit research intent
 月底前會不會完成？
 ```
 
-而沒有指定 Astrology 時，**不要**載入本檔來擴張候選方法。
+而沒有指定 Astrology 或 Zi Wei 時，**不要**載入本檔來擴張候選方法。
 
 應直接回到：
 
@@ -140,7 +144,7 @@ CHAT_INIT.md
 → production method owner
 ```
 
-Astrology production v1 仍不因 repository 有 research dossier 就成為 ordinary auto-routing candidate。
+Astrology production v1 與 Zi Wei Scope-A production v1 都不因 repository 有 research dossier 就成為 ordinary auto-routing candidate。
 
 若使用者明確指定 production Astrology：
 
@@ -150,7 +154,15 @@ CHAT_INIT.md
 → Astrology Fact Gate
 ```
 
-Zi Wei Dou Shu 與 Palmistry 仍不得因有 research dossier而成為 ordinary auto-routing candidate。
+若使用者明確指定 production Zi Wei：
+
+```text
+CHAT_INIT.md
+→ ZIWEI.md
+→ admitted Scope-A pipeline / fail-closed boundary
+```
+
+Palmistry 仍不得因有 research dossier而成為 ordinary auto-routing candidate。
 
 ## Research Routing ≠ Production Admission
 
@@ -170,11 +182,13 @@ research result is detailed
 → therefore may silently create production rule
 ```
 
-Astrology v1 的 production admission 是另外的 explicit decision，記錄於：
+Astrology 與 Zi Wei 的 production admission 都是另外的 explicit decision，分別記錄於：
 
 ```text
 ASTROLOGY.md
 ASTROLOGY_PRODUCTION_ADMISSION_V1.json
+ZIWEI.md
+ZIWEI_PRODUCTION_ADMISSION_V1.json
 ```
 
 它不改變這項原則，也不為其他 research line 建立捷徑。
@@ -241,7 +255,7 @@ judgment gap
 → explicit admission decision
 ```
 
-Astrology v1 是這個 sequence 的一個 bounded implementation，不是繞過 sequence 的例外。
+Astrology v1 與 Zi Wei Scope-A v1 都是這個 sequence 的 bounded implementation，不是繞過 sequence 的例外。
 
 修改本檔或 `PLAYBOOK_INDEX.json` 的 research pointer **不能跳過上述 sequence**。
 

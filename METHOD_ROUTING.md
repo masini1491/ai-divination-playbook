@@ -9,6 +9,7 @@ Tarot
 Meihua
 Liuyao
 Astrology（explicit-request only；不參與 ordinary auto-routing）
+Zi Wei Dou Shu / 紫微斗數（Scope-A v1；explicit-request only；不參與 ordinary auto-routing）
 Tarot + Meihua（只有 distinct responsibilities 真正需要時）
 ```
 
@@ -19,6 +20,7 @@ Tarot + Meihua（只有 distinct responsibilities 真正需要時）
 - Meihua-specific → `MEIHUA.md`
 - Liuyao-specific → `LIUYAO.md`
 - Astrology-specific → `ASTROLOGY.md`
+- Zi Wei-specific → `ZIWEI.md`
 - Tarot + Meihua 已存在後怎麼整合 → `CROSS_VALIDATION.md`
 - 新題／承接／補占／重占 → `READING_LIFECYCLE.md`
 - ChatGPT 自行抽牌／起卦 → `RUNTIME_DRAW.md`
@@ -29,7 +31,7 @@ Tarot + Meihua（只有 distinct responsibilities 真正需要時）
 
 > **Single-method first。Cross-validation 不是資訊越多越好。**
 
-> **Astrology v1 是 explicit-request method：使用者沒指定 Astrology 時，不因題目看起來像星盤題就把它加入 ordinary Fast Path。**
+> **Astrology v1 與 Zi Wei Scope-A v1 都是 explicit-request methods：使用者未明確指定時，不加入 ordinary Fast Path。**
 
 ## Fast Path｜高信心命中就停止 routing
 
@@ -59,7 +61,7 @@ Outcome / Completion
 → Liuyao
 ```
 
-Astrology 不在這個 ordinary auto-selection tree。只有使用者明確說「用占星／用星盤／看行運」等 production intent 時，才由 User Method Override 直接交給 `ASTROLOGY.md`。
+Astrology 與 Zi Wei Dou Shu 都不在這個 ordinary auto-selection tree。只有使用者明確說「用占星／用星盤／看行運」時才交給 `ASTROLOGY.md`；明確說「用紫微／用紫微斗數／看紫微命盤」時才交給 `ZIWEI.md`。
 
 若只有一個 ordinary 分支高信心命中，**立即選 method，停止讀本檔其餘 sections**；只有出現 collision、ambiguous function、使用者要求多方法或 completion／心理／演化混在同一句時，才繼續讀對應 gate。
 
@@ -71,9 +73,10 @@ Astrology 不在這個 ordinary auto-selection tree。只有使用者明確說�
 - 「用梅花」→ 使用 Meihua；
 - 「用六爻」→ 使用 Liuyao；
 - 「用占星／用星盤／看本命盤／看行運」→ 使用 Astrology，讀 `ASTROLOGY.md`；
+- 「用紫微／用紫微斗數／看紫微命盤」→ 使用 Zi Wei Scope-A v1，讀 `ZIWEI.md`；
 - 「兩個都看／交叉看」→ 先進 Cross-validation Responsibility Gate，不預設固定哪兩套。
 
-Astrology 的 override 還需區分 production reading 與 research intent：
+Astrology 與 Zi Wei 的 override 都需區分 production reading 與 research intent：
 
 ```text
 用占星幫我看／看我的本命盤／看這段行運
@@ -81,13 +84,19 @@ Astrology 的 override 還需區分 production reading 與 research intent：
 
 研究占星來源／維護 Astrology research dossier／比較研究架構
 → RESEARCH_ROUTING.md
+
+用紫微幫我看／看我的紫微命盤
+→ ZIWEI.md
+
+研究紫微來源／排盤規則／四化或 dynamic architecture
+→ RESEARCH_ROUTING.md
 ```
 
 原則上尊重使用者選擇，不因 ChatGPT 個人偏好自行換方法。
 
 只有當指定方法與問題功能明顯不合、無法依該方法形成乾淨契約，或方法本身在本次 workflow 不可用時，才應簡短指出限制並推薦更合適方法。
 
-若 Astrology 是指定方法但缺 deterministic chart facts / approved provider，依 `ASTROLOGY.md` fail closed 在 Fact Gate；不得因 Tarot / Meihua / Liuyao 比較容易執行就偷偷換方法。
+若 Astrology 是指定方法但缺 deterministic chart facts / approved provider，依 `ASTROLOGY.md` fail closed；若 Zi Wei 是指定方法但輸入超出 admitted normalized Scope-A boundary，依 `ZIWEI.md` fail closed。兩者都不得因 Tarot / Meihua / Liuyao 比較容易執行就偷偷換方法。
 
 若使用者已提供實際牌面／卦象／六爻 Cast Fact 或 structured Astrology facts，直接依既有 method fact 處理；不得為了「方法更適合」自行重抽、重卦、重算或改系統。
 
@@ -263,7 +272,7 @@ Astrology 與其他 production methods 亦同：目前可以並列成 distinct e
 - 人物、選項、主觀感受、相對比較 → Tarot；
 - 事件演變、主客結構、轉折、節奏 → Meihua；
 - 單一具體事件 outcome／completion → Liuyao；
-- Astrology 不參與 ordinary auto-selection；
+- Astrology 與 Zi Wei Dou Shu 不參與 ordinary auto-selection；
 - 只有真正存在兩個 distinct functions 時才考慮第二套方法。
 
 只有在**不同 ordinary methods 會實質改變題目功能，而現有資訊不足以知道使用者真正想問哪一層**時，才做一次最小澄清。
@@ -288,7 +297,7 @@ Astrology 與其他 production methods 亦同：目前可以並列成 distinct e
 
 依以下順序裁決：
 
-1. 使用者明確指定的方法（包含 Astrology）；
+1. 使用者明確指定的方法（包含 Astrology 與 Zi Wei Dou Shu）；
 2. 若未指定，主要 judgment function；
 3. 是否有清楚、外部可驗證的 completion rule；
 4. 單方法是否已充分；
@@ -300,6 +309,9 @@ Astrology 與其他 production methods 亦同：目前可以並列成 distinct e
 ```text
 使用者明確指定 Astrology？
 → yes: Astrology → ASTROLOGY.md
+
+使用者明確指定 Zi Wei Dou Shu？
+→ yes: Zi Wei → ZIWEI.md
 
 否，是否主要問人物心理／關係主觀／選項比較？
 → yes: Tarot
@@ -362,7 +374,15 @@ Randomizer 可起六爻
 本 session 已有 approved deterministic chart provider
 ```
 
-若 Liuyao 是最佳方法但 Structured Method Fact engine 不可用，依 `LIUYAO.md` fail closed 在缺失層；若 Astrology 是明確指定方法但 chart facts 不可取得，依 `ASTROLOGY.md` fail closed 在 Fact Gate。兩者都不得只因另一套比較容易執行就偷偷改方法。
+尤其 Zi Wei Scope-A v1：
+
+```text
+使用者要求紫微
+≠
+可以自由手算／補造未 admitted 的排盤或 dynamic facts
+```
+
+若 Liuyao 是最佳方法但 Structured Method Fact engine 不可用，依 `LIUYAO.md` fail closed；若 Astrology 或 Zi Wei 是明確指定方法但其 admitted fact/runtime boundary 不成立，分別依 `ASTROLOGY.md` / `ZIWEI.md` fail closed。不得只因另一套比較容易執行就偷偷改方法。
 
 ## 11. 建議的 Agent-facing 最小輸出
 
@@ -395,7 +415,7 @@ Randomizer 可起六爻
 
 送入正式出題／方法執行前，快速確認：
 
-- [ ] 使用者是否已指定方法？若指定 Astrology，是否直接進 `ASTROLOGY.md`？
+- [ ] 使用者是否已指定方法？若指定 Astrology / Zi Wei，是否直接進 `ASTROLOGY.md` / `ZIWEI.md`？
 - [ ] 若是 Astrology，使用者是在要 production reading 還是 research task？
 - [ ] ordinary 未指定方法時，主要 judgment function 是什麼？
 - [ ] 是否有清楚的 completion rule / horizon？
@@ -404,4 +424,4 @@ Randomizer 可起六爻
 - [ ] 若追加第二套，是否能在結果出現前寫出不同 responsibility？
 - [ ] 是否已有實際牌面／卦象／Cast Fact／Astrology Fact Bundle，因此不得重新 routing 或自行替換 fact source？
 
-核心原則：**Explicit Astrology → Astrology; otherwise Psychology/comparison → Tarot; evolution/turning point → Meihua; concrete outcome/completion → Liuyao。**
+核心原則：**Explicit Astrology → Astrology；Explicit Zi Wei → Zi Wei Scope-A；otherwise Psychology/comparison → Tarot; evolution/turning point → Meihua; concrete outcome/completion → Liuyao。**
