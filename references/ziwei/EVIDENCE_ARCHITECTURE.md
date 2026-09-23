@@ -65,7 +65,7 @@ Baseline Core Fact Set 在 matched profile 下目前可研究：
 下列不得混入無 profile 的 L2 universal fact：
 
 - Four Transformations
-- brightness
+- brightness — profile-bound; interpretation responsibility closed by `BRIGHTNESS_INTERPRETATION_RESEARCH_V0.md`, project-wide table still unselected
 - leap-month convention
 - late-Rat convention
 - subsystem year boundaries

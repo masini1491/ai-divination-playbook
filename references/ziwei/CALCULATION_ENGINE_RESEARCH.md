@@ -24,7 +24,7 @@ D13 Interpretation claims
 D14 Validation / admission
 ```
 
-第一階段以 D0–D6、D10、D12、D14 為主。D13 的 architecture / source-policy / runtime-facing contracts v0 已完成 research admission；完整 claim corpus 仍未 admission。D7/D9/D11 保持後續研究。
+第一階段以 D0–D6、D10、D12、D14 為主。D13 的 architecture / source-policy / runtime-facing contracts v0 已完成 research admission；完整 claim corpus 仍未 admission。D9 的 interpretation responsibility 已 research-closed，但 project-wide brightness table/profile 尚未選定；D7/D11 保持後續研究。
 
 ## Normalized architecture
 
@@ -119,6 +119,23 @@ PROJECT-DEFAULT-V1
 詳細身份與 evidence level 由 `FOUR_TRANSFORMATION_VARIANT_REGISTRY.md` 擁有。
 
 `PROJECT-DEFAULT-V1` 使用中性 identity `sihua.default_v1`；它不是已證實的古籍單一 lineage。選它作 `ziwei.baseline.tw_v1` 的理由是 user-perceived-fit Tarot design review，不是 engine majority、古籍唯一性或科學效度證明。
+
+### Brightness
+
+Status：`INTERPRETATION RESPONSIBILITY CLOSED / TABLE PROFILE OPEN`
+
+Current implementation evidence confirms brightness is rule/profile data attached to chart stars. iztro exposes branch-indexed brightness arrays and labels; ziwei-lite exposes generated/configurable brightness rules. These are implementation references, not proof of one universal historical table.
+
+Research contract：
+
+```text
+brightness fact = profile-bound
+raw cross-engine arrays = compare only after branch/label/profile normalization
+project default brightness table = not selected
+brightness-conditioned interpretation = sourced modifier, not automatic standalone doctrine
+```
+
+Detailed owner：`BRIGHTNESS_INTERPRETATION_RESEARCH_V0.md`.
 
 ### Leap month
 
@@ -234,8 +251,9 @@ Canonical owners：
 
 ## Remaining research gaps
 
-1. brightness、minor stars、dynamic charts；
-2. machine-readable full claim registry and source-normalized claim admission；
-3. 上述兩個明確 image gaps（只有取得可驗證 facsimile 時才重開）。
+1. minor stars、dynamic charts；
+2. project-wide brightness table/profile selection（only after source/profile reconciliation or explicit project design decision）；
+3. machine-readable full claim registry and source-normalized claim admission；
+4. 上述兩個明確 image gaps（只有取得可驗證 facsimile 時才重開）。
 
 Interpretation Architecture v0 的完成不建立 production provider、production runtime、ordinary routing 或 canonical production profile。

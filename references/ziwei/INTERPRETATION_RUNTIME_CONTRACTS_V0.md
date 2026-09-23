@@ -40,7 +40,7 @@ provenance_map
 
 Fact state must be explicit: `known`, `unknown`, `not_computed`, `ambiguous`, `not_applicable`. Absence must not silently mean false. If brightness is not computed/admitted, brightness-dependent claims are skipped.
 
-Profile-sensitive facts retain `profile_scope` and provenance. A bare profile-dependent fact without identity is insufficient.
+Profile-sensitive facts retain `profile_scope` and provenance. A bare profile-dependent fact without identity is insufficient. For brightness this includes `brightness_profile` plus rule/engine provenance; a label such as `廟` or `陷` without that identity is not a sufficient research fact.
 
 ## 2. Claim Retrieval v0
 
