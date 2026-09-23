@@ -89,7 +89,7 @@ Interpretation Research v0 is architecture-complete enough to stop broad explora
 
 ## Continuation routing note
 
-The current first-layer closure does not make every deferred interpretation item active work. For fresh-session continuation, use the Zi Wei research owner `README.md` → `Research continuation contract` to distinguish ChatGPT-eligible research/evidence/schema/admission candidates from executable/runtime/production work that still requires separate gates. Actor choice must be re-evaluated per current Stage; prior Codex or implementation work is not actor authority for the next research Stage.
+The current closures do not make every remaining item active work. For fresh-session continuation, use the Zi Wei research owner `README.md` → `Research continuation contract` to distinguish completed research stages, the admitted research-only executable selector/composer, and runtime/production work that still requires separate gates. Actor choice must be re-evaluated per current Stage; prior Codex or implementation work is not actor authority for the next Stage.
 
 ## Star × palace composition follow-up
 

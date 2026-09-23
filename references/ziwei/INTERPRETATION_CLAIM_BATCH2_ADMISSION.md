@@ -50,10 +50,6 @@ combined = 14 major stars / 28 bounded claims
 
 This closes only the first-layer major-star coverage (`core + representative conditional`). It does not mean every star/palace/combination claim is complete.
 
-## Still deferred
+## Stage-close snapshot and later status
 
-- twelve-palace source-normalized registry；
-- full star×palace combination families；
-- brightness/minor-star/transformation interpretation families；
-- executable retrieval/composition；
-- production admission。
+At Batch 2 closure, the twelve-palace registry, star×palace policy, brightness/minor-star/transformation research, executable retrieval/composition and production admission were still deferred. Subsequent bounded research stages closed the twelve-palace first layer and interpretation-responsibility questions, and `EXECUTABLE_RETRIEVAL_COMPOSITION_V0.md` later admitted research-only retrieval/composition. Production admission remains deferred.
