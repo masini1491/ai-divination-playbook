@@ -113,14 +113,14 @@ The current first-layer closure does not make every deferred interpretation item
 
 ## Batch 1 follow-up
 
-The first source-normalized machine-readable claim batch is admitted separately in `INTERPRETATION_CLAIM_BATCH1_ADMISSION.md`. This narrows the earlier `Full claim registry = DEFER` state to `PARTIAL`; it does not admit the remaining stars, twelve-palace corpus, retrieval runtime or production interpretation.
+The first source-normalized machine-readable claim batch was admitted separately in `INTERPRETATION_CLAIM_BATCH1_ADMISSION.md`, narrowing the earlier `Full claim registry = DEFER` state to `PARTIAL`. Subsequent stages admitted the remaining major-star and twelve-palace first layers plus bounded research-only executable retrieval/composition; production interpretation remains unadmitted.
 
 
 ## Batch 2 follow-up
 
-`INTERPRETATION_CLAIM_BATCH2_ADMISSION.md` admits the remaining eight major stars as 16 source-normalized machine-readable claims. Across Batch 1 + Batch 2, all fourteen major stars now have a first-layer `historical core + representative conditional` pair. This closes major-star first-layer coverage only. The twelve-palace first layer is now separately admitted; star×palace composition policy is research-closed without an exhaustive matrix. Executable retrieval/composition and production interpretation remain deferred.
+`INTERPRETATION_CLAIM_BATCH2_ADMISSION.md` admits the remaining eight major stars as 16 source-normalized machine-readable claims. Across Batch 1 + Batch 2, all fourteen major stars now have a first-layer `historical core + representative conditional` pair. This closes major-star first-layer coverage only. The twelve-palace first layer is separately admitted and star×palace composition policy is research-closed without an exhaustive matrix. Bounded executable retrieval/composition is now research-only admitted; production interpretation remains deferred.
 
 
 ## Twelve-palace follow-up
 
-`INTERPRETATION_CLAIM_PALACES_V0_ADMISSION.md` admits 24 source-normalized palace claims under schema `0.2.0-research`. The validator remains backward-compatible with the existing v0.1 major-star registries. `CG-FUDE-SCOPE-001` and `CG-NUPU-SCOPE-001` preserve historical-vs-modern scope differences. Major-star + palace first-layer coverage is now 52 claims total. The star×palace composition policy is research-closed without requiring an exhaustive matrix; sparse source-explicit overrides, later contextual layers, executable composition, and production remain deferred.
+`INTERPRETATION_CLAIM_PALACES_V0_ADMISSION.md` admits 24 source-normalized palace claims under schema `0.2.0-research`. The validator remains backward-compatible with the existing v0.1 major-star registries. `CG-FUDE-SCOPE-001` and `CG-NUPU-SCOPE-001` preserve historical-vs-modern scope differences. Major-star + palace first-layer coverage is now 52 claims total. The star×palace composition policy is research-closed without requiring an exhaustive matrix; sparse source-explicit overrides and later contextual claim families remain on-demand/deferred. Bounded executable retrieval/composition is research-only admitted; production remains deferred.
