@@ -67,6 +67,12 @@
       "kind": "reference"
     },
     {
+      "id": "research.ziwei",
+      "owner": "references/ziwei/README.md",
+      "section": "Authority boundary",
+      "kind": "reference"
+    },
+    {
       "id": "research.palmistry",
       "owner": "references/palmistry/README.md",
       "section": "Authority boundary",
