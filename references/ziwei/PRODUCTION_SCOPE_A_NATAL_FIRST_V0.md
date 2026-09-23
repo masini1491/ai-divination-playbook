@@ -1,6 +1,6 @@
 # Zi Wei Production Scope A — Bounded Natal First Layer v0
 
-Authority：`PRODUCT-SCOPE DECISION / READINESS CONTRACT / NOT PRODUCTION ADMISSION`
+Authority：`PRODUCT-SCOPE DECISION / G7 PRODUCTION-ADMITTED SCOPE / G8 ROUTING SEPARATE`
 
 ## Decision
 
@@ -10,7 +10,7 @@ The selected minimum product scope is:
 A. bounded natal first layer only
 ```
 
-This decision fixes the minimum target used by production-readiness analysis. It does not itself admit a production runtime, renderer, method owner or ordinary route.
+This decision fixed the minimum target used by production-readiness analysis. Scope-A v1 is now production-admitted by the separate canonical manifest/pipeline binding; this scope document does not itself grant ordinary routing.
 
 ## Included interpretation scope
 
@@ -72,19 +72,17 @@ ambiguous natal fact        → preserve ambiguity / omit dependent claim
 After this scope decision:
 
 ```text
-G1 natal calculation authority                 BLOCKED
+G1 natal calculation authority                 ADMITTED — SCOPE-A NATAL
 G2 production schema candidates                RESEARCH-CLOSED
 G3 required interpretation coverage            SATISFIED FOR SCOPE A
 G4 retrieval/composition                       RESEARCH-CLOSED
 G5 executable behavioral validation            RESEARCH-CLOSED
 G6 uncertainty/safety delivery contract         RESEARCH-CLOSED
-G7 production binding + explicit admission      BLOCKED
+G7 production binding + explicit admission      ADMITTED — SCOPE-A V1
 G8 ordinary routing                             BLOCKED
 ```
 
-G1 must be narrowed to a natal-only deterministic runtime/provider with explicit profile/provenance identity. It must not be blocked by brightness or dynamic capability that Scope A does not consume.
-
-G7 remains separate: research closures must be bound and validated against the admitted natal runtime before production admission.
+G1 is admitted as the natal-only deterministic runtime/provider with explicit profile/provenance identity. G7 is admitted by the bounded Scope-A v1 production manifest/pipeline binding. Neither admission expands brightness, auxiliary, Four-Transformation or dynamic authority.
 
 G8 remains last: `ZIWEI.md`, `METHOD_ROUTING.md`, `PLAYBOOK_INDEX.json` and unspecified-user routing cannot precede production admission.
 
