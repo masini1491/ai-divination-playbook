@@ -20,6 +20,15 @@ Authority：`REFERENCE-ONLY / RESEARCH EVIDENCE`
 | --- | --- | --- | --- |
 | `RedSC1/ziwei_core` | `f7700c91ba683df2b0da9386d842171a6aec835f` | ziwei-lite family 的 Dart rewrite / parity、large fixture architecture | 同 lineage；JS↔Dart parity 是 implementation consistency，不是 doctrinal independence |
 
+## Tier I — interpretation / evaluation references
+
+| Source | Exact revision / identity | License / rights | Research role | Boundary |
+| --- | --- | --- | --- | --- |
+| Nanyang-Hall `新鋟希夷陳先生紫微斗數全書` | same historical witness tracked below | historical witness | historical semantic baseline candidate；星曜、宮位、條件式解讀與方法論 | rule-specific evidence only；不得把單一傳本說成唯一正統 |
+| Zhongzhou modern lineage | named modern tradition；bounded publication / implementation evidence | modern copyrighted tradition | named-school comparator；composition / tradition projection research | REFERENCE-ONLY；不 vendor 近人著作內容，不自動覆寫 historical core |
+| `Renhuai123/nihai-tianji-corpus` | `c90006168195c0650328b7199669eb6a2d0cac93` | `data/` + `docs/` = CC BY-NC-SA 4.0；原課程權利另保留；tools = MIT | structured practitioner corpus；主星／十二宮／四化／方法論；source-conflict detection | REFERENCE-ONLY；不直接 vendor 4,886 條 corpus；case inference 不自動 generalize |
+| `DestinyLinker/MingLi-Bench` | `b7433280fd86d7a7c27debbc47d0303c218f0bfd` | MIT repository license | evaluation-only；預排 iztro 命盤以分離 chart derivation 與 reasoning | benchmark answer ≠ doctrine authority；不得反推哪一流派「為真」 |
+
 ## Tier P — primary / historical candidates
 
 | Source | Identity | Role | Boundary |
@@ -39,7 +48,11 @@ ziwei-lite                        REFERENCE-ONLY / profile & validation architec
 BingerYuan/zwds                   REFERENCE-ONLY / comparator; license unresolved
 ziwei_core                        REFERENCE-ONLY / derived-lineage parity evidence
 historical / primary candidates   REFERENCE-ONLY / rule-specific source evidence
+Zhongzhou modern                  REFERENCE-ONLY / named-tradition comparator
+nihai-tianji-corpus               REFERENCE-ONLY / practitioner projection + conflict detection
+MingLi-Bench                      EVALUATION-ONLY / reasoning benchmark
 Source Reconciliation v1          CLOSED WITH EXPLICIT IMAGE GAPS
+Interpretation Architecture v0    RESEARCH-ADOPTED architecture / claim corpus not admitted
 ```
 
 任何 upstream rule 只有在本 research owner 明確採用後，才成為本研究線的 candidate contract；仍不因此取得 production authority。

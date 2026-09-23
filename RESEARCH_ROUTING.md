@@ -70,7 +70,7 @@ Current authority：
 REFERENCE-ONLY / RESEARCH-ONLY / NOT PRODUCTION-ROUTABLE
 ```
 
-目前只建立 deterministic calculation、source/tradition、profile divergence 與 future admission 的研究架構。研究 default candidate 以「一般使用者載入 ChatGPT 後的主觀貼合／命中感」為產品目標之一，但 Tarot 覆核只屬 research decision evidence；**不等於科學驗證、客觀預測效度或唯一正統來源**。
+目前已建立 deterministic calculation、source/tradition、profile divergence，以及 interpretation architecture / provenance-preserving composition / future admission 的研究架構。研究 default candidate 以「一般使用者載入 ChatGPT 後的主觀貼合／命中感」為產品目標之一，但 Tarot 覆核只屬 research decision evidence；**不等於科學驗證、客觀預測效度或唯一正統來源**。
 
 不得因本 research line 已有 default candidate，就加入 `METHOD_ROUTING.md`、ordinary auto-selection、production cross-validation 或 production runtime。
 

@@ -24,7 +24,7 @@ D13 Interpretation claims
 D14 Validation / admission
 ```
 
-第一階段以 D0–D6、D10、D12、D14 為主；D7/D9/D11/D13 保持後續研究。
+第一階段以 D0–D6、D10、D12、D14 為主。D13 的 architecture / source-policy / runtime-facing contracts v0 已完成 research admission；完整 claim corpus 仍未 admission。D7/D9/D11 保持後續研究。
 
 ## Normalized architecture
 
@@ -211,10 +211,31 @@ Wenguang rule-page facsimile        IMAGE GAP OPEN
 
 因此 Source Reconciliation v1 可標記 `CLOSED WITH EXPLICIT IMAGE GAPS`。未來只有取得 material 新 facsimile／witness evidence 時才 reopen 對應 item；不以一般網頁數量重跑同一研究。
 
+## Interpretation architecture handoff
+
+Interpretation research v0 已完成：
+
+```text
+14-star / 12-palace claim prototypes     architecture evidence only
+contextual composition                   selected research architecture
+flat dictionary                          rejected as primary model
+source conflict preservation             selected
+ziwei.interpretation.tw_v1               research candidate
+fact/retrieval/synthesis contracts v0     research-admitted
+synthetic fixture validation v0           pass
+```
+
+Canonical owners：
+
+- `INTERPRETATION_ARCHITECTURE_V0.md`
+- `INTERPRETATION_RUNTIME_CONTRACTS_V0.md`
+- `INTERPRETATION_FIXTURE_VALIDATION_V0.md`
+- `INTERPRETATION_ADMISSION_REVIEW_V0.md`
+
 ## Remaining research gaps
 
 1. brightness、minor stars、dynamic charts；
-2. interpretation claim source architecture；
+2. machine-readable full claim registry and source-normalized claim admission；
 3. 上述兩個明確 image gaps（只有取得可驗證 facsimile 時才重開）。
 
-在 interpretation/source architecture 與 deterministic prototype/fixture 還未完成前，不建立 production provider selection 或 canonical production profile。
+Interpretation Architecture v0 的完成不建立 production provider、production runtime、ordinary routing 或 canonical production profile。
