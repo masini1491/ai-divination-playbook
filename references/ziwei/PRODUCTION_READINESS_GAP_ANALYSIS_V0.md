@@ -24,7 +24,7 @@ production routing                  = NOT ADMITTED
 | Gate | Current evidence | State | Next owner |
 | --- | --- | --- | --- |
 | G1 Calculation authority | Matched-profile research exists; baseline is componentized; brightness table open; dynamic runtime unadmitted | BLOCKED | source/profile + implementation gate |
-| G2 Production request/fact/frame schemas | Research-facing conceptual contracts only | OPEN | ChatGPT can define bounded schema candidates |
+| G2 Production request/fact/frame schemas | versioned fail-closed schema candidates + validator regressions | RESEARCH-CLOSED | production binding remains separate |
 | G3 Claim coverage | 52 natal first-layer claims; contextual/dynamic/auxiliary corpora incomplete | PARTIAL | evidence/admission, on material need |
 | G4 Executable retrieval/composition | deterministic research-only v0 + unit regressions | RESEARCH-CLOSED | production hardening requires separate gate |
 | G5 Dependency / behavioral validation | architecture fixtures + machine-readable executable mapping + regressions | RESEARCH-CLOSED | production dependency validation remains separate |
@@ -48,7 +48,7 @@ A production runtime must expose component/profile identity and provenance rathe
 
 ## G2 — production-grade schemas
 
-The current Fact Packet / Retrieval / Frame documents are conceptual research contracts. Production readiness needs versioned machine-readable schemas for at least:
+`PRODUCTION_SCHEMA_CANDIDATES_V0.md` now defines versioned fail-closed request/fact/retrieval/frame candidates and `validate_production_schema_candidates_v0.py` provides bounded deterministic validation. The candidate covers:
 
 - normalized request/input provenance;
 - calculation/profile identity;
@@ -59,7 +59,7 @@ The current Fact Packet / Retrieval / Frame documents are conceptual research co
 - conflict and safety state;
 - interpretation frame and provenance trace.
 
-These schemas can be researched before a production runtime exists, but must not pretend unavailable facts are computable.
+Unavailable facts remain explicit states and cannot be treated as computable. G2 is research-closed at the schema-candidate level; binding these candidates to a production runtime/API remains a separate implementation/admission gate.
 
 ## G3 — claim coverage
 
@@ -115,9 +115,10 @@ Production admission is a separate explicit decision after evidence from precedi
 
 Under current ChatGPT-Only mode, the following readiness work can proceed without crossing production authority:
 
-1. production-schema candidate design with unavailable fields fail-closed;
-2. uncertainty/safety delivery contract;
-3. readiness matrix reconciliation after each closure.
+1. uncertainty/safety delivery contract;
+2. readiness matrix reconciliation after each closure.
+
+Production-schema candidate design is **CLOSED — RESEARCH**.
 
 Executable behavioral validation over the admitted fixtures is **CLOSED — RESEARCH**.
 
