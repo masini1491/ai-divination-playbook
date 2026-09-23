@@ -425,3 +425,7 @@ Randomizer 可起六爻
 - [ ] 是否已有實際牌面／卦象／Cast Fact／Astrology Fact Bundle，因此不得重新 routing 或自行替換 fact source？
 
 核心原則：**Explicit Astrology → Astrology；Explicit Zi Wei → Zi Wei Scope-A；otherwise Psychology/comparison → Tarot; evolution/turning point → Meihua; concrete outcome/completion → Liuyao。**
+
+## Routing Compatibility Invariants
+
+Astrology 不在這個 ordinary auto-selection tree。Zi Wei Dou Shu Scope-A v1 也不在；兩者都只由 explicit user method override 啟動。
