@@ -1,6 +1,6 @@
 # Zi Wei Dou Shu｜紫微斗數方法契約
 
-Status: **PRODUCTION SCOPE-A V1 + OPTIONAL BRIGHTNESS FACTS V1 / EXPLICIT-REQUEST ONLY**
+Status: **PRODUCTION SCOPE-A V1 + GREGORIAN INPUT V1 + OPTIONAL BRIGHTNESS FACTS V1 / EXPLICIT-REQUEST ONLY**
 
 本檔是 Zi Wei Dou Shu 的 root production method owner。Production authority 僅涵蓋已 admission 的 **bounded natal first layer**；deterministic implementation 與 machine admission truth 由 `tools/ziwei_scope_a_pipeline.py`、`tools/ziwei_natal_provider.py` 與 `ZIWEI_PRODUCTION_ADMISSION_V1.json` 擁有。Research history 仍由 `references/ziwei/**` 擁有，不因 production admission 回寫其歷史 authority。
 
@@ -11,7 +11,8 @@ Zi Wei Scope-A v1 不參與 ordinary auto-routing。只有使用者明確要求�
 ```text
 explicit Zi Wei production
 → ZIWEI.md
-→ admitted normalized natal input + provenance
+→ Gregorian birth datetime (Asia/Taipei) → admitted calendar adapter
+   OR already-normalized lunar input + provenance
 → tools/ziwei_scope_a_pipeline.py
 → admitted natal_baseline facts
 → allowlisted 52-claim first-layer retrieval
@@ -30,6 +31,7 @@ IN:
 - 12 palace first-layer claims;
 - 52 admitted claims total;
 - admitted deterministic natal provider facts;
+- Gregorian birth datetime input via `ziwei.calendar.tw_v1` for `Asia/Taipei` civil time;
 - explicit provenance, omission, conflict and safety delivery.
 
 OPTIONAL / explicit add-on:
@@ -47,11 +49,18 @@ Unsupported layers不得用模型記憶、手算、research-only claims 或其�
 
 ## 3. Deterministic Fact Boundary
 
-Language model 不得把 raw birth data 自由手算成 production chart facts。Scope-A production 必須使用 admitted provider/pipeline 所要求的 normalized input boundary與 provenance；provider 不支援的 normalization／calendar conversion不得猜測。
+Language model 不得把 raw birth data 自由手算成 production chart facts。已 normalization 的農曆輸入仍可直接走 Scope-A；西元生日則必須先經 admitted `tools/ziwei_calendar_provider.py`。Calendar v1 僅 admission `Asia/Taipei` civil time，保留 raw lunar conversion，再明確套用 `next_day_at_23` 與 `split_after_day_15` Zi Wei policy；不得由模型自行換農曆、猜 timezone 或偷偷套真太陽時。
 
 Production runtime:
 
 ```text
+Gregorian input v1:
+Gregorian YYYY-MM-DD HH:mm:ss + Asia/Taipei
+→ tools/ziwei_calendar_provider.py
+→ tools/ziwei_gregorian_pipeline.py
+→ normalized traditional-lunar input
+→ default Scope-A or optional brightness_v1
+
 default Scope-A:
 tools/ziwei_natal_provider.py
 → tools/ziwei_scope_a_pipeline.py
@@ -116,6 +125,12 @@ ZIWEI.md
 ZIWEI_PRODUCTION_ADMISSION_V1.json
 → machine admission truth
 
+ZIWEI_CALENDAR_ADMISSION_V1.json
+→ Gregorian input/calendar normalization admission truth
+
+tools/ziwei_calendar_provider.py + tools/ziwei_gregorian_pipeline.py
+→ Gregorian → raw lunar → explicit Zi Wei normalization → Scope-A adapter
+
 tools/ziwei_natal_provider.py
 → admitted Scope-A deterministic natal provider
 
@@ -135,4 +150,4 @@ CHATGPT_OUTPUT.md
 → final output / Pre-Send owner
 ```
 
-核心原則：**Explicit Zi Wei → bounded natal Scope-A production；明確要求廟旺／亮度才加載 brightness_v1；unspecified reading → ordinary router；unsupported Zi Wei layers → fail closed。**
+核心原則：**Explicit Zi Wei 可直接給 Asia/Taipei 西元生日，由 admitted calendar adapter 正規化後進 Scope-A；明確要求廟旺／亮度才加載 brightness_v1；unspecified reading → ordinary router；unsupported Zi Wei layers → fail closed。**
