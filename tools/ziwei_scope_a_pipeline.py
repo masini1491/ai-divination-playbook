@@ -40,15 +40,14 @@ def _production_registries():
             raise ValueError(f"REGISTRY_PROFILE_MISMATCH:{name}")
     return regs
 
-def run_scope_a_natal(
-    data:NormalizedNatalInput, *,
+def _compose_scope_a_chart(
+    chart:dict[str,Any], *,
     request_id:str,
     requested_subjects:tuple[str,...]=(),
     enabled_source_ids:tuple[str,...]=(),
 ) -> dict[str,Any]:
     if not request_id.strip():
         raise ValueError("request_id is required")
-    chart=calculate_scope_a_natal(data)
     packet=_retrieval.FactPacket(
         packet_id=f"{request_id}:facts",
         interpretation_profile=INTERPRETATION_PROFILE,
@@ -107,3 +106,18 @@ def run_scope_a_natal(
             "scientific_predictive_validity_claimed":False,
         },
     }
+
+
+def run_scope_a_natal(
+    data:NormalizedNatalInput, *,
+    request_id:str,
+    requested_subjects:tuple[str,...]=(),
+    enabled_source_ids:tuple[str,...]=(),
+) -> dict[str,Any]:
+    chart=calculate_scope_a_natal(data)
+    return _compose_scope_a_chart(
+        chart,
+        request_id=request_id,
+        requested_subjects=requested_subjects,
+        enabled_source_ids=enabled_source_ids,
+    )

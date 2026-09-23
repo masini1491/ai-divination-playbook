@@ -1,6 +1,6 @@
 # Zi Wei Dou Shu｜紫微斗數方法契約
 
-Status: **PRODUCTION SCOPE-A V1 / EXPLICIT-REQUEST ONLY**
+Status: **PRODUCTION SCOPE-A V1 + OPTIONAL BRIGHTNESS FACTS V1 / EXPLICIT-REQUEST ONLY**
 
 本檔是 Zi Wei Dou Shu 的 root production method owner。Production authority 僅涵蓋已 admission 的 **bounded natal first layer**；deterministic implementation 與 machine admission truth 由 `tools/ziwei_scope_a_pipeline.py`、`tools/ziwei_natal_provider.py` 與 `ZIWEI_PRODUCTION_ADMISSION_V1.json` 擁有。Research history 仍由 `references/ziwei/**` 擁有，不因 production admission 回寫其歷史 authority。
 
@@ -19,7 +19,7 @@ explicit Zi Wei production
 → CHATGPT_OUTPUT.md
 ```
 
-研究排盤規則、來源、四化、brightness、輔星或 dynamic architecture → `RESEARCH_ROUTING.md` → `references/ziwei/**`。
+研究排盤規則、來源、四化、輔星或 dynamic architecture → `RESEARCH_ROUTING.md` → `references/ziwei/**`。若使用者在 production reading 明確要求「含廟旺／亮度／dignity」，可啟動下述 optional brightness module；未要求時維持原 Scope-A 行為。
 
 ## 2. Production Scope
 
@@ -32,9 +32,12 @@ IN:
 - admitted deterministic natal provider facts;
 - explicit provenance, omission, conflict and safety delivery.
 
+OPTIONAL / explicit add-on:
+
+- `brightness_v1`: 14 主星 profile-bound brightness facts（廟／旺／得／利／平／不／陷），只用來滿足既有 admitted claim 的 dignity applicability；不得生成 brightness-only doctrine。
+
 OUT / fail closed:
 
-- brightness-conditioned interpretation;
 - auxiliary / minor-star interpretation;
 - Four-Transformation interpretation;
 - broader contextual star×palace claim corpus;
@@ -49,9 +52,16 @@ Language model 不得把 raw birth data 自由手算成 production chart facts�
 Production runtime:
 
 ```text
+default Scope-A:
 tools/ziwei_natal_provider.py
 → tools/ziwei_scope_a_pipeline.py
 → ZIWEI_PRODUCTION_ADMISSION_V1.json
+
+optional brightness_v1 (explicit only):
+tools/ziwei_natal_provider.py
+→ tools/ziwei_brightness_provider.py
+→ tools/ziwei_brightness_pipeline.py
+→ ZIWEI_BRIGHTNESS_ADMISSION_V1.json
 ```
 
 若 deterministic boundary 不成立，停在 Fact Gate；不得改用 Tarot / Meihua / Liuyao 冒充 Zi Wei reading。
@@ -112,6 +122,12 @@ tools/ziwei_natal_provider.py
 tools/ziwei_scope_a_pipeline.py
 → production composition / retrieval / delivery binding
 
+tools/ziwei_brightness_provider.py + tools/ziwei_brightness_pipeline.py
+→ optional profile-bound brightness facts + bounded Scope-A composition
+
+ZIWEI_BRIGHTNESS_ADMISSION_V1.json
+→ optional brightness production admission truth
+
 references/ziwei/**
 → research evidence and historical research contracts
 
@@ -119,4 +135,4 @@ CHATGPT_OUTPUT.md
 → final output / Pre-Send owner
 ```
 
-核心原則：**Explicit Zi Wei → bounded natal Scope-A production；unspecified reading → ordinary router；unsupported Zi Wei layers → fail closed。**
+核心原則：**Explicit Zi Wei → bounded natal Scope-A production；明確要求廟旺／亮度才加載 brightness_v1；unspecified reading → ordinary router；unsupported Zi Wei layers → fail closed。**
