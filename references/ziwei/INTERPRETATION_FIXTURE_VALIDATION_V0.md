@@ -64,7 +64,11 @@ These fixtures test whether contextual composition reacts to material conditions
 
 `interpretation_retrieval_v0.py` now provides a bounded research-only selector/composer over the admitted 52 first-layer claims. This does not retroactively make every fixture executable: several fixtures assume brightness, auxiliary, malefic or dedicated contextual claims that remain outside the admitted first-layer corpus.
 
-Executable behavioral validation must therefore treat correct omission/fail-closed behavior as a valid outcome where the fixture dependency is unavailable.
+Executable behavioral validation therefore treats correct omission/fail-closed behavior as a valid outcome where the fixture dependency is unavailable. `ziwei_executable_behavioral_fixtures_v0.json` records the F1–F9 dispositions and `tests/test_ziwei_executable_behavioral_validation_v0.py` enforces them.
+
+## Executable-v0 validation result
+
+All F1–F9 architecture fixtures now have an explicit executable disposition. Current first-layer facts/claims are selected deterministically; unsupported auxiliary/malefic/祿馬/combination context remains blocked; F3/F4 dignity-dependent behavior fails closed until a project brightness profile exists; registered Tianfu/Fude/Tianxiang conflicts remain visible. This is a research behavioral closure, not production validation.
 
 ## Limitations
 

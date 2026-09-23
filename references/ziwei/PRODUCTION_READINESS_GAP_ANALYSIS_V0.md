@@ -27,7 +27,7 @@ production routing                  = NOT ADMITTED
 | G2 Production request/fact/frame schemas | Research-facing conceptual contracts only | OPEN | ChatGPT can define bounded schema candidates |
 | G3 Claim coverage | 52 natal first-layer claims; contextual/dynamic/auxiliary corpora incomplete | PARTIAL | evidence/admission, on material need |
 | G4 Executable retrieval/composition | deterministic research-only v0 + unit regressions | RESEARCH-CLOSED | production hardening requires separate gate |
-| G5 Dependency / behavioral validation | architecture fixtures exist; executable-v0 behavioral mapping not yet closed | OPEN | ChatGPT can close research validation |
+| G5 Dependency / behavioral validation | architecture fixtures + machine-readable executable mapping + regressions | RESEARCH-CLOSED | production dependency validation remains separate |
 | G6 User-facing uncertainty / safety | research safety principles exist; no production delivery contract | OPEN | ChatGPT can define bounded contract |
 | G7 Production admission | explicitly not granted | BLOCKED | separate explicit admission decision |
 | G8 Ordinary routing | no ZIWEI.md / METHOD_ROUTING integration | BLOCKED | only after G1–G7 |
@@ -85,14 +85,14 @@ Production hardening would require stable schema inputs, dependency validation, 
 
 ## G5 — dependency / behavioral validation
 
-Architecture-level synthetic fixtures already exist. The next research-closeable task is to map executable v0 behavior to those fixtures and classify each as:
+Architecture-level synthetic fixtures now have a machine-readable executable-v0 mapping in `ziwei_executable_behavioral_fixtures_v0.json` with deterministic regression coverage. Each fixture is classified as:
 
 - executable now with admitted facts/claims;
 - fail-closed because a required fact/profile is unavailable;
 - blocked because an L4 claim family is not admitted;
 - architecture-only because the fixture assumes unsupported modifiers.
 
-Passing means correct bounded behavior, including correct refusal/omission. It does not require manufacturing unsupported output.
+Passing means correct bounded behavior, including correct refusal/omission. It does not require manufacturing unsupported output. G5 is therefore research-closed for the current 52-claim executable v0; production dependency/behavioral validation must be reopened against the eventual production schemas/runtime.
 
 ## G6 — uncertainty / safety
 
@@ -115,10 +115,11 @@ Production admission is a separate explicit decision after evidence from precedi
 
 Under current ChatGPT-Only mode, the following readiness work can proceed without crossing production authority:
 
-1. executable behavioral validation over admitted fixtures;
-2. production-schema candidate design with unavailable fields fail-closed;
-3. uncertainty/safety delivery contract;
-4. readiness matrix reconciliation after each closure.
+1. production-schema candidate design with unavailable fields fail-closed;
+2. uncertainty/safety delivery contract;
+3. readiness matrix reconciliation after each closure.
+
+Executable behavioral validation over the admitted fixtures is **CLOSED — RESEARCH**.
 
 The following remain separate gates:
 
