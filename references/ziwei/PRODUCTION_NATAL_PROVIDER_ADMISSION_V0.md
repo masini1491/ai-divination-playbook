@@ -1,10 +1,10 @@
 # Zi Wei Scope-A Natal Provider Admission v0
 
-Authority：`G1 IMPLEMENTATION CANDIDATE / NOT PRODUCTION ADMISSION`
+Authority：`G1 ADMITTED — SCOPE-A NATAL / NOT G7 PRODUCTION ADMISSION`
 
 ## Runtime owner
 
-`tools/ziwei_natal_provider.py` is the deterministic calculation candidate for the selected Scope A.
+`tools/ziwei_natal_provider.py` is the admitted deterministic G1 calculation authority for the selected Scope A; this does not grant G7 production method admission or G8 ordinary routing.
 
 It accepts already-normalized traditional-lunar birth facts and computes only:
 
