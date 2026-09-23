@@ -11,9 +11,10 @@ Default source policy                     ADMIT — RESEARCH CANDIDATE
 Runtime-facing contracts v0               ADMIT — RESEARCH
 Fixture validation v0                     ADMIT — RESEARCH
 
-Full claim registry                       PARTIAL — BATCH1 ADMITTED
-First 6-star / 12-claim batch             ADMITTED — RESEARCH
-Remaining 8-star knowledge admission      DEFER
+Full claim registry                       PARTIAL — MAJOR-STAR LAYER COMPLETE
+Batch 1: 6 stars / 12 claims              ADMITTED — RESEARCH
+Batch 2: 8 stars / 16 claims              ADMITTED — RESEARCH
+14-major-star first-layer coverage        CLOSED — RESEARCH
 Full 12-palace knowledge admission        DEFER
 Production runtime                        NOT ADMITTED
 Production routing                        NOT ADMITTED
@@ -75,3 +76,8 @@ Interpretation Research v0 is architecture-complete enough to stop broad explora
 ## Batch 1 follow-up
 
 The first source-normalized machine-readable claim batch is admitted separately in `INTERPRETATION_CLAIM_BATCH1_ADMISSION.md`. This narrows the earlier `Full claim registry = DEFER` state to `PARTIAL`; it does not admit the remaining stars, twelve-palace corpus, retrieval runtime or production interpretation.
+
+
+## Batch 2 follow-up
+
+`INTERPRETATION_CLAIM_BATCH2_ADMISSION.md` admits the remaining eight major stars as 16 source-normalized machine-readable claims. Across Batch 1 + Batch 2, all fourteen major stars now have a first-layer `historical core + representative conditional` pair. This closes major-star first-layer coverage only; the twelve-palace registry, complete combination families, executable retrieval/composition and production interpretation remain deferred.
