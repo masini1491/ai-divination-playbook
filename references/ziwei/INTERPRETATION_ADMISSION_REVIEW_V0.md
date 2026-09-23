@@ -66,6 +66,7 @@ The earlier fourteen-star and twelve-palace prototypes were sufficient to test s
 - `CG-TIANFU-RELIEF-001`
 - `CG-TIANXIANG-AUTHORITY-001`
 - `CG-FUDE-SCOPE-001`
+- `CG-NUPU-SCOPE-001`
 
 These preserve disagreement and block implicit synthesis. They do not resolve truth between traditions.
 
@@ -112,7 +113,7 @@ The first source-normalized machine-readable claim batch is admitted separately 
 
 ## Batch 2 follow-up
 
-`INTERPRETATION_CLAIM_BATCH2_ADMISSION.md` admits the remaining eight major stars as 16 source-normalized machine-readable claims. Across Batch 1 + Batch 2, all fourteen major stars now have a first-layer `historical core + representative conditional` pair. This closes major-star first-layer coverage only; the twelve-palace registry, complete combination families, executable retrieval/composition and production interpretation remain deferred.
+`INTERPRETATION_CLAIM_BATCH2_ADMISSION.md` admits the remaining eight major stars as 16 source-normalized machine-readable claims. Across Batch 1 + Batch 2, all fourteen major stars now have a first-layer `historical core + representative conditional` pair. This closes major-star first-layer coverage only. The twelve-palace first layer is now separately admitted; star×palace composition policy is research-closed without an exhaustive matrix. Executable retrieval/composition and production interpretation remain deferred.
 
 
 ## Twelve-palace follow-up
