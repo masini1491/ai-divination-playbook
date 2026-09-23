@@ -134,6 +134,48 @@ named school / preset 可以組合 components，但 component identity 與 prove
 - [`INTERPRETATION_CLAIM_PALACES_V0_ADMISSION.md`](INTERPRETATION_CLAIM_PALACES_V0_ADMISSION.md)
 - [`ziwei_interpretation_claim_registry_palaces_v0.json`](ziwei_interpretation_claim_registry_palaces_v0.json)
 
+## Research continuation contract
+
+目前 first-layer research closure：
+
+```text
+14 major stars / 28 claims
+12 palaces / 24 claims
+combined = 52 first-layer claims
+```
+
+在目前 `Project AI mode: ChatGPT-Only` 下，下列 deferred 項目屬於可由 ChatGPT 直接承接的 **research / evidence / schema / admission candidates**：
+
+1. `star×palace` combination-family research；
+2. brightness interpretation-family research；
+3. Four-Transformation interpretation-family research；
+4. bounded minor-star admission taxonomy；
+5. temporal-context interpretation research。
+
+這份清單只保存 **eligible continuation candidates 與 actor suitability**，不是自動啟動的 roadmap、Hot backlog 或 production commitment。只有使用者明確要求繼續 Zi Wei research line，或 current canonical trigger 另行 admission 該 scope 時，才開始其中一項；每個新 Stage 仍須依 current work 重新判斷最低充分 actor，不得因前一 Stage 曾使用其他 actor 而慣性 handoff。
+
+上述 ChatGPT-side research 可做 source reconciliation、claim normalization、conflict preservation、schema/admission design 與 bounded fixture/evidence work；不得由此推導為已取得 executable 或 production authority。
+
+仍需分開 gate 的後續包括：
+
+- executable claim retrieval / composition；
+- deterministic production runtime / provider；
+- production `ZIWEI.md`；
+- `METHOD_ROUTING.md` integration / unspecified-user auto-routing；
+- production cross-validation；
+- explicit production admission。
+
+建議 continuation ordering（僅供 research planning，不構成自動 admission）：
+
+```text
+star×palace
+→ brightness
+→ Four-Transformation interpretation
+→ bounded minor-star taxonomy
+→ temporal context
+→ executable retrieval/composition only after its separate gate
+```
+
 ## Promotion boundary
 
 未來若要進 production，仍需另外完成：
