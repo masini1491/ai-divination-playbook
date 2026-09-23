@@ -65,7 +65,7 @@ A production runtime must expose component/profile identity and provenance rathe
 - conflict and safety state;
 - interpretation frame and provenance trace.
 
-Unavailable facts remain explicit states and cannot be treated as computable. G2 is research-closed at the schema-candidate level; binding these candidates to a production runtime/API remains a separate implementation/admission gate.
+Unavailable facts remain explicit states and cannot be treated as computable. G2 remains research-closed at the schema-candidate artifact level. Scope-A v1 binds the required request/provenance/frame semantics through the G7 production pipeline contract; the candidate document itself is not rewritten as historical production authority.
 
 ## G3 — claim coverage
 
@@ -85,7 +85,7 @@ For Scope A, the admitted 52 claims satisfy G3. B/C capabilities are not blocker
 
 Research-only v0 is admitted and unit-tested. It is not production authority.
 
-Production hardening would require stable schema inputs, dependency validation, stronger malformed/ambiguous-input handling, compatibility/version policy, and behavioral regression against admitted fixtures.
+For Scope-A v1, G7 supplies the bounded production wrapper and contract tests over this retriever. The research executable remains historically research-only and is not itself relabeled as production authority.
 
 ## G5 — dependency / behavioral validation
 
@@ -96,7 +96,7 @@ Architecture-level synthetic fixtures now have a machine-readable executable-v0 
 - blocked because an L4 claim family is not admitted;
 - architecture-only because the fixture assumes unsupported modifiers.
 
-Passing means correct bounded behavior, including correct refusal/omission. It does not require manufacturing unsupported output. G5 is therefore research-closed for the current 52-claim executable v0; production dependency/behavioral validation must be reopened against the eventual production schemas/runtime.
+Passing means correct bounded behavior, including correct refusal/omission. G5 remains research-closed for executable v0; Scope-A v1 adds production contract tests against the admitted provider/pipeline without rewriting the research fixture artifact.
 
 ## G6 — uncertainty / safety
 
@@ -109,7 +109,7 @@ Passing means correct bounded behavior, including correct refusal/omission. It d
 - health/death/legal/financial high-impact boundaries;
 - no scientific/predictive-validity implication.
 
-G6 is research-closed at the delivery-contract level. Binding these actions to a production renderer/API remains a separate implementation/admission gate.
+G6 remains research-closed at the delivery-contract artifact level. Scope-A v1 binds its deterministic delivery actions in the G7 pipeline; final prose remains outside pipeline authority.
 
 ## G7 / G8 — admission and routing
 
@@ -118,7 +118,7 @@ G7 is admitted for Scope-A v1 by `ZIWEI_PRODUCTION_ADMISSION_V1.json` + `tools/z
 G8 remains blocked. Production admission does not create `ZIWEI.md`, modify `METHOD_ROUTING.md`, or enable unspecified-user auto-routing.
 
 
-Production admission is a separate explicit decision after evidence from preceding gates. Only after that decision may ordinary routing artifacts such as `ZIWEI.md`, `METHOD_ROUTING.md`, `PLAYBOOK_INDEX.json`, loader/routing caches or production smoke expectations be considered.
+Production admission is now complete for bounded Scope-A v1. The only next production gate is G8: ordinary routing artifacts such as `ZIWEI.md`, `METHOD_ROUTING.md`, `PLAYBOOK_INDEX.json`, loader/routing caches and production smoke expectations require a separate routing decision.
 
 ## ChatGPT-direct continuation
 
