@@ -1,0 +1,1048 @@
+{
+  "schema_name": "ziwei_interpretation_claim_registry",
+  "schema_version": "0.2.0-research",
+  "record_status": "REFERENCE-ONLY",
+  "record_kind": "ziwei_interpretation_claim_family_registry",
+  "record_id": "ziwei-twelve-palaces-v0",
+  "production_routable": false,
+  "interpretation_profile": "ziwei.interpretation.tw_v1",
+  "claim_family": "twelve_palaces_first_layer",
+  "subjects": [
+    "命宮",
+    "兄弟宮",
+    "夫妻宮",
+    "子女宮",
+    "財帛宮",
+    "疾厄宮",
+    "遷移宮",
+    "奴僕宮",
+    "官祿宮",
+    "田宅宮",
+    "福德宮",
+    "父母宮"
+  ],
+  "aliases": {
+    "夫妻宮": [
+      "妻妾宮"
+    ],
+    "奴僕宮": [
+      "僕役宮",
+      "交友宮"
+    ]
+  },
+  "body_palace_policy": "overlay_not_thirteenth_palace",
+  "retrieval_preconditions": {
+    "requires_l2_facts": true,
+    "requires_l3_policy": true,
+    "requires_topology_facts": true
+  },
+  "sources": [
+    {
+      "source_id": "SRC-NANYANG-QUANSHU-PALACES",
+      "source_role": "PRIMARY_TEXT",
+      "admission_status": [
+        "CLAIM_ELIGIBLE"
+      ],
+      "storage_mode": [
+        "metadata_locator_normalized_paraphrase"
+      ],
+      "independence_status": "primary_witness",
+      "title": "新鋟希夷陳先生紫微斗數全書",
+      "witness_identity": "Nanyang-Hall / National Archives of Japan identified witness family",
+      "locator": "https://www.shidianguji.com/zh/book/SDZJ0170",
+      "language": "zh-Hant",
+      "verification_status": [
+        "digital_text_witness_research"
+      ],
+      "admission_scope": [
+        "bounded twelve-palace domain and topology/conditional interpretation claims"
+      ],
+      "excluded_scope": [
+        "unverified glyph-level variants",
+        "production doctrine authority",
+        "scientific validity"
+      ],
+      "notes": [
+        "Per-claim chapter locators retained; normalized paraphrases only."
+      ]
+    },
+    {
+      "source_id": "SRC-NIHAI-TIANJI",
+      "source_role": "PRACTITIONER_REFERENCE",
+      "admission_status": [
+        "REFERENCE_ONLY"
+      ],
+      "storage_mode": [
+        "metadata_plus_locator"
+      ],
+      "independence_status": "derivative_practitioner_synthesis",
+      "title": "倪海廈《天紀》結構化語料庫",
+      "immutable_revision": "c90006168195c0650328b7199669eb6a2d0cac93",
+      "locator": "https://github.com/Renhuai123/nihai-tianji-corpus",
+      "license_status": "data/docs CC BY-NC-SA 4.0; original course rights separately retained",
+      "admission_scope": [
+        "palace scope comparison",
+        "conflict detection",
+        "modern practitioner methodology"
+      ],
+      "excluded_scope": [
+        "direct claim admission in palace v0",
+        "corpus vendoring"
+      ],
+      "notes": [
+        "REFERENCE_ONLY. Fu-De scope and Nu-Pu-to-friends expansion are referenced without copying corpus passages."
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "ZW-PAL-MING-DOM-001",
+      "layer": "L4",
+      "claim_type": "palace_domain",
+      "subject": "命宮",
+      "assertion_class": "historical_core",
+      "normalized_statement": "命宮是身命與全盤主要判讀起點，承載本人整體狀態與核心表現；不能只用單一星曜關鍵字取代整體宮位判讀。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-PALACES"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzop58rvdbm"
+      ],
+      "applicability": {
+        "requires": [
+          "palace_present:命宮"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "stars",
+          "dignity",
+          "benefics",
+          "malefics"
+        ],
+        "palace_scope": [
+          "命宮"
+        ],
+        "topology_scope": [
+          "self",
+          "opposite",
+          "sanfang"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "supported",
+      "support_status": "single_source_supported",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-PAL-MING-COND-002",
+      "layer": "L4",
+      "claim_type": "palace_conditional",
+      "subject": "命宮",
+      "assertion_class": "historical_conditional",
+      "normalized_statement": "命宮判讀必須合看財帛、官祿、遷移等三方四正；命宮無正曜時也不得視為無訊息，而須回看對宮與會照。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-PALACES"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzop58rvdbm"
+      ],
+      "applicability": {
+        "requires": [
+          "palace_present:命宮"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "empty_palace",
+          "sanfang_sizheng"
+        ],
+        "palace_scope": [
+          "命宮"
+        ],
+        "topology_scope": [
+          "self",
+          "opposite",
+          "sanfang"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "supported",
+      "support_status": "single_source_supported",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-PAL-SIB-DOM-001",
+      "layer": "L4",
+      "claim_type": "palace_domain",
+      "subject": "兄弟宮",
+      "assertion_class": "historical_core",
+      "normalized_statement": "兄弟宮的歷史核心範圍是手足關係、和睦程度、助力與刑克等親緣互動。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-PALACES"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzop13hw26h"
+      ],
+      "applicability": {
+        "requires": [
+          "palace_present:兄弟宮"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "stars",
+          "dignity"
+        ],
+        "palace_scope": [
+          "兄弟宮"
+        ],
+        "topology_scope": [
+          "self",
+          "sanfang"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "supported",
+      "support_status": "single_source_supported",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-PAL-SIB-COND-002",
+      "layer": "L4",
+      "claim_type": "palace_conditional",
+      "subject": "兄弟宮",
+      "assertion_class": "historical_conditional",
+      "normalized_statement": "兄弟宮必須依星曜廟陷、吉煞與三方會照修正助力或不和等判讀；古籍中的數量、夭折等強斷不得直接轉成確定性 user-facing 結論。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-PALACES"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzop13hw26h"
+      ],
+      "applicability": {
+        "requires": [
+          "palace_present:兄弟宮"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "dignity",
+          "benefics",
+          "malefics",
+          "safety_gate"
+        ],
+        "palace_scope": [
+          "兄弟宮"
+        ],
+        "topology_scope": [
+          "self",
+          "sanfang"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "supported",
+      "support_status": "single_source_supported",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-PAL-SPOUSE-DOM-001",
+      "layer": "L4",
+      "claim_type": "palace_domain",
+      "subject": "夫妻宮",
+      "assertion_class": "historical_core",
+      "normalized_statement": "夫妻宮的歷史核心範圍是配偶與婚姻關係及其互動狀態。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-PALACES"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzop13hwrgp"
+      ],
+      "applicability": {
+        "requires": [
+          "palace_present:夫妻宮"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "stars",
+          "dignity",
+          "benefics",
+          "malefics"
+        ],
+        "palace_scope": [
+          "夫妻宮"
+        ],
+        "topology_scope": [
+          "self",
+          "opposite",
+          "sanfang"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "supported",
+      "support_status": "single_source_supported",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-PAL-SPOUSE-COND-002",
+      "layer": "L4",
+      "claim_type": "palace_conditional",
+      "subject": "夫妻宮",
+      "assertion_class": "historical_conditional",
+      "normalized_statement": "夫妻宮需依星曜組合、吉煞、廟陷與三方四正綜合判讀；不得由單一星曜或單一桃花標誌直接推出婚姻成敗，Nihai 的 mandatory 福德聯讀屬 practitioner methodology 而非 universal historical rule。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-PALACES"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzop13hwrgp"
+      ],
+      "applicability": {
+        "requires": [
+          "palace_present:夫妻宮"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "same_palace",
+          "dignity",
+          "benefics",
+          "malefics",
+          "tradition_profile"
+        ],
+        "palace_scope": [
+          "夫妻宮"
+        ],
+        "topology_scope": [
+          "self",
+          "opposite",
+          "sanfang"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "qualified",
+      "support_status": "historical_only",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-PAL-CHILD-DOM-001",
+      "layer": "L4",
+      "claim_type": "palace_domain",
+      "subject": "子女宮",
+      "assertion_class": "historical_core",
+      "normalized_statement": "子女宮的歷史核心範圍是子女、後代及與子女相關的狀態。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-PALACES"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzop13hx43t"
+      ],
+      "applicability": {
+        "requires": [
+          "palace_present:子女宮"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "stars",
+          "dignity"
+        ],
+        "palace_scope": [
+          "子女宮"
+        ],
+        "topology_scope": [
+          "self",
+          "opposite",
+          "sanfang"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "supported",
+      "support_status": "single_source_supported",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-PAL-CHILD-COND-002",
+      "layer": "L4",
+      "claim_type": "palace_conditional",
+      "subject": "子女宮",
+      "assertion_class": "historical_conditional",
+      "normalized_statement": "子女宮古典方法要求先看本宮，再看對宮與三方四正；空宮時尤其不能跳過拓撲關係。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-PALACES"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzop13hx43t"
+      ],
+      "applicability": {
+        "requires": [
+          "palace_present:子女宮"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "empty_palace",
+          "sanfang_sizheng"
+        ],
+        "palace_scope": [
+          "子女宮"
+        ],
+        "topology_scope": [
+          "self",
+          "opposite",
+          "sanfang"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "supported",
+      "support_status": "single_source_supported",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-PAL-WEALTH-DOM-001",
+      "layer": "L4",
+      "claim_type": "palace_domain",
+      "subject": "財帛宮",
+      "assertion_class": "historical_core",
+      "normalized_statement": "財帛宮的歷史核心範圍是財務、資源取得、累積與留存方式，不等於單一職業類型。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-PALACES"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzop13hxgqx"
+      ],
+      "applicability": {
+        "requires": [
+          "palace_present:財帛宮"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "stars",
+          "dignity"
+        ],
+        "palace_scope": [
+          "財帛宮"
+        ],
+        "topology_scope": [
+          "self",
+          "opposite",
+          "sanfang"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "supported",
+      "support_status": "single_source_supported",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-PAL-WEALTH-COND-002",
+      "layer": "L4",
+      "claim_type": "palace_conditional",
+      "subject": "財帛宮",
+      "assertion_class": "historical_conditional",
+      "normalized_statement": "財帛宮會因星曜、祿馬、吉煞與破耗條件形成勞心得財、流動、聚散或晚發等不同模式；不得把財星直接轉譯為保證富裕，也不得把財帛宮 hard-code 為私人企業。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-PALACES"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzop13hxgqx"
+      ],
+      "applicability": {
+        "requires": [
+          "palace_present:財帛宮"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "same_palace",
+          "benefics",
+          "malefics",
+          "tradition_profile"
+        ],
+        "palace_scope": [
+          "財帛宮"
+        ],
+        "topology_scope": [
+          "self",
+          "sanfang"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "supported",
+      "support_status": "single_source_supported",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-PAL-HEALTH-DOM-001",
+      "layer": "L4",
+      "claim_type": "palace_domain",
+      "subject": "疾厄宮",
+      "assertion_class": "historical_core",
+      "normalized_statement": "疾厄宮在傳統文本中承載身體、疾病與健康逆境相關象義；它是歷史文化 claim domain，不是醫療診斷系統。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-PALACES"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzop13hxte1"
+      ],
+      "applicability": {
+        "requires": [
+          "palace_present:疾厄宮"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "stars",
+          "dignity"
+        ],
+        "palace_scope": [
+          "疾厄宮"
+        ],
+        "topology_scope": [
+          "self",
+          "sanfang"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "supported",
+      "support_status": "single_source_supported",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-PAL-HEALTH-COND-002",
+      "layer": "L4",
+      "claim_type": "palace_conditional",
+      "subject": "疾厄宮",
+      "assertion_class": "historical_conditional",
+      "normalized_statement": "疾厄宮的傳統判讀需合看命宮、星曜廟陷與煞曜等條件；任何具體疾病、傷害或死亡語義在一般 user-facing synthesis 前必須經 health/death safety gate。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-PALACES"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzop13hxte1"
+      ],
+      "applicability": {
+        "requires": [
+          "palace_present:疾厄宮"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "命宮",
+          "dignity",
+          "malefics",
+          "safety_gate"
+        ],
+        "palace_scope": [
+          "疾厄宮"
+        ],
+        "topology_scope": [
+          "self",
+          "sanfang"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "supported",
+      "support_status": "single_source_supported",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-PAL-TRAVEL-DOM-001",
+      "layer": "L4",
+      "claim_type": "palace_domain",
+      "subject": "遷移宮",
+      "assertion_class": "historical_core",
+      "normalized_statement": "遷移宮的歷史核心範圍是外出、異地、移動與外部環境中的際遇。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-PALACES"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzop13hy615"
+      ],
+      "applicability": {
+        "requires": [
+          "palace_present:遷移宮"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "stars",
+          "dignity"
+        ],
+        "palace_scope": [
+          "遷移宮"
+        ],
+        "topology_scope": [
+          "self",
+          "opposite",
+          "sanfang"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "supported",
+      "support_status": "single_source_supported",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-PAL-TRAVEL-COND-002",
+      "layer": "L4",
+      "claim_type": "palace_conditional",
+      "subject": "遷移宮",
+      "assertion_class": "historical_conditional",
+      "normalized_statement": "遷移宮須依星曜、吉煞、廟陷與三方會照判斷外出或異地表現；固定距離門檻屬 practitioner extension，不是 historical core。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-PALACES"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzop13hy615"
+      ],
+      "applicability": {
+        "requires": [
+          "palace_present:遷移宮"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "benefics",
+          "malefics",
+          "dignity",
+          "tradition_profile"
+        ],
+        "palace_scope": [
+          "遷移宮"
+        ],
+        "topology_scope": [
+          "self",
+          "opposite",
+          "sanfang"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "qualified",
+      "support_status": "historical_only",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-PAL-SERVANT-DOM-001",
+      "layer": "L4",
+      "claim_type": "palace_domain",
+      "subject": "奴僕宮",
+      "assertion_class": "historical_core",
+      "normalized_statement": "奴僕宮的歷史核心範圍是僕從、下屬、助力、得力與背主等從屬／支持關係。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-PALACES"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/mid-page/7356346222933835785"
+      ],
+      "applicability": {
+        "requires": [
+          "palace_present:奴僕宮"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "stars",
+          "dignity"
+        ],
+        "palace_scope": [
+          "奴僕宮"
+        ],
+        "topology_scope": [
+          "self",
+          "sanfang"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "conflicted",
+      "support_status": "conflicted",
+      "conflict_group_ids": [
+        "CG-NUPU-SCOPE-001"
+      ],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-PAL-SERVANT-COND-002",
+      "layer": "L4",
+      "claim_type": "palace_conditional",
+      "subject": "奴僕宮",
+      "assertion_class": "historical_conditional",
+      "normalized_statement": "現代交友宮常把朋友、同儕、合作或合夥納入範圍，但這是對 historical 奴僕 scope 的擴張；兩者不得被靜默視為完全同義。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-PALACES"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/mid-page/7356346222933835785"
+      ],
+      "applicability": {
+        "requires": [
+          "palace_present:奴僕宮"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "tradition_profile",
+          "modern_alias"
+        ],
+        "palace_scope": [
+          "奴僕宮"
+        ],
+        "topology_scope": [
+          "self"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "conflicted",
+      "support_status": "conflicted",
+      "conflict_group_ids": [
+        "CG-NUPU-SCOPE-001"
+      ],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-PAL-CAREER-DOM-001",
+      "layer": "L4",
+      "claim_type": "palace_domain",
+      "subject": "官祿宮",
+      "assertion_class": "historical_core",
+      "normalized_statement": "官祿宮的歷史核心範圍是官職、事業、功名、職位與公共責任表現，涵蓋多種文武與職業形態。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-PALACES"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzop13hyvbd"
+      ],
+      "applicability": {
+        "requires": [
+          "palace_present:官祿宮"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "stars",
+          "dignity"
+        ],
+        "palace_scope": [
+          "官祿宮"
+        ],
+        "topology_scope": [
+          "self",
+          "opposite",
+          "sanfang"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "supported",
+      "support_status": "single_source_supported",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-PAL-CAREER-COND-002",
+      "layer": "L4",
+      "claim_type": "palace_conditional",
+      "subject": "官祿宮",
+      "assertion_class": "historical_conditional",
+      "normalized_statement": "官祿宮須依星曜、廟陷、吉煞與三方四正決定事業／職位表現；把官祿宮固定等同公家機關屬 modern narrowing，不能作 universal default。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-PALACES"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzop13hyvbd"
+      ],
+      "applicability": {
+        "requires": [
+          "palace_present:官祿宮"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "dignity",
+          "benefics",
+          "malefics",
+          "tradition_profile"
+        ],
+        "palace_scope": [
+          "官祿宮"
+        ],
+        "topology_scope": [
+          "self",
+          "opposite",
+          "sanfang"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "qualified",
+      "support_status": "historical_only",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-PAL-PROPERTY-DOM-001",
+      "layer": "L4",
+      "claim_type": "palace_domain",
+      "subject": "田宅宮",
+      "assertion_class": "historical_core",
+      "normalized_statement": "田宅宮的歷史核心範圍是祖業、土地、房產、置產與家業。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-PALACES"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzop13hz7yh"
+      ],
+      "applicability": {
+        "requires": [
+          "palace_present:田宅宮"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "stars",
+          "dignity"
+        ],
+        "palace_scope": [
+          "田宅宮"
+        ],
+        "topology_scope": [
+          "self",
+          "sanfang"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "supported",
+      "support_status": "single_source_supported",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-PAL-PROPERTY-COND-002",
+      "layer": "L4",
+      "claim_type": "palace_conditional",
+      "subject": "田宅宮",
+      "assertion_class": "historical_conditional",
+      "normalized_statement": "田宅宮需依星曜、廟陷與吉煞條件區分承祖、自置、退祖或有進有退等模式；單一房屋事件或風水映射不得自動升格成 universal rule。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-PALACES"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzop13hz7yh"
+      ],
+      "applicability": {
+        "requires": [
+          "palace_present:田宅宮"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "dignity",
+          "benefics",
+          "malefics",
+          "tradition_profile"
+        ],
+        "palace_scope": [
+          "田宅宮"
+        ],
+        "topology_scope": [
+          "self",
+          "sanfang"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "qualified",
+      "support_status": "historical_only",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-PAL-FORTUNE-DOM-001",
+      "layer": "L4",
+      "claim_type": "palace_domain",
+      "subject": "福德宮",
+      "assertion_class": "historical_core",
+      "normalized_statement": "福德宮的歷史核心範圍偏向福厚福薄、享受／安樂與勞心不寧等內在福德狀態。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-PALACES"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzop13hzkll"
+      ],
+      "applicability": {
+        "requires": [
+          "palace_present:福德宮"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "stars",
+          "dignity"
+        ],
+        "palace_scope": [
+          "福德宮"
+        ],
+        "topology_scope": [
+          "self",
+          "sanfang"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "conflicted",
+      "support_status": "conflicted",
+      "conflict_group_ids": [
+        "CG-FUDE-SCOPE-001"
+      ],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-PAL-FORTUNE-COND-002",
+      "layer": "L4",
+      "claim_type": "palace_conditional",
+      "subject": "福德宮",
+      "assertion_class": "historical_conditional",
+      "normalized_statement": "部分 modern practitioner 體系把福德宮擴張為夫妻關係與整體終身財祿／事業的強 secondary domain；此 scope extension 必須與 historical core 分開保存。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-PALACES"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzop13hzkll"
+      ],
+      "applicability": {
+        "requires": [
+          "palace_present:福德宮"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "tradition_profile"
+        ],
+        "palace_scope": [
+          "福德宮"
+        ],
+        "topology_scope": [
+          "self"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "conflicted",
+      "support_status": "conflicted",
+      "conflict_group_ids": [
+        "CG-FUDE-SCOPE-001"
+      ],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-PAL-PARENTS-DOM-001",
+      "layer": "L4",
+      "claim_type": "palace_domain",
+      "subject": "父母宮",
+      "assertion_class": "historical_core",
+      "normalized_statement": "父母宮的歷史核心範圍是父母與親緣狀態，並常與太陽、太陰等父母象義聯讀。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-PALACES"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzop13hzx8p"
+      ],
+      "applicability": {
+        "requires": [
+          "palace_present:父母宮"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "stars",
+          "太陽",
+          "太陰",
+          "dignity"
+        ],
+        "palace_scope": [
+          "父母宮"
+        ],
+        "topology_scope": [
+          "self",
+          "sanfang"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "supported",
+      "support_status": "single_source_supported",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-PAL-PARENTS-COND-002",
+      "layer": "L4",
+      "claim_type": "palace_conditional",
+      "subject": "父母宮",
+      "assertion_class": "historical_conditional",
+      "normalized_statement": "父母宮需合看本宮、日月、廟陷、吉煞與三方會照；古籍中的喪亡、刑克、領養等強斷只可作 source-bounded historical evidence，一般 user-facing synthesis 必須經 safety gate。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-PALACES"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzop13hzx8p"
+      ],
+      "applicability": {
+        "requires": [
+          "palace_present:父母宮"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "太陽",
+          "太陰",
+          "dignity",
+          "benefics",
+          "malefics",
+          "safety_gate"
+        ],
+        "palace_scope": [
+          "父母宮"
+        ],
+        "topology_scope": [
+          "self",
+          "sanfang"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "supported",
+      "support_status": "single_source_supported",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    }
+  ],
+  "conflict_groups": [
+    {
+      "conflict_group_id": "CG-FUDE-SCOPE-001",
+      "conflict_class": "cross_tradition_scope_conflict",
+      "resolution_status": "PRESERVE_SCOPE_DIFFERENCE",
+      "claim_refs": [
+        "ZW-PAL-FORTUNE-DOM-001",
+        "ZW-PAL-FORTUNE-COND-002"
+      ],
+      "external_claim_refs": [
+        "SRC-NIHAI-TIANJI#福德宮夫妻與終身擴張"
+      ],
+      "notes": [
+        "Historical core centers blessing/enjoyment/restlessness; Nihai expands the palace strongly into spouse and broader life-fortune synthesis. Do not collapse scopes."
+      ]
+    },
+    {
+      "conflict_group_id": "CG-NUPU-SCOPE-001",
+      "conflict_class": "historical_modern_semantic_scope_shift",
+      "resolution_status": "PRESERVE_SCOPE_DIFFERENCE",
+      "claim_refs": [
+        "ZW-PAL-SERVANT-DOM-001",
+        "ZW-PAL-SERVANT-COND-002"
+      ],
+      "external_claim_refs": [
+        "SRC-NIHAI-TIANJI#奴僕宮交友朋友合夥擴張"
+      ],
+      "notes": [
+        "Historical 奴僕 scope and modern 交友/peer/partner scope partially overlap but are not identical."
+      ]
+    }
+  ],
+  "privacy": {
+    "contains_real_birth_data": false
+  },
+  "research_result": {
+    "batch": "twelve-palaces-v0",
+    "claim_count": 24,
+    "subjects_covered": 12,
+    "first_layer_coverage": "CLOSED_RESEARCH",
+    "architecture_validation_target": "source-normalized palace domain + topology/methodology claims",
+    "production_authority_granted": false,
+    "scientific_predictive_validity_claimed": false
+  }
+}

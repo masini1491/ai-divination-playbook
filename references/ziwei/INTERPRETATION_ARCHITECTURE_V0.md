@@ -107,7 +107,7 @@ star_core
 × temporal context
 ```
 
-The fourteen-star and twelve-palace prototypes validated the architecture. Batch 1 now admits 12 source-normalized machine-readable claims for 紫微、天機、太陽、武曲、天同、廉貞；the remaining stars and palace corpora are not yet admitted.
+The fourteen-star and twelve-palace prototypes validated the architecture. Batch 1 + Batch 2 now admit 28 first-layer major-star claims, and Twelve Palaces v0 admits 24 first-layer palace claims. Star×palace combination families and other contextual layers remain incomplete.
 
 ## Specificity
 
@@ -133,6 +133,7 @@ CG-TIANJI-RELIEF-001
 CG-TIANFU-RELIEF-001
 CG-TIANXIANG-AUTHORITY-001
 CG-FUDE-SCOPE-001
+CG-NUPU-SCOPE-001
 ```
 
 These preserve research differences and block implicit averaging; they do not decide which tradition is objectively true.
@@ -155,11 +156,15 @@ This document does not establish scientific predictive validity, a complete clai
 
 ## Machine-readable registry status
 
-Canonical batch-1 owners:
+Canonical machine-readable owners:
 
-- `INTERPRETATION_CLAIM_REGISTRY_SCHEMA_V0.md`
-- `ziwei_interpretation_claim_registry_batch1.json`
-- `validate_interpretation_claim_registry.py`
+- `INTERPRETATION_CLAIM_REGISTRY_SCHEMA_V0.md` — v0.1/v0.2 research schema contract
+- `validate_interpretation_claim_registry.py` — dual-version deterministic validator
+- `ziwei_interpretation_claim_registry_batch1.json` — first six major stars
+- `ziwei_interpretation_claim_registry_batch2.json` — remaining eight major stars
+- `ziwei_interpretation_claim_registry_palaces_v0.json` — twelve palaces
 - `INTERPRETATION_CLAIM_BATCH1_ADMISSION.md`
+- `INTERPRETATION_CLAIM_BATCH2_ADMISSION.md`
+- `INTERPRETATION_CLAIM_PALACES_V0_ADMISSION.md`
 
-Batch 1 is research-only and does not change production routing.
+All are research-only and do not change production routing.

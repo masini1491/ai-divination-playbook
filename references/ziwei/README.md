@@ -131,6 +131,8 @@ named school / preset 可以組合 components，但 component identity 與 prove
 - [`ziwei_interpretation_claim_registry_batch1.json`](ziwei_interpretation_claim_registry_batch1.json)
 - [`INTERPRETATION_CLAIM_BATCH2_ADMISSION.md`](INTERPRETATION_CLAIM_BATCH2_ADMISSION.md)
 - [`ziwei_interpretation_claim_registry_batch2.json`](ziwei_interpretation_claim_registry_batch2.json)
+- [`INTERPRETATION_CLAIM_PALACES_V0_ADMISSION.md`](INTERPRETATION_CLAIM_PALACES_V0_ADMISSION.md)
+- [`ziwei_interpretation_claim_registry_palaces_v0.json`](ziwei_interpretation_claim_registry_palaces_v0.json)
 
 ## Promotion boundary
 
@@ -147,6 +149,6 @@ research judgment gap closed
 → explicit production admission
 ```
 
-目前已 admission 兩批共 14 顆主星 / 28 條 source-normalized machine-readable research claims，完成十四主星第一層 `core + representative conditional` coverage；十二宮、完整組合 claim families 與 production interpretation 仍未 admission。
+目前已 admission 14 顆主星 / 28 條與十二宮 / 24 條 source-normalized machine-readable research claims，完成 `major-star + palace` 第一層共 52 條 coverage；完整 star×palace 組合、brightness/minor-star/四化 interpretation families 與 production interpretation 仍未 admission。
 
 建立本 research dossier 不構成 production admission。
