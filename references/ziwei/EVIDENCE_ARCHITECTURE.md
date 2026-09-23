@@ -76,19 +76,52 @@ Baseline Core Fact Set 在 matched profile 下目前可研究：
 
 ### L4 — interpretation claims
 
-Implementation README、code comment 或 LLM memory 不足以成為 interpretation authority。
+Implementation README、code comment、benchmark answer 或 LLM memory 都不足以成為 interpretation authority。
 
-未來 claim 應能追溯：
+Interpretation Architecture v0 採 `contextual_composition`；flat star dictionary 只可作 low-level index，不是 primary interpretation model。
+
+Claim 至少應能追溯：
 
 ```text
 source identity
 → claim identity
+→ assertion class
 → applicable tradition/profile
-→ context conditions
+→ palace / star / dignity / sihua / topology conditions
+→ conflict group
 → allowed synthesis scope
 ```
 
+Research claim priority 只在同一 authority chain 內使用 specificity：
+
+```text
+exact conditional combination
+> star + palace + condition
+> star + palace
+> star conditional
+> star core
+> palace domain core
+```
+
+跨 tradition 不得用 specificity 靜默覆寫另一 tradition。遇到 registered conflict 時保留分歧，不得平均成模型自行發明的第三種說法。
+
 ### L5 — bounded synthesis
+
+L5 的 research path：
+
+```text
+validated fact packet
+→ interpretation profile
+→ deterministic claim retrieval
+→ applicability / specificity filtering
+→ conflict gate
+→ safety gate
+→ theme clustering
+→ bounded synthesis frame
+→ user-facing rendering
+```
+
+Retrieval failure、unknown fact、not-computed brightness 或 missing tradition coverage 都不得啟用 model-memory fallback。
 
 L5 可以組合 L2/L3/L4，但不得：
 
@@ -119,6 +152,22 @@ calculation_profile
 ```
 
 一個 named school 可以是 preset，但不能隱藏 components。
+
+Interpretation profile 同樣 componentized。Current research candidate：
+
+```text
+ziwei.interpretation.tw_v1
+├─ architecture.contextual_composition
+├─ historical_semantic_baseline.nanyang_quanshu
+├─ modern_named_school.zhongzhou = reference-only
+├─ practitioner.nihai = reference-only
+├─ modern_claim_adoption.explicit_only
+├─ conflict_policy.preserve_no_implicit_average
+├─ case_inference.non_generalizable_by_default
+└─ production_admitted = false
+```
+
+Default 不選一個 monolithic「流派」，而選 source-policy + explicit component decisions。
 
 ## Default candidate semantics
 
@@ -185,6 +234,21 @@ civil time vs true solar time when applicable
 
 遇到 boundary-sensitive input，future implementation 應可標記 ambiguity，而不是靜默假裝無分歧。
 
+## Interpretation research admission status
+
+Current research decision：
+
+```text
+contextual composition                 RESEARCH-ADOPTED
+flat dictionary as primary model       REJECTED
+ziwei.interpretation.tw_v1             RESEARCH-CANDIDATE
+full 14-star claim corpus              NOT ADMITTED
+full 12-palace claim corpus            NOT ADMITTED
+production interpretation runtime      NOT ADMITTED
+```
+
+詳見 `INTERPRETATION_ADMISSION_REVIEW_V0.md`。
+
 ## Admission boundary
 
-Research scaffold 要進 production 時，必須另外建立 deterministic provider/runtime、fact schema、provenance gate、behavioral regression 與 explicit admission。本文不得被 production router直接引用成 method authority。
+Research scaffold 要進 production 時，必須另外建立 deterministic provider/runtime、machine-readable schemas、provenance gate、behavioral regression 與 explicit admission。本文不得被 production router直接引用成 method authority。

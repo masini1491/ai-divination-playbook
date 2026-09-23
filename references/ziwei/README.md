@@ -14,6 +14,7 @@ REFERENCE-ONLY / RESEARCH-ONLY / NOT PRODUCTION-ROUTABLE
 research-only scaffold
 → deterministic calculation research
 → source / tradition research
+→ interpretation architecture research
 → bounded admission review
 ```
 
@@ -34,7 +35,8 @@ research-only scaffold
 2. 明確的 calculation / tradition profile；
 3. 古籍、現代門派與 implementation evidence 的分層；
 4. lineage-aware cross-engine validation；
-5. 一套可供未來 ChatGPT 使用的 research default candidate。
+5. 一套可供未來 ChatGPT 使用的 research default candidate；
+6. 可追溯、conflict-preserving、fail-closed 的 interpretation architecture。
 
 產品 default 的目前目標不是宣稱「唯一正統」，而是：
 
@@ -70,6 +72,13 @@ leap_month_policy = split_after_day_15
 rat_hour_policy = next_day_at_23
 clock_mode = civil_time
 true_solar_time = disabled
+
+interpretation_profile = ziwei.interpretation.tw_v1
+  architecture = contextual_composition
+  historical_semantic_baseline = nanyang_quanshu
+  modern_claim_adoption = explicit_only
+  conflict_policy = preserve_no_implicit_average
+  production_admitted = false
 ```
 
 ### Why this is only a candidate
@@ -113,6 +122,10 @@ named school / preset 可以組合 components，但 component identity 與 prove
 - [`SOURCE_REGISTRY.md`](SOURCE_REGISTRY.md)
 - [`SOURCE_RECONCILIATION_V1.md`](SOURCE_RECONCILIATION_V1.md)
 - [`FOUR_TRANSFORMATION_VARIANT_REGISTRY.md`](FOUR_TRANSFORMATION_VARIANT_REGISTRY.md)
+- [`INTERPRETATION_ARCHITECTURE_V0.md`](INTERPRETATION_ARCHITECTURE_V0.md)
+- [`INTERPRETATION_RUNTIME_CONTRACTS_V0.md`](INTERPRETATION_RUNTIME_CONTRACTS_V0.md)
+- [`INTERPRETATION_FIXTURE_VALIDATION_V0.md`](INTERPRETATION_FIXTURE_VALIDATION_V0.md)
+- [`INTERPRETATION_ADMISSION_REVIEW_V0.md`](INTERPRETATION_ADMISSION_REVIEW_V0.md)
 
 ## Promotion boundary
 
