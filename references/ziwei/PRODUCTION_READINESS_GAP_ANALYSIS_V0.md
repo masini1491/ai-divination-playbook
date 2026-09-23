@@ -28,7 +28,7 @@ production routing                  = NOT ADMITTED
 | G3 Claim coverage | 52 natal first-layer claims; contextual/dynamic/auxiliary corpora incomplete | PARTIAL | evidence/admission, on material need |
 | G4 Executable retrieval/composition | deterministic research-only v0 + unit regressions | RESEARCH-CLOSED | production hardening requires separate gate |
 | G5 Dependency / behavioral validation | architecture fixtures + machine-readable executable mapping + regressions | RESEARCH-CLOSED | production dependency validation remains separate |
-| G6 User-facing uncertainty / safety | research safety principles exist; no production delivery contract | OPEN | ChatGPT can define bounded contract |
+| G6 User-facing uncertainty / safety | bounded delivery contract + deterministic action regressions | RESEARCH-CLOSED | production renderer binding remains separate |
 | G7 Production admission | explicitly not granted | BLOCKED | separate explicit admission decision |
 | G8 Ordinary routing | no ZIWEI.md / METHOD_ROUTING integration | BLOCKED | only after G1–G7 |
 
@@ -96,7 +96,7 @@ Passing means correct bounded behavior, including correct refusal/omission. It d
 
 ## G6 — uncertainty / safety
 
-Production delivery needs a machine-checkable/user-facing contract covering at least:
+`UNCERTAINTY_SAFETY_DELIVERY_CONTRACT_V0.md` now defines a bounded delivery contract with deterministic action validation covering:
 
 - source-backed vs project-adopted vs profile-specific vs conflicted vs insufficient;
 - missing-fact and omitted-claim disclosure;
@@ -105,7 +105,7 @@ Production delivery needs a machine-checkable/user-facing contract covering at l
 - health/death/legal/financial high-impact boundaries;
 - no scientific/predictive-validity implication.
 
-This can be designed before production routing.
+G6 is research-closed at the delivery-contract level. Binding these actions to a production renderer/API remains a separate implementation/admission gate.
 
 ## G7 / G8 — admission and routing
 
@@ -115,10 +115,9 @@ Production admission is a separate explicit decision after evidence from precedi
 
 Under current ChatGPT-Only mode, the following readiness work can proceed without crossing production authority:
 
-1. uncertainty/safety delivery contract;
-2. readiness matrix reconciliation after each closure.
+1. readiness matrix reconciliation after each closure.
 
-Production-schema candidate design is **CLOSED — RESEARCH**.
+Production-schema candidate design and uncertainty/safety delivery contract are **CLOSED — RESEARCH**.
 
 Executable behavioral validation over the admitted fixtures is **CLOSED — RESEARCH**.
 
