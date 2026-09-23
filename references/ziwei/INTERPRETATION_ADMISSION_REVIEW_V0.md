@@ -28,9 +28,9 @@ Executable retrieval/composition          ADMITTED — RESEARCH-ONLY V0
 Production schema candidates              CLOSED — RESEARCH
 Executable behavioral validation          CLOSED — RESEARCH
 Uncertainty / safety delivery contract     CLOSED — RESEARCH
-Production Scope A                        SELECTED — BOUNDED NATAL FIRST LAYER
+Production Scope A                        PRODUCTION ADMITTED — EXPLICIT REQUEST ONLY
 Scope-A natal calculation provider        ADMITTED — G1 ONLY
-Production runtime / method                NOT ADMITTED — G7
+Production runtime / method                ADMITTED — SCOPE-A V1 / G7
 Production routing                        NOT ADMITTED
 Scientific validity                       NOT CLAIMED
 ```
@@ -86,7 +86,7 @@ Conceptually admitted: Zi Wei Fact Packet v0, Claim Retrieval v0, Interpretation
 
 ## Production gate
 
-A production phase must be a separate explicit decision. Research-only executable retrieval/composition now exists; versioned fail-closed schema candidates, executable-v0 behavioral validation, and uncertainty/safety delivery contract are also research-closed. Production Scope A is now selected: bounded natal first layer only. Its 52 admitted claims satisfy the required interpretation coverage; broader contextual, auxiliary, brightness-conditioned and dynamic interpretation are not Scope-A blockers. Scope-A natal calculation authority is now admitted at G1. Production still needs production binding of the schema candidates, production-bound dependency/behavioral validation, renderer/API binding of the uncertainty/safety contract, and explicit production admission before any METHOD_ROUTING integration.
+A production phase must be a separate explicit decision. Research-only executable retrieval/composition now exists; versioned fail-closed schema candidates, executable-v0 behavioral validation, and uncertainty/safety delivery contract are also research-closed. Production Scope A is now selected: bounded natal first layer only. Its 52 admitted claims satisfy the required interpretation coverage; broader contextual, auxiliary, brightness-conditioned and dynamic interpretation are not Scope-A blockers. Scope-A natal calculation authority is now admitted at G1. Scope-A v1 production binding/admission is now owned by `ZIWEI_PRODUCTION_ADMISSION_V1.json` + `tools/ziwei_scope_a_pipeline.py`. The binding uses the admitted natal provider, allowlists the 52-claim corpus without rewriting research registry history, preserves conflict/omission trace, and applies the delivery contract. G8 ordinary routing remains a separate gate before any `METHOD_ROUTING.md` integration.
 
 ## Research maturity conclusion
 

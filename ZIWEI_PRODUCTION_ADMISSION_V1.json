@@ -1,0 +1,70 @@
+{
+  "schema_name": "ziwei_production_admission",
+  "schema_version": "1.0.0",
+  "method": "ZiWei",
+  "method_version": "ziwei-scope-a-v1",
+  "status": "PRODUCTION_ADMITTED",
+  "activation": "explicit_user_request_only",
+  "ordinary_auto_routing": false,
+  "scope": {
+    "id": "bounded_natal_first_layer",
+    "temporal_scope": "natal_baseline",
+    "major_star_subjects": 14,
+    "palace_subjects": 12,
+    "admitted_claims": 52
+  },
+  "calculation": {
+    "provider_id": "ziwei-scope-a-natal-python",
+    "provider_version": "0.1.0",
+    "runtime_owner": "tools/ziwei_natal_provider.py",
+    "profile_id": "ziwei.scope_a.natal_v0",
+    "input_boundary": "normalized_traditional_lunar_only"
+  },
+  "pipeline": {
+    "pipeline_id": "ziwei-scope-a-production-pipeline-v1",
+    "pipeline_version": "1.0.0",
+    "runtime_owner": "tools/ziwei_scope_a_pipeline.py",
+    "interpretation_profile": "ziwei.interpretation.tw_v1",
+    "research_retriever": "references/ziwei/interpretation_retrieval_v0.py",
+    "delivery_contract": "references/ziwei/UNCERTAINTY_SAFETY_DELIVERY_CONTRACT_V0.md",
+    "final_prose_authority": false
+  },
+  "admitted_research_registries": [
+    "ziwei_interpretation_claim_registry_batch1.json",
+    "ziwei_interpretation_claim_registry_batch2.json",
+    "ziwei_interpretation_claim_registry_palaces_v0.json"
+  ],
+  "research_registry_history_policy": "remain production_routable=false; production authority is granted only by this manifest + pipeline binding",
+  "unsupported_scopes": [
+    "brightness_conditioned_interpretation",
+    "auxiliary_minor_star_interpretation",
+    "four_transformation_interpretation",
+    "star_palace_cartesian_claims",
+    "decadal",
+    "yearly",
+    "monthly",
+    "daily",
+    "hourly",
+    "dynamic_prediction"
+  ],
+  "fail_closed": [
+    "normalized_lunar_input_required",
+    "calendar_provenance_required",
+    "unsupported_scope_no_natal_fallback",
+    "unadmitted_claim_no_model_memory_substitution",
+    "registered_conflict_preserved",
+    "missing_required_fact_omits_claim"
+  ],
+  "high_stakes_guardrails": [
+    "no_deterministic_health_or_death_prediction",
+    "no_legal_outcome_guarantee",
+    "no_financial_return_or_ruin_guarantee",
+    "no_pregnancy_or_fertility_guarantee",
+    "no_violence_or_severe_harm_guarantee"
+  ],
+  "admission_decision": {
+    "decision": "admit_ziwei_scope_a_bounded_natal_v1",
+    "scientific_predictive_validity_claimed": false,
+    "g8_ordinary_routing_admitted": false
+  }
+}

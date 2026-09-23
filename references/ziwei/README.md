@@ -3,7 +3,7 @@
 ## Authority boundary
 
 ```text
-REFERENCE-ONLY / RESEARCH-ONLY / NOT PRODUCTION-ROUTABLE
+RESEARCH OWNER / SCOPE-A V1 HAS SEPARATE PRODUCTION BINDING
 ```
 
 本目錄是紫微斗數的獨立研究線。它不屬於 Astrology production owner，也不修改 Tarot／Meihua／Liuyao／Palmistry 的 maturity 或 routing。
@@ -18,14 +18,19 @@ research-only scaffold
 → bounded admission review
 ```
 
-目前**沒有**：
+目前 production 狀態：
 
-- production `ZIWEI.md`
-- production runtime / provider
-- ordinary `METHOD_ROUTING.md` entry
+- Scope-A natal provider：G1 admitted
+- Scope-A v1 production binding：G7 admitted (`ZIWEI_PRODUCTION_ADMISSION_V1.json`)
+- production `ZIWEI.md`：尚未建立（G8）
+- ordinary `METHOD_ROUTING.md` entry：尚未建立（G8）
 - production cross-validation
 - unspecified-user auto-routing
 - 科學／客觀預測有效性聲明
+
+## Production boundary
+
+Research registries remain historical research owners and keep `production_routable=false`. Scope-A v1 production authority is added separately by root `ZIWEI_PRODUCTION_ADMISSION_V1.json` and `tools/ziwei_scope_a_pipeline.py`; this does not make the research directory itself an ordinary production router.
 
 ## Research objective
 

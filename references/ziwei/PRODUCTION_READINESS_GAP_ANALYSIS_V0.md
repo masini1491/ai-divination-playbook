@@ -15,7 +15,7 @@ major-star first layer              = 14 subjects / 28 claims
 palace first layer                  = 12 subjects / 24 claims
 combined first layer                = 52 claims
 executable retrieval/composition    = ADMITTED — RESEARCH-ONLY V0
-production runtime                  = NOT ADMITTED
+production runtime                  = ADMITTED — SCOPE-A V1
 production routing                  = NOT ADMITTED
 ```
 
@@ -29,8 +29,8 @@ production routing                  = NOT ADMITTED
 | G4 Executable retrieval/composition | deterministic research-only v0 + unit regressions | RESEARCH-CLOSED | production hardening requires separate gate |
 | G5 Dependency / behavioral validation | architecture fixtures + machine-readable executable mapping + regressions | RESEARCH-CLOSED | production dependency validation remains separate |
 | G6 User-facing uncertainty / safety | bounded delivery contract + deterministic action regressions | RESEARCH-CLOSED | production renderer binding remains separate |
-| G7 Production admission | explicitly not granted | BLOCKED | separate explicit admission decision |
-| G8 Ordinary routing | no ZIWEI.md / METHOD_ROUTING integration | BLOCKED | only after G1–G7 |
+| G7 Production admission | Scope-A provider + 52-claim allowlist + deterministic retrieval + delivery contract bound by `ZIWEI_PRODUCTION_ADMISSION_V1.json` and `tools/ziwei_scope_a_pipeline.py` | ADMITTED — SCOPE-A V1 | G8 routing remains separate |
+| G8 Ordinary routing | no ZIWEI.md / METHOD_ROUTING integration | BLOCKED | separate post-G7 routing gate |
 
 ## G1 — calculation authority
 
@@ -112,6 +112,11 @@ Passing means correct bounded behavior, including correct refusal/omission. It d
 G6 is research-closed at the delivery-contract level. Binding these actions to a production renderer/API remains a separate implementation/admission gate.
 
 ## G7 / G8 — admission and routing
+
+G7 is admitted for Scope-A v1 by `ZIWEI_PRODUCTION_ADMISSION_V1.json` + `tools/ziwei_scope_a_pipeline.py`. The binding allowlists the historically non-routable 52-claim research registries, uses the admitted G1 provider, preserves conflicts/omissions, and applies the bounded delivery contract. It grants no final-prose authority and no scientific-validity claim.
+
+G8 remains blocked. Production admission does not create `ZIWEI.md`, modify `METHOD_ROUTING.md`, or enable unspecified-user auto-routing.
+
 
 Production admission is a separate explicit decision after evidence from preceding gates. Only after that decision may ordinary routing artifacts such as `ZIWEI.md`, `METHOD_ROUTING.md`, `PLAYBOOK_INDEX.json`, loader/routing caches or production smoke expectations be considered.
 
