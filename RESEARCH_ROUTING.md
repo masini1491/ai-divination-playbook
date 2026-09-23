@@ -262,3 +262,7 @@ Astrology v1 與 Zi Wei Scope-A v1 都是這個 sequence 的 bounded implementat
 核心原則：
 
 > **Research routing makes evidence discoverable without making it authoritative beyond its admitted layer. Production Astrology and Astrology research are distinct intents; ordinary unspecified readings stay on the ordinary production router.**
+
+## Routing Compatibility Invariants
+
+Astrology production reading 不屬於這個 gate。Zi Wei production reading 也不屬於這個 gate；兩者的 research intent 才由本 research router 處理。

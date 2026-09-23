@@ -249,3 +249,7 @@ Persistence ≠ default loading。只有使用者明確承接／比較／回看�
 核心原則：
 
 > **Resolve current authority once, load the derived hot cache once, read the selected canonical owner, then expand only on a real evidence gap。**
+
+## Routing Compatibility Invariants
+
+Astrology v1 是 explicit-request only。Zi Wei Scope-A v1 同樣是 explicit-request only；兩者都不得因此加入 ordinary auto-routing。
