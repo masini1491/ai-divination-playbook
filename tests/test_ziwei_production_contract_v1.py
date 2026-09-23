@@ -26,7 +26,7 @@ class ZiWeiProductionContractV1Tests(unittest.TestCase):
         self.assertFalse(r["authority"]["final_prose_authority"])
         self.assertEqual("ziwei.scope_a.natal_v0",r["calculation"]["calculation_profile"]["profile_id"])
         self.assertGreater(len(r["interpretation"]["selected_claim_ids"]),0)
-        self.assertIn("ALLOW",r["delivery"]["actions"])
+        self.assertIn("PRESENT_CONFLICT_SEPARATELY",r["delivery"]["actions"])
 
     def test_research_registries_remain_historically_non_routable(self):
         m=json.loads((ROOT/"ZIWEI_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
