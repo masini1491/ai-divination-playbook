@@ -164,6 +164,14 @@
           "profile_id": "ziwei.brightness.iztro_v1",
           "admitted_claims_added": 0
         }
+      },
+      "gregorian_input": {
+        "activation": "explicit-ziwei-request-with-gregorian-birth-datetime",
+        "provider": "tools/ziwei_calendar_provider.py",
+        "pipeline": "tools/ziwei_gregorian_pipeline.py",
+        "admission_manifest": "ZIWEI_CALENDAR_ADMISSION_V1.json",
+        "profile_id": "ziwei.calendar.tw_v1",
+        "timezone": "Asia/Taipei"
       }
     },
     {

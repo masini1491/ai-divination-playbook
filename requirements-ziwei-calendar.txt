@@ -1,0 +1,5 @@
+# Zi Wei Gregorian → lunar normalization production dependency.
+# lunar-python release: v1.4.8
+# upstream commit: 6tail/lunar-python@000c8a3d74eed098d6256a28fdd51b869324c559
+# license: MIT
+lunar_python==1.4.8

@@ -66,5 +66,19 @@
     "decision": "admit_ziwei_scope_a_bounded_natal_v1",
     "scientific_predictive_validity_claimed": false,
     "g8_ordinary_routing_admitted": false
-  }
+  },
+  "accepted_method_inputs": [
+    "normalized_traditional_lunar",
+    "gregorian_birth_datetime_via_ZIWEI_CALENDAR_ADMISSION_V1"
+  ],
+  "input_adapters": [
+    {
+      "id": "gregorian_calendar_v1",
+      "admission_manifest": "ZIWEI_CALENDAR_ADMISSION_V1.json",
+      "runtime_owner": "tools/ziwei_calendar_provider.py",
+      "pipeline": "tools/ziwei_gregorian_pipeline.py",
+      "profile_id": "ziwei.calendar.tw_v1",
+      "timezone": "Asia/Taipei"
+    }
+  ]
 }

@@ -1,0 +1,54 @@
+{
+  "schema_name": "ziwei_calendar_production_admission",
+  "schema_version": "1.0.0",
+  "method": "ZiWei",
+  "module": "gregorian_calendar_input_v1",
+  "status": "PRODUCTION_ADMITTED_INPUT_ADAPTER",
+  "activation": "explicit_ziwei_request_with_gregorian_birth_datetime",
+  "parent_admission": "ZIWEI_PRODUCTION_ADMISSION_V1.json",
+  "scope": {
+    "accepted_calendar": "gregorian",
+    "timezone": "Asia/Taipei",
+    "clock_mode": "civil_time",
+    "true_solar_time": "disabled",
+    "output": "normalized_traditional_lunar_input_for_scope_a"
+  },
+  "calculation": {
+    "provider_id": "ziwei-calendar-lunar-python",
+    "provider_version": "1.0.0",
+    "runtime_owner": "tools/ziwei_calendar_provider.py",
+    "profile_id": "ziwei.calendar.tw_v1",
+    "dependency_package": "lunar_python",
+    "dependency_version": "1.4.8",
+    "dependency_repository": "6tail/lunar-python",
+    "dependency_revision": "000c8a3d74eed098d6256a28fdd51b869324c559",
+    "dependency_license": "MIT"
+  },
+  "policy": {
+    "year_boundary": "lunar_new_year",
+    "leap_month_policy": "split_after_day_15",
+    "rat_hour_policy": "next_day_at_23",
+    "raw_lunar_conversion_preserved": true,
+    "normalization_policy_exposed": true
+  },
+  "pipeline": {
+    "runtime_owner": "tools/ziwei_gregorian_pipeline.py",
+    "pipeline_id": "ziwei-gregorian-input-adapter-v1",
+    "supports_parent_scope_a": true,
+    "supports_optional_brightness_v1": true
+  },
+  "fail_closed": [
+    "Asia/Taipei timezone required",
+    "invalid Gregorian date/time rejected",
+    "no model-memory lunar conversion",
+    "no silent true-solar-time correction",
+    "raw conversion and Zi Wei normalization remain separately visible"
+  ],
+  "unsupported": [
+    "automatic birthplace timezone resolution",
+    "non-Asia/Taipei timezone conversion",
+    "true solar time",
+    "dynamic Zi Wei scopes"
+  ],
+  "scientific_predictive_validity_claimed": false
+}
