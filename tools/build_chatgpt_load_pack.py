@@ -78,7 +78,7 @@ PROFILES = {
         "required_followup": ["ASTROLOGY.md", "selected Astrology mode owner"],
         "notes": "Production Astrology only; after the root owner, load ASTROLOGY_NATAL.md or ASTROLOGY_TRANSIT.md by reading_mode. Research intent continues to bypass the pack.",
     },
-    "continuation_stochastic": {
+    "explicit_ziwei": {\n        "fragments": ["bootstrap", "output_core"],\n        "required_followup": ["ZIWEI.md"],\n        "notes": "Production Zi Wei Scope-A only; research intent continues to bypass the pack.",\n    },\n    "continuation_stochastic": {
         "fragments": ["bootstrap", "runtime_fast_path", "output_core"],
         "required_followup": ["READING_LIFECYCLE.md", "selected method owner"],
         "notes": "READING_RECORD.md remains conditional on durable storage/cross-chat/audit intent.",
