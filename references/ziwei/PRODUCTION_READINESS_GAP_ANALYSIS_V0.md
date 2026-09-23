@@ -23,7 +23,7 @@ production routing                  = NOT ADMITTED
 
 | Gate | Current evidence | State | Next owner |
 | --- | --- | --- | --- |
-| G1 Calculation authority | Matched-profile research exists; baseline is componentized; brightness table open; dynamic runtime unadmitted | BLOCKED | source/profile + implementation gate |
+| G1 Calculation authority | Matched-profile natal research exists; Scope A requires natal palace geometry, bureau, 14-major-star placement, topology and provenance only | BLOCKED | natal runtime/provider implementation + admission gate |
 | G2 Production request/fact/frame schemas | versioned fail-closed schema candidates + validator regressions | RESEARCH-CLOSED | production binding remains separate |
 | G3 Claim coverage | Scope A selects the admitted 52 natal first-layer claims as the complete required interpretation corpus | SATISFIED — SCOPE A | reopen only if product scope expands |
 | G4 Executable retrieval/composition | deterministic research-only v0 + unit regressions | RESEARCH-CLOSED | production hardening requires separate gate |
@@ -36,13 +36,18 @@ production routing                  = NOT ADMITTED
 
 Current research is strong enough to identify a candidate componentized profile, but not enough to call it a production calculation authority.
 
-Material blockers:
+Material blockers for Scope A:
 
-- no admitted deterministic Zi Wei chart runtime/provider;
-- project-wide brightness table/profile remains unselected;
-- dynamic calculation/runtime remains unadmitted;
-- documented profile/witness variants remain identity-bearing and must not be flattened;
-- two historical facsimile image gaps remain open but are not by themselves reasons to rerun broad research.
+- no admitted deterministic natal Zi Wei chart runtime/provider;
+- required natal calculation/profile identity and provenance are not yet bound to a production runtime;
+- documented profile/witness variants affecting required natal facts remain identity-bearing and must not be flattened.
+
+Not Scope-A blockers:
+
+- project-wide brightness table/profile;
+- dynamic calculation/runtime;
+- auxiliary/minor-star calculation beyond required natal first-layer facts;
+- the two historical facsimile image gaps, unless new evidence materially changes a required natal fact.
 
 A production runtime must expose component/profile identity and provenance rather than hiding these choices behind a single opaque `default`.
 
