@@ -70,7 +70,7 @@ Baseline Core Fact Set 在 matched profile 下目前可研究：
 - late-Rat convention
 - subsystem year boundaries
 - Heaven / Earth / Human chart mode
-- many auxiliary/minor stars
+- many auxiliary/minor stars — route through `MINOR_STAR_ADMISSION_TAXONOMY_V0.md`; taxonomy does not itself admit facts/claims
 - dynamic month/day/hour charts
 - first decadal palace / start-age convention
 

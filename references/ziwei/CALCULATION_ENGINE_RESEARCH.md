@@ -79,6 +79,12 @@ Tier-A implementations 的 relative placements 高度一致；matharts 的 prima
 
 common placement rule 在多個 engines 一致，matharts primary-scan research 亦提供 rule-specific evidence。
 
+### Auxiliary / minor stars
+
+Admission responsibility is now tiered by `MINOR_STAR_ADMISSION_TAXONOMY_V0.md`. 左輔／右弼／文昌／文曲 form the first eligible auxiliary group because current research already has stronger placement/source support. High-impact modifiers such as 魁鉞、祿馬、羊陀、火鈴、空劫 remain candidates requiring source/profile closure; long-tail and cycle/flow stars remain deferred.
+
+This taxonomy does not create new L2/L4 facts by itself.
+
 ### Four Transformations
 
 不能視為 universal Core Fact，也不能再用單一「《全書》表」代表所有 historical witnesses。
@@ -251,9 +257,10 @@ Canonical owners：
 
 ## Remaining research gaps
 
-1. minor stars、dynamic charts；
-2. project-wide brightness table/profile selection（only after source/profile reconciliation or explicit project design decision）；
-3. machine-readable full claim registry and source-normalized claim admission；
-4. 上述兩個明確 image gaps（只有取得可驗證 facsimile 時才重開）。
+1. dynamic charts；
+2. auxiliary-star source/claim admission by the bounded taxonomy when materially needed；
+3. project-wide brightness table/profile selection（only after source/profile reconciliation or explicit project design decision）；
+4. machine-readable full claim registry and source-normalized claim admission；
+5. 上述兩個明確 image gaps（只有取得可驗證 facsimile 時才重開）。
 
 Interpretation Architecture v0 的完成不建立 production provider、production runtime、ordinary routing 或 canonical production profile。
