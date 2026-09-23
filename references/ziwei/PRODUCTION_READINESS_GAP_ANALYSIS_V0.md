@@ -23,7 +23,7 @@ production routing                  = NOT ADMITTED
 
 | Gate | Current evidence | State | Next owner |
 | --- | --- | --- | --- |
-| G1 Calculation authority | Matched-profile natal research exists; Scope A requires natal palace geometry, bureau, 14-major-star placement, topology and provenance only | BLOCKED | natal runtime/provider implementation + admission gate |
+| G1 Calculation authority | `tools/ziwei_natal_provider.py` implements the bounded natal facts required by Scope A with pinned parity + fail-closed tests | ADMITTED — SCOPE-A NATAL | production binding remains G7 |
 | G2 Production request/fact/frame schemas | versioned fail-closed schema candidates + validator regressions | RESEARCH-CLOSED | production binding remains separate |
 | G3 Claim coverage | Scope A selects the admitted 52 natal first-layer claims as the complete required interpretation corpus | SATISFIED — SCOPE A | reopen only if product scope expands |
 | G4 Executable retrieval/composition | deterministic research-only v0 + unit regressions | RESEARCH-CLOSED | production hardening requires separate gate |
@@ -34,13 +34,14 @@ production routing                  = NOT ADMITTED
 
 ## G1 — calculation authority
 
-Current research is strong enough to identify a candidate componentized profile, but not enough to call it a production calculation authority.
+`tools/ziwei_natal_provider.py` is admitted as the deterministic **Scope-A natal calculation authority**. This admission is intentionally narrower than a full Zi Wei production method and does not grant G7/G8.
 
-Material blockers for Scope A:
+Admitted G1 boundary for Scope A:
 
-- no admitted deterministic natal Zi Wei chart runtime/provider;
-- required natal calculation/profile identity and provenance are not yet bound to a production runtime;
-- documented profile/witness variants affecting required natal facts remain identity-bearing and must not be flattened.
+- normalized traditional-lunar input + provenance is required;
+- Life/Body, twelve-palace geometry/stems, Five-Element Bureau, Zi Wei start, fourteen-major-star placement and topology are deterministic provider facts;
+- provider/profile identity is explicit as `ziwei-scope-a-natal-python@0.1.0` / `ziwei.scope_a.natal_v0`;
+- documented variants remain identity-bearing and are not flattened.
 
 Not Scope-A blockers:
 
@@ -143,4 +144,4 @@ B. broader contextual natal interpretation
 C. natal + dynamic interpretation
 ```
 
-`PRODUCTION_SCOPE_A_NATAL_FIRST_V0.md` owns this decision. G3 claim expansion, project-wide brightness selection, auxiliary claim expansion and dynamic runtime are not Scope-A blockers. G1 is narrowed to an admitted natal calculation runtime/provider for the facts Scope A actually consumes. Production binding/admission and ordinary routing remain separate later gates.
+`PRODUCTION_SCOPE_A_NATAL_FIRST_V0.md` owns this decision. G3 claim expansion, project-wide brightness selection, auxiliary claim expansion and dynamic runtime are not Scope-A blockers. G1 is now admitted for the facts Scope A actually consumes. Production binding/admission (G7) and ordinary routing (G8) remain separate later gates.

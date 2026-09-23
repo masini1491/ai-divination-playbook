@@ -168,7 +168,7 @@ combined = 52 first-layer claims
 
 上述 ChatGPT-side research 可做 source reconciliation、claim normalization、conflict preservation、schema/admission design 與 bounded fixture/evidence work。Executable retrieval/composition 已另行取得 **RESEARCH-ONLY V0** admission；不得由此推導為 production authority。
 
-Production-readiness blocker inventory 由 `PRODUCTION_READINESS_GAP_ANALYSIS_V0.md` 擁有；minimum product scope 由 `PRODUCTION_SCOPE_A_NATAL_FIRST_V0.md` 固定為 **Scope A — bounded natal first layer only**。G2 schema candidates、G5 executable behavioral validation、G6 uncertainty/safety delivery contract 已完成 **RESEARCH-CLOSED**；52 claims 已滿足 Scope-A interpretation coverage。這些 closure 與 scope decision 都不授予 production authority。
+Production-readiness blocker inventory 由 `PRODUCTION_READINESS_GAP_ANALYSIS_V0.md` 擁有；minimum product scope 由 `PRODUCTION_SCOPE_A_NATAL_FIRST_V0.md` 固定為 **Scope A — bounded natal first layer only**；`PRODUCTION_NATAL_PROVIDER_ADMISSION_V0.md` + `tools/ziwei_natal_provider.py` 已完成 **G1 Scope-A natal calculation admission**。G2 schema candidates、G5 executable behavioral validation、G6 uncertainty/safety delivery contract 已完成 **RESEARCH-CLOSED**；52 claims 已滿足 Scope-A interpretation coverage。這些 closure 與 scope decision 都不授予 production authority。
 
 仍需分開 gate 的後續包括：
 
