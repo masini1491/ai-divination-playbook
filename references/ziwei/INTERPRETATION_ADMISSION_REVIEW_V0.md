@@ -73,6 +73,10 @@ A production phase must be a separate explicit decision. It still needs a frozen
 
 Interpretation Research v0 is architecture-complete enough to stop broad exploratory expansion. Reopen only when a material source-policy premise changes, fixtures expose a new architecture failure class, project objectives change, or production admission reveals a missing contract requirement.
 
+## Continuation routing note
+
+The current first-layer closure does not make every deferred interpretation item active work. For fresh-session continuation, use the Zi Wei research owner `README.md` → `Research continuation contract` to distinguish ChatGPT-eligible research/evidence/schema/admission candidates from executable/runtime/production work that still requires separate gates. Actor choice must be re-evaluated per current Stage; prior Codex or implementation work is not actor authority for the next research Stage.
+
 ## Batch 1 follow-up
 
 The first source-normalized machine-readable claim batch is admitted separately in `INTERPRETATION_CLAIM_BATCH1_ADMISSION.md`. This narrows the earlier `Full claim registry = DEFER` state to `PARTIAL`; it does not admit the remaining stars, twelve-palace corpus, retrieval runtime or production interpretation.
