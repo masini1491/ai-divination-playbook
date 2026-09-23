@@ -24,6 +24,7 @@ Minor-star admission taxonomy              CLOSED — RESEARCH
 Temporal-context interpretation             CLOSED — RESEARCH
 Dynamic calculation/runtime                NOT ADMITTED
 Dynamic claim corpus                       NOT ADMITTED
+Executable retrieval/composition          ADMITTED — RESEARCH-ONLY V0
 Production runtime                        NOT ADMITTED
 Production routing                        NOT ADMITTED
 Scientific validity                       NOT CLAIMED
@@ -74,9 +75,13 @@ These preserve disagreement and block implicit synthesis. They do not resolve tr
 
 Conceptually admitted: Zi Wei Fact Packet v0, Claim Retrieval v0, Interpretation Frame/Synthesis Output v0, explicit fact state, provenance trace, specificity within one authority chain, conflict gate, no model-memory fallback, and pre-render safety gate.
 
+## Executable retrieval/composition follow-up
+
+`EXECUTABLE_RETRIEVAL_COMPOSITION_V0.md` admits a bounded deterministic research implementation over the currently admitted 52 natal first-layer claims. It performs exact requires/forbids matching, source gating, specificity ordering, conflict preservation and L5 frame construction. It does not calculate charts, invent missing contextual claims, render doctrine prose, admit dynamic claims or grant production authority.
+
 ## Production gate
 
-A production phase must be a separate explicit decision. It still needs a frozen calculation runtime, machine-readable schemas, source-normalized claim registry, executable retrieval/composition, dependency validation, behavioral regression, user-facing uncertainty/safety contract and explicit production admission before any METHOD_ROUTING integration.
+A production phase must be a separate explicit decision. Research-only executable retrieval/composition now exists, but production still needs a frozen calculation runtime, production-grade request/fact/frame schemas, broader source-normalized contextual claims, dependency validation, behavioral regression, user-facing uncertainty/safety contract and explicit production admission before any METHOD_ROUTING integration.
 
 ## Research maturity conclusion
 
