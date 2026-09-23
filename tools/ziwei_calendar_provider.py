@@ -9,6 +9,7 @@ perform timezone conversion or true-solar-time correction.
 from __future__ import annotations
 
 from dataclasses import dataclass
+from datetime import datetime
 from typing import Any
 
 from lunar_python import Solar
@@ -49,6 +50,10 @@ class GregorianBirthInput:
             raise ValueError("minute must be in 0..59")
         if not 0 <= self.second <= 59:
             raise ValueError("second must be in 0..59")
+        try:
+            datetime(self.year,self.month,self.day,self.hour,self.minute,self.second)
+        except ValueError as exc:
+            raise ValueError(f"invalid Gregorian birth date/time: {exc}") from exc
 
 def hour_branch(hour: int) -> str:
     if hour in (23,0):
