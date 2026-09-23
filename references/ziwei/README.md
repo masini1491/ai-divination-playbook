@@ -134,6 +134,7 @@ named school / preset 可以組合 components，但 component identity 與 prove
 - [`INTERPRETATION_CLAIM_PALACES_V0_ADMISSION.md`](INTERPRETATION_CLAIM_PALACES_V0_ADMISSION.md)
 - [`ziwei_interpretation_claim_registry_palaces_v0.json`](ziwei_interpretation_claim_registry_palaces_v0.json)
 - [`STAR_PALACE_COMBINATION_RESEARCH_V0.md`](STAR_PALACE_COMBINATION_RESEARCH_V0.md)
+- [`BRIGHTNESS_INTERPRETATION_RESEARCH_V0.md`](BRIGHTNESS_INTERPRETATION_RESEARCH_V0.md)
 
 ## Research continuation contract
 
@@ -148,7 +149,7 @@ combined = 52 first-layer claims
 在目前 `Project AI mode: ChatGPT-Only` 下，下列 deferred 項目屬於可由 ChatGPT 直接承接的 **research / evidence / schema / admission candidates**：
 
 1. `star×palace` combination-family research — **CLOSED — RESEARCH**；
-2. brightness interpretation-family research；
+2. brightness interpretation-family research — **CLOSED — RESEARCH**；
 3. Four-Transformation interpretation-family research；
 4. bounded minor-star admission taxonomy；
 5. temporal-context interpretation research。
@@ -170,8 +171,8 @@ combined = 52 first-layer claims
 
 ```text
 star×palace
-→ brightness  # next open ChatGPT-side research stage
-→ Four-Transformation interpretation
+→ brightness
+→ Four-Transformation interpretation  # next open ChatGPT-side research stage
 → bounded minor-star taxonomy
 → temporal context
 → executable retrieval/composition only after its separate gate
@@ -192,6 +193,6 @@ research judgment gap closed
 → explicit production admission
 ```
 
-目前已 admission 14 顆主星 / 28 條與十二宮 / 24 條 source-normalized machine-readable research claims，完成 `major-star + palace` 第一層共 52 條 coverage；完整 star×palace 組合、brightness/minor-star/四化 interpretation families 與 production interpretation 仍未 admission。
+目前已 admission 14 顆主星 / 28 條與十二宮 / 24 條 source-normalized machine-readable research claims，完成 `major-star + palace` 第一層共 52 條 coverage；star×palace composition policy 與 brightness interpretation responsibility 已 research-closed。Project-wide brightness table 仍未選定；minor-star／四化／temporal interpretation families 與 production interpretation 仍未 admission。
 
 建立本 research dossier 不構成 production admission。

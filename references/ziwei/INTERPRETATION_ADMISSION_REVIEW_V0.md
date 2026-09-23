@@ -17,6 +17,8 @@ Batch 2: 8 stars / 16 claims              ADMITTED — RESEARCH
 14-major-star first-layer coverage        CLOSED — RESEARCH
 12-palace first-layer coverage            CLOSED — RESEARCH
 Star×palace composition policy            CLOSED — RESEARCH
+Brightness interpretation responsibility  CLOSED — RESEARCH
+Project-wide brightness table             NOT SELECTED
 Production runtime                        NOT ADMITTED
 Production routing                        NOT ADMITTED
 Scientific validity                       NOT CLAIMED
@@ -81,6 +83,10 @@ The current first-layer closure does not make every deferred interpretation item
 ## Star × palace composition follow-up
 
 `STAR_PALACE_COMBINATION_RESEARCH_V0.md` closes the architecture decision against an exhaustive 14×12 dictionary. Separately admitted star and palace claims may be composed at L5 with provenance preserved; that composition does not become a new sourced L4 claim. Dedicated combination overrides remain sparse, evidence-driven, and require explicit source/admission support.
+
+## Brightness follow-up
+
+`BRIGHTNESS_INTERPRETATION_RESEARCH_V0.md` closes brightness interpretation responsibility as a profile-bound modifier contract. Existing sourced claims may depend on brightness/dignity facts, but brightness alone does not create generic L4 doctrine. A project-wide brightness table/profile remains unselected and requires separate source/profile reconciliation or an explicit project design decision.
 
 ## Batch 1 follow-up
 
