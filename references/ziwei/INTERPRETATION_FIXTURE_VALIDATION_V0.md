@@ -56,6 +56,10 @@ flat_dictionary = possible low-level index/retrieval aid only
 
 User-perceived fit should come from real chart differentiation, not stronger certainty, dramatic predictions or Barnum-style filler.
 
+## Combination-claim boundary
+
+These fixtures test whether contextual composition reacts to material conditions. They do not admit dedicated star×palace L4 claims. Under `STAR_PALACE_COMBINATION_RESEARCH_V0.md`, first-layer star and palace evidence may be jointly synthesized at L5 with provenance preserved; any dedicated combination override still requires explicit source/admission evidence.
+
 ## Limitations
 
-Fixtures are synthetic; no production selector/composer exists; full source-normalized 14-star/12-palace registries are not admitted.
+Fixtures are synthetic; no production selector/composer exists. Major-star and twelve-palace first-layer registries are admitted, while later contextual claim families remain incomplete.

@@ -58,6 +58,7 @@ Zi Wei Claim Registry Batch 2      RESEARCH-ADMITTED / 8 stars / 16 claims
 Major-star first-layer coverage     CLOSED / 14 stars / 28 claims
 Twelve-palace first-layer registry  RESEARCH-ADMITTED / 12 palaces / 24 claims
 Star + palace first-layer coverage  CLOSED / 26 subjects / 52 claims
+Star×palace composition policy       CLOSED — RESEARCH / exhaustive matrix rejected; sparse source-explicit overrides only
 ```
 
 任何 upstream rule 只有在本 research owner 明確採用後，才成為本研究線的 candidate contract；仍不因此取得 production authority。

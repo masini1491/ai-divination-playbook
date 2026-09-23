@@ -133,6 +133,7 @@ named school / preset 可以組合 components，但 component identity 與 prove
 - [`ziwei_interpretation_claim_registry_batch2.json`](ziwei_interpretation_claim_registry_batch2.json)
 - [`INTERPRETATION_CLAIM_PALACES_V0_ADMISSION.md`](INTERPRETATION_CLAIM_PALACES_V0_ADMISSION.md)
 - [`ziwei_interpretation_claim_registry_palaces_v0.json`](ziwei_interpretation_claim_registry_palaces_v0.json)
+- [`STAR_PALACE_COMBINATION_RESEARCH_V0.md`](STAR_PALACE_COMBINATION_RESEARCH_V0.md)
 
 ## Research continuation contract
 
@@ -146,7 +147,7 @@ combined = 52 first-layer claims
 
 在目前 `Project AI mode: ChatGPT-Only` 下，下列 deferred 項目屬於可由 ChatGPT 直接承接的 **research / evidence / schema / admission candidates**：
 
-1. `star×palace` combination-family research；
+1. `star×palace` combination-family research — **CLOSED — RESEARCH**；
 2. brightness interpretation-family research；
 3. Four-Transformation interpretation-family research；
 4. bounded minor-star admission taxonomy；
@@ -169,7 +170,7 @@ combined = 52 first-layer claims
 
 ```text
 star×palace
-→ brightness
+→ brightness  # next open ChatGPT-side research stage
 → Four-Transformation interpretation
 → bounded minor-star taxonomy
 → temporal context
