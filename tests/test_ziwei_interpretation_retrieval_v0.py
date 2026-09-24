@@ -48,14 +48,14 @@ class ZiWeiExecutableRetrievalV0Tests(unittest.TestCase):
         self.assertEqual("conditional_fact_not_computed",reason["ZW-B2-TIANXIANG-COND-002"])
 
     def test_fact_gated_conditional_is_unsatisfied_when_domain_has_no_trigger(self):
-        r=retrieve_claims(self.packet({"star_present:天相","fact_available:auxiliary_stars"},requested_subjects={"天相"}))
+        r=retrieve_claims(self.packet({"star_present:天相","fact_available:m0_auxiliary_stars"},requested_subjects={"天相"}))
         self.assertNotIn("ZW-B2-TIANXIANG-COND-002",[x["claim_id"] for x in r["selected_claims"]])
         self.assertEqual("unsatisfied",self.activation(r,"ZW-B2-TIANXIANG-COND-002")["state"])
         reason={x["claim_id"]:x["reason"] for x in r["omissions"]}
         self.assertEqual("conditional_condition_unsatisfied",reason["ZW-B2-TIANXIANG-COND-002"])
 
     def test_fact_gated_conditional_is_selected_when_trigger_is_demonstrated(self):
-        r=retrieve_claims(self.packet({"star_present:天相","fact_available:auxiliary_stars","modifier_present:天相:左輔"},requested_subjects={"天相"}))
+        r=retrieve_claims(self.packet({"star_present:天相","fact_available:m0_auxiliary_stars","modifier_present:天相:左輔"},requested_subjects={"天相"}))
         self.assertIn("ZW-B2-TIANXIANG-COND-002",[x["claim_id"] for x in r["selected_claims"]])
         a=self.activation(r,"ZW-B2-TIANXIANG-COND-002")
         self.assertEqual("satisfied",a["state"])
