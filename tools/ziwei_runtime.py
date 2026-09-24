@@ -167,3 +167,14 @@ def run_ziwei(request:ZiWeiReadingRequest)->dict[str,Any]:
         result["authority"]["brightness_profile_admitted"]=True
         result["authority"]["brightness_only_doctrine_admitted"]=False
     return result
+
+def legacy_result(result:dict[str,Any], *, brightness:bool=False) -> dict[str,Any]:
+    """Project the typed v1 result back to the pre-v1 public pipeline surface."""
+    legacy=dict(result)
+    legacy.pop("schema_name",None)
+    legacy.pop("schema_version",None)
+    legacy.pop("runtime",None)
+    if brightness:
+        legacy["pipeline_id"]="ziwei-scope-a-brightness-production-pipeline-v1"
+        legacy["pipeline_version"]="1.0.0"
+    return legacy
