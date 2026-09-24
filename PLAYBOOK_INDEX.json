@@ -346,8 +346,8 @@
       "research.astrology.scope": {
         "owner": "references/astrology/README.md",
         "heading": "## 1. Scope",
-        "start_line": 42,
-        "end_line": 69,
+        "start_line": 46,
+        "end_line": 73,
         "next_heading": "## 2. Research decomposition"
       },
       "explicit_astrology.natal_entry": {
