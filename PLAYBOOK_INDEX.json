@@ -183,7 +183,7 @@
       "natal_provider": "tools/ziwei_natal_provider.py",
       "admission_manifest": "ZIWEI_PRODUCTION_ADMISSION_V1.json",
       "interpretation_profile": "ziwei.interpretation.tw_v1",
-      "claim_count": 52,
+      "claim_count": 56,
       "research_owner": "references/ziwei/README.md",
       "optional_modules": {
         "brightness_v1": {
@@ -194,6 +194,15 @@
           "profile_id": "ziwei.brightness.iztro_v1",
           "admitted_claims_added": 0,
           "compatibility_adapter": "tools/ziwei_brightness_pipeline.py"
+        },
+        "m0_auxiliary_v1": {
+          "activation": "explicit-module-only",
+          "pipeline": "tools/ziwei_runtime.py",
+          "provider": "tools/ziwei_m0_auxiliary_provider.py",
+          "admission_manifest": "ZIWEI_M0_AUXILIARY_ADMISSION_V1.json",
+          "profile_id": "ziwei.auxiliary.m0.iztro_v1",
+          "admitted_claims_added": 4,
+          "blanket_minor_star_admission": false
         }
       },
       "gregorian_input": {
