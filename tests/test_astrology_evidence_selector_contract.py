@@ -73,8 +73,16 @@ class AstrologyEvidenceSelectorContractTests(unittest.TestCase):
             derived["fact_only_object_ids"],
         )
         self.assertEqual(
-            "forbidden_until_separately_admitted",
+            "forbidden_unless_explicitly_admitted",
             derived["claim_binding"],
+        )
+        self.assertEqual(
+            {"Descendant", "ImumCoeli"},
+            set(derived["admitted_claim_bindings"]),
+        )
+        self.assertEqual(
+            ["SouthNode", "PartOfFortune"],
+            derived["no_admitted_claim_bindings"],
         )
 
         research = RESEARCH_QUERY_CONTRACT.read_text(encoding="utf-8")
