@@ -23,7 +23,7 @@ jobs:
           tests.test_astrology_evidence_selector_contract
           tests.test_astrology_interpretation_handoff
           tests.test_astrology_production_contract
-          tests.test_fourth_tenth_house_axis_registry
+      - run: python references/astrology/test_fourth_tenth_house_axis_registry.py
       - shell: bash
         run: |
           rm .github/workflows/astrology-derived-interpretation-test-once.yml

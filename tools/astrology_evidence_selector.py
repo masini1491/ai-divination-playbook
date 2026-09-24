@@ -341,6 +341,32 @@ def _derived_fact_interpretation_policy(
     return set(raw_ids), bindings
 
 
+def _guard_no_binding_fact_only_objects(
+    run: dict[str, Any],
+    selectors_by_id: dict[str, dict[str, Any]],
+    refs_by_selector: dict[str, list[dict[str, str]]],
+    linked_ids: list[str],
+    fact_only_ids: set[str],
+    admitted_bindings: dict[str, set[tuple[str, str]]],
+) -> None:
+    for selector_id in linked_ids:
+        selector = selectors_by_id[selector_id]
+        if selector["selector_kind"] != "object":
+            continue
+        rows_by_id = {
+            row["fact_id"]: row
+            for row in _bundle_rows(run, selector["bundle"], "objects")
+            if isinstance(row.get("fact_id"), str)
+        }
+        for ref in refs_by_selector[selector_id]:
+            row = rows_by_id.get(ref["fact_id"])
+            object_id = row.get("object_id") if isinstance(row, dict) else None
+            if object_id in fact_only_ids and not admitted_bindings.get(object_id):
+                raise AstrologyEvidenceSelectionError(
+                    f"claim binding is not admitted for derived fact-only object: {object_id}"
+                )
+
+
 def _guard_fact_only_claim_binding(
     run: dict[str, Any],
     selectors_by_id: dict[str, dict[str, Any]],
@@ -492,6 +518,14 @@ def select_evidence(reading_run: Any, typed_request: Any, *, repo_root: Path | N
     for selector in request["claim_selectors"]:
         linked_ids = selector["fact_selector_ids"]
         linked_refs = _dedupe_fact_refs([ref for selector_id in linked_ids for ref in refs_by_selector[selector_id]])
+        _guard_no_binding_fact_only_objects(
+            run,
+            selectors_by_id,
+            refs_by_selector,
+            linked_ids,
+            fact_only_ids,
+            admitted_bindings,
+        )
         required_applicability: set[str] = set()
         applicability_scope = selector["applicability_scope"]
         for selector_id in linked_ids:
