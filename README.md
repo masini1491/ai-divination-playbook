@@ -9,12 +9,14 @@ Tarot
 Meihua
 Liuyao
 Astrology（explicit-request only）
+Zi Wei Dou Shu / 紫微斗數（explicit-request only；Scope-A natal first layer）
 ```
 
 其中：
 
 - Tarot / Meihua / Liuyao 參與 ordinary method routing；
 - Astrology Production v1 已正式可用，但只在使用者明確要求「用占星／看本命盤／看行運」時啟用，不加入 ordinary auto-routing；
+- Zi Wei Scope-A Production v1 已正式可用，但只在使用者明確要求「用紫微／看紫微命盤」時啟用，不加入 ordinary auto-routing；目前支援 bounded natal first layer、Asia/Taipei 西元生日輸入與 optional brightness facts；
 - Tarot + Meihua 已有 canonical cross-validation contract；其他 method pair 在沒有專門 reconciliation contract 前，不宣稱為正式 cross-validation。
 
 > **AI / ChatGPT 快速入口：** 實際使用本手冊時，直接從 [`CHAT_INIT.md`](CHAT_INIT.md) 開始並依 task routing 只讀最低必要文件／sections；不需要先完整閱讀本 README，也不要為了「熟悉手冊」掃描整個 Repository。
@@ -49,7 +51,7 @@ ai-divination-playbook
    deterministic facts / interpretation / reading lifecycle
 ```
 
-**Adoption ≠ unconditional activation。** 普通 Tarot／Meihua／Liuyao／Astrology 使用、reading continuation 與方法解讀維持本 Repo 的短 hot path，不為形式載入 shared Playbook；只有 repository maintenance、governance／AI workflow、GitHub operations、source/tests/tooling/workflow mutation 或 validation architecture 等工程工作才解析 declared baseline、進入其 `CHAT_INIT.md` 並載入最低充分 owner。
+**Adoption ≠ unconditional activation。** 普通 Tarot／Meihua／Liuyao／Astrology／Zi Wei 使用、reading continuation 與方法解讀維持本 Repo 的短 hot path，不為形式載入 shared Playbook；只有 repository maintenance、governance／AI workflow、GitHub operations、source/tests/tooling/workflow mutation 或 validation architecture 等工程工作才解析 declared baseline、進入其 `CHAT_INIT.md` 並載入最低充分 owner。
 
 本 Repo 的 project-specific governance 與 technical source of truth 仍優先；尤其 **GitHub Connect-only** repository authority、公開 Repo privacy、Reading Record storage boundary 與各 divination method/runtime owner 都是 local rules／overrides，不因 shared baseline 的 generic default 而放寬。採用與 override 紀錄見 [`references/ai-development-playbook.md`](references/ai-development-playbook.md)。
 
@@ -60,7 +62,7 @@ ai-divination-playbook
 1. 連接 GitHub Connect。
 2. 告訴 ChatGPT：`讀取 masini1491/ai-divination-playbook`。
 3. ChatGPT 應從 `CHAT_INIT.md` 開始做 minimum-sufficient routing。
-4. 直接說你想占什麼；若要 Astrology，明確說「用占星／看本命盤／看行運」。
+4. 直接說你想占什麼；若要 Astrology，明確說「用占星／看本命盤／看行運」；若要 Zi Wei，明確說「用紫微／看紫微命盤」。
 
 一般占問例如：
 
@@ -79,6 +81,16 @@ Astrology 例如：
 ```
 
 這些要求直接交給 [`ASTROLOGY.md`](ASTROLOGY.md)，不先改寫成 Tarot / Meihua / Liuyao，也不送到 research router。
+
+Zi Wei 例如：
+
+```text
+用紫微看我的本命盤。
+2000/01/01 00:00，Asia/Taipei，用紫微看命盤。
+用紫微看命盤，並加入廟旺／亮度。
+```
+
+這些要求直接交給 [`ZIWEI.md`](ZIWEI.md)。西元生日可經 admitted calendar adapter 轉成 normalized lunar input；若明確要求廟旺／亮度，才啟用 optional brightness module。
 
 ## 一句話使用
 
@@ -111,6 +123,19 @@ explicit Astrology request
 → output guard
 ```
 
+若使用者明確指定 Zi Wei：
+
+```text
+explicit Zi Wei request
+→ Gregorian Asia/Taipei birth datetime
+   OR admitted normalized lunar input
+→ deterministic calendar / natal provider
+→ Scope-A Fact Gate
+→ allowlisted 52-claim retrieval
+→ optional brightness_v1（明確要求時）
+→ bounded synthesis
+```
+
 ## 各個方法負責什麼
 
 本專案不是把所有術數混成同一套算法，而是把不同 judgment responsibility 分開。
@@ -128,11 +153,14 @@ Outcome / Completion
 → Liuyao
 ```
 
-Astrology 則是 user override：
+Astrology 與 Zi Wei 都是 explicit user override：
 
 ```text
 用占星／看本命盤／看行運
 → Astrology
+
+用紫微／看紫微命盤
+→ Zi Wei
 ```
 
 這只是 README overview；真正 routing authority 仍以 [`METHOD_ROUTING.md`](METHOD_ROUTING.md)、[`CHAT_INIT.md`](CHAT_INIT.md) 與各 method owner 為準。
@@ -246,6 +274,52 @@ explicit Astrology request
 
 Production owner：[`ASTROLOGY.md`](ASTROLOGY.md)。
 
+### Zi Wei Dou Shu｜紫微斗數（Scope-A Production v1 / explicit-request only）
+
+Zi Wei 目前是 bounded natal production method，適合使用者明確要求：
+
+```text
+用紫微幫我看本命盤
+看我的紫微命盤
+2000/01/01 00:00，Asia/Taipei，用紫微看命盤
+用紫微看命盤，加入廟旺／亮度
+```
+
+目前 admitted production scope 包括：
+
+- `natal_baseline` only；
+- 14 主星 first-layer facts / claims；
+- 12 宮 first-layer claims；
+- 52 admitted claims；
+- 命宮、身宮、五行局、14 主星 placement 等 deterministic natal facts；
+- `Asia/Taipei` civil-time Gregorian birth datetime → normalized lunar input；
+- `23:00` 晚子時採 `next_day_at_23`；
+- 閏月採 `split_after_day_15`；
+- optional `brightness_v1`：14 主星廟／旺／得／利／平／不／陷 facts，只在明確要求廟旺／亮度時啟用；
+- provenance、omission、conflict、uncertainty 與 safety delivery。
+
+主要 production flow：
+
+```text
+explicit Zi Wei request
+→ tools/ziwei_calendar_provider.py（若輸入西元生日）
+→ tools/ziwei_gregorian_pipeline.py
+→ tools/ziwei_natal_provider.py
+→ tools/ziwei_scope_a_pipeline.py
+→ optional tools/ziwei_brightness_pipeline.py
+→ ZIWEI.md bounded synthesis
+```
+
+重要邊界：
+
+- Zi Wei **不參與 ordinary auto-routing**；
+- current production 仍不包含四化、輔／雜星 interpretation、broader star×palace corpus 或大限／流年／流月／流日／流時；
+- raw birth data 不授權 language model 自行手算農曆、命身宮、主星 placement 或 brightness；
+- Research Zi Wei 與 Production Zi Wei 分離：research 走 [`RESEARCH_ROUTING.md`](RESEARCH_ROUTING.md) → `references/ziwei/**`；
+- ChatGPT local runtime 缺少 `lunar_python` 或 Zi Wei source 時，先依 [`ZIWEI_MATERIALIZATION.md`](ZIWEI_MATERIALIZATION.md) 嘗試 verified same-commit bundle materialization；local package miss 不等於 method unavailable。
+
+Production owner：[`ZIWEI.md`](ZIWEI.md)。
+
 ## Runtime 與 deterministic calculation
 
 ### Divination Casting Randomizer
@@ -286,6 +360,33 @@ tools/liuyao_engine.py
 tools/liuyao_runtime.py
 ```
 
+### Zi Wei deterministic providers / ChatGPT materialization
+
+Canonical production implementation：
+
+```text
+tools/ziwei_calendar_provider.py
+tools/ziwei_gregorian_pipeline.py
+tools/ziwei_natal_provider.py
+tools/ziwei_scope_a_pipeline.py
+tools/ziwei_brightness_provider.py
+tools/ziwei_brightness_pipeline.py
+```
+
+ChatGPT cold-start transport：
+
+```text
+runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json
+→ 11 repo-local Zi Wei runtime/retrieval artifacts
+→ 34 pinned lunar_python==1.4.8 runtime files
+→ exact MIT LICENSE
+→ chunk/archive/per-file verification
+→ materialize verified runtime
+→ execute without requiring pip/network afterward
+```
+
+Transport bundle 只是 derived cache；canonical calculation / interpretation authority 仍在 providers、pipelines、admission manifests 與 [`ZIWEI.md`](ZIWEI.md)。
+
 ### Astrology deterministic providers
 
 Canonical production implementation：
@@ -315,6 +416,7 @@ tools/astrology_output_guard.py
 | Meihua | 事件演化、主客／體用、轉折、節奏與象徵應期 | Canonical stochastic core (`runtime/casting/core.py`) via full Runtime adapter (`runtime/casting/randomizer.py`) | [`MEIHUA.md`](MEIHUA.md) |
 | Liuyao | 單一具體事件是否成立、阻礙來源、較具體 outcome / timing | local Randomizer three-coin Raw Cast + local deterministic engine/calendar/runtime | [`LIUYAO.md`](LIUYAO.md) |
 | Astrology | 本命盤、行運與 admitted natal/transit factors；explicit-request only | local deterministic place resolver + natal/transit providers + Fact Gate | [`ASTROLOGY.md`](ASTROLOGY.md) |
+| Zi Wei | bounded natal first layer；52 admitted claims；optional brightness；explicit-request only | Gregorian calendar adapter + local natal provider/pipeline + verified ChatGPT transport bundle | [`ZIWEI.md`](ZIWEI.md) |
 
 ## Authority boundary
 
@@ -322,11 +424,12 @@ tools/astrology_output_guard.py
 
 ```text
 CHAT_INIT / METHOD_ROUTING
-→ 決定 task identity、ordinary method routing 或 explicit Astrology override
+→ 決定 task identity、ordinary method routing 或 explicit Astrology / Zi Wei override
 
 CASTING / INPUT RESOLUTION
 → stochastic methods 使用 canonical Randomizer
 → Astrology 可使用 admitted place resolver
+→ Zi Wei 可使用 admitted Gregorian calendar adapter
 
 DETERMINISTIC ENGINE / PROVIDER
 → 建立 method-specific fixed facts
@@ -377,7 +480,7 @@ Question Contract fixed
 
 ```text
 QUESTION / CONTRACT FACT
-DRAW / CAST / ASTROLOGY FACT
+DRAW / CAST / ASTROLOGY / ZI WEI FACT
 STRUCTURED METHOD FACT（若有）
 ORIGINAL INTERPRETATION
 REALITY UPDATE
@@ -394,7 +497,7 @@ BACKTEST JUDGMENT
 | [`AGENTS.md`](AGENTS.md) | repository governance / project AI mode / maintenance boundary |
 | [`CHAT_INIT.md`](CHAT_INIT.md) | fresh chat bootstrap、repository access、freshness、task routing、handoff gate |
 | [`PLAYBOOK_INDEX.json`](PLAYBOOK_INDEX.json) | machine-readable routing-only owner index |
-| [`METHOD_ROUTING.md`](METHOD_ROUTING.md) | ordinary Tarot / Meihua / Liuyao method selection；Astrology explicit override boundary |
+| [`METHOD_ROUTING.md`](METHOD_ROUTING.md) | ordinary Tarot / Meihua / Liuyao method selection；Astrology / Zi Wei explicit override boundary |
 | [`RESEARCH_ROUTING.md`](RESEARCH_ROUTING.md) | explicit research-line discovery / research vs production separation |
 | [`INPUT_CONTRACT.md`](INPUT_CONTRACT.md) | 題目與 method input / provenance contract |
 | [`QUESTION_DESIGN.md`](QUESTION_DESIGN.md) | 問題拆解與牌位／功能設計 |
@@ -402,6 +505,8 @@ BACKTEST JUDGMENT
 | [`MEIHUA.md`](MEIHUA.md) | Meihua-specific contract |
 | [`LIUYAO.md`](LIUYAO.md) | Liuyao judgment、Raw Cast → Structured Fact、解讀與 fail-closed contract |
 | [`ASTROLOGY.md`](ASTROLOGY.md) | Astrology Production v1 method owner、Fact Gate、interpretation / unsupported-factor governance |
+| [`ZIWEI.md`](ZIWEI.md) | Zi Wei Scope-A Production v1 method owner、Gregorian input、brightness / unsupported-layer boundary |
+| [`ZIWEI_MATERIALIZATION.md`](ZIWEI_MATERIALIZATION.md) | Zi Wei ChatGPT deterministic bundle、verification、cache / fail-closed materialization contract |
 | [`RUNTIME_DRAW.md`](RUNTIME_DRAW.md) | Runtime Draw / Cast、cache、source、provenance、fail closed |
 | [`CROSS_VALIDATION.md`](CROSS_VALIDATION.md) | 目前正式 Tarot × Meihua reconciliation / evidence lineage |
 | [`READING_LIFECYCLE.md`](READING_LIFECYCLE.md) | 新題、承接、條件世界、補占、重占、現實更新、完成、回測 |
@@ -410,6 +515,7 @@ BACKTEST JUDGMENT
 | [`BEHAVIORAL_EVAL.md`](BEHAVIORAL_EVAL.md) | cold-start / behavioral regression |
 | [`SESSION_HANDOFF.md`](SESSION_HANDOFF.md) | fresh-session rehydration checkpoint adapter |
 | [`references/astrology/`](references/astrology/) | Astrology research evidence；不是 production owner |
+| [`references/ziwei/`](references/ziwei/) | Zi Wei research evidence / source-policy history；不是 production owner |
 | [`references/palmistry/`](references/palmistry/) | Palmistry research line；目前不是 production method |
 | [`reports/astrology/`](reports/astrology/) | Astrology production admission / execution evidence reports |
 | [`schemas/astrology/`](schemas/astrology/) | Astrology Production v1 machine contracts |
@@ -422,7 +528,7 @@ BACKTEST JUDGMENT
 Tarot + Meihua
 ```
 
-Liuyao 與 Astrology 都已是 production methods，但 **production-ready 不等於已存在任意 pairwise cross-validation contract**。
+Liuyao、Astrology 與 Zi Wei 都已是 production methods，但 **production-ready 不等於已存在任意 pairwise cross-validation contract**。
 
 在新增專門 reconciliation contract 前，不把下列組合宣稱為 canonical cross-validation：
 
@@ -432,6 +538,10 @@ Liuyao + Meihua
 Astrology + Tarot
 Astrology + Meihua
 Astrology + Liuyao
+Zi Wei + Tarot
+Zi Wei + Meihua
+Zi Wei + Liuyao
+Zi Wei + Astrology
 ```
 
 可以在同一使用者請求中形成 distinct readings 或 bounded derived synthesis，但必須保留各自 responsibility 與 evidence lineage。
@@ -443,6 +553,7 @@ Research discoverability 不等於 production admission。
 目前：
 
 - Astrology：Research v1 evidence 保留於 `references/astrology/**`；另外已有獨立的 Production v1 authority。
+- Zi Wei：Research evidence / architecture history 保留於 `references/ziwei/**`；另外已有獨立的 Scope-A Production v1 authority、Gregorian input adapter、optional brightness 與 ChatGPT deterministic transport。
 - Palmistry：已有 bounded research line，但目前仍不是 ordinary production method。
 
 任何 research line 未來進 production，仍需完整完成 method owner、fact/runtime authority、routing、provenance、behavioral regression 與 explicit admission。
@@ -474,8 +585,8 @@ Repository 名稱泛化不代表 AI 可以自行發明未定義的方法流程�
 - 完整私人 Reading Record / session handoff payload；
 - secrets / credentials。
 
-真實 Reading Record 與個人 Astrology birth data 不得寫入本公開 Playbook。
+真實 Reading Record 與個人 Astrology / Zi Wei birth data 不得寫入本公開 Playbook。
 
 ## 狀態
 
-持續演進中。現在的 production surface 已涵蓋 Tarot、Meihua、Liuyao 與 explicit-request Astrology Production v1；後續仍以真實使用中反覆出現的 judgment gap、routing collision、runtime / deterministic calculation、record integrity 與 backtest 問題反向萃取規則，而不是追求文件數量或術數數量。
+持續演進中。現在的 production surface 已涵蓋 Tarot、Meihua、Liuyao、explicit-request Astrology Production v1 與 explicit-request Zi Wei Scope-A Production v1；後續仍以真實使用中反覆出現的 judgment gap、routing collision、runtime / deterministic calculation、record integrity 與 backtest 問題反向萃取規則，而不是追求文件數量或術數數量。
