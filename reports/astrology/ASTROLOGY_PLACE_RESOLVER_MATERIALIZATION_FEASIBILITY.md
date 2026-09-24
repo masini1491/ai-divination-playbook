@@ -189,3 +189,74 @@ A-MAT-2 may be reopened if one of these materially changes:
 4. A different offline resolver/provider is researched and independently admitted.
 
 Until then, `place_resolver_materialization_status = not-admitted-for-cold-start` is the current machine-readable decision.
+
+
+## 8. Re-open evidence — query-bounded alias-hash shard POC
+
+Status: **FEASIBILITY PASS / NOT PRODUCTION ADMISSION**
+
+A-MAT-2 re-open trigger 2 was exercised on a research-only branch in PR #172.
+
+Evidence identity:
+
+```text
+branch: research/astrology-place-shard-poc
+benchmark head: 7871af51467e8183e79e4e054ca157098a6aba15
+workflow: Astrology Place Shard POC
+run: 36033683587
+job: 107748401932
+artifact: astrology-place-shard-benchmark
+artifact id: 10823938328
+artifact digest: sha256:69b0da4440c0fab690e8ee0e0bfef0f76a55fcffc17ff1047c2db4563fc029b9
+```
+
+The POC first verified the installed `geonamescache==3.0.2` dataset bytes against the identities already recorded by this report. All four profiles matched exactly:
+
+| Profile | Bytes | SHA-256 identity |
+|---:|---:|---|
+| 500 | 79,527,431 | PASS |
+| 1000 | 60,986,259 | PASS |
+| 5000 | 29,665,391 | PASS |
+| 15000 | 16,670,875 | PASS |
+
+The benchmark then preserved the current resolver's exact case-insensitive alternate-name semantics, hashed the full normalized alias with SHA-256, and measured 2/3/4 hexadecimal-prefix shard widths. Each profile remained separate; no population-filter substitution was used.
+
+| Profile | Hex chars | Non-empty shards | P95 bytes | P99 bytes | Max bytes | Total serialized bytes |
+|---:|---:|---:|---:|---:|---:|---:|
+| 500 | 2 | 256 | 474,340 | 482,034 | 482,599 | 117,909,047 |
+| 500 | 3 | 4,096 | 33,018 | 35,169 | 42,531 | 120,558,937 |
+| 500 | 4 | 65,536 | 2,848 | 3,443 | 16,532 | 127,096,383 |
+| 1000 | 2 | 256 | 385,683 | 390,847 | 393,192 | 95,678,047 |
+| 1000 | 3 | 4,096 | 27,115 | 28,923 | 35,773 | 98,130,586 |
+| 1000 | 4 | 65,536 | 2,383 | 2,865 | 13,081 | 104,717,330 |
+| 5000 | 2 | 256 | 228,395 | 233,406 | 234,311 | 56,266,076 |
+| 5000 | 3 | 4,096 | 16,447 | 17,532 | 19,681 | 58,251,241 |
+| 5000 | 4 | 65,508 | 1,576 | 1,880 | 5,118 | 64,804,259 |
+| 15000 | 2 | 256 | 148,211 | 150,161 | 152,803 | 36,007,647 |
+| 15000 | 3 | 4,096 | 10,915 | 11,642 | 13,820 | 37,639,163 |
+| 15000 | 4 | 65,119 | 1,136 | 1,373 | 2,908 | 44,190,300 |
+
+Fixture parity was PASS for every profile × shard-width combination.
+
+Representative `cities500` query-bounded payloads:
+
+| Query | Country | 2 hex | 3 hex | 4 hex | Exact candidates |
+|---|---|---:|---:|---:|---:|
+| 樹林區 | TW | 460,943 B | 29,303 B | 1,432 B | 1 |
+| Tokyo | JP | 467,588 B | 42,189 B | 1,373 B | 1 |
+| Springfield | none | 442,749 B | 29,949 B | 3,669 B | 21 |
+| Springfield | US | 442,749 B | 29,949 B | 3,669 B | 20 |
+
+The ambiguity result is intentional: the derived transport preserves the current resolver's fail-closed candidate semantics rather than selecting the largest-population record.
+
+### 8.1 Current design conclusion
+
+The POC materially changes the feasibility evidence but **does not change current production behavior**.
+
+- 2-hex / 256-shard design is still unnecessarily large for query-bounded retrieval.
+- 4-hex / 65,536-shard-per-profile design minimizes per-query payload but creates an excessive generated-file surface.
+- **3-hex / 4,096-shard-per-profile is the current architecture candidate**: even the largest `cities500` shard was 42,531 bytes and P95 was 33,018 bytes while keeping the theoretical file surface to 16,384 shards across the four admitted profiles.
+- Whole generated storage remains larger than the source datasets because candidate payloads are replicated across alias buckets. This is acceptable for the feasibility result but should be considered before freezing the external repository format.
+- The benchmark establishes a viable query-bounded transport representation. It does not yet establish external-repository provenance, manifest/hash layout, cache policy, GitHub Connect end-to-end retrieval, product latency, or production admission.
+
+Therefore the original A-MAT-2 decision remains valid for the old **model-mediated whole-package / chunk transport**. Re-open trigger 2 is now satisfied at the feasibility layer, and a separate query-bounded transport admission study may proceed without silently changing current resolver behavior.
