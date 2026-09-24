@@ -1,5 +1,7 @@
 # Zi Wei Production Readiness Gap Analysis v0
 
+> Current-state reconciliation (2026-09-24): this file is a point-in-time readiness analysis. Current production authority is now `ZIWEI.md` + admission manifests + production tools. Explicit Zi Wei routing is admitted; ordinary unspecified auto-routing remains intentionally false. Gregorian input (`ziwei.calendar.tw_v1`), optional brightness (`ziwei.brightness.iztro_v1`) and deterministic materialization are also admitted. Historical G8 wording below must not be read as saying that no production Zi Wei route exists.
+
 Authority：`REFERENCE-ONLY / READINESS ANALYSIS / NOT PRODUCTION ADMISSION`
 
 ## Purpose

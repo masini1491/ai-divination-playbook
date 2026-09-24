@@ -1,5 +1,7 @@
 # Zi Wei Interpretation Admission Review v0
 
+> Current-state reconciliation (2026-09-24): this is a historical research/admission review. Current production routing state is **explicit Zi Wei request admitted / ordinary unspecified auto-routing false**. A named optional brightness profile (`ziwei.brightness.iztro_v1`) was later admitted; the historical phrase “project-wide brightness table NOT SELECTED” still means no universal/default historical brightness authority was selected.
+
 Authority：`REFERENCE-ONLY / RESEARCH ADMISSION RECORD / NOT PRODUCTION-ROUTABLE`
 
 ## Decision summary

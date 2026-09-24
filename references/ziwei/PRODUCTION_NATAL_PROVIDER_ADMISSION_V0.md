@@ -1,5 +1,7 @@
 # Zi Wei Scope-A Natal Provider Admission v0
 
+> Current-state reconciliation (2026-09-24): this file records the earlier G1 provider admission only. G7 Scope-A production binding was subsequently admitted; `ZIWEI.md` now owns explicit Zi Wei production activation. Gregorian normalization and optional brightness are separate later admission layers, so this provider's narrower responsibilities remain unchanged.
+
 Authority：`G1 ADMITTED — SCOPE-A NATAL / NOT G7 PRODUCTION ADMISSION`
 
 ## Runtime owner

@@ -1,5 +1,7 @@
 # Zi Wei Production Scope A — Bounded Natal First Layer v0
 
+> Current-state reconciliation (2026-09-24): this product-scope decision remains historical evidence for Scope-A selection. Scope-A is now explicitly production-routable through `ZIWEI.md`; only ordinary unspecified auto-routing remains false. Gregorian input, optional named-profile brightness facts and deterministic materialization were admitted later and do not widen the 52-claim bounded natal corpus.
+
 Authority：`PRODUCT-SCOPE DECISION / G7 PRODUCTION-ADMITTED SCOPE / G8 ROUTING SEPARATE`
 
 ## Decision
