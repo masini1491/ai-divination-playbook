@@ -26,12 +26,12 @@ import astronomy
 from tools.astrology_runtime import MAJOR_ASPECT_ORBS, gate_bundle
 
 PROVIDER_ID = "astronomy-engine-natal-v1"
-PROVIDER_VERSION = "1.0.0"
+PROVIDER_VERSION = "1.1.0"
 ASTRONOMY_ENGINE_PACKAGE_VERSION = "2.1.19"
 ASTRONOMY_ENGINE_SOURCE_REVISION = "865d3da7d8112bbc7911238052c6af4aaf877181"
 TRI_HOROSCOPE_REFERENCE_REVISION = "11318426c52c222eea108583ca45420c864825ca"
 
-BODY_NAMES = (
+CORE_BODY_NAMES = (
     "Sun",
     "Moon",
     "Mercury",
@@ -44,6 +44,10 @@ BODY_NAMES = (
     "Pluto",
     "NorthNode",
 )
+# Backward-compatible alias; E1 derived facts are deliberately not calculation/aspect/unknown-time participants.
+BODY_NAMES = CORE_BODY_NAMES
+ASPECT_PARTICIPANT_NAMES = CORE_BODY_NAMES
+UNKNOWN_TIME_BODY_NAMES = CORE_BODY_NAMES
 SIGNS = (
     "Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo",
     "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces",
@@ -303,11 +307,11 @@ def build_natal_bundle(
         cusps = _whole_sign_cusps(asc_deg)
 
     body_data: dict[str, tuple[float, float]] = {
-        body: _longitude_and_speed(body, utc) for body in BODY_NAMES
+        body: _longitude_and_speed(body, utc) for body in CORE_BODY_NAMES
     }
 
     objects: list[dict[str, Any]] = []
-    for body in BODY_NAMES:
+    for body in CORE_BODY_NAMES:
         lon, speed = body_data[body]
         row = {
             "fact_id": f"fact:object:{body.lower()}",
@@ -340,6 +344,43 @@ def build_natal_bundle(
         ]
     )
 
+    south_node_deg = _normalize_degrees(body_data["NorthNode"][0] + 180.0)
+    descendant_deg = _normalize_degrees(asc_deg + 180.0)
+    imum_coeli_deg = _normalize_degrees(mc_deg + 180.0)
+    objects.extend(
+        [
+            {
+                "fact_id": "fact:object:southnode",
+                "object_type": "point",
+                "object_id": "SouthNode",
+                "node_definition": "mean",
+                "longitude_deg": south_node_deg,
+                "house_number": _house_of(south_node_deg, cusps),
+                "derived_from": "fact:object:northnode",
+                "derivation_policy": "antipode-v1",
+                **_sign_fields(south_node_deg),
+            },
+            {
+                "fact_id": "fact:angle:descendant",
+                "object_type": "angle",
+                "object_id": "Descendant",
+                "longitude_deg": descendant_deg,
+                "derived_from": "fact:angle:ascendant",
+                "derivation_policy": "antipode-v1",
+                **_sign_fields(descendant_deg),
+            },
+            {
+                "fact_id": "fact:angle:imumcoeli",
+                "object_type": "angle",
+                "object_id": "ImumCoeli",
+                "longitude_deg": imum_coeli_deg,
+                "derived_from": "fact:angle:midheaven",
+                "derivation_policy": "antipode-v1",
+                **_sign_fields(imum_coeli_deg),
+            },
+        ]
+    )
+
     houses = [
         {
             "fact_id": f"fact:house:{house}",
@@ -351,7 +392,7 @@ def build_natal_bundle(
     ]
 
     aspects: list[dict[str, Any]] = []
-    aspect_bodies = [body for body in BODY_NAMES]
+    aspect_bodies = [body for body in ASPECT_PARTICIPANT_NAMES]
     for left, right in combinations(aspect_bodies, 2):
         left_lon = body_data[left][0]
         right_lon = body_data[right][0]
@@ -483,7 +524,7 @@ def build_unknown_time_natal_bundle(
     start_utc, end_utc = _unknown_time_date_window_utc(local_date, timezone_name)
     objects: list[dict[str, Any]] = []
     omitted: list[str] = []
-    for body in BODY_NAMES:
+    for body in UNKNOWN_TIME_BODY_NAMES:
         invariant = _unknown_time_invariant_sign(body, start_utc, end_utc)
         if invariant is None:
             omitted.append(body)
