@@ -2,7 +2,7 @@
 
 Authority：`REFERENCE-ONLY / RESEARCH CONTRACT / NOT PRODUCTION-ROUTABLE`
 
-This document defines research-facing handoff contracts. It does not create production runtime authority. A bounded research-only executable realization of Claim Retrieval v0 + L5 frame composition is owned by `EXECUTABLE_RETRIEVAL_COMPOSITION_V0.md` and `interpretation_retrieval_v0.py`. Versioned fail-closed production-schema candidates are separately owned by `PRODUCTION_SCHEMA_CANDIDATES_V0.md`; they remain candidates until bound to an admitted production runtime/API.
+This document defines research-facing handoff contracts. It does not create production runtime authority. A bounded research-facing realization is documented by `EXECUTABLE_RETRIEVAL_COMPOSITION_V0.md`; canonical executable behavior is now owned by `tools/ziwei_claim_retrieval.py`, while `interpretation_retrieval_v0.py` remains a research compatibility shim. Versioned fail-closed production-schema candidates are separately owned by `PRODUCTION_SCHEMA_CANDIDATES_V0.md`; they remain candidates until bound to an admitted production runtime/API.
 
 ## Pipeline
 

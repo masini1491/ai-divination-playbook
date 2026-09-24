@@ -147,7 +147,7 @@ named school / preset 可以組合 components，但 component identity 與 prove
 - [`MINOR_STAR_ADMISSION_TAXONOMY_V0.md`](MINOR_STAR_ADMISSION_TAXONOMY_V0.md)
 - [`TEMPORAL_CONTEXT_INTERPRETATION_RESEARCH_V0.md`](TEMPORAL_CONTEXT_INTERPRETATION_RESEARCH_V0.md)
 - [`EXECUTABLE_RETRIEVAL_COMPOSITION_V0.md`](EXECUTABLE_RETRIEVAL_COMPOSITION_V0.md)
-- [`interpretation_retrieval_v0.py`](interpretation_retrieval_v0.py)
+- [`interpretation_retrieval_v0.py`](interpretation_retrieval_v0.py) — research compatibility shim; canonical executable owner is `../../tools/ziwei_claim_retrieval.py`
 - [`PRODUCTION_READINESS_GAP_ANALYSIS_V0.md`](PRODUCTION_READINESS_GAP_ANALYSIS_V0.md)
 - [`PRODUCTION_SCOPE_A_NATAL_FIRST_V0.md`](PRODUCTION_SCOPE_A_NATAL_FIRST_V0.md)
 - [`PRODUCTION_SCHEMA_CANDIDATES_V0.md`](PRODUCTION_SCHEMA_CANDIDATES_V0.md)

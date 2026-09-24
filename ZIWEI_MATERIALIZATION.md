@@ -15,8 +15,8 @@ tools/ziwei_natal_provider.py
 tools/ziwei_scope_a_pipeline.py
 tools/ziwei_brightness_provider.py
 tools/ziwei_brightness_pipeline.py
-references/ziwei/interpretation_retrieval_v0.py
-references/ziwei/validate_uncertainty_safety_delivery_v0.py
+tools/ziwei_claim_retrieval.py
+tools/ziwei_delivery.py
 3 admitted claim registries
 ```
 
@@ -92,7 +92,7 @@ GitHub Connect → acquisition authority
 bundle → derived transport cache only
 this contract → handoff / verification / cache policy only
 pinned lunar-python → Gregorian/lunar dependency bytes
-Zi Wei providers/pipelines → deterministic production facts + retrieval binding
+Zi Wei providers/pipelines + production retrieval/delivery tools → deterministic production facts + retrieval binding
 ZIWEI.md → interpretation / output governance
 ```
 

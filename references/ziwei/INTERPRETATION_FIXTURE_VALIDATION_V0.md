@@ -62,7 +62,7 @@ These fixtures test whether contextual composition reacts to material conditions
 
 ## Executable-v0 follow-up
 
-`interpretation_retrieval_v0.py` now provides a bounded research-only selector/composer over the admitted 52 first-layer claims. This does not retroactively make every fixture executable: several fixtures assume brightness, auxiliary, malefic or dedicated contextual claims that remain outside the admitted first-layer corpus.
+`tools/ziwei_claim_retrieval.py` provides the canonical bounded selector/composer over the admitted 52 first-layer claims; `interpretation_retrieval_v0.py` remains a research compatibility shim. This does not retroactively make every fixture executable: several fixtures assume brightness, auxiliary, malefic or dedicated contextual claims that remain outside the admitted first-layer corpus.
 
 Executable behavioral validation therefore treats correct omission/fail-closed behavior as a valid outcome where the fixture dependency is unavailable. `ziwei_executable_behavioral_fixtures_v0.json` records the F1–F9 dispositions and `tests/test_ziwei_executable_behavioral_validation_v0.py` enforces them.
 

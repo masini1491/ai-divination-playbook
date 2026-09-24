@@ -25,10 +25,11 @@
     "pipeline_version": "1.1.0",
     "runtime_owner": "tools/ziwei_scope_a_pipeline.py",
     "interpretation_profile": "ziwei.interpretation.tw_v1",
-    "research_retriever": "references/ziwei/interpretation_retrieval_v0.py",
     "delivery_contract": "references/ziwei/UNCERTAINTY_SAFETY_DELIVERY_CONTRACT_V0.md",
     "final_prose_authority": false,
-    "conditional_activation_contract": "conditional_activation_v1"
+    "conditional_activation_contract": "conditional_activation_v1",
+    "claim_retrieval_runtime": "tools/ziwei_claim_retrieval.py",
+    "delivery_runtime": "tools/ziwei_delivery.py"
   },
   "admitted_research_registries": [
     "ziwei_interpretation_claim_registry_batch1.json",
