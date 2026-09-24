@@ -1,8 +1,8 @@
 {
   "schema_name": "astrology_extended_chart_e8_admission_readiness",
-  "schema_version": "0.1.0",
+  "schema_version": "0.2.0",
   "authority": "REFERENCE_ONLY",
-  "production_baseline": "0672df50233a6a7149dd4434179cc6a05467445d",
+  "production_baseline": "c824e79a92476188b9b4c63d608608e1c01e791d",
   "production_mutation_authorized": false,
   "readiness_classes": [
     "READY_WITH_CURRENT_STACK",
@@ -11,43 +11,174 @@
     "BLOCKED_ON_COMPATIBILITY_DEFINITION"
   ],
   "candidates": [
-    {"id": "mean_south_node", "phase": "E1", "readiness": "READY_WITH_CURRENT_STACK", "requires_new_external_provider": false},
-    {"id": "descendant", "phase": "E1", "readiness": "READY_WITH_CURRENT_STACK", "requires_new_external_provider": false},
-    {"id": "imum_coeli", "phase": "E1", "readiness": "READY_WITH_CURRENT_STACK", "requires_new_external_provider": false},
-    {"id": "part_of_fortune", "phase": "E4", "readiness": "READY_WITH_CURRENT_STACK", "requires_new_external_provider": false, "required_policy_ids": ["fortune-day-night-v1", "sect-geometric-solar-altitude-v1"]},
-    {"id": "rulership_traditional", "phase": "E7", "readiness": "READY_IF_EXPLICIT_POLICY_SELECTED", "requires_new_external_provider": false, "required_policy_ids": ["rulership-traditional-v1"]},
-    {"id": "rulership_modern", "phase": "E7", "readiness": "READY_IF_EXPLICIT_POLICY_SELECTED", "requires_new_external_provider": false, "required_policy_ids": ["rulership-modern-v1"]},
-    {"id": "aspect_participant_policy", "phase": "E5", "readiness": "READY_IF_EXPLICIT_POLICY_SELECTED", "requires_new_external_provider": false},
-    {"id": "pattern_topology", "phase": "E6", "readiness": "READY_IF_EXPLICIT_POLICY_SELECTED", "requires_new_external_provider": false},
-    {"id": "stellium", "phase": "E6", "readiness": "BLOCKED_ON_COMPATIBILITY_DEFINITION", "requires_new_external_provider": false},
-    {"id": "tang_qiyang_exact_pattern_compatibility", "phase": "E6", "readiness": "BLOCKED_ON_COMPATIBILITY_DEFINITION", "requires_new_external_provider": false},
-    {"id": "chiron", "phase": "E2", "readiness": "BLOCKED_ON_PROVIDER_OR_LICENSE", "requires_new_external_provider": true},
-    {"id": "ceres", "phase": "E2", "readiness": "BLOCKED_ON_PROVIDER_OR_LICENSE", "requires_new_external_provider": true},
-    {"id": "pallas", "phase": "E2", "readiness": "BLOCKED_ON_PROVIDER_OR_LICENSE", "requires_new_external_provider": true},
-    {"id": "juno", "phase": "E2", "readiness": "BLOCKED_ON_PROVIDER_OR_LICENSE", "requires_new_external_provider": true},
-    {"id": "vesta", "phase": "E2", "readiness": "BLOCKED_ON_PROVIDER_OR_LICENSE", "requires_new_external_provider": true},
-    {"id": "black_moon_lilith_variants", "phase": "E3", "readiness": "BLOCKED_ON_PROVIDER_OR_LICENSE", "requires_new_external_provider": true},
-    {"id": "vertex", "phase": "E4", "readiness": "BLOCKED_ON_PROVIDER_OR_LICENSE", "requires_new_external_provider": true},
-    {"id": "equatorial_ascendant", "phase": "E4", "readiness": "BLOCKED_ON_PROVIDER_OR_LICENSE", "requires_new_external_provider": true},
-    {"id": "east_point_alias", "phase": "E4", "readiness": "BLOCKED_ON_COMPATIBILITY_DEFINITION", "requires_new_external_provider": false}
+    {
+      "id": "mean_south_node",
+      "phase": "E1",
+      "readiness": "READY_WITH_CURRENT_STACK",
+      "requires_new_external_provider": false,
+      "production_status": "ADMITTED",
+      "admitted_main": "62537c8fc50b1616c2cfa05ec2ee3abd91040dcc"
+    },
+    {
+      "id": "descendant",
+      "phase": "E1",
+      "readiness": "READY_WITH_CURRENT_STACK",
+      "requires_new_external_provider": false,
+      "production_status": "ADMITTED",
+      "admitted_main": "62537c8fc50b1616c2cfa05ec2ee3abd91040dcc"
+    },
+    {
+      "id": "imum_coeli",
+      "phase": "E1",
+      "readiness": "READY_WITH_CURRENT_STACK",
+      "requires_new_external_provider": false,
+      "production_status": "ADMITTED",
+      "admitted_main": "62537c8fc50b1616c2cfa05ec2ee3abd91040dcc"
+    },
+    {
+      "id": "part_of_fortune",
+      "phase": "E4",
+      "readiness": "READY_WITH_CURRENT_STACK",
+      "requires_new_external_provider": false,
+      "required_policy_ids": [
+        "fortune-day-night-v1",
+        "sect-geometric-solar-altitude-v1"
+      ],
+      "production_status": "ADMITTED",
+      "admitted_main": "3563d4b554521833795d223236a178ab68669b32"
+    },
+    {
+      "id": "rulership_traditional",
+      "phase": "E7",
+      "readiness": "READY_IF_EXPLICIT_POLICY_SELECTED",
+      "requires_new_external_provider": false,
+      "required_policy_ids": [
+        "rulership-traditional-v1"
+      ]
+    },
+    {
+      "id": "rulership_modern",
+      "phase": "E7",
+      "readiness": "READY_IF_EXPLICIT_POLICY_SELECTED",
+      "requires_new_external_provider": false,
+      "required_policy_ids": [
+        "rulership-modern-v1"
+      ]
+    },
+    {
+      "id": "aspect_participant_policy",
+      "phase": "E5",
+      "readiness": "READY_IF_EXPLICIT_POLICY_SELECTED",
+      "requires_new_external_provider": false
+    },
+    {
+      "id": "pattern_topology",
+      "phase": "E6",
+      "readiness": "READY_IF_EXPLICIT_POLICY_SELECTED",
+      "requires_new_external_provider": false
+    },
+    {
+      "id": "stellium",
+      "phase": "E6",
+      "readiness": "BLOCKED_ON_COMPATIBILITY_DEFINITION",
+      "requires_new_external_provider": false
+    },
+    {
+      "id": "tang_qiyang_exact_pattern_compatibility",
+      "phase": "E6",
+      "readiness": "BLOCKED_ON_COMPATIBILITY_DEFINITION",
+      "requires_new_external_provider": false
+    },
+    {
+      "id": "chiron",
+      "phase": "E2",
+      "readiness": "BLOCKED_ON_PROVIDER_OR_LICENSE",
+      "requires_new_external_provider": true
+    },
+    {
+      "id": "ceres",
+      "phase": "E2",
+      "readiness": "BLOCKED_ON_PROVIDER_OR_LICENSE",
+      "requires_new_external_provider": true
+    },
+    {
+      "id": "pallas",
+      "phase": "E2",
+      "readiness": "BLOCKED_ON_PROVIDER_OR_LICENSE",
+      "requires_new_external_provider": true
+    },
+    {
+      "id": "juno",
+      "phase": "E2",
+      "readiness": "BLOCKED_ON_PROVIDER_OR_LICENSE",
+      "requires_new_external_provider": true
+    },
+    {
+      "id": "vesta",
+      "phase": "E2",
+      "readiness": "BLOCKED_ON_PROVIDER_OR_LICENSE",
+      "requires_new_external_provider": true
+    },
+    {
+      "id": "black_moon_lilith_variants",
+      "phase": "E3",
+      "readiness": "BLOCKED_ON_PROVIDER_OR_LICENSE",
+      "requires_new_external_provider": true
+    },
+    {
+      "id": "vertex",
+      "phase": "E4",
+      "readiness": "BLOCKED_ON_PROVIDER_OR_LICENSE",
+      "requires_new_external_provider": true
+    },
+    {
+      "id": "equatorial_ascendant",
+      "phase": "E4",
+      "readiness": "BLOCKED_ON_PROVIDER_OR_LICENSE",
+      "requires_new_external_provider": true
+    },
+    {
+      "id": "east_point_alias",
+      "phase": "E4",
+      "readiness": "BLOCKED_ON_COMPATIBILITY_DEFINITION",
+      "requires_new_external_provider": false
+    }
   ],
   "decisions": {
     "D1_extended_ephemeris_strategy": {
       "status": "USER_DECISION_REQUIRED",
-      "options": ["MIT_ONLY", "SWISS_AGPL", "SWISS_PROFESSIONAL"]
+      "options": [
+        "MIT_ONLY",
+        "SWISS_AGPL",
+        "SWISS_PROFESSIONAL"
+      ]
     },
     "D2_policy_activation_style": {
-      "status": "USER_DECISION_REQUIRED",
-      "options": ["EXPLICIT_SELECTOR_ONLY", "NAMED_COMPATIBILITY_PROFILE"]
+      "status": "SELECTED_FOR_CURRENT_STACK_LANE",
+      "options": [
+        "EXPLICIT_SELECTOR_ONLY",
+        "NAMED_COMPATIBILITY_PROFILE"
+      ],
+      "selected": "EXPLICIT_SELECTOR_ONLY"
     }
   },
   "recommended_order": [
-    "E1_DERIVED_AXES",
-    "E4_FORTUNE_AND_SECT",
     "E7_NAMED_RULERSHIP",
     "E5_PARTICIPANT_POLICY_PLUMBING",
     "E6_TOPOLOGY_FOR_ADMITTED_ASPECTS",
+    "E1_E4_INTERPRETATION_CLAIMS_WHEN_SOURCE_BACKED",
     "EXTENDED_PROVIDER_AFTER_D1",
     "COMPATIBILITY_PROFILE_AFTER_EVIDENCE"
-  ]
+  ],
+  "current_state_reconciliation": {
+    "reconciled_at_main": "c824e79a92476188b9b4c63d608608e1c01e791d",
+    "e1_status": "PRODUCTION_ADMITTED",
+    "e4_status": "PRODUCTION_ADMITTED",
+    "derived_fact_interpretation_boundary": "CLOSED_BY_PR_147",
+    "remaining_current_stack_order": [
+      "E7_NAMED_RULERSHIP",
+      "E5_PARTICIPANT_POLICY_PLUMBING",
+      "E6_TOPOLOGY_FOR_ADMITTED_ASPECTS"
+    ]
+  }
 }
