@@ -69,7 +69,7 @@ explicit Astrology natal/transit request
    → verify archive size + SHA-256
    → slice every source_file by offset / byte_size
    → verify per-file SHA-256 + Git blob identity
-   → astronomy dependency files must match pinned upstream blob allowlist
+   → astronomy dependency files must match pinned `astronomy-engine==2.1.19` PyPI distribution SHA-256 allowlist
    → write exact paths under /mnt/data/divination-astrology-runtime/
    → write + fresh-read core_bundle_verification.json
    → prepend verified cache root to Python sys.path
