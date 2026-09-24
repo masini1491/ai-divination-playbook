@@ -67,6 +67,15 @@ class AstrologyEvidenceSelectorContractTests(unittest.TestCase):
             "not_admitted_without_separate_claim_family",
             manifest["natal_semantic_policy"]["north_node_sign_interpretation"],
         )
+        derived = manifest["natal_semantic_policy"]["derived_fact_interpretation"]
+        self.assertEqual(
+            ["SouthNode", "Descendant", "ImumCoeli"],
+            derived["fact_only_object_ids"],
+        )
+        self.assertEqual(
+            "forbidden_until_separately_admitted",
+            derived["claim_binding"],
+        )
 
         research = RESEARCH_QUERY_CONTRACT.read_text(encoding="utf-8")
         self.assertIn("REFERENCE-ONLY", research)
