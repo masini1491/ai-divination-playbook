@@ -53,7 +53,7 @@ class AstrologyProviderTests(unittest.TestCase):
         self.assertEqual("verified_provider", self.bundle["calculation_verification"])
         provider = self.bundle["provider"]
         self.assertEqual("astronomy-engine-natal-v1", provider["provider_id"])
-        self.assertEqual("1.2.0", provider["provider_version"])
+        self.assertEqual("1.3.0", provider["provider_version"])
         self.assertEqual("astronomy-engine==2.1.19", provider["astronomy_engine_package"])
         self.assertEqual("Australia/Sydney", provider["timezone_name"])
         self.assertEqual("1990-06-15T00:00:00+00:00", provider["resolved_utc_iso"])
@@ -312,6 +312,22 @@ class AstrologyProviderTests(unittest.TestCase):
         )
         self.assertNotIn("PartOfFortune", _objects_by_id(unknown))
         self.assertNotIn("sect", unknown["provider"])
+
+
+    def test_e5_aspect_policy_identity_preserves_current_participants(self):
+        provider = self.bundle["provider"]["aspect_policies"]
+        self.assertEqual("aspect-participants-core-bodies-v1", provider["participant_policy_id"])
+        self.assertEqual("major-aspects-v1", provider["aspect_policy_id"])
+        self.assertEqual("major-aspect-orbs-v1", provider["orb_policy_id"])
+        self.assertEqual(
+            ["Sun", "Moon", "Mercury", "Venus", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto", "NorthNode"],
+            provider["participant_object_ids"],
+        )
+        self.assertEqual("not_admitted", provider["extended_points_or_angles"])
+        for aspect in self.bundle["facts"]["aspects"]:
+            self.assertEqual("aspect-participants-core-bodies-v1", aspect["participant_policy_id"])
+            self.assertEqual("major-aspects-v1", aspect["aspect_policy_id"])
+            self.assertEqual("major-aspect-orbs-v1", aspect["orb_policy_id"])
 
 
 if __name__ == "__main__":
