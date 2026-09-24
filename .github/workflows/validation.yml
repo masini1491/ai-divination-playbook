@@ -65,6 +65,15 @@ jobs:
       - name: Verify Meihua deterministic tool bundle
         run: python tools/build_meihua_tool_bundle.py --check
 
+      - name: Generate Zi Wei deterministic tool bundle candidate
+        run: python tools/build_ziwei_tool_bundle.py
+
+      - name: Upload Zi Wei deterministic tool bundle candidate
+        uses: actions/upload-artifact@v4
+        with:
+          name: ziwei-bundle-candidate
+          path: runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json
+
       - name: Verify Zi Wei deterministic tool bundle
         run: python tools/build_ziwei_tool_bundle.py --check
 
