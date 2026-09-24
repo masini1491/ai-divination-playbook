@@ -11,8 +11,9 @@
     "temporal_scope": "natal_baseline",
     "major_star_subjects": 14,
     "palace_subjects": 12,
-    "admitted_claims": 56,
-    "optional_auxiliary_subjects": 4
+    "admitted_claims": 52,
+    "optional_auxiliary_subjects": 4,
+    "maximum_admitted_claims_with_optional_modules": 56
   },
   "calculation": {
     "provider_id": "ziwei-scope-a-natal-python",
@@ -43,8 +44,7 @@
   "admitted_research_registries": [
     "ziwei_interpretation_claim_registry_batch1.json",
     "ziwei_interpretation_claim_registry_batch2.json",
-    "ziwei_interpretation_claim_registry_palaces_v0.json",
-    "ziwei_interpretation_claim_registry_m0_auxiliary_v1.json"
+    "ziwei_interpretation_claim_registry_palaces_v0.json"
   ],
   "research_registry_history_policy": "remain production_routable=false; production authority is granted only by this manifest + pipeline binding",
   "unsupported_scopes": [
@@ -117,7 +117,10 @@
       "admission_manifest": "ZIWEI_M0_AUXILIARY_ADMISSION_V1.json",
       "provider": "tools/ziwei_m0_auxiliary_provider.py",
       "profile_id": "ziwei.auxiliary.m0.iztro_v1",
-      "admitted_claims_added": 4
+      "admitted_claims_added": 4,
+      "admitted_research_registries": [
+        "ziwei_interpretation_claim_registry_m0_auxiliary_v1.json"
+      ]
     }
   ]
 }
