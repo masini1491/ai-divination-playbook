@@ -6,7 +6,7 @@ on:
   pull_request:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   validate:
@@ -73,6 +73,17 @@ jobs:
         with:
           name: ziwei-bundle-candidate
           path: runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json
+
+      - name: Commit Zi Wei deterministic tool bundle candidate
+        run: |
+          if git diff --quiet -- runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json; then
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json
+          git commit -m "Regenerate Zi Wei deterministic tool bundle"
+          git push origin HEAD:fix/ziwei-m0-post-merge-audit
 
       - name: Verify Zi Wei deterministic tool bundle
         run: python tools/build_ziwei_tool_bundle.py --check
