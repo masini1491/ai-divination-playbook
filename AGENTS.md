@@ -26,6 +26,7 @@ Applicability: substantive user-facing engineering / repository-maintenance repl
 | Responsibility | Owner |
 | --- | --- |
 | Fresh-session bootstrap / GitHub access / freshness / handoff gate | `CHAT_INIT.md` |
+| Repository topology / deterministic-data layering | `REPOSITORY_ARCHITECTURE.md` |
 | Ordinary method selection | `METHOD_ROUTING.md` |
 | Explicit research-line routing | `RESEARCH_ROUTING.md` |
 | Input / provenance contract | `INPUT_CONTRACT.md` |
@@ -37,6 +38,8 @@ Applicability: substantive user-facing engineering / repository-maintenance repl
 | User-visible output | `CHATGPT_OUTPUT.md` |
 | Behavioral regression | `BEHAVIORAL_EVAL.md` + `evals/regression_matrix.json` |
 | Machine routing | `PLAYBOOK_INDEX.json` |
+
+Repository topology、`tools/`／`data/`／`runtime/`／`third_party/`／`references/`／`schemas/` 共通分層與 deterministic-data provenance boundary → `REPOSITORY_ARCHITECTURE.md`；`AGENTS.md` 只提供 routing pointer，不複製其完整 policy。
 
 ## Runtime / engine boundary
 
