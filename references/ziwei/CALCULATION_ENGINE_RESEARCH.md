@@ -4,6 +4,8 @@ Authority：`REFERENCE-ONLY / RESEARCH SYNTHESIS`
 
 本檔記錄目前已完成的 matched-profile calculation reconciliation；不是 implementation dependency manifest。
 
+> Current-state reconciliation (2026-09-24): Scope-A natal production、Asia/Taipei Gregorian calendar adapter、optional `ziwei.brightness.iztro_v1` brightness facts，以及 ChatGPT deterministic materialization 已在 root production owners 分別 admission。本文後續保留的是 research synthesis/history；其中「project-wide brightness table 尚未選定」只表示沒有 universal/historical default，**不**否定已 admission 的 optional named implementation profile。
+
 ## Capability decomposition
 
 ```text
