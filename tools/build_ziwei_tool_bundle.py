@@ -6,7 +6,7 @@ complete Python runtime of pinned lunar_python==1.4.8. It is a transport cache,
 not a second calculation or interpretation authority.
 """
 from __future__ import annotations
-import argparse, base64, hashlib, importlib.util, json, sys, zlib
+import argparse, base64, hashlib, importlib.metadata, importlib.util, json, sys, zlib
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -73,28 +73,15 @@ DEPENDENCY_BLOBS={
 "lunar_python/util/SolarUtil.py":"5d608b66bb82778619a0d3b66aec19e8c1585c70",
 "lunar_python/util/TaoUtil.py":"311c5347bbef2a806575041ab4b39e3551f7b83f",
 }
-LICENSE_BYTES=b"""MIT License
-
-Copyright (c) 2020 6tail
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is furnished
-to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-""".rstrip(b"\n")
+def dependency_license_bytes()->bytes:
+    dist=importlib.metadata.distribution(DEPENDENCY_PACKAGE)
+    candidates=[p for p in (dist.files or ()) if Path(str(p)).name.upper()=="LICENSE"]
+    if len(candidates)!=1:
+        raise RuntimeError(f"expected exactly one installed dependency LICENSE, found {len(candidates)}")
+    data=Path(dist.locate_file(candidates[0])).read_bytes()
+    if git_blob_sha(data)!=DEPENDENCY_LICENSE_BLOB:
+        raise RuntimeError(f"installed dependency LICENSE byte mismatch: {git_blob_sha(data)}")
+    return data
 
 def sha256(data:bytes)->str: return hashlib.sha256(data).hexdigest()
 def git_blob_sha(data:bytes)->str:
@@ -126,11 +113,10 @@ def build_bundle()->dict[str,object]:
         manifest.append(_entry(path,data,"dependency",offset,expected_blob))
         parts.append(data); offset+=len(data)
 
-    if git_blob_sha(LICENSE_BYTES) != DEPENDENCY_LICENSE_BLOB:
-        raise RuntimeError("embedded dependency license identity mismatch")
+    license_bytes=dependency_license_bytes()
     license_path="third_party/lunar-python/LICENSE"
-    manifest.append(_entry(license_path,LICENSE_BYTES,"dependency-license",offset,DEPENDENCY_LICENSE_BLOB))
-    parts.append(LICENSE_BYTES); offset+=len(LICENSE_BYTES)
+    manifest.append(_entry(license_path,license_bytes,"dependency-license",offset,DEPENDENCY_LICENSE_BLOB))
+    parts.append(license_bytes); offset+=len(license_bytes)
 
     archive=b"".join(parts)
     compressed=zlib.compress(archive,9)
@@ -213,7 +199,7 @@ def verify_bundle(bundle:dict[str,object], *, compare_project:bool=True)->list[s
             if entry["origin"]=="dependency":
                 expected=DEPENDENCY_BLOBS.get(entry["path"])
                 if expected!=entry["git_blob_sha"]: errors.append(f"{entry['path']} pinned upstream blob mismatch")
-            if entry["origin"]=="dependency-license" and part!=LICENSE_BYTES:
+            if entry["origin"]=="dependency-license" and git_blob_sha(part)!=DEPENDENCY_LICENSE_BLOB:
                 errors.append("dependency license bytes mismatch")
             cursor+=size
         if cursor!=len(archive): errors.append("archive has trailing bytes")
