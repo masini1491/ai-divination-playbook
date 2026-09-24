@@ -115,6 +115,7 @@ This item is a standing reconciliation guard. It is not a request to change curr
 - canonical_evidence:
   - `ASTROLOGY_MATERIALIZATION.md`
   - `ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json`
+  - `REPOSITORY_ARCHITECTURE.md`
   - `reports/astrology/ASTROLOGY_PLACE_RESOLVER_MATERIALIZATION_FEASIBILITY.md`
   - `tools/astrology_place_shard_benchmark.py`
   - `tools/astrology_place_split_shard_benchmark.py`
@@ -128,9 +129,9 @@ This item is a standing reconciliation guard. It is not a request to change curr
   - `cities500` split 3+3 unique lookup measured 18,494 bytes for 樹林區/TW and 23,702 bytes for Tokyo/JP; Springfield ambiguity preview measured 63,069 bytes;
   - split 3+3 theoretical file surface is 8,192 shard paths/profile; candidate 2-hex was too costly for ambiguity retrieval and candidate 4-hex created an excessive file surface.
 - remaining_gate:
-  - freeze external repository / manifest / attribution / exact-revision contract around the selected alias-3hex + candidate-3hex format candidate;
+  - freeze the same-repo deterministic-data contract under `data/astrology/place/v1/**`, including manifest, provenance, attribution, schema/version, generator identity and exact admitted source-dataset hashes around the selected alias-3hex + candidate-3hex format candidate;
   - make the generator build alias routing once per profile and keep alias/candidate generation deterministic;
-  - define exact GitHub Connect retrieval + integrity verification + connector-side filtering + cache behavior;
+  - define same-commit GitHub Connect bounded shard retrieval + integrity verification + connector-side filtering + cache behavior;
   - expand semantic parity to a deterministic corpus beyond the bounded POC fixtures;
   - validate end-to-end cold-start payload/latency and full semantic parity;
   - only then consider changing `ASTROLOGY_MATERIALIZATION.md` current production behavior or `ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json`.
