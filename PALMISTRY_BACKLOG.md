@@ -12,7 +12,6 @@ BLOCKED     = cannot proceed until a stated dependency is satisfied
 IN_PROGRESS = actively being executed in one bounded task
 DONE        = completion gate satisfied and canonical read-back verified
 DEFERRED    = intentionally not current work
-WAITING_USER_EVIDENCE = next admissible step requires new private/user-supplied evidence
 ```
 
 Priority vocabulary:
@@ -114,7 +113,7 @@ Closed work above must not be reopened merely because a fresh session has not se
 ### PALM-P1-010 — Collect formal B2 S2 / S3 source images
 
 - type: EMPIRICAL / USER-SUPPLIED PRIVATE EVIDENCE
-- status: WAITING_USER_EVIDENCE
+- status: BLOCKED
 - priority: P1
 - owner: Palmistry device/capture repeatability
 - blocked_by: new real captures
@@ -321,7 +320,7 @@ Unless the user explicitly requests a different bounded Palmistry research task,
 3. reconcile item status against canonical Palmistry owners
 4. run PALM-P0-001 / PALM-P0-002 maintenance if current summaries are stale
 5. inspect whether S2/S3 user evidence exists
-   ├─ absent  → STOP at WAITING_USER_EVIDENCE; do not invent replacement work
+   ├─ absent  → STOP at BLOCKED on new user evidence; do not invent replacement work
    └─ present → PALM-P1-020 source freeze
               → PALM-P1-030 formal runner + raw-result freeze
               → PALM-P1-040 results + bounded closure
