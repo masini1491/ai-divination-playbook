@@ -117,6 +117,11 @@ jobs:
     needs: [validate, casting-runtime]
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -124,18 +129,51 @@ jobs:
 
       - name: Wait for matching Vercel production deployment and smoke-test all methods
         env:
-          EXPECTED_SHA: ${{ github.sha }}
+          CURRENT_SHA: ${{ github.sha }}
           CAST_URL: https://ai-divination-playbook-casting-masini1491-9205.vercel.app/api/cast
         run: |
           python - <<'PY'
           import json
           import os
+          import re
+          import subprocess
           import time
           import urllib.error
           import urllib.request
 
           url = os.environ["CAST_URL"]
-          expected = os.environ["EXPECTED_SHA"]
+          current = os.environ["CURRENT_SHA"]
+
+          def git(*args):
+              return subprocess.run(
+                  ["git", *args],
+                  check=True,
+                  capture_output=True,
+                  text=True,
+              ).stdout.strip()
+
+          current_runtime_tree = git("rev-parse", f"{current}:runtime/casting")
+
+          def deployment_provenance_ok(deployed):
+              if not isinstance(deployed, str) or re.fullmatch(r"[0-9a-f]{40}", deployed) is None:
+                  return False, f"invalid runtime_source_commit={deployed!r}"
+              try:
+                  git("cat-file", "-e", f"{deployed}^{{commit}}")
+                  ancestor = subprocess.run(
+                      ["git", "merge-base", "--is-ancestor", deployed, current],
+                      check=False,
+                  ).returncode == 0
+                  if not ancestor:
+                      return False, f"deployment commit {deployed} is not an ancestor of current main {current}"
+                  deployed_runtime_tree = git("rev-parse", f"{deployed}:runtime/casting")
+              except subprocess.CalledProcessError as exc:
+                  return False, f"cannot verify deployment commit {deployed}: {exc}"
+              if deployed_runtime_tree != current_runtime_tree:
+                  return False, (
+                      f"runtime/casting tree mismatch: deployed={deployed_runtime_tree} "
+                      f"current={current_runtime_tree} commit={deployed}"
+                  )
+              return True, deployed
 
           def post(body):
               request = urllib.request.Request(
@@ -170,8 +208,11 @@ jobs:
               for key, value in expected_identity.items():
                   if payload.get(key) != value:
                       return False, f"{method}: {key}={payload.get(key)!r}"
-              if payload.get("runtime_source_commit") != expected:
-                  return False, f"{method}: commit={payload.get('runtime_source_commit')!r}"
+              provenance_ok, provenance_detail = deployment_provenance_ok(
+                  payload.get("runtime_source_commit")
+              )
+              if not provenance_ok:
+                  return False, f"{method}: {provenance_detail}"
               results = payload.get("results")
               if not isinstance(results, list) or len(results) != 1:
                   return False, f"{method}: result_count={len(results) if isinstance(results, list) else 'invalid'}"
@@ -235,7 +276,13 @@ jobs:
                   failures.append(f"invalid: {exc!r}")
 
               if not failures:
-                  print(f"production smoke passed for monorepo commit {expected}")
+                  status, _, payload = post({"method": "tarot", "count": 1, "repeat": 1})
+                  deployed = payload.get("runtime_source_commit") if status == 200 else None
+                  print(
+                      "production smoke passed: "
+                      f"current_main={current} deployed_commit={deployed} "
+                      f"runtime_tree={current_runtime_tree}"
+                  )
                   raise SystemExit(0)
 
               last = "; ".join(failures)
