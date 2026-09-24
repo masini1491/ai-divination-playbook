@@ -177,17 +177,36 @@ def _cluster_graph(bundle: dict[str, Any]) -> tuple[
     list[tuple[str, ...]],
     dict[tuple[int, int], dict[str, set[str]]],
 ]:
-    aspects = bundle.get("facts", {}).get("aspects", [])
+    facts = bundle.get("facts", {})
+    aspects = facts.get("aspects", [])
+    objects = facts.get("objects", [])
     if not isinstance(aspects, list):
         raise PatternTopologyError("pattern topology requires an admitted aspect list")
+    if not isinstance(objects, list):
+        raise PatternTopologyError("pattern topology requires admitted object facts")
+
+    ref_to_object_id: dict[str, str] = {}
+    for row in objects:
+        if not isinstance(row, dict):
+            continue
+        fact_id = row.get("fact_id")
+        object_id = row.get("object_id")
+        if isinstance(fact_id, str) and isinstance(object_id, str):
+            ref_to_object_id[fact_id] = object_id
 
     object_ids: set[str] = set()
     aspect_rows: list[tuple[str, str, str, str]] = []
     for row in aspects:
         if not isinstance(row, dict):
             continue
-        left = _object_id_from_ref(row.get("left_ref"))
-        right = _object_id_from_ref(row.get("right_ref"))
+        left_ref = row.get("left_ref")
+        right_ref = row.get("right_ref")
+        _object_id_from_ref(left_ref)
+        _object_id_from_ref(right_ref)
+        left = ref_to_object_id.get(left_ref)
+        right = ref_to_object_id.get(right_ref)
+        if left is None or right is None:
+            raise PatternTopologyError("aspect ref does not resolve to admitted object identity")
         name = row.get("aspect")
         fact_id = row.get("fact_id")
         if not isinstance(name, str) or not isinstance(fact_id, str):
