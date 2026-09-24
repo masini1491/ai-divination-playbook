@@ -107,7 +107,7 @@ def request_from_transport(payload:dict[str,Any])->ZiWeiReadingRequest:
         raise ValueError("request transport must be an object")
     allowed={"schema_name","schema_version","request_id","temporal_scope","birth","optional_modules",
              "requested_subjects","enabled_source_ids","brightness_profile","m0_auxiliary_profile"}
-    required=allowed-{"brightness_profile"}
+    required=allowed-{"brightness_profile","m0_auxiliary_profile"}
     unknown=set(payload)-allowed
     missing=required-set(payload)
     if unknown:
