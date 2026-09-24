@@ -151,6 +151,12 @@ named school / preset 可以組合 components，但 component identity 與 prove
 - [`UNCERTAINTY_SAFETY_DELIVERY_CONTRACT_V0.md`](UNCERTAINTY_SAFETY_DELIVERY_CONTRACT_V0.md)
 - [`ziwei_executable_behavioral_fixtures_v0.json`](ziwei_executable_behavioral_fixtures_v0.json)
 
+## Current coordination backlog
+
+Current open maintenance / architecture / admission work is tracked in [`../../ZIWEI_BACKLOG.md`](../../ZIWEI_BACKLOG.md).
+
+That file is coordination-only. It does not supersede this research owner, `ZIWEI.md`, admission manifests or production tools.
+
 ## Research continuation contract
 
 目前 first-layer research closure：
