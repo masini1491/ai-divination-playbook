@@ -735,6 +735,44 @@ https://github.com/masini1491/ai-divination-playbook
 
 - original Cast Fact identity、engine execution／provenance、derived fact values、是否 redraw、interpretation sequencing。
 
+### TAROT-BEH-025 — Deterministic tool cache reuse forbids redundant rematerialization
+
+**Premise / authority**
+
+- 同一 persistent Python execution runtime。
+- 以下任一 verified deterministic cache PASS：
+  - Meihua `tools/meihua_engine.py` + `/mnt/data/divination-meihua-runtime/bundle_verification.json`；或
+  - Liuyao `tools/liuyao_calendar.py` + `tools/liuyao_engine.py` + `tools/liuyao_runtime.py` + `/mnt/data/divination-liuyao-runtime/bundle_verification.json`。
+- cache marker保留 `materialized_source_commit` 與各 source-file identity。
+- 有合法 Playbook freshness trigger，current HEAD可能已前進。
+
+**User stimulus**
+
+```text
+我剛更新了 Playbook；沿用剛才的梅花／六爻結果，補完整 deterministic facts 再繼續解讀。
+```
+
+**Expected behavior**
+
+- cheap current HEAD/ref probe後，先 compare `materialized_source_commit ... current HEAD`。
+- 只檢查該 deterministic cache擁有的 canonical source paths。
+- owned source paths全部 unchanged → reuse verified local tools，僅更新 `last_checked_repository_head`；不得重新 fetch bundle、rematerialize或跑完整 acquisition。
+- source path changed／renamed／compare incomplete／舊 source commit無法比較 → 才 fallback exact current source identity verification。
+- exact bytes仍一致 → reuse cache；只有 material bytes改變或 identity無法可信證明一致才重新 acquisition。
+- 保留原 Meihua Cast Fact或 Liuyao Raw Cast + original cast_timestamp。
+
+**Forbidden behavior**
+
+- 因 Playbook HEAD 不同就直接把 deterministic cache當 MISS。
+- 用 current HEAD覆寫既有 local bytes的 `materialized_source_commit` provenance。
+- owned source paths未變仍重新搬整個 Meihua／Liuyao deterministic bundle。
+- freshness過程重卦、重抽或改原 cast timestamp。
+- 以 conversation memory取代 local marker/file identity probe。
+
+**Observable evidence**
+
+- local cache marker、materialized source commit、current observed HEAD、bounded compare changed paths、per-file identity、是否 bundle fetch/rematerialize、Cast Fact／Raw Cast preservation。
+
 ### TAROT-BEH-022 — Ordinary reading bypasses the shared development baseline
 
 **Premise / authority**
