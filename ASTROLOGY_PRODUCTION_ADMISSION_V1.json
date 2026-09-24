@@ -143,7 +143,7 @@
     "unknown_birth_time_supported": "invariant_sign_only",
     "unknown_time_requires_exact_coordinates": false,
     "unknown_time_requires_iana_timezone": true,
-    "provider_version": "1.2.0",
+    "provider_version": "1.3.0",
     "known_time_derived_axes": {
       "object_ids": [
         "SouthNode",
@@ -259,7 +259,12 @@
       "Pluto",
       "NorthNode"
     ],
-    "extended_points_or_angles": "not_admitted"
+    "extended_points_or_angles": "not_admitted",
+    "participant_policy_id": "aspect-participants-core-bodies-v1",
+    "aspect_policy_id": "major-aspects-v1",
+    "orb_policy_id": "major-aspect-orbs-v1",
+    "auto_include_new_objects": false,
+    "extended_policy_activation": "explicit_selector_only"
   },
   "source_policy": {
     "required_source_admission_any": [
