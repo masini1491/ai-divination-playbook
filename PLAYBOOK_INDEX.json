@@ -183,7 +183,7 @@
       "natal_provider": "tools/ziwei_natal_provider.py",
       "admission_manifest": "ZIWEI_PRODUCTION_ADMISSION_V1.json",
       "interpretation_profile": "ziwei.interpretation.tw_v1",
-      "claim_count": 56,
+      "claim_count": 52,
       "research_owner": "references/ziwei/README.md",
       "optional_modules": {
         "brightness_v1": {
@@ -225,7 +225,8 @@
         "tools/ziwei_scope_a_pipeline.py",
         "tools/ziwei_brightness_pipeline.py",
         "tools/ziwei_gregorian_pipeline.py"
-      ]
+      ],
+      "maximum_claim_count_with_optional_modules": 56
     },
     {
       "id": "method.astrology",
