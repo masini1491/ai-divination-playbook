@@ -189,6 +189,11 @@ CONTRACTS: dict[str, list[tuple[str, tuple[str, ...]]]] = {
                 "不抓 GitHub、不重新 materialize、不跑 full smoke",
                 "Playbook HEAD 更新本身不是 Randomizer refresh trigger",
                 "Fresh question means fresh RNG, not fresh program acquisition",
+                "Identity-First Refresh｜合法 refresh trigger 成立後仍先比 runtime identity",
+                "Refresh trigger成立 ≠ 必須重新 materialize",
+                "compare cached runtime_source_commit ... current HEAD",
+                "MUST NOT",
+                "rematerialize only on material runtime identity change",
             ),
         )
     ],
