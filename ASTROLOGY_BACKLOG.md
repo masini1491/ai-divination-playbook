@@ -420,3 +420,4 @@ When a backlog item changes:
 5. do not use this backlog as authority to bypass a production/research admission gate;
 6. do not silently add new work because an implementation happens to expose extra capability;
 7. if another backlog owns a shared item, link it rather than creating divergent technical authority.
+8. generated loader ranges/index metadata remain derived discoverability hints, never backlog authority.
