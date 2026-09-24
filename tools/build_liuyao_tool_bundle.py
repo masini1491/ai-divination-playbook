@@ -100,7 +100,8 @@ def build_bundle() -> dict[str, object]:
             "required_marker_fields": [
                 "verified",
                 "repository",
-                "playbook_commit",
+                "materialized_source_commit",
+                "last_checked_repository_head",
                 "bundle_contract",
                 "archive_sha256",
                 "files",
