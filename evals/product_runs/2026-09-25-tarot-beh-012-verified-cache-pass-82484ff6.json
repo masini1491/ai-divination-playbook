@@ -1,0 +1,42 @@
+{
+  "scenario_id": "TAROT-BEH-012",
+  "playbook_sha": "82484ff67fb5c69d32e0971173add83ee2908404",
+  "classification": "PASS",
+  "run_kind": "formal",
+  "run_time": "2026-09-25T03:19:58+08:00",
+  "stimulus": "再占另一個新的問題：TAROT-BEH-012 verified-cache reuse regression probe。",
+  "observed_actions": [
+    "Before the tested new-question segment, the session completed a legitimate identity-first freshness check from cached runtime source commit d62ee8edefc71a24c182b9abf60713ccb108e1e0 to current Playbook 82484ff67fb5c69d32e0971173add83ee2908404.",
+    "The repository compare showed runtime/casting/core.py and runtime/casting/randomizer.py were unchanged; only RUNTIME_DRAW.md, loader regression coverage, the retrospective FAIL record, and its product-run validation test changed.",
+    "Because the cached runtime source path was unchanged, the session did not fetch the current capsule or rematerialize executable bytes; it updated only the currentness observation while preserving materialized runtime_source_commit d62ee8edefc71a24c182b9abf60713ccb108e1e0.",
+    "For the tested new question itself, the first source-related action was the fixed local capsule-core probe on /mnt/data/divination-casting-runtime/core.py plus capsule_verification.json.",
+    "The local probe verified cache_locator_version=4, repository/path identity, runtime_copy_sha256 37421caa42d8abfd3c5be3db0dc26261902ef632e3fc18b922719ad7f5bfb63a, and runtime invariants including 78 unique Tarot cards.",
+    "No GitHub acquisition, capsule retrieval, rematerialization, or full smoke execution occurred during the tested new-question segment.",
+    "The verified cached canonical core executed fresh RNG through execute_stochastic() and produced a new Tarot Draw Fact at 2026-09-25T03:19:58+08:00: 劍侍正."
+  ],
+  "classification_reason": "PASS. After a separate legitimate identity-first freshness check established that the cached runtime source path had not changed, the tested TAROT-BEH-012 new-question segment began with the fixed local cache probe, reused the verified cached canonical core, skipped GitHub acquisition/rematerialization/full smoke, and performed a fresh canonical stochastic execution. The materialized source provenance remained d62ee8edefc71a24c182b9abf60713ccb108e1e0 while current repository observation was 82484ff67fb5c69d32e0971173add83ee2908404, demonstrating the intended separation between executable-byte provenance and repository freshness.",
+  "response_reference": "Current ChatGPT maintenance conversation on 2026-09-25. Observable evidence includes the exact GitHub compare used for the prior identity-first refresh and two Python cache/execution probes. Private conversation content is not committed; only technical product evidence is summarized here.",
+  "notes": {
+    "environment": "ChatGPT persistent session with GitHub Connect and Python runtime",
+    "cache_kind": "capsule core locator v4",
+    "materialized_runtime_source_commit": "d62ee8edefc71a24c182b9abf60713ccb108e1e0",
+    "current_playbook_head": "82484ff67fb5c69d32e0971173add83ee2908404",
+    "runtime_copy_sha256": "37421caa42d8abfd3c5be3db0dc26261902ef632e3fc18b922719ad7f5bfb63a",
+    "core_version": "2",
+    "algorithm_version": "2",
+    "decoded_size": 7530,
+    "identity_refresh": {
+      "core_path_changed": false,
+      "randomizer_path_changed": false,
+      "rematerialized": false
+    },
+    "tested_segment": {
+      "local_probe_pass": true,
+      "github_acquisition": false,
+      "rematerialization": false,
+      "full_smoke": false,
+      "draw_shorthand": "劍侍正",
+      "generated_at_taipei": "2026-09-25T03:19:58+08:00"
+    }
+  }
+}
