@@ -13,7 +13,6 @@ tools/ziwei_runtime.py
 tools/ziwei_calendar_provider.py
 tools/ziwei_gregorian_pipeline.py
 tools/ziwei_natal_provider.py
-tools/ziwei_runtime.py
 schemas/ziwei/ZIWEI_READING_REQUEST_V1.schema.json
 schemas/ziwei/ZIWEI_READING_RESULT_V1.schema.json
 tools/ziwei_scope_a_pipeline.py
@@ -96,7 +95,9 @@ GitHub Connect → acquisition authority
 bundle → derived transport cache only
 this contract → handoff / verification / cache policy only
 pinned lunar-python → Gregorian/lunar dependency bytes
-tools/ziwei_runtime.py → canonical typed production composition\nZi Wei providers + production retrieval/delivery tools → deterministic facts + admitted claim binding\nlegacy pipelines → compatibility adapters only
+tools/ziwei_runtime.py → canonical typed production composition
+Zi Wei providers + production retrieval/delivery tools → deterministic facts + admitted claim binding
+legacy pipelines → compatibility adapters only
 ZIWEI.md → interpretation / output governance
 ```
 
