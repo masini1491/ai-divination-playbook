@@ -62,6 +62,90 @@ class ZiWeiReadingRequest:
             if self.brightness_profile not in (None,BRIGHTNESS_PROFILE_ID):
                 raise ValueError(f"unsupported brightness_profile: {self.brightness_profile}")
 
+def request_to_transport(request:ZiWeiReadingRequest)->dict[str,Any]:
+    """Serialize the typed request into the versioned JSON transport contract."""
+    request.validate()
+    if isinstance(request.birth,GregorianBirthInput):
+        birth={
+            "input_type":"gregorian",
+            "year":request.birth.year,"month":request.birth.month,"day":request.birth.day,
+            "hour":request.birth.hour,"minute":request.birth.minute,"second":request.birth.second,
+            "timezone":request.birth.timezone,
+        }
+    else:
+        birth={
+            "input_type":"normalized_lunar",
+            "lunar_year":request.birth.lunar_year,"lunar_month":request.birth.lunar_month,
+            "lunar_day":request.birth.lunar_day,"hour_branch":request.birth.hour_branch,
+            "calendar_provenance":request.birth.calendar_provenance,
+            "leap_month_identity":request.birth.leap_month_identity,
+        }
+    payload={
+        "schema_name":"ziwei_reading_request","schema_version":"1.0.0",
+        "request_id":request.request_id,"temporal_scope":request.temporal_scope,
+        "birth":birth,"optional_modules":list(request.optional_modules),
+        "requested_subjects":list(request.requested_subjects),
+        "enabled_source_ids":list(request.enabled_source_ids),
+    }
+    if request.brightness_profile is not None:
+        payload["brightness_profile"]=request.brightness_profile
+    return payload
+
+def request_from_transport(payload:dict[str,Any])->ZiWeiReadingRequest:
+    """Parse the closed-world v1 JSON transport into the typed runtime request."""
+    if not isinstance(payload,dict):
+        raise ValueError("request transport must be an object")
+    allowed={"schema_name","schema_version","request_id","temporal_scope","birth","optional_modules",
+             "requested_subjects","enabled_source_ids","brightness_profile"}
+    required=allowed-{"brightness_profile"}
+    unknown=set(payload)-allowed
+    missing=required-set(payload)
+    if unknown:
+        raise ValueError(f"unknown request fields: {','.join(sorted(unknown))}")
+    if missing:
+        raise ValueError(f"missing request fields: {','.join(sorted(missing))}")
+    if payload["schema_name"]!="ziwei_reading_request" or payload["schema_version"]!="1.0.0":
+        raise ValueError("unsupported Zi Wei request schema")
+    birth=payload["birth"]
+    if not isinstance(birth,dict):
+        raise ValueError("birth must be an object")
+    input_type=birth.get("input_type")
+    if input_type=="gregorian":
+        fields={"input_type","year","month","day","hour","minute","second","timezone"}
+        if set(birth)!=fields:
+            raise ValueError("gregorian birth fields do not match v1 schema")
+        typed_birth=GregorianBirthInput(
+            year=birth["year"],month=birth["month"],day=birth["day"],hour=birth["hour"],
+            minute=birth["minute"],second=birth["second"],timezone=birth["timezone"],
+        )
+    elif input_type=="normalized_lunar":
+        fields={"input_type","lunar_year","lunar_month","lunar_day","hour_branch","calendar_provenance","leap_month_identity"}
+        if set(birth)!=fields:
+            raise ValueError("normalized lunar birth fields do not match v1 schema")
+        typed_birth=NormalizedNatalInput(
+            lunar_year=birth["lunar_year"],lunar_month=birth["lunar_month"],lunar_day=birth["lunar_day"],
+            hour_branch=birth["hour_branch"],calendar_provenance=birth["calendar_provenance"],
+            leap_month_identity=birth["leap_month_identity"],
+        )
+    else:
+        raise ValueError(f"unsupported birth input_type: {input_type}")
+    for name in ("optional_modules","requested_subjects","enabled_source_ids"):
+        if not isinstance(payload[name],list) or any(not isinstance(x,str) or not x for x in payload[name]):
+            raise ValueError(f"{name} must be an array of non-empty strings")
+        if len(set(payload[name]))!=len(payload[name]):
+            raise ValueError(f"{name} must contain unique items")
+    request=ZiWeiReadingRequest(
+        request_id=payload["request_id"],birth=typed_birth,temporal_scope=payload["temporal_scope"],
+        requested_subjects=tuple(payload["requested_subjects"]),enabled_source_ids=tuple(payload["enabled_source_ids"]),
+        optional_modules=tuple(payload["optional_modules"]),brightness_profile=payload.get("brightness_profile"),
+    )
+    request.validate()
+    return request
+
+def run_ziwei_transport(payload:dict[str,Any])->dict[str,Any]:
+    """Execute the versioned JSON transport contract through the canonical typed runtime."""
+    return run_ziwei(request_from_transport(payload))
+
 def _production_registries():
     regs=_retrieval.load_registries(REF/x for x in ADMITTED_REGISTRIES)
     for name,reg in zip(ADMITTED_REGISTRIES,regs):
