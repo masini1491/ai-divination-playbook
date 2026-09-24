@@ -1,6 +1,6 @@
 {
   "schema_name": "astrology_extended_chart_e8_admission_readiness",
-  "schema_version": "0.3.0",
+  "schema_version": "0.4.0",
   "authority": "REFERENCE_ONLY",
   "production_baseline": "3346b59055a300aa8998884ccc376017483836af",
   "production_mutation_authorized": false,
@@ -156,12 +156,22 @@
   ],
   "decisions": {
     "D1_extended_ephemeris_strategy": {
-      "status": "USER_DECISION_REQUIRED",
+      "status": "RESEARCH_REFRAMED_NO_PRODUCTION_SELECTION",
+      "runtime_constraint": "chatgpt_only_production_must_not_require_live_third_party_api",
       "options": [
-        "MIT_ONLY",
+        "CURRENT_CORE_ONLY",
+        "LOCAL_ANALYTICAL",
+        "BUNDLED_EPHEMERIS",
+        "EXTERNAL_RUNTIME",
         "SWISS_AGPL",
         "SWISS_PROFESSIONAL"
-      ]
+      ],
+      "next_research_lanes": [
+        "LOCAL_ANALYTICAL",
+        "BUNDLED_EPHEMERIS"
+      ],
+      "research_evidence": "references/astrology/CHATGPT_ONLY_EXTENDED_EPHEMERIS_FEASIBILITY.md",
+      "production_selection": null
     },
     "D2_policy_activation_style": {
       "status": "SELECTED_FOR_CURRENT_STACK_LANE",
