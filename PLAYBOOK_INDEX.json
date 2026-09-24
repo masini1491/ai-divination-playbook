@@ -221,7 +221,10 @@
       "place_resolver_cold_start_fallback": "require-explicit-coordinates-plus-iana-timezone",
       "rulership_projection": "tools/astrology_rulership_projection.py",
       "rulership_projection_schema": "schemas/astrology/ASTROLOGY_RULERSHIP_PROJECTION_V1.schema.json",
-      "rulership_activation": "explicit-selector-only"
+      "rulership_activation": "explicit-selector-only",
+      "pattern_topology_projection": "tools/astrology_pattern_topology.py",
+      "pattern_topology_projection_schema": "schemas/astrology/ASTROLOGY_PATTERN_TOPOLOGY_PROJECTION_V1.schema.json",
+      "pattern_topology_activation": "explicit-selector-only"
     },
     {
       "id": "method.astrology.natal",

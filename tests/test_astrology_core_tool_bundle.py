@@ -55,6 +55,7 @@ class AstrologyCoreToolBundleTests(unittest.TestCase):
                 "from tools.astrology_orchestrator import run_request\n"
                 "import tools.astrology_transit_provider\n"
                 "from tools.astrology_rulership_projection import build_rulership_projection\n"
+                "from tools.astrology_pattern_topology import build_pattern_topology_projection\n"
                 "q={'schema_name':'astrology_reading_request','schema_version':'1.0.0','reading_mode':'natal','subject_ref':'synthetic-core-bundle-fixture','birth':{'local_datetime':'2000-01-01T12:00:00','birth_time_certainty':'exact','house_system':'Whole Sign','location':{'coordinates':{'latitude':0.0,'longitude':0.0,'timezone_name':'UTC'}}}}\n"
                 "r=run_request(q)\n"
                 "assert r['status']=='admitted' and r['interpretation_allowed'] is True\n"
@@ -66,6 +67,8 @@ class AstrologyCoreToolBundleTests(unittest.TestCase):
                 "assert r['fact_bundles']['natal']['provider']['sect']['policy_id']=='sect-geometric-solar-altitude-v1'\n"
                 "rp=build_rulership_projection(r['fact_bundles']['natal'],'rulership-modern-v1')\n"
                 "assert len(rp['projections'])==12 and rp['policy_id']=='rulership-modern-v1'\n"
+                "pp=build_pattern_topology_projection(r['fact_bundles']['natal'],participant_policy_id='aspect-participants-core-bodies-v1',aspect_policy_id='major-aspects-v1',orb_policy_id='major-aspect-orbs-v1',pattern_policy_id='aspect-pattern-topology-major-v1',pattern_projection_policy_id='pattern-projection-report-all-valid-v1')\n"
+                "assert pp['schema_name']=='astrology_pattern_topology_projection'\n"
                 "print(json.dumps({'ok':True,'mode':r['input_resolution']['resolution_mode']}))\n",
                 encoding="utf-8",
             )

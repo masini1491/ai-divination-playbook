@@ -147,6 +147,12 @@ class AstrologyProductionContractTests(unittest.TestCase):
             row["rulership_projection_schema"],
         )
         self.assertEqual("explicit-selector-only", row["rulership_activation"])
+        self.assertEqual("tools/astrology_pattern_topology.py", row["pattern_topology_projection"])
+        self.assertEqual(
+            "schemas/astrology/ASTROLOGY_PATTERN_TOPOLOGY_PROJECTION_V1.schema.json",
+            row["pattern_topology_projection_schema"],
+        )
+        self.assertEqual("explicit-selector-only", row["pattern_topology_activation"])
         self.assertNotIn("explicit_astrology", data["loader"]["bypass_profiles"])
 
     def test_astrology_root_owner_keeps_common_boundary_and_routes_mode_owners(self):
@@ -238,6 +244,21 @@ class AstrologyProductionContractTests(unittest.TestCase):
         self.assertFalse(policy["auto_include_new_objects"])
         self.assertEqual("explicit_selector_only", policy["extended_policy_activation"])
         self.assertTrue({"SouthNode", "Ascendant", "Descendant", "Midheaven", "ImumCoeli", "PartOfFortune"}.isdisjoint(policy["participant_object_ids"]))
+
+    def test_e6_topology_requires_explicit_e5_and_projection_policies(self):
+        manifest = json.loads((ROOT / "ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        policy = manifest["orchestration"]["policy_projections"]["pattern_topology"]
+        self.assertEqual("explicit_selector_only", policy["activation"])
+        self.assertEqual("aspect-participants-core-bodies-v1", policy["required_participant_policy_id"])
+        self.assertEqual("major-aspects-v1", policy["required_aspect_policy_id"])
+        self.assertEqual("major-aspect-orbs-v1", policy["required_orb_policy_id"])
+        self.assertEqual(["aspect-pattern-topology-major-v1"], policy["admitted_pattern_policy_ids"])
+        self.assertEqual(
+            ["pattern-projection-report-all-valid-v1", "pattern-projection-suppress-strict-subsets-v1"],
+            policy["admitted_projection_policy_ids"],
+        )
+        self.assertEqual("forbidden", policy["silent_default"])
+        self.assertFalse(policy["semantic_interpretation_authority"])
 
 
 if __name__ == "__main__":
