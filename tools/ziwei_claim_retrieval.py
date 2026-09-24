@@ -6,11 +6,12 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Iterable
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[1]
+REGISTRY_ROOT = ROOT / "references" / "ziwei"
 DEFAULT_REGISTRIES = (
-    ROOT / "ziwei_interpretation_claim_registry_batch1.json",
-    ROOT / "ziwei_interpretation_claim_registry_batch2.json",
-    ROOT / "ziwei_interpretation_claim_registry_palaces_v0.json",
+    REGISTRY_ROOT / "ziwei_interpretation_claim_registry_batch1.json",
+    REGISTRY_ROOT / "ziwei_interpretation_claim_registry_batch2.json",
+    REGISTRY_ROOT / "ziwei_interpretation_claim_registry_palaces_v0.json",
 )
 SUPPORTED_TEMPORAL_SCOPE = "natal_baseline"
 ELIGIBLE_ADOPTION = "RESEARCH_CLAIM_ELIGIBLE"
