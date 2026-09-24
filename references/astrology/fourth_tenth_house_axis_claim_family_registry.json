@@ -13,44 +13,20 @@
       "author_or_org": "Vettius Valens; Mark Riley English translation; janegca LaTeX transcription",
       "source_role": "PRIMARY_TEXT",
       "source_kind": "translation_transcription_repository",
-      "tradition_tags": [
-        "hellenistic",
-        "classical_antiquity"
-      ],
+      "tradition_tags": ["hellenistic", "classical_antiquity"],
       "immutable_revision": "2d4a8b9890cd5cb7714abd52f6bd938272ba8237",
-      "locator": [
-        "book04/12-places.tex"
-      ],
+      "locator": ["book04/12-places.tex"],
       "language": "English translation of Greek primary text",
       "license_status": "repository_gpl_2_0_translation_rights_separately_unresolved",
       "license_identifier": "GPL-2.0",
       "copyright_status": "mixed_or_unresolved_translation_status",
-      "storage_mode": [
-        "metadata_plus_locator",
-        "normalized_paraphrase"
-      ],
-      "verification_status": [
-        "identity_verified",
-        "revision_verified",
-        "locator_verified",
-        "repository_license_verified"
-      ],
-      "admission_status": [
-        "CLAIM_ELIGIBLE"
-      ],
-      "admission_scope": [
-        "Hellenistic fourth-place significations",
-        "Hellenistic tenth-place significations"
-      ],
-      "excluded_scope": [
-        "scientific predictive validity",
-        "modern psychological meaning",
-        "project-canonical house policy"
-      ],
+      "storage_mode": ["metadata_plus_locator", "normalized_paraphrase"],
+      "verification_status": ["identity_verified", "revision_verified", "locator_verified", "repository_license_verified"],
+      "admission_status": ["CLAIM_ELIGIBLE"],
+      "admission_scope": ["Hellenistic fourth-place significations", "Hellenistic tenth-place significations"],
+      "excluded_scope": ["scientific predictive validity", "modern psychological meaning", "project-canonical house policy"],
       "independence_status": "primary_witness",
-      "notes": [
-        "No translation corpus is vendored; only metadata, locators and project-authored paraphrases are stored."
-      ]
+      "notes": ["No translation corpus is vendored; only metadata, locators and project-authored paraphrases are stored."]
     },
     {
       "source_id": "source:lilly-christian-astrology-fourth-tenth-houses",
@@ -58,37 +34,18 @@
       "author_or_org": "William Lilly",
       "source_role": "PRIMARY_TEXT",
       "source_kind": "early_modern_primary_text_web_edition",
-      "tradition_tags": [
-        "early_modern",
-        "traditional_western"
-      ],
+      "tradition_tags": ["early_modern", "traditional_western"],
       "publication_or_release_date": "1647",
       "edition": "Skyscript / Deborah Houlding retyped web edition",
       "locator": "Of the Twelve Houses, their Nature and Signification; Fourth House CA p.53; Tenth House CA p.56",
       "language": "English",
       "license_status": "original_text_public_domain_web_presentation_rights_separate",
       "copyright_status": "public_domain_original_text_with_modern_web_presentation",
-      "storage_mode": [
-        "metadata_plus_locator",
-        "normalized_paraphrase"
-      ],
-      "verification_status": [
-        "identity_verified",
-        "publication_verified",
-        "locator_verified"
-      ],
-      "admission_status": [
-        "CLAIM_ELIGIBLE"
-      ],
-      "admission_scope": [
-        "early-modern fourth-house significations",
-        "early-modern tenth-house significations"
-      ],
-      "excluded_scope": [
-        "Hellenistic lineage identity",
-        "modern psychological meaning",
-        "scientific predictive validity"
-      ],
+      "storage_mode": ["metadata_plus_locator", "normalized_paraphrase"],
+      "verification_status": ["identity_verified", "publication_verified", "locator_verified"],
+      "admission_status": ["CLAIM_ELIGIBLE"],
+      "admission_scope": ["early-modern fourth-house significations", "early-modern tenth-house significations"],
+      "excluded_scope": ["Hellenistic lineage identity", "modern psychological meaning", "scientific predictive validity"],
       "independence_status": "primary_witness"
     },
     {
@@ -97,41 +54,19 @@
       "author_or_org": "Deborah Houlding / Skyscript",
       "source_role": "PRACTITIONER_REFERENCE",
       "source_kind": "practitioner_reference",
-      "tradition_tags": [
-        "modern",
-        "traditional_practice"
-      ],
+      "tradition_tags": ["modern", "traditional_practice"],
       "publication_or_release_date": "1996",
-      "locator": [
-        "Skyscript: The 4th house",
-        "Skyscript: The 10th house"
-      ],
+      "locator": ["Skyscript: The 4th house", "Skyscript: The 10th house"],
       "language": "English",
       "license_status": "copyrighted_web_reference",
       "copyright_status": "copyrighted",
-      "storage_mode": [
-        "metadata_plus_locator",
-        "normalized_paraphrase"
-      ],
-      "verification_status": [
-        "identity_verified",
-        "locator_verified"
-      ],
-      "admission_status": [
-        "CLAIM_ELIGIBLE"
-      ],
-      "admission_scope": [
-        "qualified contemporary traditional-practitioner framing"
-      ],
-      "excluded_scope": [
-        "independent ancient witness",
-        "universal doctrine",
-        "scientific predictive validity"
-      ],
+      "storage_mode": ["metadata_plus_locator", "normalized_paraphrase"],
+      "verification_status": ["identity_verified", "locator_verified"],
+      "admission_status": ["CLAIM_ELIGIBLE"],
+      "admission_scope": ["qualified contemporary traditional-practitioner framing"],
+      "excluded_scope": ["independent ancient witness", "universal doctrine", "scientific predictive validity"],
       "independence_status": "derivative_practitioner_synthesis",
-      "upstream_source_refs": [
-        "source:lilly-christian-astrology-fourth-tenth-houses"
-      ]
+      "upstream_source_refs": ["source:lilly-christian-astrology-fourth-tenth-houses"]
     },
     {
       "source_id": "source:wvanderen-fourth-tenth-house-modules",
@@ -139,47 +74,20 @@
       "author_or_org": "wvanderen/astrology-skill contributors",
       "source_role": "REFERENCE_IMPLEMENTATION",
       "source_kind": "repository",
-      "tradition_tags": [
-        "modern",
-        "retrieval_first",
-        "psychological_language"
-      ],
+      "tradition_tags": ["modern", "retrieval_first", "psychological_language"],
       "immutable_revision": "a9339b3c7151313530aa5002572c6612a2cfd59f",
-      "locator": [
-        "references/houses/4th.md",
-        "references/houses/10th.md"
-      ],
+      "locator": ["references/houses/4th.md", "references/houses/10th.md"],
       "language": "English",
       "license_status": "verified_permissive",
       "license_identifier": "MIT",
       "copyright_status": "copyrighted",
-      "storage_mode": [
-        "metadata_plus_locator",
-        "normalized_paraphrase"
-      ],
-      "verification_status": [
-        "identity_verified",
-        "revision_verified",
-        "license_verified",
-        "locator_verified"
-      ],
-      "admission_status": [
-        "REFERENCE_ONLY"
-      ],
-      "admission_scope": [
-        "qualified modern/reference framing",
-        "retrieval-first implementation evidence"
-      ],
-      "excluded_scope": [
-        "independent historical witness",
-        "project-canonical doctrine",
-        "clinical or predictive authority"
-      ],
+      "storage_mode": ["metadata_plus_locator", "normalized_paraphrase"],
+      "verification_status": ["identity_verified", "revision_verified", "license_verified", "locator_verified"],
+      "admission_status": ["REFERENCE_ONLY"],
+      "admission_scope": ["qualified modern/reference framing", "retrieval-first implementation evidence"],
+      "excluded_scope": ["independent historical witness", "project-canonical doctrine", "clinical or predictive authority"],
       "independence_status": "shared_upstream",
-      "upstream_source_refs": [
-        "source:valens-riley-fourth-tenth-places",
-        "source:lilly-christian-astrology-fourth-tenth-houses"
-      ],
+      "upstream_source_refs": ["source:valens-riley-fourth-tenth-places", "source:lilly-christian-astrology-fourth-tenth-houses"],
       "derivative_relationship": "module source notes paraphrase classical sources while adding modern interpretive language"
     },
     {
@@ -188,30 +96,16 @@
       "author_or_org": "masini1491/ai-divination-playbook Astrology research",
       "source_role": "PROJECT_SYNTHESIS",
       "source_kind": "project_validation_result",
-      "tradition_tags": [
-        "research_policy",
-        "unknown_birth_time"
-      ],
+      "tradition_tags": ["research_policy", "unknown_birth_time"],
       "locator": "references/astrology/UNKNOWN_TIME_SENSITIVITY_RESULTS.md",
       "language": "Traditional Chinese / English identifiers",
       "license_status": "project_authored",
       "copyright_status": "project_authored",
-      "storage_mode": [
-        "project_authored_synthesis"
-      ],
-      "verification_status": [
-        "project_source_verified"
-      ],
-      "admission_status": [
-        "POLICY_PROVENANCE_ELIGIBLE"
-      ],
-      "admission_scope": [
-        "house and angle availability precondition under birth-time uncertainty"
-      ],
-      "excluded_scope": [
-        "interpretive house meaning",
-        "scientific validation of astrology"
-      ],
+      "storage_mode": ["project_authored_synthesis"],
+      "verification_status": ["project_source_verified"],
+      "admission_status": ["POLICY_PROVENANCE_ELIGIBLE"],
+      "admission_scope": ["house and angle availability precondition under birth-time uncertainty"],
+      "excluded_scope": ["interpretive house meaning", "scientific validation of astrology"],
       "independence_status": "independent_evidence"
     }
   ],
@@ -221,40 +115,17 @@
       "layer": "L4",
       "claim_type": "historical_doctrine",
       "normalized_statement": "In the reviewed Valens passage, the fourth place includes home, possessions, lodgings, activity, change of place and several additional concrete life topics; it is not reducible to a single modern psychological theme.",
-      "source_refs": [
-        "source:valens-riley-fourth-tenth-places"
-      ],
-      "source_locator_refs": [
-        "book04/12-places.tex"
-      ],
-      "tradition_tags": [
-        "hellenistic",
-        "classical_antiquity"
-      ],
-      "tradition_context_refs": [
-        "lineage:hellenistic"
-      ],
-      "historical_context_refs": [
-        "context:classical_antiquity"
-      ],
-      "applies_to": [
-        "natal",
-        "fourth house",
-        "IC",
-        "ImumCoeli",
-        "home",
-        "possessions",
-        "activity"
-      ],
+      "source_refs": ["source:valens-riley-fourth-tenth-places"],
+      "source_locator_refs": ["book04/12-places.tex"],
+      "tradition_tags": ["hellenistic", "classical_antiquity"],
+      "tradition_context_refs": ["lineage:hellenistic"],
+      "historical_context_refs": ["context:classical_antiquity"],
+      "applies_to": ["natal", "fourth house", "IC", "ImumCoeli", "home", "possessions", "activity"],
       "scope": "historical Hellenistic place signification",
       "confidence_status": "supported",
       "support_status": "single_source_supported",
-      "conflict_group_ids": [
-        "conflict:fourth-house-historical-modern-scope"
-      ],
-      "cautions": [
-        "Do not silently rewrite Valens as modern family-of-origin or inner-child psychology."
-      ],
+      "conflict_group_ids": ["conflict:fourth-house-historical-modern-scope"],
+      "cautions": ["Do not silently rewrite Valens as modern family-of-origin or inner-child psychology."],
       "storage_origin": "project-authored normalized paraphrase"
     },
     {
@@ -262,39 +133,17 @@
       "layer": "L4",
       "claim_type": "historical_doctrine",
       "normalized_statement": "In the reviewed Valens passage, the tenth place includes occupation, rank, success, change and innovation in business together with other concrete topics.",
-      "source_refs": [
-        "source:valens-riley-fourth-tenth-places"
-      ],
-      "source_locator_refs": [
-        "book04/12-places.tex"
-      ],
-      "tradition_tags": [
-        "hellenistic",
-        "classical_antiquity"
-      ],
-      "tradition_context_refs": [
-        "lineage:hellenistic"
-      ],
-      "historical_context_refs": [
-        "context:classical_antiquity"
-      ],
-      "applies_to": [
-        "natal",
-        "tenth house",
-        "MC",
-        "occupation",
-        "rank",
-        "success"
-      ],
+      "source_refs": ["source:valens-riley-fourth-tenth-places"],
+      "source_locator_refs": ["book04/12-places.tex"],
+      "tradition_tags": ["hellenistic", "classical_antiquity"],
+      "tradition_context_refs": ["lineage:hellenistic"],
+      "historical_context_refs": ["context:classical_antiquity"],
+      "applies_to": ["natal", "tenth house", "MC", "occupation", "rank", "success"],
       "scope": "historical Hellenistic place signification",
       "confidence_status": "supported",
       "support_status": "single_source_supported",
-      "conflict_group_ids": [
-        "conflict:tenth-house-historical-modern-scope"
-      ],
-      "cautions": [
-        "Occupation/rank language should not be collapsed into one modern career-calling construct."
-      ],
+      "conflict_group_ids": ["conflict:tenth-house-historical-modern-scope"],
+      "cautions": ["Occupation/rank language should not be collapsed into one modern career-calling construct."],
       "storage_origin": "project-authored normalized paraphrase"
     },
     {
@@ -302,42 +151,17 @@
       "layer": "L4",
       "claim_type": "historical_doctrine",
       "normalized_statement": "Lilly's early-modern fourth-house catalogue includes the father, lands, houses, inheritances, cultivation, hidden treasure and the determination or end of a matter, and names the angle Imum Coeli.",
-      "source_refs": [
-        "source:lilly-christian-astrology-fourth-tenth-houses"
-      ],
-      "source_locator_refs": [
-        "Christian Astrology, Fourth House, CA p.53"
-      ],
-      "tradition_tags": [
-        "early_modern",
-        "traditional_western"
-      ],
+      "source_refs": ["source:lilly-christian-astrology-fourth-tenth-houses"],
+      "source_locator_refs": ["Christian Astrology, Fourth House, CA p.53"],
+      "tradition_tags": ["early_modern", "traditional_western"],
       "tradition_context_refs": [],
-      "historical_context_refs": [
-        "context:early_modern"
-      ],
-      "applies_to": [
-        "natal",
-        "horary",
-        "fourth house",
-        "IC",
-        "ImumCoeli",
-        "father",
-        "land",
-        "home",
-        "inheritance",
-        "end of matter"
-      ],
+      "historical_context_refs": ["context:early_modern"],
+      "applies_to": ["natal", "horary", "fourth house", "IC", "ImumCoeli", "father", "land", "home", "inheritance", "end of matter"],
       "scope": "early-modern house catalogue",
       "confidence_status": "supported",
       "support_status": "single_source_supported",
-      "conflict_group_ids": [
-        "conflict:fourth-house-historical-modern-scope",
-        "conflict:fourth-tenth-parent-signification"
-      ],
-      "cautions": [
-        "The current taxonomy has no early-modern doctrinal-lineage selector; historical context must not be promoted into doctrine routing."
-      ],
+      "conflict_group_ids": ["conflict:fourth-house-historical-modern-scope", "conflict:fourth-tenth-parent-signification"],
+      "cautions": ["The current taxonomy has no early-modern doctrinal-lineage selector; historical context must not be promoted into doctrine routing."],
       "storage_origin": "project-authored normalized paraphrase"
     },
     {
@@ -345,41 +169,17 @@
       "layer": "L4",
       "claim_type": "historical_doctrine",
       "normalized_statement": "Lilly's early-modern tenth-house catalogue includes rulers and magistrates, honour, preferment, dignity, office, profession or trade, and the mother, and names the angle Medium Coeli or Midheaven.",
-      "source_refs": [
-        "source:lilly-christian-astrology-fourth-tenth-houses"
-      ],
-      "source_locator_refs": [
-        "Christian Astrology, Tenth House, CA p.56"
-      ],
-      "tradition_tags": [
-        "early_modern",
-        "traditional_western"
-      ],
+      "source_refs": ["source:lilly-christian-astrology-fourth-tenth-houses"],
+      "source_locator_refs": ["Christian Astrology, Tenth House, CA p.56"],
+      "tradition_tags": ["early_modern", "traditional_western"],
       "tradition_context_refs": [],
-      "historical_context_refs": [
-        "context:early_modern"
-      ],
-      "applies_to": [
-        "natal",
-        "horary",
-        "tenth house",
-        "MC",
-        "authority",
-        "honour",
-        "profession",
-        "trade",
-        "mother"
-      ],
+      "historical_context_refs": ["context:early_modern"],
+      "applies_to": ["natal", "horary", "tenth house", "MC", "authority", "honour", "profession", "trade", "mother"],
       "scope": "early-modern house catalogue",
       "confidence_status": "supported",
       "support_status": "single_source_supported",
-      "conflict_group_ids": [
-        "conflict:tenth-house-historical-modern-scope",
-        "conflict:fourth-tenth-parent-signification"
-      ],
-      "cautions": [
-        "Parent assignment and professional significations are tradition-bounded and should not be universalized."
-      ],
+      "conflict_group_ids": ["conflict:tenth-house-historical-modern-scope", "conflict:fourth-tenth-parent-signification"],
+      "cautions": ["Parent assignment and professional significations are tradition-bounded and should not be universalized."],
       "storage_origin": "project-authored normalized paraphrase"
     },
     {
@@ -387,42 +187,17 @@
       "layer": "L4",
       "claim_type": "house_meaning",
       "normalized_statement": "In Houlding's contemporary traditional-practitioner framework, the fourth house concerns roots and foundations, parents and ancestry, land and property, the home environment and the ending or conclusion of matters.",
-      "source_refs": [
-        "source:houlding-house-rulerships-fourth-tenth"
-      ],
-      "source_locator_refs": [
-        "Skyscript: The 4th house"
-      ],
-      "tradition_tags": [
-        "modern",
-        "traditional_practice"
-      ],
+      "source_refs": ["source:houlding-house-rulerships-fourth-tenth"],
+      "source_locator_refs": ["Skyscript: The 4th house"],
+      "tradition_tags": ["modern", "traditional_practice"],
       "tradition_context_refs": [],
-      "historical_context_refs": [
-        "context:modern_contemporary"
-      ],
-      "applies_to": [
-        "fourth house",
-        "IC",
-        "ImumCoeli",
-        "roots",
-        "family",
-        "ancestry",
-        "land",
-        "property",
-        "home",
-        "endings"
-      ],
+      "historical_context_refs": ["context:modern_contemporary"],
+      "applies_to": ["fourth house", "IC", "ImumCoeli", "roots", "family", "ancestry", "land", "property", "home", "endings"],
       "scope": "qualified contemporary traditional-practitioner framing",
       "confidence_status": "qualified",
       "support_status": "tradition_bounded",
-      "conflict_group_ids": [
-        "conflict:fourth-house-historical-modern-scope",
-        "conflict:fourth-tenth-parent-signification"
-      ],
-      "cautions": [
-        "Practitioner synthesis is not an independent ancient witness and does not establish scientific validity."
-      ],
+      "conflict_group_ids": ["conflict:fourth-house-historical-modern-scope", "conflict:fourth-tenth-parent-signification"],
+      "cautions": ["Practitioner synthesis is not an independent ancient witness and does not establish scientific validity."],
       "storage_origin": "project-authored normalized paraphrase"
     },
     {
@@ -430,39 +205,17 @@
       "layer": "L4",
       "claim_type": "house_meaning",
       "normalized_statement": "In Houlding's contemporary traditional-practitioner framework, the tenth house covers employment or profession, employers and authority, honour and reputation, worldly position, public visibility and outward accomplishment; it also preserves the traditional association with the mother.",
-      "source_refs": [
-        "source:houlding-house-rulerships-fourth-tenth"
-      ],
-      "source_locator_refs": [
-        "Skyscript: The 10th house"
-      ],
-      "tradition_tags": [
-        "modern",
-        "traditional_practice"
-      ],
+      "source_refs": ["source:houlding-house-rulerships-fourth-tenth"],
+      "source_locator_refs": ["Skyscript: The 10th house"],
+      "tradition_tags": ["modern", "traditional_practice"],
       "tradition_context_refs": [],
-      "historical_context_refs": [
-        "context:modern_contemporary"
-      ],
-      "applies_to": [
-        "tenth house",
-        "MC",
-        "profession",
-        "authority",
-        "reputation",
-        "public standing",
-        "mother"
-      ],
+      "historical_context_refs": ["context:modern_contemporary"],
+      "applies_to": ["tenth house", "MC", "profession", "authority", "reputation", "public standing", "mother"],
       "scope": "qualified contemporary traditional-practitioner framing",
       "confidence_status": "qualified",
       "support_status": "tradition_bounded",
-      "conflict_group_ids": [
-        "conflict:tenth-house-historical-modern-scope",
-        "conflict:fourth-tenth-parent-signification"
-      ],
-      "cautions": [
-        "Public-role framing must not be treated as a guarantee of career outcome or status."
-      ],
+      "conflict_group_ids": ["conflict:tenth-house-historical-modern-scope", "conflict:fourth-tenth-parent-signification"],
+      "cautions": ["Public-role framing must not be treated as a guarantee of career outcome or status."],
       "storage_origin": "project-authored normalized paraphrase"
     },
     {
@@ -470,37 +223,17 @@
       "layer": "L4",
       "claim_type": "house_meaning",
       "normalized_statement": "The reviewed reference implementation adds modern language around belonging, emotional foundations, private memory and an inner architecture inherited from family or place to fourth-house interpretation.",
-      "source_refs": [
-        "source:wvanderen-fourth-tenth-house-modules"
-      ],
-      "source_locator_refs": [
-        "references/houses/4th.md"
-      ],
-      "tradition_tags": [
-        "modern",
-        "retrieval_first",
-        "psychological_language"
-      ],
+      "source_refs": ["source:wvanderen-fourth-tenth-house-modules"],
+      "source_locator_refs": ["references/houses/4th.md"],
+      "tradition_tags": ["modern", "retrieval_first", "psychological_language"],
       "tradition_context_refs": [],
-      "historical_context_refs": [
-        "context:modern_contemporary"
-      ],
-      "applies_to": [
-        "fourth house",
-        "belonging",
-        "emotional foundation",
-        "private memory",
-        "family of origin"
-      ],
+      "historical_context_refs": ["context:modern_contemporary"],
+      "applies_to": ["fourth house", "belonging", "emotional foundation", "private memory", "family of origin"],
       "scope": "one modern reference implementation",
       "confidence_status": "qualified",
       "support_status": "tradition_bounded",
-      "conflict_group_ids": [
-        "conflict:fourth-house-historical-modern-scope"
-      ],
-      "cautions": [
-        "REFERENCE_ONLY language cannot self-promote to a psychological school or universal doctrine without separate admission evidence."
-      ],
+      "conflict_group_ids": ["conflict:fourth-house-historical-modern-scope"],
+      "cautions": ["REFERENCE_ONLY language cannot self-promote to a psychological school or universal doctrine without separate admission evidence."],
       "storage_origin": "project-authored normalized paraphrase"
     },
     {
@@ -508,38 +241,17 @@
       "layer": "L4",
       "claim_type": "house_meaning",
       "normalized_statement": "The reviewed reference implementation adds modern language around ambition, calling, public identity, contribution, leadership style and external standards of success to tenth-house interpretation.",
-      "source_refs": [
-        "source:wvanderen-fourth-tenth-house-modules"
-      ],
-      "source_locator_refs": [
-        "references/houses/10th.md"
-      ],
-      "tradition_tags": [
-        "modern",
-        "retrieval_first",
-        "psychological_language"
-      ],
+      "source_refs": ["source:wvanderen-fourth-tenth-house-modules"],
+      "source_locator_refs": ["references/houses/10th.md"],
+      "tradition_tags": ["modern", "retrieval_first", "psychological_language"],
       "tradition_context_refs": [],
-      "historical_context_refs": [
-        "context:modern_contemporary"
-      ],
-      "applies_to": [
-        "tenth house",
-        "ambition",
-        "calling",
-        "public identity",
-        "contribution",
-        "leadership"
-      ],
+      "historical_context_refs": ["context:modern_contemporary"],
+      "applies_to": ["tenth house", "ambition", "calling", "public identity", "contribution", "leadership"],
       "scope": "one modern reference implementation",
       "confidence_status": "qualified",
       "support_status": "tradition_bounded",
-      "conflict_group_ids": [
-        "conflict:tenth-house-historical-modern-scope"
-      ],
-      "cautions": [
-        "REFERENCE_ONLY wording is not silently typed as psychological astrology and does not imply one predetermined vocation."
-      ],
+      "conflict_group_ids": ["conflict:tenth-house-historical-modern-scope"],
+      "cautions": ["REFERENCE_ONLY wording is not silently typed as psychological astrology and does not imply one predetermined vocation."],
       "storage_origin": "project-authored normalized paraphrase"
     },
     {
@@ -547,97 +259,41 @@
       "layer": "L3",
       "claim_type": "policy_configuration",
       "normalized_statement": "Fourth- and tenth-house or IC/MC interpretation requires available L2 house and angle facts; when birth-time uncertainty makes those facts unavailable, the route must fail closed instead of substituting a nominal house or noon chart.",
-      "source_refs": [
-        "source:project-unknown-time-house-sensitivity"
-      ],
-      "source_locator_refs": [
-        "references/astrology/UNKNOWN_TIME_SENSITIVITY_RESULTS.md"
-      ],
-      "tradition_tags": [
-        "research_policy",
-        "unknown_birth_time"
-      ],
+      "source_refs": ["source:project-unknown-time-house-sensitivity"],
+      "source_locator_refs": ["references/astrology/UNKNOWN_TIME_SENSITIVITY_RESULTS.md"],
+      "tradition_tags": ["research_policy", "unknown_birth_time"],
       "tradition_context_refs": [],
-      "applies_to": [
-        "fourth house",
-        "tenth house",
-        "IC",
-        "ImumCoeli",
-        "MC",
-        "unknown birth time"
-      ],
+      "applies_to": ["fourth house", "tenth house", "IC", "ImumCoeli", "MC", "unknown birth time"],
       "scope": "research precondition linking L2 fact availability to L3/L4 house interpretation",
       "confidence_status": "supported",
       "support_status": "single_source_supported",
       "conflict_group_ids": [],
-      "cautions": [
-        "Registry metadata documents the policy; generic callers must still declare requires_l2_facts=true for current retrieval core to enforce it."
-      ],
+      "cautions": ["Registry metadata documents the policy; generic callers must still declare requires_l2_facts=true for current retrieval core to enforce it."],
       "storage_origin": "project-authored synthesis from executable unknown-time research"
     }
   ],
   "conflict_groups": [
     {
       "conflict_group_id": "conflict:fourth-house-historical-modern-scope",
-      "conflict_class": [
-        "historical_vs_modern_difference",
-        "scope_difference",
-        "tradition_difference"
-      ],
-      "claim_refs": [
-        "claim:valens-fourth-place-home-possessions-activity",
-        "claim:lilly-fourth-house-land-father-endings",
-        "claim:houlding-fourth-house-roots-foundation-property",
-        "claim:reference-fourth-house-belonging-emotional-foundation"
-      ],
-      "tradition_contexts": [
-        "Hellenistic Valens",
-        "early-modern Lilly",
-        "contemporary traditional practice",
-        "modern reference implementation"
-      ],
+      "conflict_class": ["historical_vs_modern_difference", "scope_difference", "tradition_difference"],
+      "claim_refs": ["claim:valens-fourth-place-home-possessions-activity", "claim:lilly-fourth-house-land-father-endings", "claim:houlding-fourth-house-roots-foundation-property", "claim:reference-fourth-house-belonging-emotional-foundation"],
+      "tradition_contexts": ["Hellenistic Valens", "early-modern Lilly", "contemporary traditional practice", "modern reference implementation"],
       "resolution_status": "coexist",
       "resolution_note": "Keep historical concrete-place catalogues and later psychological/foundational language visibly separate; do not average them into one timeless house definition."
     },
     {
       "conflict_group_id": "conflict:tenth-house-historical-modern-scope",
-      "conflict_class": [
-        "historical_vs_modern_difference",
-        "scope_difference",
-        "tradition_difference"
-      ],
-      "claim_refs": [
-        "claim:valens-tenth-place-occupation-rank-success",
-        "claim:lilly-tenth-house-authority-honour-profession",
-        "claim:houlding-tenth-house-profession-authority-public-standing",
-        "claim:reference-tenth-house-calling-public-identity"
-      ],
-      "tradition_contexts": [
-        "Hellenistic Valens",
-        "early-modern Lilly",
-        "contemporary traditional practice",
-        "modern reference implementation"
-      ],
+      "conflict_class": ["historical_vs_modern_difference", "scope_difference", "tradition_difference"],
+      "claim_refs": ["claim:valens-tenth-place-occupation-rank-success", "claim:lilly-tenth-house-authority-honour-profession", "claim:houlding-tenth-house-profession-authority-public-standing", "claim:reference-tenth-house-calling-public-identity"],
+      "tradition_contexts": ["Hellenistic Valens", "early-modern Lilly", "contemporary traditional practice", "modern reference implementation"],
       "resolution_status": "coexist",
       "resolution_note": "Preserve occupation/rank/authority/reputation claims separately from modern calling/public-identity language."
     },
     {
       "conflict_group_id": "conflict:fourth-tenth-parent-signification",
-      "conflict_class": [
-        "tradition_difference",
-        "historical_development",
-        "scope_difference"
-      ],
-      "claim_refs": [
-        "claim:lilly-fourth-house-land-father-endings",
-        "claim:lilly-tenth-house-authority-honour-profession",
-        "claim:houlding-fourth-house-roots-foundation-property",
-        "claim:houlding-tenth-house-profession-authority-public-standing"
-      ],
-      "tradition_contexts": [
-        "early-modern Lilly",
-        "contemporary traditional practice"
-      ],
+      "conflict_class": ["tradition_difference", "historical_development", "scope_difference"],
+      "claim_refs": ["claim:lilly-fourth-house-land-father-endings", "claim:lilly-tenth-house-authority-honour-profession", "claim:houlding-fourth-house-roots-foundation-property", "claim:houlding-tenth-house-profession-authority-public-standing"],
+      "tradition_contexts": ["early-modern Lilly", "contemporary traditional practice"],
       "resolution_status": "coexist",
       "resolution_note": "Record source-specific parent assignments without promoting a universal project rule; any future parent-signification policy requires its own evidence family."
     }
@@ -648,13 +304,7 @@
   },
   "research_result": {
     "contract_status": "bounded_fourth_tenth_axis_claim_family_with_l2_precondition",
-    "key_decomposition": [
-      "Hellenistic place catalogue",
-      "early-modern house catalogue",
-      "contemporary practitioner framing",
-      "modern reference framing",
-      "house-angle availability precondition"
-    ],
+    "key_decomposition": ["Hellenistic place catalogue", "early-modern house catalogue", "contemporary practitioner framing", "modern reference framing", "house-angle availability precondition"],
     "production_authority_granted": false,
     "scientific_predictive_validity_claimed": false
   },
