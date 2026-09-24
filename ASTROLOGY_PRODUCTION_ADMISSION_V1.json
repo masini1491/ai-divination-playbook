@@ -113,14 +113,27 @@
     "runtime_owner": "tools/astrology_provider.py",
     "scope": [
       "natal",
-      "natal_unknown_time_invariant_signs"
+      "natal_unknown_time_invariant_signs",
+      "natal_known_time_derived_axes"
     ],
     "raw_birth_data_supported": true,
     "requires_explicit_coordinates": true,
     "requires_iana_timezone": true,
     "unknown_birth_time_supported": "invariant_sign_only",
     "unknown_time_requires_exact_coordinates": false,
-    "unknown_time_requires_iana_timezone": true
+    "unknown_time_requires_iana_timezone": true,
+    "provider_version": "1.1.0",
+    "known_time_derived_axes": {
+      "object_ids": [
+        "SouthNode",
+        "Descendant",
+        "ImumCoeli"
+      ],
+      "derivation_policy": "antipode-v1",
+      "unknown_time": "not_emitted",
+      "aspect_participation": "not_admitted",
+      "interpretation_semantics": "fact_only_until_separately_admitted"
+    }
   },
   "place_resolver": {
     "resolver_id": "geonamescache-city-v1",
@@ -196,7 +209,21 @@
       "trine": 7,
       "square": 7,
       "sextile": 5
-    }
+    },
+    "participant_object_ids": [
+      "Sun",
+      "Moon",
+      "Mercury",
+      "Venus",
+      "Mars",
+      "Jupiter",
+      "Saturn",
+      "Uranus",
+      "Neptune",
+      "Pluto",
+      "NorthNode"
+    ],
+    "extended_points_or_angles": "not_admitted"
   },
   "source_policy": {
     "required_source_admission_any": [
@@ -278,6 +305,14 @@
         "doctrine_status": "project semantic profile, not a canonical astrology school",
         "scientific_or_psychometric_validity": false
       }
+    },
+    "derived_fact_interpretation": {
+      "fact_only_object_ids": [
+        "SouthNode",
+        "Descendant",
+        "ImumCoeli"
+      ],
+      "claim_binding": "forbidden_until_separately_admitted"
     }
   }
 }

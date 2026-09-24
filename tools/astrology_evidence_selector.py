@@ -318,6 +318,39 @@ def _fact_bound_applicability(
     return tags
 
 
+def _fact_only_object_ids(manifest: dict[str, Any]) -> set[str]:
+    policy = manifest.get("natal_semantic_policy", {}).get("derived_fact_interpretation", {})
+    raw_ids = policy.get("fact_only_object_ids", [])
+    if not isinstance(raw_ids, list) or any(not isinstance(item, str) or not item for item in raw_ids):
+        raise AstrologyEvidenceSelectionError("production manifest fact_only_object_ids must be a string array")
+    return set(raw_ids)
+
+
+def _guard_fact_only_claim_binding(
+    run: dict[str, Any],
+    selectors_by_id: dict[str, dict[str, Any]],
+    refs_by_selector: dict[str, list[dict[str, str]]],
+    linked_ids: list[str],
+    fact_only_ids: set[str],
+) -> None:
+    for selector_id in linked_ids:
+        selector = selectors_by_id[selector_id]
+        if selector["selector_kind"] != "object":
+            continue
+        rows_by_id = {
+            row["fact_id"]: row
+            for row in _bundle_rows(run, selector["bundle"], "objects")
+            if isinstance(row.get("fact_id"), str)
+        }
+        for ref in refs_by_selector[selector_id]:
+            row = rows_by_id.get(ref["fact_id"])
+            object_id = row.get("object_id") if isinstance(row, dict) else None
+            if object_id in fact_only_ids:
+                raise AstrologyEvidenceSelectionError(
+                    f"claim binding is not admitted for fact-only object: {object_id}"
+                )
+
+
 def _registry_index(root: Path, manifest: dict[str, Any]) -> dict[str, dict[str, Any]]:
     admitted = set(manifest.get("admitted_research_registries", []))
     index: dict[str, dict[str, Any]] = {}
@@ -421,6 +454,7 @@ def select_evidence(reading_run: Any, typed_request: Any, *, repo_root: Path | N
     root = repo_root or _root_dir()
     manifest = _load_json(root / PRODUCTION_MANIFEST_PATH)
     registries = _registry_index(root, manifest)
+    fact_only_ids = _fact_only_object_ids(manifest)
 
     selectors_by_id = {selector["selector_id"]: selector for selector in request["fact_selectors"]}
     refs_by_selector: dict[str, list[dict[str, str]]] = {}
@@ -439,6 +473,7 @@ def select_evidence(reading_run: Any, typed_request: Any, *, repo_root: Path | N
     for selector in request["claim_selectors"]:
         linked_ids = selector["fact_selector_ids"]
         linked_refs = _dedupe_fact_refs([ref for selector_id in linked_ids for ref in refs_by_selector[selector_id]])
+        _guard_fact_only_claim_binding(run, selectors_by_id, refs_by_selector, linked_ids, fact_only_ids)
         required_applicability: set[str] = set()
         applicability_scope = selector["applicability_scope"]
         for selector_id in linked_ids:

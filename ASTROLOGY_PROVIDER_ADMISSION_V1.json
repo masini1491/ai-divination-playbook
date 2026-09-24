@@ -2,11 +2,12 @@
   "schema_name": "astrology_provider_admission",
   "schema_version": "1.0.0",
   "provider_id": "astronomy-engine-natal-v1",
-  "provider_version": "1.0.0",
+  "provider_version": "1.1.0",
   "status": "PRODUCTION_ADMITTED",
   "scope": [
     "natal",
-    "natal_unknown_time_invariant_signs"
+    "natal_unknown_time_invariant_signs",
+    "natal_known_time_derived_axes"
   ],
   "output_schema": "astrology_fact_bundle@1.0.0",
   "runtime_owner": "tools/astrology_provider.py",
@@ -77,7 +78,58 @@
     "fixed_offset_as_timezone_identity": "not_admitted",
     "unknown_time_scan_minutes": 5,
     "unknown_time_boundary_guard_deg": 2,
-    "unknown_time_output": "only full-local-date invariant tropical sign facts; no longitude degree, house, angle, or natal aspect"
+    "unknown_time_output": "only full-local-date invariant tropical sign facts; no longitude degree, house, angle, or natal aspect",
+    "derived_known_time_objects": [
+      {
+        "object_id": "SouthNode",
+        "object_type": "point",
+        "fact_id": "fact:object:southnode",
+        "node_definition": "mean",
+        "derived_from": "fact:object:northnode",
+        "derivation_policy": "antipode-v1"
+      },
+      {
+        "object_id": "Descendant",
+        "object_type": "angle",
+        "fact_id": "fact:angle:descendant",
+        "derived_from": "fact:angle:ascendant",
+        "derivation_policy": "antipode-v1"
+      },
+      {
+        "object_id": "ImumCoeli",
+        "object_type": "angle",
+        "fact_id": "fact:angle:imumcoeli",
+        "derived_from": "fact:angle:midheaven",
+        "derivation_policy": "antipode-v1"
+      }
+    ],
+    "aspect_participant_object_ids": [
+      "Sun",
+      "Moon",
+      "Mercury",
+      "Venus",
+      "Mars",
+      "Jupiter",
+      "Saturn",
+      "Uranus",
+      "Neptune",
+      "Pluto",
+      "NorthNode"
+    ],
+    "unknown_time_object_ids": [
+      "Sun",
+      "Moon",
+      "Mercury",
+      "Venus",
+      "Mars",
+      "Jupiter",
+      "Saturn",
+      "Uranus",
+      "Neptune",
+      "Pluto",
+      "NorthNode"
+    ],
+    "derived_axes_unknown_time": "not_emitted"
   },
   "provenance": {
     "fact_source": "approved_provider",

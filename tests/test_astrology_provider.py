@@ -50,6 +50,7 @@ class AstrologyProviderTests(unittest.TestCase):
         self.assertEqual("verified_provider", self.bundle["calculation_verification"])
         provider = self.bundle["provider"]
         self.assertEqual("astronomy-engine-natal-v1", provider["provider_id"])
+        self.assertEqual("1.1.0", provider["provider_version"])
         self.assertEqual("astronomy-engine==2.1.19", provider["astronomy_engine_package"])
         self.assertEqual("Australia/Sydney", provider["timezone_name"])
         self.assertEqual("1990-06-15T00:00:00+00:00", provider["resolved_utc_iso"])
@@ -174,6 +175,44 @@ class AstrologyProviderTests(unittest.TestCase):
             self.assertIn(aspect["left_ref"], object_ids)
             self.assertIn(aspect["right_ref"], object_ids)
         self.assertTrue(gate_bundle(self.bundle)["interpretation_allowed"])
+
+
+    def test_e1_known_time_derived_axes_are_antipodes_with_explicit_provenance(self):
+        objects = _objects_by_id(self.bundle)
+        cases = (
+            ("SouthNode", "NorthNode", "fact:object:northnode"),
+            ("Descendant", "Ascendant", "fact:angle:ascendant"),
+            ("ImumCoeli", "Midheaven", "fact:angle:midheaven"),
+        )
+        for derived_id, parent_id, parent_ref in cases:
+            with self.subTest(object_id=derived_id):
+                derived = objects[derived_id]
+                parent = objects[parent_id]
+                expected = (parent["longitude_deg"] + 180.0) % 360.0
+                self.assertAlmostEqual(expected, derived["longitude_deg"], delta=1e-9)
+                self.assertEqual(parent_ref, derived["derived_from"])
+                self.assertEqual("antipode-v1", derived["derivation_policy"])
+        self.assertEqual("mean", objects["SouthNode"]["node_definition"])
+        self.assertIn("house_number", objects["SouthNode"])
+
+    def test_e1_derived_axes_do_not_expand_natal_aspect_participants(self):
+        forbidden_refs = {
+            "fact:object:southnode",
+            "fact:angle:descendant",
+            "fact:angle:imumcoeli",
+        }
+        for aspect in self.bundle["facts"]["aspects"]:
+            self.assertNotIn(aspect["left_ref"], forbidden_refs)
+            self.assertNotIn(aspect["right_ref"], forbidden_refs)
+
+    def test_e1_derived_axes_are_not_emitted_for_unknown_birth_time(self):
+        bundle = build_unknown_time_natal_bundle(
+            local_date="2006-03-14",
+            timezone_name="Asia/Taipei",
+            subject_ref="subject:synthetic-date-only-e1-boundary",
+        )
+        ids = set(_objects_by_id(bundle))
+        self.assertTrue({"SouthNode", "Descendant", "ImumCoeli"}.isdisjoint(ids))
 
 
 if __name__ == "__main__":
