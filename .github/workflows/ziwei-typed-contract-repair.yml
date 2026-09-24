@@ -1,0 +1,29 @@
+name: Zi Wei typed-contract repair bridge
+on:
+  push:
+    branches: [fix/ziwei-typed-contract-closure]
+permissions:
+  contents: write
+jobs:
+  regenerate-and-validate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: python -m pip install --disable-pip-version-check -r requirements-ziwei-calendar.txt
+      - run: python tools/build_ziwei_tool_bundle.py
+      - run: python tools/build_ziwei_tool_bundle.py --check
+      - run: python -m unittest tests.test_ziwei_unified_runtime_v1 -v
+      - run: python -m unittest discover -s tests -v
+      - run: python tools/playbook_check.py .
+      - name: Commit regenerated derived bundle and remove bridge
+        run: |
+          rm .github/workflows/ziwei-typed-contract-repair.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json .github/workflows/ziwei-typed-contract-repair.yml
+          git commit -m "Regenerate Zi Wei bundle after typed contract repair"
+          git push origin HEAD:fix/ziwei-typed-contract-closure

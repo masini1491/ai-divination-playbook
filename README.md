@@ -302,12 +302,16 @@ Zi Wei 目前是 bounded natal production method，適合使用者明確要求�
 
 ```text
 explicit Zi Wei request
-→ tools/ziwei_calendar_provider.py（若輸入西元生日）
-→ tools/ziwei_gregorian_pipeline.py
+→ versioned ZiWeiReadingRequest / JSON transport
+→ tools/ziwei_runtime.py::run_ziwei() / run_ziwei_transport()
+→ tools/ziwei_calendar_provider.py（西元生日）或 normalized lunar input
 → tools/ziwei_natal_provider.py
-→ tools/ziwei_scope_a_pipeline.py
-→ optional tools/ziwei_brightness_pipeline.py
+→ optional tools/ziwei_brightness_provider.py
+→ tools/ziwei_claim_retrieval.py + tools/ziwei_delivery.py
+→ typed Zi Wei result
 → ZIWEI.md bounded synthesis
+
+Legacy `run_scope_a_*` pipelines are compatibility adapters only; they are not the canonical production composition owner.
 ```
 
 重要邊界：
@@ -365,12 +369,15 @@ tools/liuyao_runtime.py
 Canonical production implementation：
 
 ```text
-tools/ziwei_calendar_provider.py
-tools/ziwei_gregorian_pipeline.py
-tools/ziwei_natal_provider.py
-tools/ziwei_scope_a_pipeline.py
-tools/ziwei_brightness_provider.py
-tools/ziwei_brightness_pipeline.py
+tools/ziwei_runtime.py                  # canonical typed composition + JSON transport boundary
+tools/ziwei_calendar_provider.py         # admitted Gregorian normalization provider
+tools/ziwei_natal_provider.py            # admitted natal fact provider
+tools/ziwei_brightness_provider.py       # optional admitted brightness facts
+tools/ziwei_claim_retrieval.py           # production claim retrieval
+tools/ziwei_delivery.py                  # bounded delivery execution
+tools/ziwei_gregorian_pipeline.py        # legacy compatibility adapter
+tools/ziwei_scope_a_pipeline.py          # legacy compatibility adapter
+tools/ziwei_brightness_pipeline.py       # legacy compatibility adapter
 ```
 
 ChatGPT cold-start transport：
