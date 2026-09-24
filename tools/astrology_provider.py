@@ -26,7 +26,7 @@ import astronomy
 from tools.astrology_runtime import MAJOR_ASPECT_ORBS, gate_bundle
 
 PROVIDER_ID = "astronomy-engine-natal-v1"
-PROVIDER_VERSION = "1.1.0"
+PROVIDER_VERSION = "1.2.0"
 ASTRONOMY_ENGINE_PACKAGE_VERSION = "2.1.19"
 ASTRONOMY_ENGINE_SOURCE_REVISION = "865d3da7d8112bbc7911238052c6af4aaf877181"
 TRI_HOROSCOPE_REFERENCE_REVISION = "11318426c52c222eea108583ca45420c864825ca"
@@ -58,6 +58,8 @@ R2D = 180.0 / math.pi
 PLACIDUS_MAX_ABS_LATITUDE = 66.0
 UNKNOWN_TIME_SCAN_MINUTES = 5
 UNKNOWN_TIME_BOUNDARY_GUARD_DEG = 2.0
+FORTUNE_POLICY_ID = "fortune-day-night-v1"
+SECT_POLICY_ID = "sect-geometric-solar-altitude-v1"
 
 
 class ProviderInputError(ValueError):
@@ -166,6 +168,55 @@ def _motion_state(speed_deg_per_day: float) -> str:
     if abs(speed_deg_per_day) < 0.01:
         return "stationary"
     return "retrograde" if speed_deg_per_day < 0 else "direct"
+
+
+def _sun_geometric_altitude_deg(
+    when_utc: dt.datetime,
+    latitude: float,
+    longitude: float,
+) -> float:
+    try:
+        t = _astronomy_time(when_utc)
+        sun_eqj = astronomy.GeoVector(astronomy.Body.Sun, t, True)
+        sun_eqd_vec = astronomy.RotateVector(astronomy.Rotation_EQJ_EQD(t), sun_eqj)
+        sun_eqd = astronomy.EquatorFromVector(sun_eqd_vec)
+        observer = astronomy.Observer(latitude, longitude, 0.0)
+        horizon = astronomy.Horizon(
+            t,
+            observer,
+            sun_eqd.ra,
+            sun_eqd.dec,
+            astronomy.Refraction.Airless,
+        )
+        return float(horizon.altitude)
+    except Exception as exc:
+        raise ProviderInputError(
+            "sect-geometric-solar-altitude-v1 calculation unavailable"
+        ) from exc
+
+
+def _sect_from_geometric_altitude(altitude_deg: float) -> str:
+    if altitude_deg > 0.0:
+        return "diurnal"
+    if altitude_deg < 0.0:
+        return "nocturnal"
+    raise ProviderInputError(
+        "sect-geometric-solar-altitude-v1 is undefined at exact 0 degree solar altitude"
+    )
+
+
+def _part_of_fortune_longitude(
+    *,
+    ascendant_deg: float,
+    sun_deg: float,
+    moon_deg: float,
+    sect: str,
+) -> float:
+    if sect == "diurnal":
+        return _normalize_degrees(ascendant_deg + moon_deg - sun_deg)
+    if sect == "nocturnal":
+        return _normalize_degrees(ascendant_deg + sun_deg - moon_deg)
+    raise ProviderInputError(f"unsupported sect classification for Part of Fortune: {sect}")
 
 
 def _mc_asc(ramc_deg: float, eps_deg: float, latitude_deg: float) -> tuple[float, float]:
@@ -309,6 +360,8 @@ def build_natal_bundle(
     body_data: dict[str, tuple[float, float]] = {
         body: _longitude_and_speed(body, utc) for body in CORE_BODY_NAMES
     }
+    sun_geometric_altitude_deg = _sun_geometric_altitude_deg(utc, latitude, longitude)
+    sect = _sect_from_geometric_altitude(sun_geometric_altitude_deg)
 
     objects: list[dict[str, Any]] = []
     for body in CORE_BODY_NAMES:
@@ -381,6 +434,33 @@ def build_natal_bundle(
         ]
     )
 
+    fortune_deg = _part_of_fortune_longitude(
+        ascendant_deg=asc_deg,
+        sun_deg=body_data["Sun"][0],
+        moon_deg=body_data["Moon"][0],
+        sect=sect,
+    )
+    objects.append(
+        {
+            "fact_id": "fact:object:partoffortune",
+            "object_type": "point",
+            "object_id": "PartOfFortune",
+            "point_kind": "lot",
+            "longitude_deg": fortune_deg,
+            "house_number": _house_of(fortune_deg, cusps),
+            "derived_from": [
+                "fact:angle:ascendant",
+                "fact:object:sun",
+                "fact:object:moon",
+            ],
+            "derivation_policy": FORTUNE_POLICY_ID,
+            "sect_policy_id": SECT_POLICY_ID,
+            "sect": sect,
+            "sun_geometric_altitude_deg": sun_geometric_altitude_deg,
+            **_sign_fields(fortune_deg),
+        }
+    )
+
     houses = [
         {
             "fact_id": f"fact:house:{house}",
@@ -441,6 +521,13 @@ def build_natal_bundle(
             "mean_obliquity_deg": eps,
             "local_sidereal_hours": lst_hours,
             "ramc_deg": ramc,
+            "sect": {
+                "classification": sect,
+                "policy_id": SECT_POLICY_ID,
+                "sun_geometric_altitude_deg": sun_geometric_altitude_deg,
+                "refraction": "Airless",
+                "sun_frame": "geocentric-equator-of-date",
+            },
         },
         "facts": {
             "objects": objects,

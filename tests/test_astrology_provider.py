@@ -7,7 +7,10 @@ from unittest.mock import patch
 
 from tools.astrology_provider import (
     ProviderInputError,
+    _part_of_fortune_longitude,
     _resolve_local_time,
+    _sect_from_geometric_altitude,
+    _sun_geometric_altitude_deg,
     _unknown_time_invariant_sign,
     build_natal_bundle,
     build_unknown_time_natal_bundle,
@@ -50,7 +53,7 @@ class AstrologyProviderTests(unittest.TestCase):
         self.assertEqual("verified_provider", self.bundle["calculation_verification"])
         provider = self.bundle["provider"]
         self.assertEqual("astronomy-engine-natal-v1", provider["provider_id"])
-        self.assertEqual("1.1.0", provider["provider_version"])
+        self.assertEqual("1.2.0", provider["provider_version"])
         self.assertEqual("astronomy-engine==2.1.19", provider["astronomy_engine_package"])
         self.assertEqual("Australia/Sydney", provider["timezone_name"])
         self.assertEqual("1990-06-15T00:00:00+00:00", provider["resolved_utc_iso"])
@@ -213,6 +216,102 @@ class AstrologyProviderTests(unittest.TestCase):
         )
         ids = set(_objects_by_id(bundle))
         self.assertTrue({"SouthNode", "Descendant", "ImumCoeli"}.isdisjoint(ids))
+
+
+    def test_e4_sect_parity_fixture_reproduces_astronomy_engine_altitudes(self):
+        import datetime as dt
+
+        fixture = json.loads(
+            (ROOT / "references" / "astrology" / "extended_chart_e4_sect_parity_fixture.json").read_text(encoding="utf-8")
+        )
+        self.assertTrue(fixture["summary"]["all_classifications_match"])
+        self.assertEqual(6, fixture["summary"]["classification_matches"])
+        for case in fixture["cases"]:
+            with self.subTest(fixture_id=case["fixture_id"]):
+                when = dt.datetime.fromisoformat(case["utc_iso"])
+                altitude = _sun_geometric_altitude_deg(
+                    when,
+                    case["latitude"],
+                    case["longitude"],
+                )
+                self.assertAlmostEqual(
+                    case["astronomy_engine_geometric_altitude_deg"],
+                    altitude,
+                    delta=1e-9,
+                )
+                self.assertEqual(
+                    case["astronomy_engine_classification"],
+                    _sect_from_geometric_altitude(altitude),
+                )
+
+    def test_e4_sect_policy_fails_closed_at_exact_horizon(self):
+        with self.assertRaisesRegex(ProviderInputError, "exact 0 degree"):
+            _sect_from_geometric_altitude(0.0)
+
+    def test_e4_sect_calculation_unavailable_fails_closed(self):
+        with patch("tools.astrology_provider.astronomy.GeoVector", side_effect=RuntimeError("synthetic failure")):
+            with self.assertRaisesRegex(ProviderInputError, "calculation unavailable"):
+                _sun_geometric_altitude_deg(
+                    __import__("datetime").datetime(2000, 1, 1, tzinfo=__import__("datetime").timezone.utc),
+                    0.0,
+                    0.0,
+                )
+
+    def test_e4_part_of_fortune_formula_is_explicitly_sect_dependent(self):
+        self.assertEqual(
+            (10.0 + 100.0 - 40.0) % 360.0,
+            _part_of_fortune_longitude(
+                ascendant_deg=10.0,
+                sun_deg=40.0,
+                moon_deg=100.0,
+                sect="diurnal",
+            ),
+        )
+        self.assertEqual(
+            (10.0 + 40.0 - 100.0) % 360.0,
+            _part_of_fortune_longitude(
+                ascendant_deg=10.0,
+                sun_deg=40.0,
+                moon_deg=100.0,
+                sect="nocturnal",
+            ),
+        )
+
+    def test_e4_provider_emits_fortune_with_sect_provenance(self):
+        objects = _objects_by_id(self.bundle)
+        fortune = objects["PartOfFortune"]
+        provider_sect = self.bundle["provider"]["sect"]
+        self.assertEqual("point", fortune["object_type"])
+        self.assertEqual("lot", fortune["point_kind"])
+        self.assertEqual("fortune-day-night-v1", fortune["derivation_policy"])
+        self.assertEqual("sect-geometric-solar-altitude-v1", fortune["sect_policy_id"])
+        self.assertEqual(provider_sect["classification"], fortune["sect"])
+        self.assertAlmostEqual(
+            provider_sect["sun_geometric_altitude_deg"],
+            fortune["sun_geometric_altitude_deg"],
+            delta=1e-12,
+        )
+        expected = _part_of_fortune_longitude(
+            ascendant_deg=objects["Ascendant"]["longitude_deg"],
+            sun_deg=objects["Sun"]["longitude_deg"],
+            moon_deg=objects["Moon"]["longitude_deg"],
+            sect=fortune["sect"],
+        )
+        self.assertAlmostEqual(expected, fortune["longitude_deg"], delta=1e-9)
+        self.assertIn("house_number", fortune)
+
+    def test_e4_fortune_does_not_expand_aspects_or_unknown_time(self):
+        forbidden = "fact:object:partoffortune"
+        for aspect in self.bundle["facts"]["aspects"]:
+            self.assertNotEqual(forbidden, aspect["left_ref"])
+            self.assertNotEqual(forbidden, aspect["right_ref"])
+        unknown = build_unknown_time_natal_bundle(
+            local_date="2006-03-14",
+            timezone_name="Asia/Taipei",
+            subject_ref="subject:synthetic-date-only-e4-boundary",
+        )
+        self.assertNotIn("PartOfFortune", _objects_by_id(unknown))
+        self.assertNotIn("sect", unknown["provider"])
 
 
 if __name__ == "__main__":
