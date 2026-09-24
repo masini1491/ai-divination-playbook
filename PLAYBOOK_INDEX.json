@@ -73,6 +73,16 @@
       "kind": "reference"
     },
     {
+      "id": "coordination.astrology-backlog",
+      "owner": "ASTROLOGY_BACKLOG.md",
+      "kind": "coordination",
+      "authority": "coordination-only",
+      "method": "Astrology",
+      "production_authority": false,
+      "research_evidence_authority": false,
+      "routing_authority": false
+    },
+    {
       "id": "coordination.ziwei-backlog",
       "owner": "ZIWEI_BACKLOG.md",
       "kind": "coordination",
