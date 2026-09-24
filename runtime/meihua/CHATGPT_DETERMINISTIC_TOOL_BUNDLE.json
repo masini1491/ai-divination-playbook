@@ -84,5 +84,18 @@
       "sha256": "a787a1388a09027f57430082eb8a35824f0a1a61f9f9b8d1163ccb79c32d1de1",
       "payload": "KHMu0Nc1h2BX3wib/B9H6WtRKXR+GWqcw6/FMqIJZI46LVmKB3jAo4GMKek/pIW5c/99VsvpNHwHW715EtR/TgnpRpxkeFUZWk1CE/WZMZJzfgI7UaAZOznbJ7C1TRhx+KXSxDGKM6OZI3xmOLMat3XDwfmQC7qznRAG9vJFN8pC3MEpqJZL3cBBwwCH4IfIkXq72QqzyqAwFXghftB0wprrljhFRCjBG07kB2Epa+Xxg1fRyuUS93CjkEEw6tg2diDbpkHOtjGfbNsqZg6UjbMtl/k/ipwFxA=="
     }
-  ]
+  ],
+  "cache_contract": {
+    "cache_dir": "/mnt/data/divination-meihua-runtime",
+    "marker": "bundle_verification.json",
+    "required_marker_fields": [
+      "verified",
+      "repository",
+      "materialized_source_commit",
+      "last_checked_repository_head",
+      "bundle_contract",
+      "source_file"
+    ],
+    "reuse_only_when_source_file_identity_matches": true
+  }
 }
