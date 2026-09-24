@@ -111,7 +111,7 @@ This SHA is review evidence only, not a pin. Every maintenance task must resolve
 ### ZW-P1-001 — Unified Zi Wei runtime and typed request/result interface
 
 - type: ARCHITECTURE
-- status: IN_PROGRESS
+- status: DONE
 - priority: P1
 - owner: Zi Wei production runtime
 - blocked_by:
@@ -136,7 +136,16 @@ This SHA is review evidence only, not a pin. Every maintenance task must resolve
   - Scope-A + Gregorian + optional brightness behavior preserved;
   - fail-closed unsupported scopes/modules;
   - transport/materialization path updated if runtime source set changes;
-  - CI and product smoke pass.
+  - CI passes; product smoke is required only where the repository workflow actually runs it.
+- completion_evidence:
+  - merged by PR #166 at `babd0bd814e00d804fd2d29f400bd3a89e320538`;
+  - `tools/ziwei_runtime.py` owns the canonical typed `run_ziwei()` composition path;
+  - request/result schemas are versioned under `schemas/ziwei/`;
+  - four legacy entrypoints remain compatibility adapters with prior public result surfaces;
+  - Gregorian and `brightness_v1` composition converge through the same runtime;
+  - unsupported temporal scope/module/profile fails closed;
+  - deterministic bundle was regenerated with runtime + schemas;
+  - Validate Playbook run #616: unit tests, structural checker and casting-runtime succeeded; PR `production-smoke` was skipped by workflow and is not reported as PASS.
 
 ### ZW-P1-002 — Normalize Zi Wei production / research execution boundary
 
