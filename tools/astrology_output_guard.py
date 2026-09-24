@@ -207,15 +207,41 @@ def _validate_unit_refs(
     fact_index: dict[tuple[str, str], dict[str, Any]],
     claim_index: dict[tuple[str, str], dict[str, Any]],
 ) -> None:
+    unit_fact_keys = {_fact_key(ref) for ref in unit["fact_refs"]}
     for ref in unit["fact_refs"]:
         if _fact_key(ref) not in fact_index:
             raise AstrologyOutputGuardError(
                 f"{path} cites fact outside admitted handoff: {ref['bundle']} / {ref['fact_id']}"
             )
+
+    linked_fact_keys: set[tuple[str, str]] = set()
     for ref in unit["claim_refs"]:
-        if _claim_key(ref) not in claim_index:
+        claim = claim_index.get(_claim_key(ref))
+        if claim is None:
             raise AstrologyOutputGuardError(
                 f"{path} cites claim outside admitted handoff: {ref['registry_record_id']} / {ref['claim_id']}"
+            )
+        raw_links = claim.get("fact_refs", [])
+        if not isinstance(raw_links, list):
+            raise AstrologyOutputGuardError(
+                f"{path} cites claim with invalid fact applicability binding: {ref['registry_record_id']} / {ref['claim_id']}"
+            )
+        for raw in raw_links:
+            if not isinstance(raw, dict):
+                raise AstrologyOutputGuardError(
+                    f"{path} cites claim with invalid fact applicability binding: {ref['registry_record_id']} / {ref['claim_id']}"
+                )
+            bundle = raw.get("bundle")
+            fact_id = raw.get("fact_id")
+            if isinstance(bundle, str) and isinstance(fact_id, str):
+                linked_fact_keys.add((bundle, fact_id))
+
+    if unit["claim_refs"]:
+        uncovered = sorted(unit_fact_keys - linked_fact_keys)
+        if uncovered:
+            bundle, fact_id = uncovered[0]
+            raise AstrologyOutputGuardError(
+                f"{path} cites claim(s) that are not applicability-bound to fact: {bundle} / {fact_id}"
             )
 
 
