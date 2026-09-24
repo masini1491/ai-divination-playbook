@@ -503,7 +503,7 @@
         "conditional_activation": {
           "mode": "fact_gated",
           "availability_requires": [
-            "fact_available:auxiliary_stars"
+            "fact_available:m0_auxiliary_stars"
           ],
           "satisfies_all": [],
           "satisfies_any": [
