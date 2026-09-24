@@ -121,7 +121,46 @@ Liuyao → six 6/7/8/9 lines, bottom-to-top, 6/9 changing, 7/8 static
 
 **Playbook HEAD 更新本身不是 Randomizer refresh trigger。Fresh question means fresh RNG, not fresh program acquisition。**
 
-## Acquisition｜只有 cache FAIL 才讀
+## Identity-First Refresh｜合法 refresh trigger 成立後仍先比 runtime identity
+
+只有前節列出的 Randomizer-specific refresh trigger 已合法成立時才進本節。**Refresh trigger成立 ≠ 必須重新 materialize。**
+
+最低成本順序：
+
+```text
+verified local cache + marker
+→ cheap current repository HEAD/ref probe
+→ compare cached runtime_source_commit ... current HEAD
+→ inspect cached runtime_source_path only
+   ├─ unchanged
+   │  → reuse verified local bytes / imported module when safe
+   │  → update observed currentness / provenance marker if needed
+   │  → fresh stochastic execution
+   └─ changed / renamed / compare incomplete / cached commit unavailable
+      → exact current source identity verification
+      → bytes unchanged
+         → reuse verified local bytes
+         → refresh provenance/currentness only
+      → bytes changed / identity inconclusive
+         → Acquisition
+         → verify + materialize + bounded smoke
+         → fresh stochastic execution
+```
+
+Identity rules：
+
+- full Runtime cache identity owner path：`runtime/casting/randomizer.py`；
+- capsule-core cache identity owner path：`runtime/casting/core.py`；
+- cached `runtime_source_commit` 是 **materialized byte provenance**；current Playbook HEAD 是 **repository freshness observation**，兩者可以不同；
+- compare 結果顯示 cached runtime source path 未變 → **MUST NOT** 為了 current HEAD 不同而重新抓 source/capsule、重新 materialize或重跑 full smoke；
+- path changed、rename、compare truncation/ambiguity、cached commit無法比較，才進 exact current source identity fallback；
+- exact current source hash/byte identity與 cache一致 → 保留 cache；只更新 currentness/provenance metadata，不重寫 executable bytes；
+- 只有 source bytes真的改變或 identity 無法可信證明一致時，才進 Acquisition；
+- provenance metadata若擴充，必須區分 materialized source identity 與 last-checked repository identity；不得把 current HEAD 回填成舊 executable bytes 的 source commit。
+
+核心：**refresh currentness first；rematerialize only on material runtime identity change。**
+
+## Acquisition｜只有 cache FAIL 或 identity change 才讀
 
 ```text
 Python capability
