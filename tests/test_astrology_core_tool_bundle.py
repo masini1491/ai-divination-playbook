@@ -32,6 +32,7 @@ class AstrologyCoreToolBundleTests(unittest.TestCase):
         self.assertEqual("astronomy-engine",d["package"])
         self.assertEqual("2.1.19",d["version"])
         self.assertEqual("865d3da7d8112bbc7911238052c6af4aaf877181",d["revision"])
+        self.assertEqual("pypi-wheel-2.1.19-runtime-files-pinned-by-sha256",d["byte_identity"])
         self.assertEqual(2,d["runtime_file_count"])
         self.assertFalse(self.b["execution_contract"]["dependency_install_required_after_materialization"])
         self.assertFalse(self.b["scope"]["place_resolver_included"])
