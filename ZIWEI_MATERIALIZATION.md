@@ -13,6 +13,9 @@ tools/ziwei_runtime.py
 tools/ziwei_calendar_provider.py
 tools/ziwei_gregorian_pipeline.py
 tools/ziwei_natal_provider.py
+tools/ziwei_runtime.py
+schemas/ziwei/ZIWEI_READING_REQUEST_V1.schema.json
+schemas/ziwei/ZIWEI_READING_RESULT_V1.schema.json
 tools/ziwei_scope_a_pipeline.py
 tools/ziwei_brightness_provider.py
 tools/ziwei_brightness_pipeline.py
