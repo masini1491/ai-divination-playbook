@@ -27,8 +27,10 @@
   "pipeline": {
     "pipeline_id": "ziwei-scope-a-brightness-production-pipeline-v1",
     "pipeline_version": "1.0.0",
-    "runtime_owner": "tools/ziwei_brightness_pipeline.py",
-    "parent_pipeline": "tools/ziwei_scope_a_pipeline.py"
+    "runtime_owner": "tools/ziwei_runtime.py",
+    "parent_pipeline": "tools/ziwei_scope_a_pipeline.py",
+    "compatibility_adapter": "tools/ziwei_brightness_pipeline.py",
+    "parent_runtime": "tools/ziwei_runtime.py"
   },
   "interpretation": {
     "new_claim_corpus": false,

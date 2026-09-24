@@ -23,13 +23,21 @@
   "pipeline": {
     "pipeline_id": "ziwei-scope-a-production-pipeline-v1",
     "pipeline_version": "1.1.0",
-    "runtime_owner": "tools/ziwei_scope_a_pipeline.py",
+    "runtime_owner": "tools/ziwei_runtime.py",
     "interpretation_profile": "ziwei.interpretation.tw_v1",
     "delivery_contract": "references/ziwei/UNCERTAINTY_SAFETY_DELIVERY_CONTRACT_V0.md",
     "final_prose_authority": false,
     "conditional_activation_contract": "conditional_activation_v1",
     "claim_retrieval_runtime": "tools/ziwei_claim_retrieval.py",
-    "delivery_runtime": "tools/ziwei_delivery.py"
+    "delivery_runtime": "tools/ziwei_delivery.py",
+    "compatibility_adapter": "tools/ziwei_scope_a_pipeline.py",
+    "request_schema": "schemas/ziwei/ZIWEI_READING_REQUEST_V1.schema.json",
+    "result_schema": "schemas/ziwei/ZIWEI_READING_RESULT_V1.schema.json",
+    "compatibility_adapters": [
+      "tools/ziwei_scope_a_pipeline.py",
+      "tools/ziwei_brightness_pipeline.py",
+      "tools/ziwei_gregorian_pipeline.py"
+    ]
   },
   "admitted_research_registries": [
     "ziwei_interpretation_claim_registry_batch1.json",
@@ -79,9 +87,25 @@
       "id": "gregorian_calendar_v1",
       "admission_manifest": "ZIWEI_CALENDAR_ADMISSION_V1.json",
       "runtime_owner": "tools/ziwei_calendar_provider.py",
-      "pipeline": "tools/ziwei_gregorian_pipeline.py",
+      "pipeline": "tools/ziwei_runtime.py",
       "profile_id": "ziwei.calendar.tw_v1",
       "timezone": "Asia/Taipei"
     }
-  ]
+  ],
+  "runtime": {
+    "runtime_id": "ziwei-production-runtime-v1",
+    "runtime_version": "1.0.0",
+    "runtime_owner": "tools/ziwei_runtime.py",
+    "request_schema": "schemas/ziwei/ZIWEI_READING_REQUEST_V1.schema.json",
+    "result_schema": "schemas/ziwei/ZIWEI_READING_RESULT_V1.schema.json",
+    "temporal_scope": "natal_baseline",
+    "optional_modules": [
+      "brightness_v1"
+    ],
+    "compatibility_adapters": [
+      "tools/ziwei_scope_a_pipeline.py",
+      "tools/ziwei_brightness_pipeline.py",
+      "tools/ziwei_gregorian_pipeline.py"
+    ]
+  }
 }

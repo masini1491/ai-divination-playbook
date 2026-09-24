@@ -1,0 +1,180 @@
+#!/usr/bin/env python3
+"""Canonical typed runtime for admitted Zi Wei production composition.
+
+This owner normalizes the admitted request surface, selects optional modules,
+binds deterministic providers to admitted claim retrieval/delivery, and emits
+one versioned result shape. Legacy pipeline entrypoints are compatibility
+adapters only.
+"""
+from __future__ import annotations
+
+from dataclasses import dataclass
+from typing import Any, Literal
+
+from tools import ziwei_claim_retrieval as _retrieval
+from tools import ziwei_delivery as _delivery
+from tools.ziwei_brightness_provider import PROFILE_ID as BRIGHTNESS_PROFILE_ID, calculate_brightness
+from tools.ziwei_calendar_provider import GregorianBirthInput, normalize_gregorian_birth
+from tools.ziwei_natal_provider import NormalizedNatalInput, calculate_scope_a_natal
+from pathlib import Path
+
+ROOT=Path(__file__).resolve().parents[1]
+REF=ROOT/"references"/"ziwei"
+
+RUNTIME_ID="ziwei-production-runtime-v1"
+RUNTIME_VERSION="1.0.0"
+REQUEST_SCHEMA="schemas/ziwei/ZIWEI_READING_REQUEST_V1.schema.json"
+RESULT_SCHEMA="schemas/ziwei/ZIWEI_READING_RESULT_V1.schema.json"
+INTERPRETATION_PROFILE="ziwei.interpretation.tw_v1"
+TEMPORAL_SCOPE="natal_baseline"
+BRIGHTNESS_MODULE="brightness_v1"
+ADMITTED_REGISTRIES=(
+    "ziwei_interpretation_claim_registry_batch1.json",
+    "ziwei_interpretation_claim_registry_batch2.json",
+    "ziwei_interpretation_claim_registry_palaces_v0.json",
+)
+
+@dataclass(frozen=True)
+class ZiWeiReadingRequest:
+    request_id: str
+    birth: GregorianBirthInput | NormalizedNatalInput
+    temporal_scope: Literal["natal_baseline"] = TEMPORAL_SCOPE
+    requested_subjects: tuple[str,...] = ()
+    enabled_source_ids: tuple[str,...] = ()
+    optional_modules: tuple[str,...] = ()
+    brightness_profile: str | None = None
+
+    def validate(self) -> None:
+        if not isinstance(self.request_id,str) or not self.request_id.strip():
+            raise ValueError("request_id is required")
+        if self.temporal_scope != TEMPORAL_SCOPE:
+            raise ValueError(f"unsupported temporal_scope: {self.temporal_scope}")
+        if not isinstance(self.birth,(GregorianBirthInput,NormalizedNatalInput)):
+            raise ValueError("birth must be GregorianBirthInput or NormalizedNatalInput")
+        unknown=sorted(set(self.optional_modules)-{BRIGHTNESS_MODULE})
+        if unknown:
+            raise ValueError(f"unsupported optional_modules: {','.join(unknown)}")
+        if len(set(self.optional_modules)) != len(self.optional_modules):
+            raise ValueError("optional_modules must be unique")
+        if self.brightness_profile is not None and BRIGHTNESS_MODULE not in self.optional_modules:
+            raise ValueError("brightness_profile requires brightness_v1")
+        if BRIGHTNESS_MODULE in self.optional_modules:
+            if self.brightness_profile not in (None,BRIGHTNESS_PROFILE_ID):
+                raise ValueError(f"unsupported brightness_profile: {self.brightness_profile}")
+
+def _production_registries():
+    regs=_retrieval.load_registries(REF/x for x in ADMITTED_REGISTRIES)
+    for name,reg in zip(ADMITTED_REGISTRIES,regs):
+        if reg.get("production_routable") is not False:
+            raise ValueError(f"REGISTRY_HISTORY_MUTATED:{name}")
+        if reg.get("interpretation_profile") != INTERPRETATION_PROFILE:
+            raise ValueError(f"REGISTRY_PROFILE_MISMATCH:{name}")
+    return regs
+
+def _normalize_birth(birth:GregorianBirthInput|NormalizedNatalInput)->tuple[NormalizedNatalInput,dict[str,Any]|None]:
+    if isinstance(birth,NormalizedNatalInput):
+        birth.validate()
+        return birth,None
+    calendar=normalize_gregorian_birth(birth)
+    n=calendar["normalized_natal_input"]
+    return NormalizedNatalInput(
+        lunar_year=n["lunar_year"], lunar_month=n["lunar_month"], lunar_day=n["lunar_day"],
+        hour_branch=n["hour_branch"], calendar_provenance=n["calendar_provenance"],
+        leap_month_identity=n["leap_month_identity"],
+    ),calendar
+
+def _compose(chart:dict[str,Any], request:ZiWeiReadingRequest, calendar:dict[str,Any]|None)->dict[str,Any]:
+    packet=_retrieval.FactPacket(
+        packet_id=f"{request.request_id}:facts",
+        interpretation_profile=INTERPRETATION_PROFILE,
+        temporal_scope=TEMPORAL_SCOPE,
+        facts=frozenset(chart["retrieval_facts"]),
+        requested_subjects=frozenset(request.requested_subjects),
+        enabled_source_ids=frozenset(request.enabled_source_ids),
+    )
+    retrieval=_retrieval.retrieve_claims(packet,_production_registries())
+    frame=_retrieval.compose_frame(packet,retrieval)
+    conflicts=frame["conflicts"]
+    evidence_states={"source_backed","project_adopted"}
+    if conflicts:
+        evidence_states.add("conflicted")
+    actions=_delivery.delivery_actions(evidence_states=evidence_states)
+    modules=list(request.optional_modules)
+    result={
+        "schema_name":"ziwei_reading_result",
+        "schema_version":"1.0.0",
+        "runtime":{
+            "runtime_id":RUNTIME_ID,
+            "runtime_version":RUNTIME_VERSION,
+            "request_schema":REQUEST_SCHEMA,
+            "result_schema":RESULT_SCHEMA,
+            "temporal_scope":TEMPORAL_SCOPE,
+            "optional_modules":modules,
+        },
+        "pipeline_id":"ziwei-scope-a-production-pipeline-v1",
+        "pipeline_version":"1.1.0",
+        "status":"PRODUCTION_ADMITTED",
+        "scope":"bounded_natal_first_layer"+("+optional_brightness_v1" if BRIGHTNESS_MODULE in modules else ""),
+        "request_id":request.request_id,
+        "calculation":{
+            "provider":chart["provider"], "calculation_profile":chart["calculation_profile"],
+            "input_provenance":chart["input_provenance"], "normalized_input":chart["normalized_input"],
+            "year_pillar":chart["year_pillar"], "life_palace":chart["life_palace"],
+            "body_palace":chart["body_palace"], "five_element_bureau":chart["five_element_bureau"],
+            "ziwei_branch":chart["ziwei_branch"], "major_star_placements":chart["major_star_placements"],
+            "palaces":chart["palaces"], "topology":chart["topology"], "unsupported":chart["unsupported"],
+        },
+        "interpretation":{
+            "profile":INTERPRETATION_PROFILE, "temporal_scope":TEMPORAL_SCOPE,
+            "selected_claims":retrieval["selected_claims"], "selected_claim_ids":frame["selected_claim_ids"],
+            "conditional_evaluations":retrieval["conditional_evaluations"], "subject_claims":frame["subject_claims"],
+            "conflicts":conflicts, "omissions":retrieval["omissions"],
+        },
+        "delivery":{
+            "evidence_states":sorted(evidence_states), "actions":actions,
+            "rendering_boundary":"admitted_claims_only_no_new_doctrine",
+            "high_impact_requires_bounded_delivery":True,
+        },
+        "authority":{
+            "production_authority_granted":True, "ordinary_auto_routing":False,
+            "final_prose_authority":False, "scientific_predictive_validity_claimed":False,
+        },
+    }
+    if calendar is not None:
+        result["input_adapter"]={
+            "pipeline_id":"ziwei-gregorian-input-adapter-v1",
+            "pipeline_version":"1.0.0",
+            "calendar":calendar,
+        }
+        result["authority"]["gregorian_input_adapter_admitted"]=True
+    return result
+
+def run_ziwei(request:ZiWeiReadingRequest)->dict[str,Any]:
+    request.validate()
+    natal,calendar=_normalize_birth(request.birth)
+    chart=calculate_scope_a_natal(natal)
+    if BRIGHTNESS_MODULE in request.optional_modules:
+        brightness=calculate_brightness(chart["major_star_placements"])
+        chart=dict(chart)
+        chart["retrieval_facts"]=list(chart["retrieval_facts"])+list(brightness["retrieval_facts"])
+        unsupported=dict(chart["unsupported"])
+        unsupported["brightness"]="computed_by_optional_profile"
+        chart["unsupported"]=unsupported
+        chart["brightness"]=brightness
+    result=_compose(chart,request,calendar)
+    if BRIGHTNESS_MODULE in request.optional_modules:
+        result["calculation"]["brightness"]=chart["brightness"]
+        result["authority"]["brightness_profile_admitted"]=True
+        result["authority"]["brightness_only_doctrine_admitted"]=False
+    return result
+
+def legacy_result(result:dict[str,Any], *, brightness:bool=False) -> dict[str,Any]:
+    """Project the typed v1 result back to the pre-v1 public pipeline surface."""
+    legacy=dict(result)
+    legacy.pop("schema_name",None)
+    legacy.pop("schema_version",None)
+    legacy.pop("runtime",None)
+    if brightness:
+        legacy["pipeline_id"]="ziwei-scope-a-brightness-production-pipeline-v1"
+        legacy["pipeline_version"]="1.0.0"
+    return legacy

@@ -111,19 +111,21 @@ This SHA is review evidence only, not a pin. Every maintenance task must resolve
 ### ZW-P1-001 — Unified Zi Wei runtime and typed request/result interface
 
 - type: ARCHITECTURE
-- status: OPEN
+- status: IN_PROGRESS
 - priority: P1
 - owner: Zi Wei production runtime
 - blocked_by:
   - ZW-P0-002
   - ZW-P1-002
-- current_state:
-  - `run_scope_a_natal()`
-  - `run_scope_a_gregorian()`
-  - `run_scope_a_natal_with_brightness()`
-  - `run_scope_a_gregorian_with_brightness()`
-  - no canonical `tools/ziwei_runtime.py`
-  - no versioned Zi Wei reading request/result schema
+- pre_change_state:
+  - four combinatorial public entrypoints owned composition;
+  - no canonical `tools/ziwei_runtime.py`;
+  - no versioned Zi Wei reading request/result schema.
+- implementation_state:
+  - `tools/ziwei_runtime.py` owns typed production composition through `run_ziwei()`;
+  - `schemas/ziwei/ZIWEI_READING_REQUEST_V1.schema.json` and `ZIWEI_READING_RESULT_V1.schema.json` define the v1 interface;
+  - legacy `run_scope_a_*` entrypoints are compatibility adapters;
+  - `brightness_v1` is selected through `optional_modules`, not a new canonical entrypoint;
 - target:
   - one request owner for birth input, temporal scope, requested subjects, optional modules and profile selections;
   - one result owner for normalized input, deterministic facts, selected claims, omissions, conflicts, provenance and authority state;

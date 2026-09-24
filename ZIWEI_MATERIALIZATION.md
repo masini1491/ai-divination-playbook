@@ -9,9 +9,12 @@ Status: **TASK-SPECIFIC CANONICAL CONTRACT**
 Repo-local authority 仍是：
 
 ```text
+tools/ziwei_runtime.py
 tools/ziwei_calendar_provider.py
 tools/ziwei_gregorian_pipeline.py
 tools/ziwei_natal_provider.py
+schemas/ziwei/ZIWEI_READING_REQUEST_V1.schema.json
+schemas/ziwei/ZIWEI_READING_RESULT_V1.schema.json
 tools/ziwei_scope_a_pipeline.py
 tools/ziwei_brightness_provider.py
 tools/ziwei_brightness_pipeline.py
@@ -53,7 +56,7 @@ explicit Zi Wei request
    → write exact paths under /mnt/data/divination-ziwei-runtime/
    → write + fresh-read bundle_verification.json
    → prepend verified cache root to Python sys.path
-→ execute tools/ziwei_gregorian_pipeline.py
+→ execute tools/ziwei_runtime.py (`run_ziwei`)
 → deterministic Scope-A facts / admitted claims
 → ZIWEI.md bounded synthesis
 ```
@@ -92,7 +95,9 @@ GitHub Connect → acquisition authority
 bundle → derived transport cache only
 this contract → handoff / verification / cache policy only
 pinned lunar-python → Gregorian/lunar dependency bytes
-Zi Wei providers/pipelines + production retrieval/delivery tools → deterministic production facts + retrieval binding
+tools/ziwei_runtime.py → canonical typed production composition
+Zi Wei providers + production retrieval/delivery tools → deterministic facts + admitted claim binding
+legacy pipelines → compatibility adapters only
 ZIWEI.md → interpretation / output governance
 ```
 

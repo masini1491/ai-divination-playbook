@@ -25,6 +25,9 @@ DEPENDENCY_LICENSE="MIT"
 DEPENDENCY_LICENSE_BLOB="f02d3b9375ad9cd6eb17cabdc9723b91e257f612"
 
 PROJECT_PATHS=(
+ "tools/ziwei_runtime.py",
+ "schemas/ziwei/ZIWEI_READING_REQUEST_V1.schema.json",
+ "schemas/ziwei/ZIWEI_READING_RESULT_V1.schema.json",
  "tools/ziwei_calendar_provider.py",
  "tools/ziwei_gregorian_pipeline.py",
  "tools/ziwei_natal_provider.py",

@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ZIWEI_READING_RESULT_V1.schema.json",
+  "title": "Zi Wei Production v1 Reading Result",
+  "description": "Closed-world top-level result contract emitted by tools/ziwei_runtime.py. Nested calculation, interpretation, delivery and authority objects retain their existing admitted contracts.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_name",
+    "schema_version",
+    "runtime",
+    "pipeline_id",
+    "pipeline_version",
+    "status",
+    "scope",
+    "request_id",
+    "calculation",
+    "interpretation",
+    "delivery",
+    "authority"
+  ],
+  "properties": {
+    "schema_name": {
+      "const": "ziwei_reading_result"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "runtime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "runtime_id",
+        "runtime_version",
+        "request_schema",
+        "result_schema",
+        "temporal_scope",
+        "optional_modules"
+      ],
+      "properties": {
+        "runtime_id": {
+          "const": "ziwei-production-runtime-v1"
+        },
+        "runtime_version": {
+          "const": "1.0.0"
+        },
+        "request_schema": {
+          "const": "schemas/ziwei/ZIWEI_READING_REQUEST_V1.schema.json"
+        },
+        "result_schema": {
+          "const": "schemas/ziwei/ZIWEI_READING_RESULT_V1.schema.json"
+        },
+        "temporal_scope": {
+          "const": "natal_baseline"
+        },
+        "optional_modules": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "brightness_v1"
+            ]
+          }
+        }
+      }
+    },
+    "pipeline_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "pipeline_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "const": "PRODUCTION_ADMITTED"
+    },
+    "scope": {
+      "enum": [
+        "bounded_natal_first_layer",
+        "bounded_natal_first_layer+optional_brightness_v1"
+      ]
+    },
+    "request_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "calculation": {
+      "type": "object"
+    },
+    "interpretation": {
+      "type": "object"
+    },
+    "delivery": {
+      "type": "object"
+    },
+    "authority": {
+      "type": "object"
+    },
+    "input_adapter": {
+      "type": "object"
+    }
+  }
+}
