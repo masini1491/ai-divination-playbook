@@ -45,6 +45,19 @@ class LiuyaoMaterializationContractTests(unittest.TestCase):
         self.assertIn("deterministic recovery 沿用原 `cast_timestamp`", self.owner)
         self.assertIn("保留原 cast_timestamp", self.materialization)
 
+    def test_identity_first_refresh_is_source_path_scoped(self) -> None:
+        required = (
+            "materialized_source_commit",
+            "last_checked_repository_head",
+            "Identity-first deterministic refresh",
+            "tools/liuyao_calendar.py",
+            "tools/liuyao_engine.py",
+            "tools/liuyao_runtime.py",
+            "current HEAD與 `materialized_source_commit` 不同本身不是 MISS",
+        )
+        for phrase in required:
+            self.assertIn(phrase, self.materialization)
+
     def test_unavailable_requires_exhausted_materialization_paths(self) -> None:
         self.assertIn(
             "recovery exhausted + structural engine unavailable",
