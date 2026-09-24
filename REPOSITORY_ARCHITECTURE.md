@@ -13,6 +13,8 @@ Status: **REPO-LEVEL CANONICAL CONTRACT**
 - ChatGPT runtime/materialization transport 與 durable data 的邊界；
 - third-party implementation 何時可 vendored；
 - research/evidence 與 stable machine contract 的位置；
+- routing/index/evidence/fixture/validation 等 supporting surface 何時值得建立；
+- control-plane / data-plane 如何分離；
 - 大型 repo-local data 如何維持 bounded-read / bounded-loading。
 
 本檔不回答：
@@ -37,6 +39,20 @@ third_party/  actually vendored upstream implementation
 references/   research / evidence / comparison / historical records
 schemas/      stable machine-readable contracts
 ```
+
+這六層是 **core topology**，不是要求 repository 只能存在這六個目錄。依實際 retrieval intent，可另外建立下列 **optional supporting surfaces**：
+
+```text
+indexes/      routing / lookup metadata only
+evidence/     bounded observations / measurements / provenance staging
+fixtures/     deterministic test / parity / reproducibility inputs
+validation/   validation contracts / result artifacts / campaign evidence
+coordination/ or TASKS/BACKLOG
+              Hot / Cold work-control surfaces where the repository adopts them
+```
+
+Optional surface 不是新的 semantic authority class；建立前必須有獨立 retrieval intent、清楚 responsibility boundary 與 bounded-loading benefit。若現有 owner 已能自然承接，不為目錄對稱或形式完整而新增 surface。
+
 
 ### 2.1 `tools/`
 
@@ -149,7 +165,104 @@ Schema：
 - 不自動取得 calculation / semantic authority；
 - 若 schema 與 owner policy 衝突，以 canonical owner 為準。
 
-## 3. Source / derived data / transport boundary
+
+### 2.7 Optional supporting surfaces
+
+#### `indexes/`
+
+`indexes/` 只放 machine-readable routing / lookup metadata。
+
+Shared rule：
+
+- index 可保存 stable id / alias / owner / path / section / bucket locator；
+- index 不複製被路由內容本體；
+- index 不保存 volatile current conclusion、validation result 或歷史 evidence，除非該 index 本身就是對應 canonical owner；
+- routing metadata 失效時應 fail closed 或回 canonical router，而不是靠模型猜 path；
+- generated index 應可由 canonical owner / manifest deterministic rebuild。
+
+概念上：
+
+```text
+index = control plane
+canonical owner / data / evidence = data plane
+```
+
+若 receiving actor 能直接從 current authoritative source 取得 substantive content，routing/handoff 優先傳 pointer / identity，不把大型 file、diff、log、dataset 複製進 control message 或 index。
+
+#### `evidence/`
+
+`evidence/` 可用於保存 observation、bench/hardware result、source capture summary、provenance record 或 pre-canonical evidence staging。
+
+- evidence ≠ policy / architecture / method authority；
+- evidence 不因被 commit 就自動升格為 admitted fact；
+- promotion 必須回到對應 canonical owner / admission contract；
+- raw sensitive evidence 不得為了之後再清理而先進 public Git。
+
+#### `fixtures/`
+
+`fixtures/` 可保存 deterministic tests、parity、replay、golden input/output 或 reproducibility 所需的 bounded examples。
+
+- fixture 證明的是已覆蓋的 tested scope；
+- fixture PASS 不等於全域 production validity；
+- public fixture 不得包含可識別個資、secret 或未授權 proprietary data。
+
+#### `validation/`
+
+`validation/` 可保存 validation contract、campaign plan、machine result或 current validation evidence，但必須清楚區分：
+
+```text
+validation contract
+≠ validation run result
+≠ production authority
+```
+
+是否採 dedicated `validation/` 由 repository scale / independent retrieval intent 決定；小型專案可以由現有 owner 承接，不要求建立空目錄。
+
+#### coordination surfaces
+
+`TASKS.md`、`BACKLOG.md`、`tasks/**` 或等價 Hot / Cold coordination surface 是 work-control plane，不是 technical truth/data plane。
+
+- queue/admission 可授權 work lifecycle，但不得取代 architecture / protocol / data / evidence authority；
+- Cold item 不因持久化而取得 execution authority；
+- 已完成的 technical truth 應回 canonical owner / source / history，而不是永久靠 queue 維持 current state。
+
+## 3. Information surface admission / retrieval-intent gate
+
+新增 file / directory / router / index / evidence dossier / data shard family前，先回答：
+
+> **這是否形成可被獨立詢問、引用或 bounded-load，且與既有 owner 有清楚 responsibility boundary 的 retrieval intent？**
+
+只有「內容變多」、「檔案變大」、「來源很多」或「看起來比較整齊」不足以構成新 surface。
+
+優先順序：
+
+1. exact canonical leaf 已知 → direct leaf；
+2. 需要 routing → thin index / router；
+3. 需要 substantive current content → 從 authoritative data plane direct-read；
+4. 只有在不可重取、跨邊界 transport 本身是 requirement、或 bounded cache 有實測收益時，才建立 derived transport/cache；
+5. evidence足夠即停止，不為形式掃完整 repository。
+
+Repository topology 必須同時最佳化：
+
+- authority clarity；
+- retrieval/search cost；
+- context cohesion；
+- reconciliation/drift cost；
+- deterministic rebuildability。
+
+概念上：
+
+```text
+control plane
+  routing / owner pointer / task state / bounded decision state
+
+data plane
+  canonical file body / dataset / evidence / diff / log / runtime result
+```
+
+Control plane 不複製 data plane 本體；data plane 也不因被 routing metadata 指到就取得額外 authority。
+
+## 4. Source / derived data / transport boundary
 
 任何 deterministic-data feature 必須先分類三層：
 
@@ -165,7 +278,7 @@ source authority
 
 不得因 source package 可執行，就假設 production 必須 vendor 或 materialize整包 source implementation。
 
-## 4. Repo-local deterministic-data contract
+## 5. Repo-local deterministic-data contract
 
 新增或大改 `data/**` 時，至少回答：
 
@@ -191,7 +304,7 @@ versioned path or explicit format version
 
 若單一 manifest 過大，可採 hierarchical manifest / aggregate hash；不要求把每個 shard hash 全塞進一個 root file。
 
-## 5. Large-data / bounded-read rule
+## 6. Large-data / bounded-read rule
 
 Repository physical size 與 ChatGPT loading size 分開治理：
 
@@ -217,7 +330,7 @@ Large dataset 必須避免被 `CHAT_INIT.md`、load pack 或 ordinary method boo
 
 Query-bounded shard / index 設計應優先讓 ordinary request 只讀最低充分 data subset。
 
-## 6. Directory width / sharding
+## 7. Directory width / sharding
 
 大量 generated files 不應全部 flat 放同一 directory。
 
@@ -243,7 +356,7 @@ Path layout 必須：
 - 不要求 model 先 enumerate 整個 tree；
 - 支援 exact-commit bounded retrieval。
 
-## 7. Generator and rebuild contract
+## 8. Generator and rebuild contract
 
 Generator 應：
 
@@ -259,7 +372,7 @@ Build-time dependency ≠ runtime dependency。
 
 Generator 可以依賴 external/pinned package，但 production consumer若只需要 repo-local `data/**`，不因 generator dependency 而必須在 ordinary ChatGPT runtime安裝該 package。
 
-## 8. Method-specific extension rule
+## 9. Method-specific extension rule
 
 Astrology / Zi Wei / Liuyao / Meihua 等 method 可在本共通分層下定義自己的 data schema、provider、materialization 或 admission，但不得建立平行 repository-layer policy。
 
@@ -271,7 +384,7 @@ shared invariant不變
 → 若真的需要改 shared taxonomy，再修改本檔
 ```
 
-## 9. Current method implications
+## 10. Current method implications
 
 ### Astrology
 
@@ -315,7 +428,7 @@ B. upstream calendar source only generates verified repo-local data
 
 未來若加入大型曆法表、mapping table、lookup index，先依本檔判斷是 executable logic、deterministic data、transport、vendored implementation、research evidence 或 schema，再交由各 method owner admission。
 
-## 10. Validation / migration rule
+## 11. Validation / migration rule
 
 改動 shared repository architecture 時：
 
