@@ -62,6 +62,8 @@ typed Zi Wei request
 → tools/ziwei_natal_provider.py
 → optional_modules includes brightness_v1
    → tools/ziwei_brightness_provider.py
+→ optional_modules includes m0_auxiliary_v1
+   → tools/ziwei_m0_auxiliary_provider.py
 → tools/ziwei_claim_retrieval.py
 → tools/ziwei_delivery.py
 → typed Zi Wei result
@@ -148,6 +150,9 @@ tools/ziwei_claim_retrieval.py + tools/ziwei_delivery.py
 
 tools/ziwei_brightness_provider.py + tools/ziwei_brightness_pipeline.py
 → optional profile-bound brightness facts + legacy compatibility adapter
+
+tools/ziwei_m0_auxiliary_provider.py + ZIWEI_M0_AUXILIARY_ADMISSION_V1.json
+→ optional M0 左輔／右弼／文昌／文曲 placement / modifier facts + bounded auxiliary-role claim admission
 
 ZIWEI_BRIGHTNESS_ADMISSION_V1.json
 → optional brightness production admission truth
