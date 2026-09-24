@@ -29,7 +29,7 @@ Last reviewed against:
 
 ```text
 ai-divination-playbook main
-367e9725d02e9dfd4a069088bcc2c534fb2a8f27
+fd5e22f275bdad6aa23076179e68115cce1c177e
 ```
 
 This SHA is review evidence only, not a pin. Every maintenance task must resolve current `main` again before mutation.
@@ -39,7 +39,7 @@ This SHA is review evidence only, not a pin. Every maintenance task must resolve
 ### ZW-P0-001 — Reconcile stale Zi Wei research/current-state documents
 
 - type: MAINTENANCE / RECONCILIATION
-- status: OPEN
+- status: DONE
 - priority: P0
 - owner: Zi Wei maintenance
 - blocked_by: none
@@ -69,11 +69,15 @@ This SHA is review evidence only, not a pin. Every maintenance task must resolve
   - document current optional brightness profile `ziwei.brightness.iztro_v1`;
   - document Gregorian adapter and deterministic materialization current state;
   - structural/behavioral validation passes.
+- completion_evidence:
+  - current-state annotations added without rewriting historical research decisions;
+  - explicit production routing vs ordinary unspecified auto-routing is now distinguished;
+  - Gregorian adapter, optional brightness profile and deterministic materialization current state are documented.
 
 ### ZW-P0-002 — Harden conditional applicability / activation semantics
 
 - type: BUG / CORRECTNESS
-- status: OPEN
+- status: DONE
 - priority: P0
 - owner: Zi Wei interpretation/runtime maintenance
 - blocked_by: none
@@ -96,6 +100,11 @@ This SHA is review evidence only, not a pin. Every maintenance task must resolve
   - reconcile existing 52-claim fixtures and production selection behavior;
   - add regression coverage for satisfied / unsatisfied / not-computed conditional activation;
   - no model-memory substitution.
+- completion_evidence:
+  - merged by PR #163 at `fd5e22f275bdad6aa23076179e68115cce1c177e`;
+  - conditional activation states are explicit: `not_required / satisfied / unsatisfied / not_computed`;
+  - production selection fails closed for undemonstrated fact-gated conditions;
+  - 52-claim admitted corpus count is unchanged.
 
 ## P1 — product architecture
 
