@@ -1,0 +1,35 @@
+name: One-time build Astrology core bundle
+
+on:
+  push:
+    branches:
+      - feat/astrology-core-materialization
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    if: ${{ !contains(github.event.head_commit.message, 'Generate Astrology core bundle') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/astrology-core-materialization
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install pinned Astronomy Engine only
+        run: python -m pip install --disable-pip-version-check astronomy-engine==2.1.19
+      - name: Generate deterministic core bundle
+        run: python tools/build_astrology_core_bundle.py
+      - name: Commit generated artifact
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add runtime/astrology/CHATGPT_DETERMINISTIC_CORE_BUNDLE.json
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m "Generate Astrology core bundle"
+          git push

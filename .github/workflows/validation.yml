@@ -41,6 +41,12 @@ jobs:
       - name: Verify Astrology rule-layering regression selection
         run: python tools/behavioral_eval.py --matrix evals/regression_matrix.json --change-class astrology-rule-layering
 
+      - name: Verify Astrology deterministic core tool bundle
+        run: python tools/build_astrology_core_bundle.py --check
+
+      - name: Verify Astrology deterministic materialization regression selection
+        run: python tools/behavioral_eval.py --matrix evals/regression_matrix.json --change-class astrology-deterministic-materialization
+
       - name: Verify output-core regression selection
         run: python tools/behavioral_eval.py --matrix evals/regression_matrix.json --change-class output-core-refactor
 

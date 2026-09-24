@@ -183,10 +183,17 @@
       "TAROT-BEH-017",
       "TAROT-BEH-018",
       "TAROT-BEH-012"
+    ],
+    "astrology-deterministic-materialization": [
+      "TAROT-BEH-016",
+      "TAROT-BEH-017",
+      "TAROT-BEH-018",
+      "TAROT-BEH-012"
     ]
   },
   "supporting_product_scenarios": {
     "liuyao-deterministic-materialization": "evals/LIUYAO_MATERIALIZATION_PRODUCT_SCENARIO.md",
-    "ziwei-deterministic-materialization": "evals/ZIWEI_MATERIALIZATION_PRODUCT_SCENARIO.md"
+    "ziwei-deterministic-materialization": "evals/ZIWEI_MATERIALIZATION_PRODUCT_SCENARIO.md",
+    "astrology-deterministic-materialization": "evals/ASTROLOGY_MATERIALIZATION_PRODUCT_SCENARIO.md"
   }
 }
