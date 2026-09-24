@@ -1,25 +1,15 @@
 #!/usr/bin/env python3
 """Production binding for Zi Wei Scope-A bounded natal first layer."""
 from __future__ import annotations
-import importlib.util
-import sys
 from pathlib import Path
 from typing import Any
 
 from tools.ziwei_natal_provider import NormalizedNatalInput, calculate_scope_a_natal
+from tools import ziwei_claim_retrieval as _retrieval
+from tools import ziwei_delivery as _delivery
 
 ROOT=Path(__file__).resolve().parents[1]
 REF=ROOT/"references"/"ziwei"
-
-def _load(name:str,path:Path):
-    spec=importlib.util.spec_from_file_location(name,path)
-    if not spec or not spec.loader:
-        raise RuntimeError(f"cannot load {path}")
-    mod=importlib.util.module_from_spec(spec); sys.modules[name]=mod; spec.loader.exec_module(mod)
-    return mod
-
-_retrieval=_load("ziwei_scope_a_retrieval",REF/"interpretation_retrieval_v0.py")
-_delivery=_load("ziwei_scope_a_delivery",REF/"validate_uncertainty_safety_delivery_v0.py")
 
 PIPELINE_ID="ziwei-scope-a-production-pipeline-v1"
 PIPELINE_VERSION="1.1.0"
