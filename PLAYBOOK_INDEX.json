@@ -179,7 +179,7 @@
       "kind": "contract",
       "activation": "explicit-request-only",
       "scope": "natal_baseline",
-      "pipeline": "tools/ziwei_scope_a_pipeline.py",
+      "pipeline": "tools/ziwei_runtime.py",
       "natal_provider": "tools/ziwei_natal_provider.py",
       "admission_manifest": "ZIWEI_PRODUCTION_ADMISSION_V1.json",
       "interpretation_profile": "ziwei.interpretation.tw_v1",
@@ -188,25 +188,35 @@
       "optional_modules": {
         "brightness_v1": {
           "activation": "explicit-brightness-or-dignity-request-only",
-          "pipeline": "tools/ziwei_brightness_pipeline.py",
+          "pipeline": "tools/ziwei_runtime.py",
           "provider": "tools/ziwei_brightness_provider.py",
           "admission_manifest": "ZIWEI_BRIGHTNESS_ADMISSION_V1.json",
           "profile_id": "ziwei.brightness.iztro_v1",
-          "admitted_claims_added": 0
+          "admitted_claims_added": 0,
+          "compatibility_adapter": "tools/ziwei_brightness_pipeline.py"
         }
       },
       "gregorian_input": {
         "activation": "explicit-ziwei-request-with-gregorian-birth-datetime",
         "provider": "tools/ziwei_calendar_provider.py",
-        "pipeline": "tools/ziwei_gregorian_pipeline.py",
+        "pipeline": "tools/ziwei_runtime.py",
         "admission_manifest": "ZIWEI_CALENDAR_ADMISSION_V1.json",
         "profile_id": "ziwei.calendar.tw_v1",
-        "timezone": "Asia/Taipei"
+        "timezone": "Asia/Taipei",
+        "compatibility_adapter": "tools/ziwei_gregorian_pipeline.py"
       },
       "materialization_contract": "ZIWEI_MATERIALIZATION.md",
       "deterministic_transport_bundle": "runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json",
       "transport_generator": "tools/build_ziwei_tool_bundle.py",
-      "materialization_product_scenario": "evals/ZIWEI_MATERIALIZATION_PRODUCT_SCENARIO.md"
+      "materialization_product_scenario": "evals/ZIWEI_MATERIALIZATION_PRODUCT_SCENARIO.md",
+      "runtime": "tools/ziwei_runtime.py",
+      "request_schema": "schemas/ziwei/ZIWEI_READING_REQUEST_V1.schema.json",
+      "result_schema": "schemas/ziwei/ZIWEI_READING_RESULT_V1.schema.json",
+      "compatibility_adapters": [
+        "tools/ziwei_scope_a_pipeline.py",
+        "tools/ziwei_brightness_pipeline.py",
+        "tools/ziwei_gregorian_pipeline.py"
+      ]
     },
     {
       "id": "method.astrology",
