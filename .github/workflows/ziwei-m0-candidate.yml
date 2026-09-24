@@ -1,0 +1,31 @@
+name: Zi Wei M0 candidate bridge
+on:
+  push:
+    branches: [feat/ziwei-m0-auxiliary-v1]
+permissions:
+  contents: write
+jobs:
+  validate-and-regenerate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: python -m pip install --disable-pip-version-check -r requirements-astrology-provider.txt
+      - run: python -m pip install --disable-pip-version-check -r requirements-ziwei-calendar.txt
+      - run: python references/ziwei/validate_interpretation_claim_registry.py references/ziwei/ziwei_interpretation_claim_registry_m0_auxiliary_v1.json
+      - run: python -m unittest tests.test_ziwei_m0_auxiliary_v1 -v
+      - run: python -m unittest discover -s tests -v
+      - run: python tools/playbook_check.py .
+      - run: python tools/build_ziwei_tool_bundle.py
+      - run: python tools/build_ziwei_tool_bundle.py --check
+      - name: Commit derived bundle and remove bridge
+        run: |
+          rm .github/workflows/ziwei-m0-candidate.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json .github/workflows/ziwei-m0-candidate.yml
+          git commit -m "Regenerate Zi Wei bundle for M0 auxiliary module"
+          git push origin HEAD:feat/ziwei-m0-auxiliary-v1
