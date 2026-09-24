@@ -138,7 +138,10 @@ tools/ziwei_natal_provider.py
 → admitted Scope-A deterministic natal provider
 
 tools/ziwei_scope_a_pipeline.py
-→ production composition / retrieval / delivery binding
+→ production composition binding
+
+tools/ziwei_claim_retrieval.py + tools/ziwei_delivery.py
+→ production claim retrieval / conditional activation / bounded delivery execution
 
 tools/ziwei_brightness_provider.py + tools/ziwei_brightness_pipeline.py
 → optional profile-bound brightness facts + bounded Scope-A composition
