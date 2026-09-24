@@ -184,8 +184,9 @@ PALMISTRY_BACKLOG.md
 - 都不是 production authority、research-evidence authority 或 method-routing authority；
 - Astrology、Zi Wei、Palmistry 具有獨立 retrieval intent，且可由獨立 ChatGPT project conversations 維護，因此不建立 root `BACKLOG.md` aggregate；
 - machine discovery 由 `PLAYBOOK_INDEX.json` routing-only entries提供；
-- concrete ChatGPT coordination write mapping 由 `AGENTS.md` 擁有；
+- 本節同時是 shared `REPOSITORY_EXECUTION.md` 所要求的 project-specific equivalent path contract：ChatGPT coordination-write allowlist 明確為 `/ASTROLOGY_BACKLOG.md`、`/ZIWEI_BACKLOG.md`、`/PALMISTRY_BACKLOG.md`；`AGENTS.md` 只提供 routing pointer；
 - cross-method shared item只指定一個 canonical coordination owner，其餘 backlog只保存 pointer，避免 divergent work state。
+- 此 allowlist 只授權 coordination-only persistence；不因而擴張對 `tools/**`、`data/**`、`runtime/**`、`references/**`、`schemas/**`、method owners、admission manifests 或其他 governance surfaces 的寫入權。
 
 #### Other optional surfaces
 
