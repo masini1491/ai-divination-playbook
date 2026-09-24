@@ -117,16 +117,21 @@ This item is a standing reconciliation guard. It is not a request to change curr
   - `ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json`
   - `reports/astrology/ASTROLOGY_PLACE_RESOLVER_MATERIALIZATION_FEASIBILITY.md`
   - `tools/astrology_place_shard_benchmark.py`
+  - `tools/astrology_place_split_shard_benchmark.py`
 - current_state:
   - original A-MAT-2 whole-package/model-mediated cold-start transport remains not admitted;
   - PR #172 exact-byte research POC satisfies the query-bounded-shard feasibility re-open trigger;
   - all four admitted `geonamescache==3.0.2` dataset identities matched the prior A-MAT-2 hashes;
   - fixture parity passed for 樹林區/TW, Tokyo/JP and ambiguous Springfield cases across all tested profiles and widths;
-  - 3-hex SHA-256 alias sharding is the current architecture candidate: 4,096 shards/profile, `cities500` P95 33,018 bytes, max 42,531 bytes.
+  - PR #173 split-store POC preserved fixture parity across all four profiles and selected alias-3hex + candidate-3hex as the current format candidate;
+  - split 3+3 reduces aggregate generated storage from 314,579,927 bytes to 189,935,792 bytes (~39.6% reduction);
+  - `cities500` split 3+3 unique lookup measured 18,494 bytes for 樹林區/TW and 23,702 bytes for Tokyo/JP; Springfield ambiguity preview measured 63,069 bytes;
+  - split 3+3 theoretical file surface is 8,192 shard paths/profile; candidate 2-hex was too costly for ambiguity retrieval and candidate 4-hex created an excessive file surface.
 - remaining_gate:
-  - freeze external repository / manifest / attribution / exact-revision contract;
-  - decide whether inline candidate replication is acceptable or whether alias-index + candidate-store separation materially improves total generated size without harming bounded lookup;
-  - define exact GitHub Connect retrieval + connector-side filtering + cache verification behavior;
+  - freeze external repository / manifest / attribution / exact-revision contract around the selected alias-3hex + candidate-3hex format candidate;
+  - make the generator build alias routing once per profile and keep alias/candidate generation deterministic;
+  - define exact GitHub Connect retrieval + integrity verification + connector-side filtering + cache behavior;
+  - expand semantic parity to a deterministic corpus beyond the bounded POC fixtures;
   - validate end-to-end cold-start payload/latency and full semantic parity;
   - only then consider changing `ASTROLOGY_MATERIALIZATION.md` current production behavior or `ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json`.
 - completion_gate:
