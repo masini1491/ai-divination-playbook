@@ -260,3 +260,102 @@ The POC materially changes the feasibility evidence but **does not change curren
 - The benchmark establishes a viable query-bounded transport representation. It does not yet establish external-repository provenance, manifest/hash layout, cache policy, GitHub Connect end-to-end retrieval, product latency, or production admission.
 
 Therefore the original A-MAT-2 decision remains valid for the old **model-mediated whole-package / chunk transport**. Re-open trigger 2 is now satisfied at the feasibility layer, and a separate query-bounded transport admission study may proceed without silently changing current resolver behavior.
+
+
+## 9. Split alias-index + candidate-store POC
+
+Status: **FEASIBILITY PASS / CURRENT FORMAT CANDIDATE SELECTED / NOT PRODUCTION ADMISSION**
+
+PR #173 compared the current 3-hex inline alias+candidate representation against a split transport:
+
+```text
+alias lookup: SHA-256(normalized exact alias) → 3-hex alias shard
+alias shard route payload: geoname_id + country_code + population + canonical name
+candidate lookup: SHA-256(geoname_id) → candidate shard
+candidate record: current admitted PlaceCandidate fields
+```
+
+The route payload is intentionally sufficient to preserve country filtering and the current resolver sort order before any full candidate record is fetched. A unique match requires one candidate record; an ambiguous match materializes only the first ten sorted candidates needed by the current error preview.
+
+Evidence identity:
+
+```text
+branch: research/astrology-place-shard-split-poc
+benchmark head: 742c7899478aa6790daa5f6f809949f13f75150d
+workflow: Astrology Place Split Shard POC
+run: 36035872538
+job: 107755709035
+artifact: astrology-place-split-shard-benchmark
+artifact id: 10825181328
+artifact digest: sha256:d4ec99fd8ab9e008855ff5f81a9bcb06a00695552541cc64a73cf6bacfda8748
+```
+
+The exact `geonamescache==3.0.2` dataset identities from A-MAT-2 again matched before the comparison was accepted. All tested split designs preserved fixture parity for 樹林區/TW, Tokyo/JP, Springfield without country, and Springfield/US across all four admitted population profiles.
+
+### 9.1 Storage comparison
+
+Current inline 3-hex total serialized storage across the four profiles:
+
+```text
+314,579,927 bytes
+```
+
+Split alias-3hex + candidate-3hex total serialized storage:
+
+```text
+189,935,792 bytes
+```
+
+This is a reduction of approximately **39.6%** while preserving the same source datasets and the tested exact-match semantics.
+
+| Profile | Inline 3-hex total | Split alias-3 + candidate-3 total | Alias P95 | Alias max | Candidate P95 | Candidate max |
+|---:|---:|---:|---:|---:|---:|---:|
+| 500 | 120,558,937 | 75,168,066 | 15,142 | 18,809 | 5,887 | 7,268 |
+| 1000 | 98,130,586 | 60,190,165 | 12,596 | 15,946 | 4,457 | 6,197 |
+| 5000 | 58,251,241 | 33,557,450 | 7,700 | 9,287 | 2,103 | 2,884 |
+| 15000 | 37,639,163 | 21,020,111 | 5,140 | 6,463 | 1,201 | 1,798 |
+
+The split 3+3 design has a theoretical file surface of 8,192 shards/profile, or 32,768 shard paths across the four admitted profiles.
+
+### 9.2 Query-bounded retrieval comparison
+
+Representative `cities500` split 3+3 payloads:
+
+| Query | Country | Alias shard | Candidate buckets | Candidate bytes | Total lookup bytes | Match count |
+|---|---|---:|---:|---:|---:|---:|
+| 樹林區 | TW | 13,710 | 1 | 4,784 | 18,494 | 1 |
+| Tokyo | JP | 18,411 | 1 | 5,291 | 23,702 | 1 |
+| Springfield | none | 13,754 | 10 | 49,315 | 63,069 | 21 |
+| Springfield | US | 13,754 | 10 | 49,315 | 63,069 | 20 |
+
+For comparison, the previous inline 3-hex `cities500` fixture shards were 29,303 bytes for 樹林區, 42,189 bytes for Tokyo, and 29,949 bytes for Springfield. The split design improves unique-match payload and total generated storage; ambiguous queries may require multiple candidate-store reads because the current resolver exposes a ten-candidate preview.
+
+### 9.3 Candidate-store width trade-off
+
+Candidate 2-hex keeps the file surface small but makes ambiguous retrieval too expensive: `cities500` Springfield required 701,598 bytes total lookup.
+
+Candidate 4-hex minimizes lookup bytes further — `cities500` 樹林區 14,248 bytes and Springfield 18,283 bytes — but raises the theoretical file surface to 69,632 paths/profile, or 278,528 across four profiles.
+
+**Current format candidate: alias 3-hex + candidate 3-hex.**
+
+It is the best measured balance in this POC between:
+
+- total generated storage;
+- bounded unique lookup;
+- bounded ambiguity preview;
+- generated-file surface;
+- exact source/profile preservation;
+- current country-filter / ambiguity / preview semantics.
+
+### 9.4 Remaining admission boundary
+
+This POC selects a transport-format candidate but still does **not** admit it for production. Remaining work is now narrower:
+
+1. define the external generated-data repository contract, manifest, schema version, source SHA identities, per-shard integrity and CC-BY attribution;
+2. make the generator build the alias index once per profile and derive candidate stores without repeated alias work;
+3. prove end-to-end GitHub Connect exact-revision retrieval, integrity verification, cache behavior and connector-side filtering;
+4. expand semantic parity beyond the bounded fixtures to a deterministic corpus covering not-found, country filters, Unicode/casefold aliases and high-ambiguity names;
+5. benchmark end-to-end cold-start latency and actual model-visible payload;
+6. only after those gates pass, consider a separate change to `ASTROLOGY_MATERIALIZATION.md` and production admission.
+
+The original A-MAT-2 prohibition remains applicable to whole-package/model-mediated cold-start transport. The query-bounded external-shard lane now has a selected research format candidate but no production authority yet.
