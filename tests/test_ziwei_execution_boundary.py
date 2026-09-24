@@ -7,13 +7,17 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 
 class ZiWeiExecutionBoundaryTests(unittest.TestCase):
-    def test_production_pipeline_does_not_dynamic_load_reference_python(self):
-        text=(ROOT/"tools"/"ziwei_scope_a_pipeline.py").read_text(encoding="utf-8")
-        self.assertNotIn("importlib.util",text)
-        self.assertNotIn("interpretation_retrieval_v0.py",text)
-        self.assertNotIn("validate_uncertainty_safety_delivery_v0.py",text)
-        self.assertIn("ziwei_claim_retrieval",text)
-        self.assertIn("ziwei_delivery",text)
+    def test_production_runtime_does_not_dynamic_load_reference_python(self):
+        runtime=(ROOT/"tools"/"ziwei_runtime.py").read_text(encoding="utf-8")
+        adapter=(ROOT/"tools"/"ziwei_scope_a_pipeline.py").read_text(encoding="utf-8")
+        self.assertNotIn("importlib.util",runtime)
+        self.assertNotIn("interpretation_retrieval_v0.py",runtime)
+        self.assertNotIn("validate_uncertainty_safety_delivery_v0.py",runtime)
+        self.assertIn("ziwei_claim_retrieval",runtime)
+        self.assertIn("ziwei_delivery",runtime)
+        self.assertIn("from tools.ziwei_runtime import",adapter)
+        self.assertNotIn("ziwei_claim_retrieval",adapter)
+        self.assertNotIn("ziwei_delivery",adapter)
 
     def test_canonical_retriever_keeps_research_registries_as_data_dependencies(self):
         text=(ROOT/"tools"/"ziwei_claim_retrieval.py").read_text(encoding="utf-8")
