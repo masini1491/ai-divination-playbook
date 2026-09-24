@@ -248,6 +248,15 @@ class AstrologyProviderTests(unittest.TestCase):
         with self.assertRaisesRegex(ProviderInputError, "exact 0 degree"):
             _sect_from_geometric_altitude(0.0)
 
+    def test_e4_sect_calculation_unavailable_fails_closed(self):
+        with patch("tools.astrology_provider.astronomy.GeoVector", side_effect=RuntimeError("synthetic failure")):
+            with self.assertRaisesRegex(ProviderInputError, "calculation unavailable"):
+                _sun_geometric_altitude_deg(
+                    __import__("datetime").datetime(2000, 1, 1, tzinfo=__import__("datetime").timezone.utc),
+                    0.0,
+                    0.0,
+                )
+
     def test_e4_part_of_fortune_formula_is_explicitly_sect_dependent(self):
         self.assertEqual(
             (10.0 + 100.0 - 40.0) % 360.0,
