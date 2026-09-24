@@ -1,0 +1,100 @@
+{
+  "schema_name": "astrology_e4_sect_parity_fixture",
+  "schema_version": "1.0.0",
+  "authority": "SYNTHETIC_VALIDATION_EVIDENCE",
+  "policy_id": "sect-geometric-solar-altitude-v1",
+  "production_dependency": {
+    "package": "astronomy-engine",
+    "version": "2.1.19",
+    "source_revision": "865d3da7d8112bbc7911238052c6af4aaf877181",
+    "refraction": "Airless",
+    "sun_frame": "geocentric-equator-of-date"
+  },
+  "research_oracle": {
+    "package": "pyswisseph",
+    "version": "2.10.3.2",
+    "research_source_repository": "g-battaglia/kerykeion",
+    "research_source_revision": "b18848eb8e1e0a2b09a096dbb9688c8404dfb06b",
+    "role": "validation-oracle-only-not-production-dependency"
+  },
+  "cases": [
+    {
+      "fixture_id": "london-summer-noon",
+      "utc_iso": "1990-06-15T12:00:00+00:00",
+      "latitude": 51.5074,
+      "longitude": 0.0,
+      "astronomy_engine_geometric_altitude_deg": 61.804284197005764,
+      "swiss_geometric_altitude_deg": 61.804319538336145,
+      "altitude_delta_deg": -3.534133038129994e-05,
+      "astronomy_engine_classification": "diurnal",
+      "swiss_classification": "diurnal",
+      "classification_match": true
+    },
+    {
+      "fixture_id": "london-summer-midnight",
+      "utc_iso": "1990-06-15T00:00:00+00:00",
+      "latitude": 51.5074,
+      "longitude": 0.0,
+      "astronomy_engine_geometric_altitude_deg": -15.202815600735974,
+      "swiss_geometric_altitude_deg": -15.202779513210244,
+      "altitude_delta_deg": -3.608752573036611e-05,
+      "astronomy_engine_classification": "nocturnal",
+      "swiss_classification": "nocturnal",
+      "classification_match": true
+    },
+    {
+      "fixture_id": "equator-equinox-morning",
+      "utc_iso": "2000-03-20T09:00:00+00:00",
+      "latitude": 0.0,
+      "longitude": 0.0,
+      "astronomy_engine_geometric_altitude_deg": 43.14617328558428,
+      "swiss_geometric_altitude_deg": 43.14618729258013,
+      "altitude_delta_deg": -1.4006995847637427e-05,
+      "astronomy_engine_classification": "diurnal",
+      "swiss_classification": "diurnal",
+      "classification_match": true
+    },
+    {
+      "fixture_id": "equator-equinox-evening",
+      "utc_iso": "2000-03-20T21:00:00+00:00",
+      "latitude": 0.0,
+      "longitude": 0.0,
+      "astronomy_engine_geometric_altitude_deg": -43.18311156235467,
+      "swiss_geometric_altitude_deg": -43.18312621648645,
+      "altitude_delta_deg": 1.465413178181052e-05,
+      "astronomy_engine_classification": "nocturnal",
+      "swiss_classification": "nocturnal",
+      "classification_match": true
+    },
+    {
+      "fixture_id": "buenos-aires-summer-noon",
+      "utc_iso": "1990-12-15T15:00:00+00:00",
+      "latitude": -34.6,
+      "longitude": -58.4,
+      "astronomy_engine_geometric_altitude_deg": 74.47557539646064,
+      "swiss_geometric_altitude_deg": 74.47556664313369,
+      "altitude_delta_deg": 8.753326952160023e-06,
+      "astronomy_engine_classification": "diurnal",
+      "swiss_classification": "diurnal",
+      "classification_match": true
+    },
+    {
+      "fixture_id": "buenos-aires-summer-midnight",
+      "utc_iso": "1990-12-15T03:00:00+00:00",
+      "latitude": -34.6,
+      "longitude": -58.4,
+      "astronomy_engine_geometric_altitude_deg": -31.01707116185186,
+      "swiss_geometric_altitude_deg": -31.017100109155646,
+      "altitude_delta_deg": 2.8947303785997747e-05,
+      "astronomy_engine_classification": "nocturnal",
+      "swiss_classification": "nocturnal",
+      "classification_match": true
+    }
+  ],
+  "summary": {
+    "case_count": 6,
+    "classification_matches": 6,
+    "all_classifications_match": true,
+    "max_abs_altitude_delta_deg": 3.608752573036611e-05
+  }
+}
