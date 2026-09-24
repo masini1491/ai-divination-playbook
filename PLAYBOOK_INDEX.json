@@ -73,6 +73,16 @@
       "kind": "reference"
     },
     {
+      "id": "coordination.ziwei-backlog",
+      "owner": "ZIWEI_BACKLOG.md",
+      "kind": "coordination",
+      "authority": "coordination-only",
+      "method": "ZiWei",
+      "production_authority": false,
+      "research_evidence_authority": false,
+      "routing_authority": false
+    },
+    {
       "id": "research.palmistry",
       "owner": "references/palmistry/README.md",
       "section": "Authority boundary",
