@@ -25,11 +25,13 @@
         "digital_text_witness_research"
       ],
       "admission_scope": [
-        "bounded star core and conditional interpretation claims"
+        "source context for bounded auxiliary-role policy claims",
+        "conditional modifier evidence where separately admitted"
       ],
       "excluded_scope": [
         "unverified glyph-level variants",
-        "production doctrine authority"
+        "production doctrine authority",
+        "independent historical semantic core for the four M0 stars"
       ],
       "notes": [
         "Normalized paraphrases only; locator retained for source verification."
@@ -184,6 +186,8 @@
   },
   "research_result": {
     "production_authority_granted": false,
-    "scientific_predictive_validity_claimed": false
+    "scientific_predictive_validity_claimed": false,
+    "claim_scope": "bounded_auxiliary_role_policy_only",
+    "historical_semantic_core_admitted": false
   }
 }
