@@ -215,7 +215,10 @@
       "deterministic_core_transport_bundle": "runtime/astrology/CHATGPT_DETERMINISTIC_CORE_BUNDLE.json",
       "core_transport_generator": "tools/build_astrology_core_bundle.py",
       "materialization_product_scenario": "evals/ASTROLOGY_MATERIALIZATION_PRODUCT_SCENARIO.md",
-      "core_bundle_scope": "explicit-coordinates-plus-iana-timezone; place-resolver-excluded"
+      "core_bundle_scope": "explicit-coordinates-plus-iana-timezone; place-resolver-excluded",
+      "place_resolver_materialization_status": "not-admitted-for-cold-start",
+      "place_resolver_materialization_decision": "reports/astrology/ASTROLOGY_PLACE_RESOLVER_MATERIALIZATION_FEASIBILITY.md",
+      "place_resolver_cold_start_fallback": "require-explicit-coordinates-plus-iana-timezone"
     },
     {
       "id": "method.astrology.natal",
