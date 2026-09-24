@@ -30,7 +30,14 @@
     "conditional_activation_contract": "conditional_activation_v1",
     "claim_retrieval_runtime": "tools/ziwei_claim_retrieval.py",
     "delivery_runtime": "tools/ziwei_delivery.py",
-    "compatibility_adapter": "tools/ziwei_scope_a_pipeline.py"
+    "compatibility_adapter": "tools/ziwei_scope_a_pipeline.py",
+    "request_schema": "schemas/ziwei/ZIWEI_READING_REQUEST_V1.schema.json",
+    "result_schema": "schemas/ziwei/ZIWEI_READING_RESULT_V1.schema.json",
+    "compatibility_adapters": [
+      "tools/ziwei_scope_a_pipeline.py",
+      "tools/ziwei_brightness_pipeline.py",
+      "tools/ziwei_gregorian_pipeline.py"
+    ]
   },
   "admitted_research_registries": [
     "ziwei_interpretation_claim_registry_batch1.json",
