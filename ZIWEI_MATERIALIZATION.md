@@ -16,7 +16,7 @@ tools/ziwei_natal_provider.py
 schemas/ziwei/ZIWEI_READING_REQUEST_V1.schema.json
 schemas/ziwei/ZIWEI_READING_RESULT_V1.schema.json
 tools/ziwei_scope_a_pipeline.py
-tools/ziwei_brightness_provider.py
+tools/ziwei_brightness_provider.py\ntools/ziwei_m0_auxiliary_provider.py
 tools/ziwei_brightness_pipeline.py
 tools/ziwei_claim_retrieval.py
 tools/ziwei_delivery.py
