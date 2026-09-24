@@ -490,6 +490,7 @@ class AstrologyEvidenceSelectorTests(unittest.TestCase):
                     "registry_record_id": "first-seventh-house-axis-research-v1",
                     "claim_type": "historical_doctrine",
                     "applies_to_all": ["natal", "seventh house", "marriage"],
+                    "tradition_context_refs_any": ["lineage:hellenistic"],
                     "fact_selector_ids": ["desc"],
                 }
             ],
@@ -523,6 +524,7 @@ class AstrologyEvidenceSelectorTests(unittest.TestCase):
                     "registry_record_id": "fourth-tenth-house-axis-research-v1",
                     "claim_type": "historical_doctrine",
                     "applies_to_all": ["natal", "fourth house", "home", "possessions", "activity"],
+                    "tradition_context_refs_any": ["lineage:hellenistic"],
                     "fact_selector_ids": ["ic"],
                 }
             ],
