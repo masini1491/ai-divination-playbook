@@ -108,7 +108,8 @@ Marker 至少應綁定：
 ```text
 verified = true
 repository
-playbook_commit
+materialized_source_commit
+last_checked_repository_head
 bundle_contract
 archive_sha256
 files[]: path + sha256 + git_blob_sha + local_copy_identity
@@ -116,7 +117,35 @@ files[]: path + sha256 + git_blob_sha + local_copy_identity
 
 marker 寫入後應 fresh read-back 驗證必要欄位與 local copies；沒有可觀察的 marker/read-back evidence 不宣稱 persistent verified cache 已建立。
 
-不得因聊天重開就假設舊 cache 仍有效；也不得因 local cache 不存在就直接宣告 source 不存在。若 local cache identity 與當次 required source identity 不一致，視為 cache MISS，重新走 §3 acquisition；不以 stale cache 冒充 current source。
+不得因聊天重開就假設舊 cache 仍有效；也不得因 local cache 不存在就直接宣告 source 不存在。
+
+`materialized_source_commit` 表示目前三支 local tool bytes 的 provenance；`last_checked_repository_head` 只是最近一次 current repository observation。兩者可以不同，不得因 Playbook HEAD 前進就把 local executable provenance回填成新 HEAD。
+
+### 4A. Identity-first deterministic refresh
+
+只有存在合法 freshness trigger時才做 current repository identity probe：
+
+```text
+verified Liuyao deterministic cache
+→ cheap current HEAD/ref probe
+→ compare materialized_source_commit ... current HEAD
+→ inspect only:
+   tools/liuyao_calendar.py
+   tools/liuyao_engine.py
+   tools/liuyao_runtime.py
+→ all unchanged
+   → reuse verified local files
+   → update last_checked_repository_head only
+   → MUST NOT fetch deterministic bundle / rematerialize / rerun full acquisition
+→ any changed / renamed / compare incomplete / source commit unavailable
+   → exact current per-file identity verification
+   → all bytes unchanged → reuse cache
+   → any bytes changed / identity inconclusive → §3 acquisition
+```
+
+Repository其他檔案的 commit不構成 Liuyao deterministic-tool refresh trigger。只有 owned source paths的 material identity改變，或 identity無法可信證明一致時，才重新 acquisition / materialization。
+
+local cache identity真正失配時才視為 MISS；current HEAD與 `materialized_source_commit` 不同本身不是 MISS。
 
 ## 5. Unavailable classification
 
