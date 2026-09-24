@@ -24,7 +24,7 @@ class AstrologyProductionContractTests(unittest.TestCase):
         transit = data["transit_provider"]
         place = data["place_resolver"]
         self.assertEqual("astronomy-engine-natal-v1", natal["provider_id"])
-        self.assertEqual("1.1.0", natal["provider_version"])
+        self.assertEqual("1.2.0", natal["provider_version"])
         self.assertIn("natal_known_time_derived_axes", natal["scope"])
         self.assertEqual(
             ["SouthNode", "Descendant", "ImumCoeli"],
@@ -52,9 +52,15 @@ class AstrologyProductionContractTests(unittest.TestCase):
         data = json.loads((ROOT / "ASTROLOGY_PROVIDER_ADMISSION_V1.json").read_text(encoding="utf-8"))
         self.assertEqual("astrology_provider_admission", data["schema_name"])
         self.assertEqual("PRODUCTION_ADMITTED", data["status"])
-        self.assertEqual("1.1.0", data["provider_version"])
+        self.assertEqual("1.2.0", data["provider_version"])
         self.assertEqual(
-            ["natal", "natal_unknown_time_invariant_signs", "natal_known_time_derived_axes"],
+            [
+                "natal",
+                "natal_unknown_time_invariant_signs",
+                "natal_known_time_derived_axes",
+                "natal_known_time_part_of_fortune",
+                "natal_known_time_sect",
+            ],
             data["scope"],
         )
         self.assertEqual("astronomy-engine", data["dependency"]["package"])
@@ -168,6 +174,40 @@ class AstrologyProductionContractTests(unittest.TestCase):
         self.assertEqual("not_admitted", manifest["aspect_policy"]["extended_points_or_angles"])
         derived = manifest["natal_semantic_policy"]["derived_fact_interpretation"]
         self.assertEqual("forbidden_until_separately_admitted", derived["claim_binding"])
+
+
+    def test_e4_admission_is_named_fail_closed_and_fact_only(self):
+        provider = json.loads((ROOT / "ASTROLOGY_PROVIDER_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        production = json.loads((ROOT / "ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
+
+        sect = provider["calculation_policy"]["sect_policy"]
+        self.assertEqual("sect-geometric-solar-altitude-v1", sect["policy_id"])
+        self.assertEqual("geocentric-equator-of-date", sect["sun_frame"])
+        self.assertEqual("Airless", sect["refraction"])
+        self.assertEqual("fail_closed", sect["exact_zero"])
+        self.assertEqual("fail_closed", sect["unavailable"])
+        self.assertEqual("not_computed", sect["unknown_time"])
+
+        fortune = provider["calculation_policy"]["part_of_fortune"]
+        self.assertEqual("PartOfFortune", fortune["object_id"])
+        self.assertEqual("fortune-day-night-v1", fortune["derivation_policy"])
+        self.assertEqual("sect-geometric-solar-altitude-v1", fortune["sect_policy_id"])
+        self.assertEqual("Ascendant + Moon - Sun", fortune["diurnal_formula"])
+        self.assertEqual("Ascendant + Sun - Moon", fortune["nocturnal_formula"])
+        self.assertEqual("not_emitted", fortune["unknown_time"])
+        self.assertEqual("not_admitted", fortune["aspect_participation"])
+
+        admitted = production["natal_provider"]["known_time_part_of_fortune"]
+        self.assertEqual("fact_only_until_separately_admitted", admitted["interpretation_semantics"])
+        self.assertEqual(
+            "provider_derived_calculation_context",
+            production["natal_provider"]["known_time_sect"]["authority"],
+        )
+        self.assertIn(
+            "PartOfFortune",
+            production["natal_semantic_policy"]["derived_fact_interpretation"]["fact_only_object_ids"],
+        )
+        self.assertNotIn("PartOfFortune", production["aspect_policy"]["participant_object_ids"])
 
 
 if __name__ == "__main__":
