@@ -22,12 +22,13 @@
   },
   "pipeline": {
     "pipeline_id": "ziwei-scope-a-production-pipeline-v1",
-    "pipeline_version": "1.0.0",
+    "pipeline_version": "1.1.0",
     "runtime_owner": "tools/ziwei_scope_a_pipeline.py",
     "interpretation_profile": "ziwei.interpretation.tw_v1",
     "research_retriever": "references/ziwei/interpretation_retrieval_v0.py",
     "delivery_contract": "references/ziwei/UNCERTAINTY_SAFETY_DELIVERY_CONTRACT_V0.md",
-    "final_prose_authority": false
+    "final_prose_authority": false,
+    "conditional_activation_contract": "conditional_activation_v1"
   },
   "admitted_research_registries": [
     "ziwei_interpretation_claim_registry_batch1.json",
@@ -53,7 +54,8 @@
     "unsupported_scope_no_natal_fallback",
     "unadmitted_claim_no_model_memory_substitution",
     "registered_conflict_preserved",
-    "missing_required_fact_omits_claim"
+    "missing_required_fact_omits_claim",
+    "undemonstrated_conditional_claim_omitted"
   ],
   "high_stakes_guardrails": [
     "no_deterministic_health_or_death_prediction",

@@ -1,6 +1,6 @@
 {
   "schema_name": "ziwei_interpretation_claim_registry",
-  "schema_version": "0.2.0-research",
+  "schema_version": "0.2.1-research",
   "record_status": "REFERENCE-ONLY",
   "record_kind": "ziwei_interpretation_claim_family_registry",
   "record_id": "ziwei-twelve-palaces-v0",
@@ -164,7 +164,14 @@
           "opposite",
           "sanfang"
         ],
-        "temporal_scope": "natal_baseline"
+        "temporal_scope": "natal_baseline",
+        "conditional_activation": {
+          "mode": "context_only",
+          "availability_requires": [],
+          "satisfies_all": [],
+          "satisfies_any": [],
+          "forbids": []
+        }
       },
       "confidence_status": "supported",
       "support_status": "single_source_supported",
@@ -238,7 +245,14 @@
           "self",
           "sanfang"
         ],
-        "temporal_scope": "natal_baseline"
+        "temporal_scope": "natal_baseline",
+        "conditional_activation": {
+          "mode": "context_only",
+          "availability_requires": [],
+          "satisfies_all": [],
+          "satisfies_any": [],
+          "forbids": []
+        }
       },
       "confidence_status": "supported",
       "support_status": "single_source_supported",
@@ -317,7 +331,14 @@
           "opposite",
           "sanfang"
         ],
-        "temporal_scope": "natal_baseline"
+        "temporal_scope": "natal_baseline",
+        "conditional_activation": {
+          "mode": "context_only",
+          "availability_requires": [],
+          "satisfies_all": [],
+          "satisfies_any": [],
+          "forbids": []
+        }
       },
       "confidence_status": "qualified",
       "support_status": "historical_only",
@@ -391,7 +412,14 @@
           "opposite",
           "sanfang"
         ],
-        "temporal_scope": "natal_baseline"
+        "temporal_scope": "natal_baseline",
+        "conditional_activation": {
+          "mode": "context_only",
+          "availability_requires": [],
+          "satisfies_all": [],
+          "satisfies_any": [],
+          "forbids": []
+        }
       },
       "confidence_status": "supported",
       "support_status": "single_source_supported",
@@ -466,7 +494,14 @@
           "self",
           "sanfang"
         ],
-        "temporal_scope": "natal_baseline"
+        "temporal_scope": "natal_baseline",
+        "conditional_activation": {
+          "mode": "context_only",
+          "availability_requires": [],
+          "satisfies_all": [],
+          "satisfies_any": [],
+          "forbids": []
+        }
       },
       "confidence_status": "supported",
       "support_status": "single_source_supported",
@@ -540,7 +575,14 @@
           "self",
           "sanfang"
         ],
-        "temporal_scope": "natal_baseline"
+        "temporal_scope": "natal_baseline",
+        "conditional_activation": {
+          "mode": "context_only",
+          "availability_requires": [],
+          "satisfies_all": [],
+          "satisfies_any": [],
+          "forbids": []
+        }
       },
       "confidence_status": "supported",
       "support_status": "single_source_supported",
@@ -616,7 +658,14 @@
           "opposite",
           "sanfang"
         ],
-        "temporal_scope": "natal_baseline"
+        "temporal_scope": "natal_baseline",
+        "conditional_activation": {
+          "mode": "context_only",
+          "availability_requires": [],
+          "satisfies_all": [],
+          "satisfies_any": [],
+          "forbids": []
+        }
       },
       "confidence_status": "qualified",
       "support_status": "historical_only",
@@ -689,7 +738,14 @@
         "topology_scope": [
           "self"
         ],
-        "temporal_scope": "natal_baseline"
+        "temporal_scope": "natal_baseline",
+        "conditional_activation": {
+          "mode": "context_only",
+          "availability_requires": [],
+          "satisfies_all": [],
+          "satisfies_any": [],
+          "forbids": []
+        }
       },
       "confidence_status": "conflicted",
       "support_status": "conflicted",
@@ -767,7 +823,14 @@
           "opposite",
           "sanfang"
         ],
-        "temporal_scope": "natal_baseline"
+        "temporal_scope": "natal_baseline",
+        "conditional_activation": {
+          "mode": "context_only",
+          "availability_requires": [],
+          "satisfies_all": [],
+          "satisfies_any": [],
+          "forbids": []
+        }
       },
       "confidence_status": "qualified",
       "support_status": "historical_only",
@@ -841,7 +904,14 @@
           "self",
           "sanfang"
         ],
-        "temporal_scope": "natal_baseline"
+        "temporal_scope": "natal_baseline",
+        "conditional_activation": {
+          "mode": "context_only",
+          "availability_requires": [],
+          "satisfies_all": [],
+          "satisfies_any": [],
+          "forbids": []
+        }
       },
       "confidence_status": "qualified",
       "support_status": "historical_only",
@@ -913,7 +983,14 @@
         "topology_scope": [
           "self"
         ],
-        "temporal_scope": "natal_baseline"
+        "temporal_scope": "natal_baseline",
+        "conditional_activation": {
+          "mode": "context_only",
+          "availability_requires": [],
+          "satisfies_all": [],
+          "satisfies_any": [],
+          "forbids": []
+        }
       },
       "confidence_status": "conflicted",
       "support_status": "conflicted",
@@ -993,7 +1070,14 @@
           "self",
           "sanfang"
         ],
-        "temporal_scope": "natal_baseline"
+        "temporal_scope": "natal_baseline",
+        "conditional_activation": {
+          "mode": "context_only",
+          "availability_requires": [],
+          "satisfies_all": [],
+          "satisfies_any": [],
+          "forbids": []
+        }
       },
       "confidence_status": "supported",
       "support_status": "single_source_supported",

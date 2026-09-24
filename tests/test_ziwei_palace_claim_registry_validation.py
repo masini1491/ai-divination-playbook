@@ -29,7 +29,7 @@ class ZiWeiPalaceClaimRegistryValidationTests(unittest.TestCase):
 
     def test_palace_shape_guards_and_scope_conflicts(self):
         data=json.loads(PALACE.read_text(encoding='utf-8'))
-        self.assertEqual('0.2.0-research',data['schema_version'])
+        self.assertEqual('0.2.1-research',data['schema_version'])
         self.assertEqual(24,len(data['claims']))
         self.assertEqual(12,len(data['subjects']))
         self.assertEqual('overlay_not_thirteenth_palace',data['body_palace_policy'])
@@ -42,7 +42,7 @@ class ZiWeiPalaceClaimRegistryValidationTests(unittest.TestCase):
     def test_v01_does_not_silently_accept_palace_claim_types(self):
         data=json.loads(PALACE.read_text(encoding='utf-8'))
         downgraded=copy.deepcopy(data)
-        downgraded['schema_version']='0.1.0-research'
+        downgraded['schema_version']='0.1.1-research'
         tmp=ROOT / 'references' / 'ziwei' / '.tmp_palace_registry_v01_reject.json'
         try:
             tmp.write_text(json.dumps(downgraded,ensure_ascii=False),encoding='utf-8')

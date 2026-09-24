@@ -7,13 +7,16 @@ from pathlib import Path
 from typing import Any
 
 SCHEMA_NAME = 'ziwei_interpretation_claim_registry'
-SUPPORTED_SCHEMA_VERSIONS = {'0.1.0-research','0.2.0-research'}
+SUPPORTED_SCHEMA_VERSIONS = {'0.1.0-research','0.1.1-research','0.2.0-research','0.2.1-research'}
+HARDENED_CONDITIONAL_VERSIONS = {'0.1.1-research','0.2.1-research'}
 SOURCE_ROLES = {'PRIMARY_TEXT','SCHOLARLY_SECONDARY','PRACTITIONER_REFERENCE','REFERENCE_IMPLEMENTATION','PROJECT_SYNTHESIS'}
 ADMISSION = {'REFERENCE_ONLY','CLAIM_ELIGIBLE','EVALUATION_ONLY','REJECTED'}
 LAYERS = {'L4'}
 CLAIM_TYPES_BY_VERSION = {
     '0.1.0-research': {'star_core','star_conditional','methodology'},
+    '0.1.1-research': {'star_core','star_conditional','methodology'},
     '0.2.0-research': {'star_core','star_conditional','palace_domain','palace_conditional','methodology'},
+    '0.2.1-research': {'star_core','star_conditional','palace_domain','palace_conditional','methodology'},
 }
 ASSERTION_CLASSES = {'historical_core','historical_conditional','named_tradition','practitioner_heuristic','case_inference','project_adoption'}
 CONFIDENCE = {'supported','qualified','provisional','conflicted','unsupported'}
@@ -95,7 +98,32 @@ def validate(data:Any)->list[dict[str,str]]:
             elif 'CLAIM_ELIGIBLE' not in s.get('admission_status',[]): err(errors,'SOURCE_NOT_CLAIM_ELIGIBLE',p+'.source_refs',f'{ref} is not CLAIM_ELIGIBLE')
         locs=c.get('source_locators')
         if not str_array(locs) or not locs: err(errors,'SOURCE_LOCATORS_REQUIRED',p+'.source_locators','non-empty locator array required')
-        if not isinstance(c.get('applicability'),dict): err(errors,'APPLICABILITY_REQUIRED',p+'.applicability','object required')
+        app=c.get('applicability')
+        if not isinstance(app,dict):
+            err(errors,'APPLICABILITY_REQUIRED',p+'.applicability','object required')
+        else:
+            conditional=c.get('claim_type') in {'star_conditional','palace_conditional'}
+            meta=app.get('conditional_activation')
+            if conditional and schema_version in HARDENED_CONDITIONAL_VERSIONS and not isinstance(meta,dict):
+                err(errors,'CONDITIONAL_ACTIVATION_REQUIRED',p+'.applicability.conditional_activation','required for hardened conditional schema')
+            if meta is not None:
+                if not conditional:
+                    err(errors,'CONDITIONAL_ACTIVATION_FORBIDDEN',p+'.applicability.conditional_activation','only conditional claim types may declare activation')
+                elif not isinstance(meta,dict):
+                    err(errors,'CONDITIONAL_ACTIVATION_OBJECT_REQUIRED',p+'.applicability.conditional_activation','must be object')
+                else:
+                    mode=meta.get('mode')
+                    if mode not in {'context_only','fact_gated'}:
+                        err(errors,'CONDITIONAL_ACTIVATION_MODE_INVALID',p+'.applicability.conditional_activation.mode','must be context_only or fact_gated')
+                    for key in ('availability_requires','satisfies_all','satisfies_any','forbids'):
+                        if not str_array(meta.get(key)):
+                            err(errors,'CONDITIONAL_ACTIVATION_ARRAY_REQUIRED',p+f'.applicability.conditional_activation.{key}','string array required')
+                    if mode=='fact_gated' and not meta.get('availability_requires'):
+                        err(errors,'CONDITIONAL_AVAILABILITY_REQUIRED',p+'.applicability.conditional_activation.availability_requires','fact_gated mode requires at least one availability fact')
+                    if mode=='context_only':
+                        for key in ('availability_requires','satisfies_all','satisfies_any','forbids'):
+                            if meta.get(key):
+                                err(errors,'CONTEXT_ONLY_ACTIVATION_MUST_BE_EMPTY',p+f'.applicability.conditional_activation.{key}','context_only mode must not declare chart predicates')
         if c.get('confidence_status') not in CONFIDENCE: err(errors,'CONFIDENCE_INVALID',p+'.confidence_status','unsupported')
         if c.get('support_status') not in SUPPORT: err(errors,'SUPPORT_INVALID',p+'.support_status','unsupported')
         if not isinstance(c.get('conflict_group_ids'),list): err(errors,'CONFLICT_IDS_REQUIRED',p+'.conflict_group_ids','array required')
@@ -112,7 +140,7 @@ def validate(data:Any)->list[dict[str,str]]:
         if gid in conflict_ids: err(errors,'CONFLICT_ID_DUPLICATE',p+'.conflict_group_id','must be unique')
         conflict_ids.add(gid)
         allowed_resolutions={'PRESERVE_CONFLICT','RESOLVED_BY_PROFILE'}
-        if schema_version=='0.2.0-research': allowed_resolutions.add('PRESERVE_SCOPE_DIFFERENCE')
+        if schema_version in {'0.2.0-research','0.2.1-research'}: allowed_resolutions.add('PRESERVE_SCOPE_DIFFERENCE')
         if g.get('resolution_status') not in allowed_resolutions: err(errors,'CONFLICT_RESOLUTION_INVALID',p+'.resolution_status',f'unsupported for schema {schema_version}')
         refs=g.get('claim_refs')
         if not isinstance(refs,list): err(errors,'CONFLICT_CLAIM_REFS_REQUIRED',p+'.claim_refs','array required'); refs=[]
