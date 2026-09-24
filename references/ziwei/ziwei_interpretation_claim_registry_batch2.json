@@ -1,6 +1,6 @@
 {
   "schema_name": "ziwei_interpretation_claim_registry",
-  "schema_version": "0.1.0-research",
+  "schema_version": "0.1.1-research",
   "record_status": "REFERENCE-ONLY",
   "record_kind": "ziwei_interpretation_claim_family_registry",
   "record_id": "ziwei-major-stars-batch2-v0",
@@ -146,7 +146,21 @@
         "topology_scope": [
           "self"
         ],
-        "temporal_scope": "natal_baseline"
+        "temporal_scope": "natal_baseline",
+        "conditional_activation": {
+          "mode": "fact_gated",
+          "availability_requires": [
+            "fact_available:auxiliary_stars"
+          ],
+          "satisfies_all": [],
+          "satisfies_any": [
+            "modifier_present:天府:擎羊",
+            "modifier_present:天府:陀羅",
+            "modifier_present:天府:火星",
+            "modifier_present:天府:鈴星"
+          ],
+          "forbids": []
+        }
       },
       "confidence_status": "conflicted",
       "support_status": "conflicted",
@@ -207,8 +221,7 @@
       ],
       "applicability": {
         "requires": [
-          "star_present:太陰",
-          "fact_available:dignity"
+          "star_present:太陰"
         ],
         "forbids": [],
         "modifiers": [
@@ -220,7 +233,16 @@
         "topology_scope": [
           "self"
         ],
-        "temporal_scope": "natal_baseline"
+        "temporal_scope": "natal_baseline",
+        "conditional_activation": {
+          "mode": "fact_gated",
+          "availability_requires": [
+            "fact_available:dignity"
+          ],
+          "satisfies_all": [],
+          "satisfies_any": [],
+          "forbids": []
+        }
       },
       "confidence_status": "supported",
       "support_status": "single_source_supported",
@@ -302,7 +324,18 @@
           "self",
           "sanfang"
         ],
-        "temporal_scope": "natal_baseline"
+        "temporal_scope": "natal_baseline",
+        "conditional_activation": {
+          "mode": "fact_gated",
+          "availability_requires": [
+            "fact_available:dignity",
+            "fact_available:auxiliary_stars",
+            "fact_available:star_relations"
+          ],
+          "satisfies_all": [],
+          "satisfies_any": [],
+          "forbids": []
+        }
       },
       "confidence_status": "supported",
       "support_status": "single_source_supported",
@@ -379,7 +412,18 @@
           "self",
           "sanfang"
         ],
-        "temporal_scope": "natal_baseline"
+        "temporal_scope": "natal_baseline",
+        "conditional_activation": {
+          "mode": "fact_gated",
+          "availability_requires": [
+            "fact_available:dignity",
+            "fact_available:auxiliary_stars",
+            "fact_available:star_relations"
+          ],
+          "satisfies_all": [],
+          "satisfies_any": [],
+          "forbids": []
+        }
       },
       "confidence_status": "supported",
       "support_status": "single_source_supported",
@@ -455,7 +499,21 @@
           "self",
           "sanfang"
         ],
-        "temporal_scope": "natal_baseline"
+        "temporal_scope": "natal_baseline",
+        "conditional_activation": {
+          "mode": "fact_gated",
+          "availability_requires": [
+            "fact_available:auxiliary_stars"
+          ],
+          "satisfies_all": [],
+          "satisfies_any": [
+            "modifier_present:天相:左輔",
+            "modifier_present:天相:右弼",
+            "modifier_present:天相:文昌",
+            "modifier_present:天相:文曲"
+          ],
+          "forbids": []
+        }
       },
       "confidence_status": "conflicted",
       "support_status": "conflicted",
@@ -534,7 +592,16 @@
           "self",
           "sanfang"
         ],
-        "temporal_scope": "natal_baseline"
+        "temporal_scope": "natal_baseline",
+        "conditional_activation": {
+          "mode": "fact_gated",
+          "availability_requires": [
+            "fact_available:auxiliary_stars"
+          ],
+          "satisfies_all": [],
+          "satisfies_any": [],
+          "forbids": []
+        }
       },
       "confidence_status": "qualified",
       "support_status": "historical_only",
@@ -614,7 +681,25 @@
           "self",
           "sanfang"
         ],
-        "temporal_scope": "natal_baseline"
+        "temporal_scope": "natal_baseline",
+        "conditional_activation": {
+          "mode": "fact_gated",
+          "availability_requires": [
+            "fact_available:dignity",
+            "fact_available:auxiliary_stars",
+            "fact_available:star_relations"
+          ],
+          "satisfies_all": [],
+          "satisfies_any": [
+            "modifier_present:七殺:紫微",
+            "modifier_present:七殺:祿存",
+            "modifier_present:七殺:左輔",
+            "modifier_present:七殺:右弼",
+            "modifier_present:七殺:文昌",
+            "modifier_present:七殺:文曲"
+          ],
+          "forbids": []
+        }
       },
       "confidence_status": "supported",
       "support_status": "single_source_supported",
@@ -692,7 +777,17 @@
           "self",
           "sanfang"
         ],
-        "temporal_scope": "natal_baseline"
+        "temporal_scope": "natal_baseline",
+        "conditional_activation": {
+          "mode": "fact_gated",
+          "availability_requires": [
+            "fact_available:dignity",
+            "fact_available:auxiliary_stars"
+          ],
+          "satisfies_all": [],
+          "satisfies_any": [],
+          "forbids": []
+        }
       },
       "confidence_status": "supported",
       "support_status": "single_source_supported",

@@ -81,6 +81,9 @@ Production v1 只可使用 pipeline allowlist 選出的 admitted claims。Resear
 
 - no admitted claim → omit / insufficient;
 - missing fact → do not guess;
+- conditional rule relevance ≠ demonstrated chart condition;
+- `context_only` conditional rules may remain active as methodology/profile/safety context;
+- `fact_gated` conditional claims enter selected claims only when activation = `satisfied`; `not_computed` / `unsatisfied` remain explicit omissions/evaluations;
 - registered conflict → preserve and present separately;
 - source-backed / project-adopted / profile-specific state不得混成無來源 certainty;
 - final prose不得創造新的 Zi Wei doctrine。

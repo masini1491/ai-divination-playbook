@@ -1,5 +1,5 @@
 {
-  "schema_version": "0.1.0-research",
+  "schema_version": "0.2.0-research",
   "authority": "REFERENCE-ONLY / RESEARCH VALIDATION / NOT PRODUCTION-ROUTABLE",
   "interpretation_profile": "ziwei.interpretation.tw_v1",
   "temporal_scope": "natal_baseline",
@@ -16,14 +16,20 @@
       ],
       "expected_selected": [
         "ZW-B1-ZIWEI-CORE-001",
-        "ZW-B1-ZIWEI-COND-002",
         "ZW-PAL-MING-DOM-001",
         "ZW-PAL-MING-COND-002"
       ],
       "classification": "PARTIAL_EXECUTABLE_CONTEXT_BLOCKED",
       "blocked_dependencies": [
         "auxiliary_claims:左輔/右弼"
-      ]
+      ],
+      "expected_omitted": [
+        "ZW-B1-ZIWEI-COND-002"
+      ],
+      "expected_conditional_states": {
+        "ZW-B1-ZIWEI-COND-002": "not_computed",
+        "ZW-PAL-MING-COND-002": "not_required"
+      }
     },
     {
       "id": "F2",
@@ -37,14 +43,20 @@
       ],
       "expected_selected": [
         "ZW-B1-ZIWEI-CORE-001",
-        "ZW-B1-ZIWEI-COND-002",
         "ZW-PAL-MING-DOM-001",
         "ZW-PAL-MING-COND-002"
       ],
       "classification": "PARTIAL_EXECUTABLE_CONTEXT_BLOCKED",
       "blocked_dependencies": [
         "malefic_context_claims"
-      ]
+      ],
+      "expected_omitted": [
+        "ZW-B1-ZIWEI-COND-002"
+      ],
+      "expected_conditional_states": {
+        "ZW-B1-ZIWEI-COND-002": "not_computed",
+        "ZW-PAL-MING-COND-002": "not_required"
+      }
     },
     {
       "id": "F3",
@@ -67,7 +79,11 @@
       "classification": "FAIL_CLOSED_PROFILE_BLOCKED",
       "blocked_dependencies": [
         "project_brightness_profile"
-      ]
+      ],
+      "expected_conditional_states": {
+        "ZW-B1-TAIYANG-COND-002": "not_computed",
+        "ZW-PAL-CAREER-COND-002": "not_required"
+      }
     },
     {
       "id": "F4",
@@ -90,7 +106,11 @@
       "classification": "FAIL_CLOSED_PROFILE_BLOCKED",
       "blocked_dependencies": [
         "project_brightness_profile"
-      ]
+      ],
+      "expected_conditional_states": {
+        "ZW-B1-TAIYANG-COND-002": "not_computed",
+        "ZW-PAL-CAREER-COND-002": "not_required"
+      }
     },
     {
       "id": "F5",
@@ -104,14 +124,20 @@
       ],
       "expected_selected": [
         "ZW-B1-WUQU-CORE-001",
-        "ZW-B1-WUQU-COND-002",
         "ZW-PAL-WEALTH-DOM-001",
         "ZW-PAL-WEALTH-COND-002"
       ],
       "classification": "PARTIAL_EXECUTABLE_CONTEXT_BLOCKED",
       "blocked_dependencies": [
         "祿馬_claim_family"
-      ]
+      ],
+      "expected_omitted": [
+        "ZW-B1-WUQU-COND-002"
+      ],
+      "expected_conditional_states": {
+        "ZW-B1-WUQU-COND-002": "not_computed",
+        "ZW-PAL-WEALTH-COND-002": "not_required"
+      }
     },
     {
       "id": "F6",
@@ -125,7 +151,6 @@
       ],
       "expected_selected": [
         "ZW-B1-WUQU-CORE-001",
-        "ZW-B1-WUQU-COND-002",
         "ZW-PAL-WEALTH-DOM-001",
         "ZW-PAL-WEALTH-COND-002"
       ],
@@ -133,7 +158,14 @@
       "blocked_dependencies": [
         "破軍_combination_claim",
         "malefic_context_claims"
-      ]
+      ],
+      "expected_omitted": [
+        "ZW-B1-WUQU-COND-002"
+      ],
+      "expected_conditional_states": {
+        "ZW-B1-WUQU-COND-002": "not_computed",
+        "ZW-PAL-WEALTH-COND-002": "not_required"
+      }
     },
     {
       "id": "F7",
@@ -147,14 +179,20 @@
       ],
       "expected_selected": [
         "ZW-B2-JUMEN-CORE-001",
-        "ZW-B2-JUMEN-COND-002",
         "ZW-PAL-SPOUSE-DOM-001",
         "ZW-PAL-SPOUSE-COND-002"
       ],
       "classification": "PARTIAL_EXECUTABLE_CONTEXT_BLOCKED",
       "blocked_dependencies": [
         "favorable_modifier_claims"
-      ]
+      ],
+      "expected_omitted": [
+        "ZW-B2-JUMEN-COND-002"
+      ],
+      "expected_conditional_states": {
+        "ZW-B2-JUMEN-COND-002": "not_computed",
+        "ZW-PAL-SPOUSE-COND-002": "not_required"
+      }
     },
     {
       "id": "F8",
@@ -168,18 +206,23 @@
       ],
       "expected_selected": [
         "ZW-B2-TIANFU-CORE-001",
-        "ZW-B2-TIANFU-COND-002",
         "ZW-PAL-FORTUNE-DOM-001",
         "ZW-PAL-FORTUNE-COND-002"
       ],
       "expected_conflicts": [
-        "CG-TIANFU-RELIEF-001",
         "CG-FUDE-SCOPE-001"
       ],
       "classification": "PARTIAL_EXECUTABLE_CONFLICT_PRESERVED",
       "blocked_dependencies": [
         "malefic_context_claims"
-      ]
+      ],
+      "expected_omitted": [
+        "ZW-B2-TIANFU-COND-002"
+      ],
+      "expected_conditional_states": {
+        "ZW-B2-TIANFU-COND-002": "not_computed",
+        "ZW-PAL-FORTUNE-COND-002": "not_required"
+      }
     },
     {
       "id": "F9",
@@ -193,17 +236,21 @@
       ],
       "expected_selected": [
         "ZW-B2-TIANXIANG-CORE-001",
-        "ZW-B2-TIANXIANG-COND-002",
         "ZW-PAL-CAREER-DOM-001",
         "ZW-PAL-CAREER-COND-002"
       ],
-      "expected_conflicts": [
-        "CG-TIANXIANG-AUTHORITY-001"
-      ],
+      "expected_conflicts": [],
       "classification": "PARTIAL_EXECUTABLE_CONFLICT_PRESERVED",
       "blocked_dependencies": [
         "favorable_support_claims"
-      ]
+      ],
+      "expected_omitted": [
+        "ZW-B2-TIANXIANG-COND-002"
+      ],
+      "expected_conditional_states": {
+        "ZW-B2-TIANXIANG-COND-002": "not_computed",
+        "ZW-PAL-CAREER-COND-002": "not_required"
+      }
     }
   ]
 }

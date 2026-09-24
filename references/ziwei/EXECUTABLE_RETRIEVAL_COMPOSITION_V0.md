@@ -23,6 +23,7 @@ claim corpus:
 outputs:
   selected claim records
   explicit omissions
+  conditional activation evaluations
   registered conflict identities
   specificity ordering
   provenance-preserving L5 frame
@@ -40,9 +41,19 @@ A claim is eligible only when:
 4. enabled source gate, when supplied, intersects the claim source refs;
 5. `temporal_scope` matches exactly;
 6. all machine-readable `requires[]` facts are present;
-7. no `forbids[]` fact is present.
+7. no `forbids[]` fact is present;
+8. conditional claims pass their explicit `conditional_activation` contract.
 
-Missing facts cause omission, not inference.
+Conditional activation is four-state:
+
+```text
+not_required  context/profile/methodology rule; chart trigger is not required
+satisfied     required deterministic domains are available and predicates match
+unsatisfied   required domains are available but declared predicates do not match
+not_computed  one or more required deterministic domains are unavailable
+```
+
+Only `not_required` and `satisfied` conditional claims enter `selected_claims`. `unsatisfied` and `not_computed` are omitted and preserved in `conditional_evaluations`. Missing facts cause omission, not inference. `modifiers[]` remains descriptive metadata; it is not globally equivalent to `requires[]` or activation predicates.
 
 ## Specificity
 
@@ -86,6 +97,8 @@ registered conflict → preserved in output
 The executable contract has deterministic unit coverage for:
 
 - star core/conditional selection;
+- context-only conditional `not_required` selection;
+- fact-gated conditional `satisfied` / `unsatisfied` / `not_computed` behavior;
 - missing-required-fact omission;
 - star + palace coexistence without Cartesian L4 invention;
 - conflict preservation;

@@ -57,6 +57,9 @@ class ZiWeiBrightnessContractV1Tests(unittest.TestCase):
         self.assertNotIn("ZW-B2-TAIYIN-COND-002",base["interpretation"]["selected_claim_ids"])
         self.assertIn("ZW-B1-TAIYANG-COND-002",bright["interpretation"]["selected_claim_ids"])
         self.assertIn("ZW-B2-TAIYIN-COND-002",bright["interpretation"]["selected_claim_ids"])
+        states={x["claim_id"]:x["state"] for x in bright["interpretation"]["conditional_evaluations"]}
+        self.assertEqual("satisfied",states["ZW-B1-TAIYANG-COND-002"])
+        self.assertEqual("satisfied",states["ZW-B2-TAIYIN-COND-002"])
 
 if __name__=="__main__":
     unittest.main()

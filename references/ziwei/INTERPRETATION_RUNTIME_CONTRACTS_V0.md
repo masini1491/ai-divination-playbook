@@ -66,7 +66,7 @@ Retrieval performs fact matching + profile/source gating + applicability matchin
 
 Future claim applicability should be machine-matchable for star-in-palace, dignity, transformations, same-palace, benefics/malefics, opposite, sanfang, body overlay and temporal scope. A transformation-dependent match additionally requires the transformed-star fact's `sihua_profile_id`; the label alone is insufficient. A temporal match must not widen `natal_baseline` into decadal/yearly/monthly/daily/hourly applicability without an admitted rule.
 
-Each selected claim should preserve claim ID, matched fact IDs, applicability result, specificity level, source, tradition, assertion class, conflict group, adoption state and provenance.
+Each selected claim should preserve claim ID, matched fact IDs, applicability result, specificity level, source, tradition, assertion class, conflict group, adoption state and provenance. Conditional claims additionally preserve an explicit activation evaluation. `context_only` rules use `not_required`; `fact_gated` rules are selectable only when their state is `satisfied`. `unsatisfied` and `not_computed` remain omissions/evaluation evidence rather than active doctrine.
 
 ## 3. Specificity contract
 

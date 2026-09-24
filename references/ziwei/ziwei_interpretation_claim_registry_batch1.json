@@ -1,6 +1,6 @@
 {
   "schema_name": "ziwei_interpretation_claim_registry",
-  "schema_version": "0.1.0-research",
+  "schema_version": "0.1.1-research",
   "record_status": "REFERENCE-ONLY",
   "record_kind": "ziwei_interpretation_claim_family_registry",
   "record_id": "ziwei-major-stars-batch1-v0",
@@ -145,7 +145,20 @@
           "self",
           "sanfang"
         ],
-        "temporal_scope": "natal_baseline"
+        "temporal_scope": "natal_baseline",
+        "conditional_activation": {
+          "mode": "fact_gated",
+          "availability_requires": [
+            "fact_available:auxiliary_stars"
+          ],
+          "satisfies_all": [],
+          "satisfies_any": [
+            "modifier_present:紫微:左輔",
+            "modifier_present:紫微:右弼",
+            "modifier_present:紫微:malefic_stars"
+          ],
+          "forbids": []
+        }
       },
       "confidence_status": "supported",
       "support_status": "single_source_supported",
@@ -216,7 +229,14 @@
         "topology_scope": [
           "self"
         ],
-        "temporal_scope": "natal_baseline"
+        "temporal_scope": "natal_baseline",
+        "conditional_activation": {
+          "mode": "context_only",
+          "availability_requires": [],
+          "satisfies_all": [],
+          "satisfies_any": [],
+          "forbids": []
+        }
       },
       "confidence_status": "conflicted",
       "support_status": "conflicted",
@@ -277,8 +297,7 @@
       ],
       "applicability": {
         "requires": [
-          "star_present:太陽",
-          "fact_available:dignity"
+          "star_present:太陽"
         ],
         "forbids": [],
         "modifiers": [
@@ -290,7 +309,16 @@
         "topology_scope": [
           "self"
         ],
-        "temporal_scope": "natal_baseline"
+        "temporal_scope": "natal_baseline",
+        "conditional_activation": {
+          "mode": "fact_gated",
+          "availability_requires": [
+            "fact_available:dignity"
+          ],
+          "satisfies_all": [],
+          "satisfies_any": [],
+          "forbids": []
+        }
       },
       "confidence_status": "supported",
       "support_status": "single_source_supported",
@@ -368,7 +396,17 @@
           "self",
           "sanfang"
         ],
-        "temporal_scope": "natal_baseline"
+        "temporal_scope": "natal_baseline",
+        "conditional_activation": {
+          "mode": "fact_gated",
+          "availability_requires": [
+            "fact_available:auxiliary_stars",
+            "fact_available:star_relations"
+          ],
+          "satisfies_all": [],
+          "satisfies_any": [],
+          "forbids": []
+        }
       },
       "confidence_status": "supported",
       "support_status": "single_source_supported",
@@ -439,7 +477,14 @@
         "topology_scope": [
           "self"
         ],
-        "temporal_scope": "natal_baseline"
+        "temporal_scope": "natal_baseline",
+        "conditional_activation": {
+          "mode": "context_only",
+          "availability_requires": [],
+          "satisfies_all": [],
+          "satisfies_any": [],
+          "forbids": []
+        }
       },
       "confidence_status": "qualified",
       "support_status": "historical_only",
@@ -516,7 +561,19 @@
           "self",
           "sanfang"
         ],
-        "temporal_scope": "natal_baseline"
+        "temporal_scope": "natal_baseline",
+        "conditional_activation": {
+          "mode": "fact_gated",
+          "availability_requires": [
+            "fact_available:dignity",
+            "fact_available:auxiliary_stars",
+            "fact_available:star_relations",
+            "fact_available:four_transformations"
+          ],
+          "satisfies_all": [],
+          "satisfies_any": [],
+          "forbids": []
+        }
       },
       "confidence_status": "supported",
       "support_status": "single_source_supported",

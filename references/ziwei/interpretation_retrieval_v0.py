@@ -14,6 +14,8 @@ DEFAULT_REGISTRIES = (
 )
 SUPPORTED_TEMPORAL_SCOPE = "natal_baseline"
 ELIGIBLE_ADOPTION = "RESEARCH_CLAIM_ELIGIBLE"
+CONDITIONAL_CLAIM_TYPES = {"star_conditional", "palace_conditional"}
+ACTIVE_CONDITIONAL_STATES = {"not_required", "satisfied"}
 
 SPECIFICITY = {
     "star_conditional": 40,
@@ -46,21 +48,77 @@ class FactPacket:
 def load_registries(paths: Iterable[Path] = DEFAULT_REGISTRIES) -> list[dict[str, Any]]:
     return [json.loads(Path(path).read_text(encoding="utf-8")) for path in paths]
 
-def _claim_matches(packet: FactPacket, claim: dict[str, Any]) -> tuple[bool, str]:
+def _evaluate_conditional_activation(packet: FactPacket, claim: dict[str, Any]) -> dict[str, Any] | None:
+    if claim.get("claim_type") not in CONDITIONAL_CLAIM_TYPES:
+        return None
+    meta = claim.get("applicability", {}).get("conditional_activation")
+    if not isinstance(meta, dict):
+        return {
+            "mode": "missing",
+            "state": "not_computed",
+            "reason": "conditional_activation_metadata_missing",
+            "availability_requires": [],
+            "missing_availability": [],
+            "satisfies_all": [],
+            "satisfies_any": [],
+            "forbids": [],
+            "matched_satisfies_all": [],
+            "matched_satisfies_any": [],
+            "matched_forbids": [],
+        }
+    mode = str(meta.get("mode", ""))
+    availability = tuple(str(x) for x in meta.get("availability_requires", []))
+    satisfies_all = tuple(str(x) for x in meta.get("satisfies_all", []))
+    satisfies_any = tuple(str(x) for x in meta.get("satisfies_any", []))
+    forbids = tuple(str(x) for x in meta.get("forbids", []))
+    if mode == "context_only":
+        state, reason = "not_required", "context_only_rule"
+    elif mode == "fact_gated":
+        missing_availability = sorted(set(availability) - packet.facts)
+        if missing_availability:
+            state, reason = "not_computed", "conditional_fact_not_computed"
+        elif set(forbids).intersection(packet.facts):
+            state, reason = "unsatisfied", "conditional_condition_unsatisfied"
+        elif not set(satisfies_all).issubset(packet.facts):
+            state, reason = "unsatisfied", "conditional_condition_unsatisfied"
+        elif satisfies_any and not set(satisfies_any).intersection(packet.facts):
+            state, reason = "unsatisfied", "conditional_condition_unsatisfied"
+        else:
+            state, reason = "satisfied", "conditional_condition_satisfied"
+    else:
+        state, reason = "not_computed", "conditional_activation_mode_invalid"
+    return {
+        "mode": mode,
+        "state": state,
+        "reason": reason,
+        "availability_requires": list(availability),
+        "missing_availability": sorted(set(availability) - packet.facts),
+        "satisfies_all": list(satisfies_all),
+        "satisfies_any": list(satisfies_any),
+        "forbids": list(forbids),
+        "matched_satisfies_all": sorted(set(satisfies_all).intersection(packet.facts)),
+        "matched_satisfies_any": sorted(set(satisfies_any).intersection(packet.facts)),
+        "matched_forbids": sorted(set(forbids).intersection(packet.facts)),
+    }
+
+def _claim_matches(packet: FactPacket, claim: dict[str, Any]) -> tuple[bool, str, dict[str, Any] | None]:
     app = claim.get("applicability", {})
     if app.get("temporal_scope") != packet.temporal_scope:
-        return False, "temporal_scope_mismatch"
+        return False, "temporal_scope_mismatch", None
     if packet.temporal_scope != SUPPORTED_TEMPORAL_SCOPE:
-        return False, "dynamic_scope_not_admitted"
+        return False, "dynamic_scope_not_admitted", None
     if packet.requested_subjects and claim.get("subject") not in packet.requested_subjects:
-        return False, "subject_not_requested"
+        return False, "subject_not_requested", None
     requires = set(app.get("requires", []))
     if not requires.issubset(packet.facts):
-        return False, "required_fact_missing"
+        return False, "required_fact_missing", None
     forbids = set(app.get("forbids", []))
     if forbids.intersection(packet.facts):
-        return False, "forbidden_fact_present"
-    return True, "matched"
+        return False, "forbidden_fact_present", None
+    activation = _evaluate_conditional_activation(packet, claim)
+    if activation is not None and activation["state"] not in ACTIVE_CONDITIONAL_STATES:
+        return False, activation["reason"], activation
+    return True, "matched", activation
 
 def retrieve_claims(
     packet: FactPacket,
@@ -69,6 +127,7 @@ def retrieve_claims(
     regs = list(registries) if registries is not None else load_registries()
     selected: list[dict[str, Any]] = []
     omissions: list[dict[str, str]] = []
+    conditional_evaluations: list[dict[str, Any]] = []
     conflict_defs: dict[str, dict[str, Any]] = {}
 
     for registry in regs:
@@ -86,7 +145,15 @@ def retrieve_claims(
             if packet.enabled_source_ids and not set(claim.get("source_refs", [])).intersection(packet.enabled_source_ids):
                 omissions.append({"claim_id": cid, "reason": "source_not_enabled"})
                 continue
-            matched, reason = _claim_matches(packet, claim)
+            matched, reason, activation = _claim_matches(packet, claim)
+            if activation is not None:
+                conditional_evaluations.append({
+                    "claim_id": cid,
+                    "subject": claim.get("subject"),
+                    "claim_type": claim.get("claim_type"),
+                    "conflict_group_ids": list(claim.get("conflict_group_ids", [])),
+                    **activation,
+                })
             if not matched:
                 omissions.append({"claim_id": cid, "reason": reason})
                 continue
@@ -101,10 +168,12 @@ def retrieve_claims(
                 "conflict_group_ids": list(claim.get("conflict_group_ids", [])),
                 "specificity": SPECIFICITY.get(claim.get("claim_type"), 0),
                 "matched_requires": list(claim.get("applicability", {}).get("requires", [])),
+                "conditional_activation": activation,
                 "temporal_scope": claim.get("applicability", {}).get("temporal_scope"),
             })
 
     selected.sort(key=lambda x: (-x["specificity"], x["claim_id"]))
+    conditional_evaluations.sort(key=lambda x: x["claim_id"])
     active_groups = sorted({gid for claim in selected for gid in claim["conflict_group_ids"]})
     conflicts = [{
         "conflict_group_id": gid,
@@ -118,6 +187,7 @@ def retrieve_claims(
         "interpretation_profile": packet.interpretation_profile,
         "temporal_scope": packet.temporal_scope,
         "selected_claims": selected,
+        "conditional_evaluations": conditional_evaluations,
         "conflicts": conflicts,
         "omissions": omissions,
         "production_authority_granted": False,
@@ -130,12 +200,13 @@ def compose_frame(packet: FactPacket, retrieval: dict[str, Any]) -> dict[str, An
         by_subject.setdefault(claim["subject"], []).append(claim["claim_id"])
     return {
         "authority": "REFERENCE-ONLY / RESEARCH EXECUTABLE / NOT PRODUCTION-ROUTABLE",
-        "frame_version": "0.1.0-research",
+        "frame_version": "0.2.0-research",
         "packet_id": packet.packet_id,
         "interpretation_profile": packet.interpretation_profile,
         "temporal_scope": packet.temporal_scope,
         "selected_claim_ids": [x["claim_id"] for x in claims],
         "subject_claims": by_subject,
+        "conditional_evaluations": retrieval["conditional_evaluations"],
         "conflicts": retrieval["conflicts"],
         "omission_count": len(retrieval["omissions"]),
         "rendering_boundary": "frame_only_no_doctrine_generation",

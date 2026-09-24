@@ -22,7 +22,7 @@ _retrieval=_load("ziwei_scope_a_retrieval",REF/"interpretation_retrieval_v0.py")
 _delivery=_load("ziwei_scope_a_delivery",REF/"validate_uncertainty_safety_delivery_v0.py")
 
 PIPELINE_ID="ziwei-scope-a-production-pipeline-v1"
-PIPELINE_VERSION="1.0.0"
+PIPELINE_VERSION="1.1.0"
 INTERPRETATION_PROFILE="ziwei.interpretation.tw_v1"
 TEMPORAL_SCOPE="natal_baseline"
 ADMITTED_REGISTRIES=(
@@ -89,6 +89,7 @@ def _compose_scope_a_chart(
             "temporal_scope":TEMPORAL_SCOPE,
             "selected_claims":retrieval["selected_claims"],
             "selected_claim_ids":frame["selected_claim_ids"],
+            "conditional_evaluations":retrieval["conditional_evaluations"],
             "subject_claims":frame["subject_claims"],
             "conflicts":conflicts,
             "omissions":retrieval["omissions"],

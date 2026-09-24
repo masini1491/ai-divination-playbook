@@ -46,6 +46,9 @@ class ZiWeiExecutableBehavioralValidationV0(unittest.TestCase):
                 self.assertTrue(set(fx.get("expected_omitted", [])).issubset(omitted))
                 conflicts = {x["conflict_group_id"] for x in result["conflicts"]}
                 self.assertTrue(set(fx.get("expected_conflicts", [])).issubset(conflicts))
+                states = {x["claim_id"]: x["state"] for x in result["conditional_evaluations"]}
+                for claim_id, expected_state in fx.get("expected_conditional_states", {}).items():
+                    self.assertEqual(expected_state, states[claim_id])
                 self.assertFalse(result["production_authority_granted"])
 
     def test_blocked_context_is_never_represented_as_admitted_claim(self):

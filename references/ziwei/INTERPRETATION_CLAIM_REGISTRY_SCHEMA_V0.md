@@ -7,11 +7,13 @@ Schema name：`ziwei_interpretation_claim_registry`
 Supported versions：
 
 ```text
-0.1.0-research  major-star first-layer registries
-0.2.0-research  adds palace-domain claim families
+0.1.0-research  historical major-star first-layer registry schema
+0.1.1-research  hardens conditional activation metadata for major-star claims
+0.2.0-research  historical palace-domain extension
+0.2.1-research  hardens conditional activation metadata for palace-capable registries
 ```
 
-`0.2.0-research` is backward-compatible at the validator level: existing v0.1 Batch 1/2 registries remain valid and are not rewritten.
+`0.2.x-research` remains backward-compatible at the validator level with v0.1 claim types. Historical `0.1.0` / `0.2.0` files remain validator-readable; the production-admitted 52-claim corpus now uses `0.1.1` / `0.2.1` so conditional activation is explicit.
 
 ## Top-level contract
 
@@ -46,7 +48,7 @@ research_result.scientific_predictive_validity_claimed = false
 
 ## Versioned claim types
 
-### v0.1
+### v0.1.x
 
 ```text
 star_core
@@ -54,7 +56,7 @@ star_conditional
 methodology
 ```
 
-### v0.2
+### v0.2.x
 
 ```text
 star_core
@@ -64,7 +66,7 @@ palace_conditional
 methodology
 ```
 
-A v0.1 registry must not use palace claim types. Palace registries must declare `0.2.0-research`.
+A v0.1.x registry must not use palace claim types. Hardened palace registries declare `0.2.1-research`.
 
 ## Source record
 
@@ -142,7 +144,20 @@ modifiers[]
 palace_scope[]
 topology_scope[]
 temporal_scope
+conditional_activation {
+  mode = context_only | fact_gated
+  availability_requires[]
+  satisfies_all[]
+  satisfies_any[]
+  forbids[]
+}
 ```
+
+For hardened `0.1.1-research` / `0.2.1-research`, every `star_conditional` / `palace_conditional` claim declares `conditional_activation`.
+
+- `context_only`: methodology/profile/safety/context rule; chart-condition demonstration is not required and predicate arrays remain empty.
+- `fact_gated`: availability facts first prove the relevant deterministic domain was computed. Missing availability is `not_computed`; available data that does not satisfy declared predicates is `unsatisfied`; only a demonstrated match is `satisfied`.
+- Rule relevance is not condition demonstration. `modifiers[]` remains descriptive metadata and is never globally promoted to `requires[]`.
 
 ## Palace semantics
 

@@ -18,6 +18,7 @@ class ZiWeiClaimRegistryBatch2ValidationTests(unittest.TestCase):
 
     def test_batch2_shape_and_guards(self):
         data=json.loads(REGISTRY.read_text(encoding='utf-8'))
+        self.assertEqual('0.1.1-research',data['schema_version'])
         self.assertEqual(16,len(data['claims']))
         self.assertEqual({'天府','太陰','貪狼','巨門','天相','天梁','七殺','破軍'},set(data['subjects']))
         self.assertFalse(data['production_routable'])
