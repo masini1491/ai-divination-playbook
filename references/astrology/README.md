@@ -20,6 +20,10 @@ Research maturity review: [`ASTROLOGY_RESEARCH_V1_MATURITY_REVIEW.md`](ASTROLOGY
 
 Integrated research execution evidence: [`ASTROLOGY_RESEARCH_V1_COMPLETION_EXECUTION_RESULTS.md`](ASTROLOGY_RESEARCH_V1_COMPLETION_EXECUTION_RESULTS.md)
 
+Current coordination backlog: [`../../ASTROLOGY_BACKLOG.md`](../../ASTROLOGY_BACKLOG.md)
+
+The backlog is coordination-only. It does not supersede this research owner, `ASTROLOGY.md`, admission manifests or production tools.
+
 本目錄是 Astrology 的 **historical / ongoing research evidence surface**。Research v1 已完成；current production authority 另由 root owners 明確 admission。兩層不得互相覆蓋：
 
 ```text

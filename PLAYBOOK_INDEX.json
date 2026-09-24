@@ -73,6 +73,16 @@
       "kind": "reference"
     },
     {
+      "id": "coordination.astrology-backlog",
+      "owner": "ASTROLOGY_BACKLOG.md",
+      "kind": "coordination",
+      "authority": "coordination-only",
+      "method": "Astrology",
+      "production_authority": false,
+      "research_evidence_authority": false,
+      "routing_authority": false
+    },
+    {
       "id": "coordination.ziwei-backlog",
       "owner": "ZIWEI_BACKLOG.md",
       "kind": "coordination",
@@ -336,8 +346,8 @@
       "research.astrology.scope": {
         "owner": "references/astrology/README.md",
         "heading": "## 1. Scope",
-        "start_line": 42,
-        "end_line": 69,
+        "start_line": 46,
+        "end_line": 73,
         "next_heading": "## 2. Research decomposition"
       },
       "explicit_astrology.natal_entry": {
