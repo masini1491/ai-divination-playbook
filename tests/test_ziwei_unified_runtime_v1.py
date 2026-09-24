@@ -88,7 +88,7 @@ class ZiWeiUnifiedRuntimeV1Tests(unittest.TestCase):
         with self.assertRaises(ValueError):
             run_ziwei(ZiWeiReadingRequest(request_id="bad-scope",birth=self.natal,temporal_scope="yearly"))
         with self.assertRaises(ValueError):
-            run_ziwei(ZiWeiReadingRequest(request_id="bad-module",birth=self.natal,optional_modules=("m0_auxiliary_v1",)))
+            run_ziwei(ZiWeiReadingRequest(request_id="bad-module",birth=self.natal,optional_modules=("unsupported_module_v1",)))
         with self.assertRaises(ValueError):
             run_ziwei(ZiWeiReadingRequest(
                 request_id="bad-profile",birth=self.natal,
