@@ -141,6 +141,12 @@ class AstrologyProductionContractTests(unittest.TestCase):
         self.assertEqual("ASTROLOGY_TRANSIT.md", row["transit_owner"])
         self.assertEqual("ASTROLOGY_NATAL.md", rows["method.astrology.natal"]["owner"])
         self.assertEqual("ASTROLOGY_TRANSIT.md", rows["method.astrology.transit"]["owner"])
+        self.assertEqual("tools/astrology_rulership_projection.py", row["rulership_projection"])
+        self.assertEqual(
+            "schemas/astrology/ASTROLOGY_RULERSHIP_PROJECTION_V1.schema.json",
+            row["rulership_projection_schema"],
+        )
+        self.assertEqual("explicit-selector-only", row["rulership_activation"])
         self.assertNotIn("explicit_astrology", data["loader"]["bypass_profiles"])
 
     def test_astrology_root_owner_keeps_common_boundary_and_routes_mode_owners(self):
@@ -208,6 +214,19 @@ class AstrologyProductionContractTests(unittest.TestCase):
             production["natal_semantic_policy"]["derived_fact_interpretation"]["fact_only_object_ids"],
         )
         self.assertNotIn("PartOfFortune", production["aspect_policy"]["participant_object_ids"])
+
+    def test_e7_rulership_is_dual_policy_and_has_no_silent_default(self):
+        manifest = json.loads((ROOT / "ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        policy = manifest["orchestration"]["policy_projections"]["rulership"]
+        self.assertEqual("deterministic_policy_projection_only", policy["authority"])
+        self.assertEqual("explicit_selector_only", policy["activation"])
+        self.assertEqual(
+            ["rulership-traditional-v1", "rulership-modern-v1"],
+            policy["admitted_policy_ids"],
+        )
+        self.assertEqual("forbidden", policy["silent_default"])
+        self.assertEqual("forbidden", policy["silent_blending"])
+        self.assertFalse(policy["semantic_interpretation_authority"])
 
 
 if __name__ == "__main__":

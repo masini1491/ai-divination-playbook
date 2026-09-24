@@ -25,6 +25,7 @@ PROJECT_PATHS=(
  "tools/astrology_provider.py",
  "tools/astrology_transit_provider.py",
  "tools/astrology_orchestrator.py",
+ "tools/astrology_rulership_projection.py",
 )
 DEPENDENCY_SHA256={
  "astronomy/__init__.py":"bd11c0176cd4546161a01d3665808cf92614cce7953a169b023b5760f0260203",

@@ -54,6 +54,7 @@ class AstrologyCoreToolBundleTests(unittest.TestCase):
                 "import json\n"
                 "from tools.astrology_orchestrator import run_request\n"
                 "import tools.astrology_transit_provider\n"
+                "from tools.astrology_rulership_projection import build_rulership_projection\n"
                 "q={'schema_name':'astrology_reading_request','schema_version':'1.0.0','reading_mode':'natal','subject_ref':'synthetic-core-bundle-fixture','birth':{'local_datetime':'2000-01-01T12:00:00','birth_time_certainty':'exact','house_system':'Whole Sign','location':{'coordinates':{'latitude':0.0,'longitude':0.0,'timezone_name':'UTC'}}}}\n"
                 "r=run_request(q)\n"
                 "assert r['status']=='admitted' and r['interpretation_allowed'] is True\n"
@@ -63,6 +64,8 @@ class AstrologyCoreToolBundleTests(unittest.TestCase):
                 "ids={x['object_id'] for x in r['fact_bundles']['natal']['facts']['objects']}\n"
                 "assert {'SouthNode','Descendant','ImumCoeli','PartOfFortune'} <= ids\n"
                 "assert r['fact_bundles']['natal']['provider']['sect']['policy_id']=='sect-geometric-solar-altitude-v1'\n"
+                "rp=build_rulership_projection(r['fact_bundles']['natal'],'rulership-modern-v1')\n"
+                "assert len(rp['projections'])==12 and rp['policy_id']=='rulership-modern-v1'\n"
                 "print(json.dumps({'ok':True,'mode':r['input_resolution']['resolution_mode']}))\n",
                 encoding="utf-8",
             )

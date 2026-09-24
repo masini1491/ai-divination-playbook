@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ASTROLOGY_RULERSHIP_PROJECTION_V1.schema.json",
+  "title": "Astrology Rulership Projection 1.0",
+  "type": "object",
+  "required": [
+    "schema_name",
+    "schema_version",
+    "status",
+    "authority",
+    "method",
+    "reading_mode",
+    "subject_ref",
+    "house_system",
+    "policy_id",
+    "explicit_policy_required",
+    "semantic_interpretation_authority",
+    "projections"
+  ],
+  "properties": {
+    "schema_name": {"const": "astrology_rulership_projection"},
+    "schema_version": {"const": "1.0.0"},
+    "status": {"const": "projected"},
+    "authority": {"const": "deterministic_policy_projection_only"},
+    "method": {"const": "Astrology"},
+    "reading_mode": {"const": "natal"},
+    "subject_ref": {"type": "string", "minLength": 1},
+    "house_system": {"enum": ["Whole Sign", "Placidus"]},
+    "policy_id": {"enum": ["rulership-traditional-v1", "rulership-modern-v1"]},
+    "explicit_policy_required": {"const": true},
+    "semantic_interpretation_authority": {"const": false},
+    "projections": {
+      "type": "array",
+      "minItems": 12,
+      "maxItems": 12,
+      "items": {
+        "type": "object",
+        "required": [
+          "projection_id",
+          "projection_kind",
+          "policy_id",
+          "house_number",
+          "house_fact_ref",
+          "sign_on_house",
+          "ruler_object_id",
+          "ruler_fact_ref"
+        ],
+        "properties": {
+          "projection_id": {"type": "string", "minLength": 1},
+          "projection_kind": {"const": "rulership"},
+          "policy_id": {"enum": ["rulership-traditional-v1", "rulership-modern-v1"]},
+          "house_number": {"type": "integer", "minimum": 1, "maximum": 12},
+          "house_fact_ref": {"type": "string", "minLength": 1},
+          "sign_on_house": {"type": "string", "minLength": 1},
+          "ruler_object_id": {"type": "string", "minLength": 1},
+          "ruler_fact_ref": {"type": "string", "minLength": 1},
+          "ruler_sign": {"type": "string", "minLength": 1},
+          "ruler_house_number": {"type": "integer", "minimum": 1, "maximum": 12}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

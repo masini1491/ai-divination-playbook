@@ -105,6 +105,25 @@
       "reading_record_storage": "external_only",
       "semantic_selection_authority": false,
       "final_text_authority": false
+    },
+    "policy_projections": {
+      "rulership": {
+        "projection_id": "astrology-rulership-projection-v1",
+        "runtime_owner": "tools/astrology_rulership_projection.py",
+        "output_schema": "schemas/astrology/ASTROLOGY_RULERSHIP_PROJECTION_V1.schema.json",
+        "output_schema_id": "astrology_rulership_projection@1.0.0",
+        "authority": "deterministic_policy_projection_only",
+        "activation": "explicit_selector_only",
+        "admitted_policy_ids": [
+          "rulership-traditional-v1",
+          "rulership-modern-v1"
+        ],
+        "silent_default": "forbidden",
+        "silent_blending": "forbidden",
+        "requires_admitted_natal_bundle": true,
+        "requires_all_12_house_facts": true,
+        "semantic_interpretation_authority": false
+      }
     }
   },
   "natal_provider": {
