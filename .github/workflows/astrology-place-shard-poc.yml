@@ -1,0 +1,82 @@
+name: Astrology Place Shard POC
+
+on:
+  pull_request:
+    paths:
+      - "tools/astrology_place_shard_benchmark.py"
+      - ".github/workflows/astrology-place-shard-poc.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install exact admitted resolver dependency
+        run: python -m pip install --disable-pip-version-check "geonamescache==3.0.2"
+
+      - name: Benchmark exact-dataset alias hash shards
+        run: |
+          python tools/astrology_place_shard_benchmark.py \
+            --bucket-hex-chars 2 3 4 \
+            --output astrology-place-shard-benchmark.json \
+            > /dev/null
+
+      - name: Print bounded benchmark summary
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          report = json.loads(Path("astrology-place-shard-benchmark.json").read_text())
+          print("status", report["status"])
+          for item in report["dataset_identity"]:
+              print(
+                  "dataset",
+                  item["profile"],
+                  "identity_match=" + str(item["identity_match"]),
+                  "bytes=" + str(item["actual_bytes"]),
+                  "sha256=" + item["actual_sha256"],
+              )
+          for row in report["benchmarks"]:
+              print(
+                  "benchmark",
+                  "profile=" + str(row["profile"]),
+                  "hex=" + str(row["bucket_hex_chars"]),
+                  "shards=" + str(row["nonempty_shards"]),
+                  "p95=" + str(row["p95_shard_bytes"]),
+                  "p99=" + str(row["p99_shard_bytes"]),
+                  "max=" + str(row["max_shard_bytes"]),
+                  "total=" + str(row["total_serialized_bytes"]),
+                  "fixture_parity=" + str(row["fixture_parity"]),
+              )
+              for fixture in row["fixtures"]:
+                  print(
+                      "fixture",
+                      "profile=" + str(row["profile"]),
+                      "hex=" + str(row["bucket_hex_chars"]),
+                      fixture["name"],
+                      str(fixture["country_code"]),
+                      "bucket=" + fixture["bucket"],
+                      "bytes=" + str(fixture["shard_bytes"]),
+                      "matches=" + str(len(fixture["actual_ids"])),
+                      "parity=" + str(fixture["parity"]),
+                  )
+          PY
+
+      - name: Upload benchmark evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: astrology-place-shard-benchmark
+          path: astrology-place-shard-benchmark.json
+          retention-days: 7
