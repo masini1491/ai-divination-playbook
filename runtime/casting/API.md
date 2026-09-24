@@ -33,6 +33,13 @@ Content-Type: application/json
 
 Vercel deployment 會用 `VERCEL_GIT_COMMIT_SHA` 注入 `runtime_source_commit`；非 Vercel 本機執行則明確為 `unknown`。
 
+Production provenance gate 不要求 `runtime_source_commit == current monorepo HEAD`。對於未修改 `runtime/casting/**` 的 monorepo commit，Vercel 可跳過部署；合法 production state 必須同時滿足：
+
+- deployed commit 是 current main 的 ancestor；
+- deployed commit 與 current main 的 `runtime/casting` Git tree identity 完全相同。
+
+只要 casting tree 已改變而 production 尚未部署，tree identity 即不相同，production smoke 必須 fail closed。
+
 所有 API response 都設定 `Cache-Control: no-store`；request body 上限 1024 bytes，單次 `repeat` 上限 20，以限制單次請求成本。這些是 request bounds，**不是跨 instance 的 rate limit**。
 
 ## OpenAPI
