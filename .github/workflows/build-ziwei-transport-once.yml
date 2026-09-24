@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   build:
-    if: github.event.head_commit.message == 'Stage Zi Wei deterministic transport generator'
+    if: startsWith(github.event.head_commit.message, 'Build Zi Wei transport')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
