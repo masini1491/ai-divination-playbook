@@ -197,6 +197,38 @@ CONTRACTS: dict[str, list[tuple[str, tuple[str, ...]]]] = {
             ),
         )
     ],
+    "TAROT-BEH-025": [
+        (
+            "MEIHUA_MATERIALIZATION.md",
+            (
+                "materialized_source_commit",
+                "last_checked_repository_head",
+                "Identity-first deterministic refresh",
+                "tools/meihua_engine.py",
+                "MUST NOT fetch bundle / rematerialize",
+            ),
+        ),
+        (
+            "LIUYAO_MATERIALIZATION.md",
+            (
+                "materialized_source_commit",
+                "last_checked_repository_head",
+                "Identity-first deterministic refresh",
+                "tools/liuyao_calendar.py",
+                "tools/liuyao_engine.py",
+                "tools/liuyao_runtime.py",
+                "current HEAD與 `materialized_source_commit` 不同本身不是 MISS",
+            ),
+        ),
+        (
+            "BEHAVIORAL_EVAL.md",
+            (
+                "TAROT-BEH-025 — Deterministic tool cache reuse forbids redundant rematerialization",
+                "owned source paths全部 unchanged",
+                "不得重新 fetch bundle、rematerialize或跑完整 acquisition",
+            ),
+        ),
+    ],
     "TAROT-BEH-013": [
         (
             "CHAT_INIT.md",
