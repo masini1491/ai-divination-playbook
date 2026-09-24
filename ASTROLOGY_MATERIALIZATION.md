@@ -106,6 +106,36 @@ place/country request → resolver-specific unavailable / materialization requir
 
 不得把 resolver dependency miss升格成整個 Astrology core runtime unavailable。
 
+### 6.1 A-MAT-2 feasibility closure｜目前不 admission resolver cold-start transport
+
+A-MAT-2 以 `geonamescache==3.0.2` 的 installed wheel/runtime bytes 與 current admitted resolver semantics 實測後，**目前不 admission model-mediated place-resolver materialization transport**。Evidence owner：`reports/astrology/ASTROLOGY_PLACE_RESOLVER_MATERIALIZATION_FEASIBILITY.md`。
+
+關鍵 evidence：
+
+- PyPI wheel下載約 **35.0 MB**；installed distribution約 **187,204,618 bytes**。
+- current resolver admitted scope實際需要的 minimum package/runtime data約 **186,949,890 bytes / 178.289 MiB**。
+- `cities500.json` 單檔約 **79,527,431 bytes**；四個 supported city datasets合計約 **178.194 MiB**。
+- `cities500` 不能單純以 `population >= threshold` 等價推導 1000／5000／15000 datasets；實測 parity皆為 false，因此不得為減少 transport成本而 silent collapse dataset semantics。
+- 初步 derived exact-alias compact index即使壓縮後仍約 **12.83 MB / 38,526 個 444-char chunks**；naive 64–1024 hash shards的 worst-case仍需數千 chunks，未達可接受的 ordinary ChatGPT cold-start transport成本。
+
+因此目前合法行為固定為：
+
+```text
+resolver runtime already available
+→ place / country input may use admitted geonamescache resolver
+
+resolver runtime unavailable + explicit coordinates + IANA timezone available
+→ continue through A-MAT-1 verified core materialization
+
+resolver runtime unavailable + only place / country name available
+→ request explicit coordinates + IANA timezone
+→ do not generic-web geocode
+→ do not model-guess coordinates/timezone
+→ do not silently substitute another population dataset/profile
+```
+
+這是 bounded **no-transport decision**，不是把 `tools/astrology_place_resolver.py` 降級或取消 production admission。未來若有新的 host-native artifact bridge、query-bounded verified shard design或其他 materially較低成本 transport，需另做 admission／parity／product validation後才能改變此邊界。
+
 ## 7. Fallback / fail closed
 
 Core bundle無法取得或驗證時，可退回同 exact commit repo-source + pinned upstream Astronomy Engine exact-source materialization；仍須 byte-preserving、逐檔 identity verification。
