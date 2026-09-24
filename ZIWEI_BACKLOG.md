@@ -139,7 +139,7 @@ This SHA is review evidence only, not a pin. Every maintenance task must resolve
 ### ZW-P1-002 — Normalize Zi Wei production / research execution boundary
 
 - type: ARCHITECTURE / BEHAVIOR-PRESERVING
-- status: OPEN
+- status: DONE
 - priority: P1
 - owner: Zi Wei production runtime / research-boundary maintenance
 - blocked_by:
@@ -170,6 +170,12 @@ This SHA is review evidence only, not a pin. Every maintenance task must resolve
   - stale old executable-path references are reconciled;
   - behavior-preserving targeted regression, bundle validation and production contract validation pass;
   - canonical read-back confirms only the intended ownership/path normalization.
+- completion_evidence:
+  - canonical production executables moved to `tools/ziwei_claim_retrieval.py` and `tools/ziwei_delivery.py`;
+  - reference-path Python files remain compatibility shims only;
+  - production pipeline no longer dynamic-loads Python from `references/ziwei/**`;
+  - deterministic bundle contains no reference-path Python executables;
+  - admitted research registries remain in `references/ziwei/**` with historical `production_routable=false` policy unchanged.
 
 ## P1 — feature admission
 
