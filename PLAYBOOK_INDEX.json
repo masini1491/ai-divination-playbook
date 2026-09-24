@@ -49,6 +49,13 @@
       "adapter": "SESSION_HANDOFF.md"
     },
     {
+      "id": "repository.architecture",
+      "owner": "REPOSITORY_ARCHITECTURE.md",
+      "section": "2. Repository layer taxonomy",
+      "kind": "contract",
+      "scope": "repo-level"
+    },
+    {
       "id": "method.routing",
       "owner": "METHOD_ROUTING.md",
       "section": "Fast Path｜高信心命中就停止 routing",
