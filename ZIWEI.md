@@ -73,7 +73,7 @@ tools/ziwei_natal_provider.py
 → ZIWEI_BRIGHTNESS_ADMISSION_V1.json
 ```
 
-若 deterministic boundary 不成立，停在 Fact Gate；不得改用 Tarot / Meihua / Liuyao 冒充 Zi Wei reading。
+若 local runtime / dependency cache 缺失，先依 `ZIWEI_MATERIALIZATION.md` 嘗試同 exact-commit deterministic transport materialization；local package miss 不等於 deterministic source unavailable。只有 admitted materialization/direct-source paths 都失敗才停在 Fact Gate；不得改用 Tarot / Meihua / Liuyao 冒充 Zi Wei reading。
 
 ## 4. Interpretation / Evidence Boundary
 
@@ -142,6 +142,9 @@ tools/ziwei_brightness_provider.py + tools/ziwei_brightness_pipeline.py
 
 ZIWEI_BRIGHTNESS_ADMISSION_V1.json
 → optional brightness production admission truth
+
+ZIWEI_MATERIALIZATION.md + runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json
+→ ChatGPT cold-start deterministic source/dependency transport；derived cache only
 
 references/ziwei/**
 → research evidence and historical research contracts
