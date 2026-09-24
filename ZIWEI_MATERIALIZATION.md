@@ -21,7 +21,7 @@ tools/ziwei_m0_auxiliary_provider.py
 tools/ziwei_brightness_pipeline.py
 tools/ziwei_claim_retrieval.py
 tools/ziwei_delivery.py
-3 admitted claim registries
+3 base admitted claim registries + optional M0 auxiliary claim registry
 ```
 
 Gregorian calendar dependency authority固定為：
