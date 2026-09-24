@@ -19,8 +19,14 @@ class AstrologyExtendedChartE8ReadinessTests(unittest.TestCase):
         self.assertEqual("REFERENCE_ONLY", data["authority"])
         self.assertFalse(data["production_mutation_authorized"])
         self.assertEqual(
-            "0672df50233a6a7149dd4434179cc6a05467445d",
+            "c824e79a92476188b9b4c63d608608e1c01e791d",
             data["production_baseline"],
+        )
+        self.assertEqual("PRODUCTION_ADMITTED", data["current_state_reconciliation"]["e1_status"])
+        self.assertEqual("PRODUCTION_ADMITTED", data["current_state_reconciliation"]["e4_status"])
+        self.assertEqual(
+            "CLOSED_BY_PR_147",
+            data["current_state_reconciliation"]["derived_fact_interpretation_boundary"],
         )
 
     def test_readiness_classes_are_closed_and_used_consistently(self):
@@ -86,9 +92,32 @@ class AstrologyExtendedChartE8ReadinessTests(unittest.TestCase):
             ["EXPLICIT_SELECTOR_ONLY", "NAMED_COMPATIBILITY_PROFILE"],
             decisions["D2_policy_activation_style"]["options"],
         )
-        for decision in decisions.values():
-            self.assertEqual("USER_DECISION_REQUIRED", decision["status"])
-            self.assertNotIn("selected", decision)
+        self.assertEqual(
+            "USER_DECISION_REQUIRED",
+            decisions["D1_extended_ephemeris_strategy"]["status"],
+        )
+        self.assertNotIn("selected", decisions["D1_extended_ephemeris_strategy"])
+        self.assertEqual(
+            "SELECTED_FOR_CURRENT_STACK_LANE",
+            decisions["D2_policy_activation_style"]["status"],
+        )
+        self.assertEqual(
+            "EXPLICIT_SELECTOR_ONLY",
+            decisions["D2_policy_activation_style"]["selected"],
+        )
+
+    def test_admitted_e1_e4_candidates_are_marked_without_rewriting_research_class(self):
+        rows = {row["id"]: row for row in self.data["candidates"]}
+        for object_id in ("mean_south_node", "descendant", "imum_coeli", "part_of_fortune"):
+            self.assertEqual("ADMITTED", rows[object_id]["production_status"])
+        self.assertEqual(
+            [
+                "E7_NAMED_RULERSHIP",
+                "E5_PARTICIPANT_POLICY_PLUMBING",
+                "E6_TOPOLOGY_FOR_ADMITTED_ASPECTS",
+            ],
+            self.data["current_state_reconciliation"]["remaining_current_stack_order"],
+        )
 
 
 if __name__ == "__main__":
