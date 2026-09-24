@@ -1,0 +1,189 @@
+{
+  "schema_name": "ziwei_interpretation_claim_registry",
+  "schema_version": "0.1.1-research",
+  "record_status": "REFERENCE-ONLY",
+  "record_kind": "ziwei_interpretation_claim_family_registry",
+  "record_id": "ziwei-m0-auxiliary-v1",
+  "production_routable": false,
+  "interpretation_profile": "ziwei.interpretation.tw_v1",
+  "sources": [
+    {
+      "source_id": "SRC-NANYANG-QUANSHU-STARS",
+      "source_role": "PRIMARY_TEXT",
+      "admission_status": [
+        "CLAIM_ELIGIBLE"
+      ],
+      "storage_mode": [
+        "metadata_locator_normalized_paraphrase"
+      ],
+      "independence_status": "primary_witness",
+      "title": "新鋟希夷陳先生紫微斗數全書",
+      "witness_identity": "Nanyang-Hall / National Archives of Japan identified witness family",
+      "locator": "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzoopnqo0t6",
+      "language": "zh-Hant",
+      "verification_status": [
+        "digital_text_witness_research"
+      ],
+      "admission_scope": [
+        "bounded star core and conditional interpretation claims"
+      ],
+      "excluded_scope": [
+        "unverified glyph-level variants",
+        "production doctrine authority"
+      ],
+      "notes": [
+        "Normalized paraphrases only; locator retained for source verification."
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "ZW-M0-ZUOFU-CORE-001",
+      "layer": "L4",
+      "claim_type": "star_core",
+      "subject": "左輔",
+      "assertion_class": "project_adoption",
+      "normalized_statement": "左輔在本 M0 邊界只作為輔助條件星使用；其 production 語義限於已 admission 主星條件判讀中的輔助修飾，不延伸為獨立吉凶或事件預測。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-STARS"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzoopnqo0t6"
+      ],
+      "applicability": {
+        "requires": [
+          "star_present:左輔"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "auxiliary_role_only"
+        ],
+        "palace_scope": [
+          "any"
+        ],
+        "topology_scope": [
+          "self",
+          "sanfang"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-M0-YOUBI-CORE-001",
+      "layer": "L4",
+      "claim_type": "star_core",
+      "subject": "右弼",
+      "assertion_class": "project_adoption",
+      "normalized_statement": "右弼在本 M0 邊界只作為輔助條件星使用；其 production 語義限於已 admission 主星條件判讀中的輔助修飾，不延伸為獨立吉凶或事件預測。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-STARS"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzoopnqo0t6"
+      ],
+      "applicability": {
+        "requires": [
+          "star_present:右弼"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "auxiliary_role_only"
+        ],
+        "palace_scope": [
+          "any"
+        ],
+        "topology_scope": [
+          "self",
+          "sanfang"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-M0-WENCHANG-CORE-001",
+      "layer": "L4",
+      "claim_type": "star_core",
+      "subject": "文昌",
+      "assertion_class": "project_adoption",
+      "normalized_statement": "文昌在本 M0 邊界只作為文輔條件星使用；其 production 語義限於已 admission 主星條件判讀中的輔助修飾，不延伸為獨立學業、功名或事件預測。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-STARS"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzoopnqo0t6"
+      ],
+      "applicability": {
+        "requires": [
+          "star_present:文昌"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "auxiliary_role_only"
+        ],
+        "palace_scope": [
+          "any"
+        ],
+        "topology_scope": [
+          "self",
+          "sanfang"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-M0-WENQU-CORE-001",
+      "layer": "L4",
+      "claim_type": "star_core",
+      "subject": "文曲",
+      "assertion_class": "project_adoption",
+      "normalized_statement": "文曲在本 M0 邊界只作為文輔條件星使用；其 production 語義限於已 admission 主星條件判讀中的輔助修飾，不延伸為獨立學業、功名或事件預測。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-STARS"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzoopnqo0t6"
+      ],
+      "applicability": {
+        "requires": [
+          "star_present:文曲"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "auxiliary_role_only"
+        ],
+        "palace_scope": [
+          "any"
+        ],
+        "topology_scope": [
+          "self",
+          "sanfang"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    }
+  ],
+  "conflict_groups": [],
+  "privacy": {
+    "contains_real_birth_data": false
+  },
+  "research_result": {
+    "production_authority_granted": false,
+    "scientific_predictive_validity_claimed": false
+  }
+}

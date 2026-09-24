@@ -15,6 +15,8 @@ class ZiWeiProductionContractV1Tests(unittest.TestCase):
         self.assertEqual("explicit_user_request_only",m["activation"])
         self.assertFalse(m["ordinary_auto_routing"])
         self.assertEqual(52,m["scope"]["admitted_claims"])
+        self.assertEqual(56,m["scope"]["maximum_admitted_claims_with_optional_modules"])
+        self.assertEqual(4,m["scope"]["optional_auxiliary_subjects"])
         self.assertEqual("1.1.0",m["pipeline"]["pipeline_version"])
         self.assertEqual("conditional_activation_v1",m["pipeline"]["conditional_activation_contract"])
         self.assertFalse(m["admission_decision"]["g8_ordinary_routing_admitted"])

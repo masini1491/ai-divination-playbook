@@ -194,6 +194,15 @@
           "profile_id": "ziwei.brightness.iztro_v1",
           "admitted_claims_added": 0,
           "compatibility_adapter": "tools/ziwei_brightness_pipeline.py"
+        },
+        "m0_auxiliary_v1": {
+          "activation": "explicit-module-only",
+          "pipeline": "tools/ziwei_runtime.py",
+          "provider": "tools/ziwei_m0_auxiliary_provider.py",
+          "admission_manifest": "ZIWEI_M0_AUXILIARY_ADMISSION_V1.json",
+          "profile_id": "ziwei.auxiliary.m0.iztro_v1",
+          "admitted_claims_added": 4,
+          "blanket_minor_star_admission": false
         }
       },
       "gregorian_input": {
@@ -216,7 +225,8 @@
         "tools/ziwei_scope_a_pipeline.py",
         "tools/ziwei_brightness_pipeline.py",
         "tools/ziwei_gregorian_pipeline.py"
-      ]
+      ],
+      "maximum_claim_count_with_optional_modules": 56
     },
     {
       "id": "method.astrology",

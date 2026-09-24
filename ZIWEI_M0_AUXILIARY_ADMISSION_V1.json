@@ -1,0 +1,54 @@
+{
+  "schema_name": "ziwei_m0_auxiliary_admission",
+  "schema_version": "1.0.0",
+  "method": "ZiWei",
+  "status": "PRODUCTION_ADMITTED_OPTIONAL_MODULE",
+  "activation": "optional_module_m0_auxiliary_v1_only",
+  "module_id": "m0_auxiliary_v1",
+  "profile_id": "ziwei.auxiliary.m0.iztro_v1",
+  "scope": {
+    "temporal_scope": "natal_baseline",
+    "stars": [
+      "左輔",
+      "右弼",
+      "文昌",
+      "文曲"
+    ],
+    "blanket_minor_star_admission": false
+  },
+  "calculation": {
+    "provider": "tools/ziwei_m0_auxiliary_provider.py",
+    "provider_id": "ziwei-m0-auxiliary-python",
+    "provider_version": "1.0.0",
+    "input_boundary": "normalized_lunar_month_and_hour_branch_plus_admitted_major_star_placements",
+    "implementation_reference": {
+      "repository": "SylarLong/iztro",
+      "revision": "2c7ef9be669df7b19d1799f4dce335fed3794f78",
+      "path": "src/star/location.ts"
+    }
+  },
+  "evidence": {
+    "research_taxonomy": "references/ziwei/MINOR_STAR_ADMISSION_TAXONOMY_V0.md",
+    "calculation_research": "references/ziwei/CALCULATION_ENGINE_RESEARCH.md",
+    "primary_source_registry": "references/ziwei/SOURCE_REGISTRY.md",
+    "claim_registry": "references/ziwei/ziwei_interpretation_claim_registry_m0_auxiliary_v1.json"
+  },
+  "interpretation": {
+    "new_claims": 4,
+    "interpretation_profile": "ziwei.interpretation.tw_v1",
+    "relation_scope": "self_or_sanfang_only",
+    "existing_conditional_activation_integration": [
+      "ZW-B2-TIANXIANG-COND-002"
+    ],
+    "final_prose_authority": false,
+    "generic_auxiliary_domain_complete": false
+  },
+  "fail_closed": [
+    "module_not_requested_no_m0_facts",
+    "unknown_auxiliary_profile_rejected",
+    "only_four_admitted_m0_stars",
+    "no_m1_m2_m3_inference",
+    "no_model_memory_substitution"
+  ],
+  "scientific_predictive_validity_claimed": false
+}

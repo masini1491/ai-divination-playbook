@@ -193,7 +193,7 @@ This SHA is review evidence only, not a pin. Every maintenance task must resolve
 ### ZW-P1-010 — M0 auxiliary stars: 左輔／右弼／文昌／文曲
 
 - type: FEATURE / ADMISSION
-- status: OPEN
+- status: DONE
 - priority: P1
 - owner: Zi Wei auxiliary-star admission
 - blocked_by:
@@ -217,6 +217,16 @@ This SHA is review evidence only, not a pin. Every maintenance task must resolve
   - claim corpus admitted separately from calculation facts;
   - production manifest/pipeline/index updated;
   - ChatGPT transport bundle regenerated and verified if new runtime files are needed.
+- completion_evidence:
+  - optional module id: `m0_auxiliary_v1`;
+  - admitted profile: `ziwei.auxiliary.m0.iztro_v1`;
+  - deterministic provider: `tools/ziwei_m0_auxiliary_provider.py`;
+  - admitted subjects are exactly 左輔／右弼／文昌／文曲; M1/M2/M3 remain excluded;
+  - base Scope-A claim corpus remains 52; M0 adds 4 optional bounded auxiliary-role claims for a maximum of 56;
+  - M0 exposes `fact_available:m0_auxiliary_stars`, not the broader `fact_available:auxiliary_stars`;
+  - existing conditional activation integration is limited to claims whose complete condition domain is covered by M0;
+  - deterministic transport bundle regenerated and verified by the M0 candidate bridge;
+  - candidate bridge passed registry validation, M0 targeted tests, full unittest suite, `playbook_check.py`, and bundle build/check.
 
 ### ZW-P1-020 — Four Transformations production admission
 

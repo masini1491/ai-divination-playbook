@@ -11,7 +11,9 @@
     "temporal_scope": "natal_baseline",
     "major_star_subjects": 14,
     "palace_subjects": 12,
-    "admitted_claims": 52
+    "admitted_claims": 52,
+    "optional_auxiliary_subjects": 4,
+    "maximum_admitted_claims_with_optional_modules": 56
   },
   "calculation": {
     "provider_id": "ziwei-scope-a-natal-python",
@@ -46,8 +48,8 @@
   ],
   "research_registry_history_policy": "remain production_routable=false; production authority is granted only by this manifest + pipeline binding",
   "unsupported_scopes": [
+    "non_m0_auxiliary_minor_star_interpretation",
     "brightness_conditioned_interpretation",
-    "auxiliary_minor_star_interpretation",
     "four_transformation_interpretation",
     "star_palace_cartesian_claims",
     "decadal",
@@ -100,12 +102,25 @@
     "result_schema": "schemas/ziwei/ZIWEI_READING_RESULT_V1.schema.json",
     "temporal_scope": "natal_baseline",
     "optional_modules": [
-      "brightness_v1"
+      "brightness_v1",
+      "m0_auxiliary_v1"
     ],
     "compatibility_adapters": [
       "tools/ziwei_scope_a_pipeline.py",
       "tools/ziwei_brightness_pipeline.py",
       "tools/ziwei_gregorian_pipeline.py"
     ]
-  }
+  },
+  "optional_module_admissions": [
+    {
+      "module_id": "m0_auxiliary_v1",
+      "admission_manifest": "ZIWEI_M0_AUXILIARY_ADMISSION_V1.json",
+      "provider": "tools/ziwei_m0_auxiliary_provider.py",
+      "profile_id": "ziwei.auxiliary.m0.iztro_v1",
+      "admitted_claims_added": 4,
+      "admitted_research_registries": [
+        "ziwei_interpretation_claim_registry_m0_auxiliary_v1.json"
+      ]
+    }
+  ]
 }
