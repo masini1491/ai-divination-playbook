@@ -53,6 +53,9 @@ def _handoff() -> dict:
                     }
                 ],
                 "cautions": ["Do not expand this into private-motive claims."],
+                "fact_refs": [
+                    {"bundle": "natal", "fact_id": "fact:house:7"}
+                ],
             }
         ],
         "conflicts": [],

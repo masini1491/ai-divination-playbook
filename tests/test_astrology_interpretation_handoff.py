@@ -178,5 +178,71 @@ class AstrologyInterpretationHandoffTests(unittest.TestCase):
         self.assertEqual("ready_for_bounded_interpretation", result["status"])
 
 
+    def test_exact_reference_pipeline_rejects_e1_fact_only_claim_binding(self):
+        run = admitted_run()
+        run["fact_bundles"]["natal"]["facts"]["objects"].append(
+            {
+                "fact_id": "fact:angle:descendant",
+                "object_type": "angle",
+                "object_id": "Descendant",
+                "longitude_deg": 180.0,
+                "derived_from": "fact:angle:ascendant",
+                "derivation_policy": "antipode-v1",
+            }
+        )
+        request = valid_request()
+        descendant_ref = {"bundle": "natal", "fact_id": "fact:angle:descendant"}
+        request["fact_refs"] = [descendant_ref]
+        request["claim_requests"][0]["fact_refs"] = [descendant_ref]
+        with self.assertRaisesRegex(
+            InterpretationHandoffError,
+            "claim binding is not admitted for fact-only object: Descendant",
+        ):
+            build_handoff(run, request, repo_root=ROOT)
+
+    def test_exact_reference_pipeline_rejects_e4_fact_only_claim_binding(self):
+        run = admitted_run()
+        run["fact_bundles"]["natal"]["facts"]["objects"].append(
+            {
+                "fact_id": "fact:object:partoffortune",
+                "object_type": "point",
+                "object_id": "PartOfFortune",
+                "longitude_deg": 123.0,
+                "derivation_policy": "fortune-day-night-v1",
+                "sect_policy_id": "sect-geometric-solar-altitude-v1",
+            }
+        )
+        request = valid_request()
+        fortune_ref = {"bundle": "natal", "fact_id": "fact:object:partoffortune"}
+        request["fact_refs"] = [fortune_ref]
+        request["claim_requests"][0]["fact_refs"] = [fortune_ref]
+        with self.assertRaisesRegex(
+            InterpretationHandoffError,
+            "claim binding is not admitted for fact-only object: PartOfFortune",
+        ):
+            build_handoff(run, request, repo_root=ROOT)
+
+    def test_fact_only_object_can_be_selected_without_claim_binding(self):
+        run = admitted_run()
+        run["fact_bundles"]["natal"]["facts"]["objects"].append(
+            {
+                "fact_id": "fact:object:southnode",
+                "object_type": "point",
+                "object_id": "SouthNode",
+                "longitude_deg": 42.0,
+                "node_definition": "mean",
+                "derived_from": "fact:object:northnode",
+                "derivation_policy": "antipode-v1",
+            }
+        )
+        request = valid_request()
+        request["fact_refs"] = [{"bundle": "natal", "fact_id": "fact:object:southnode"}]
+        request["claim_requests"] = []
+        result = build_handoff(run, request, repo_root=ROOT)
+        self.assertEqual("ready_for_bounded_interpretation", result["status"])
+        self.assertEqual([], result["selected_claims"])
+        self.assertEqual("SouthNode", result["selected_facts"][0]["fact"]["object_id"])
+
+
 if __name__ == "__main__":
     unittest.main()
