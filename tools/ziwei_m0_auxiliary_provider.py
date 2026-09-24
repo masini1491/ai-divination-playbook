@@ -11,7 +11,7 @@ def calculate_m0_auxiliary(data:NormalizedNatalInput, major_star_placements:dict
     if set(major_star_placements)!=set(MAJOR_STARS): raise ValueError("M0 auxiliary provider requires the admitted 14-major-star placement set")
     month=data.lunar_month; hour=_idx(data.hour_branch)
     placements={"左輔":BRANCHES[(_idx("辰")+month-1)%12],"右弼":BRANCHES[(_idx("戌")-(month-1))%12],"文昌":BRANCHES[(_idx("戌")-hour)%12],"文曲":BRANCHES[(_idx("辰")+hour)%12]}
-    facts=["fact_available:auxiliary_stars",*(f"star_present:{s}" for s in STARS)]; relations=[]
+    facts=["fact_available:m0_auxiliary_stars",*(f"star_present:{s}" for s in STARS)]; relations=[]
     for subject,branch in major_star_placements.items():
         i=_idx(branch); sanfang={BRANCHES[i],BRANCHES[(i+4)%12],BRANCHES[(i+8)%12]}
         for auxiliary,aux_branch in placements.items():
