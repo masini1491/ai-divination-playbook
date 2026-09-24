@@ -142,6 +142,77 @@ class AstrologyRuntimeTests(unittest.TestCase):
         codes = {e["code"] for e in validate_bundle(data)}
         self.assertIn("ASPECT_REF_UNKNOWN", codes)
 
+    def test_natal_aspect_cannot_reference_house_fact(self):
+        data = natal_bundle()
+        data["facts"]["aspects"][0]["right_ref"] = "fact:house-1"
+        codes = {e["code"] for e in validate_bundle(data)}
+        self.assertIn("NATAL_ASPECT_ENDPOINT_NOT_OBJECT", codes)
+
+    def test_natal_aspect_rejects_extended_object_outside_e5_participant_policy(self):
+        data = natal_bundle()
+        data["facts"]["objects"].append(
+            {"fact_id": "fact:desc", "object_type": "angle", "object_id": "Descendant"}
+        )
+        data["facts"]["aspects"][0]["right_ref"] = "fact:desc"
+        codes = {e["code"] for e in validate_bundle(data)}
+        self.assertIn("NATAL_ASPECT_PARTICIPANT_NOT_ADMITTED", codes)
+
+    def test_user_supplied_natal_aspect_may_omit_policy_ids_for_backward_compatibility(self):
+        data = natal_bundle()
+        aspect = data["facts"]["aspects"][0]
+        self.assertNotIn("participant_policy_id", aspect)
+        self.assertNotIn("aspect_policy_id", aspect)
+        self.assertNotIn("orb_policy_id", aspect)
+        self.assertEqual([], validate_bundle(data))
+
+    def test_user_supplied_wrong_policy_id_is_rejected_when_present(self):
+        data = natal_bundle()
+        data["facts"]["aspects"][0]["participant_policy_id"] = "aspect-participants-core-plus-angles-v1"
+        codes = {e["code"] for e in validate_bundle(data)}
+        self.assertIn("NATAL_ASPECT_POLICY_PROVENANCE_INVALID", codes)
+
+    def test_approved_provider_natal_aspect_requires_row_policy_ids_and_provider_policy_block(self):
+        data = natal_bundle()
+        data["fact_source"] = "approved_provider"
+        data["calculation_verification"] = "verified_provider"
+        codes = {e["code"] for e in validate_bundle(data)}
+        self.assertIn("NATAL_ASPECT_POLICY_PROVENANCE_INVALID", codes)
+        self.assertIn("NATAL_ASPECT_PROVIDER_POLICY_REQUIRED", codes)
+
+    def test_approved_provider_policy_block_cannot_spoof_extended_participants(self):
+        data = natal_bundle()
+        data["fact_source"] = "approved_provider"
+        data["calculation_verification"] = "verified_provider"
+        data["facts"]["aspects"][0].update(
+            {
+                "participant_policy_id": "aspect-participants-core-bodies-v1",
+                "aspect_policy_id": "major-aspects-v1",
+                "orb_policy_id": "major-aspect-orbs-v1",
+            }
+        )
+        data["provider"] = {
+            "aspect_policies": {
+                "participant_policy_id": "aspect-participants-core-bodies-v1",
+                "participant_object_ids": [
+                    "Sun", "Moon", "Mercury", "Venus", "Mars", "Jupiter",
+                    "Saturn", "Uranus", "Neptune", "Pluto", "NorthNode", "Descendant",
+                ],
+                "aspect_policy_id": "major-aspects-v1",
+                "aspect_types": ["conjunction", "opposition", "trine", "square", "sextile"],
+                "orb_policy_id": "major-aspect-orbs-v1",
+                "max_orb_degrees": {
+                    "conjunction": 8,
+                    "opposition": 8,
+                    "trine": 7,
+                    "square": 7,
+                    "sextile": 5,
+                },
+                "extended_points_or_angles": "not_admitted",
+            }
+        }
+        codes = {e["code"] for e in validate_bundle(data)}
+        self.assertIn("NATAL_ASPECT_PROVIDER_POLICY_MISMATCH", codes)
+
     def test_transit_mode_requires_transit_fact(self):
         data = natal_bundle()
         data["reading_mode"] = "transit"

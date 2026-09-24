@@ -35,6 +35,22 @@ MAJOR_ASPECT_ORBS = {
     "square": 7.0,
     "sextile": 5.0,
 }
+NATAL_ASPECT_PARTICIPANT_POLICY_ID = "aspect-participants-core-bodies-v1"
+NATAL_ASPECT_POLICY_ID = "major-aspects-v1"
+NATAL_ORB_POLICY_ID = "major-aspect-orbs-v1"
+NATAL_ASPECT_PARTICIPANT_OBJECT_IDS = {
+    "Sun",
+    "Moon",
+    "Mercury",
+    "Venus",
+    "Mars",
+    "Jupiter",
+    "Saturn",
+    "Uranus",
+    "Neptune",
+    "Pluto",
+    "NorthNode",
+}
 FORBIDDEN_FACT_SOURCES = {"model_calculated", "memory_inferred"}
 
 
@@ -161,6 +177,7 @@ def validate_bundle(data: Any) -> list[dict[str, str]]:
 
     seen_ids: set[str] = set()
     object_or_house_ids: set[str] = set()
+    object_rows_by_fact_id: dict[str, dict[str, Any]] = {}
     for collection_name, collection in (("objects", objects), ("houses", houses), ("aspects", aspects), ("events", events)):
         for i, row in enumerate(collection):
             path = f"$.facts.{collection_name}[{i}]"
@@ -176,6 +193,8 @@ def validate_bundle(data: Any) -> list[dict[str, str]]:
                 seen_ids.add(fact_id)
                 if collection_name in {"objects", "houses"}:
                     object_or_house_ids.add(fact_id)
+                if collection_name == "objects":
+                    object_rows_by_fact_id[fact_id] = row
 
     for i, aspect in enumerate(aspects):
         if not isinstance(aspect, dict):
@@ -190,12 +209,53 @@ def validate_bundle(data: Any) -> list[dict[str, str]]:
                 _error(errors, "ASPECT_ORB_INVALID", path + ".orb_deg", "orb_deg must be a finite non-negative number")
             elif float(orb) > MAJOR_ASPECT_ORBS[name]:
                 _error(errors, "ASPECT_ORB_EXCEEDS_POLICY", path + ".orb_deg", f"{name} exceeds production v1 max orb {MAJOR_ASPECT_ORBS[name]}")
+        if data.get("reading_mode") == "natal":
+            if aspect.get("scope") != "natal":
+                _error(errors, "NATAL_ASPECT_SCOPE_INVALID", path + ".scope", "natal aspect rows must declare scope=natal")
+            for policy_key, expected in (
+                ("participant_policy_id", NATAL_ASPECT_PARTICIPANT_POLICY_ID),
+                ("aspect_policy_id", NATAL_ASPECT_POLICY_ID),
+                ("orb_policy_id", NATAL_ORB_POLICY_ID),
+            ):
+                value = aspect.get(policy_key)
+                if fact_source == "approved_provider":
+                    if value != expected:
+                        _error(
+                            errors,
+                            "NATAL_ASPECT_POLICY_PROVENANCE_INVALID",
+                            path + f".{policy_key}",
+                            f"approved-provider natal aspects require {policy_key}={expected}",
+                        )
+                elif value is not None and value != expected:
+                    _error(
+                        errors,
+                        "NATAL_ASPECT_POLICY_PROVENANCE_INVALID",
+                        path + f".{policy_key}",
+                        f"when supplied, {policy_key} must equal {expected}",
+                    )
+
         for ref_key in ("left_ref", "right_ref"):
             ref = aspect.get(ref_key)
             if not _string(ref):
                 _error(errors, "ASPECT_REF_REQUIRED", path + f".{ref_key}", f"{ref_key} is required")
             elif ref not in object_or_house_ids:
                 _error(errors, "ASPECT_REF_UNKNOWN", path + f".{ref_key}", f"unknown fact ref: {ref}")
+            elif data.get("reading_mode") == "natal":
+                object_row = object_rows_by_fact_id.get(ref)
+                if object_row is None:
+                    _error(
+                        errors,
+                        "NATAL_ASPECT_ENDPOINT_NOT_OBJECT",
+                        path + f".{ref_key}",
+                        "natal aspects may reference admitted object facts only",
+                    )
+                elif object_row.get("object_id") not in NATAL_ASPECT_PARTICIPANT_OBJECT_IDS:
+                    _error(
+                        errors,
+                        "NATAL_ASPECT_PARTICIPANT_NOT_ADMITTED",
+                        path + f".{ref_key}",
+                        f"object_id {object_row.get('object_id')!r} is not admitted by {NATAL_ASPECT_PARTICIPANT_POLICY_ID}",
+                    )
 
     for i, event in enumerate(events):
         if not isinstance(event, dict):
@@ -206,6 +266,37 @@ def validate_bundle(data: Any) -> list[dict[str, str]]:
             _error(errors, "EVENT_KIND_UNSUPPORTED", path + ".event_kind", "production v1 admits transit_to_natal, station and ingress events only")
         if data.get("reading_mode") != "transit":
             _error(errors, "EVENTS_REQUIRE_TRANSIT_MODE", path, "timing events require reading_mode=transit")
+
+    if data.get("reading_mode") == "natal" and fact_source == "approved_provider" and aspects:
+        provider_policy = data.get("provider", {}).get("aspect_policies")
+        if not isinstance(provider_policy, dict):
+            _error(
+                errors,
+                "NATAL_ASPECT_PROVIDER_POLICY_REQUIRED",
+                "$.provider.aspect_policies",
+                "approved-provider natal aspects require explicit E5 aspect policy provenance",
+            )
+        else:
+            expected_provider_policy = {
+                "participant_policy_id": NATAL_ASPECT_PARTICIPANT_POLICY_ID,
+                "participant_object_ids": [
+                    "Sun", "Moon", "Mercury", "Venus", "Mars", "Jupiter",
+                    "Saturn", "Uranus", "Neptune", "Pluto", "NorthNode",
+                ],
+                "aspect_policy_id": NATAL_ASPECT_POLICY_ID,
+                "aspect_types": list(MAJOR_ASPECT_ORBS),
+                "orb_policy_id": NATAL_ORB_POLICY_ID,
+                "max_orb_degrees": dict(MAJOR_ASPECT_ORBS),
+                "extended_points_or_angles": "not_admitted",
+            }
+            for key, expected in expected_provider_policy.items():
+                if provider_policy.get(key) != expected:
+                    _error(
+                        errors,
+                        "NATAL_ASPECT_PROVIDER_POLICY_MISMATCH",
+                        "$.provider.aspect_policies." + key,
+                        f"approved-provider natal aspect policy {key} does not match production admission",
+                    )
 
     if data.get("reading_mode") == "transit" and not events and not any(
         isinstance(row, dict) and row.get("scope") == "transit_to_natal" for row in aspects

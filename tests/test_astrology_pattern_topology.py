@@ -107,6 +107,39 @@ class AstrologyPatternTopologyTests(unittest.TestCase):
         self.assertIn(["Mars"], clusters)
         self.assertIn(["Jupiter"], clusters)
 
+    def test_e6_rejects_spoofed_provider_participant_set(self):
+        bundle = base_bundle()
+        bundle["provider"]["aspect_policies"]["participant_object_ids"].append("Descendant")
+        with self.assertRaisesRegex(PatternTopologyError, "requires an admitted Astrology fact bundle|participant_object_ids"):
+            projected(bundle)
+
+    def test_e6_rejects_extended_object_even_with_core_policy_labels(self):
+        bundle = base_bundle()
+        bundle["fact_source"] = "user_supplied_structured_export"
+        bundle["calculation_verification"] = "user_asserted"
+        bundle["facts"]["objects"].append(
+            {
+                "fact_id": "fact:object:syntheticdesc",
+                "object_type": "angle",
+                "object_id": "Descendant",
+            }
+        )
+        bundle["facts"]["aspects"] = [
+            {
+                "fact_id": "fact:aspect:synthetic:extended",
+                "aspect": "square",
+                "orb_deg": 0.0,
+                "left_ref": "fact:object:sun",
+                "right_ref": "fact:object:syntheticdesc",
+                "scope": "natal",
+                "participant_policy_id": PARTICIPANT,
+                "aspect_policy_id": ASPECT,
+                "orb_policy_id": ORB,
+            }
+        ]
+        with self.assertRaisesRegex(PatternTopologyError, "requires an admitted Astrology fact bundle|outside admitted E5 participant policy"):
+            projected(bundle)
+
     def test_policy_ids_are_explicit_and_fail_closed(self):
         bundle = base_bundle()
         with self.assertRaisesRegex(PatternTopologyError, "participant_policy_id"):

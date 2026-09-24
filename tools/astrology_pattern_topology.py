@@ -19,6 +19,19 @@ CLUSTER_POLICY_ID = "conjunction-clusters-transitive-v1"
 ADMITTED_PARTICIPANT_POLICY_ID = "aspect-participants-core-bodies-v1"
 ADMITTED_ASPECT_POLICY_ID = "major-aspects-v1"
 ADMITTED_ORB_POLICY_ID = "major-aspect-orbs-v1"
+ADMITTED_PARTICIPANT_OBJECT_IDS = {
+    "Sun",
+    "Moon",
+    "Mercury",
+    "Venus",
+    "Mars",
+    "Jupiter",
+    "Saturn",
+    "Uranus",
+    "Neptune",
+    "Pluto",
+    "NorthNode",
+}
 
 PROJECTION_POLICIES = {
     "pattern-projection-report-all-valid-v1",
@@ -171,6 +184,23 @@ def _validate_explicit_policy_ids(
     for key, value in expected.items():
         if provider_policy.get(key) != value:
             raise PatternTopologyError(f"bundle {key} does not match explicit E6 selector")
+    if provider_policy.get("participant_object_ids") != [
+        "Sun", "Moon", "Mercury", "Venus", "Mars", "Jupiter",
+        "Saturn", "Uranus", "Neptune", "Pluto", "NorthNode",
+    ]:
+        raise PatternTopologyError("bundle participant_object_ids do not match admitted E5 participant policy")
+    if provider_policy.get("aspect_types") != ["conjunction", "opposition", "trine", "square", "sextile"]:
+        raise PatternTopologyError("bundle aspect_types do not match admitted E5 aspect policy")
+    if provider_policy.get("max_orb_degrees") != {
+        "conjunction": 8.0,
+        "opposition": 8.0,
+        "trine": 7.0,
+        "square": 7.0,
+        "sextile": 5.0,
+    }:
+        raise PatternTopologyError("bundle max_orb_degrees do not match admitted E5 orb policy")
+    if provider_policy.get("extended_points_or_angles") != "not_admitted":
+        raise PatternTopologyError("bundle extended point/angle aspect participation is not admitted")
 
 
 def _cluster_graph(bundle: dict[str, Any]) -> tuple[
@@ -207,6 +237,10 @@ def _cluster_graph(bundle: dict[str, Any]) -> tuple[
         right = ref_to_object_id.get(right_ref)
         if left is None or right is None:
             raise PatternTopologyError("aspect ref does not resolve to admitted object identity")
+        if left not in ADMITTED_PARTICIPANT_OBJECT_IDS or right not in ADMITTED_PARTICIPANT_OBJECT_IDS:
+            raise PatternTopologyError(
+                "aspect graph contains object outside admitted E5 participant policy"
+            )
         name = row.get("aspect")
         fact_id = row.get("fact_id")
         if not isinstance(name, str) or not isinstance(fact_id, str):
