@@ -85,19 +85,39 @@ class AstrologyExtendedChartE8ReadinessTests(unittest.TestCase):
 
     def test_material_decisions_are_explicit_and_unselected(self):
         decisions = self.data["decisions"]
+        d1 = decisions["D1_extended_ephemeris_strategy"]
         self.assertEqual(
-            ["MIT_ONLY", "SWISS_AGPL", "SWISS_PROFESSIONAL"],
-            decisions["D1_extended_ephemeris_strategy"]["options"],
+            [
+                "CURRENT_CORE_ONLY",
+                "LOCAL_ANALYTICAL",
+                "BUNDLED_EPHEMERIS",
+                "EXTERNAL_RUNTIME",
+                "SWISS_AGPL",
+                "SWISS_PROFESSIONAL",
+            ],
+            d1["options"],
         )
+        self.assertEqual(
+            "RESEARCH_REFRAMED_NO_PRODUCTION_SELECTION",
+            d1["status"],
+        )
+        self.assertEqual(
+            "chatgpt_only_production_must_not_require_live_third_party_api",
+            d1["runtime_constraint"],
+        )
+        self.assertEqual(
+            ["LOCAL_ANALYTICAL", "BUNDLED_EPHEMERIS"],
+            d1["next_research_lanes"],
+        )
+        self.assertEqual(
+            "references/astrology/CHATGPT_ONLY_EXTENDED_EPHEMERIS_FEASIBILITY.md",
+            d1["research_evidence"],
+        )
+        self.assertIsNone(d1["production_selection"])
         self.assertEqual(
             ["EXPLICIT_SELECTOR_ONLY", "NAMED_COMPATIBILITY_PROFILE"],
             decisions["D2_policy_activation_style"]["options"],
         )
-        self.assertEqual(
-            "USER_DECISION_REQUIRED",
-            decisions["D1_extended_ephemeris_strategy"]["status"],
-        )
-        self.assertNotIn("selected", decisions["D1_extended_ephemeris_strategy"])
         self.assertEqual(
             "SELECTED_FOR_CURRENT_STACK_LANE",
             decisions["D2_policy_activation_style"]["status"],
@@ -106,6 +126,18 @@ class AstrologyExtendedChartE8ReadinessTests(unittest.TestCase):
             "EXPLICIT_SELECTOR_ONLY",
             decisions["D2_policy_activation_style"]["selected"],
         )
+
+    def test_chatgpt_only_ephemeris_research_stays_reference_only(self):
+        path = ROOT / "references" / "astrology" / "CHATGPT_ONLY_EXTENDED_EPHEMERIS_FEASIBILITY.md"
+        text = path.read_text(encoding="utf-8")
+        self.assertIn("REFERENCE-ONLY", text)
+        self.assertIn("NO PRODUCTION MUTATION AUTHORIZED", text)
+        self.assertIn("TheDaniel166/moira@", text)
+        self.assertIn("vedika-io/xalen-ephemeris@", text)
+        self.assertIn("skyfielders/python-skyfield@", text)
+        self.assertIn("brandon-rhodes/python-jplephem@", text)
+        self.assertIn("Live JPL API is NOT suitable as a mandatory ChatGPT-only runtime", text)
+        self.assertIn("Production admission remains unchanged by this report.", text)
 
     def test_current_stack_admissions_are_reconciled_without_rewriting_research_class(self):
         rows = {row["id"]: row for row in self.data["candidates"]}
