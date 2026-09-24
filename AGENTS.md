@@ -101,6 +101,25 @@ resolve repo/ref when currentness matters
 5. `BEHAVIORAL_EVAL.md`、`references/`、`CASE_STUDIES/`預設 Cold；exact owner已知就直讀。
 6. old chat／memory 不得覆蓋 current reality、原始 Input Contract、method facts或 current canonical rule。
 
+## ChatGPT Coordination Write Mapping
+
+本 Repo 已明確採用三個 **peer / method-scoped coordination surfaces**：
+
+- `/ASTROLOGY_BACKLOG.md`
+- `/ZIWEI_BACKLOG.md`
+- `/PALMISTRY_BACKLOG.md`
+
+這三個 path 是本 Repo 對 shared `REPOSITORY_EXECUTION.md` → `Coordination Write Allowlist` 的 project-specific opt-in / equivalent path contract。其 generic Hot / Cold、persistence、promotion、execution 與 retrieval semantics 仍由 activated shared `AI_CONTEXT.md` / `REPOSITORY_EXECUTION.md` 擁有；本檔不複製第二份。
+
+此 mapping 只 closure **coordination-only persistence**：
+
+- 各 backlog 只保存各自 method 的 queue identity、status、priority、dependency、completion gate 與 canonical pointers；
+- 不取得 production authority、research-evidence authority 或 method-routing authority；
+- 不要求建立 root `/BACKLOG.md` aggregate；跨 method shared item 指定一個 canonical coordination owner，其餘 surface只保存 pointer；
+- 不因本 allowlist 擴張對 `tools/**`、`data/**`、`runtime/**`、`references/**`、`schemas/**`、method owners、admission manifests 或 governance surface 的寫入權。
+
+本 Repo 為 `ChatGPT-Only` 時，其他 maintenance mutation 是否可由 ChatGPT直接執行，仍依 selected mode + current Task/Stage + local path/action governance + current capability / permission 判斷；本節只負責三個 backlog 的 coordination path closure。
+
 ## 維護與 validation
 
 - 優先修改既有 canonical owner；不在 README／AGENTS／CHAT_INIT／index／load pack／method owner間複製完整 normative policy。
