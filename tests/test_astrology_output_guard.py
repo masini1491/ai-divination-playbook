@@ -56,6 +56,9 @@ def admitted_handoff() -> dict:
                     }
                 ],
                 "cautions": ["Do not expand this into private-motive claims."],
+                "fact_refs": [
+                    {"bundle": "natal", "fact_id": "fact:house:7"}
+                ],
             }
         ],
         "conflicts": [],
@@ -161,6 +164,60 @@ class AstrologyOutputGuardTests(unittest.TestCase):
         self.assertEqual(0, completed.returncode, completed.stderr or completed.stdout)
         result = json.loads(completed.stdout)
         self.assertEqual("ready_for_user", result["status"])
+
+
+    def test_output_unit_rejects_claim_not_bound_to_all_cited_facts(self):
+        handoff = admitted_handoff()
+        handoff["selected_facts"].append(
+            {
+                "bundle": "natal",
+                "collection": "objects",
+                "fact": {
+                    "fact_id": "fact:angle:descendant",
+                    "object_type": "angle",
+                    "object_id": "Descendant",
+                    "longitude_deg": 180.0,
+                },
+            }
+        )
+        draft = valid_draft()
+        draft["evidence"][0]["fact_refs"].append(
+            {"bundle": "natal", "fact_id": "fact:angle:descendant"}
+        )
+        with self.assertRaisesRegex(
+            AstrologyOutputGuardError,
+            "not applicability-bound to fact: natal / fact:angle:descendant",
+        ):
+            build_output(handoff, draft)
+
+    def test_output_unit_allows_deterministic_fact_without_claim(self):
+        handoff = admitted_handoff()
+        handoff["selected_facts"].append(
+            {
+                "bundle": "natal",
+                "collection": "objects",
+                "fact": {
+                    "fact_id": "fact:angle:descendant",
+                    "object_type": "angle",
+                    "object_id": "Descendant",
+                    "longitude_deg": 180.0,
+                },
+            }
+        )
+        draft = valid_draft()
+        draft["evidence"].append(
+            {
+                "text": "The deterministic chart contains a Descendant at 180 degrees.",
+                "fact_refs": [{"bundle": "natal", "fact_id": "fact:angle:descendant"}],
+                "claim_refs": [],
+            }
+        )
+        result = build_output(handoff, draft)
+        self.assertEqual("ready_for_user", result["status"])
+        self.assertIn(
+            {"bundle": "natal", "fact_id": "fact:angle:descendant"},
+            result["used_fact_refs"],
+        )
 
 
 if __name__ == "__main__":
