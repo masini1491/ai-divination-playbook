@@ -17,7 +17,7 @@ jobs:
         with:
           python-version: "3.12"
       - run: python tools/build_chatgpt_load_pack.py --check
-      - run: python tools/check_playbook.py
+      - run: python tools/playbook_check.py .
       - shell: bash
         run: |
           rm .github/workflows/astrology-backlog-validation-once.yml
