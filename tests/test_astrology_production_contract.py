@@ -24,6 +24,14 @@ class AstrologyProductionContractTests(unittest.TestCase):
         transit = data["transit_provider"]
         place = data["place_resolver"]
         self.assertEqual("astronomy-engine-natal-v1", natal["provider_id"])
+        self.assertEqual("1.1.0", natal["provider_version"])
+        self.assertIn("natal_known_time_derived_axes", natal["scope"])
+        self.assertEqual(
+            ["SouthNode", "Descendant", "ImumCoeli"],
+            natal["known_time_derived_axes"]["object_ids"],
+        )
+        self.assertEqual("not_emitted", natal["known_time_derived_axes"]["unknown_time"])
+        self.assertEqual("not_admitted", natal["known_time_derived_axes"]["aspect_participation"])
         self.assertEqual("astronomy-engine-transit-v1", transit["provider_id"])
         self.assertEqual("geonamescache-city-v1", place["resolver_id"])
         self.assertTrue(natal["raw_birth_data_supported"])
@@ -44,7 +52,11 @@ class AstrologyProductionContractTests(unittest.TestCase):
         data = json.loads((ROOT / "ASTROLOGY_PROVIDER_ADMISSION_V1.json").read_text(encoding="utf-8"))
         self.assertEqual("astrology_provider_admission", data["schema_name"])
         self.assertEqual("PRODUCTION_ADMITTED", data["status"])
-        self.assertEqual(["natal", "natal_unknown_time_invariant_signs"], data["scope"])
+        self.assertEqual("1.1.0", data["provider_version"])
+        self.assertEqual(
+            ["natal", "natal_unknown_time_invariant_signs", "natal_known_time_derived_axes"],
+            data["scope"],
+        )
         self.assertEqual("astronomy-engine", data["dependency"]["package"])
         self.assertEqual("2.1.19", data["dependency"]["version"])
         self.assertEqual("MIT", data["dependency"]["license"])
@@ -143,6 +155,19 @@ class AstrologyProductionContractTests(unittest.TestCase):
         self.assertNotIn("\ndomicile\nexaltation\ndetriment\nfall\n", natal)
         self.assertNotIn("root tolerance =", transit)
         self.assertIn("production orchestrator / admitted natal provider", transit)
+
+
+    def test_e1_admission_keeps_aspect_and_interpretation_boundaries_closed(self):
+        manifest = json.loads((ROOT / "ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        participants = manifest["aspect_policy"]["participant_object_ids"]
+        self.assertEqual(
+            ["Sun", "Moon", "Mercury", "Venus", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto", "NorthNode"],
+            participants,
+        )
+        self.assertTrue({"SouthNode", "Descendant", "ImumCoeli"}.isdisjoint(participants))
+        self.assertEqual("not_admitted", manifest["aspect_policy"]["extended_points_or_angles"])
+        derived = manifest["natal_semantic_policy"]["derived_fact_interpretation"]
+        self.assertEqual("forbidden_until_separately_admitted", derived["claim_binding"])
 
 
 if __name__ == "__main__":
