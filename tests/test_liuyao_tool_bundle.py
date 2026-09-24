@@ -63,6 +63,15 @@ class LiuyaoToolBundleTests(unittest.TestCase):
         self.assertTrue(contract["verify_archive_before_unpack"])
         self.assertTrue(contract["verify_each_file_before_write_or_import"])
 
+    def test_cache_contract_separates_source_and_current_head(self) -> None:
+        cache = self.bundle["cache_contract"]
+        self.assertEqual("/mnt/data/divination-liuyao-runtime", cache["cache_dir"])
+        self.assertEqual("bundle_verification.json", cache["marker"])
+        self.assertIn("materialized_source_commit", cache["required_marker_fields"])
+        self.assertIn("last_checked_repository_head", cache["required_marker_fields"])
+        self.assertNotIn("playbook_commit", cache["required_marker_fields"])
+        self.assertTrue(cache["reuse_only_when_all_source_file_identities_match"])
+
     def test_chunk_contract_is_bounded_and_retryable(self) -> None:
         archive = self.bundle["archive"]
         self.assertEqual(444, archive["chunk_size"])
