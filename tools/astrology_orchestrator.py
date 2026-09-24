@@ -14,7 +14,6 @@ import json
 from pathlib import Path
 from typing import Any
 
-from tools.astrology_place_resolver import PlaceResolutionError, resolve_country_timezone, resolve_place
 from tools.astrology_provider import (
     BODY_NAMES,
     SUPPORTED_HOUSE_SYSTEMS,
@@ -36,6 +35,20 @@ REQUEST_SCHEMA_PATH = "ASTROLOGY_READING_REQUEST_V1.schema.json"
 
 class OrchestrationInputError(ValueError):
     """A reading request cannot be admitted by the orchestration contract."""
+
+def _load_place_resolver():
+    """Load the admitted offline resolver only when place/country input needs it."""
+    try:
+        from tools.astrology_place_resolver import resolve_country_timezone, resolve_place
+    except ModuleNotFoundError as exc:
+        if exc.name in {"geonamescache", "tools.astrology_place_resolver"}:
+            raise OrchestrationInputError(
+                "admitted Astrology place resolver runtime unavailable; "
+                "provide explicit coordinates + IANA timezone or materialize the resolver separately"
+            ) from exc
+        raise
+    return resolve_country_timezone, resolve_place
+
 
 
 def _object(value: Any, path: str) -> dict[str, Any]:
@@ -283,7 +296,10 @@ def normalize_request(data: Any) -> dict[str, Any]:
 
 def _resolve_location(normalized: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
     location = normalized["birth"]["location"]
+    resolve_country_timezone = None
+    resolve_place = None
     if "country" in location:
+        resolve_country_timezone, resolve_place = _load_place_resolver()
         country = location["country"]
         result = resolve_country_timezone(country.get("name"), country_code=country.get("country_code"))
         resolved = result["resolved"]
@@ -293,6 +309,7 @@ def _resolve_location(normalized: dict[str, Any]) -> tuple[dict[str, Any], dict[
         )
 
     if "place" in location:
+        resolve_country_timezone, resolve_place = _load_place_resolver()
         place = location["place"]
         result = resolve_place(place["name"], country_code=place.get("country_code"))
         resolved = result["resolved"]
@@ -442,11 +459,27 @@ def main() -> int:
         OSError,
         json.JSONDecodeError,
         OrchestrationInputError,
-        PlaceResolutionError,
         ProviderInputError,
         TransitProviderInputError,
         RuntimeError,
     ) as exc:
+        result = {
+            "schema_name": RUN_SCHEMA_NAME,
+            "schema_version": RUN_SCHEMA_VERSION,
+            "status": "rejected",
+            "interpretation_allowed": False,
+            "error": str(exc),
+        }
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+        return 1
+    except Exception as exc:
+        # Preserve the admitted resolver's public PlaceResolutionError for direct
+        # callers without importing geonamescache on coordinates-only cold start.
+        if not (
+            exc.__class__.__module__ == "tools.astrology_place_resolver"
+            and exc.__class__.__name__ == "PlaceResolutionError"
+        ):
+            raise
         result = {
             "schema_name": RUN_SCHEMA_NAME,
             "schema_version": RUN_SCHEMA_VERSION,

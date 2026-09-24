@@ -210,7 +210,12 @@
       "transit_provider_admission_manifest": "ASTROLOGY_TRANSIT_PROVIDER_ADMISSION_V1.json",
       "admission_manifest": "ASTROLOGY_PRODUCTION_ADMISSION_V1.json",
       "natal_owner": "ASTROLOGY_NATAL.md",
-      "transit_owner": "ASTROLOGY_TRANSIT.md"
+      "transit_owner": "ASTROLOGY_TRANSIT.md",
+      "materialization_contract": "ASTROLOGY_MATERIALIZATION.md",
+      "deterministic_core_transport_bundle": "runtime/astrology/CHATGPT_DETERMINISTIC_CORE_BUNDLE.json",
+      "core_transport_generator": "tools/build_astrology_core_bundle.py",
+      "materialization_product_scenario": "evals/ASTROLOGY_MATERIALIZATION_PRODUCT_SCENARIO.md",
+      "core_bundle_scope": "explicit-coordinates-plus-iana-timezone; place-resolver-excluded"
     },
     {
       "id": "method.astrology.natal",
