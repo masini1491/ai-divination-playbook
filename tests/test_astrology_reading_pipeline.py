@@ -81,5 +81,17 @@ class AstrologyReadingPipelineTests(unittest.TestCase):
         self.assertIn("rendered_text", result)
 
 
+    def test_legacy_pipeline_rejects_derived_fact_only_claim_binding(self):
+        interpretation = load(INTERPRETATION)
+        descendant_ref = {"bundle": "natal", "fact_id": "fact:angle:descendant"}
+        interpretation["fact_refs"] = [descendant_ref]
+        interpretation["claim_requests"][0]["fact_refs"] = [descendant_ref]
+        with self.assertRaisesRegex(
+            AstrologyReadingPipelineError,
+            "claim binding is not admitted for fact-only object: Descendant",
+        ):
+            run_pipeline(load(READING), interpretation, load(OUTPUT), repo_root=ROOT)
+
+
 if __name__ == "__main__":
     unittest.main()
