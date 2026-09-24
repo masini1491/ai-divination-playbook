@@ -6,7 +6,7 @@ Declared baseline：`main`
 
 Project AI mode：`ChatGPT-Only`
 
-Last reviewed source revision：`433270d0d6c4a0ed993f6bd547e01e5538ae8731`
+Last reviewed source revision：`7bc4110e72e9c13f7f49efab52899329fe8bc0ea`
 
 Relationship：**common AI engineering baseline + conditional activation**。這不是 divination method authority，也不是要求 ordinary reading 每次載入 shared Playbook。
 
@@ -32,6 +32,7 @@ Shared `REPORTING.md` 是窄化的 adoption-level exception：substantive user-f
 3. **Private-context inference-egress boundary**：ordinary reading 不啟動 shared Playbook，因此私人 reading Context 的 disclosure permission 必須由 project-native governance 持續有效；model／provider／router 或 destination materially 改變時不得自動沿用既有 permission。
 4. **Divination method authority**：Tarot／Meihua／Liuyao／Astrology、stochastic runtime、deterministic engines、Question / Input Contract、Reading lifecycle與 cross-validation 仍由本 Repo canonical owners負責。
 5. **Project-native hot path**：ordinary reading／continuation／method interpretation 不啟動 shared Playbook；repository maintenance／AI engineering governance 才 activate。
+6. **Method-scoped coordination topology**：本 Repo 已採用 `ASTROLOGY_BACKLOG.md`、`ZIWEI_BACKLOG.md`、`PALMISTRY_BACKLOG.md` 三個 peer coordination surfaces。其 path/write mapping由 local `AGENTS.md` 明確 opt-in；generic Hot / Cold、retrieval、persistence、promotion與 execution semantics仍由 activated shared `AI_CONTEXT.md` / `REPOSITORY_EXECUTION.md` 擁有。
 
 ## Shared engineering rules｜不在本 Repo 複製第二份
 
@@ -42,6 +43,7 @@ Shared `REPORTING.md` 是窄化的 adoption-level exception：substantive user-f
 - GitHub operation response-shape、mutation/read-back、workflow-trigger evidence、terminal residue cleanup；
 - repository-level absence-claim coverage；
 - AI Context / hot-cold / retrieval-cost governance；
+- generic coordination-surface semantics、multi peer/domain-scoped coordination rules、persistence / promotion / execution admission → upstream `AI_CONTEXT.md` / `REPOSITORY_EXECUTION.md`；
 - shared actor / host-adapter engineering semantics；
 - substantive engineering reporting presentation / timestamp / pre-send contract → upstream `REPORTING.md`；
 - cross-boundary revision continuity / consumer-side revision reconciliation → upstream `AI_CONTEXT.md` → `Cross-boundary Revision Continuity`；本 Repo `SESSION_HANDOFF.md` 只作 project-native session-handoff adapter，保存 `observed_head`／current-HEAD rehydration 等最低充分 mapping，不重定義 generic revision-continuity semantics；
@@ -66,7 +68,7 @@ Shared `REPORTING.md` 是窄化的 adoption-level exception：substantive user-f
 目前 `ChatGPT-Only` mode 下，不因 shared baseline存在就自動啟用：
 
 - Codex root / child delegation、child profile override、usage-budget routing；
-- TASKS / BACKLOG / coordination surfaces（除非本 Repo未來另行 opt-in）；
+- shared Playbook 的 generic root `/TASKS.md`、root `/BACKLOG.md` 或任意其他 coordination layout 不自動繼承；本 Repo 只啟用 local governance 明確列出的 method-scoped coordination surfaces；
 - Codex-specific resource-exhaustion fallback；
 - 任何會覆蓋本 Repo GitHub Connect-only、privacy、method/runtime 或 Reading Record boundary 的 generic default。
 
