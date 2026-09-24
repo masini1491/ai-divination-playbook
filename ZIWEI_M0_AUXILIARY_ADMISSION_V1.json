@@ -41,14 +41,18 @@
       "ZW-B2-TIANXIANG-COND-002"
     ],
     "final_prose_authority": false,
-    "generic_auxiliary_domain_complete": false
+    "generic_auxiliary_domain_complete": false,
+    "claim_scope": "bounded_auxiliary_role_policy_only",
+    "historical_semantic_core_admitted": false,
+    "source_normalized_independent_star_meanings_admitted": false
   },
   "fail_closed": [
     "module_not_requested_no_m0_facts",
     "unknown_auxiliary_profile_rejected",
     "only_four_admitted_m0_stars",
     "no_m1_m2_m3_inference",
-    "no_model_memory_substitution"
+    "no_model_memory_substitution",
+    "generic_auxiliary_domain_remains_not_computed"
   ],
   "scientific_predictive_validity_claimed": false
 }
