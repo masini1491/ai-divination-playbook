@@ -32,10 +32,11 @@
     "normalization_policy_exposed": true
   },
   "pipeline": {
-    "runtime_owner": "tools/ziwei_gregorian_pipeline.py",
+    "runtime_owner": "tools/ziwei_runtime.py",
     "pipeline_id": "ziwei-gregorian-input-adapter-v1",
     "supports_parent_scope_a": true,
-    "supports_optional_brightness_v1": true
+    "supports_optional_brightness_v1": true,
+    "compatibility_adapter": "tools/ziwei_gregorian_pipeline.py"
   },
   "fail_closed": [
     "Asia/Taipei timezone required",
