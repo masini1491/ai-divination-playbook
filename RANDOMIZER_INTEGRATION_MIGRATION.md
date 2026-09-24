@@ -382,6 +382,8 @@ Python 3.13
 → main-push Vercel production smoke
 ```
 
+Current monorepo deployment semantics are path-bounded: Vercel may skip a Git deployment when `runtime/casting/**` is unchanged. Therefore main-push production smoke validates that the deployed `runtime_source_commit` is an ancestor of current main and that its `runtime/casting` Git tree exactly matches current main. Exact equality with the monorepo HEAD is required only when that HEAD is the deployed casting-source commit; unrelated Astrology/docs/governance commits must not force a redundant casting deployment.
+
 Migration may normalize Python versions later only as a separately evidenced compatibility decision. Version normalization is not required to prove repository consolidation.
 
 The final GitHub Actions topology may use one workflow or multiple workflows, but failure visibility must remain distinct enough to identify:
