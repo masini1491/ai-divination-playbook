@@ -57,6 +57,7 @@ class LiuyaoMaterializationDiscoverabilityTests(unittest.TestCase):
                 "TAROT-BEH-006",
                 "TAROT-BEH-007",
                 "TAROT-BEH-012",
+                "TAROT-BEH-025",
             ],
             self.matrix["change_classes"]["liuyao-deterministic-materialization"],
         )
