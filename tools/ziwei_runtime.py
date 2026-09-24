@@ -34,8 +34,8 @@ ADMITTED_REGISTRIES=(
     "ziwei_interpretation_claim_registry_batch1.json",
     "ziwei_interpretation_claim_registry_batch2.json",
     "ziwei_interpretation_claim_registry_palaces_v0.json",
-    "ziwei_interpretation_claim_registry_m0_auxiliary_v1.json",
 )
+M0_REGISTRY="ziwei_interpretation_claim_registry_m0_auxiliary_v1.json"
 
 @dataclass(frozen=True)
 class ZiWeiReadingRequest:
@@ -157,9 +157,12 @@ def run_ziwei_transport(payload:dict[str,Any])->dict[str,Any]:
     """Execute the versioned JSON transport contract through the canonical typed runtime."""
     return run_ziwei(request_from_transport(payload))
 
-def _production_registries():
-    regs=_retrieval.load_registries(REF/x for x in ADMITTED_REGISTRIES)
-    for name,reg in zip(ADMITTED_REGISTRIES,regs):
+def _production_registries(optional_modules:tuple[str,...]=()):
+    names=list(ADMITTED_REGISTRIES)
+    if M0_MODULE in optional_modules:
+        names.append(M0_REGISTRY)
+    regs=_retrieval.load_registries(REF/x for x in names)
+    for name,reg in zip(names,regs):
         if reg.get("production_routable") is not False:
             raise ValueError(f"REGISTRY_HISTORY_MUTATED:{name}")
         if reg.get("interpretation_profile") != INTERPRETATION_PROFILE:
@@ -187,7 +190,7 @@ def _compose(chart:dict[str,Any], request:ZiWeiReadingRequest, calendar:dict[str
         requested_subjects=frozenset(request.requested_subjects),
         enabled_source_ids=frozenset(request.enabled_source_ids),
     )
-    retrieval=_retrieval.retrieve_claims(packet,_production_registries())
+    retrieval=_retrieval.retrieve_claims(packet,_production_registries(request.optional_modules))
     frame=_retrieval.compose_frame(packet,retrieval)
     conflicts=frame["conflicts"]
     evidence_states={"source_backed","project_adopted"}
