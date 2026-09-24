@@ -123,6 +123,41 @@
         "requires_admitted_natal_bundle": true,
         "requires_all_12_house_facts": true,
         "semantic_interpretation_authority": false
+      },
+      "pattern_topology": {
+        "projection_id": "astrology-pattern-topology-v1",
+        "runtime_owner": "tools/astrology_pattern_topology.py",
+        "output_schema": "schemas/astrology/ASTROLOGY_PATTERN_TOPOLOGY_PROJECTION_V1.schema.json",
+        "output_schema_id": "astrology_pattern_topology_projection@1.0.0",
+        "authority": "deterministic_topology_projection_only",
+        "activation": "explicit_selector_only",
+        "required_participant_policy_id": "aspect-participants-core-bodies-v1",
+        "required_aspect_policy_id": "major-aspects-v1",
+        "required_orb_policy_id": "major-aspect-orbs-v1",
+        "admitted_pattern_policy_ids": [
+          "aspect-pattern-topology-major-v1"
+        ],
+        "conjunction_cluster_policy_id": "conjunction-clusters-transitive-v1",
+        "admitted_projection_policy_ids": [
+          "pattern-projection-report-all-valid-v1",
+          "pattern-projection-suppress-strict-subsets-v1"
+        ],
+        "admitted_pattern_types": [
+          "T-Square",
+          "Grand Trine",
+          "Grand Cross",
+          "Kite",
+          "Mystic Rectangle",
+          "Cradle",
+          "Grand Sextile"
+        ],
+        "unsupported_pattern_types": {
+          "Yod": "requires quincunx aspect policy and orb",
+          "Stellium": "definition not admitted",
+          "Grand Quintile": "requires quintile/biquintile aspect policy"
+        },
+        "silent_default": "forbidden",
+        "semantic_interpretation_authority": false
       }
     }
   },
