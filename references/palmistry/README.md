@@ -15,6 +15,12 @@ Root `RESEARCH_ROUTING.md` 現在可以在使用者**明確指定 Palmistry / �
 
 正式採用前應至少記錄 source/ref、license、用途、可驗證 observation 能力、interpretation scope、流派差異與 not-adopted boundary。
 
+## Current coordination backlog
+
+Current open maintenance / empirical continuation work is tracked in [`../../PALMISTRY_BACKLOG.md`](../../PALMISTRY_BACKLOG.md).
+
+The backlog is coordination-only. It does not supersede `PALMISTRY.md`, this research owner, frozen evidence artifacts, node-specific plans/locks/results/closures, or repository routing authority.
+
 ## Research synthesis
 
 - [`SYNTHESIS.md`](SYNTHESIS.md) — source comparison、architecture implication、validation state 與 remaining evidence gaps。
