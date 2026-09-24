@@ -39,18 +39,7 @@ references/   research / external-source dossiers / comparison / historical reco
 schemas/      stable machine-readable contracts
 ```
 
-這六層是 **core topology**，不是要求 repository 只能存在這六個目錄。依實際 retrieval intent，可另外建立下列 **optional supporting surfaces**：
-
-```text
-indexes/      routing / lookup metadata only
-evidence/     bounded observations / measurements / provenance staging
-fixtures/     deterministic test / parity / reproducibility inputs
-validation/   validation contracts / result artifacts / campaign evidence
-coordination/ or TASKS/BACKLOG
-              Hot / Cold work-control surfaces where the repository adopts them
-```
-
-Optional surface 不是新的 semantic authority class；建立前必須有獨立 retrieval intent、清楚 responsibility boundary 與 bounded-loading benefit。若現有 owner 已能自然承接，不為目錄對稱或形式完整而新增 surface。
+這六層是 **core topology**，不是要求 repository 只能存在這六個目錄。Supporting surface（例如 routing index、evidence、fixture、validation、coordination）的 generic admission / loading / authority semantics 由 activated shared development baseline canonical owners負責；本 Repo 只在 §2.7 記錄實際採用的 physical mapping 與 stricter local delta，不為目錄對稱建立空 surface。
 
 
 ### 2.1 `tools/`
