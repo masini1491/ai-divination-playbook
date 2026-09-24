@@ -2,7 +2,7 @@
 
 Status: **PRODUCTION SCOPE-A V1 + GREGORIAN INPUT V1 + OPTIONAL BRIGHTNESS FACTS V1 / EXPLICIT-REQUEST ONLY**
 
-本檔是 Zi Wei Dou Shu 的 root production method owner。Production authority 僅涵蓋已 admission 的 **bounded natal first layer**；deterministic implementation 與 machine admission truth 由 `tools/ziwei_scope_a_pipeline.py`、`tools/ziwei_natal_provider.py` 與 `ZIWEI_PRODUCTION_ADMISSION_V1.json` 擁有。Research history 仍由 `references/ziwei/**` 擁有，不因 production admission 回寫其歷史 authority。
+本檔是 Zi Wei Dou Shu 的 root production method owner。Production authority 僅涵蓋已 admission 的 **bounded natal first layer**；typed production composition 由 `tools/ziwei_runtime.py` 擁有；deterministic fact providers 與 machine admission truth 分別由 `tools/ziwei_*_provider.py` 與 admission manifests 擁有。Research history 仍由 `references/ziwei/**` 擁有，不因 production admission 回寫其歷史 authority。
 
 ## 1. Activation / Routing
 
@@ -13,7 +13,7 @@ explicit Zi Wei production
 → ZIWEI.md
 → Gregorian birth datetime (Asia/Taipei) → admitted calendar adapter
    OR already-normalized lunar input + provenance
-→ tools/ziwei_scope_a_pipeline.py
+→ tools/ziwei_runtime.py (`run_ziwei`)
 → admitted natal_baseline facts
 → allowlisted 52-claim first-layer retrieval
 → bounded conflict / uncertainty / safety delivery
@@ -54,24 +54,23 @@ Language model 不得把 raw birth data 自由手算成 production chart facts�
 Production runtime:
 
 ```text
-Gregorian input v1:
-Gregorian YYYY-MM-DD HH:mm:ss + Asia/Taipei
-→ tools/ziwei_calendar_provider.py
-→ tools/ziwei_gregorian_pipeline.py
-→ normalized traditional-lunar input
-→ default Scope-A or optional brightness_v1
+typed Zi Wei request
+→ tools/ziwei_runtime.py / run_ziwei()
+→ Gregorian birth → tools/ziwei_calendar_provider.py
+   OR normalized traditional-lunar birth
+→ tools/ziwei_natal_provider.py
+→ optional_modules includes brightness_v1
+   → tools/ziwei_brightness_provider.py
+→ tools/ziwei_claim_retrieval.py
+→ tools/ziwei_delivery.py
+→ typed Zi Wei result
 
-default Scope-A:
-tools/ziwei_natal_provider.py
-→ tools/ziwei_scope_a_pipeline.py
-→ ZIWEI_PRODUCTION_ADMISSION_V1.json
-
-optional brightness_v1 (explicit only):
-tools/ziwei_natal_provider.py
-→ tools/ziwei_brightness_provider.py
-→ tools/ziwei_brightness_pipeline.py
-→ ZIWEI_BRIGHTNESS_ADMISSION_V1.json
+legacy run_scope_a_* entrypoints
+→ compatibility adapters
+→ tools/ziwei_runtime.py
 ```
+
+`schemas/ziwei/ZIWEI_READING_REQUEST_V1.schema.json` 與 `schemas/ziwei/ZIWEI_READING_RESULT_V1.schema.json` 定義 closed-world v1 interface。Unsupported temporal scope、optional module 或 profile 必須 fail closed；不得再為每個 module/input 組合新增 `with_x_and_y` canonical runtime。
 
 若 local runtime / dependency cache 缺失，先依 `ZIWEI_MATERIALIZATION.md` 嘗試同 exact-commit deterministic transport materialization；local package miss 不等於 deterministic source unavailable。只有 admitted materialization/direct-source paths 都失敗才停在 Fact Gate；不得改用 Tarot / Meihua / Liuyao 冒充 Zi Wei reading。
 
@@ -131,20 +130,23 @@ ZIWEI_PRODUCTION_ADMISSION_V1.json
 ZIWEI_CALENDAR_ADMISSION_V1.json
 → Gregorian input/calendar normalization admission truth
 
+tools/ziwei_runtime.py + schemas/ziwei/ZIWEI_READING_{REQUEST,RESULT}_V1.schema.json
+→ canonical typed request / composition / result owner
+
 tools/ziwei_calendar_provider.py + tools/ziwei_gregorian_pipeline.py
-→ Gregorian → raw lunar → explicit Zi Wei normalization → Scope-A adapter
+→ Gregorian normalization provider + legacy compatibility adapter
 
 tools/ziwei_natal_provider.py
 → admitted Scope-A deterministic natal provider
 
 tools/ziwei_scope_a_pipeline.py
-→ production composition binding
+→ legacy normalized-lunar compatibility adapter
 
 tools/ziwei_claim_retrieval.py + tools/ziwei_delivery.py
 → production claim retrieval / conditional activation / bounded delivery execution
 
 tools/ziwei_brightness_provider.py + tools/ziwei_brightness_pipeline.py
-→ optional profile-bound brightness facts + bounded Scope-A composition
+→ optional profile-bound brightness facts + legacy compatibility adapter
 
 ZIWEI_BRIGHTNESS_ADMISSION_V1.json
 → optional brightness production admission truth
