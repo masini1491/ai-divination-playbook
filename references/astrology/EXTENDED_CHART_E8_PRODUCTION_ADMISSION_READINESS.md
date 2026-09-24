@@ -17,6 +17,9 @@ Research inputs:
 
 This review does **not** admit any new production factor. Its job is to separate implementation-ready candidates from decisions that require new policy, provider, licensing, or compatibility authority.
 
+> Current research supersession: the original D1 Swiss-centered three-way decision below is historical evidence from this E8 review. After current-stack admission and ChatGPT deterministic materialization work, `CHATGPT_ONLY_EXTENDED_EPHEMERIS_FEASIBILITY.md` broadens D1 into provider-neutral capability lanes: `CURRENT_CORE_ONLY`, `LOCAL_ANALYTICAL`, `BUNDLED_EPHEMERIS`, `EXTERNAL_RUNTIME`, `SWISS_AGPL`, and `SWISS_PROFESSIONAL`. No production selection is made by that later research.
+
+
 ## 1. Current production constraints
 
 Astrology Production v1 currently admits:
@@ -160,25 +163,36 @@ At this point, the remaining material decisions are:
 
 ### D1 — Extended ephemeris production strategy
 
-Choose one production posture:
+The original E8 review framed D1 as `MIT_ONLY | SWISS_AGPL | SWISS_PROFESSIONAL`. Current ChatGPT-only research has shown that this is too coarse because runtime transport is itself a product constraint.
+
+Current research decision surface:
 
 ```text
-MIT_ONLY
-  keep current Astronomy Engine production dependency;
-  admit only factors calculable/derivable within current stack;
-  E2/E3 and Swiss-dependent special points remain unsupported.
+CURRENT_CORE_ONLY
+  keep extended ephemeris unsupported.
+
+LOCAL_ANALYTICAL
+  project-owned deterministic formula/orbital model where independently validated.
+
+BUNDLED_EPHEMERIS
+  controlled build-time authoritative data
+  → immutable compact local artifact
+  → no mandatory runtime API.
+
+EXTERNAL_RUNTIME
+  JPL/SPICE/other provider only in environments with explicit external runtime capability;
+  not sufficient as the ordinary ChatGPT-only path.
 
 SWISS_AGPL
-  adopt Swiss/pyswisseph under AGPL-compatible production/deployment obligations;
-  requires dedicated provider admission, deployment/license compliance review,
-  bounded epoch/tolerance policy and production regressions.
+  optional Swiss production dependency under AGPL-compatible obligations.
 
 SWISS_PROFESSIONAL
-  use Swiss Ephemeris Professional License;
-  requires separate licensing/procurement confirmation plus the same technical admission work.
+  optional Swiss production dependency under separately obtained professional license.
 ```
 
-This review does not provide legal advice and does not choose between those license postures.
+These are capability lanes and need not be mutually exclusive across object families. No production lane is selected yet. Current next research lanes are `LOCAL_ANALYTICAL` and `BUNDLED_EPHEMERIS`; see `CHATGPT_ONLY_EXTENDED_EPHEMERIS_FEASIBILITY.md`.
+
+This review does not provide legal advice and does not select a production license/provider posture.
 
 ### D2 — Production policy activation style
 
