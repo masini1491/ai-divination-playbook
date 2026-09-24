@@ -32,13 +32,15 @@ PROJECT_PATHS=(
  "tools/ziwei_gregorian_pipeline.py",
  "tools/ziwei_natal_provider.py",
  "tools/ziwei_scope_a_pipeline.py",
- "tools/ziwei_brightness_provider.py",\n "tools/ziwei_m0_auxiliary_provider.py",
+ "tools/ziwei_brightness_provider.py",
+ "tools/ziwei_m0_auxiliary_provider.py",
  "tools/ziwei_brightness_pipeline.py",
  "tools/ziwei_claim_retrieval.py",
  "tools/ziwei_delivery.py",
  "references/ziwei/ziwei_interpretation_claim_registry_batch1.json",
  "references/ziwei/ziwei_interpretation_claim_registry_batch2.json",
- "references/ziwei/ziwei_interpretation_claim_registry_palaces_v0.json",\n "references/ziwei/ziwei_interpretation_claim_registry_m0_auxiliary_v1.json",
+ "references/ziwei/ziwei_interpretation_claim_registry_palaces_v0.json",
+ "references/ziwei/ziwei_interpretation_claim_registry_m0_auxiliary_v1.json",
 )
 DEPENDENCY_BLOBS={
 "lunar_python/__init__.py":"373688d6a5c8b65322df473345adc195a811709b",
@@ -158,7 +160,8 @@ def build_bundle()->dict[str,object]:
                 for i,c in enumerate(chunks)]
     }
 
-def render(v:dict[str,object])->str: return json.dumps(v,ensure_ascii=False,indent=2)+"\n"
+def render(v:dict[str,object])->str: return json.dumps(v,ensure_ascii=False,indent=2)+"
+"
 
 def decode_archive(bundle:dict[str,object])->bytes:
     chunks=sorted(bundle["chunks"],key=lambda x:int(x["index"]))
@@ -222,7 +225,8 @@ def materialize(bundle:dict[str,object], target:Path, playbook_commit:str)->dict
             "bundle_contract":CONTRACT,"archive_sha256":bundle["archive"]["sha256"],
             "dependency":bundle["dependency"],"files":files}
     marker_path=target/bundle["cache_contract"]["marker"]
-    marker_path.write_text(json.dumps(marker,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+    marker_path.write_text(json.dumps(marker,ensure_ascii=False,indent=2)+"
+",encoding="utf-8")
     return marker
 
 def main(argv=None)->int:
