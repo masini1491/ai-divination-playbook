@@ -43,6 +43,26 @@ class RepositoryArchitectureContractTests(unittest.TestCase):
         )
         self.assertIn("三層不可互相偷換 authority", text)
 
+    def test_indexes_are_routing_only_control_plane(self) -> None:
+        text = (ROOT / "REPOSITORY_ARCHITECTURE.md").read_text(encoding="utf-8")
+        self.assertIn("indexes/      routing / lookup metadata only", text)
+        self.assertIn("index 不複製被路由內容本體", text)
+        self.assertIn("index = control plane", text)
+
+    def test_optional_surfaces_are_not_mandatory_taxonomy(self) -> None:
+        text = (ROOT / "REPOSITORY_ARCHITECTURE.md").read_text(encoding="utf-8")
+        self.assertIn("optional supporting surfaces", text)
+        self.assertIn("不為目錄對稱或形式完整而新增 surface", text)
+        self.assertIn("evidence ≠ policy / architecture / method authority", text)
+        self.assertIn("fixture PASS 不等於全域 production validity", text)
+
+    def test_retrieval_intent_and_control_data_plane_are_explicit(self) -> None:
+        text = (ROOT / "REPOSITORY_ARCHITECTURE.md").read_text(encoding="utf-8")
+        self.assertIn("Information surface admission / retrieval-intent gate", text)
+        self.assertIn("control plane", text)
+        self.assertIn("data plane", text)
+        self.assertIn("Control plane 不複製 data plane 本體", text)
+
 
 if __name__ == "__main__":
     unittest.main()
