@@ -185,7 +185,9 @@ class AstrologyProductionContractTests(unittest.TestCase):
         self.assertTrue({"SouthNode", "Descendant", "ImumCoeli"}.isdisjoint(participants))
         self.assertEqual("not_admitted", manifest["aspect_policy"]["extended_points_or_angles"])
         derived = manifest["natal_semantic_policy"]["derived_fact_interpretation"]
-        self.assertEqual("forbidden_until_separately_admitted", derived["claim_binding"])
+        self.assertEqual("forbidden_unless_explicitly_admitted", derived["claim_binding"])
+        self.assertEqual({"Descendant", "ImumCoeli"}, set(derived["admitted_claim_bindings"]))
+        self.assertEqual(["SouthNode", "PartOfFortune"], derived["no_admitted_claim_bindings"])
 
 
     def test_e4_admission_is_named_fail_closed_and_fact_only(self):
@@ -259,6 +261,35 @@ class AstrologyProductionContractTests(unittest.TestCase):
         )
         self.assertEqual("forbidden", policy["silent_default"])
         self.assertFalse(policy["semantic_interpretation_authority"])
+
+
+    def test_derived_interpretation_admission_is_exact_claim_allowlist(self):
+        manifest = json.loads((ROOT / "ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        policy = manifest["natal_semantic_policy"]["derived_fact_interpretation"]
+        descendant = {
+            (row["registry_record_id"], row["claim_id"])
+            for row in policy["admitted_claim_bindings"]["Descendant"]
+        }
+        ic = {
+            (row["registry_record_id"], row["claim_id"])
+            for row in policy["admitted_claim_bindings"]["ImumCoeli"]
+        }
+        self.assertEqual(
+            {
+                ("first-seventh-house-axis-research-v1", "claim:valens-seventh-place-marriage"),
+                ("first-seventh-house-axis-research-v1", "claim:lilly-seventh-house-marriage-opponents"),
+                ("first-seventh-house-axis-research-v1", "claim:houlding-seventh-house-partnership-opponent"),
+            },
+            descendant,
+        )
+        self.assertEqual(
+            {
+                ("fourth-tenth-house-axis-research-v1", "claim:valens-fourth-place-home-possessions-activity"),
+                ("fourth-tenth-house-axis-research-v1", "claim:lilly-fourth-house-land-father-endings"),
+                ("fourth-tenth-house-axis-research-v1", "claim:houlding-fourth-house-roots-foundation-property"),
+            },
+            ic,
+        )
 
 
 if __name__ == "__main__":
