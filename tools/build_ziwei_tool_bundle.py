@@ -160,8 +160,7 @@ def build_bundle()->dict[str,object]:
                 for i,c in enumerate(chunks)]
     }
 
-def render(v:dict[str,object])->str: return json.dumps(v,ensure_ascii=False,indent=2)+"
-"
+def render(v:dict[str,object])->str: return json.dumps(v,ensure_ascii=False,indent=2)+"\n"
 
 def decode_archive(bundle:dict[str,object])->bytes:
     chunks=sorted(bundle["chunks"],key=lambda x:int(x["index"]))
