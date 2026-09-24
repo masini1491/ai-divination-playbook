@@ -79,6 +79,69 @@ Canonical authority 永遠是 `tools/meihua_engine.py`。若存在 `runtime/meih
 
 Local cache MISS 不等於 deterministic source unavailable。GitHub Connect 可取得 exact-commit source／bundle且 Python 可執行時，先完成 byte-preserving acquisition / verification，再判斷 unavailable。
 
+## 6. Verified local deterministic cache
+
+允許 persistent verified cache reuse。預設位置：
+
+```text
+/mnt/data/divination-meihua-runtime/
+bundle_verification.json
+```
+
+Marker 至少綁定：
+
+```text
+verified = true
+repository
+materialized_source_commit
+last_checked_repository_head
+bundle_contract
+source_file: path + sha256 + git_blob_sha + local_copy_identity
+```
+
+`materialized_source_commit` 表示目前 local executable bytes 的 provenance；`last_checked_repository_head` 只表示最近一次 repository freshness observation。兩者可以不同，不得因 current HEAD 前進就把舊 executable bytes 的 source provenance改寫成新 HEAD。
+
+### 6A. Identity-first deterministic refresh
+
+只有存在合法 freshness trigger時才做 current repository identity probe。最低流程：
+
+```text
+verified Meihua cache
+→ cheap current HEAD/ref probe
+→ compare materialized_source_commit ... current HEAD
+→ inspect tools/meihua_engine.py only
+   ├─ unchanged
+   │  → reuse verified local engine
+   │  → update last_checked_repository_head only
+   │  → MUST NOT fetch bundle / rematerialize
+   └─ changed / renamed / compare incomplete / source commit unavailable
+      → exact current source identity verification
+      → bytes unchanged → reuse cache
+      → bytes changed / identity inconclusive → reacquire bundle/source
+```
+
+Repository其他檔案更新本身不是 deterministic-engine refresh trigger。只有 `tools/meihua_engine.py` 的 material identity改變，或 identity無法可信證明一致時，才重新 acquisition / materialization。
+
+marker 寫入後必須 fresh read-back；沒有可觀察 marker/local-copy verification evidence，不宣稱 persistent verified cache成立。
+
+## 7. Authority boundary
+
+```text
+tools/meihua_engine.py
+→ canonical deterministic source
+
+runtime/meihua/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json
+→ CI-generated derived transport only
+
+MEIHUA_MATERIALIZATION.md
+→ deterministic handoff / verification / cache freshness only
+
+MEIHUA.md
+→ interpretation authority
+```
+
 核心原則：
 
 > **Preserve Cast Fact, derive downstream deterministically, interpret last.**
+
+> **Refresh currentness first；rematerialize only on material Meihua engine identity change。**
