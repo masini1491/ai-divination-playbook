@@ -37,8 +37,11 @@
     "new_claims": 4,
     "interpretation_profile": "ziwei.interpretation.tw_v1",
     "relation_scope": "self_or_sanfang_only",
-    "existing_conditional_activation_integration": true,
-    "final_prose_authority": false
+    "existing_conditional_activation_integration": [
+      "ZW-B2-TIANXIANG-COND-002"
+    ],
+    "final_prose_authority": false,
+    "generic_auxiliary_domain_complete": false
   },
   "fail_closed": [
     "module_not_requested_no_m0_facts",
