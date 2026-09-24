@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ASTROLOGY_PATTERN_TOPOLOGY_PROJECTION_V1.schema.json",
+  "title": "Astrology Pattern Topology Projection 1.0",
+  "type": "object",
+  "required": [
+    "schema_name",
+    "schema_version",
+    "status",
+    "authority",
+    "method",
+    "reading_mode",
+    "subject_ref",
+    "participant_policy_id",
+    "aspect_policy_id",
+    "orb_policy_id",
+    "pattern_policy_id",
+    "conjunction_cluster_policy_id",
+    "pattern_projection_policy_id",
+    "semantic_interpretation_authority",
+    "unsupported_pattern_types",
+    "patterns"
+  ],
+  "properties": {
+    "schema_name": {"const": "astrology_pattern_topology_projection"},
+    "schema_version": {"const": "1.0.0"},
+    "status": {"const": "projected"},
+    "authority": {"const": "deterministic_topology_projection_only"},
+    "method": {"const": "Astrology"},
+    "reading_mode": {"const": "natal"},
+    "subject_ref": {"type": "string", "minLength": 1},
+    "participant_policy_id": {"const": "aspect-participants-core-bodies-v1"},
+    "aspect_policy_id": {"const": "major-aspects-v1"},
+    "orb_policy_id": {"const": "major-aspect-orbs-v1"},
+    "pattern_policy_id": {"const": "aspect-pattern-topology-major-v1"},
+    "conjunction_cluster_policy_id": {"const": "conjunction-clusters-transitive-v1"},
+    "pattern_projection_policy_id": {
+      "enum": [
+        "pattern-projection-report-all-valid-v1",
+        "pattern-projection-suppress-strict-subsets-v1"
+      ]
+    },
+    "semantic_interpretation_authority": {"const": false},
+    "unsupported_pattern_types": {
+      "type": "array",
+      "items": {"enum": ["Yod", "Stellium", "Grand Quintile"]},
+      "uniqueItems": true
+    },
+    "patterns": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "pattern_id",
+          "pattern_type",
+          "pattern_policy_id",
+          "participant_policy_id",
+          "aspect_policy_id",
+          "orb_policy_id",
+          "conjunction_cluster_policy_id",
+          "pattern_projection_policy_id",
+          "vertex_clusters",
+          "supporting_aspect_ids"
+        ],
+        "properties": {
+          "pattern_id": {"type": "string", "minLength": 1},
+          "pattern_type": {
+            "enum": [
+              "T-Square",
+              "Grand Trine",
+              "Grand Cross",
+              "Kite",
+              "Mystic Rectangle",
+              "Cradle",
+              "Grand Sextile"
+            ]
+          },
+          "pattern_policy_id": {"const": "aspect-pattern-topology-major-v1"},
+          "participant_policy_id": {"const": "aspect-participants-core-bodies-v1"},
+          "aspect_policy_id": {"const": "major-aspects-v1"},
+          "orb_policy_id": {"const": "major-aspect-orbs-v1"},
+          "conjunction_cluster_policy_id": {"const": "conjunction-clusters-transitive-v1"},
+          "pattern_projection_policy_id": {
+            "enum": [
+              "pattern-projection-report-all-valid-v1",
+              "pattern-projection-suppress-strict-subsets-v1"
+            ]
+          },
+          "vertex_clusters": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 6,
+            "items": {
+              "type": "array",
+              "minItems": 1,
+              "items": {"type": "string", "minLength": 1},
+              "uniqueItems": true
+            }
+          },
+          "supporting_aspect_ids": {
+            "type": "array",
+            "minItems": 3,
+            "items": {"type": "string", "minLength": 1},
+            "uniqueItems": true
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
