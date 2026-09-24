@@ -196,7 +196,7 @@ class AstrologyInterpretationHandoffTests(unittest.TestCase):
         request["claim_requests"][0]["fact_refs"] = [descendant_ref]
         with self.assertRaisesRegex(
             InterpretationHandoffError,
-            "claim binding is not admitted for fact-only object: Descendant",
+            "claim binding is not admitted for derived fact-only object: Descendant",
         ):
             build_handoff(run, request, repo_root=ROOT)
 
@@ -218,7 +218,7 @@ class AstrologyInterpretationHandoffTests(unittest.TestCase):
         request["claim_requests"][0]["fact_refs"] = [fortune_ref]
         with self.assertRaisesRegex(
             InterpretationHandoffError,
-            "claim binding is not admitted for fact-only object: PartOfFortune",
+            "claim binding is not admitted for derived fact-only object: PartOfFortune",
         ):
             build_handoff(run, request, repo_root=ROOT)
 
@@ -242,6 +242,57 @@ class AstrologyInterpretationHandoffTests(unittest.TestCase):
         self.assertEqual("ready_for_bounded_interpretation", result["status"])
         self.assertEqual([], result["selected_claims"])
         self.assertEqual("SouthNode", result["selected_facts"][0]["fact"]["object_id"])
+
+
+    def test_exact_reference_pipeline_allows_admitted_descendant_claim_binding(self):
+        run = admitted_run()
+        run["fact_bundles"]["natal"]["facts"]["objects"].append(
+            {
+                "fact_id": "fact:angle:descendant",
+                "object_type": "angle",
+                "object_id": "Descendant",
+                "longitude_deg": 180.0,
+                "derived_from": "fact:angle:ascendant",
+                "derivation_policy": "antipode-v1",
+            }
+        )
+        ref = {"bundle": "natal", "fact_id": "fact:angle:descendant"}
+        request = valid_request()
+        request["fact_refs"] = [ref]
+        request["claim_requests"] = [
+            {
+                "registry_record_id": "first-seventh-house-axis-research-v1",
+                "claim_id": "claim:valens-seventh-place-marriage",
+                "fact_refs": [ref],
+            }
+        ]
+        result = build_handoff(run, request, repo_root=ROOT)
+        self.assertEqual("claim:valens-seventh-place-marriage", result["selected_claims"][0]["claim_id"])
+
+    def test_exact_reference_pipeline_allows_admitted_imumcoeli_claim_binding(self):
+        run = admitted_run()
+        run["fact_bundles"]["natal"]["facts"]["objects"].append(
+            {
+                "fact_id": "fact:angle:imumcoeli",
+                "object_type": "angle",
+                "object_id": "ImumCoeli",
+                "longitude_deg": 90.0,
+                "derived_from": "fact:angle:midheaven",
+                "derivation_policy": "antipode-v1",
+            }
+        )
+        ref = {"bundle": "natal", "fact_id": "fact:angle:imumcoeli"}
+        request = valid_request()
+        request["fact_refs"] = [ref]
+        request["claim_requests"] = [
+            {
+                "registry_record_id": "fourth-tenth-house-axis-research-v1",
+                "claim_id": "claim:valens-fourth-place-home-possessions-activity",
+                "fact_refs": [ref],
+            }
+        ]
+        result = build_handoff(run, request, repo_root=ROOT)
+        self.assertEqual("claim:valens-fourth-place-home-possessions-activity", result["selected_claims"][0]["claim_id"])
 
 
 if __name__ == "__main__":
