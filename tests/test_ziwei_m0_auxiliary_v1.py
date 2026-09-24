@@ -18,6 +18,9 @@ class ZiWeiM0AuxiliaryV1Tests(unittest.TestCase):
         self.assertEqual({"左輔","右弼","文昌","文曲"},set(m0["calculation"]["m0_auxiliary"]["placements"]))
         ids=set(m0["interpretation"]["selected_claim_ids"]); self.assertTrue({"ZW-M0-ZUOFU-CORE-001","ZW-M0-YOUBI-CORE-001","ZW-M0-WENCHANG-CORE-001","ZW-M0-WENQU-CORE-001"}.issubset(ids))
         self.assertFalse(any(x.startswith("ZW-M0-") for x in base["interpretation"]["selected_claim_ids"]))
+    def test_baseline_transport_does_not_require_m0_profile(self):
+        base=ZiWeiReadingRequest(request_id="base-t",birth=self.natal())
+        self.assertEqual(base,request_from_transport(request_to_transport(base)))
     def test_transport_profile_binding_and_fail_closed(self):
         req=ZiWeiReadingRequest(request_id="m0-t",birth=self.natal(),optional_modules=(M0_MODULE,),m0_auxiliary_profile=PROFILE_ID)
         self.assertEqual(req,request_from_transport(request_to_transport(req)))
