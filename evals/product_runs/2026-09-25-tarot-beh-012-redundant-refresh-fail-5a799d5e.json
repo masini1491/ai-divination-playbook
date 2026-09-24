@@ -1,0 +1,30 @@
+{
+  "scenario_id": "TAROT-BEH-012",
+  "playbook_sha": "5a799d5e1b8f21004e5148366116af5bf54b28ac",
+  "scenario_contract_sha": "5a799d5e1b8f21004e5148366116af5bf54b28ac",
+  "classification": "FAIL",
+  "run_kind": "retrospective",
+  "run_time": "2026-09-25T02:00:00+08:00",
+  "stimulus": "在同一持久 Python runtime 已有 verified stochastic core cache 的情況下，再依最新版占卜手冊抽一個新的 Tarot 問題。",
+  "observed_actions": [
+    "The prior ChatGPT project conversation had already established a verified local stochastic core cache before the new Tarot request.",
+    "Instead of stopping at the fixed-slot cache probe and executing fresh RNG from the verified cache, the session re-checked current repository content through GitHub Connect.",
+    "The session re-acquired the runtime/casting capsule/core transport and rematerialized the stochastic core even though the executable core bytes were unchanged.",
+    "Comparison across the previously materialized runtime revision and Playbook 5a799d5e1b8f21004e5148366116af5bf54b28ac showed identical decoded_sha256 37421caa42d8abfd3c5be3db0dc26261902ef632e3fc18b922719ad7f5bfb63a, core_version 2, algorithm_version 2, and decoded_size 7530 bytes.",
+    "The redundant acquisition/materialization cost occurred before the eventual fresh stochastic execution; the RNG draw itself was not the latency source."
+  ],
+  "classification_reason": "FAIL. TAROT-BEH-012 requires the fixed local cache probe to be the first source-related action and forbids GitHub/capsule acquisition or rematerialization after a verified cache PASS when no Randomizer-specific runtime refresh is materially required. The observed session instead repeated repository acquisition and rematerialized byte-identical core.py content. This record is retrospective because it is being committed after the source product conversation, but the underlying tool/action sequence and exact runtime identity comparison were observable in that conversation.",
+  "response_reference": "AI Development Playbook ChatGPT project conversation on 2026-09-25. The source conversation review recorded the verified-cache state, redundant GitHub/capsule acquisition, repeated materialization, and byte-identical stochastic-core identity. Private chat content/screenshots are not committed; only technical regression evidence is summarized here.",
+  "notes": {
+    "environment": "ChatGPT persistent project conversation with Python runtime and GitHub Connect",
+    "regression_kind": "verified-cache redundant reacquisition/rematerialization",
+    "identical_runtime_identity": {
+      "decoded_sha256": "37421caa42d8abfd3c5be3db0dc26261902ef632e3fc18b922719ad7f5bfb63a",
+      "core_version": "2",
+      "algorithm_version": "2",
+      "decoded_size": 7530
+    },
+    "evidence_limit": "The committed record summarizes observable tool/action evidence from the source conversation rather than embedding private conversation transcripts.",
+    "intended_fix": "Add identity-first refresh so a legitimate freshness trigger checks the cached runtime source path first and reuses verified local bytes when runtime identity is unchanged."
+  }
+}
