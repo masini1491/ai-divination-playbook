@@ -1,14 +1,22 @@
 #!/usr/bin/env python3
-"""Optional brightness-enabled production binding for Zi Wei Scope-A."""
+"""Compatibility adapter for legacy brightness-enabled Zi Wei Scope-A callers."""
 from __future__ import annotations
 from typing import Any
 
-from tools.ziwei_brightness_provider import calculate_brightness
-from tools.ziwei_natal_provider import NormalizedNatalInput, calculate_scope_a_natal
-from tools.ziwei_scope_a_pipeline import _compose_scope_a_chart
+from tools.ziwei_natal_provider import NormalizedNatalInput
+from tools.ziwei_runtime import BRIGHTNESS_MODULE, ZiWeiReadingRequest, run_ziwei
 
 PIPELINE_ID="ziwei-scope-a-brightness-production-pipeline-v1"
 PIPELINE_VERSION="1.0.0"
+
+def _legacy_result(result:dict[str,Any])->dict[str,Any]:
+    legacy=dict(result)
+    legacy.pop("schema_name",None)
+    legacy.pop("schema_version",None)
+    legacy.pop("runtime",None)
+    legacy["pipeline_id"]=PIPELINE_ID
+    legacy["pipeline_version"]=PIPELINE_VERSION
+    return legacy
 
 def run_scope_a_natal_with_brightness(
     data:NormalizedNatalInput, *,
@@ -16,24 +24,10 @@ def run_scope_a_natal_with_brightness(
     requested_subjects:tuple[str,...]=(),
     enabled_source_ids:tuple[str,...]=(),
 ) -> dict[str,Any]:
-    chart=calculate_scope_a_natal(data)
-    brightness=calculate_brightness(chart["major_star_placements"])
-    augmented=dict(chart)
-    augmented["retrieval_facts"]=list(chart["retrieval_facts"])+list(brightness["retrieval_facts"])
-    unsupported=dict(chart["unsupported"])
-    unsupported["brightness"]="computed_by_optional_profile"
-    augmented["unsupported"]=unsupported
-    result=_compose_scope_a_chart(
-        augmented,
+    return _legacy_result(run_ziwei(ZiWeiReadingRequest(
         request_id=request_id,
+        birth=data,
         requested_subjects=requested_subjects,
         enabled_source_ids=enabled_source_ids,
-    )
-    result["pipeline_id"]=PIPELINE_ID
-    result["pipeline_version"]=PIPELINE_VERSION
-    result["scope"]="bounded_natal_first_layer+optional_brightness_v1"
-    result["calculation"]["unsupported"]=unsupported
-    result["calculation"]["brightness"]=brightness
-    result["authority"]["brightness_profile_admitted"]=True
-    result["authority"]["brightness_only_doctrine_admitted"]=False
-    return result
+        optional_modules=(BRIGHTNESS_MODULE,),
+    )))
