@@ -224,8 +224,7 @@ def materialize(bundle:dict[str,object], target:Path, playbook_commit:str)->dict
             "bundle_contract":CONTRACT,"archive_sha256":bundle["archive"]["sha256"],
             "dependency":bundle["dependency"],"files":files}
     marker_path=target/bundle["cache_contract"]["marker"]
-    marker_path.write_text(json.dumps(marker,ensure_ascii=False,indent=2)+"
-",encoding="utf-8")
+    marker_path.write_text(json.dumps(marker,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     return marker
 
 def main(argv=None)->int:
