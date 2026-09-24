@@ -389,7 +389,42 @@
         "ImumCoeli",
         "PartOfFortune"
       ],
-      "claim_binding": "forbidden_until_separately_admitted"
+      "claim_binding": "forbidden_unless_explicitly_admitted",
+      "admitted_claim_bindings": {
+        "Descendant": [
+          {
+            "registry_record_id": "first-seventh-house-axis-research-v1",
+            "claim_id": "claim:valens-seventh-place-marriage"
+          },
+          {
+            "registry_record_id": "first-seventh-house-axis-research-v1",
+            "claim_id": "claim:lilly-seventh-house-marriage-opponents"
+          },
+          {
+            "registry_record_id": "first-seventh-house-axis-research-v1",
+            "claim_id": "claim:houlding-seventh-house-partnership-opponent"
+          }
+        ],
+        "ImumCoeli": [
+          {
+            "registry_record_id": "fourth-tenth-house-axis-research-v1",
+            "claim_id": "claim:valens-fourth-place-home-possessions-activity"
+          },
+          {
+            "registry_record_id": "fourth-tenth-house-axis-research-v1",
+            "claim_id": "claim:lilly-fourth-house-land-father-endings"
+          },
+          {
+            "registry_record_id": "fourth-tenth-house-axis-research-v1",
+            "claim_id": "claim:houlding-fourth-house-roots-foundation-property"
+          }
+        ]
+      },
+      "no_admitted_claim_bindings": [
+        "SouthNode",
+        "PartOfFortune"
+      ],
+      "interpretation_scope_note": "Descendant and ImumCoeli admit only the explicitly listed source-backed claim bindings. SouthNode and PartOfFortune remain deterministic facts without production semantic claim families."
     }
   }
 }

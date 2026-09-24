@@ -219,28 +219,45 @@ def _fact_index(run: dict[str, Any]) -> dict[tuple[str, str], dict[str, Any]]:
     return index
 
 
-def _fact_only_object_ids(manifest: dict[str, Any]) -> set[str]:
+def _derived_fact_interpretation_policy(
+    manifest: dict[str, Any],
+) -> tuple[set[str], dict[str, set[tuple[str, str]]]]:
     policy = manifest.get("natal_semantic_policy", {}).get("derived_fact_interpretation", {})
     raw_ids = policy.get("fact_only_object_ids", [])
     if not isinstance(raw_ids, list) or any(not isinstance(item, str) or not item for item in raw_ids):
         raise InterpretationHandoffError("production manifest fact_only_object_ids must be a string array")
-    return set(raw_ids)
+    raw_bindings = policy.get("admitted_claim_bindings", {})
+    if not isinstance(raw_bindings, dict):
+        raise InterpretationHandoffError("production manifest admitted_claim_bindings must be an object")
+    bindings: dict[str, set[tuple[str, str]]] = {}
+    for object_id, rows in raw_bindings.items():
+        if not isinstance(object_id, str) or not isinstance(rows, list):
+            raise InterpretationHandoffError("production manifest admitted_claim_bindings is invalid")
+        allowed: set[tuple[str, str]] = set()
+        for row in rows:
+            if not isinstance(row, dict) or not isinstance(row.get("registry_record_id"), str) or not isinstance(row.get("claim_id"), str):
+                raise InterpretationHandoffError("production manifest admitted_claim_bindings entry is invalid")
+            allowed.add((row["registry_record_id"], row["claim_id"]))
+        bindings[object_id] = allowed
+    return set(raw_ids), bindings
 
 
-def _reject_fact_only_claim_binding(
+def _enforce_derived_fact_claim_binding(
     claim_request: dict[str, Any],
     fact_index: dict[tuple[str, str], dict[str, Any]],
     fact_only_ids: set[str],
+    admitted_bindings: dict[str, set[tuple[str, str]]],
 ) -> None:
+    claim_identity = (claim_request["registry_record_id"], claim_request["claim_id"])
     for ref in claim_request["fact_refs"]:
         hit = fact_index.get(_ref_key(ref))
         if not isinstance(hit, dict) or hit.get("collection") != "objects":
             continue
         fact = hit.get("fact")
         object_id = fact.get("object_id") if isinstance(fact, dict) else None
-        if object_id in fact_only_ids:
+        if object_id in fact_only_ids and claim_identity not in admitted_bindings.get(object_id, set()):
             raise InterpretationHandoffError(
-                f"claim binding is not admitted for fact-only object: {object_id}"
+                f"claim binding is not admitted for derived fact-only object: {object_id}"
             )
 
 
@@ -374,7 +391,7 @@ def build_handoff(run: Any, request: Any, *, repo_root: Path | None = None) -> d
             )
         selected_facts.append(hit)
 
-    fact_only_ids = _fact_only_object_ids(manifest)
+    fact_only_ids, admitted_bindings = _derived_fact_interpretation_policy(manifest)
     admitted_registry_ids = set(manifest.get("admitted_research_registries", []))
     registries = _registry_index(root, admitted_registry_ids)
     source_policy = manifest.get("source_policy", {})
@@ -385,7 +402,12 @@ def build_handoff(run: Any, request: Any, *, repo_root: Path | None = None) -> d
     used_conflicts: dict[str, dict[str, Any]] = {}
     disclosures: list[str] = []
     for claim_request in normalized["claim_requests"]:
-        _reject_fact_only_claim_binding(claim_request, fact_index, fact_only_ids)
+        _enforce_derived_fact_claim_binding(
+            claim_request,
+            fact_index,
+            fact_only_ids,
+            admitted_bindings,
+        )
         registry_id = claim_request["registry_record_id"]
         if registry_id not in admitted_registry_ids:
             raise InterpretationHandoffError(f"registry is not production-admitted: {registry_id}")

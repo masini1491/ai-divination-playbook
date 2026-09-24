@@ -467,13 +467,13 @@ class AstrologyEvidenceSelectorTests(unittest.TestCase):
         )
         self.assertEqual([], selection["claim_requests"])
 
-    def test_e1_descendant_fact_cannot_unlock_existing_seventh_house_claims(self):
+    def test_e1_descendant_allows_only_source_backed_admitted_claim_binding(self):
         run = run_request(load(NATAL_READING))
         typed = {
             "schema_name": "astrology_typed_evidence_selection_request",
             "schema_version": "1.0.0",
-            "question_id": "typed-e1-descendant-claim-boundary",
-            "question": "Do not treat fact admission as interpretation admission.",
+            "question_id": "typed-e1-descendant-claim-admission",
+            "question": "Select the admitted historical Descendant marriage claim.",
             "fact_selectors": [
                 {
                     "selector_id": "desc",
@@ -490,15 +490,50 @@ class AstrologyEvidenceSelectorTests(unittest.TestCase):
                     "registry_record_id": "first-seventh-house-axis-research-v1",
                     "claim_type": "historical_doctrine",
                     "applies_to_all": ["natal", "seventh house", "marriage"],
+                    "tradition_context_refs_any": ["lineage:hellenistic"],
                     "fact_selector_ids": ["desc"],
                 }
             ],
         }
-        with self.assertRaisesRegex(
-            AstrologyEvidenceSelectionError,
-            "claim binding is not admitted for fact-only object: Descendant",
-        ):
-            select_evidence(run, typed, repo_root=ROOT)
+        selection = select_evidence(run, typed, repo_root=ROOT)
+        self.assertEqual(
+            "claim:valens-seventh-place-marriage",
+            selection["claim_requests"][0]["claim_id"],
+        )
+
+    def test_e1_imumcoeli_allows_source_backed_admitted_claim_binding(self):
+        run = run_request(load(NATAL_READING))
+        typed = {
+            "schema_name": "astrology_typed_evidence_selection_request",
+            "schema_version": "1.0.0",
+            "question_id": "typed-e1-ic-claim-admission",
+            "question": "Select the admitted Hellenistic fourth-place claim for IC.",
+            "fact_selectors": [
+                {
+                    "selector_id": "ic",
+                    "selector_kind": "object",
+                    "bundle": "natal",
+                    "cardinality": "exactly_one",
+                    "object_id": "ImumCoeli",
+                    "object_type": "angle",
+                }
+            ],
+            "claim_selectors": [
+                {
+                    "selector_id": "fourth",
+                    "registry_record_id": "fourth-tenth-house-axis-research-v1",
+                    "claim_type": "historical_doctrine",
+                    "applies_to_all": ["natal", "fourth house", "home", "possessions", "activity"],
+                    "tradition_context_refs_any": ["lineage:hellenistic"],
+                    "fact_selector_ids": ["ic"],
+                }
+            ],
+        }
+        selection = select_evidence(run, typed, repo_root=ROOT)
+        self.assertEqual(
+            "claim:valens-fourth-place-home-possessions-activity",
+            selection["claim_requests"][0]["claim_id"],
+        )
 
 
     def test_e4_fortune_fact_is_selectable_without_interpretation_claim(self):
@@ -558,7 +593,7 @@ class AstrologyEvidenceSelectorTests(unittest.TestCase):
         }
         with self.assertRaisesRegex(
             AstrologyEvidenceSelectionError,
-            "claim binding is not admitted for fact-only object: PartOfFortune",
+            "claim binding is not admitted for derived fact-only object: PartOfFortune",
         ):
             select_evidence(run, typed, repo_root=ROOT)
 
