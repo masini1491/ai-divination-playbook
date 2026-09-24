@@ -4,6 +4,9 @@ Status: **REFERENCE-ONLY / RESEARCH COMPLETE / DEFAULT PARTICIPANT SET NOT SELEC
 
 Baseline: `masini1491/ai-divination-playbook@40d4938bb3f265d332608312463b550fb8b8aa13`
 
+> Production supersession note (current reconciliation: `3346b59055a300aa8998884ccc376017483836af`): this file remains historical research authority. Production subsequently admitted the current-core `aspect-participants-core-bodies-v1` policy in #150 and hardened its runtime participant/provenance boundary in #154. No extended participant default (angles, South Node, Fortune, asteroids, Lilith, Vertex, etc.) is implied by that admission.
+
+
 ## 1. Problem
 
 Current Production v1 computes major aspects over its admitted body list. Extended charts introduce angles, nodes, asteroids, lots and special points. Whether those objects are allowed to participate in aspects is a policy choice, not an astronomical fact.
