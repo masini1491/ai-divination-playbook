@@ -19,15 +19,16 @@ class AstrologyExtendedChartE8ReadinessTests(unittest.TestCase):
         self.assertEqual("REFERENCE_ONLY", data["authority"])
         self.assertFalse(data["production_mutation_authorized"])
         self.assertEqual(
-            "c824e79a92476188b9b4c63d608608e1c01e791d",
+            "3346b59055a300aa8998884ccc376017483836af",
             data["production_baseline"],
         )
         self.assertEqual("PRODUCTION_ADMITTED", data["current_state_reconciliation"]["e1_status"])
         self.assertEqual("PRODUCTION_ADMITTED", data["current_state_reconciliation"]["e4_status"])
-        self.assertEqual(
-            "CLOSED_BY_PR_147",
-            data["current_state_reconciliation"]["derived_fact_interpretation_boundary"],
-        )
+        derived = data["current_state_reconciliation"]["derived_fact_interpretation_boundary"]
+        self.assertEqual("BOUNDED_CLAIMS_ADMITTED_BY_PR_152", derived["descendant"])
+        self.assertEqual("BOUNDED_CLAIMS_ADMITTED_BY_PR_152", derived["imum_coeli"])
+        self.assertEqual("FACT_ONLY", derived["south_node"])
+        self.assertEqual("FACT_ONLY", derived["part_of_fortune"])
 
     def test_readiness_classes_are_closed_and_used_consistently(self):
         data = self.data
@@ -106,17 +107,34 @@ class AstrologyExtendedChartE8ReadinessTests(unittest.TestCase):
             decisions["D2_policy_activation_style"]["selected"],
         )
 
-    def test_admitted_e1_e4_candidates_are_marked_without_rewriting_research_class(self):
+    def test_current_stack_admissions_are_reconciled_without_rewriting_research_class(self):
         rows = {row["id"]: row for row in self.data["candidates"]}
         for object_id in ("mean_south_node", "descendant", "imum_coeli", "part_of_fortune"):
             self.assertEqual("ADMITTED", rows[object_id]["production_status"])
+        for object_id in ("rulership_traditional", "rulership_modern"):
+            self.assertEqual("ADMITTED", rows[object_id]["production_status"])
         self.assertEqual(
-            [
-                "E7_NAMED_RULERSHIP",
-                "E5_PARTICIPANT_POLICY_PLUMBING",
-                "E6_TOPOLOGY_FOR_ADMITTED_ASPECTS",
-            ],
-            self.data["current_state_reconciliation"]["remaining_current_stack_order"],
+            "ADMITTED_CURRENT_CORE_SCOPE",
+            rows["aspect_participant_policy"]["production_status"],
+        )
+        self.assertEqual(
+            "ADMITTED_CURRENT_MAJOR_ASPECT_SCOPE",
+            rows["pattern_topology"]["production_status"],
+        )
+        current = self.data["current_state_reconciliation"]
+        self.assertEqual([], current["remaining_current_stack_order"])
+        self.assertTrue(current["current_stack_closure"])
+        self.assertEqual(
+            "PRODUCTION_ADMITTED_EXPLICIT_SELECTOR_ONLY",
+            current["e7_status"],
+        )
+        self.assertEqual(
+            "PRODUCTION_ADMITTED_CURRENT_CORE_SCOPE_RUNTIME_HARDENED",
+            current["e5_status"],
+        )
+        self.assertEqual(
+            "PRODUCTION_ADMITTED_CURRENT_MAJOR_ASPECT_SCOPE_RUNTIME_HARDENED",
+            current["e6_status"],
         )
 
 

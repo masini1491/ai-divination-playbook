@@ -1,8 +1,8 @@
 {
   "schema_name": "astrology_extended_chart_e8_admission_readiness",
-  "schema_version": "0.2.0",
+  "schema_version": "0.3.0",
   "authority": "REFERENCE_ONLY",
-  "production_baseline": "c824e79a92476188b9b4c63d608608e1c01e791d",
+  "production_baseline": "3346b59055a300aa8998884ccc376017483836af",
   "production_mutation_authorized": false,
   "readiness_classes": [
     "READY_WITH_CURRENT_STACK",
@@ -54,7 +54,9 @@
       "requires_new_external_provider": false,
       "required_policy_ids": [
         "rulership-traditional-v1"
-      ]
+      ],
+      "production_status": "ADMITTED",
+      "admitted_main": "6b97b586db6eeff06c87cf464e711ae60be1fb92"
     },
     {
       "id": "rulership_modern",
@@ -63,19 +65,27 @@
       "requires_new_external_provider": false,
       "required_policy_ids": [
         "rulership-modern-v1"
-      ]
+      ],
+      "production_status": "ADMITTED",
+      "admitted_main": "6b97b586db6eeff06c87cf464e711ae60be1fb92"
     },
     {
       "id": "aspect_participant_policy",
       "phase": "E5",
       "readiness": "READY_IF_EXPLICIT_POLICY_SELECTED",
-      "requires_new_external_provider": false
+      "requires_new_external_provider": false,
+      "production_status": "ADMITTED_CURRENT_CORE_SCOPE",
+      "admitted_main": "7a59762cb3c76d6e9b28a445b65b129504821d0d",
+      "runtime_hardened_main": "3346b59055a300aa8998884ccc376017483836af"
     },
     {
       "id": "pattern_topology",
       "phase": "E6",
       "readiness": "READY_IF_EXPLICIT_POLICY_SELECTED",
-      "requires_new_external_provider": false
+      "requires_new_external_provider": false,
+      "production_status": "ADMITTED_CURRENT_MAJOR_ASPECT_SCOPE",
+      "admitted_main": "00194b001662ed1f31e915d5b8a4d3ef341e3b14",
+      "runtime_hardened_main": "3346b59055a300aa8998884ccc376017483836af"
     },
     {
       "id": "stellium",
@@ -163,22 +173,27 @@
     }
   },
   "recommended_order": [
-    "E7_NAMED_RULERSHIP",
-    "E5_PARTICIPANT_POLICY_PLUMBING",
-    "E6_TOPOLOGY_FOR_ADMITTED_ASPECTS",
-    "E1_E4_INTERPRETATION_CLAIMS_WHEN_SOURCE_BACKED",
+    "SOUTH_NODE_PART_OF_FORTUNE_INTERPRETATION_CLAIMS_WHEN_SOURCE_BACKED",
+    "EXTENDED_ASPECT_PARTICIPANT_POLICIES",
+    "YOD_STELLIUM_GRAND_QUINTILE_POLICY_EXPANSION",
+    "TRANSIT_HOUSE_SEARCH",
     "EXTENDED_PROVIDER_AFTER_D1",
     "COMPATIBILITY_PROFILE_AFTER_EVIDENCE"
   ],
   "current_state_reconciliation": {
-    "reconciled_at_main": "c824e79a92476188b9b4c63d608608e1c01e791d",
+    "reconciled_at_main": "3346b59055a300aa8998884ccc376017483836af",
     "e1_status": "PRODUCTION_ADMITTED",
     "e4_status": "PRODUCTION_ADMITTED",
-    "derived_fact_interpretation_boundary": "CLOSED_BY_PR_147",
-    "remaining_current_stack_order": [
-      "E7_NAMED_RULERSHIP",
-      "E5_PARTICIPANT_POLICY_PLUMBING",
-      "E6_TOPOLOGY_FOR_ADMITTED_ASPECTS"
-    ]
+    "e7_status": "PRODUCTION_ADMITTED_EXPLICIT_SELECTOR_ONLY",
+    "e5_status": "PRODUCTION_ADMITTED_CURRENT_CORE_SCOPE_RUNTIME_HARDENED",
+    "e6_status": "PRODUCTION_ADMITTED_CURRENT_MAJOR_ASPECT_SCOPE_RUNTIME_HARDENED",
+    "derived_fact_interpretation_boundary": {
+      "descendant": "BOUNDED_CLAIMS_ADMITTED_BY_PR_152",
+      "imum_coeli": "BOUNDED_CLAIMS_ADMITTED_BY_PR_152",
+      "south_node": "FACT_ONLY",
+      "part_of_fortune": "FACT_ONLY"
+    },
+    "remaining_current_stack_order": [],
+    "current_stack_closure": true
   }
 }

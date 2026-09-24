@@ -29,6 +29,8 @@ Production v1 在 admitted facts / claims存在時可解讀：
 - 12-house topics；
 - major essential dignity；
 - admitted major-aspect claims；
+- explicit-policy house-rulership projections；
+- explicit-policy admitted major-aspect pattern topology；
 - source-backed methodological / uncertainty claims。
 
 不得因 chart含更多可計算欄位就自動擴充到未 admitted systems。
@@ -60,7 +62,40 @@ Interpretation：
 - 沒有 admitted semantic claim → `unsupported_factor`；
 - research-only pair module不得偷渡。
 
-## 6. Natal Interpretation Order
+## 6. Policy-Derived Natal Projections
+
+Rulership 與 aspect-pattern topology 都不是新的 astronomical facts；它們是建立在已 admitted natal facts 上的 deterministic policy projection。
+
+### House rulership
+
+使用者明確要求宮主星／house ruler，且本命盤具有完整 admitted house facts時：
+
+```text
+admitted natal bundle
+→ require explicit rulership policy
+   ├─ rulership-traditional-v1
+   └─ rulership-modern-v1
+→ tools/astrology_rulership_projection.py
+```
+
+不得因一般占星習慣、使用者未指定流派或模型偏好而 silent-default。不得自動混合 traditional / modern，也不得自行加入未 admitted co-ruler policy。Projection 本身沒有 semantic interpretation authority；後續語意仍需 admitted claims / mode-owner規則。
+
+### Aspect-pattern topology
+
+使用者明確要求 T-Square、Grand Trine、Grand Cross、Kite、Mystic Rectangle、Cradle、Grand Sextile 等 production-admitted pattern時：
+
+```text
+runtime-admitted natal aspect graph
+→ explicit admitted E5 participant / aspect / orb policy
+→ explicit E6 pattern policy + projection policy
+→ tools/astrology_pattern_topology.py
+```
+
+不得從 raw longitudes繞過 E5 qualified aspect graph，也不得因 object存在就讓 angle、South Node、Part of Fortune或其他 extended point自動參與。若缺少 explicit policy selector，保持 unsupported / ask only when materially necessary；不得 silent-default。
+
+目前 Yod、Stellium、Grand Quintile與 exact consumer/唐綺陽 pattern compatibility不在此 production projection scope；依 `ASTROLOGY_PRODUCTION_ADMISSION_V1.json` fail closed。
+
+## 7. Natal Interpretation Order
 
 ```text
 1. identify user question
@@ -75,7 +110,7 @@ Interpretation：
 
 不要為了「完整」傾倒整張盤所有 factor；輸出仍受 `CHATGPT_OUTPUT.md` minimum-sufficient與Pre-Send gate約束。
 
-## 7. Natal Unsupported / Uncertainty
+## 8. Natal Unsupported / Uncertainty
 
 - 無 house fact → 不從 Sun sign猜 house；
 - planet-in-sign interpretation 優先組合 production-admitted 的 planet-function + sign-style claims；該 composable semantics registry 必須由 typed request 明確選擇 production manifest 所列 semantic profile，不得在 tradition / framework 未指定時 silent-default。此 profile 是 project semantic profile，不得冒充 canonical astrology school。不得把兩者合成固定人格診斷。Exact planet/sign pair meaning只有在另有 pair-specific admitted claim時才可使用；無 source-backed claim（包含目前未另行 admission 的 North Node sign semantics）→ `unsupported_factor`；

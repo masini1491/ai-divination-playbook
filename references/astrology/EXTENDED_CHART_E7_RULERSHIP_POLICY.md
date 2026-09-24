@@ -4,6 +4,9 @@ Status: **REFERENCE-ONLY / RESEARCH COMPLETE / DEFAULT SCHOOL NOT SELECTED / NOT
 
 Baseline: `masini1491/ai-divination-playbook@40d4938bb3f265d332608312463b550fb8b8aa13`
 
+> Production supersession note (current reconciliation: `3346b59055a300aa8998884ccc376017483836af`): this file remains historical research authority. Production subsequently admitted both `rulership-traditional-v1` and `rulership-modern-v1` in #149 under explicit-selector-only activation, with no silent default, blending or co-ruler policy.
+
+
 ## 1. Problem
 
 House-ruler output is not a raw astronomical fact. It projects a sign-rulership tradition onto deterministic house-cusp/sign facts.

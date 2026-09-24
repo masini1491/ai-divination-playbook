@@ -173,6 +173,13 @@ class AstrologyProductionContractTests(unittest.TestCase):
         self.assertNotIn("\ndomicile\nexaltation\ndetriment\nfall\n", natal)
         self.assertNotIn("root tolerance =", transit)
         self.assertIn("production orchestrator / admitted natal provider", transit)
+        self.assertIn("tools/astrology_rulership_projection.py", natal)
+        self.assertIn("rulership-traditional-v1", natal)
+        self.assertIn("rulership-modern-v1", natal)
+        self.assertIn("不得因一般占星習慣、使用者未指定流派或模型偏好而 silent-default", natal)
+        self.assertIn("tools/astrology_pattern_topology.py", natal)
+        self.assertIn("runtime-admitted natal aspect graph", natal)
+        self.assertIn("Yod、Stellium、Grand Quintile", natal)
 
 
     def test_e1_admission_keeps_aspect_and_interpretation_boundaries_closed(self):
