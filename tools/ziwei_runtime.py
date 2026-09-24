@@ -255,7 +255,9 @@ def run_ziwei(request:ZiWeiReadingRequest)->dict[str,Any]:
         m0=calculate_m0_auxiliary(natal,chart["major_star_placements"])
         chart=dict(chart)
         chart["retrieval_facts"]=list(chart["retrieval_facts"])+list(m0["retrieval_facts"])
-        unsupported=dict(chart["unsupported"]); unsupported["auxiliary_stars"]="computed_by_optional_m0_profile"; chart["unsupported"]=unsupported
+        unsupported=dict(chart["unsupported"])
+        unsupported["m0_auxiliary_stars"]="computed_by_optional_m0_profile"
+        chart["unsupported"]=unsupported
         chart["m0_auxiliary"]=m0
     if BRIGHTNESS_MODULE in request.optional_modules:
         brightness=calculate_brightness(chart["major_star_placements"])
