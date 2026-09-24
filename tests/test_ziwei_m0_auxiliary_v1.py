@@ -21,6 +21,7 @@ class ZiWeiM0AuxiliaryV1Tests(unittest.TestCase):
         self.assertNotIn("fact_available:auxiliary_stars",facts)
         ids=set(m0["interpretation"]["selected_claim_ids"]); self.assertTrue({"ZW-M0-ZUOFU-CORE-001","ZW-M0-YOUBI-CORE-001","ZW-M0-WENCHANG-CORE-001","ZW-M0-WENQU-CORE-001"}.issubset(ids))
         self.assertFalse(any(x.startswith("ZW-M0-") for x in base["interpretation"]["selected_claim_ids"]))
+        self.assertFalse(any(x["claim_id"].startswith("ZW-M0-") for x in base["interpretation"]["omissions"]))
         base_states={x["claim_id"]:x["state"] for x in base["interpretation"]["conditional_evaluations"]}
         m0_states={x["claim_id"]:x["state"] for x in m0["interpretation"]["conditional_evaluations"]}
         self.assertEqual("not_computed",base_states["ZW-B2-TIANXIANG-COND-002"])
