@@ -29,7 +29,7 @@ Last reviewed against:
 
 ```text
 ai-divination-playbook main
-5eb2eead9e9eaeb99165a4f8066ae8f6b7babc90
+367e9725d02e9dfd4a069088bcc2c534fb2a8f27
 ```
 
 This SHA is review evidence only, not a pin. Every maintenance task must resolve current `main` again before mutation.
@@ -107,6 +107,7 @@ This SHA is review evidence only, not a pin. Every maintenance task must resolve
 - owner: Zi Wei production runtime
 - blocked_by:
   - ZW-P0-002
+  - ZW-P1-002
 - current_state:
   - `run_scope_a_natal()`
   - `run_scope_a_gregorian()`
@@ -125,6 +126,41 @@ This SHA is review evidence only, not a pin. Every maintenance task must resolve
   - fail-closed unsupported scopes/modules;
   - transport/materialization path updated if runtime source set changes;
   - CI and product smoke pass.
+
+### ZW-P1-002 — Normalize Zi Wei production / research execution boundary
+
+- type: ARCHITECTURE / BEHAVIOR-PRESERVING
+- status: OPEN
+- priority: P1
+- owner: Zi Wei production runtime / research-boundary maintenance
+- blocked_by:
+  - ZW-P0-002
+  - ZW-P0-001
+- current_state:
+  - `tools/ziwei_scope_a_pipeline.py` production-loads `references/ziwei/interpretation_retrieval_v0.py`;
+  - the same production pipeline loads `references/ziwei/validate_uncertainty_safety_delivery_v0.py` as executable delivery logic;
+  - the deterministic ChatGPT bundle includes those two research-path Python executables plus the three admitted research registries;
+  - the three claim registries remain historically `production_routable=false` and are explicitly allowlisted by production admission;
+  - root admission manifests and flat `tools/ziwei_*.py` layout remain consistent with current repository conventions, including Astrology.
+- target:
+  - production runtime no longer imports executable Python from `references/ziwei/**`;
+  - move only the production-executed retrieval/delivery implementation to coherent production tooling owners;
+  - keep research evidence, admission history and the currently admitted research registries in `references/ziwei/**` unless a separate production-data divergence trigger appears;
+  - preserve the existing production allowlist/history policy for the 52 claims;
+  - update materialization bundle sources, manifest pointers and targeted tests without semantic claim changes.
+- non_goals:
+  - no broad `references/ziwei/**` directory reorganization;
+  - no `admissions/ziwei/` migration at this stage;
+  - no `tools/ziwei/` package migration at this stage;
+  - no duplicate `data/ziwei/production/` claim snapshot without an independent authority/divergence need;
+  - no conditional-applicability semantic fix in the relocation PR.
+- completion_gate:
+  - production execution has no Python import/load dependency on `references/ziwei/**`;
+  - research registries retain historical non-routable metadata and explicit production allowlisting;
+  - runtime/materialization source inventory and canonical pointers are synchronized;
+  - stale old executable-path references are reconciled;
+  - behavior-preserving targeted regression, bundle validation and production contract validation pass;
+  - canonical read-back confirms only the intended ownership/path normalization.
 
 ## P1 — feature admission
 
