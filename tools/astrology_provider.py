@@ -26,7 +26,7 @@ import astronomy
 from tools.astrology_runtime import MAJOR_ASPECT_ORBS, gate_bundle
 
 PROVIDER_ID = "astronomy-engine-natal-v1"
-PROVIDER_VERSION = "1.2.0"
+PROVIDER_VERSION = "1.3.0"
 ASTRONOMY_ENGINE_PACKAGE_VERSION = "2.1.19"
 ASTRONOMY_ENGINE_SOURCE_REVISION = "865d3da7d8112bbc7911238052c6af4aaf877181"
 TRI_HOROSCOPE_REFERENCE_REVISION = "11318426c52c222eea108583ca45420c864825ca"
@@ -46,6 +46,9 @@ CORE_BODY_NAMES = (
 )
 # Backward-compatible alias; E1 derived facts are deliberately not calculation/aspect/unknown-time participants.
 BODY_NAMES = CORE_BODY_NAMES
+ASPECT_PARTICIPANT_POLICY_ID = "aspect-participants-core-bodies-v1"
+ASPECT_POLICY_ID = "major-aspects-v1"
+ORB_POLICY_ID = "major-aspect-orbs-v1"
 ASPECT_PARTICIPANT_NAMES = CORE_BODY_NAMES
 UNKNOWN_TIME_BODY_NAMES = CORE_BODY_NAMES
 SIGNS = (
@@ -488,6 +491,9 @@ def build_natal_bundle(
                 "left_ref": f"fact:object:{left.lower()}",
                 "right_ref": f"fact:object:{right.lower()}",
                 "scope": "natal",
+                "participant_policy_id": ASPECT_PARTICIPANT_POLICY_ID,
+                "aspect_policy_id": ASPECT_POLICY_ID,
+                "orb_policy_id": ORB_POLICY_ID,
             }
         )
 
@@ -521,6 +527,15 @@ def build_natal_bundle(
             "mean_obliquity_deg": eps,
             "local_sidereal_hours": lst_hours,
             "ramc_deg": ramc,
+            "aspect_policies": {
+                "participant_policy_id": ASPECT_PARTICIPANT_POLICY_ID,
+                "participant_object_ids": list(ASPECT_PARTICIPANT_NAMES),
+                "aspect_policy_id": ASPECT_POLICY_ID,
+                "aspect_types": list(MAJOR_ASPECT_ORBS),
+                "orb_policy_id": ORB_POLICY_ID,
+                "max_orb_degrees": dict(MAJOR_ASPECT_ORBS),
+                "extended_points_or_angles": "not_admitted",
+            },
             "sect": {
                 "classification": sect,
                 "policy_id": SECT_POLICY_ID,
