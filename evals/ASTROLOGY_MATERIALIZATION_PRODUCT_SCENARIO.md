@@ -21,3 +21,7 @@ The assistant must not silently pip-install a floating dependency, rewrite missi
 ## Non-claim
 
 This scenario does not prove place/country-name cold-start materialization. Place resolver transport remains a separate scope.
+
+## Formal product evidence
+
+- `evals/product_runs/2026-09-24-astrology-mat-beh-001-chatgpt-8a074ad9.json` — PASS at Playbook `8a074ad93803cb2d14f397547a3462de519e12a0`; empty cache + missing `astronomy` package → exact-commit verified handoff → full 386-chunk/archive/per-file verification → `python -S` coordinates-only natal execution → admitted runtime gate. This proves core materialization in the observed ChatGPT/Python product environment; it does not prove Free-plan behavior or place-resolver cold-start.
