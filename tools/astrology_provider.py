@@ -175,19 +175,24 @@ def _sun_geometric_altitude_deg(
     latitude: float,
     longitude: float,
 ) -> float:
-    t = _astronomy_time(when_utc)
-    sun_eqj = astronomy.GeoVector(astronomy.Body.Sun, t, True)
-    sun_eqd_vec = astronomy.RotateVector(astronomy.Rotation_EQJ_EQD(t), sun_eqj)
-    sun_eqd = astronomy.EquatorFromVector(sun_eqd_vec)
-    observer = astronomy.Observer(latitude, longitude, 0.0)
-    horizon = astronomy.Horizon(
-        t,
-        observer,
-        sun_eqd.ra,
-        sun_eqd.dec,
-        astronomy.Refraction.Airless,
-    )
-    return float(horizon.altitude)
+    try:
+        t = _astronomy_time(when_utc)
+        sun_eqj = astronomy.GeoVector(astronomy.Body.Sun, t, True)
+        sun_eqd_vec = astronomy.RotateVector(astronomy.Rotation_EQJ_EQD(t), sun_eqj)
+        sun_eqd = astronomy.EquatorFromVector(sun_eqd_vec)
+        observer = astronomy.Observer(latitude, longitude, 0.0)
+        horizon = astronomy.Horizon(
+            t,
+            observer,
+            sun_eqd.ra,
+            sun_eqd.dec,
+            astronomy.Refraction.Airless,
+        )
+        return float(horizon.altitude)
+    except Exception as exc:
+        raise ProviderInputError(
+            "sect-geometric-solar-altitude-v1 calculation unavailable"
+        ) from exc
 
 
 def _sect_from_geometric_altitude(altitude_deg: float) -> str:
