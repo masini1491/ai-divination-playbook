@@ -43,25 +43,54 @@ class RepositoryArchitectureContractTests(unittest.TestCase):
         )
         self.assertIn("三層不可互相偷換 authority", text)
 
-    def test_indexes_are_routing_only_control_plane(self) -> None:
+    def test_supporting_surface_semantics_delegate_to_shared_baseline(self) -> None:
         text = (ROOT / "REPOSITORY_ARCHITECTURE.md").read_text(encoding="utf-8")
-        self.assertIn("indexes/      routing / lookup metadata only", text)
-        self.assertIn("index 不複製被路由內容本體", text)
-        self.assertIn("index = control plane", text)
+        self.assertIn("generic semantics 不由本檔重定義", text)
+        self.assertIn("upstream `AI_CONTEXT.md`", text)
+        self.assertIn("upstream `REPOSITORY_EXECUTION.md`", text)
+        self.assertNotIn("## 3. Information surface admission / retrieval-intent gate", text)
+        self.assertNotIn("index = control plane", text)
 
-    def test_optional_surfaces_are_not_mandatory_taxonomy(self) -> None:
+    def test_method_scoped_backlog_topology_is_explicit(self) -> None:
         text = (ROOT / "REPOSITORY_ARCHITECTURE.md").read_text(encoding="utf-8")
-        self.assertIn("optional supporting surfaces", text)
-        self.assertIn("不為目錄對稱或形式完整而新增 surface", text)
-        self.assertIn("evidence ≠ policy / architecture / method authority", text)
-        self.assertIn("fixture PASS 不等於全域 production validity", text)
+        for name in (
+            "ASTROLOGY_BACKLOG.md",
+            "ZIWEI_BACKLOG.md",
+            "PALMISTRY_BACKLOG.md",
+        ):
+            self.assertIn(name, text)
+        self.assertIn("不建立 root `BACKLOG.md` aggregate", text)
 
-    def test_retrieval_intent_and_control_data_plane_are_explicit(self) -> None:
-        text = (ROOT / "REPOSITORY_ARCHITECTURE.md").read_text(encoding="utf-8")
-        self.assertIn("Information surface admission / retrieval-intent gate", text)
-        self.assertIn("control plane", text)
-        self.assertIn("data plane", text)
-        self.assertIn("Control plane 不複製 data plane 本體", text)
+    def test_agents_closes_coordination_write_mapping(self) -> None:
+        text = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
+        self.assertIn("ChatGPT Coordination Write Mapping", text)
+        for path in (
+            "/ASTROLOGY_BACKLOG.md",
+            "/ZIWEI_BACKLOG.md",
+            "/PALMISTRY_BACKLOG.md",
+        ):
+            self.assertIn(path, text)
+        self.assertIn("coordination-only persistence", text)
+
+    def test_adoption_record_tracks_current_shared_review_and_local_backlogs(self) -> None:
+        text = (ROOT / "references" / "ai-development-playbook.md").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn(
+            "Last reviewed source revision：`7bc4110e72e9c13f7f49efab52899329fe8bc0ea`",
+            text,
+        )
+        self.assertIn("Method-scoped coordination topology", text)
+        self.assertNotIn(
+            "TASKS / BACKLOG / coordination surfaces（除非本 Repo未來另行 opt-in）",
+            text,
+        )
+
+    def test_astrology_place_backlog_uses_same_repo_data_contract(self) -> None:
+        text = (ROOT / "ASTROLOGY_BACKLOG.md").read_text(encoding="utf-8")
+        self.assertIn("data/astrology/place/v1/**", text)
+        self.assertIn("same-commit GitHub Connect bounded shard retrieval", text)
+        self.assertNotIn("freeze external repository / manifest", text)
 
 
 if __name__ == "__main__":
