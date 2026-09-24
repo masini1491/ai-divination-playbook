@@ -16,8 +16,16 @@ class ZiWeiM0AuxiliaryV1Tests(unittest.TestCase):
         self.assertNotIn("m0_auxiliary",base["calculation"]); self.assertEqual("not_computed",base["calculation"]["unsupported"]["auxiliary_stars"])
         self.assertEqual("computed_by_optional_m0_profile",m0["calculation"]["unsupported"]["auxiliary_stars"])
         self.assertEqual({"左輔","右弼","文昌","文曲"},set(m0["calculation"]["m0_auxiliary"]["placements"]))
+        facts=set(m0["calculation"]["m0_auxiliary"]["retrieval_facts"])
+        self.assertIn("fact_available:m0_auxiliary_stars",facts)
+        self.assertNotIn("fact_available:auxiliary_stars",facts)
         ids=set(m0["interpretation"]["selected_claim_ids"]); self.assertTrue({"ZW-M0-ZUOFU-CORE-001","ZW-M0-YOUBI-CORE-001","ZW-M0-WENCHANG-CORE-001","ZW-M0-WENQU-CORE-001"}.issubset(ids))
         self.assertFalse(any(x.startswith("ZW-M0-") for x in base["interpretation"]["selected_claim_ids"]))
+        base_states={x["claim_id"]:x["state"] for x in base["interpretation"]["conditional_evaluations"]}
+        m0_states={x["claim_id"]:x["state"] for x in m0["interpretation"]["conditional_evaluations"]}
+        self.assertEqual("not_computed",base_states["ZW-B2-TIANXIANG-COND-002"])
+        self.assertIn(m0_states["ZW-B2-TIANXIANG-COND-002"],{"satisfied","unsatisfied"})
+        self.assertEqual("not_computed",m0_states["ZW-B1-ZIWEI-COND-002"])
     def test_baseline_transport_does_not_require_m0_profile(self):
         base=ZiWeiReadingRequest(request_id="base-t",birth=self.natal())
         self.assertEqual(base,request_from_transport(request_to_transport(base)))
