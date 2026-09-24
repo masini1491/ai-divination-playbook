@@ -60,7 +60,7 @@ class AstrologyCoreToolBundleTests(unittest.TestCase):
                 "assert r['status']=='admitted' and r['interpretation_allowed'] is True\n"
                 "assert r['input_resolution']['resolution_mode']=='explicit_coordinates'\n"
                 "assert r['fact_bundles']['natal']['provider']['provider_id']=='astronomy-engine-natal-v1'\n"
-                "assert r['fact_bundles']['natal']['provider']['provider_version']=='1.2.0'\n"
+                "assert r['fact_bundles']['natal']['provider']['provider_version']=='1.3.0'\n"
                 "ids={x['object_id'] for x in r['fact_bundles']['natal']['facts']['objects']}\n"
                 "assert {'SouthNode','Descendant','ImumCoeli','PartOfFortune'} <= ids\n"
                 "assert r['fact_bundles']['natal']['provider']['sect']['policy_id']=='sect-geometric-solar-altitude-v1'\n"
