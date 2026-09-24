@@ -25,7 +25,8 @@
     "TAROT-BEH-021",
     "TAROT-BEH-022",
     "TAROT-BEH-023",
-    "TAROT-BEH-024"
+    "TAROT-BEH-024",
+    "TAROT-BEH-025"
   ],
   "change_classes": {
     "bootstrap-access": [
@@ -118,7 +119,8 @@
       "TAROT-BEH-016",
       "TAROT-BEH-017",
       "TAROT-BEH-018",
-      "TAROT-BEH-022"
+      "TAROT-BEH-022",
+      "TAROT-BEH-025"
     ],
     "agent-skills-adapter": [
       "TAROT-BEH-001",
@@ -146,13 +148,15 @@
       "TAROT-BEH-004",
       "TAROT-BEH-006",
       "TAROT-BEH-007",
-      "TAROT-BEH-012"
+      "TAROT-BEH-012",
+      "TAROT-BEH-025"
     ],
     "meihua-deterministic-materialization": [
       "TAROT-BEH-004",
       "TAROT-BEH-010",
       "TAROT-BEH-020",
-      "TAROT-BEH-021"
+      "TAROT-BEH-021",
+      "TAROT-BEH-025"
     ],
     "shared-development-baseline": [
       "TAROT-BEH-001",
