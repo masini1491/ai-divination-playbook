@@ -1,0 +1,28 @@
+name: Astrology ChatGPT ephemeris research regression
+on:
+  push:
+    branches: [astrology-chatgpt-only-extended-ephemeris-research]
+permissions:
+  contents: write
+jobs:
+  targeted:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m unittest tests.test_astrology_extended_chart_e8_readiness
+      - run: python tools/build_chatgpt_load_pack.py --check
+      - shell: bash
+        run: |
+          rm .github/workflows/astrology-chatgpt-ephemeris-research-once.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .github/workflows/astrology-chatgpt-ephemeris-research-once.yml
+          git commit -m "Retire ChatGPT ephemeris research bridge"
+          git push origin "HEAD:${{ github.ref_name }}"
