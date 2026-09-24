@@ -36,7 +36,7 @@ tools/        executable authority / provider / resolver / generator
 data/         repo-local deterministic datasets
 runtime/      ChatGPT execution / materialization transport artifacts
 third_party/  actually vendored upstream implementation
-references/   research / evidence / comparison / historical records
+references/   research / external-source dossiers / comparison / historical records
 schemas/      stable machine-readable contracts
 ```
 
@@ -144,14 +144,16 @@ Vendoring 仍需：
 
 ### 2.5 `references/`
 
-`references/` 放置：
+`references/` 放置以**外部來源與研究 synthesis**為主的 durable material：
 
-- research；
+- research synthesis；
+- external source / upstream dossier；
 - source comparison；
-- historical evidence；
-- feasibility / benchmark；
-- admission preparation evidence；
+- historical research record；
+- feasibility / architecture comparison；
 - external implementation review。
+
+Run-specific observation、bench/hardware measurement、validation result 或 pre-canonical capture staging 優先歸 `evidence/`（若該 repository 採用此 optional surface），不要讓 `references/` 同時變成 run-result archive。
 
 `references/**` 預設不是 production authority；production scope 必須另由 method owner / admission contract 明確承接。
 
