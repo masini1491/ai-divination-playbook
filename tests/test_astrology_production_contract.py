@@ -24,7 +24,7 @@ class AstrologyProductionContractTests(unittest.TestCase):
         transit = data["transit_provider"]
         place = data["place_resolver"]
         self.assertEqual("astronomy-engine-natal-v1", natal["provider_id"])
-        self.assertEqual("1.2.0", natal["provider_version"])
+        self.assertEqual("1.3.0", natal["provider_version"])
         self.assertIn("natal_known_time_derived_axes", natal["scope"])
         self.assertEqual(
             ["SouthNode", "Descendant", "ImumCoeli"],
@@ -52,7 +52,7 @@ class AstrologyProductionContractTests(unittest.TestCase):
         data = json.loads((ROOT / "ASTROLOGY_PROVIDER_ADMISSION_V1.json").read_text(encoding="utf-8"))
         self.assertEqual("astrology_provider_admission", data["schema_name"])
         self.assertEqual("PRODUCTION_ADMITTED", data["status"])
-        self.assertEqual("1.2.0", data["provider_version"])
+        self.assertEqual("1.3.0", data["provider_version"])
         self.assertEqual(
             [
                 "natal",
@@ -227,6 +227,17 @@ class AstrologyProductionContractTests(unittest.TestCase):
         self.assertEqual("forbidden", policy["silent_default"])
         self.assertEqual("forbidden", policy["silent_blending"])
         self.assertFalse(policy["semantic_interpretation_authority"])
+
+
+    def test_e5_names_current_aspect_policy_without_expanding_behavior(self):
+        manifest = json.loads((ROOT / "ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        policy = manifest["aspect_policy"]
+        self.assertEqual("aspect-participants-core-bodies-v1", policy["participant_policy_id"])
+        self.assertEqual("major-aspects-v1", policy["aspect_policy_id"])
+        self.assertEqual("major-aspect-orbs-v1", policy["orb_policy_id"])
+        self.assertFalse(policy["auto_include_new_objects"])
+        self.assertEqual("explicit_selector_only", policy["extended_policy_activation"])
+        self.assertTrue({"SouthNode", "Ascendant", "Descendant", "Midheaven", "ImumCoeli", "PartOfFortune"}.isdisjoint(policy["participant_object_ids"]))
 
 
 if __name__ == "__main__":
