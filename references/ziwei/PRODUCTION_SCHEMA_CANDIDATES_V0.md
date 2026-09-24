@@ -1,5 +1,7 @@
 # Zi Wei Production Schema Candidates v0
 
+> Supersession / current-state note (2026-09-24): these schemas remain research candidates and historical design evidence; they are not the current production API authority. A bounded Scope-A production runtime now exists, explicit Zi Wei routing is admitted, and the current runtime additionally exposes conditional activation evaluation semantics. Future typed request/result work is tracked separately in `ZIWEI_BACKLOG.md`.
+
 Authority：`REFERENCE-ONLY / PRODUCTION-SCHEMA CANDIDATE / NOT PRODUCTION ADMISSION`
 
 These schemas define fail-closed interfaces for a future production implementation. They do not imply that a Zi Wei calculation runtime/provider or production route exists.
