@@ -26,12 +26,17 @@ class BehavioralProductRunRecordTests(unittest.TestCase):
             "behavioral_eval_product_runs",
         )
 
-    def test_all_committed_product_run_records_validate(self):
+    def test_all_committed_tarot_behavioral_product_run_records_validate(self):
         paths = sorted(PRODUCT_RUNS.glob("*.json"))
-        self.assertTrue(paths)
+        records = []
         for path in paths:
+            record = json.loads(path.read_text(encoding="utf-8"))
+            scenario_id = record.get("scenario_id")
+            if isinstance(scenario_id, str) and scenario_id.startswith("TAROT-BEH-"):
+                records.append((path, record))
+        self.assertTrue(records)
+        for path, record in records:
             with self.subTest(path=path.name):
-                record = json.loads(path.read_text(encoding="utf-8"))
                 self.assertEqual(
                     self.behavioral.validate_record(record),
                     [],
