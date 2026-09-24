@@ -202,7 +202,9 @@
           "admission_manifest": "ZIWEI_M0_AUXILIARY_ADMISSION_V1.json",
           "profile_id": "ziwei.auxiliary.m0.iztro_v1",
           "admitted_claims_added": 4,
-          "blanket_minor_star_admission": false
+          "blanket_minor_star_admission": false,
+          "claim_scope": "bounded_auxiliary_role_policy_only",
+          "historical_semantic_core_admitted": false
         }
       },
       "gregorian_input": {
