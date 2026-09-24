@@ -145,7 +145,7 @@ This SHA is review evidence only, not a pin. Every maintenance task must resolve
 - blocked_by:
   - ZW-P0-002
   - ZW-P0-001
-- current_state:
+- pre_change_state:
   - `tools/ziwei_scope_a_pipeline.py` production-loads `references/ziwei/interpretation_retrieval_v0.py`;
   - the same production pipeline loads `references/ziwei/validate_uncertainty_safety_delivery_v0.py` as executable delivery logic;
   - the deterministic ChatGPT bundle includes those two research-path Python executables plus the three admitted research registries;
