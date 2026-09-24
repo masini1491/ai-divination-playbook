@@ -93,6 +93,16 @@
       "routing_authority": false
     },
     {
+      "id": "coordination.palmistry-backlog",
+      "owner": "PALMISTRY_BACKLOG.md",
+      "kind": "coordination",
+      "authority": "coordination-only",
+      "method": "Palmistry",
+      "production_authority": false,
+      "research_evidence_authority": false,
+      "routing_authority": false
+    },
+    {
       "id": "research.palmistry",
       "owner": "references/palmistry/README.md",
       "section": "Authority boundary",
