@@ -114,7 +114,9 @@
     "scope": [
       "natal",
       "natal_unknown_time_invariant_signs",
-      "natal_known_time_derived_axes"
+      "natal_known_time_derived_axes",
+      "natal_known_time_part_of_fortune",
+      "natal_known_time_sect"
     ],
     "raw_birth_data_supported": true,
     "requires_explicit_coordinates": true,
@@ -122,7 +124,7 @@
     "unknown_birth_time_supported": "invariant_sign_only",
     "unknown_time_requires_exact_coordinates": false,
     "unknown_time_requires_iana_timezone": true,
-    "provider_version": "1.1.0",
+    "provider_version": "1.2.0",
     "known_time_derived_axes": {
       "object_ids": [
         "SouthNode",
@@ -133,6 +135,21 @@
       "unknown_time": "not_emitted",
       "aspect_participation": "not_admitted",
       "interpretation_semantics": "fact_only_until_separately_admitted"
+    },
+    "known_time_part_of_fortune": {
+      "object_id": "PartOfFortune",
+      "fact_id": "fact:object:partoffortune",
+      "derivation_policy": "fortune-day-night-v1",
+      "sect_policy_id": "sect-geometric-solar-altitude-v1",
+      "unknown_time": "not_emitted",
+      "aspect_participation": "not_admitted",
+      "interpretation_semantics": "fact_only_until_separately_admitted"
+    },
+    "known_time_sect": {
+      "policy_id": "sect-geometric-solar-altitude-v1",
+      "authority": "provider_derived_calculation_context",
+      "unknown_time": "not_computed",
+      "interpretation_semantics": "not_independently_admitted"
     }
   },
   "place_resolver": {
@@ -310,7 +327,8 @@
       "fact_only_object_ids": [
         "SouthNode",
         "Descendant",
-        "ImumCoeli"
+        "ImumCoeli",
+        "PartOfFortune"
       ],
       "claim_binding": "forbidden_until_separately_admitted"
     }
