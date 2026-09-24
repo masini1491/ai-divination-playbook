@@ -28,7 +28,8 @@ REQUEST_SCHEMA="schemas/ziwei/ZIWEI_READING_REQUEST_V1.schema.json"
 RESULT_SCHEMA="schemas/ziwei/ZIWEI_READING_RESULT_V1.schema.json"
 INTERPRETATION_PROFILE="ziwei.interpretation.tw_v1"
 TEMPORAL_SCOPE="natal_baseline"
-BRIGHTNESS_MODULE="brightness_v1"\nM0_MODULE="m0_auxiliary_v1"
+BRIGHTNESS_MODULE="brightness_v1"
+M0_MODULE="m0_auxiliary_v1"
 ADMITTED_REGISTRIES=(
     "ziwei_interpretation_claim_registry_batch1.json",
     "ziwei_interpretation_claim_registry_batch2.json",
