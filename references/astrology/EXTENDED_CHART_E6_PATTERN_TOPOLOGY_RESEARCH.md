@@ -4,6 +4,9 @@ Status: **REFERENCE-ONLY / RESEARCH COMPLETE / ORB PRODUCT POLICY NOT SELECTED /
 
 Baseline: `masini1491/ai-divination-playbook@40d4938bb3f265d332608312463b550fb8b8aa13`
 
+> Production supersession note (current reconciliation: `3346b59055a300aa8998884ccc376017483836af`): this file remains historical research authority. Production subsequently admitted seven major-aspect topology projections in #151 and hardened the E5-qualified graph boundary in #154. Yod, Stellium, Grand Quintile and exact consumer/唐綺陽 compatibility remain outside the admitted scope described here.
+
+
 ## 1. Core conclusion
 
 Aspect patterns are deterministic **after** participant, aspect-type and orb policies are fixed. They are not a new astronomical calculation layer.
