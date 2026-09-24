@@ -33,6 +33,12 @@ def build_bundle()->dict[str,object]:
                  "retry_source":"fresh-read-same-commit-bundle-failed-chunk-only"},
       "execution_contract":{"preserve_cast_fact":True,"verify_each_chunk_before_reassembly":True,
                             "verify_final_payload_before_write_or_import":True,"interpretation_authority":False},
+      "cache_contract":{
+        "cache_dir":"/mnt/data/divination-meihua-runtime",
+        "marker":"bundle_verification.json",
+        "required_marker_fields":["verified","repository","materialized_source_commit","last_checked_repository_head","bundle_contract","source_file"],
+        "reuse_only_when_source_file_identity_matches":True
+      },
       "chunks":[{"index":i,"encoded_length":len(c),"sha256":hashlib.sha256(c.encode("ascii")).hexdigest(),"payload":c}
                 for i,c in enumerate(chunks)]
     }
