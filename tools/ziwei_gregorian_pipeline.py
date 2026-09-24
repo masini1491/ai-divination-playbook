@@ -1,38 +1,23 @@
 #!/usr/bin/env python3
-"""Gregorian-input adapters for admitted Zi Wei Scope-A production pipelines."""
+"""Compatibility adapters for legacy Gregorian-input Zi Wei Scope-A callers."""
 from __future__ import annotations
 from typing import Any
 
-from tools.ziwei_brightness_pipeline import run_scope_a_natal_with_brightness
-from tools.ziwei_calendar_provider import GregorianBirthInput, normalize_gregorian_birth
-from tools.ziwei_natal_provider import NormalizedNatalInput
-from tools.ziwei_scope_a_pipeline import run_scope_a_natal
+from tools.ziwei_calendar_provider import GregorianBirthInput
+from tools.ziwei_runtime import BRIGHTNESS_MODULE, ZiWeiReadingRequest, run_ziwei
 
 PIPELINE_ID="ziwei-gregorian-input-adapter-v1"
 PIPELINE_VERSION="1.0.0"
 
-def _to_natal_input(calendar:dict[str,Any]) -> NormalizedNatalInput:
-    n=calendar["normalized_natal_input"]
-    return NormalizedNatalInput(
-        lunar_year=n["lunar_year"],
-        lunar_month=n["lunar_month"],
-        lunar_day=n["lunar_day"],
-        hour_branch=n["hour_branch"],
-        calendar_provenance=n["calendar_provenance"],
-        leap_month_identity=n["leap_month_identity"],
-    )
-
-def _bind_calendar(result:dict[str,Any], calendar:dict[str,Any]) -> dict[str,Any]:
-    bound=dict(result)
-    bound["input_adapter"]={
-        "pipeline_id":PIPELINE_ID,
-        "pipeline_version":PIPELINE_VERSION,
-        "calendar":calendar,
-    }
-    authority=dict(bound["authority"])
-    authority["gregorian_input_adapter_admitted"]=True
-    bound["authority"]=authority
-    return bound
+def _legacy_result(result:dict[str,Any], *, brightness:bool)->dict[str,Any]:
+    legacy=dict(result)
+    legacy.pop("schema_name",None)
+    legacy.pop("schema_version",None)
+    legacy.pop("runtime",None)
+    if brightness:
+        legacy["pipeline_id"]="ziwei-scope-a-brightness-production-pipeline-v1"
+        legacy["pipeline_version"]="1.0.0"
+    return legacy
 
 def run_scope_a_gregorian(
     data:GregorianBirthInput, *,
@@ -40,14 +25,12 @@ def run_scope_a_gregorian(
     requested_subjects:tuple[str,...]=(),
     enabled_source_ids:tuple[str,...]=(),
 ) -> dict[str,Any]:
-    calendar=normalize_gregorian_birth(data)
-    result=run_scope_a_natal(
-        _to_natal_input(calendar),
+    return _legacy_result(run_ziwei(ZiWeiReadingRequest(
         request_id=request_id,
+        birth=data,
         requested_subjects=requested_subjects,
         enabled_source_ids=enabled_source_ids,
-    )
-    return _bind_calendar(result,calendar)
+    )),brightness=False)
 
 def run_scope_a_gregorian_with_brightness(
     data:GregorianBirthInput, *,
@@ -55,11 +38,10 @@ def run_scope_a_gregorian_with_brightness(
     requested_subjects:tuple[str,...]=(),
     enabled_source_ids:tuple[str,...]=(),
 ) -> dict[str,Any]:
-    calendar=normalize_gregorian_birth(data)
-    result=run_scope_a_natal_with_brightness(
-        _to_natal_input(calendar),
+    return _legacy_result(run_ziwei(ZiWeiReadingRequest(
         request_id=request_id,
+        birth=data,
         requested_subjects=requested_subjects,
         enabled_source_ids=enabled_source_ids,
-    )
-    return _bind_calendar(result,calendar)
+        optional_modules=(BRIGHTNESS_MODULE,),
+    )),brightness=True)
