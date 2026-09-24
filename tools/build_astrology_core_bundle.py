@@ -18,7 +18,7 @@ DEPENDENCY_VERSION="2.1.19"
 DEPENDENCY_REPOSITORY="cosinekitty/astronomy"
 DEPENDENCY_REVISION="865d3da7d8112bbc7911238052c6af4aaf877181"
 DEPENDENCY_LICENSE="MIT"
-DEPENDENCY_LICENSE_BLOB="cb43597eccade848b55b474a63c6649106631f02"
+DEPENDENCY_LICENSE_SHA256="b4d9dd0fd80fce3879c4cd9e3754364f74fc5ec046f33276475ba3876785c8b7"
 
 PROJECT_PATHS=(
  "tools/astrology_runtime.py",
@@ -26,9 +26,9 @@ PROJECT_PATHS=(
  "tools/astrology_transit_provider.py",
  "tools/astrology_orchestrator.py",
 )
-DEPENDENCY_BLOBS={
- "astronomy/__init__.py":"a51b00b1a7b0e9b9c9a419f9ed34433a7c2c1a2e",
- "astronomy/astronomy.py":"1a48fdf620540df22fcf421d0df0c2c016999e52",
+DEPENDENCY_SHA256={
+ "astronomy/__init__.py":"bd11c0176cd4546161a01d3665808cf92614cce7953a169b023b5760f0260203",
+ "astronomy/astronomy.py":"5f3a17c0b14290d084eeb0d29b00b3139cd1703a8d30fa5eb141398a24719261",
 }
 
 def sha256(data:bytes)->str: return hashlib.sha256(data).hexdigest()
@@ -49,16 +49,16 @@ def dependency_license_bytes()->bytes:
     if len(candidates)!=1:
         raise RuntimeError(f"expected exactly one installed dependency LICENSE, found {len(candidates)}")
     data=Path(dist.locate_file(candidates[0])).read_bytes()
-    if git_blob_sha(data)!=DEPENDENCY_LICENSE_BLOB:
-        raise RuntimeError(f"installed dependency LICENSE byte mismatch: {git_blob_sha(data)}")
+    if sha256(data)!=DEPENDENCY_LICENSE_SHA256:
+        raise RuntimeError(f"installed dependency LICENSE byte mismatch: {sha256(data)}")
     return data
 
-def _entry(path:str,data:bytes,origin:str,offset:int,expected_blob:str|None=None)->dict[str,object]:
-    actual=git_blob_sha(data)
-    if expected_blob is not None and actual!=expected_blob:
-        raise RuntimeError(f"pinned byte mismatch: {path}: {actual} != {expected_blob}")
+def _entry(path:str,data:bytes,origin:str,offset:int,expected_sha256:str|None=None)->dict[str,object]:
+    actual_sha256=sha256(data); actual_blob=git_blob_sha(data)
+    if expected_sha256 is not None and actual_sha256!=expected_sha256:
+        raise RuntimeError(f"pinned distribution byte mismatch: {path}: {actual_sha256} != {expected_sha256}")
     return {"path":path,"origin":origin,"byte_size":len(data),"offset":offset,
-            "sha256":sha256(data),"git_blob_sha":actual}
+            "sha256":actual_sha256,"git_blob_sha":actual_blob}
 
 def build_bundle()->dict[str,object]:
     manifest=[]; parts=[]; offset=0
@@ -68,14 +68,14 @@ def build_bundle()->dict[str,object]:
         parts.append(data); offset+=len(data)
 
     dep_root=dependency_root()
-    for path,expected_blob in DEPENDENCY_BLOBS.items():
+    for path,expected_sha256 in DEPENDENCY_SHA256.items():
         data=(dep_root/path).read_bytes()
-        manifest.append(_entry(path,data,"dependency",offset,expected_blob))
+        manifest.append(_entry(path,data,"dependency",offset,expected_sha256))
         parts.append(data); offset+=len(data)
 
     license_bytes=dependency_license_bytes()
     license_path="third_party/astronomy-engine/LICENSE"
-    manifest.append(_entry(license_path,license_bytes,"dependency-license",offset,DEPENDENCY_LICENSE_BLOB))
+    manifest.append(_entry(license_path,license_bytes,"dependency-license",offset,DEPENDENCY_LICENSE_SHA256))
     parts.append(license_bytes); offset+=len(license_bytes)
 
     archive=b"".join(parts)
@@ -90,8 +90,9 @@ def build_bundle()->dict[str,object]:
       "dependency":{
         "package":DEPENDENCY_PACKAGE,"import_name":DEPENDENCY_IMPORT,"version":DEPENDENCY_VERSION,
         "repository":DEPENDENCY_REPOSITORY,"revision":DEPENDENCY_REVISION,"license":DEPENDENCY_LICENSE,
-        "license_bundle_path":license_path,"runtime_file_count":len(DEPENDENCY_BLOBS),
-        "byte_identity":"installed-package-source-must-match-pinned-upstream-git-blobs"
+        "license_bundle_path":license_path,"runtime_file_count":len(DEPENDENCY_SHA256),
+        "byte_identity":"pypi-wheel-2.1.19-runtime-files-pinned-by-sha256",
+        "source_revision_relationship":"provenance-only; PyPI wheel bytes are not asserted byte-identical to the Git source revision"
       },
       "scope":{
         "natal_core":True,"transit_core":True,"explicit_coordinates_plus_iana_timezone":True,
@@ -165,9 +166,9 @@ def verify_bundle(bundle:dict[str,object], *, compare_project:bool=True)->list[s
             if compare_project and entry["origin"]=="playbook" and part!=(ROOT/entry["path"]).read_bytes():
                 errors.append(f"{entry['path']} does not reproduce canonical bytes")
             if entry["origin"]=="dependency":
-                expected=DEPENDENCY_BLOBS.get(entry["path"])
-                if expected!=entry["git_blob_sha"]: errors.append(f"{entry['path']} pinned upstream blob mismatch")
-            if entry["origin"]=="dependency-license" and git_blob_sha(part)!=DEPENDENCY_LICENSE_BLOB:
+                expected=DEPENDENCY_SHA256.get(entry["path"])
+                if expected!=entry["sha256"]: errors.append(f"{entry['path']} pinned distribution sha256 mismatch")
+            if entry["origin"]=="dependency-license" and sha256(part)!=DEPENDENCY_LICENSE_SHA256:
                 errors.append("dependency license bytes mismatch")
             cursor+=size
         if cursor!=len(archive): errors.append("archive has trailing bytes")
