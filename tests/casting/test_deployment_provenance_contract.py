@@ -15,7 +15,7 @@ class CastingDeploymentProvenanceContractTests(unittest.TestCase):
 
         self.assertIn("fetch-depth: 0", workflow)
         self.assertIn('CURRENT_SHA: ${{ github.sha }}', workflow)
-        self.assertIn('git("merge-base", "--is-ancestor"', workflow)
+        self.assertIn('["git", "merge-base", "--is-ancestor", deployed, current]', workflow)
         self.assertIn('git("rev-parse", f"{current}:runtime/casting")', workflow)
         self.assertIn('git("rev-parse", f"{deployed}:runtime/casting")', workflow)
         self.assertIn("runtime/casting tree mismatch", workflow)
