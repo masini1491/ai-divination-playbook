@@ -219,6 +219,31 @@ def _fact_index(run: dict[str, Any]) -> dict[tuple[str, str], dict[str, Any]]:
     return index
 
 
+def _fact_only_object_ids(manifest: dict[str, Any]) -> set[str]:
+    policy = manifest.get("natal_semantic_policy", {}).get("derived_fact_interpretation", {})
+    raw_ids = policy.get("fact_only_object_ids", [])
+    if not isinstance(raw_ids, list) or any(not isinstance(item, str) or not item for item in raw_ids):
+        raise InterpretationHandoffError("production manifest fact_only_object_ids must be a string array")
+    return set(raw_ids)
+
+
+def _reject_fact_only_claim_binding(
+    claim_request: dict[str, Any],
+    fact_index: dict[tuple[str, str], dict[str, Any]],
+    fact_only_ids: set[str],
+) -> None:
+    for ref in claim_request["fact_refs"]:
+        hit = fact_index.get(_ref_key(ref))
+        if not isinstance(hit, dict) or hit.get("collection") != "objects":
+            continue
+        fact = hit.get("fact")
+        object_id = fact.get("object_id") if isinstance(fact, dict) else None
+        if object_id in fact_only_ids:
+            raise InterpretationHandoffError(
+                f"claim binding is not admitted for fact-only object: {object_id}"
+            )
+
+
 def _registry_index(root: Path, admitted_ids: set[str]) -> dict[str, dict[str, Any]]:
     index: dict[str, dict[str, Any]] = {}
     registry_dir = root / "references" / "astrology"
@@ -349,6 +374,7 @@ def build_handoff(run: Any, request: Any, *, repo_root: Path | None = None) -> d
             )
         selected_facts.append(hit)
 
+    fact_only_ids = _fact_only_object_ids(manifest)
     admitted_registry_ids = set(manifest.get("admitted_research_registries", []))
     registries = _registry_index(root, admitted_registry_ids)
     source_policy = manifest.get("source_policy", {})
@@ -359,6 +385,7 @@ def build_handoff(run: Any, request: Any, *, repo_root: Path | None = None) -> d
     used_conflicts: dict[str, dict[str, Any]] = {}
     disclosures: list[str] = []
     for claim_request in normalized["claim_requests"]:
+        _reject_fact_only_claim_binding(claim_request, fact_index, fact_only_ids)
         registry_id = claim_request["registry_record_id"]
         if registry_id not in admitted_registry_ids:
             raise InterpretationHandoffError(f"registry is not production-admitted: {registry_id}")
