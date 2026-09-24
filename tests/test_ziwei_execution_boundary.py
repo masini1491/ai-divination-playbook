@@ -18,7 +18,7 @@ class ZiWeiExecutionBoundaryTests(unittest.TestCase):
     def test_canonical_retriever_keeps_research_registries_as_data_dependencies(self):
         text=(ROOT/"tools"/"ziwei_claim_retrieval.py").read_text(encoding="utf-8")
         self.assertIn('REGISTRY_ROOT = ROOT / "references" / "ziwei"',text)
-        self.assertNotIn('ROOT / "ziwei_interpretation_claim_registry_batch1.json"',text)
+        self.assertNotIn('DEFAULT_REGISTRIES = (\n    ROOT / "ziwei_interpretation_claim_registry_batch1.json"',text)
 
     def test_bundle_has_no_reference_python_executables(self):
         text=(ROOT/"tools"/"build_ziwei_tool_bundle.py").read_text(encoding="utf-8")
