@@ -441,5 +441,65 @@ class AstrologyEvidenceSelectorTests(unittest.TestCase):
             select_evidence(run, typed, repo_root=ROOT)
 
 
+    def test_e1_descendant_fact_is_selectable_without_interpretation_claim(self):
+        run = run_request(load(NATAL_READING))
+        typed = {
+            "schema_name": "astrology_typed_evidence_selection_request",
+            "schema_version": "1.0.0",
+            "question_id": "typed-e1-descendant-fact",
+            "question": "Select the deterministic Descendant fact only.",
+            "fact_selectors": [
+                {
+                    "selector_id": "desc",
+                    "selector_kind": "object",
+                    "bundle": "natal",
+                    "cardinality": "exactly_one",
+                    "object_id": "Descendant",
+                    "object_type": "angle",
+                }
+            ],
+            "claim_selectors": [],
+        }
+        selection = select_evidence(run, typed, repo_root=ROOT)
+        self.assertEqual(
+            [{"bundle": "natal", "fact_id": "fact:angle:descendant"}],
+            selection["fact_refs"],
+        )
+        self.assertEqual([], selection["claim_requests"])
+
+    def test_e1_descendant_fact_cannot_unlock_existing_seventh_house_claims(self):
+        run = run_request(load(NATAL_READING))
+        typed = {
+            "schema_name": "astrology_typed_evidence_selection_request",
+            "schema_version": "1.0.0",
+            "question_id": "typed-e1-descendant-claim-boundary",
+            "question": "Do not treat fact admission as interpretation admission.",
+            "fact_selectors": [
+                {
+                    "selector_id": "desc",
+                    "selector_kind": "object",
+                    "bundle": "natal",
+                    "cardinality": "exactly_one",
+                    "object_id": "Descendant",
+                    "object_type": "angle",
+                }
+            ],
+            "claim_selectors": [
+                {
+                    "selector_id": "seventh",
+                    "registry_record_id": "first-seventh-house-axis-research-v1",
+                    "claim_type": "historical_doctrine",
+                    "applies_to_all": ["natal", "seventh house", "marriage"],
+                    "fact_selector_ids": ["desc"],
+                }
+            ],
+        }
+        with self.assertRaisesRegex(
+            AstrologyEvidenceSelectionError,
+            "claim binding is not admitted for fact-only object: Descendant",
+        ):
+            select_evidence(run, typed, repo_root=ROOT)
+
+
 if __name__ == "__main__":
     unittest.main()
