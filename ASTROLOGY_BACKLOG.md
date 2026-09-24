@@ -103,6 +103,39 @@ The closed work above must not be repeatedly rediscovered as open work unless a 
 
 This item is a standing reconciliation guard. It is not a request to change current behavior immediately.
 
+## P1 — place-resolution transport
+
+### AST-P1-005 — Query-bounded place-resolver shard transport admission
+
+- type: RESEARCH / MATERIALIZATION / PROVIDER TRANSPORT
+- status: OPEN
+- priority: P1
+- owner: Astrology place-resolution materialization
+- blocked_by: none
+- canonical_evidence:
+  - `ASTROLOGY_MATERIALIZATION.md`
+  - `ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json`
+  - `reports/astrology/ASTROLOGY_PLACE_RESOLVER_MATERIALIZATION_FEASIBILITY.md`
+  - `tools/astrology_place_shard_benchmark.py`
+- current_state:
+  - original A-MAT-2 whole-package/model-mediated cold-start transport remains not admitted;
+  - PR #172 exact-byte research POC satisfies the query-bounded-shard feasibility re-open trigger;
+  - all four admitted `geonamescache==3.0.2` dataset identities matched the prior A-MAT-2 hashes;
+  - fixture parity passed for 樹林區/TW, Tokyo/JP and ambiguous Springfield cases across all tested profiles and widths;
+  - 3-hex SHA-256 alias sharding is the current architecture candidate: 4,096 shards/profile, `cities500` P95 33,018 bytes, max 42,531 bytes.
+- remaining_gate:
+  - freeze external repository / manifest / attribution / exact-revision contract;
+  - decide whether inline candidate replication is acceptable or whether alias-index + candidate-store separation materially improves total generated size without harming bounded lookup;
+  - define exact GitHub Connect retrieval + connector-side filtering + cache verification behavior;
+  - validate end-to-end cold-start payload/latency and full semantic parity;
+  - only then consider changing `ASTROLOGY_MATERIALIZATION.md` current production behavior or `ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json`.
+- completion_gate:
+  - deterministic generated-data provenance from the four exact admitted source datasets;
+  - bounded worst-case retrieval supported by measured evidence;
+  - exact-name/alternate-name, country filtering, ambiguity and not-found semantics preserve current resolver behavior;
+  - license / attribution obligations are explicit;
+  - production admission remains a separate reviewed change.
+
 ## P1 — extended astronomical facts
 
 ### AST-P1-010 — EXP-1 five-body compact ephemeris feasibility
