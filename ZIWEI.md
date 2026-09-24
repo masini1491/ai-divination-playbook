@@ -37,7 +37,7 @@ IN:
 OPTIONAL / explicit add-on:
 
 - `brightness_v1`: 14 主星 profile-bound brightness facts（廟／旺／得／利／平／不／陷），只用來滿足既有 admitted claim 的 dignity applicability；不得生成 brightness-only doctrine。
-- `m0_auxiliary_v1`: 左輔／右弼／文昌／文曲四星的 profile-bound natal placement + self/sanfang modifier facts；只 admission 4 個 bounded auxiliary-role claims 與既有 major-star conditional activation，不代表 blanket minor-star admission。
+- `m0_auxiliary_v1`: 左輔／右弼／文昌／文曲四星的 profile-bound natal placement + self/sanfang modifier facts；只 admission 4 個 bounded auxiliary-role **policy** claims 與既有 major-star conditional activation，不代表 blanket minor-star admission，也不代表四星各自 historical semantic core 已 production admission。
 
 OUT / fail closed:
 
@@ -152,7 +152,7 @@ tools/ziwei_brightness_provider.py + tools/ziwei_brightness_pipeline.py
 → optional profile-bound brightness facts + legacy compatibility adapter
 
 tools/ziwei_m0_auxiliary_provider.py + ZIWEI_M0_AUXILIARY_ADMISSION_V1.json
-→ optional M0 左輔／右弼／文昌／文曲 placement / modifier facts + bounded auxiliary-role claim admission
+→ optional M0 左輔／右弼／文昌／文曲 placement / modifier facts + bounded auxiliary-role policy claim admission; independent historical star semantics remain outside this admission
 
 ZIWEI_BRIGHTNESS_ADMISSION_V1.json
 → optional brightness production admission truth
