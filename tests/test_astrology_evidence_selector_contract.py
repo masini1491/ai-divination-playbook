@@ -69,7 +69,7 @@ class AstrologyEvidenceSelectorContractTests(unittest.TestCase):
         )
         derived = manifest["natal_semantic_policy"]["derived_fact_interpretation"]
         self.assertEqual(
-            ["SouthNode", "Descendant", "ImumCoeli"],
+            ["SouthNode", "Descendant", "ImumCoeli", "PartOfFortune"],
             derived["fact_only_object_ids"],
         )
         self.assertEqual(
