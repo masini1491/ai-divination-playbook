@@ -208,13 +208,13 @@ This SHA is review evidence only, not a pin. Every maintenance task must resolve
   - deterministic M0 placement provider/profile;
   - deterministic fixtures;
   - auxiliary fact schema/provenance;
-  - source-normalized bounded M0 interpretation claims;
+  - bounded M0 auxiliary-role policy claims with source context; independent historical star semantics require a separate future admission if desired;
   - conditional-activation integration with existing major-star claims;
   - optional production admission, not blanket minor-star admission.
 - completion_gate:
   - exact placement/profile identity;
   - no automatic promotion of M1/M2/M3;
-  - claim corpus admitted separately from calculation facts;
+  - auxiliary-role policy claim corpus admitted separately from calculation facts; no independent historical semantic core is implied;
   - production manifest/pipeline/index updated;
   - ChatGPT transport bundle regenerated and verified if new runtime files are needed.
 - completion_evidence:
@@ -222,8 +222,8 @@ This SHA is review evidence only, not a pin. Every maintenance task must resolve
   - admitted profile: `ziwei.auxiliary.m0.iztro_v1`;
   - deterministic provider: `tools/ziwei_m0_auxiliary_provider.py`;
   - admitted subjects are exactly 左輔／右弼／文昌／文曲; M1/M2/M3 remain excluded;
-  - base Scope-A claim corpus remains 52; M0 adds 4 optional bounded auxiliary-role claims for a maximum of 56;
-  - M0 exposes `fact_available:m0_auxiliary_stars`, not the broader `fact_available:auxiliary_stars`;
+  - base Scope-A claim corpus remains 52; M0 adds 4 optional bounded auxiliary-role policy claims for a maximum of 56; these are not an admission of independent historical semantic cores for the four stars;
+  - M0 exposes `fact_available:m0_auxiliary_stars`, not the broader `fact_available:auxiliary_stars`; generic `unsupported.auxiliary_stars` remains `not_computed`, while the M0-specific domain records its own computed state;
   - existing conditional activation integration is limited to claims whose complete condition domain is covered by M0;
   - deterministic transport bundle regenerated and verified by the M0 candidate bridge;
   - candidate bridge passed registry validation, M0 targeted tests, full unittest suite, `playbook_check.py`, and bundle build/check.

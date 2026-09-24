@@ -120,7 +120,9 @@
       "admitted_claims_added": 4,
       "admitted_research_registries": [
         "ziwei_interpretation_claim_registry_m0_auxiliary_v1.json"
-      ]
+      ],
+      "claim_scope": "bounded_auxiliary_role_policy_only",
+      "historical_semantic_core_admitted": false
     }
   ]
 }
