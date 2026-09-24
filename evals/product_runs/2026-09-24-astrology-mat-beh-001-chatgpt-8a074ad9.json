@@ -1,0 +1,57 @@
+{
+  "scenario_id": "ASTROLOGY-MAT-BEH-001",
+  "playbook_sha": "8a074ad93803cb2d14f397547a3462de519e12a0",
+  "classification": "PASS",
+  "run_kind": "formal",
+  "run_time": "2026-09-24T11:35:00+08:00",
+  "stimulus": "Execute the Astrology deterministic core cold-start materialization scenario using a synthetic natal request with explicit coordinates and IANA timezone.",
+  "observed_actions": [
+    "Current ai-divination-playbook main was resolved through GitHub Connect to exact commit 8a074ad93803cb2d14f397547a3462de519e12a0.",
+    "Cold-start probe showed Python 3.13.5 available, /mnt/data/divination-astrology-runtime absent, and importlib.util.find_spec('astronomy') returned None.",
+    "The canonical ASTROLOGY_MATERIALIZATION.md and same-commit runtime/astrology/CHATGPT_DETERMINISTIC_CORE_BUNDLE.json were read from the exact Playbook revision.",
+    "Direct model-mediated transfer validated chunks 0-119 by encoded length and SHA-256, demonstrating the documented chunk transport shape.",
+    "Because the runtime lacked a direct GitHub-connector-to-container file bridge, acquisition transport failed over without changing source authority: a one-time temporary GitHub Actions branch checked out the exact canonical main commit and uploaded only the same-commit bundle, canonical verifier, and PLAYBOOK_COMMIT marker as an artifact.",
+    "The handoff artifact reported digest sha256:1ef2aec114ceca730c2a6e8f80f8d77cbd427820c6f5716c763cb0f30b56443d and PLAYBOOK_COMMIT read back exactly 8a074ad93803cb2d14f397547a3462de519e12a0; the temporary branch self-deleted after upload and main remained unchanged.",
+    "The canonical build_astrology_core_bundle.py verifier returned no errors across all 386 chunks, archive metadata, seven source/dependency files, per-file SHA-256/Git blob checks, pinned astronomy-engine 2.1.19 distribution identities, and MIT license payload.",
+    "Materialization wrote /mnt/data/divination-astrology-runtime/core_bundle_verification.json with verified=true, exact playbook_commit, archive SHA-256 6ecf79ca41158653ae39e717cba9c4b1f38d65511d55db4ea63afb863dbf1c05, dependency version 2.1.19, and seven file identities; fresh read-back matched.",
+    "With PYTHONPATH limited to the materialized cache and Python invoked with -S, a synthetic natal request using explicit coordinates plus Asia/Taipei succeeded without geonamescache or installed site-packages.",
+    "The orchestrator returned status=admitted, interpretation_allowed=true, input_resolution.resolution_mode=explicit_coordinates, provider_id=astronomy-engine-natal-v1.",
+    "The natal runtime gate returned status=admitted, interpretation_allowed=true, fact_source=approved_provider, calculation_verification=verified_provider, and no errors."
+  ],
+  "classification_reason": "PASS. The observed ChatGPT product environment satisfied the material ASTROLOGY-MAT-BEH-001 core contract: empty cache + missing astronomy package -> exact current Playbook identity -> same-commit deterministic core bundle handoff -> full chunk/archive/per-file identity verification -> verified local cache -> isolated python -S execution -> explicit-coordinates natal provider -> admitted Astrology runtime gate. The transport used a bounded GitHub Actions artifact handoff after the direct connector-to-container bridge proved unavailable; authority and exact source revision were preserved and the canonical bundle verifier established byte identity before execution.",
+  "response_reference": "Source ChatGPT conversation on 2026-09-24. Technical evidence only is recorded here; no private natal data or chat screenshots are committed.",
+  "notes": {
+    "environment": "ChatGPT product session with Python 3.13.5; exact subscription-tier behavior is not claimed",
+    "initial_cache": "absent",
+    "initial_astronomy_package": "absent",
+    "acquisition_authority": "GitHub Connect / GitHub exact-commit repository authority",
+    "handoff_transport": "one-time GitHub Actions exact-commit artifact after direct connector-to-container handoff gap",
+    "artifact_digest": "sha256:1ef2aec114ceca730c2a6e8f80f8d77cbd427820c6f5716c763cb0f30b56443d",
+    "bundle_contract": "chunked-model-mediated-astrology-deterministic-core-bundle-v1",
+    "chunk_count": 386,
+    "chunk_size": 444,
+    "archive_sha256": "6ecf79ca41158653ae39e717cba9c4b1f38d65511d55db4ea63afb863dbf1c05",
+    "materialized_file_count": 7,
+    "dependency": "astronomy-engine==2.1.19",
+    "execution_isolation": "python -S with PYTHONPATH pointing only at the verified materialized cache",
+    "request_fixture": {
+      "reading_mode": "natal",
+      "local_datetime": "2000-01-01T12:00:00",
+      "location_mode": "explicit_coordinates",
+      "timezone_name": "Asia/Taipei"
+    },
+    "runtime_result": {
+      "status": "admitted",
+      "interpretation_allowed": true,
+      "provider_id": "astronomy-engine-natal-v1",
+      "runtime_gate_status": "admitted",
+      "fact_source": "approved_provider",
+      "calculation_verification": "verified_provider"
+    },
+    "non_claims": [
+      "Does not prove Free-plan behavior.",
+      "Does not prove place/country-name resolver materialization.",
+      "Does not promote the supporting scenario into the strict-P4 baseline."
+    ]
+  }
+}
