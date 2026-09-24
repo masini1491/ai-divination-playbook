@@ -218,7 +218,10 @@
       "core_bundle_scope": "explicit-coordinates-plus-iana-timezone; place-resolver-excluded",
       "place_resolver_materialization_status": "not-admitted-for-cold-start",
       "place_resolver_materialization_decision": "reports/astrology/ASTROLOGY_PLACE_RESOLVER_MATERIALIZATION_FEASIBILITY.md",
-      "place_resolver_cold_start_fallback": "require-explicit-coordinates-plus-iana-timezone"
+      "place_resolver_cold_start_fallback": "require-explicit-coordinates-plus-iana-timezone",
+      "rulership_projection": "tools/astrology_rulership_projection.py",
+      "rulership_projection_schema": "schemas/astrology/ASTROLOGY_RULERSHIP_PROJECTION_V1.schema.json",
+      "rulership_activation": "explicit-selector-only"
     },
     {
       "id": "method.astrology.natal",
