@@ -172,7 +172,11 @@
         "admission_manifest": "ZIWEI_CALENDAR_ADMISSION_V1.json",
         "profile_id": "ziwei.calendar.tw_v1",
         "timezone": "Asia/Taipei"
-      }
+      },
+      "materialization_contract": "ZIWEI_MATERIALIZATION.md",
+      "deterministic_transport_bundle": "runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json",
+      "transport_generator": "tools/build_ziwei_tool_bundle.py",
+      "materialization_product_scenario": "evals/ZIWEI_MATERIALIZATION_PRODUCT_SCENARIO.md"
     },
     {
       "id": "method.astrology",

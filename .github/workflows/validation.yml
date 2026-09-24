@@ -59,6 +59,12 @@ jobs:
       - name: Verify Meihua deterministic tool bundle
         run: python tools/build_meihua_tool_bundle.py --check
 
+      - name: Verify Zi Wei deterministic tool bundle
+        run: python tools/build_ziwei_tool_bundle.py --check
+
+      - name: Verify Zi Wei deterministic regression selection
+        run: python tools/behavioral_eval.py --matrix evals/regression_matrix.json --change-class ziwei-deterministic-materialization
+
       - name: Verify Meihua deterministic regression selection
         run: python tools/behavioral_eval.py --matrix evals/regression_matrix.json --change-class meihua-deterministic-materialization
 
