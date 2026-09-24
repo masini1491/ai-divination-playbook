@@ -61,16 +61,21 @@ class RepositoryArchitectureContractTests(unittest.TestCase):
             self.assertIn(name, text)
         self.assertIn("不建立 root `BACKLOG.md` aggregate", text)
 
-    def test_agents_closes_coordination_write_mapping(self) -> None:
-        text = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
-        self.assertIn("ChatGPT Coordination Write Mapping", text)
+    def test_coordination_write_mapping_is_owned_by_repository_architecture(self) -> None:
+        agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
+        architecture = (ROOT / "REPOSITORY_ARCHITECTURE.md").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("ChatGPT Coordination Write Mapping", agents)
+        self.assertIn("REPOSITORY_ARCHITECTURE.md", agents)
         for path in (
             "/ASTROLOGY_BACKLOG.md",
             "/ZIWEI_BACKLOG.md",
             "/PALMISTRY_BACKLOG.md",
         ):
-            self.assertIn(path, text)
-        self.assertIn("coordination-only persistence", text)
+            self.assertIn(path, architecture)
+        self.assertIn("coordination-only persistence", architecture)
+        self.assertNotIn("/ASTROLOGY_BACKLOG.md", agents)
 
     def test_adoption_record_tracks_current_shared_review_and_local_backlogs(self) -> None:
         text = (ROOT / "references" / "ai-development-playbook.md").read_text(
