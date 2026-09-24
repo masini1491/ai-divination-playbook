@@ -1,0 +1,128 @@
+name: Astrology E4 sect parity one-shot
+
+on:
+  push:
+    branches: [astrology-e4-adm-1]
+
+permissions:
+  contents: write
+
+jobs:
+  parity:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install pinned calculation dependencies
+        run: |
+          python -m pip install --disable-pip-version-check astronomy-engine==2.1.19 pyswisseph==2.10.3.2
+
+      - name: Generate synthetic parity fixture
+        shell: bash
+        run: |
+          python - <<'PY'
+          import datetime as dt
+          import json
+          from pathlib import Path
+          import astronomy
+          import swisseph as swe
+
+          cases = [
+              ("london-summer-noon", "1990-06-15T12:00:00+00:00", 51.5074, 0.0),
+              ("london-summer-midnight", "1990-06-15T00:00:00+00:00", 51.5074, 0.0),
+              ("equator-equinox-morning", "2000-03-20T09:00:00+00:00", 0.0, 0.0),
+              ("equator-equinox-evening", "2000-03-20T21:00:00+00:00", 0.0, 0.0),
+              ("buenos-aires-summer-noon", "1990-12-15T15:00:00+00:00", -34.6, -58.4),
+              ("buenos-aires-summer-midnight", "1990-12-15T03:00:00+00:00", -34.6, -58.4),
+          ]
+
+          def atime(when):
+              return astronomy.Time.Make(
+                  when.year, when.month, when.day,
+                  when.hour, when.minute,
+                  when.second + when.microsecond / 1_000_000.0,
+              )
+
+          out = []
+          for fixture_id, iso, lat, lon in cases:
+              when = dt.datetime.fromisoformat(iso)
+              t = atime(when)
+              vec = astronomy.GeoVector(astronomy.Body.Sun, t, True)
+              eqd_vec = astronomy.RotateVector(astronomy.Rotation_EQJ_EQD(t), vec)
+              eqd = astronomy.EquatorFromVector(eqd_vec)
+              observer = astronomy.Observer(lat, lon, 0.0)
+              ae = astronomy.Horizon(t, observer, eqd.ra, eqd.dec, astronomy.Refraction.Airless)
+              ae_alt = float(ae.altitude)
+
+              hour = when.hour + when.minute/60 + when.second/3600
+              jd = swe.julday(when.year, when.month, when.day, hour, swe.GREG_CAL)
+              sun = swe.calc_ut(jd, swe.SUN, swe.FLG_SWIEPH | swe.FLG_SPEED)[0]
+              sw = swe.azalt(jd, swe.ECL2HOR, (lon, lat, 0.0), 0, 0, (sun[0], 0.0, 1.0))
+              sw_alt = float(sw[1])
+
+              ae_class = "diurnal" if ae_alt > 0 else ("nocturnal" if ae_alt < 0 else "boundary")
+              sw_class = "diurnal" if sw_alt > 0 else ("nocturnal" if sw_alt < 0 else "boundary")
+              out.append({
+                  "fixture_id": fixture_id,
+                  "utc_iso": iso,
+                  "latitude": lat,
+                  "longitude": lon,
+                  "astronomy_engine_geometric_altitude_deg": ae_alt,
+                  "swiss_geometric_altitude_deg": sw_alt,
+                  "altitude_delta_deg": ae_alt - sw_alt,
+                  "astronomy_engine_classification": ae_class,
+                  "swiss_classification": sw_class,
+                  "classification_match": ae_class == sw_class,
+              })
+
+          payload = {
+              "schema_name": "astrology_e4_sect_parity_fixture",
+              "schema_version": "1.0.0",
+              "authority": "SYNTHETIC_VALIDATION_EVIDENCE",
+              "policy_id": "sect-geometric-solar-altitude-v1",
+              "production_dependency": {
+                  "package": "astronomy-engine",
+                  "version": "2.1.19",
+                  "source_revision": "865d3da7d8112bbc7911238052c6af4aaf877181",
+                  "refraction": "Airless",
+                  "sun_frame": "geocentric-equator-of-date",
+              },
+              "research_oracle": {
+                  "package": "pyswisseph",
+                  "version": "2.10.3.2",
+                  "research_source_repository": "g-battaglia/kerykeion",
+                  "research_source_revision": "b18848eb8e1e0a2b09a096dbb9688c8404dfb06b",
+                  "role": "validation-oracle-only-not-production-dependency",
+              },
+              "cases": out,
+              "summary": {
+                  "case_count": len(out),
+                  "classification_matches": sum(1 for x in out if x["classification_match"]),
+                  "all_classifications_match": all(x["classification_match"] for x in out),
+                  "max_abs_altitude_delta_deg": max(abs(x["altitude_delta_deg"]) for x in out),
+              },
+          }
+          if not payload["summary"]["all_classifications_match"]:
+              raise SystemExit(json.dumps(payload, indent=2))
+          target = Path("references/astrology/extended_chart_e4_sect_parity_fixture.json")
+          target.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+          print(json.dumps(payload["summary"], indent=2))
+          PY
+
+      - name: Retire one-shot workflow and commit fixture
+        shell: bash
+        run: |
+          rm .github/workflows/astrology-e4-sect-parity-once.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add references/astrology/extended_chart_e4_sect_parity_fixture.json .github/workflows/astrology-e4-sect-parity-once.yml
+          git commit -m "Record Astrology E4 sect parity fixture"
+          git push origin "HEAD:${{ github.ref_name }}"
