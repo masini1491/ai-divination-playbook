@@ -23,13 +23,13 @@ class AstrologyMaterializationDiscoverabilityTests(unittest.TestCase):
         self.assertEqual("evals/ASTROLOGY_MATERIALIZATION_PRODUCT_SCENARIO.md",
                          self.matrix["supporting_product_scenarios"]["astrology-deterministic-materialization"])
         self.assertNotIn("ASTROLOGY-MAT-BEH-001",self.matrix["full_baseline"])
-        self.assertIn("does **not** alter the existing strict-P4",self.scenario)
+        self.assertIn("**does not** alter the existing strict-P4",self.scenario)
 
     def test_contract_keeps_core_and_place_resolution_separate(self):
         for phrase in (
             "local package miss ≠ Astrology unavailable",
             "astronomy-engine==2.1.19",
-            "place resolver must remain",
+            "place resolver → separate admitted input-resolution authority",
             "does **not require pip/network installation afterward**",
         ):
             self.assertIn(phrase,self.contract)
