@@ -16,11 +16,11 @@ jobs:
       - run: python -m pip install --disable-pip-version-check -r requirements-astrology-provider.txt
       - run: python -m pip install --disable-pip-version-check -r requirements-ziwei-calendar.txt
       - run: python references/ziwei/validate_interpretation_claim_registry.py references/ziwei/ziwei_interpretation_claim_registry_m0_auxiliary_v1.json
+      - run: python tools/build_ziwei_tool_bundle.py
+      - run: python tools/build_ziwei_tool_bundle.py --check
       - run: python -m unittest tests.test_ziwei_m0_auxiliary_v1 -v
       - run: python -m unittest discover -s tests -v
       - run: python tools/playbook_check.py .
-      - run: python tools/build_ziwei_tool_bundle.py
-      - run: python tools/build_ziwei_tool_bundle.py --check
       - name: Commit derived bundle and remove bridge
         run: |
           rm .github/workflows/ziwei-m0-candidate.yml
