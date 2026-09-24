@@ -13,8 +13,7 @@ Status: **REPO-LEVEL CANONICAL CONTRACT**
 - ChatGPT runtime/materialization transport 與 durable data 的邊界；
 - third-party implementation 何時可 vendored；
 - research/evidence 與 stable machine contract 的位置；
-- routing/index/evidence/fixture/validation 等 supporting surface 何時值得建立；
-- control-plane / data-plane 如何分離；
+- 本 Repo 實際採用哪些 supporting surfaces 與 physical path mapping；
 - 大型 repo-local data 如何維持 bounded-read / bounded-loading。
 
 本檔不回答：
@@ -168,101 +167,40 @@ Schema：
 - 若 schema 與 owner policy 衝突，以 canonical owner 為準。
 
 
-### 2.7 Optional supporting surfaces
+### 2.7 Project-specific supporting-surface mapping
 
-#### `indexes/`
+Supporting-surface 的 **generic semantics 不由本檔重定義**。Shared development baseline 被 activation 時：
 
-`indexes/` 只放 machine-readable routing / lookup metadata。
+- retrieval intent / context cohesion / thin routing / control-data plane / Hot-Cold / evidence staging → upstream `AI_CONTEXT.md`；
+- coordination persistence / promotion / execution / write authority → upstream `REPOSITORY_EXECUTION.md`；
+- fixture / validation / PASS scope / large-artifact acceptance → upstream `DEBUG_VALIDATION.md`；
+- source / derived / provenance integrity → upstream `INFORMATION_INTEGRITY.md`；
+- external-source research / reference knowledge / licensing → upstream `RESEARCH_ARCHITECTURE.md`。
 
-Shared rule：
+本 Repo 只保存實際採用的 physical mapping 與 stricter local delta。
 
-- index 可保存 stable id / alias / owner / path / section / bucket locator；
-- index 不複製被路由內容本體；
-- index 不保存 volatile current conclusion、validation result 或歷史 evidence，除非該 index 本身就是對應 canonical owner；
-- routing metadata 失效時應 fail closed 或回 canonical router，而不是靠模型猜 path；
-- generated index 應可由 canonical owner / manifest deterministic rebuild。
+#### Method-scoped coordination topology
 
-概念上：
-
-```text
-index = control plane
-canonical owner / data / evidence = data plane
-```
-
-若 receiving actor 能直接從 current authoritative source 取得 substantive content，routing/handoff 優先傳 pointer / identity，不把大型 file、diff、log、dataset 複製進 control message 或 index。
-
-#### `evidence/`
-
-`evidence/` 可用於保存 observation、bench/hardware result、source capture summary、provenance record 或 pre-canonical evidence staging。
-
-- evidence ≠ policy / architecture / method authority；
-- evidence 不因被 commit 就自動升格為 admitted fact；
-- promotion 必須回到對應 canonical owner / admission contract；
-- raw sensitive evidence 不得為了之後再清理而先進 public Git。
-
-#### `fixtures/`
-
-`fixtures/` 可保存 deterministic tests、parity、replay、golden input/output 或 reproducibility 所需的 bounded examples。
-
-- fixture 證明的是已覆蓋的 tested scope；
-- fixture PASS 不等於全域 production validity；
-- public fixture 不得包含可識別個資、secret 或未授權 proprietary data。
-
-#### `validation/`
-
-`validation/` 可保存 validation contract、campaign plan、machine result或 current validation evidence，但必須清楚區分：
+本 Repo 已採用三個 peer coordination surfaces：
 
 ```text
-validation contract
-≠ validation run result
-≠ production authority
+ASTROLOGY_BACKLOG.md
+ZIWEI_BACKLOG.md
+PALMISTRY_BACKLOG.md
 ```
 
-是否採 dedicated `validation/` 由 repository scale / independent retrieval intent 決定；小型專案可以由現有 owner 承接，不要求建立空目錄。
+共同 local contract：
 
-#### coordination surfaces
+- 都是 `coordination-only`；
+- 都不是 production authority、research-evidence authority 或 method-routing authority；
+- Astrology、Zi Wei、Palmistry 具有獨立 retrieval intent，且可由獨立 ChatGPT project conversations 維護，因此不建立 root `BACKLOG.md` aggregate；
+- machine discovery 由 `PLAYBOOK_INDEX.json` routing-only entries提供；
+- concrete ChatGPT coordination write mapping 由 `AGENTS.md` 擁有；
+- cross-method shared item只指定一個 canonical coordination owner，其餘 backlog只保存 pointer，避免 divergent work state。
 
-`TASKS.md`、`BACKLOG.md`、`tasks/**` 或等價 Hot / Cold coordination surface 是 work-control plane，不是 technical truth/data plane。
+#### Other optional surfaces
 
-- queue/admission 可授權 work lifecycle，但不得取代 architecture / protocol / data / evidence authority；
-- Cold item 不因持久化而取得 execution authority；
-- 已完成的 technical truth 應回 canonical owner / source / history，而不是永久靠 queue 維持 current state。
-
-## 3. Information surface admission / retrieval-intent gate
-
-新增 file / directory / router / index / evidence dossier / data shard family前，先回答：
-
-> **這是否形成可被獨立詢問、引用或 bounded-load，且與既有 owner 有清楚 responsibility boundary 的 retrieval intent？**
-
-只有「內容變多」、「檔案變大」、「來源很多」或「看起來比較整齊」不足以構成新 surface。
-
-優先順序：
-
-1. exact canonical leaf 已知 → direct leaf；
-2. 需要 routing → thin index / router；
-3. 需要 substantive current content → 從 authoritative data plane direct-read；
-4. 只有在不可重取、跨邊界 transport 本身是 requirement、或 bounded cache 有實測收益時，才建立 derived transport/cache；
-5. evidence足夠即停止，不為形式掃完整 repository。
-
-Repository topology 必須同時最佳化：
-
-- authority clarity；
-- retrieval/search cost；
-- context cohesion；
-- reconciliation/drift cost；
-- deterministic rebuildability。
-
-概念上：
-
-```text
-control plane
-  routing / owner pointer / task state / bounded decision state
-
-data plane
-  canonical file body / dataset / evidence / diff / log / runtime result
-```
-
-Control plane 不複製 data plane 本體；data plane 也不因被 routing metadata 指到就取得額外 authority。
+`indexes/`、`evidence/`、`fixtures/`、`validation/` 等 path 只有在本 Repo 未來真的採用時才建立；是否值得建立與其 generic semantics依 shared baseline canonical owners判斷。本檔不因目錄名稱存在而自行建立第二份 shared policy。
 
 ## 4. Source / derived data / transport boundary
 
