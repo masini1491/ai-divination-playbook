@@ -387,7 +387,8 @@
       "fact_only_object_ids": [
         "SouthNode",
         "Descendant",
-        "ImumCoeli"
+        "ImumCoeli",
+        "PartOfFortune"
       ],
       "claim_binding": "forbidden_unless_explicitly_admitted",
       "admitted_claim_bindings": {
