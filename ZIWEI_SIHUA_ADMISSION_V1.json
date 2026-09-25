@@ -1,0 +1,66 @@
+{
+  "schema_name": "ziwei_sihua_production_admission",
+  "schema_version": "1.0.0",
+  "method": "ZiWei",
+  "status": "PRODUCTION_ADMITTED_OPTIONAL_MODULE",
+  "activation": "optional_module_sihua_v1_only",
+  "module_id": "sihua_v1",
+  "profile_id": "sihua.default_v1",
+  "scope": {
+    "temporal_scope": "natal_baseline",
+    "fact_scope": "birth_year_four_transformations",
+    "transformation_order": [
+      "祿",
+      "權",
+      "科",
+      "忌"
+    ],
+    "admitted_claims_added": 3,
+    "transformed_star_interpretation_admitted": true
+  },
+  "calculation": {
+    "provider": "tools/ziwei_sihua_provider.py",
+    "provider_id": "ziwei-sihua-project-default-python",
+    "provider_version": "1.0.0",
+    "input_boundary": "admitted_natal_year_pillar_stem",
+    "profile_revision": "1.0.0",
+    "base_source": {
+      "repository": "matharts/ziwei",
+      "revision": "596f43c43ff6fbae526314c7f668bbf346445ff1",
+      "path": "crates/ziwei/src/rules.rs"
+    },
+    "project_override": {
+      "year_stem": "庚",
+      "transform_kind": "科",
+      "base_star": "太陰",
+      "selected_star": "天府",
+      "decision_owner": "references/ziwei/FOUR_TRANSFORMATION_VARIANT_REGISTRY.md",
+      "decision_identity": "PROJECT-DEFAULT-V1"
+    }
+  },
+  "evidence": {
+    "variant_registry": "references/ziwei/FOUR_TRANSFORMATION_VARIANT_REGISTRY.md",
+    "interpretation_research": "references/ziwei/FOUR_TRANSFORMATION_INTERPRETATION_RESEARCH_V0.md",
+    "claim_registry": "references/ziwei/ziwei_interpretation_claim_registry_sihua_v0.json"
+  },
+  "interpretation": {
+    "new_claim_corpus": true,
+    "admitted_claims_added": 3,
+    "facts_only": false,
+    "generic_transform_outcome_dictionary": false,
+    "cross_profile_averaging": false,
+    "source_explicit_transformed_star_claims_required_for_future_claim_admission": true,
+    "claim_scope": "three_source_explicit_fact_gated_transformed_star_conditionals"
+  },
+  "fail_closed": [
+    "explicit_optional_activation_required",
+    "profile_identity_required",
+    "unknown_sihua_profile_rejected",
+    "invalid_year_stem_rejected",
+    "no_cross_profile_averaging",
+    "no_model_memory_transformation_table",
+    "no_transformed_star_interpretation_without_separate_source_explicit_claim_admission",
+    "no_generic_lu_quan_ke_ji_outcome_guarantees"
+  ],
+  "scientific_predictive_validity_claimed": false
+}

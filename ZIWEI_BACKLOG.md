@@ -290,10 +290,12 @@ This SHA is review evidence only, not a pin. Every maintenance task must resolve
 - current_state:
   - `sihua.default_v1` exists as a project research/default-candidate identity;
   - deterministic calculation candidate now exists at `tools/ziwei_sihua_provider.py` with explicit `sihua_profile_id`, profile revision, pinned complete 10-stem base-table provenance and one explicit project override (庚科：太陰 → 天府);
-  - the candidate is intentionally NOT production-admitted and is not wired into `tools/ziwei_runtime.py`;
-  - first source-explicit transformed-star research registry now exists at `references/ziwei/ziwei_interpretation_claim_registry_sihua_v0.json` with 3 primary-source, fact-gated conditional claims (貪狼化祿四墓；太陽化忌五支例外；太陰化忌四支例外);
-  - that registry remains research-only and deliberately requires future `fact_available:star_locations` + exact `star_branch:*` facts before any claim can activate;
-  - production admission manifest/runtime wiring are still absent.
+  - production-admission candidate wires optional `sihua_v1` through `tools/ziwei_runtime.py`, typed request/result schemas and `ZIWEI_SIHUA_ADMISSION_V1.json`;
+  - natal provider exposes deterministic `fact_available:star_locations` + exact `star_branch:<star>:<branch>` predicates from its already-computed major-star placements;
+  - `references/ziwei/ziwei_interpretation_claim_registry_sihua_v0.json` contributes exactly 3 primary-source, fact-gated conditional claims (貪狼化祿四墓；太陽化忌五支例外；太陰化忌四支例外) only when `sihua_v1` is enabled;
+  - base admitted claim count remains 52; combined optional-module maximum becomes 59 (M0 +4, sihua +3);
+  - generic 祿／權／科／忌 outcome doctrine, cross-profile averaging and unsourced transformed-star prose remain fail closed;
+  - deterministic ChatGPT bundle v2 includes the sihua provider + exact bounded sihua registry.
 - completion_gate:
   - deterministic provider with explicit `sihua_profile_id`;
   - no cross-profile averaging;

@@ -59,7 +59,8 @@
           "items": {
             "enum": [
               "brightness_v1",
-              "m0_auxiliary_v1"
+              "m0_auxiliary_v1",
+              "sihua_v1"
             ]
           }
         }
@@ -81,7 +82,11 @@
         "bounded_natal_first_layer",
         "bounded_natal_first_layer+optional_brightness_v1",
         "bounded_natal_first_layer+optional_m0_auxiliary_v1",
-        "bounded_natal_first_layer+optional_brightness_v1+optional_m0_auxiliary_v1"
+        "bounded_natal_first_layer+optional_sihua_v1",
+        "bounded_natal_first_layer+optional_brightness_v1+optional_m0_auxiliary_v1",
+        "bounded_natal_first_layer+optional_brightness_v1+optional_sihua_v1",
+        "bounded_natal_first_layer+optional_m0_auxiliary_v1+optional_sihua_v1",
+        "bounded_natal_first_layer+optional_brightness_v1+optional_m0_auxiliary_v1+optional_sihua_v1"
       ]
     },
     "request_id": {

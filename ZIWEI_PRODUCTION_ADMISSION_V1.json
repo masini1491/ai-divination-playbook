@@ -13,7 +13,8 @@
     "palace_subjects": 12,
     "admitted_claims": 52,
     "optional_auxiliary_subjects": 4,
-    "maximum_admitted_claims_with_optional_modules": 56
+    "maximum_admitted_claims_with_optional_modules": 59,
+    "optional_sihua_claims": 3
   },
   "calculation": {
     "provider_id": "ziwei-scope-a-natal-python",
@@ -103,7 +104,8 @@
     "temporal_scope": "natal_baseline",
     "optional_modules": [
       "brightness_v1",
-      "m0_auxiliary_v1"
+      "m0_auxiliary_v1",
+      "sihua_v1"
     ],
     "compatibility_adapters": [
       "tools/ziwei_scope_a_pipeline.py",
@@ -123,6 +125,18 @@
       ],
       "claim_scope": "bounded_auxiliary_role_policy_only",
       "historical_semantic_core_admitted": false
+    },
+    {
+      "module_id": "sihua_v1",
+      "admission_manifest": "ZIWEI_SIHUA_ADMISSION_V1.json",
+      "provider": "tools/ziwei_sihua_provider.py",
+      "profile_id": "sihua.default_v1",
+      "admitted_claims_added": 3,
+      "admitted_research_registries": [
+        "ziwei_interpretation_claim_registry_sihua_v0.json"
+      ],
+      "claim_scope": "three_source_explicit_fact_gated_transformed_star_conditionals",
+      "transformed_star_interpretation_admitted": true
     }
   ]
 }

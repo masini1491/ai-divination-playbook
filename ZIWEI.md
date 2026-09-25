@@ -1,6 +1,6 @@
 # Zi Wei Dou Shu｜紫微斗數方法契約
 
-Status: **PRODUCTION SCOPE-A V1 + GREGORIAN INPUT V1 + OPTIONAL BRIGHTNESS FACTS V1 / EXPLICIT-REQUEST ONLY**
+Status: **PRODUCTION SCOPE-A V1 + GREGORIAN INPUT V1 + OPTIONAL BRIGHTNESS / M0 AUXILIARY / SIHUA FACTS V1 / EXPLICIT-REQUEST ONLY**
 
 本檔是 Zi Wei Dou Shu 的 root production method owner。Production authority 僅涵蓋已 admission 的 **bounded natal first layer**；typed production composition 由 `tools/ziwei_runtime.py` 擁有；deterministic fact providers 與 machine admission truth 分別由 `tools/ziwei_*_provider.py` 與 admission manifests 擁有。Research history 仍由 `references/ziwei/**` 擁有，不因 production admission 回寫其歷史 authority。
 
@@ -20,7 +20,7 @@ explicit Zi Wei production
 → CHATGPT_OUTPUT.md
 ```
 
-研究排盤規則、來源、四化、輔星或 dynamic architecture → `RESEARCH_ROUTING.md` → `references/ziwei/**`。若使用者在 production reading 明確要求「含廟旺／亮度／dignity」，可啟動下述 optional brightness module；未要求時維持原 Scope-A 行為。
+研究排盤規則、來源、未 admission 的四化解讀、輔星或 dynamic architecture → `RESEARCH_ROUTING.md` → `references/ziwei/**`。若使用者明確要求廟旺／亮度、M0 輔星 facts 或生年四化 facts，可啟動對應 optional module；未要求時維持原 Scope-A 行為。
 
 ## 2. Production Scope
 
@@ -38,11 +38,12 @@ OPTIONAL / explicit add-on:
 
 - `brightness_v1`: 14 主星 profile-bound brightness facts（廟／旺／得／利／平／不／陷），只用來滿足既有 admitted claim 的 dignity applicability；不得生成 brightness-only doctrine。
 - `m0_auxiliary_v1`: 左輔／右弼／文昌／文曲四星的 profile-bound natal placement + self/sanfang modifier facts；只 admission 4 個 bounded auxiliary-role **policy** claims 與既有 major-star conditional activation，不代表 blanket minor-star admission，也不代表四星各自 historical semantic core 已 production admission。
+- `sihua_v1`: `sihua.default_v1` profile-bound 生年四化 deterministic facts + 3 條 source-explicit、fact-gated transformed-star conditionals（貪狼化祿四墓、太陽化忌五支例外、太陰化忌四支例外）。不得由四化 label 自動推導通用吉凶，也不得跨 profile 平均；未符合 exact profile / sihua / star-location facts 時不得啟動。
 
 OUT / fail closed:
 
 - non-M0 auxiliary / minor-star interpretation;
-- Four-Transformation interpretation;
+- Four-Transformation interpretation beyond separately admitted source-explicit transformed-star claims (currently none);
 - broader contextual star×palace claim corpus;
 - decadal / yearly / monthly / daily / hourly / other dynamic prediction.
 
@@ -64,6 +65,9 @@ typed Zi Wei request
    → tools/ziwei_brightness_provider.py
 → optional_modules includes m0_auxiliary_v1
    → tools/ziwei_m0_auxiliary_provider.py
+→ optional_modules includes sihua_v1
+   → tools/ziwei_sihua_provider.py
+   → 3 source-explicit transformed-star claims（exact fact-gated）
 → tools/ziwei_claim_retrieval.py
 → tools/ziwei_delivery.py
 → typed Zi Wei result
@@ -154,6 +158,9 @@ tools/ziwei_brightness_provider.py + tools/ziwei_brightness_pipeline.py
 tools/ziwei_m0_auxiliary_provider.py + ZIWEI_M0_AUXILIARY_ADMISSION_V1.json
 → optional M0 左輔／右弼／文昌／文曲 placement / modifier facts + bounded auxiliary-role policy claim admission; independent historical star semantics remain outside this admission
 
+tools/ziwei_sihua_provider.py + ZIWEI_SIHUA_ADMISSION_V1.json
+→ optional profile-bound 生年四化 facts + exactly 3 source-explicit fact-gated transformed-star claims; generic transformation doctrine remains unadmitted
+
 ZIWEI_BRIGHTNESS_ADMISSION_V1.json
 → optional brightness production admission truth
 
@@ -167,4 +174,4 @@ CHATGPT_OUTPUT.md
 → final output / Pre-Send owner
 ```
 
-核心原則：**Explicit Zi Wei 可直接給 Asia/Taipei 西元生日，由 admitted calendar adapter 正規化後進 Scope-A；明確要求廟旺／亮度才加載 brightness_v1；unspecified reading → ordinary router；unsupported Zi Wei layers → fail closed。**
+核心原則：**Explicit Zi Wei 可直接給 Asia/Taipei 西元生日，由 admitted calendar adapter 正規化後進 Scope-A；optional facts modules 必須明確啟用且保留 profile/provenance；sihua_v1 只提供四化 facts、不自動創造四化斷語；unspecified reading → ordinary router；unsupported Zi Wei layers → fail closed。**

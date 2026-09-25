@@ -32,7 +32,19 @@ class ZiWeiScopeANatalProviderTests(unittest.TestCase):
         chart=calculate_scope_a_natal(NormalizedNatalInput(1987,5,20,"酉","synthetic"))
         self.assertEqual(len(chart["palaces"]),12)
         self.assertEqual(len(chart["major_star_placements"]),14)
-        self.assertEqual(len(chart["retrieval_facts"]),26)
+        facts=set(chart["retrieval_facts"])
+        base_facts={f"palace_present:{x['palace']}" for x in chart["palaces"]}
+        base_facts.update(f"star_present:{star}" for star in chart["major_star_placements"])
+        self.assertEqual(26,len(base_facts))
+        self.assertTrue(base_facts.issubset(facts))
+        self.assertIn("fact_available:star_locations",facts)
+        expected_locations={
+            f"star_branch:{star}:{branch}"
+            for star,branch in chart["major_star_placements"].items()
+        }
+        self.assertEqual(14,len(expected_locations))
+        self.assertTrue(expected_locations.issubset(facts))
+        self.assertEqual(41,len(facts))
         self.assertEqual(chart["topology"]["命宮"]["opposite_palace"],"遷移宮")
         self.assertEqual(set(chart["topology"]["命宮"]["sanfang_palaces"]),{"財帛宮","官祿宮"})
         self.assertFalse(chart["production_authority_granted"])

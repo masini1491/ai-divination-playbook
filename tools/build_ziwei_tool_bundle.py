@@ -43,6 +43,7 @@ PROJECT_PATHS=(
  "tools/ziwei_scope_a_pipeline.py",
  "tools/ziwei_brightness_provider.py",
  "tools/ziwei_m0_auxiliary_provider.py",
+ "tools/ziwei_sihua_provider.py",
  "tools/ziwei_brightness_pipeline.py",
  "tools/ziwei_claim_retrieval.py",
  "tools/ziwei_delivery.py",
@@ -50,6 +51,7 @@ PROJECT_PATHS=(
  "references/ziwei/ziwei_interpretation_claim_registry_batch2.json",
  "references/ziwei/ziwei_interpretation_claim_registry_palaces_v0.json",
  "references/ziwei/ziwei_interpretation_claim_registry_m0_auxiliary_v1.json",
+ "references/ziwei/ziwei_interpretation_claim_registry_sihua_v0.json",
 )
 DEPENDENCY_BLOBS={
 "lunar_python/__init__.py":"373688d6a5c8b65322df473345adc195a811709b",
