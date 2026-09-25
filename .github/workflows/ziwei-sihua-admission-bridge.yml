@@ -1,0 +1,53 @@
+name: Zi Wei Sihua Admission Bundle Bridge
+
+on:
+  push:
+    branches:
+      - zw-p1-020-sihua-production-admission
+    paths:
+      - ".github/workflows/ziwei-sihua-admission-bridge.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  rebuild-and-verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Rebuild Zi Wei deterministic bundle
+        run: python tools/build_ziwei_tool_bundle.py
+      - name: Verify regenerated bundle
+        run: python tools/build_ziwei_tool_bundle.py --check
+      - name: Run focused sihua and bundle regression
+        run: |
+          python -m unittest             tests.test_ziwei_sihua_provider             tests.test_ziwei_sihua_admission             tests.test_ziwei_tool_bundle
+      - name: Remove temporary bridge and enforce bounded generated diff
+        run: |
+          rm .github/workflows/ziwei-sihua-admission-bridge.yml
+          python - <<'PY'
+          import subprocess
+          changed=subprocess.check_output(
+              ["git","status","--porcelain","--untracked-files=all"],text=True
+          ).splitlines()
+          paths=[line[3:] for line in changed]
+          allowed={
+              ".github/workflows/ziwei-sihua-admission-bridge.yml",
+              "runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json",
+          }
+          unexpected=[p for p in paths if p not in allowed]
+          assert not unexpected, unexpected
+          assert set(paths)==allowed, paths
+          PY
+      - name: Commit regenerated bundle and remove bridge
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json .github/workflows/ziwei-sihua-admission-bridge.yml
+          git commit -m "Regenerate Zi Wei bundle for sihua admission"
+          git push origin HEAD:zw-p1-020-sihua-production-admission
