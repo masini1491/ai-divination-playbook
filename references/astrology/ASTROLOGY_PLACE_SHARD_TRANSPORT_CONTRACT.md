@@ -63,3 +63,16 @@ Observed real profile-500 shard sizes: alias 樹林區 13,700 B, Tokyo 18,401 B,
 The first probe run 36139475713 generated the same files but failed only when Actions attempted to push them because workflow permission is contents: read. That permission was intentionally not widened; the succeeding probe used an artifact.
 
 Boundary: artifact transport is not a same-commit repository file path. This probe strengthens real-shard payload/semantic evidence but does not claim GitHub Connect repo-file cold-start latency PASS. Production admission remains unchanged.
+
+
+## Real committed-shard GitHub Connect probe — PR #212
+
+Status: **CONNECTOR COLD-START GATE PASS / PRODUCTION CORPUS STILL NOT MATERIALIZED**
+
+Temporary non-merge PR #212 committed two real profile-15000 shards generated from the exact admitted geonamescache 3.0.2 source, then retrieved them through GitHub Connect at exact commit `28594152cc8b5ae1f35a2959770ac68e5f5d2a44`.
+
+For `樹林區` the alias shard source size was 4,175 bytes and the candidate shard source size was 919 bytes. Exact-ref retrieval returned stable Git blobs `f9d7aaf3813e5f6125a15cca2057b14eb2e6011a` and `b1c458406c266ecc58422b5e035b60d92abee3d5`. The resolved record was geoname 1668875 / Shulin / TW / Asia/Taipei / 24.99085, 121.42199, matching the admitted resolver semantics.
+
+Observed client-side GitHub Connect round trips were 547 ms + 422 ms on the first measured alias/candidate sequence (969 ms total) and 460 ms + 620 ms on a repeated sequence (1,080 ms total). These observations support the bounded cold-start product gate for this real committed-shard path. They are not connector-internal network/cache telemetry and must not be represented as such.
+
+The transport research gates are now sufficient to proceed to a separate production corpus materialization/admission design. No production admission is granted by this evidence alone.
