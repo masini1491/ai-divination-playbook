@@ -1,0 +1,16 @@
+{
+  "schema_name": "astrology_place_shard_provenance",
+  "schema_version": "1.0.0",
+  "authority": "DERIVED_DATA_PROVENANCE_ONLY",
+  "chain": [
+    "GeoNames dataset distributed by geonamescache==3.0.2",
+    "exact source bytes verified against frozen SHA-256 identities",
+    "project-owned deterministic generator",
+    "repo-local split alias/candidate shards under data/astrology/place/v1/**"
+  ],
+  "source_revision": "yaph/geonamescache@df4f6497b321f7981645ab0c5c77d3354c63bd01",
+  "software_license": "MIT",
+  "dataset_license": "CC-BY-4.0",
+  "attribution_required": true,
+  "production_consequence": "NONE_UNTIL_SEPARATELY_ADMITTED"
+}

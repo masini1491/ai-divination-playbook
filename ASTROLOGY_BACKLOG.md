@@ -135,11 +135,12 @@ This item is a standing reconciliation guard. It is not a request to change curr
   - split 3+3 reduces aggregate generated storage from 314,579,927 bytes to 189,935,792 bytes (~39.6% reduction);
   - `cities500` split 3+3 unique lookup measured 18,494 bytes for 樹林區/TW and 23,702 bytes for Tokyo/JP; Springfield ambiguity preview measured 63,069 bytes;
   - split 3+3 theoretical file surface is 8,192 shard paths/profile; candidate 2-hex was too costly for ambiguity retrieval and candidate 4-hex created an excessive file surface.
+  - PR #189 transport-contract probe passed exact source identity, deterministic rebuild, 13-query corpus parity, <=100 KB corpus query payload, <=10 ambiguity preview records and zero-byte repeated-query cache gates across all four profiles;
+  - durable split 3+3 format/provenance/generator contract is frozen under `data/astrology/place/v1/**`; generated shard corpus and production transport remain not admitted.
 - remaining_gate:
-  - freeze the same-repo deterministic-data contract under `data/astrology/place/v1/**`, including manifest, provenance, attribution, schema/version, generator identity and exact admitted source-dataset hashes around the selected alias-3hex + candidate-3hex format candidate;
-  - make the generator build alias routing once per profile and keep alias/candidate generation deterministic;
-  - define same-commit GitHub Connect bounded shard retrieval + integrity verification + connector-side filtering + cache behavior;
-  - expand semantic parity to a deterministic corpus beyond the bounded POC fixtures;
+  - same-repo deterministic-data format/provenance/generator contract: COMPLETE (data corpus intentionally not committed yet);
+  - deterministic corpus parity beyond the original POC fixtures: COMPLETE for the frozen 13-query research corpus;
+  - define and prove same-commit GitHub Connect bounded shard retrieval + integrity verification + connector-side filtering + cache behavior;
   - validate end-to-end cold-start payload/latency and full semantic parity;
   - only then consider changing `ASTROLOGY_MATERIALIZATION.md` current production behavior or `ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json`.
 - completion_gate:

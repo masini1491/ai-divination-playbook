@@ -1,0 +1,87 @@
+{
+  "schema_name": "astrology_place_shard_dataset_manifest",
+  "schema_version": "1.0.0",
+  "status": "FORMAT_CONTRACT_FROZEN_DATA_NOT_YET_COMMITTED",
+  "production_admission": "NOT_GRANTED",
+  "dataset_id": "astrology-place-geonamescache-v1",
+  "path_root": "data/astrology/place/v1",
+  "format": {
+    "alias_hex_chars": 3,
+    "candidate_hex_chars": 3,
+    "hash": "sha256",
+    "serialization": "canonical compact JSON UTF-8 sort_keys",
+    "alias_path": "profiles/{profile}/aliases/{first_hex}/{remaining_two_hex}.json",
+    "candidate_path": "profiles/{profile}/candidates/{first_hex}/{remaining_two_hex}.json"
+  },
+  "supported_profiles": [
+    500,
+    1000,
+    5000,
+    15000
+  ],
+  "source": {
+    "package": "geonamescache==3.0.2",
+    "repository": "yaph/geonamescache",
+    "revision": "df4f6497b321f7981645ab0c5c77d3354c63bd01",
+    "dataset_origin": "GeoNames",
+    "dataset_license": "CC-BY-4.0",
+    "attribution_required": true
+  },
+  "source_datasets": {
+    "500": {
+      "bytes": 79527431,
+      "sha256": "1523be8c6f083eeee946e1c27a0916474d0f0de4361a15104fcc70218bc4d55e"
+    },
+    "1000": {
+      "bytes": 60986259,
+      "sha256": "a6dffc566a3196e0995c7925defdafa548bb8a8fa951d6ab2ea78abedeb0dd60"
+    },
+    "5000": {
+      "bytes": 29665391,
+      "sha256": "6f65c327a0f7374cb7ee629ed6e5128d6d3a2a4d92ed98fc7629690f5074ed55"
+    },
+    "15000": {
+      "bytes": 16670875,
+      "sha256": "24e87d89c775305650301618fa434d26e47e1b64ba5e27a5611e0f351908fd11"
+    }
+  },
+  "generator": {
+    "path": "tools/generate_astrology_place_shards.py",
+    "generator_id": "astrology-place-shard-generator-v1",
+    "deterministic": true,
+    "source_identity_mismatch": "fail_closed"
+  },
+  "integrity": {
+    "per_shard": "sha256 exact bytes",
+    "aggregate": "sha256 over sorted path + NUL + per-shard sha256 digest",
+    "manifest_policy": "aggregate digest populated only for generated committed dataset"
+  },
+  "consumer_semantics": {
+    "exact_name_or_alternate_name": true,
+    "query_normalization": "strip then casefold",
+    "alias_normalization": "casefold",
+    "country_filter": "optional ISO alpha-2",
+    "ambiguity": "fail_closed_with_first_10_sorted_candidate_preview",
+    "not_found": "fail_closed"
+  },
+  "research_evidence": {
+    "temporary_pr": 189,
+    "temporary_head": "fdf5fa8f3236984c05257d648b0907330a6ce7ae",
+    "workflow_run": 36097690832,
+    "validate_job": 107953321687,
+    "corpus_queries_per_profile": 13,
+    "semantic_parity_ratio": 1,
+    "max_query_visible_bytes_by_profile": {
+      "500": 65060,
+      "1000": 50244,
+      "5000": 21831,
+      "15000": 10431
+    }
+  },
+  "unresolved_admission_gates": [
+    "same-commit GitHub Connect exact-revision retrieval proof",
+    "connector-side integrity/filtering implementation proof",
+    "real connector cold-start latency/product validation",
+    "production materialization/admission mutation"
+  ]
+}
