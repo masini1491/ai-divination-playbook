@@ -144,8 +144,9 @@ This item is a standing reconciliation guard. It is not a request to change curr
   - bounded alias-first → local country/ambiguity filtering → candidate-on-demand orchestration: COMPLETE at connector-surface proof scope; GitHub Connect does not expose server-side filtering;
   - connector cache-hit/network-byte telemetry: UNAVAILABLE; do not treat repeated identical retrieval as a zero-byte cache proof;
   - real generated-shard bounded corpus payload + semantic route evidence: COMPLETE at profile-500 research scope via temporary non-merge PR #210 / workflow 36139602395 / artifact 10866252034;
-  - validate GitHub Connect repo-file cold-start latency against real committed generated shards; artifact transport is not accepted as equivalent;
-  - only then consider changing `ASTROLOGY_MATERIALIZATION.md` current production behavior or `ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json`.
+  - GitHub Connect repo-file cold-start latency against real committed generated shards: COMPLETE at bounded profile-15000 unique-query scope via temporary non-merge PR #212; first observed alias+candidate sequence 969 ms total, with stable exact-ref Git blob identity and semantic parity;
+  - client timings are product observations only; connector-internal cache/network-byte telemetry remains unavailable and must not be claimed;
+  - transport research gate is COMPLETE; next work is a separate production generated-corpus materialization/admission design. Do not change `ASTROLOGY_MATERIALIZATION.md` or `ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json` until production data availability and integrity are real.
 - completion_gate:
   - deterministic generated-data provenance from the four exact admitted source datasets;
   - bounded worst-case retrieval supported by measured evidence;
