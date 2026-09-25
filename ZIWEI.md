@@ -43,7 +43,7 @@ OPTIONAL / explicit add-on:
 OUT / fail closed:
 
 - non-M0 auxiliary / minor-star interpretation;
-- Four-Transformation interpretation beyond separately admitted source-explicit transformed-star claims (currently none);
+- Four-Transformation interpretation beyond the 3 separately admitted source-explicit transformed-star claims in `sihua_v1`;
 - broader contextual star×palace claim corpus;
 - decadal / yearly / monthly / daily / hourly / other dynamic prediction.
 
