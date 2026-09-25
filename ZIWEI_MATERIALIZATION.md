@@ -38,6 +38,27 @@ MIT
 
 聊天室 Python 沒有 `lunar_python`、沒有 repo checkout、或 `/mnt/data` 沒有 Zi Wei files，本身都不等於 Zi Wei deterministic runtime unavailable。若 GitHub Connect exact-commit retrieval 與 Python execution 都可用，必須先嘗試同 commit bundle materialization。
 
+### Explicit Minguo-year notation pre-adapter
+
+If the user explicitly supplies a Taiwan Minguo year notation (for example
+`民國76年`), resolve and execute `tools/ziwei_year_notation.py` from the same
+exact Playbook commit **before** Gregorian calendar normalization:
+
+```text
+explicit 民國 year
+→ same-commit tools/ziwei_year_notation.py
+→ deterministic CE year = 民國 year + 1911
+→ GregorianBirthInput
+→ ordinary Zi Wei deterministic runtime/materialization path
+```
+
+This tiny notation adapter is intentionally **not bundled** into
+`CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json` because it is only needed for explicit
+Minguo notation and executes before the deterministic chart runtime. Ordinary CE
+inputs therefore pay zero extra bundle bytes. If same-commit helper retrieval or
+execution fails, do not model-calculate the conversion; fail closed on that
+notation input.
+
 ## 3. Preferred cold-start path
 
 ```text

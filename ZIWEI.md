@@ -11,7 +11,7 @@ Zi Wei Scope-A v1 不參與 ordinary auto-routing。只有使用者明確要求�
 ```text
 explicit Zi Wei production
 → ZIWEI.md
-→ Gregorian birth datetime (Asia/Taipei) → admitted calendar adapter
+→ Gregorian birth datetime (Asia/Taipei; CE or explicit 民國 year notation) → admitted year-notation/calendar adapters
    OR already-normalized lunar input + provenance
 → tools/ziwei_runtime.py (`run_ziwei`)
 → admitted natal_baseline facts
@@ -31,7 +31,7 @@ IN:
 - 12 palace first-layer claims;
 - 52 admitted claims total;
 - admitted deterministic natal provider facts;
-- Gregorian birth datetime input via `ziwei.calendar.tw_v1` for `Asia/Taipei` civil time;
+- Gregorian birth datetime input via `ziwei.calendar.tw_v1` for `Asia/Taipei` civil time; explicit 民國年份 notation is deterministically converted by `tools/ziwei_year_notation.py` (`民國 N 年 → CE N+1911`) before the same Gregorian calendar adapter;
 - explicit provenance, omission, conflict and safety delivery.
 
 OPTIONAL / explicit add-on:
@@ -50,7 +50,7 @@ Unsupported layers不得用模型記憶、手算、research-only claims 或其�
 
 ## 3. Deterministic Fact Boundary
 
-Language model 不得把 raw birth data 自由手算成 production chart facts。已 normalization 的農曆輸入仍可直接走 Scope-A；西元生日則必須先經 admitted `tools/ziwei_calendar_provider.py`。Calendar v1 僅 admission `Asia/Taipei` civil time，保留 raw lunar conversion，再明確套用 `next_day_at_23` 與 `split_after_day_15` Zi Wei policy；不得由模型自行換農曆、猜 timezone 或偷偷套真太陽時。
+Language model 不得把 raw birth data 自由手算成 production chart facts。已 normalization 的農曆輸入仍可直接走 Scope-A；西元生日則必須先經 admitted `tools/ziwei_calendar_provider.py`。若使用者明確使用民國紀年，必須先以 `tools/ziwei_year_notation.py` 做 deterministic 年份 notation conversion（`民國 N 年 = 西元 N+1911 年`），保留 source/converted facts，再送入同一 Gregorian provider；不得由模型心算或把民國誤當另一種 lunar calendar。Calendar v1 僅 admission `Asia/Taipei` civil time，保留 raw lunar conversion，再明確套用 `next_day_at_23` 與 `split_after_day_15` Zi Wei policy；不得由模型自行換農曆、猜 timezone 或偷偷套真太陽時。
 
 Production runtime:
 
@@ -136,8 +136,8 @@ ZIWEI_CALENDAR_ADMISSION_V1.json
 tools/ziwei_runtime.py + schemas/ziwei/ZIWEI_READING_{REQUEST,RESULT}_V1.schema.json
 → canonical typed request / composition / result owner
 
-tools/ziwei_calendar_provider.py + tools/ziwei_gregorian_pipeline.py
-→ Gregorian normalization provider + legacy compatibility adapter
+tools/ziwei_year_notation.py + tools/ziwei_calendar_provider.py + tools/ziwei_gregorian_pipeline.py
+→ 民國年份 deterministic notation adapter + Gregorian normalization provider + legacy compatibility adapter
 
 tools/ziwei_natal_provider.py
 → admitted Scope-A deterministic natal provider

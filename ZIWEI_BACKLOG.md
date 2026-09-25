@@ -108,6 +108,20 @@ This SHA is review evidence only, not a pin. Every maintenance task must resolve
 
 ## P1 — product architecture
 
+### ZW-P1-004 — Minguo year-notation input adapter
+
+- type: INPUT NORMALIZATION / PRODUCTION ADAPTER EXTENSION
+- status: IN_PROGRESS
+- priority: P1
+- owner: Zi Wei maintenance
+- scope:
+  - explicit 民國 year notation only;
+  - deterministic conversion `CE year = 民國 year + 1911`;
+  - preserve existing Gregorian timezone/calendar/Zi Wei policy semantics;
+  - no natural-language freeform date parser beyond explicit Minguo year notation;
+  - no pre-Republic year notation.
+- admission owner: `ZIWEI_CALENDAR_ADMISSION_V1.json`
+
 ### ZW-P1-003 — Calendar deterministic-data architecture evaluation
 
 - type: ARCHITECTURE / CALENDAR DATA POC
