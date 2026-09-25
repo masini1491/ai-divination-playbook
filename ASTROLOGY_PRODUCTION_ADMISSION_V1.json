@@ -158,6 +158,27 @@
         },
         "silent_default": "forbidden",
         "semantic_interpretation_authority": false
+      },
+      "extended_aspects": {
+        "projection_id": "astrology-extended-aspect-projection-v1",
+        "runtime_owner": "tools/astrology_aspect_projection.py",
+        "output_schema": "schemas/astrology/ASTROLOGY_ASPECT_PROJECTION_V1.schema.json",
+        "output_schema_id": "astrology_aspect_projection@1.0.0",
+        "authority": "deterministic_policy_projection_only",
+        "activation": "explicit_selector_only",
+        "admitted_participant_policy_ids": [
+          "aspect-participants-core-plus-angles-v1",
+          "aspect-participants-core-plus-south-node-v1",
+          "aspect-participants-core-plus-fortune-v1"
+        ],
+        "required_aspect_policy_id": "major-aspects-v1",
+        "required_orb_policy_id": "major-aspect-orbs-v1",
+        "default_participant_policy_id": null,
+        "auto_include_new_objects": false,
+        "semantic_interpretation_authority": false,
+        "policy_definitions_owner": "ASTROLOGY_PRODUCTION_ADMISSION_V1.json#/aspect_policy/extended_participant_policies",
+        "explicit_aspect_policy_selector_required": true,
+        "explicit_orb_policy_selector_required": true
       }
     }
   },
@@ -187,7 +208,7 @@
       ],
       "derivation_policy": "antipode-v1",
       "unknown_time": "not_emitted",
-      "aspect_participation": "not_admitted",
+      "aspect_participation": "explicit_projection_policy_only",
       "interpretation_semantics": "fact_only_until_separately_admitted"
     },
     "known_time_part_of_fortune": {
@@ -196,7 +217,7 @@
       "derivation_policy": "fortune-day-night-v1",
       "sect_policy_id": "sect-geometric-solar-altitude-v1",
       "unknown_time": "not_emitted",
-      "aspect_participation": "not_admitted",
+      "aspect_participation": "explicit_projection_policy_only",
       "interpretation_semantics": "fact_only_until_separately_admitted"
     },
     "known_time_sect": {
@@ -306,12 +327,74 @@
       "Pluto",
       "NorthNode"
     ],
-    "extended_points_or_angles": "not_admitted",
+    "extended_points_or_angles": "explicit_projection_policies_only",
     "participant_policy_id": "aspect-participants-core-bodies-v1",
     "aspect_policy_id": "major-aspects-v1",
     "orb_policy_id": "major-aspect-orbs-v1",
     "auto_include_new_objects": false,
-    "extended_policy_activation": "explicit_selector_only"
+    "extended_policy_activation": "explicit_selector_only",
+    "extended_participant_policy_ids": [
+      "aspect-participants-core-plus-angles-v1",
+      "aspect-participants-core-plus-south-node-v1",
+      "aspect-participants-core-plus-fortune-v1"
+    ],
+    "default_extended_policy": null,
+    "extended_participant_policies": {
+      "aspect-participants-core-plus-angles-v1": {
+        "participant_object_ids": [
+          "Sun",
+          "Moon",
+          "Mercury",
+          "Venus",
+          "Mars",
+          "Jupiter",
+          "Saturn",
+          "Uranus",
+          "Neptune",
+          "Pluto",
+          "NorthNode",
+          "Ascendant",
+          "Midheaven",
+          "Descendant",
+          "ImumCoeli"
+        ],
+        "exact_birth_time_required": true
+      },
+      "aspect-participants-core-plus-south-node-v1": {
+        "participant_object_ids": [
+          "Sun",
+          "Moon",
+          "Mercury",
+          "Venus",
+          "Mars",
+          "Jupiter",
+          "Saturn",
+          "Uranus",
+          "Neptune",
+          "Pluto",
+          "NorthNode",
+          "SouthNode"
+        ],
+        "exact_birth_time_required": false
+      },
+      "aspect-participants-core-plus-fortune-v1": {
+        "participant_object_ids": [
+          "Sun",
+          "Moon",
+          "Mercury",
+          "Venus",
+          "Mars",
+          "Jupiter",
+          "Saturn",
+          "Uranus",
+          "Neptune",
+          "Pluto",
+          "NorthNode",
+          "PartOfFortune"
+        ],
+        "exact_birth_time_required": true
+      }
+    }
   },
   "source_policy": {
     "required_source_admission_any": [

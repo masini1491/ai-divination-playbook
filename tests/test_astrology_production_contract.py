@@ -31,7 +31,7 @@ class AstrologyProductionContractTests(unittest.TestCase):
             natal["known_time_derived_axes"]["object_ids"],
         )
         self.assertEqual("not_emitted", natal["known_time_derived_axes"]["unknown_time"])
-        self.assertEqual("not_admitted", natal["known_time_derived_axes"]["aspect_participation"])
+        self.assertEqual("explicit_projection_policy_only", natal["known_time_derived_axes"]["aspect_participation"])
         self.assertEqual("astronomy-engine-transit-v1", transit["provider_id"])
         self.assertEqual("geonamescache-city-v1", place["resolver_id"])
         self.assertTrue(natal["raw_birth_data_supported"])
@@ -190,7 +190,16 @@ class AstrologyProductionContractTests(unittest.TestCase):
             participants,
         )
         self.assertTrue({"SouthNode", "Descendant", "ImumCoeli"}.isdisjoint(participants))
-        self.assertEqual("not_admitted", manifest["aspect_policy"]["extended_points_or_angles"])
+        self.assertEqual("explicit_projection_policies_only", manifest["aspect_policy"]["extended_points_or_angles"])
+        self.assertIsNone(manifest["aspect_policy"]["default_extended_policy"])
+        self.assertEqual(
+            {
+                "aspect-participants-core-plus-angles-v1",
+                "aspect-participants-core-plus-south-node-v1",
+                "aspect-participants-core-plus-fortune-v1",
+            },
+            set(manifest["aspect_policy"]["extended_participant_policy_ids"]),
+        )
         derived = manifest["natal_semantic_policy"]["derived_fact_interpretation"]
         self.assertEqual("forbidden_unless_explicitly_admitted", derived["claim_binding"])
         self.assertEqual({"Descendant", "ImumCoeli", "PartOfFortune"}, set(derived["admitted_claim_bindings"]))
@@ -216,7 +225,7 @@ class AstrologyProductionContractTests(unittest.TestCase):
         self.assertEqual("Ascendant + Moon - Sun", fortune["diurnal_formula"])
         self.assertEqual("Ascendant + Sun - Moon", fortune["nocturnal_formula"])
         self.assertEqual("not_emitted", fortune["unknown_time"])
-        self.assertEqual("not_admitted", fortune["aspect_participation"])
+        self.assertEqual("explicit_projection_policy_only", fortune["aspect_participation"])
 
         admitted = production["natal_provider"]["known_time_part_of_fortune"]
         self.assertEqual("fact_only_until_separately_admitted", admitted["interpretation_semantics"])

@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ASTROLOGY_ASPECT_PROJECTION_V1.schema.json",
+  "title": "Astrology Extended Aspect Projection 1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_name",
+    "schema_version",
+    "status",
+    "authority",
+    "method",
+    "reading_mode",
+    "subject_ref",
+    "birth_time_certainty",
+    "participant_policy_id",
+    "participant_object_ids",
+    "aspect_policy_id",
+    "orb_policy_id",
+    "explicit_policy_required",
+    "auto_include_new_objects",
+    "semantic_interpretation_authority",
+    "aspects"
+  ],
+  "properties": {
+    "schema_name": {
+      "const": "astrology_aspect_projection"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "status": {
+      "const": "projected"
+    },
+    "authority": {
+      "const": "deterministic_policy_projection_only"
+    },
+    "method": {
+      "const": "Astrology"
+    },
+    "reading_mode": {
+      "const": "natal"
+    },
+    "subject_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "birth_time_certainty": {
+      "enum": [
+        "exact",
+        "approximate",
+        "rectified"
+      ]
+    },
+    "participant_policy_id": {
+      "enum": [
+        "aspect-participants-core-plus-angles-v1",
+        "aspect-participants-core-plus-south-node-v1",
+        "aspect-participants-core-plus-fortune-v1"
+      ]
+    },
+    "participant_object_ids": {
+      "type": "array",
+      "minItems": 12,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "aspect_policy_id": {
+      "const": "major-aspects-v1"
+    },
+    "orb_policy_id": {
+      "const": "major-aspect-orbs-v1"
+    },
+    "explicit_policy_required": {
+      "const": true
+    },
+    "auto_include_new_objects": {
+      "const": false
+    },
+    "semantic_interpretation_authority": {
+      "const": false
+    },
+    "aspects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "fact_id",
+          "projection_kind",
+          "left_object_id",
+          "right_object_id",
+          "left_fact_ref",
+          "right_fact_ref",
+          "aspect",
+          "orb_deg",
+          "participant_policy_id",
+          "aspect_policy_id",
+          "orb_policy_id"
+        ],
+        "properties": {
+          "fact_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "projection_kind": {
+            "const": "aspect_geometry"
+          },
+          "left_object_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "right_object_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "left_fact_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "right_fact_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "aspect": {
+            "enum": [
+              "conjunction",
+              "opposition",
+              "trine",
+              "square",
+              "sextile"
+            ]
+          },
+          "orb_deg": {
+            "type": "number",
+            "minimum": 0
+          },
+          "participant_policy_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "aspect_policy_id": {
+            "const": "major-aspects-v1"
+          },
+          "orb_policy_id": {
+            "const": "major-aspect-orbs-v1"
+          }
+        }
+      }
+    }
+  }
+}

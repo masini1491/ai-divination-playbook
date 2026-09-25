@@ -120,3 +120,8 @@ runtime-admitted natal aspect graph
 - provider不支援的 scope不得由模型補算。
 
 共通 safety / source / recording rule回到 `ASTROLOGY.md`。
+
+
+## Explicit extended-aspect projections
+
+The natal provider's default aspect graph remains `aspect-participants-core-bodies-v1`. Extended aspect geometry is available only through `tools/astrology_aspect_projection.py` with explicit admitted participant, aspect, and orb policy selectors. No silent default or automatic inclusion is allowed. Angle/Fortune policies require exact birth time. Projection output is deterministic geometry only; semantic interpretation requires separately admitted source-backed claims.
