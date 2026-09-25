@@ -29,7 +29,7 @@ from tools.astrology_provider import (
 from tools.astrology_runtime import MAJOR_ASPECT_ORBS, gate_bundle
 
 PROVIDER_ID = "astronomy-engine-transit-v1"
-PROVIDER_VERSION = "1.0.0"
+PROVIDER_VERSION = "1.1.0"
 MAX_SEARCH_DAYS = 400.0
 DEFAULT_STEP_HOURS = 3.0
 ROOT_TOLERANCE_SECONDS = 0.5
