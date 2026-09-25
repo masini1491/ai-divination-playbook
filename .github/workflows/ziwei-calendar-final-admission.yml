@@ -22,7 +22,7 @@ jobs:
           python-version: "3.12"
       - name: Assert isolated staging lineage
         run: |
-          test "$(git rev-parse HEAD^)" = "b08c95580fa5bf872b2568f77c77227bc8ad2c7e"
+          test "$(git rev-parse HEAD^)" = "a25b87c9fc71c923f002cee994e05414324e1cc5"
           test "$(git branch --show-current)" = "zw-p1-003-calendar-final-admission"
       - name: Install pinned build/parity dependencies
         run: |
