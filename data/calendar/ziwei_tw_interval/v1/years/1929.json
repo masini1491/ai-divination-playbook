@@ -1,0 +1,107 @@
+{
+  "coverage": "gregorian_year_intersection",
+  "gregorian_year": 1929,
+  "intervals": [
+    {
+      "day_count": 30,
+      "end_date": "1929-01-10",
+      "lunar_year": 1928,
+      "signed_lunar_month": 11,
+      "start_date": "1928-12-12"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1929-02-09",
+      "lunar_year": 1928,
+      "signed_lunar_month": 12,
+      "start_date": "1929-01-11"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1929-03-10",
+      "lunar_year": 1929,
+      "signed_lunar_month": 1,
+      "start_date": "1929-02-10"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1929-04-09",
+      "lunar_year": 1929,
+      "signed_lunar_month": 2,
+      "start_date": "1929-03-11"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1929-05-08",
+      "lunar_year": 1929,
+      "signed_lunar_month": 3,
+      "start_date": "1929-04-10"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1929-06-06",
+      "lunar_year": 1929,
+      "signed_lunar_month": 4,
+      "start_date": "1929-05-09"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1929-07-06",
+      "lunar_year": 1929,
+      "signed_lunar_month": 5,
+      "start_date": "1929-06-07"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1929-08-04",
+      "lunar_year": 1929,
+      "signed_lunar_month": 6,
+      "start_date": "1929-07-07"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1929-09-02",
+      "lunar_year": 1929,
+      "signed_lunar_month": 7,
+      "start_date": "1929-08-05"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1929-10-02",
+      "lunar_year": 1929,
+      "signed_lunar_month": 8,
+      "start_date": "1929-09-03"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1929-10-31",
+      "lunar_year": 1929,
+      "signed_lunar_month": 9,
+      "start_date": "1929-10-03"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1929-11-30",
+      "lunar_year": 1929,
+      "signed_lunar_month": 10,
+      "start_date": "1929-11-01"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1929-12-30",
+      "lunar_year": 1929,
+      "signed_lunar_month": 11,
+      "start_date": "1929-12-01"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1930-01-29",
+      "lunar_year": 1929,
+      "signed_lunar_month": 12,
+      "start_date": "1929-12-31"
+    }
+  ],
+  "schema_name": "ziwei_calendar_interval_year_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}

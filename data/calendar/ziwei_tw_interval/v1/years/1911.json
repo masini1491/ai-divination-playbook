@@ -1,0 +1,100 @@
+{
+  "coverage": "gregorian_year_intersection",
+  "gregorian_year": 1911,
+  "intervals": [
+    {
+      "day_count": 29,
+      "end_date": "1911-01-29",
+      "lunar_year": 1910,
+      "signed_lunar_month": 12,
+      "start_date": "1911-01-01"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1911-02-28",
+      "lunar_year": 1911,
+      "signed_lunar_month": 1,
+      "start_date": "1911-01-30"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1911-03-29",
+      "lunar_year": 1911,
+      "signed_lunar_month": 2,
+      "start_date": "1911-03-01"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1911-04-28",
+      "lunar_year": 1911,
+      "signed_lunar_month": 3,
+      "start_date": "1911-03-30"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1911-05-27",
+      "lunar_year": 1911,
+      "signed_lunar_month": 4,
+      "start_date": "1911-04-29"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1911-06-25",
+      "lunar_year": 1911,
+      "signed_lunar_month": 5,
+      "start_date": "1911-05-28"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1911-07-25",
+      "lunar_year": 1911,
+      "signed_lunar_month": 6,
+      "start_date": "1911-06-26"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1911-08-23",
+      "lunar_year": 1911,
+      "signed_lunar_month": -6,
+      "start_date": "1911-07-26"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1911-09-21",
+      "lunar_year": 1911,
+      "signed_lunar_month": 7,
+      "start_date": "1911-08-24"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1911-10-21",
+      "lunar_year": 1911,
+      "signed_lunar_month": 8,
+      "start_date": "1911-09-22"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1911-11-20",
+      "lunar_year": 1911,
+      "signed_lunar_month": 9,
+      "start_date": "1911-10-22"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1911-12-19",
+      "lunar_year": 1911,
+      "signed_lunar_month": 10,
+      "start_date": "1911-11-21"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1912-01-18",
+      "lunar_year": 1911,
+      "signed_lunar_month": 11,
+      "start_date": "1911-12-20"
+    }
+  ],
+  "schema_name": "ziwei_calendar_interval_year_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}

@@ -1,0 +1,107 @@
+{
+  "coverage": "gregorian_year_intersection",
+  "gregorian_year": 2030,
+  "intervals": [
+    {
+      "day_count": 30,
+      "end_date": "2030-01-03",
+      "lunar_year": 2029,
+      "signed_lunar_month": 11,
+      "start_date": "2029-12-05"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2030-02-02",
+      "lunar_year": 2029,
+      "signed_lunar_month": 12,
+      "start_date": "2030-01-04"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2030-03-03",
+      "lunar_year": 2030,
+      "signed_lunar_month": 1,
+      "start_date": "2030-02-03"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2030-04-02",
+      "lunar_year": 2030,
+      "signed_lunar_month": 2,
+      "start_date": "2030-03-04"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2030-05-01",
+      "lunar_year": 2030,
+      "signed_lunar_month": 3,
+      "start_date": "2030-04-03"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2030-05-31",
+      "lunar_year": 2030,
+      "signed_lunar_month": 4,
+      "start_date": "2030-05-02"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2030-06-30",
+      "lunar_year": 2030,
+      "signed_lunar_month": 5,
+      "start_date": "2030-06-01"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2030-07-29",
+      "lunar_year": 2030,
+      "signed_lunar_month": 6,
+      "start_date": "2030-07-01"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2030-08-28",
+      "lunar_year": 2030,
+      "signed_lunar_month": 7,
+      "start_date": "2030-07-30"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2030-09-26",
+      "lunar_year": 2030,
+      "signed_lunar_month": 8,
+      "start_date": "2030-08-29"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2030-10-26",
+      "lunar_year": 2030,
+      "signed_lunar_month": 9,
+      "start_date": "2030-09-27"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2030-11-24",
+      "lunar_year": 2030,
+      "signed_lunar_month": 10,
+      "start_date": "2030-10-27"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2030-12-24",
+      "lunar_year": 2030,
+      "signed_lunar_month": 11,
+      "start_date": "2030-11-25"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2031-01-22",
+      "lunar_year": 2030,
+      "signed_lunar_month": 12,
+      "start_date": "2030-12-25"
+    }
+  ],
+  "schema_name": "ziwei_calendar_interval_year_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}

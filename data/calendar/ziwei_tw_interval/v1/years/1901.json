@@ -1,0 +1,100 @@
+{
+  "coverage": "gregorian_year_intersection",
+  "gregorian_year": 1901,
+  "intervals": [
+    {
+      "day_count": 29,
+      "end_date": "1901-01-19",
+      "lunar_year": 1900,
+      "signed_lunar_month": 11,
+      "start_date": "1900-12-22"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1901-02-18",
+      "lunar_year": 1900,
+      "signed_lunar_month": 12,
+      "start_date": "1901-01-20"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1901-03-19",
+      "lunar_year": 1901,
+      "signed_lunar_month": 1,
+      "start_date": "1901-02-19"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1901-04-18",
+      "lunar_year": 1901,
+      "signed_lunar_month": 2,
+      "start_date": "1901-03-20"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1901-05-17",
+      "lunar_year": 1901,
+      "signed_lunar_month": 3,
+      "start_date": "1901-04-19"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1901-06-15",
+      "lunar_year": 1901,
+      "signed_lunar_month": 4,
+      "start_date": "1901-05-18"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1901-07-15",
+      "lunar_year": 1901,
+      "signed_lunar_month": 5,
+      "start_date": "1901-06-16"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1901-08-13",
+      "lunar_year": 1901,
+      "signed_lunar_month": 6,
+      "start_date": "1901-07-16"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1901-09-12",
+      "lunar_year": 1901,
+      "signed_lunar_month": 7,
+      "start_date": "1901-08-14"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1901-10-11",
+      "lunar_year": 1901,
+      "signed_lunar_month": 8,
+      "start_date": "1901-09-13"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1901-11-10",
+      "lunar_year": 1901,
+      "signed_lunar_month": 9,
+      "start_date": "1901-10-12"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1901-12-10",
+      "lunar_year": 1901,
+      "signed_lunar_month": 10,
+      "start_date": "1901-11-11"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1902-01-09",
+      "lunar_year": 1901,
+      "signed_lunar_month": 11,
+      "start_date": "1901-12-11"
+    }
+  ],
+  "schema_name": "ziwei_calendar_interval_year_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}

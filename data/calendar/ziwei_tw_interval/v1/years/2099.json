@@ -1,0 +1,100 @@
+{
+  "coverage": "gregorian_year_intersection",
+  "gregorian_year": 2099,
+  "intervals": [
+    {
+      "day_count": 30,
+      "end_date": "2099-01-20",
+      "lunar_year": 2098,
+      "signed_lunar_month": 12,
+      "start_date": "2098-12-22"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2099-02-19",
+      "lunar_year": 2099,
+      "signed_lunar_month": 1,
+      "start_date": "2099-01-21"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2099-03-21",
+      "lunar_year": 2099,
+      "signed_lunar_month": 2,
+      "start_date": "2099-02-20"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2099-04-19",
+      "lunar_year": 2099,
+      "signed_lunar_month": -2,
+      "start_date": "2099-03-22"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2099-05-19",
+      "lunar_year": 2099,
+      "signed_lunar_month": 3,
+      "start_date": "2099-04-20"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2099-06-18",
+      "lunar_year": 2099,
+      "signed_lunar_month": 4,
+      "start_date": "2099-05-20"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2099-07-17",
+      "lunar_year": 2099,
+      "signed_lunar_month": 5,
+      "start_date": "2099-06-19"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2099-08-15",
+      "lunar_year": 2099,
+      "signed_lunar_month": 6,
+      "start_date": "2099-07-18"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2099-09-14",
+      "lunar_year": 2099,
+      "signed_lunar_month": 7,
+      "start_date": "2099-08-16"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2099-10-13",
+      "lunar_year": 2099,
+      "signed_lunar_month": 8,
+      "start_date": "2099-09-15"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2099-11-11",
+      "lunar_year": 2099,
+      "signed_lunar_month": 9,
+      "start_date": "2099-10-14"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2099-12-11",
+      "lunar_year": 2099,
+      "signed_lunar_month": 10,
+      "start_date": "2099-11-12"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2100-01-09",
+      "lunar_year": 2099,
+      "signed_lunar_month": 11,
+      "start_date": "2099-12-12"
+    }
+  ],
+  "schema_name": "ziwei_calendar_interval_year_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}

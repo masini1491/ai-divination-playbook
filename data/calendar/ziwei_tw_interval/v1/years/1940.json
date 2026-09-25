@@ -1,0 +1,107 @@
+{
+  "coverage": "gregorian_year_intersection",
+  "gregorian_year": 1940,
+  "intervals": [
+    {
+      "day_count": 29,
+      "end_date": "1940-01-08",
+      "lunar_year": 1939,
+      "signed_lunar_month": 11,
+      "start_date": "1939-12-11"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1940-02-07",
+      "lunar_year": 1939,
+      "signed_lunar_month": 12,
+      "start_date": "1940-01-09"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1940-03-08",
+      "lunar_year": 1940,
+      "signed_lunar_month": 1,
+      "start_date": "1940-02-08"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1940-04-07",
+      "lunar_year": 1940,
+      "signed_lunar_month": 2,
+      "start_date": "1940-03-09"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1940-05-06",
+      "lunar_year": 1940,
+      "signed_lunar_month": 3,
+      "start_date": "1940-04-08"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1940-06-05",
+      "lunar_year": 1940,
+      "signed_lunar_month": 4,
+      "start_date": "1940-05-07"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1940-07-04",
+      "lunar_year": 1940,
+      "signed_lunar_month": 5,
+      "start_date": "1940-06-06"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1940-08-03",
+      "lunar_year": 1940,
+      "signed_lunar_month": 6,
+      "start_date": "1940-07-05"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1940-09-01",
+      "lunar_year": 1940,
+      "signed_lunar_month": 7,
+      "start_date": "1940-08-04"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1940-09-30",
+      "lunar_year": 1940,
+      "signed_lunar_month": 8,
+      "start_date": "1940-09-02"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1940-10-30",
+      "lunar_year": 1940,
+      "signed_lunar_month": 9,
+      "start_date": "1940-10-01"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1940-11-28",
+      "lunar_year": 1940,
+      "signed_lunar_month": 10,
+      "start_date": "1940-10-31"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1940-12-28",
+      "lunar_year": 1940,
+      "signed_lunar_month": 11,
+      "start_date": "1940-11-29"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1941-01-26",
+      "lunar_year": 1940,
+      "signed_lunar_month": 12,
+      "start_date": "1940-12-29"
+    }
+  ],
+  "schema_name": "ziwei_calendar_interval_year_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}

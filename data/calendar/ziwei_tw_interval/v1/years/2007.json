@@ -1,0 +1,100 @@
+{
+  "coverage": "gregorian_year_intersection",
+  "gregorian_year": 2007,
+  "intervals": [
+    {
+      "day_count": 30,
+      "end_date": "2007-01-18",
+      "lunar_year": 2006,
+      "signed_lunar_month": 11,
+      "start_date": "2006-12-20"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2007-02-17",
+      "lunar_year": 2006,
+      "signed_lunar_month": 12,
+      "start_date": "2007-01-19"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2007-03-18",
+      "lunar_year": 2007,
+      "signed_lunar_month": 1,
+      "start_date": "2007-02-18"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2007-04-16",
+      "lunar_year": 2007,
+      "signed_lunar_month": 2,
+      "start_date": "2007-03-19"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2007-05-16",
+      "lunar_year": 2007,
+      "signed_lunar_month": 3,
+      "start_date": "2007-04-17"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2007-06-14",
+      "lunar_year": 2007,
+      "signed_lunar_month": 4,
+      "start_date": "2007-05-17"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2007-07-13",
+      "lunar_year": 2007,
+      "signed_lunar_month": 5,
+      "start_date": "2007-06-15"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2007-08-12",
+      "lunar_year": 2007,
+      "signed_lunar_month": 6,
+      "start_date": "2007-07-14"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2007-09-10",
+      "lunar_year": 2007,
+      "signed_lunar_month": 7,
+      "start_date": "2007-08-13"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2007-10-10",
+      "lunar_year": 2007,
+      "signed_lunar_month": 8,
+      "start_date": "2007-09-11"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2007-11-09",
+      "lunar_year": 2007,
+      "signed_lunar_month": 9,
+      "start_date": "2007-10-11"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2007-12-09",
+      "lunar_year": 2007,
+      "signed_lunar_month": 10,
+      "start_date": "2007-11-10"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2008-01-07",
+      "lunar_year": 2007,
+      "signed_lunar_month": 11,
+      "start_date": "2007-12-10"
+    }
+  ],
+  "schema_name": "ziwei_calendar_interval_year_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}

@@ -1,0 +1,100 @@
+{
+  "coverage": "gregorian_year_intersection",
+  "gregorian_year": 1988,
+  "intervals": [
+    {
+      "day_count": 29,
+      "end_date": "1988-01-18",
+      "lunar_year": 1987,
+      "signed_lunar_month": 11,
+      "start_date": "1987-12-21"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1988-02-16",
+      "lunar_year": 1987,
+      "signed_lunar_month": 12,
+      "start_date": "1988-01-19"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1988-03-17",
+      "lunar_year": 1988,
+      "signed_lunar_month": 1,
+      "start_date": "1988-02-17"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1988-04-15",
+      "lunar_year": 1988,
+      "signed_lunar_month": 2,
+      "start_date": "1988-03-18"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1988-05-15",
+      "lunar_year": 1988,
+      "signed_lunar_month": 3,
+      "start_date": "1988-04-16"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1988-06-13",
+      "lunar_year": 1988,
+      "signed_lunar_month": 4,
+      "start_date": "1988-05-16"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1988-07-13",
+      "lunar_year": 1988,
+      "signed_lunar_month": 5,
+      "start_date": "1988-06-14"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1988-08-11",
+      "lunar_year": 1988,
+      "signed_lunar_month": 6,
+      "start_date": "1988-07-14"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1988-09-10",
+      "lunar_year": 1988,
+      "signed_lunar_month": 7,
+      "start_date": "1988-08-12"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1988-10-10",
+      "lunar_year": 1988,
+      "signed_lunar_month": 8,
+      "start_date": "1988-09-11"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1988-11-08",
+      "lunar_year": 1988,
+      "signed_lunar_month": 9,
+      "start_date": "1988-10-11"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1988-12-08",
+      "lunar_year": 1988,
+      "signed_lunar_month": 10,
+      "start_date": "1988-11-09"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1989-01-07",
+      "lunar_year": 1988,
+      "signed_lunar_month": 11,
+      "start_date": "1988-12-09"
+    }
+  ],
+  "schema_name": "ziwei_calendar_interval_year_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}

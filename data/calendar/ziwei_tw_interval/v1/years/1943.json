@@ -1,0 +1,107 @@
+{
+  "coverage": "gregorian_year_intersection",
+  "gregorian_year": 1943,
+  "intervals": [
+    {
+      "day_count": 29,
+      "end_date": "1943-01-05",
+      "lunar_year": 1942,
+      "signed_lunar_month": 11,
+      "start_date": "1942-12-08"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1943-02-04",
+      "lunar_year": 1942,
+      "signed_lunar_month": 12,
+      "start_date": "1943-01-06"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1943-03-05",
+      "lunar_year": 1943,
+      "signed_lunar_month": 1,
+      "start_date": "1943-02-05"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1943-04-04",
+      "lunar_year": 1943,
+      "signed_lunar_month": 2,
+      "start_date": "1943-03-06"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1943-05-03",
+      "lunar_year": 1943,
+      "signed_lunar_month": 3,
+      "start_date": "1943-04-05"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1943-06-02",
+      "lunar_year": 1943,
+      "signed_lunar_month": 4,
+      "start_date": "1943-05-04"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1943-07-01",
+      "lunar_year": 1943,
+      "signed_lunar_month": 5,
+      "start_date": "1943-06-03"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1943-07-31",
+      "lunar_year": 1943,
+      "signed_lunar_month": 6,
+      "start_date": "1943-07-02"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1943-08-30",
+      "lunar_year": 1943,
+      "signed_lunar_month": 7,
+      "start_date": "1943-08-01"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1943-09-28",
+      "lunar_year": 1943,
+      "signed_lunar_month": 8,
+      "start_date": "1943-08-31"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1943-10-28",
+      "lunar_year": 1943,
+      "signed_lunar_month": 9,
+      "start_date": "1943-09-29"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1943-11-26",
+      "lunar_year": 1943,
+      "signed_lunar_month": 10,
+      "start_date": "1943-10-29"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1943-12-26",
+      "lunar_year": 1943,
+      "signed_lunar_month": 11,
+      "start_date": "1943-11-27"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1944-01-24",
+      "lunar_year": 1943,
+      "signed_lunar_month": 12,
+      "start_date": "1943-12-27"
+    }
+  ],
+  "schema_name": "ziwei_calendar_interval_year_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}

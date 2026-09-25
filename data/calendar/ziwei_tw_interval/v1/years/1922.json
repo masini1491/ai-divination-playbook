@@ -1,0 +1,100 @@
+{
+  "coverage": "gregorian_year_intersection",
+  "gregorian_year": 1922,
+  "intervals": [
+    {
+      "day_count": 30,
+      "end_date": "1922-01-27",
+      "lunar_year": 1921,
+      "signed_lunar_month": 12,
+      "start_date": "1921-12-29"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1922-02-26",
+      "lunar_year": 1922,
+      "signed_lunar_month": 1,
+      "start_date": "1922-01-28"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1922-03-27",
+      "lunar_year": 1922,
+      "signed_lunar_month": 2,
+      "start_date": "1922-02-27"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1922-04-26",
+      "lunar_year": 1922,
+      "signed_lunar_month": 3,
+      "start_date": "1922-03-28"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1922-05-26",
+      "lunar_year": 1922,
+      "signed_lunar_month": 4,
+      "start_date": "1922-04-27"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1922-06-24",
+      "lunar_year": 1922,
+      "signed_lunar_month": 5,
+      "start_date": "1922-05-27"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1922-07-23",
+      "lunar_year": 1922,
+      "signed_lunar_month": -5,
+      "start_date": "1922-06-25"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1922-08-22",
+      "lunar_year": 1922,
+      "signed_lunar_month": 6,
+      "start_date": "1922-07-24"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1922-09-20",
+      "lunar_year": 1922,
+      "signed_lunar_month": 7,
+      "start_date": "1922-08-23"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1922-10-19",
+      "lunar_year": 1922,
+      "signed_lunar_month": 8,
+      "start_date": "1922-09-21"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1922-11-18",
+      "lunar_year": 1922,
+      "signed_lunar_month": 9,
+      "start_date": "1922-10-20"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1922-12-17",
+      "lunar_year": 1922,
+      "signed_lunar_month": 10,
+      "start_date": "1922-11-19"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1923-01-16",
+      "lunar_year": 1922,
+      "signed_lunar_month": 11,
+      "start_date": "1922-12-18"
+    }
+  ],
+  "schema_name": "ziwei_calendar_interval_year_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}

@@ -1,0 +1,100 @@
+{
+  "coverage": "gregorian_year_intersection",
+  "gregorian_year": 1976,
+  "intervals": [
+    {
+      "day_count": 30,
+      "end_date": "1976-01-30",
+      "lunar_year": 1975,
+      "signed_lunar_month": 12,
+      "start_date": "1976-01-01"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1976-02-29",
+      "lunar_year": 1976,
+      "signed_lunar_month": 1,
+      "start_date": "1976-01-31"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1976-03-30",
+      "lunar_year": 1976,
+      "signed_lunar_month": 2,
+      "start_date": "1976-03-01"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1976-04-28",
+      "lunar_year": 1976,
+      "signed_lunar_month": 3,
+      "start_date": "1976-03-31"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1976-05-28",
+      "lunar_year": 1976,
+      "signed_lunar_month": 4,
+      "start_date": "1976-04-29"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1976-06-26",
+      "lunar_year": 1976,
+      "signed_lunar_month": 5,
+      "start_date": "1976-05-29"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1976-07-26",
+      "lunar_year": 1976,
+      "signed_lunar_month": 6,
+      "start_date": "1976-06-27"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1976-08-24",
+      "lunar_year": 1976,
+      "signed_lunar_month": 7,
+      "start_date": "1976-07-27"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1976-09-23",
+      "lunar_year": 1976,
+      "signed_lunar_month": 8,
+      "start_date": "1976-08-25"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1976-10-22",
+      "lunar_year": 1976,
+      "signed_lunar_month": -8,
+      "start_date": "1976-09-24"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1976-11-20",
+      "lunar_year": 1976,
+      "signed_lunar_month": 9,
+      "start_date": "1976-10-23"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1976-12-20",
+      "lunar_year": 1976,
+      "signed_lunar_month": 10,
+      "start_date": "1976-11-21"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1977-01-18",
+      "lunar_year": 1976,
+      "signed_lunar_month": 11,
+      "start_date": "1976-12-21"
+    }
+  ],
+  "schema_name": "ziwei_calendar_interval_year_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}

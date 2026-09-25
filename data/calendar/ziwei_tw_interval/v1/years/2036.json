@@ -1,0 +1,100 @@
+{
+  "coverage": "gregorian_year_intersection",
+  "gregorian_year": 2036,
+  "intervals": [
+    {
+      "day_count": 30,
+      "end_date": "2036-01-27",
+      "lunar_year": 2035,
+      "signed_lunar_month": 12,
+      "start_date": "2035-12-29"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2036-02-26",
+      "lunar_year": 2036,
+      "signed_lunar_month": 1,
+      "start_date": "2036-01-28"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2036-03-27",
+      "lunar_year": 2036,
+      "signed_lunar_month": 2,
+      "start_date": "2036-02-27"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2036-04-25",
+      "lunar_year": 2036,
+      "signed_lunar_month": 3,
+      "start_date": "2036-03-28"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2036-05-25",
+      "lunar_year": 2036,
+      "signed_lunar_month": 4,
+      "start_date": "2036-04-26"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2036-06-23",
+      "lunar_year": 2036,
+      "signed_lunar_month": 5,
+      "start_date": "2036-05-26"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2036-07-22",
+      "lunar_year": 2036,
+      "signed_lunar_month": 6,
+      "start_date": "2036-06-24"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2036-08-21",
+      "lunar_year": 2036,
+      "signed_lunar_month": -6,
+      "start_date": "2036-07-23"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2036-09-19",
+      "lunar_year": 2036,
+      "signed_lunar_month": 7,
+      "start_date": "2036-08-22"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2036-10-18",
+      "lunar_year": 2036,
+      "signed_lunar_month": 8,
+      "start_date": "2036-09-20"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2036-11-17",
+      "lunar_year": 2036,
+      "signed_lunar_month": 9,
+      "start_date": "2036-10-19"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2036-12-16",
+      "lunar_year": 2036,
+      "signed_lunar_month": 10,
+      "start_date": "2036-11-18"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2037-01-15",
+      "lunar_year": 2036,
+      "signed_lunar_month": 11,
+      "start_date": "2036-12-17"
+    }
+  ],
+  "schema_name": "ziwei_calendar_interval_year_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}

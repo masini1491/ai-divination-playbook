@@ -1,0 +1,100 @@
+{
+  "coverage": "gregorian_year_intersection",
+  "gregorian_year": 2071,
+  "intervals": [
+    {
+      "day_count": 30,
+      "end_date": "2071-01-30",
+      "lunar_year": 2070,
+      "signed_lunar_month": 12,
+      "start_date": "2071-01-01"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2071-03-01",
+      "lunar_year": 2071,
+      "signed_lunar_month": 1,
+      "start_date": "2071-01-31"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2071-03-30",
+      "lunar_year": 2071,
+      "signed_lunar_month": 2,
+      "start_date": "2071-03-02"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2071-04-29",
+      "lunar_year": 2071,
+      "signed_lunar_month": 3,
+      "start_date": "2071-03-31"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2071-05-28",
+      "lunar_year": 2071,
+      "signed_lunar_month": 4,
+      "start_date": "2071-04-30"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2071-06-27",
+      "lunar_year": 2071,
+      "signed_lunar_month": 5,
+      "start_date": "2071-05-29"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2071-07-26",
+      "lunar_year": 2071,
+      "signed_lunar_month": 6,
+      "start_date": "2071-06-28"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2071-08-24",
+      "lunar_year": 2071,
+      "signed_lunar_month": 7,
+      "start_date": "2071-07-27"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2071-09-23",
+      "lunar_year": 2071,
+      "signed_lunar_month": 8,
+      "start_date": "2071-08-25"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2071-10-22",
+      "lunar_year": 2071,
+      "signed_lunar_month": -8,
+      "start_date": "2071-09-24"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2071-11-21",
+      "lunar_year": 2071,
+      "signed_lunar_month": 9,
+      "start_date": "2071-10-23"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2071-12-20",
+      "lunar_year": 2071,
+      "signed_lunar_month": 10,
+      "start_date": "2071-11-22"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2072-01-19",
+      "lunar_year": 2071,
+      "signed_lunar_month": 11,
+      "start_date": "2071-12-21"
+    }
+  ],
+  "schema_name": "ziwei_calendar_interval_year_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}

@@ -1,0 +1,107 @@
+{
+  "coverage": "gregorian_year_intersection",
+  "gregorian_year": 1951,
+  "intervals": [
+    {
+      "day_count": 30,
+      "end_date": "1951-01-07",
+      "lunar_year": 1950,
+      "signed_lunar_month": 11,
+      "start_date": "1950-12-09"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1951-02-05",
+      "lunar_year": 1950,
+      "signed_lunar_month": 12,
+      "start_date": "1951-01-08"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1951-03-07",
+      "lunar_year": 1951,
+      "signed_lunar_month": 1,
+      "start_date": "1951-02-06"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1951-04-05",
+      "lunar_year": 1951,
+      "signed_lunar_month": 2,
+      "start_date": "1951-03-08"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1951-05-05",
+      "lunar_year": 1951,
+      "signed_lunar_month": 3,
+      "start_date": "1951-04-06"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1951-06-04",
+      "lunar_year": 1951,
+      "signed_lunar_month": 4,
+      "start_date": "1951-05-06"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1951-07-03",
+      "lunar_year": 1951,
+      "signed_lunar_month": 5,
+      "start_date": "1951-06-05"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1951-08-02",
+      "lunar_year": 1951,
+      "signed_lunar_month": 6,
+      "start_date": "1951-07-04"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1951-08-31",
+      "lunar_year": 1951,
+      "signed_lunar_month": 7,
+      "start_date": "1951-08-03"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1951-09-30",
+      "lunar_year": 1951,
+      "signed_lunar_month": 8,
+      "start_date": "1951-09-01"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1951-10-29",
+      "lunar_year": 1951,
+      "signed_lunar_month": 9,
+      "start_date": "1951-10-01"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1951-11-28",
+      "lunar_year": 1951,
+      "signed_lunar_month": 10,
+      "start_date": "1951-10-30"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1951-12-27",
+      "lunar_year": 1951,
+      "signed_lunar_month": 11,
+      "start_date": "1951-11-29"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1952-01-26",
+      "lunar_year": 1951,
+      "signed_lunar_month": 12,
+      "start_date": "1951-12-28"
+    }
+  ],
+  "schema_name": "ziwei_calendar_interval_year_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}

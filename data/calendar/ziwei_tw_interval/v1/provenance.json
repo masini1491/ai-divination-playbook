@@ -1,0 +1,41 @@
+{
+  "dataset_id": "ziwei_tw_interval_1900_2100_candidate_v1",
+  "dataset_kind": "derived_gregorian_year_shards_with_lunar_month_intervals",
+  "generator": {
+    "path": "tools/build_ziwei_calendar_interval_dataset.py",
+    "sha256": "7b6da91734c5afde20e47cd8f31be67a73c9f20d82ba458accb02fbe22c79a31"
+  },
+  "license_note": "Upstream implementation is MIT licensed; this tree stores deterministic derived calendar facts, not vendored upstream implementation.",
+  "production_authority": false,
+  "runtime_policy_separation": [
+    "next_day_at_23",
+    "split_after_day_15",
+    "hour_branch_mapping"
+  ],
+  "schema_name": "ziwei_calendar_dataset_provenance",
+  "schema_version": "1.0.0",
+  "selected_product_range": {
+    "end_date": "2100-12-31",
+    "production_admitted": false,
+    "selected": true,
+    "start_date": "1900-01-01",
+    "status": "SELECTED_CANDIDATE_NOT_PRODUCTION_ADMITTED"
+  },
+  "source": {
+    "license": "MIT",
+    "package": "lunar_python",
+    "repository": "6tail/lunar-python",
+    "revision": "000c8a3d74eed098d6256a28fdd51b869324c559",
+    "source_identity": {
+      "file_count": 34,
+      "hash_algorithm": "sha256(path + NUL + sha256 + NUL, lexicographic path order)",
+      "identity_policy": "installed-source-bytes-must-match-pinned-upstream-git-blobs",
+      "inventory_owner": "tools/build_ziwei_tool_bundle.py",
+      "sha256": "bf49ea69241171a8e5b5a85ca07748c88b00f5ce392f25c21617e398c9c9a712",
+      "total_bytes": 373725
+    },
+    "version": "1.4.8"
+  },
+  "status": "RESEARCH_CANDIDATE_NOT_PRODUCTION",
+  "timezone_scope": "Asia/Taipei civil time"
+}

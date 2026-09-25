@@ -1,0 +1,100 @@
+{
+  "coverage": "gregorian_year_intersection",
+  "gregorian_year": 2077,
+  "intervals": [
+    {
+      "day_count": 29,
+      "end_date": "2077-01-23",
+      "lunar_year": 2076,
+      "signed_lunar_month": 12,
+      "start_date": "2076-12-26"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2077-02-22",
+      "lunar_year": 2077,
+      "signed_lunar_month": 1,
+      "start_date": "2077-01-24"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2077-03-23",
+      "lunar_year": 2077,
+      "signed_lunar_month": 2,
+      "start_date": "2077-02-23"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2077-04-22",
+      "lunar_year": 2077,
+      "signed_lunar_month": 3,
+      "start_date": "2077-03-24"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2077-05-21",
+      "lunar_year": 2077,
+      "signed_lunar_month": 4,
+      "start_date": "2077-04-23"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2077-06-19",
+      "lunar_year": 2077,
+      "signed_lunar_month": -4,
+      "start_date": "2077-05-22"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2077-07-19",
+      "lunar_year": 2077,
+      "signed_lunar_month": 5,
+      "start_date": "2077-06-20"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2077-08-17",
+      "lunar_year": 2077,
+      "signed_lunar_month": 6,
+      "start_date": "2077-07-20"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2077-09-16",
+      "lunar_year": 2077,
+      "signed_lunar_month": 7,
+      "start_date": "2077-08-18"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2077-10-16",
+      "lunar_year": 2077,
+      "signed_lunar_month": 8,
+      "start_date": "2077-09-17"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2077-11-15",
+      "lunar_year": 2077,
+      "signed_lunar_month": 9,
+      "start_date": "2077-10-17"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2077-12-14",
+      "lunar_year": 2077,
+      "signed_lunar_month": 10,
+      "start_date": "2077-11-16"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2078-01-13",
+      "lunar_year": 2077,
+      "signed_lunar_month": 11,
+      "start_date": "2077-12-15"
+    }
+  ],
+  "schema_name": "ziwei_calendar_interval_year_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}

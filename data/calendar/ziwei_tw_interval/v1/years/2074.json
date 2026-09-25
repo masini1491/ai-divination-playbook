@@ -1,0 +1,100 @@
+{
+  "coverage": "gregorian_year_intersection",
+  "gregorian_year": 2074,
+  "intervals": [
+    {
+      "day_count": 29,
+      "end_date": "2074-01-26",
+      "lunar_year": 2073,
+      "signed_lunar_month": 12,
+      "start_date": "2073-12-29"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2074-02-25",
+      "lunar_year": 2074,
+      "signed_lunar_month": 1,
+      "start_date": "2074-01-27"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2074-03-26",
+      "lunar_year": 2074,
+      "signed_lunar_month": 2,
+      "start_date": "2074-02-26"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2074-04-25",
+      "lunar_year": 2074,
+      "signed_lunar_month": 3,
+      "start_date": "2074-03-27"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2074-05-25",
+      "lunar_year": 2074,
+      "signed_lunar_month": 4,
+      "start_date": "2074-04-26"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2074-06-23",
+      "lunar_year": 2074,
+      "signed_lunar_month": 5,
+      "start_date": "2074-05-26"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2074-07-23",
+      "lunar_year": 2074,
+      "signed_lunar_month": 6,
+      "start_date": "2074-06-24"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2074-08-21",
+      "lunar_year": 2074,
+      "signed_lunar_month": -6,
+      "start_date": "2074-07-24"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2074-09-20",
+      "lunar_year": 2074,
+      "signed_lunar_month": 7,
+      "start_date": "2074-08-22"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2074-10-19",
+      "lunar_year": 2074,
+      "signed_lunar_month": 8,
+      "start_date": "2074-09-21"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2074-11-18",
+      "lunar_year": 2074,
+      "signed_lunar_month": 9,
+      "start_date": "2074-10-20"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2074-12-17",
+      "lunar_year": 2074,
+      "signed_lunar_month": 10,
+      "start_date": "2074-11-19"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2075-01-16",
+      "lunar_year": 2074,
+      "signed_lunar_month": 11,
+      "start_date": "2074-12-18"
+    }
+  ],
+  "schema_name": "ziwei_calendar_interval_year_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}

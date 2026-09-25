@@ -1,0 +1,107 @@
+{
+  "coverage": "gregorian_year_intersection",
+  "gregorian_year": 2060,
+  "intervals": [
+    {
+      "day_count": 30,
+      "end_date": "2060-01-03",
+      "lunar_year": 2059,
+      "signed_lunar_month": 11,
+      "start_date": "2059-12-05"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2060-02-01",
+      "lunar_year": 2059,
+      "signed_lunar_month": 12,
+      "start_date": "2060-01-04"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2060-03-02",
+      "lunar_year": 2060,
+      "signed_lunar_month": 1,
+      "start_date": "2060-02-02"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2060-03-31",
+      "lunar_year": 2060,
+      "signed_lunar_month": 2,
+      "start_date": "2060-03-03"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2060-04-29",
+      "lunar_year": 2060,
+      "signed_lunar_month": 3,
+      "start_date": "2060-04-01"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2060-05-29",
+      "lunar_year": 2060,
+      "signed_lunar_month": 4,
+      "start_date": "2060-04-30"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2060-06-27",
+      "lunar_year": 2060,
+      "signed_lunar_month": 5,
+      "start_date": "2060-05-30"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2060-07-26",
+      "lunar_year": 2060,
+      "signed_lunar_month": 6,
+      "start_date": "2060-06-28"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2060-08-25",
+      "lunar_year": 2060,
+      "signed_lunar_month": 7,
+      "start_date": "2060-07-27"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2060-09-23",
+      "lunar_year": 2060,
+      "signed_lunar_month": 8,
+      "start_date": "2060-08-26"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2060-10-23",
+      "lunar_year": 2060,
+      "signed_lunar_month": 9,
+      "start_date": "2060-09-24"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2060-11-22",
+      "lunar_year": 2060,
+      "signed_lunar_month": 10,
+      "start_date": "2060-10-24"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2060-12-22",
+      "lunar_year": 2060,
+      "signed_lunar_month": 11,
+      "start_date": "2060-11-23"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2061-01-20",
+      "lunar_year": 2060,
+      "signed_lunar_month": 12,
+      "start_date": "2060-12-23"
+    }
+  ],
+  "schema_name": "ziwei_calendar_interval_year_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}

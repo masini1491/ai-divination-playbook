@@ -1,0 +1,1689 @@
+{
+  "aggregate_hash": "4913a39e770afcd21eedc387523c572b8c4fc6469889c28f6ea75613f8984d79",
+  "aggregate_hash_algorithm": "sha256(path + NUL + bytes + NUL, lexicographic path order)",
+  "dataset_id": "ziwei_tw_interval_1900_2100_candidate_v1",
+  "dependency": {
+    "license": "MIT",
+    "package": "lunar_python",
+    "repository": "6tail/lunar-python",
+    "revision": "000c8a3d74eed098d6256a28fdd51b869324c559",
+    "source_identity": {
+      "file_count": 34,
+      "hash_algorithm": "sha256(path + NUL + sha256 + NUL, lexicographic path order)",
+      "identity_policy": "installed-source-bytes-must-match-pinned-upstream-git-blobs",
+      "inventory_owner": "tools/build_ziwei_tool_bundle.py",
+      "sha256": "bf49ea69241171a8e5b5a85ca07748c88b00f5ce392f25c21617e398c9c9a712",
+      "total_bytes": 373725
+    },
+    "version": "1.4.8"
+  },
+  "generator": {
+    "path": "tools/build_ziwei_calendar_interval_dataset.py",
+    "sha256": "7b6da91734c5afde20e47cd8f31be67a73c9f20d82ba458accb02fbe22c79a31"
+  },
+  "materialized_year_range": {
+    "end_year": 2101,
+    "start_year": 1900
+  },
+  "metadata_files": [
+    {
+      "bytes": 1595,
+      "path": "provenance.json",
+      "sha256": "84f01557c20d4b8d293e145e1120b970305837df109d2f80993a3dc6351a8997"
+    },
+    {
+      "bytes": 630,
+      "path": "ATTRIBUTION.md",
+      "sha256": "d97dd1d2f18063d3a995daf8286a8152139778ac08224d74025f9ac930ea5f58"
+    }
+  ],
+  "one_query_contract": {
+    "ordinary_date_max_files": 1,
+    "rat_hour_cross_year_max_files": 2
+  },
+  "production_admitted": false,
+  "requested_gregorian_range": {
+    "end_year": 2100,
+    "start_year": 1900
+  },
+  "schema_name": "ziwei_calendar_interval_dataset_manifest",
+  "schema_version": "0.2.0-candidate",
+  "selected_product_range": {
+    "end_date": "2100-12-31",
+    "production_admitted": false,
+    "selected": true,
+    "start_date": "1900-01-01",
+    "status": "SELECTED_CANDIDATE_NOT_PRODUCTION_ADMITTED"
+  },
+  "shard_contract": {
+    "record": "lunar-month interval",
+    "schema_name": "ziwei_calendar_interval_year_shard",
+    "schema_version": "0.1.0-poc",
+    "shard_key": "Gregorian year",
+    "status": "RESEARCH_POC_NOT_PRODUCTION"
+  },
+  "shards": [
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1900.json",
+      "sha256": "ab108f0bbe878b7bec63f96a5a0be92474ed145f08ee010b9042fe869fe2b4a5",
+      "support_role": "requested_range",
+      "year": 1900
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1901.json",
+      "sha256": "fb7378e53923efcfbe18a57687d0e0a2809c312ac2b69aa31568e0f60f7b3164",
+      "support_role": "requested_range",
+      "year": 1901
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/1902.json",
+      "sha256": "9e0e0660caef5bc9ee62d7973c426e590fade5bc7887fc200330c1316c72debb",
+      "support_role": "requested_range",
+      "year": 1902
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1903.json",
+      "sha256": "7bc7835ea5a6339de8fd4fb688c08f689369dce002e7466c095c145a0ba79490",
+      "support_role": "requested_range",
+      "year": 1903
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1904.json",
+      "sha256": "9464d84af10d10374b03d2db36223bb01e4442436eab01a6250164f07dcc2aa2",
+      "support_role": "requested_range",
+      "year": 1904
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/1905.json",
+      "sha256": "1364e00f59d7b43beb4d9f0e961621ea70a441a5daba457f8ca14eff06eebd7d",
+      "support_role": "requested_range",
+      "year": 1905
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1906.json",
+      "sha256": "6aead09f9738819d5c392d61bc56c667fd7e9b89695092596bc6ed6e40e37c22",
+      "support_role": "requested_range",
+      "year": 1906
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1907.json",
+      "sha256": "87e13ee73b62949d20f6a1481e6bc0ec5f705bdbab6e35ec166894ef856e68f0",
+      "support_role": "requested_range",
+      "year": 1907
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/1908.json",
+      "sha256": "0be888eac4202263803ab52ac684c95c6a6a7c514231644bc2b1b0a5787edc0e",
+      "support_role": "requested_range",
+      "year": 1908
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1909.json",
+      "sha256": "4a067b205596a2236068c27e657aa84638f0a0aa55ca6e4a2281a8b2c1d798e1",
+      "support_role": "requested_range",
+      "year": 1909
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1910.json",
+      "sha256": "ac33ce0e0a2b6a1a46e605978b63eda076ff70dc1ee25117638a911d3fe729fa",
+      "support_role": "requested_range",
+      "year": 1910
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1911.json",
+      "sha256": "4c2e31ac1ff798ef18d8c6eb556d18544d7f56425b75004c72bc05faab097a82",
+      "support_role": "requested_range",
+      "year": 1911
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1912.json",
+      "sha256": "2c282038151d2f5f35918a8e64f3e5248c02e348da9ca870df7bebb973804e04",
+      "support_role": "requested_range",
+      "year": 1912
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/1913.json",
+      "sha256": "79de2dda6254fc661fcb4fb07d80032155d4c05ab25ed3e198a4c98f3287c41d",
+      "support_role": "requested_range",
+      "year": 1913
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1914.json",
+      "sha256": "c2e58df5ab6c4dbf700d4ae14bd625fbc403aaa1cc9b5b95240a9c0b09c272a6",
+      "support_role": "requested_range",
+      "year": 1914
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1915.json",
+      "sha256": "1bd62f05a42eac3c17d4ca1da5951c818808bc179c77f0a6849926069971c954",
+      "support_role": "requested_range",
+      "year": 1915
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/1916.json",
+      "sha256": "a03dcc0dccb124733394ad42b1a2a51ea2f235fcdbc8d191185f2d5ba57cb1b2",
+      "support_role": "requested_range",
+      "year": 1916
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1917.json",
+      "sha256": "f46b4715afdb9bb50112b7bf78504a69ed1b2013fa607fe04b1a68e7dc1faf27",
+      "support_role": "requested_range",
+      "year": 1917
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1918.json",
+      "sha256": "524db3a29cad5138350c7d1271a61da2bc8769c7d3d8e2e72d8884f18bf6552a",
+      "support_role": "requested_range",
+      "year": 1918
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/1919.json",
+      "sha256": "83a817b35eda5ad679934aa2d8f9b11e594b94a7b7887a5c33916c6b0d5b615c",
+      "support_role": "requested_range",
+      "year": 1919
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1920.json",
+      "sha256": "5518b55df17ee24b0a58898077b4cf7e7b3d5dcd5753f4f9c797c83a1b51b79a",
+      "support_role": "requested_range",
+      "year": 1920
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/1921.json",
+      "sha256": "065f039c229ea82924276edfc0e2d43403aa484e547260ef25026eaf85225927",
+      "support_role": "requested_range",
+      "year": 1921
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1922.json",
+      "sha256": "6b8cc85e9a93cebc7dad5ad42e04f9f74be4e882c6060944b31cb99b5aef66cb",
+      "support_role": "requested_range",
+      "year": 1922
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1923.json",
+      "sha256": "2409f01fad12a18585a45655f1326e44065b77df2fb50ad9972a96d95c8c5a67",
+      "support_role": "requested_range",
+      "year": 1923
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/1924.json",
+      "sha256": "68215fdd9e89a1e9cea827e9602993fdb65c3abec6c9b186529c781f062230b3",
+      "support_role": "requested_range",
+      "year": 1924
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1925.json",
+      "sha256": "77caa887cf9ff3e5baef9ee402b53964070158266bf8a652e986db58d55ff849",
+      "support_role": "requested_range",
+      "year": 1925
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1926.json",
+      "sha256": "4091fd04f4a12f03133dc650390ad7363c33a0afcfc7a04cb35a1777cb750fd2",
+      "support_role": "requested_range",
+      "year": 1926
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/1927.json",
+      "sha256": "1283817870749efb3e4871865f58250ff9ae87c7564335130bb160c72865e1e9",
+      "support_role": "requested_range",
+      "year": 1927
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1928.json",
+      "sha256": "2a59bceb1fae732f597a94ece2192bb2bef8f3ad070d8231f87f74b8c839fd43",
+      "support_role": "requested_range",
+      "year": 1928
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/1929.json",
+      "sha256": "be5f188766f156ccd2b3a119ec0e6dc6d2fb69104a8a36ecc73033ca52b329ab",
+      "support_role": "requested_range",
+      "year": 1929
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1930.json",
+      "sha256": "1bcfa7a03863c41b81d51f1de64c84069d410e682e562b62313c5235e74cccf2",
+      "support_role": "requested_range",
+      "year": 1930
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1931.json",
+      "sha256": "fe42108ea398e62016c6373c5faa65514d0802ec9d6dcf7eea9eee8f1ed04a7b",
+      "support_role": "requested_range",
+      "year": 1931
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/1932.json",
+      "sha256": "5ef892f498a1088e7a4d9c7fe4633f81aae3a9a27951b5fa4eaa4a2e89ef27bf",
+      "support_role": "requested_range",
+      "year": 1932
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1933.json",
+      "sha256": "607124df7119b29057533909a03744090c744585c0cf094936322d2802b80240",
+      "support_role": "requested_range",
+      "year": 1933
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1934.json",
+      "sha256": "152bfa3185308d487fe89479d010462382a15ff46d69c32602b16d0ff1edc53d",
+      "support_role": "requested_range",
+      "year": 1934
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/1935.json",
+      "sha256": "14a07c83b163b7e8051963f5dfee210d709d2b5a32d7ae07964e7ed4ca8a7104",
+      "support_role": "requested_range",
+      "year": 1935
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1936.json",
+      "sha256": "f6790bd53d284413ec84a013be20823282cae70dbc04a392bb4fb48f313fd8b4",
+      "support_role": "requested_range",
+      "year": 1936
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1937.json",
+      "sha256": "83084786a093b05cb2f960ba129f58a0a4fe2bf380f0ef2f1e61bc5ea5f0aa70",
+      "support_role": "requested_range",
+      "year": 1937
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/1938.json",
+      "sha256": "48f4f29d854c65edd4ccf3aa7e590c86acececd737542aafd775b31ad1fe216f",
+      "support_role": "requested_range",
+      "year": 1938
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1939.json",
+      "sha256": "c4f1679db37335a2eaca5b17a777c6316ea766630a65a73019722d7712d22b84",
+      "support_role": "requested_range",
+      "year": 1939
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/1940.json",
+      "sha256": "bc1dcd34bae6ed259fb33745354dc956309789f59d853e647bb10a28f79f46a3",
+      "support_role": "requested_range",
+      "year": 1940
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1941.json",
+      "sha256": "71c0cc4d1e5841c8a90d8901f6111399f1a0ff09360297467c43ce30f2322484",
+      "support_role": "requested_range",
+      "year": 1941
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1942.json",
+      "sha256": "b86d6712b416ff2b4c1b403da10b4d5b104a2788f543e71437c4479a208dc4be",
+      "support_role": "requested_range",
+      "year": 1942
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/1943.json",
+      "sha256": "97361880567888b43d56faf5195abe6b2c0aea951fbe7db0ccdba858f1f857ef",
+      "support_role": "requested_range",
+      "year": 1943
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1944.json",
+      "sha256": "05464496f6b477a310d5bda2a74e5a15b7af1be1db18baa205692febe814e55f",
+      "support_role": "requested_range",
+      "year": 1944
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1945.json",
+      "sha256": "2f719e4c7e794e05cb32b6f988a628c7b56f16c3d4a7065fe90cd9a6846b26ed",
+      "support_role": "requested_range",
+      "year": 1945
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/1946.json",
+      "sha256": "8ff6333edf9dfe4d7200af3e3338e3e2373f47cb3872d31ee67ca2831f7296aa",
+      "support_role": "requested_range",
+      "year": 1946
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1947.json",
+      "sha256": "6e9d9050de9b6fe51e8f6331a0117b0b6e4a3e264b5cf8fca4d2413cf5cd4606",
+      "support_role": "requested_range",
+      "year": 1947
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/1948.json",
+      "sha256": "49f36cd0684a3fe25e30c949c108816e2508ce07309ecf8618f973c0e3e73a76",
+      "support_role": "requested_range",
+      "year": 1948
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1949.json",
+      "sha256": "b46be51a7df7ace313b67b48c61654088377e2edc06707a3ac766b015852e969",
+      "support_role": "requested_range",
+      "year": 1949
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1950.json",
+      "sha256": "cbd6e1e6d6a27f95864b5bdab70c79eb5f9c93f6f93c1dbf4f429a338f80d103",
+      "support_role": "requested_range",
+      "year": 1950
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/1951.json",
+      "sha256": "2e53559634ec413b43e10a5cb6000e7a44f85091ea1e557dba0843157023f57c",
+      "support_role": "requested_range",
+      "year": 1951
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1952.json",
+      "sha256": "d1b05d3cffa65634885967f3be39660bcd0f8f9afcabed9e0e6be26ef0fa9b67",
+      "support_role": "requested_range",
+      "year": 1952
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1953.json",
+      "sha256": "b12100647b9edec89ac86a48d6c6c42a643dc99239b32e493304214e62c37b1c",
+      "support_role": "requested_range",
+      "year": 1953
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/1954.json",
+      "sha256": "2d0da91b4430b060cb6aab5600966fbc9275187b3413c0f1554a299bf31b3943",
+      "support_role": "requested_range",
+      "year": 1954
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1955.json",
+      "sha256": "caf749dc49f17b130a62e3fe6db96f5e4c236508c8b8370ae7025dc20f546aec",
+      "support_role": "requested_range",
+      "year": 1955
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1956.json",
+      "sha256": "73be678cdfbab3eb1541b62f37849856f23b9a05a0151127d35ce57593a8a823",
+      "support_role": "requested_range",
+      "year": 1956
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1957.json",
+      "sha256": "a1e7a6bbf0fd28db88a259cb3ed8af2ef0f46dc01617bb931db28eb842bd0c13",
+      "support_role": "requested_range",
+      "year": 1957
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1958.json",
+      "sha256": "4ca8373e40a7485b2fb08469e2dec1e698bdbac584a382a78fbcd27807afc71f",
+      "support_role": "requested_range",
+      "year": 1958
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/1959.json",
+      "sha256": "b4ed95ad4cdd92111b87c0180410c38b3c1e9eb3c11364bbb632d4e2936fc9f6",
+      "support_role": "requested_range",
+      "year": 1959
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1960.json",
+      "sha256": "7dc62fa7672769ea308a6872b2c257b79397a830602d29e18d22467b93c28df4",
+      "support_role": "requested_range",
+      "year": 1960
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1961.json",
+      "sha256": "724ca53bb1348f450498cd6bd121742fc1d2932056430664f5918034d40a1850",
+      "support_role": "requested_range",
+      "year": 1961
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/1962.json",
+      "sha256": "3f0cd9150aca45219bc5f18262119a1ebe9886590bfc0543816710449a2c6680",
+      "support_role": "requested_range",
+      "year": 1962
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1963.json",
+      "sha256": "494fe370fb1040b9e945f4e678d7b982d1fac21a6341d08ea486b4c1ec5db065",
+      "support_role": "requested_range",
+      "year": 1963
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1964.json",
+      "sha256": "848d1e030b77196dff515cb0ca549dc3f700334ed3c58d2df1f4673e29c0d942",
+      "support_role": "requested_range",
+      "year": 1964
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/1965.json",
+      "sha256": "e9c79820d0427af313e9cbbde3c4ad10a297fef36b49f6d3965d0697d35af367",
+      "support_role": "requested_range",
+      "year": 1965
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1966.json",
+      "sha256": "8139407037513da646b2948715d98ef9d587f2eb6e3574a40adfa6250b9db290",
+      "support_role": "requested_range",
+      "year": 1966
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/1967.json",
+      "sha256": "40bdd20c9d6a28add98912cc73a69a9b7851b79bbd6ee88310d18c9585b69195",
+      "support_role": "requested_range",
+      "year": 1967
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1968.json",
+      "sha256": "449456b4ff0957a5886db32aab1fd3105105f703b412a9a86f99c7a4f0dcb56c",
+      "support_role": "requested_range",
+      "year": 1968
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1969.json",
+      "sha256": "b94d2063a52540e4019450a8b06ae92134b0293783f06966c782d6dbc484566f",
+      "support_role": "requested_range",
+      "year": 1969
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/1970.json",
+      "sha256": "a4be8daca315ae1586aebdc969ef6e2768fe8f514b9fc5cf36ee7457c1976698",
+      "support_role": "requested_range",
+      "year": 1970
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1971.json",
+      "sha256": "0440c5473604cb2368d2d8f6d79b5bc7fa37a34006870e82bb2f47c7ea5639ee",
+      "support_role": "requested_range",
+      "year": 1971
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1972.json",
+      "sha256": "2f650de98163008e6cdd0fac12e94440e1030e7948e144b9d41cc94927e6f966",
+      "support_role": "requested_range",
+      "year": 1972
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/1973.json",
+      "sha256": "c542543d3bcf8e9daff88f4b801573bfc9baf13d225269925d2fdfdd8d77c647",
+      "support_role": "requested_range",
+      "year": 1973
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1974.json",
+      "sha256": "e5e74dcdc3fa4062d0796dfda635c29e6beee74a30361e5f573a490905029c7f",
+      "support_role": "requested_range",
+      "year": 1974
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1975.json",
+      "sha256": "3de2827b5377ef2a9796e947bfd79b1c6cc7598a7fc19f3c059bf8b039aac17a",
+      "support_role": "requested_range",
+      "year": 1975
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1976.json",
+      "sha256": "d1b70f6d3e1229b6d9ee60767f225d4fd31a397e5273f2ada2bb22b1ee42d0f7",
+      "support_role": "requested_range",
+      "year": 1976
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1977.json",
+      "sha256": "0b862cabf78ffa24e7efda4bbf00000dd334ed660fc5b12d220d8513b0f421fc",
+      "support_role": "requested_range",
+      "year": 1977
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/1978.json",
+      "sha256": "5ecb19797d4083470dcfcc24a222aea756236557f43d1949cad8509919e4a687",
+      "support_role": "requested_range",
+      "year": 1978
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1979.json",
+      "sha256": "9e0c4b4012e00adb3387f405e056aeedb14f386452ad81ce8b49c800c9f1c6c2",
+      "support_role": "requested_range",
+      "year": 1979
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1980.json",
+      "sha256": "08765f54ccb8539bd6010640a45df028ab93725b279cbe9b502a5b86725e4597",
+      "support_role": "requested_range",
+      "year": 1980
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/1981.json",
+      "sha256": "41dfb5c85853bd17da9ea9349857ff75e195432bf1211ca03e5185987a87af03",
+      "support_role": "requested_range",
+      "year": 1981
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1982.json",
+      "sha256": "a1c51d4e6690b6273106836dfccc0b81df6d3ebdfd3ba5489a8005ba5a087ca9",
+      "support_role": "requested_range",
+      "year": 1982
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1983.json",
+      "sha256": "149e726038b4c764bc659215161ae24fffc5f11d5928b098e30d62911598cd08",
+      "support_role": "requested_range",
+      "year": 1983
+    },
+    {
+      "bytes": 2444,
+      "interval_count": 14,
+      "path": "years/1984.json",
+      "sha256": "bd759773459dc1c60cd88b1622b9885ab04101659d905e4691d50006b999475e",
+      "support_role": "requested_range",
+      "year": 1984
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1985.json",
+      "sha256": "74c182d5110da9128a4e5e037ade2d10e7d65bcff9a05cc0357aef51eb30470f",
+      "support_role": "requested_range",
+      "year": 1985
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/1986.json",
+      "sha256": "f9b0066d99f55d3628a93bb8fcc6df5108acebc3516246b161415fed9b3d6589",
+      "support_role": "requested_range",
+      "year": 1986
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1987.json",
+      "sha256": "4b2b4a1e86e55a35edf2b6f6fcb193bc98dd257ea99e820f9d9adf8ae63e5578",
+      "support_role": "requested_range",
+      "year": 1987
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1988.json",
+      "sha256": "07817e3f24a1e34f8733981f3ab9064631df4b823bbd85527d9ba8cfe83789da",
+      "support_role": "requested_range",
+      "year": 1988
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/1989.json",
+      "sha256": "3942406f29fe39d092199799de0b3a0aeccbeaeba2f299b57b70d27242d50bf2",
+      "support_role": "requested_range",
+      "year": 1989
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1990.json",
+      "sha256": "a880f38ffc7d568ded27bc2f46d4d50570de6e5177029f200efed95e4bc60d5e",
+      "support_role": "requested_range",
+      "year": 1990
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1991.json",
+      "sha256": "6a40dd21db5bf6c409ff76e56099d93d036ed096ed6d2f4c41c35ee992651541",
+      "support_role": "requested_range",
+      "year": 1991
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/1992.json",
+      "sha256": "47d3ac5a99f320b6950c6fec546df1c0ed19e787ec987a7518ee6606528b1e3f",
+      "support_role": "requested_range",
+      "year": 1992
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1993.json",
+      "sha256": "0842b315c64965bcfa5e703582a66370d9d98a1dc09a00414d87f64c3aee015d",
+      "support_role": "requested_range",
+      "year": 1993
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1994.json",
+      "sha256": "2612789dcbbe768ded2ab442b07fc568459a4f3f0c16ecbb27f4b996ed40e6f2",
+      "support_role": "requested_range",
+      "year": 1994
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1995.json",
+      "sha256": "8059cda0ab9df45e0830ed86dc958a6ef385b923b6c19152aba5c65f167803cb",
+      "support_role": "requested_range",
+      "year": 1995
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1996.json",
+      "sha256": "b24c6a78773746319cfffb5bc412b40178e5ee806ff8df41f4ee479ebe54b025",
+      "support_role": "requested_range",
+      "year": 1996
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/1997.json",
+      "sha256": "202a31b0810804434c194c0d5846e791fda904abf31fc6c8b255d27f0d250cdf",
+      "support_role": "requested_range",
+      "year": 1997
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1998.json",
+      "sha256": "b38b201c167fb1023db1d531b78c9fb2efefb5bf1bba71e9600a4c03a28e79ae",
+      "support_role": "requested_range",
+      "year": 1998
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/1999.json",
+      "sha256": "04212860c780553c869d2f66afba5fe774ede2a86b923a607fb252a47a337210",
+      "support_role": "requested_range",
+      "year": 1999
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/2000.json",
+      "sha256": "091467e37bb8115737a7e9b85f4513b64e1e075ca63cf0dfded15c66091394e5",
+      "support_role": "requested_range",
+      "year": 2000
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2001.json",
+      "sha256": "7ef689255be96ac81654d7cfe5ed65a712f704dbc8c224e747839918f8d13971",
+      "support_role": "requested_range",
+      "year": 2001
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2002.json",
+      "sha256": "a625b6440ffd0ae724a12295122ea70f98d9c58d6143c1fbc9cb19bfd2c4e46c",
+      "support_role": "requested_range",
+      "year": 2002
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/2003.json",
+      "sha256": "9c0e840324e131f84ff13fce27a749c9fe14f056453941b89d7344b467c39c30",
+      "support_role": "requested_range",
+      "year": 2003
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2004.json",
+      "sha256": "e8c36d1a5a681976d08515e3d0af5683868d9edfa608de6391411a9661bc0abb",
+      "support_role": "requested_range",
+      "year": 2004
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/2005.json",
+      "sha256": "255e727080f476b11a4391d7c14381947da834cf8822c73ccb1f9a0f35533172",
+      "support_role": "requested_range",
+      "year": 2005
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2006.json",
+      "sha256": "98576ed72bacf552b3c45458a6fc42de0ca4bc18938d4486c859b6521ff2e0e0",
+      "support_role": "requested_range",
+      "year": 2006
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2007.json",
+      "sha256": "8d1329c3457edb53a6d6106f7817672fd589486d031d08e1299a3e7fe666654a",
+      "support_role": "requested_range",
+      "year": 2007
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/2008.json",
+      "sha256": "18f10b184e83daf388187c72d0a9c10abd202e7c9deb89087b32eed17b001de9",
+      "support_role": "requested_range",
+      "year": 2008
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2009.json",
+      "sha256": "cad9e789a2165443fd49969fb2ad59d6dd5ef3a60a403cec83d6708cd5a4d183",
+      "support_role": "requested_range",
+      "year": 2009
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2010.json",
+      "sha256": "6639c36d1c56c71b0b8e5fe85f591deb0aadf01cc5586aa676029fcd2c26de07",
+      "support_role": "requested_range",
+      "year": 2010
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/2011.json",
+      "sha256": "81fd11f675af179a4a6cd4210c099b6b4e482837af0ff02080cf41ef3ae90ca9",
+      "support_role": "requested_range",
+      "year": 2011
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2012.json",
+      "sha256": "d213b3d101315215087712db69246abe55ee9437e7c8f51168b528c91164cb5f",
+      "support_role": "requested_range",
+      "year": 2012
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2013.json",
+      "sha256": "b492283c164a1fafa6f96be05721d4e21821bd11d8d36b1148950faf9cd6f210",
+      "support_role": "requested_range",
+      "year": 2013
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2014.json",
+      "sha256": "bf7a8bea83a1c157c8325eec3a24e93a3956e166bb0890f8b351cddda299dc71",
+      "support_role": "requested_range",
+      "year": 2014
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2015.json",
+      "sha256": "1ca6156a06cdcade38567eda58dc43ca88558ac4d4cd76e71c99db82f27dcf75",
+      "support_role": "requested_range",
+      "year": 2015
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/2016.json",
+      "sha256": "763d095708000a4b87f066e670409d173bc2c6b9f7a2449a7c322e89648bdb22",
+      "support_role": "requested_range",
+      "year": 2016
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2017.json",
+      "sha256": "394ce20b694bc75af7e6511b7bc9177f6c912a30ee178578fb9c28c1a0cb7f25",
+      "support_role": "requested_range",
+      "year": 2017
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2018.json",
+      "sha256": "36dbf46f1e8a9a8da16834aa93b11fe5f8efdbd862e33eb5dbedc3243c6ec03d",
+      "support_role": "requested_range",
+      "year": 2018
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/2019.json",
+      "sha256": "223f073876653c762f532ca62cdc64aca857d63f915aaa1aa555398fe1ab9477",
+      "support_role": "requested_range",
+      "year": 2019
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2020.json",
+      "sha256": "1d205756d36258fcc33ec622fcd0e037b350b660cd4926097a424ba944d81182",
+      "support_role": "requested_range",
+      "year": 2020
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2021.json",
+      "sha256": "803cca4a6c416119b84b57891f34acbac09cbc871ce07220575b5eab24cc2b57",
+      "support_role": "requested_range",
+      "year": 2021
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/2022.json",
+      "sha256": "a5ff6e73073cc6b91181a47828e78ca2c08535cedd2244cbc59c54fe8df19c75",
+      "support_role": "requested_range",
+      "year": 2022
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2023.json",
+      "sha256": "9e49350d8328f7524b35da57c65d22f3c3733ef54cac6bcba4997ca23bae15bf",
+      "support_role": "requested_range",
+      "year": 2023
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/2024.json",
+      "sha256": "10a793b89bb9280a78dd7d6306437510566e9ef839961d973341eda43e74b802",
+      "support_role": "requested_range",
+      "year": 2024
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2025.json",
+      "sha256": "49ef3648bf38e58769b1ae15b1f977c4185998e7be5526a11ec245ca725d8f2c",
+      "support_role": "requested_range",
+      "year": 2025
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2026.json",
+      "sha256": "3f714bb87d85314b28721cf3761cc30a5acfea6f4b9240d800454a622c6f29b5",
+      "support_role": "requested_range",
+      "year": 2026
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/2027.json",
+      "sha256": "0d1cc9f375d522ac3984eef9a547a92eb6f5a8c16eae725a2d519c428e59b4e3",
+      "support_role": "requested_range",
+      "year": 2027
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2028.json",
+      "sha256": "985ab9cefaabf9f60037ba9337486a1f154d4362f65469e99f4275d92ab10576",
+      "support_role": "requested_range",
+      "year": 2028
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2029.json",
+      "sha256": "712864cab7bbc53639877ee6eadb6b23f464d66cadee3caf623701dd21d68652",
+      "support_role": "requested_range",
+      "year": 2029
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/2030.json",
+      "sha256": "b3f4797dfa7c145bae14c7e1b7250713fd6a8f1564b9c1cae633c9f5e4cbab37",
+      "support_role": "requested_range",
+      "year": 2030
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2031.json",
+      "sha256": "b226e95df304305d364e3870b0c7d8f377cbd2aa1eba38ad75e96991740870cd",
+      "support_role": "requested_range",
+      "year": 2031
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2032.json",
+      "sha256": "f50374bd9a9c5dfebba4a567a20c71b527db1d446bf4b462fdeac2dcd37d1f9f",
+      "support_role": "requested_range",
+      "year": 2032
+    },
+    {
+      "bytes": 2285,
+      "interval_count": 13,
+      "path": "years/2033.json",
+      "sha256": "22d50feb892f8d73bca75849273ac437e1fda276dde3ad650e7268c02d7a4736",
+      "support_role": "requested_range",
+      "year": 2033
+    },
+    {
+      "bytes": 2285,
+      "interval_count": 13,
+      "path": "years/2034.json",
+      "sha256": "41519f0a32da70faf27da44153ba3287a4a1b53e5d29411b10b4e4491a136e07",
+      "support_role": "requested_range",
+      "year": 2034
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/2035.json",
+      "sha256": "b8e3f60993d27eb501c7ef974e7adc19d4e376c9c608e117d409fb15cb0522ce",
+      "support_role": "requested_range",
+      "year": 2035
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2036.json",
+      "sha256": "85170ff4b8bb648f3b6950f6d197fe416d0015b1d9472a39ea5773158d8cf3e0",
+      "support_role": "requested_range",
+      "year": 2036
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2037.json",
+      "sha256": "1773155905fb45708755366e80f33c13da6233c8f138e1265262b07d1861111a",
+      "support_role": "requested_range",
+      "year": 2037
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/2038.json",
+      "sha256": "8a3d9b71be1d197cdfbb76eadb1db9be34c2e63bffe6ea3b94218de786f10dd8",
+      "support_role": "requested_range",
+      "year": 2038
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2039.json",
+      "sha256": "197f21e88191704959653d4f8d2fa074eefe398427f4d0427cddb22bbab1b8d5",
+      "support_role": "requested_range",
+      "year": 2039
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2040.json",
+      "sha256": "5bbcb2a9d9ebfb8b07ba23673317b110e23d42ebb6c9114eea2b01c7a7ba1bbb",
+      "support_role": "requested_range",
+      "year": 2040
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/2041.json",
+      "sha256": "c3e868141de6dde3c568b818aacf91b9fbe24df64e5e17b8e37cdd883fe77aac",
+      "support_role": "requested_range",
+      "year": 2041
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2042.json",
+      "sha256": "b886a267b308d548b092eddba3495452c8e2be3e339aefca00dd366122bd3509",
+      "support_role": "requested_range",
+      "year": 2042
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/2043.json",
+      "sha256": "189890fa3d39d1b47003866d72ad477b51e909b7dde6b31f00b7f4c42afb0a13",
+      "support_role": "requested_range",
+      "year": 2043
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2044.json",
+      "sha256": "88d2ff723f9736d9be458d1a23e3cf233e4ee12328ec89621d73788611a2f7df",
+      "support_role": "requested_range",
+      "year": 2044
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2045.json",
+      "sha256": "7c36b482fc752be46b998a316fd9bd820da1ab038befe115a403303f353a68c3",
+      "support_role": "requested_range",
+      "year": 2045
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/2046.json",
+      "sha256": "b26ca7d240c363e349ca18b07af5ea4fbde8844ebae604c9323d3c217f0263ea",
+      "support_role": "requested_range",
+      "year": 2046
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2047.json",
+      "sha256": "176677c23ab870da9b6ae30726bfaad7819c30e83bf06cbfdb076334e5154d8b",
+      "support_role": "requested_range",
+      "year": 2047
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2048.json",
+      "sha256": "d068268dedcecccae80a4de21d3a1542d529734fafa4e8e1d88bb40a3b0761b2",
+      "support_role": "requested_range",
+      "year": 2048
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/2049.json",
+      "sha256": "dde03fbce54565d1fd45605abf32e92d187ae18628af28f9481d00bf600a4ae5",
+      "support_role": "requested_range",
+      "year": 2049
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2050.json",
+      "sha256": "0bc41e3e245ea19479557dd00535cdbcbc6f5900d651adb4e196b5b78540cb65",
+      "support_role": "requested_range",
+      "year": 2050
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2051.json",
+      "sha256": "4425e5a26a13b85b44b9542e0aecf623641a24d7474b5d79078d8bcd0105ded4",
+      "support_role": "requested_range",
+      "year": 2051
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/2052.json",
+      "sha256": "0dd8ad48d0e520a651eb6370f7fb3dd730a9df0185c1f3b75344bcebd2779ecd",
+      "support_role": "requested_range",
+      "year": 2052
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2053.json",
+      "sha256": "f9600391b2f2b88e0fc8ba0614ecb731dc9ce50f8e6ba3f218091631477be538",
+      "support_role": "requested_range",
+      "year": 2053
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/2054.json",
+      "sha256": "80678f6c4e0abfeca2639978a34564d95e48a51904773c264c69d62d530e60b2",
+      "support_role": "requested_range",
+      "year": 2054
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2055.json",
+      "sha256": "ba008c2ccc343784f86b89670a4f1d44f8a9c8fa87ac0ad6c8513748ee816e52",
+      "support_role": "requested_range",
+      "year": 2055
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2056.json",
+      "sha256": "287f4be6075d6d32a92c03e5ba6b07bce964c35010e178dd5ac19ea373731af9",
+      "support_role": "requested_range",
+      "year": 2056
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/2057.json",
+      "sha256": "cc3e60b0868bf266b0afcffe1d0c0ba262fc923dd8df707c57101964fe0e1c16",
+      "support_role": "requested_range",
+      "year": 2057
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2058.json",
+      "sha256": "d50ca1e849cfdcb7085b20f88d55bd4ab5b2e7431422e80e9b1a468f579bbe47",
+      "support_role": "requested_range",
+      "year": 2058
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2059.json",
+      "sha256": "485c9f4f6165bb73b84ac3f7ddecbb36942879265eea86c76680f026b0f3be58",
+      "support_role": "requested_range",
+      "year": 2059
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/2060.json",
+      "sha256": "b052308086ed9b3bb9f4cc4b2709accde01a4d06dfbd486bfe10226ae3e3c19f",
+      "support_role": "requested_range",
+      "year": 2060
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2061.json",
+      "sha256": "f4d7cc6c1339e8b9151c53fe662d67df9a75be5c1bd61cae7c5fab4ab05ab6c8",
+      "support_role": "requested_range",
+      "year": 2061
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/2062.json",
+      "sha256": "9ebb5ecbdbc1f77609449562849a097d4502662e6978834aa64306fc8ce68337",
+      "support_role": "requested_range",
+      "year": 2062
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2063.json",
+      "sha256": "b33938a8797a06daa523a0ac20556a9e9d531dda7a394ecbe339b9d3a7aa73c7",
+      "support_role": "requested_range",
+      "year": 2063
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2064.json",
+      "sha256": "21c5b263236887bbabb8474d1cce4cd7dd96094ad9a655c2fdadbe885bdd1954",
+      "support_role": "requested_range",
+      "year": 2064
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/2065.json",
+      "sha256": "b77e92a21b669d7f3337b86a6f19e6550bc7b24093c6a2a976789a583fba6ea2",
+      "support_role": "requested_range",
+      "year": 2065
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2066.json",
+      "sha256": "4380581d8bb2ca32a0f4f3cc065e0377d5ef5d3fa13d7cb1009e6e9f30ebc0cc",
+      "support_role": "requested_range",
+      "year": 2066
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2067.json",
+      "sha256": "be082543c8eeff896e6b6684075e4513e7680518b52e6a435a8e570a8e8cb655",
+      "support_role": "requested_range",
+      "year": 2067
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/2068.json",
+      "sha256": "49c1522787da59ab6c2251c9881aedbc3d5ab1f27272afde33d3e5812b063f27",
+      "support_role": "requested_range",
+      "year": 2068
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2069.json",
+      "sha256": "910af16608eab05c14e9f86ba7d77e2d3890ba8fa2b87f3a423c651fbd536e72",
+      "support_role": "requested_range",
+      "year": 2069
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2070.json",
+      "sha256": "efedf728a0c6bddc7e9a3831a7307c2b4d64da2f4bf69fdd64e54d7b9b9ef083",
+      "support_role": "requested_range",
+      "year": 2070
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2071.json",
+      "sha256": "1d3ae8f625d62f79a15d6a9be64ac4ed298766c276ed174b40ca96db81fc6963",
+      "support_role": "requested_range",
+      "year": 2071
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2072.json",
+      "sha256": "9438f7e963c9f12bcc58672f8930c3b3f929c2703bec42602fa80a96bd049ae3",
+      "support_role": "requested_range",
+      "year": 2072
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/2073.json",
+      "sha256": "109944430bfbc25cc3100275ceb7b08469d11f8775f7fbba16b9ce7926298b01",
+      "support_role": "requested_range",
+      "year": 2073
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2074.json",
+      "sha256": "7493e227b6f92c78e89e844a8d20dc3bd78328b500fe406abb63ad38c19c27f4",
+      "support_role": "requested_range",
+      "year": 2074
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2075.json",
+      "sha256": "716d4a04c1e1af268af4b519f1e4d153eeb4351e1adeea647a6399824c2f9939",
+      "support_role": "requested_range",
+      "year": 2075
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/2076.json",
+      "sha256": "6b26879604408aa3537a59ed9bad072ce2982144b4d7bfcd8368bbd338dc2744",
+      "support_role": "requested_range",
+      "year": 2076
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2077.json",
+      "sha256": "e00a23c608103f0bf00ee4d96e2c0b969234bbbd068a73f7ebbd902b24fe106d",
+      "support_role": "requested_range",
+      "year": 2077
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2078.json",
+      "sha256": "0357d3c6adf660728483635449d0af89f47b25b4a082ce2954e2a80161ebb965",
+      "support_role": "requested_range",
+      "year": 2078
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/2079.json",
+      "sha256": "04ccde8b1abb6dbe9ef73021ecff48b85c32f144e030d12aa85b1c26fedd617e",
+      "support_role": "requested_range",
+      "year": 2079
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2080.json",
+      "sha256": "87d07f520717afa18198a8ad3104439ee6a58e4773748243fe1779420557d65d",
+      "support_role": "requested_range",
+      "year": 2080
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/2081.json",
+      "sha256": "cf2b73b31abe23dea656ddd6e467c4f2e273245f5c49ce15f308af799029e057",
+      "support_role": "requested_range",
+      "year": 2081
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2082.json",
+      "sha256": "eae086bffb651ab98e3383ec4f1e035efb29c8fa0f766cc1f5ccca8229726843",
+      "support_role": "requested_range",
+      "year": 2082
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2083.json",
+      "sha256": "d4ddc70adec1a97a5d961ca94cc341b5b0a16b198b82df8e4f01912cc0d3325b",
+      "support_role": "requested_range",
+      "year": 2083
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/2084.json",
+      "sha256": "7011820afcd893e33013ca53501eb805b3edf8cd9f2d1250d58ec19700a66217",
+      "support_role": "requested_range",
+      "year": 2084
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2085.json",
+      "sha256": "4e4856aa3852b9e3de22a1b5caff3a9e94891b9d7949aa8ac27f271b2e2120f9",
+      "support_role": "requested_range",
+      "year": 2085
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2086.json",
+      "sha256": "200f5476e8c304e84ca8f8ab061bbbd18b9d1172658fab7ebb22c39b0cce714d",
+      "support_role": "requested_range",
+      "year": 2086
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/2087.json",
+      "sha256": "92b5cd30f96f1a47fea071bc55932a0e0661a0c9b0c9eab97dadfc9d8b1d7a7d",
+      "support_role": "requested_range",
+      "year": 2087
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2088.json",
+      "sha256": "434c26d63c6a741b6986c4c90050b53572126dfd3c1658add44074196b588eb7",
+      "support_role": "requested_range",
+      "year": 2088
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2089.json",
+      "sha256": "572494b8c1ee2a9e25fdeeee9c91076030bcd62da1a6d0328c59e9d0606cca64",
+      "support_role": "requested_range",
+      "year": 2089
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2090.json",
+      "sha256": "97c1b3561126c323f969ab5ab231dd65e4d16f336dbd5eed2ee44769da03bd01",
+      "support_role": "requested_range",
+      "year": 2090
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2091.json",
+      "sha256": "76ef51b7980fc3a1069112273b43caf02d2091a86e6ae91bc9df620de0c756bb",
+      "support_role": "requested_range",
+      "year": 2091
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/2092.json",
+      "sha256": "5b705f72fe12d01b4f6370eae49149323bba34f96e49ab18d56899b420ca2b59",
+      "support_role": "requested_range",
+      "year": 2092
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2093.json",
+      "sha256": "dbc92138f12617e3a39786f234a6a080a32c8e3f591ac07a5993095ea43d3d6a",
+      "support_role": "requested_range",
+      "year": 2093
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2094.json",
+      "sha256": "e6bb2ade15c4027bc07bbe52098c38c6999c1b6118f48a37a6f24e888f6ba9b8",
+      "support_role": "requested_range",
+      "year": 2094
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/2095.json",
+      "sha256": "9b8bd96f8e3aa23b969c4ae5b14dcdb58f7f80a6ea2de68f4d89e90686942177",
+      "support_role": "requested_range",
+      "year": 2095
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2096.json",
+      "sha256": "e39a2fdff8e3c11186ea89a08ebfe1fc96ee7d84a2a0699b654e207cf1e97ec0",
+      "support_role": "requested_range",
+      "year": 2096
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2097.json",
+      "sha256": "5430000222e72ee459395293e99bd1eb7f2ddc47774cb97e808b44e50652e08f",
+      "support_role": "requested_range",
+      "year": 2097
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/2098.json",
+      "sha256": "3f9a4045395a75a9d1a77388281470a279f5bb195261b3083563e38826d7f32c",
+      "support_role": "requested_range",
+      "year": 2098
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2099.json",
+      "sha256": "16a833f6d3f3c70976ce895cd1e3879bbdb13272e18fb361c5fec8b5a273fd51",
+      "support_role": "requested_range",
+      "year": 2099
+    },
+    {
+      "bytes": 2443,
+      "interval_count": 14,
+      "path": "years/2100.json",
+      "sha256": "2186762f5125b9bc0aafb4a5b7b1cd5a547e0d9586baf5355e5d3cdc67547a13",
+      "support_role": "requested_range",
+      "year": 2100
+    },
+    {
+      "bytes": 2284,
+      "interval_count": 13,
+      "path": "years/2101.json",
+      "sha256": "263456a93cf1d0770b0a4e8b8ef9df3adf4fd778858aa86961af6a1e33b73eaf",
+      "support_role": "policy_tail",
+      "year": 2101
+    }
+  ],
+  "status": "RESEARCH_CANDIDATE_NOT_PRODUCTION",
+  "summary": {
+    "interval_count": 2692,
+    "shard_count": 202,
+    "total_shard_bytes": 471865
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "coverage": "gregorian_year_intersection",
+  "gregorian_year": 1955,
+  "intervals": [
+    {
+      "day_count": 30,
+      "end_date": "1955-01-23",
+      "lunar_year": 1954,
+      "signed_lunar_month": 12,
+      "start_date": "1954-12-25"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1955-02-21",
+      "lunar_year": 1955,
+      "signed_lunar_month": 1,
+      "start_date": "1955-01-24"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1955-03-23",
+      "lunar_year": 1955,
+      "signed_lunar_month": 2,
+      "start_date": "1955-02-22"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1955-04-21",
+      "lunar_year": 1955,
+      "signed_lunar_month": 3,
+      "start_date": "1955-03-24"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1955-05-21",
+      "lunar_year": 1955,
+      "signed_lunar_month": -3,
+      "start_date": "1955-04-22"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1955-06-19",
+      "lunar_year": 1955,
+      "signed_lunar_month": 4,
+      "start_date": "1955-05-22"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1955-07-18",
+      "lunar_year": 1955,
+      "signed_lunar_month": 5,
+      "start_date": "1955-06-20"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1955-08-17",
+      "lunar_year": 1955,
+      "signed_lunar_month": 6,
+      "start_date": "1955-07-19"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1955-09-15",
+      "lunar_year": 1955,
+      "signed_lunar_month": 7,
+      "start_date": "1955-08-18"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1955-10-15",
+      "lunar_year": 1955,
+      "signed_lunar_month": 8,
+      "start_date": "1955-09-16"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1955-11-13",
+      "lunar_year": 1955,
+      "signed_lunar_month": 9,
+      "start_date": "1955-10-16"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1955-12-13",
+      "lunar_year": 1955,
+      "signed_lunar_month": 10,
+      "start_date": "1955-11-14"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1956-01-12",
+      "lunar_year": 1955,
+      "signed_lunar_month": 11,
+      "start_date": "1955-12-14"
+    }
+  ],
+  "schema_name": "ziwei_calendar_interval_year_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}

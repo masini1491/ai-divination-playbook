@@ -1,0 +1,100 @@
+{
+  "coverage": "gregorian_year_intersection",
+  "gregorian_year": 1915,
+  "intervals": [
+    {
+      "day_count": 29,
+      "end_date": "1915-01-14",
+      "lunar_year": 1914,
+      "signed_lunar_month": 11,
+      "start_date": "1914-12-17"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1915-02-13",
+      "lunar_year": 1914,
+      "signed_lunar_month": 12,
+      "start_date": "1915-01-15"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1915-03-15",
+      "lunar_year": 1915,
+      "signed_lunar_month": 1,
+      "start_date": "1915-02-14"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1915-04-13",
+      "lunar_year": 1915,
+      "signed_lunar_month": 2,
+      "start_date": "1915-03-16"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1915-05-13",
+      "lunar_year": 1915,
+      "signed_lunar_month": 3,
+      "start_date": "1915-04-14"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1915-06-12",
+      "lunar_year": 1915,
+      "signed_lunar_month": 4,
+      "start_date": "1915-05-14"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1915-07-11",
+      "lunar_year": 1915,
+      "signed_lunar_month": 5,
+      "start_date": "1915-06-13"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1915-08-10",
+      "lunar_year": 1915,
+      "signed_lunar_month": 6,
+      "start_date": "1915-07-12"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1915-09-08",
+      "lunar_year": 1915,
+      "signed_lunar_month": 7,
+      "start_date": "1915-08-11"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1915-10-08",
+      "lunar_year": 1915,
+      "signed_lunar_month": 8,
+      "start_date": "1915-09-09"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1915-11-06",
+      "lunar_year": 1915,
+      "signed_lunar_month": 9,
+      "start_date": "1915-10-09"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1915-12-06",
+      "lunar_year": 1915,
+      "signed_lunar_month": 10,
+      "start_date": "1915-11-07"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1916-01-04",
+      "lunar_year": 1915,
+      "signed_lunar_month": 11,
+      "start_date": "1915-12-07"
+    }
+  ],
+  "schema_name": "ziwei_calendar_interval_year_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}

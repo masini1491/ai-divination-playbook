@@ -1,0 +1,100 @@
+{
+  "coverage": "gregorian_year_intersection",
+  "gregorian_year": 1975,
+  "intervals": [
+    {
+      "day_count": 29,
+      "end_date": "1975-01-11",
+      "lunar_year": 1974,
+      "signed_lunar_month": 11,
+      "start_date": "1974-12-14"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1975-02-10",
+      "lunar_year": 1974,
+      "signed_lunar_month": 12,
+      "start_date": "1975-01-12"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1975-03-12",
+      "lunar_year": 1975,
+      "signed_lunar_month": 1,
+      "start_date": "1975-02-11"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1975-04-11",
+      "lunar_year": 1975,
+      "signed_lunar_month": 2,
+      "start_date": "1975-03-13"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1975-05-10",
+      "lunar_year": 1975,
+      "signed_lunar_month": 3,
+      "start_date": "1975-04-12"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1975-06-09",
+      "lunar_year": 1975,
+      "signed_lunar_month": 4,
+      "start_date": "1975-05-11"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1975-07-08",
+      "lunar_year": 1975,
+      "signed_lunar_month": 5,
+      "start_date": "1975-06-10"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1975-08-06",
+      "lunar_year": 1975,
+      "signed_lunar_month": 6,
+      "start_date": "1975-07-09"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1975-09-05",
+      "lunar_year": 1975,
+      "signed_lunar_month": 7,
+      "start_date": "1975-08-07"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1975-10-04",
+      "lunar_year": 1975,
+      "signed_lunar_month": 8,
+      "start_date": "1975-09-06"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1975-11-02",
+      "lunar_year": 1975,
+      "signed_lunar_month": 9,
+      "start_date": "1975-10-05"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1975-12-02",
+      "lunar_year": 1975,
+      "signed_lunar_month": 10,
+      "start_date": "1975-11-03"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1975-12-31",
+      "lunar_year": 1975,
+      "signed_lunar_month": 11,
+      "start_date": "1975-12-03"
+    }
+  ],
+  "schema_name": "ziwei_calendar_interval_year_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}

@@ -1,0 +1,100 @@
+{
+  "coverage": "gregorian_year_intersection",
+  "gregorian_year": 1974,
+  "intervals": [
+    {
+      "day_count": 30,
+      "end_date": "1974-01-22",
+      "lunar_year": 1973,
+      "signed_lunar_month": 12,
+      "start_date": "1973-12-24"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1974-02-21",
+      "lunar_year": 1974,
+      "signed_lunar_month": 1,
+      "start_date": "1974-01-23"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1974-03-23",
+      "lunar_year": 1974,
+      "signed_lunar_month": 2,
+      "start_date": "1974-02-22"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1974-04-21",
+      "lunar_year": 1974,
+      "signed_lunar_month": 3,
+      "start_date": "1974-03-24"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1974-05-21",
+      "lunar_year": 1974,
+      "signed_lunar_month": 4,
+      "start_date": "1974-04-22"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1974-06-19",
+      "lunar_year": 1974,
+      "signed_lunar_month": -4,
+      "start_date": "1974-05-22"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1974-07-18",
+      "lunar_year": 1974,
+      "signed_lunar_month": 5,
+      "start_date": "1974-06-20"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1974-08-17",
+      "lunar_year": 1974,
+      "signed_lunar_month": 6,
+      "start_date": "1974-07-19"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1974-09-15",
+      "lunar_year": 1974,
+      "signed_lunar_month": 7,
+      "start_date": "1974-08-18"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1974-10-14",
+      "lunar_year": 1974,
+      "signed_lunar_month": 8,
+      "start_date": "1974-09-16"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1974-11-13",
+      "lunar_year": 1974,
+      "signed_lunar_month": 9,
+      "start_date": "1974-10-15"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1974-12-13",
+      "lunar_year": 1974,
+      "signed_lunar_month": 10,
+      "start_date": "1974-11-14"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1975-01-11",
+      "lunar_year": 1974,
+      "signed_lunar_month": 11,
+      "start_date": "1974-12-14"
+    }
+  ],
+  "schema_name": "ziwei_calendar_interval_year_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}

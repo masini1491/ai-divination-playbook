@@ -1,0 +1,100 @@
+{
+  "coverage": "gregorian_year_intersection",
+  "gregorian_year": 1950,
+  "intervals": [
+    {
+      "day_count": 29,
+      "end_date": "1950-01-17",
+      "lunar_year": 1949,
+      "signed_lunar_month": 11,
+      "start_date": "1949-12-20"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1950-02-16",
+      "lunar_year": 1949,
+      "signed_lunar_month": 12,
+      "start_date": "1950-01-18"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1950-03-17",
+      "lunar_year": 1950,
+      "signed_lunar_month": 1,
+      "start_date": "1950-02-17"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1950-04-16",
+      "lunar_year": 1950,
+      "signed_lunar_month": 2,
+      "start_date": "1950-03-18"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1950-05-16",
+      "lunar_year": 1950,
+      "signed_lunar_month": 3,
+      "start_date": "1950-04-17"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1950-06-14",
+      "lunar_year": 1950,
+      "signed_lunar_month": 4,
+      "start_date": "1950-05-17"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1950-07-14",
+      "lunar_year": 1950,
+      "signed_lunar_month": 5,
+      "start_date": "1950-06-15"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1950-08-13",
+      "lunar_year": 1950,
+      "signed_lunar_month": 6,
+      "start_date": "1950-07-15"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1950-09-11",
+      "lunar_year": 1950,
+      "signed_lunar_month": 7,
+      "start_date": "1950-08-14"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1950-10-10",
+      "lunar_year": 1950,
+      "signed_lunar_month": 8,
+      "start_date": "1950-09-12"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1950-11-09",
+      "lunar_year": 1950,
+      "signed_lunar_month": 9,
+      "start_date": "1950-10-11"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1950-12-08",
+      "lunar_year": 1950,
+      "signed_lunar_month": 10,
+      "start_date": "1950-11-10"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1951-01-07",
+      "lunar_year": 1950,
+      "signed_lunar_month": 11,
+      "start_date": "1950-12-09"
+    }
+  ],
+  "schema_name": "ziwei_calendar_interval_year_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}

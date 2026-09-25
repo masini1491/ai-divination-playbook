@@ -1,0 +1,100 @@
+{
+  "coverage": "gregorian_year_intersection",
+  "gregorian_year": 1958,
+  "intervals": [
+    {
+      "day_count": 30,
+      "end_date": "1958-01-19",
+      "lunar_year": 1957,
+      "signed_lunar_month": 11,
+      "start_date": "1957-12-21"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1958-02-17",
+      "lunar_year": 1957,
+      "signed_lunar_month": 12,
+      "start_date": "1958-01-20"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1958-03-19",
+      "lunar_year": 1958,
+      "signed_lunar_month": 1,
+      "start_date": "1958-02-18"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1958-04-18",
+      "lunar_year": 1958,
+      "signed_lunar_month": 2,
+      "start_date": "1958-03-20"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1958-05-18",
+      "lunar_year": 1958,
+      "signed_lunar_month": 3,
+      "start_date": "1958-04-19"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1958-06-16",
+      "lunar_year": 1958,
+      "signed_lunar_month": 4,
+      "start_date": "1958-05-19"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1958-07-16",
+      "lunar_year": 1958,
+      "signed_lunar_month": 5,
+      "start_date": "1958-06-17"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1958-08-14",
+      "lunar_year": 1958,
+      "signed_lunar_month": 6,
+      "start_date": "1958-07-17"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1958-09-12",
+      "lunar_year": 1958,
+      "signed_lunar_month": 7,
+      "start_date": "1958-08-15"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1958-10-12",
+      "lunar_year": 1958,
+      "signed_lunar_month": 8,
+      "start_date": "1958-09-13"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1958-11-10",
+      "lunar_year": 1958,
+      "signed_lunar_month": 9,
+      "start_date": "1958-10-13"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1958-12-10",
+      "lunar_year": 1958,
+      "signed_lunar_month": 10,
+      "start_date": "1958-11-11"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1959-01-08",
+      "lunar_year": 1958,
+      "signed_lunar_month": 11,
+      "start_date": "1958-12-11"
+    }
+  ],
+  "schema_name": "ziwei_calendar_interval_year_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}

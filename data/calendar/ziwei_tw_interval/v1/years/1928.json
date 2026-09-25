@@ -1,0 +1,100 @@
+{
+  "coverage": "gregorian_year_intersection",
+  "gregorian_year": 1928,
+  "intervals": [
+    {
+      "day_count": 30,
+      "end_date": "1928-01-22",
+      "lunar_year": 1927,
+      "signed_lunar_month": 12,
+      "start_date": "1927-12-24"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1928-02-20",
+      "lunar_year": 1928,
+      "signed_lunar_month": 1,
+      "start_date": "1928-01-23"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1928-03-21",
+      "lunar_year": 1928,
+      "signed_lunar_month": 2,
+      "start_date": "1928-02-21"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1928-04-19",
+      "lunar_year": 1928,
+      "signed_lunar_month": -2,
+      "start_date": "1928-03-22"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1928-05-18",
+      "lunar_year": 1928,
+      "signed_lunar_month": 3,
+      "start_date": "1928-04-20"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1928-06-17",
+      "lunar_year": 1928,
+      "signed_lunar_month": 4,
+      "start_date": "1928-05-19"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1928-07-16",
+      "lunar_year": 1928,
+      "signed_lunar_month": 5,
+      "start_date": "1928-06-18"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1928-08-14",
+      "lunar_year": 1928,
+      "signed_lunar_month": 6,
+      "start_date": "1928-07-17"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1928-09-13",
+      "lunar_year": 1928,
+      "signed_lunar_month": 7,
+      "start_date": "1928-08-15"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1928-10-12",
+      "lunar_year": 1928,
+      "signed_lunar_month": 8,
+      "start_date": "1928-09-14"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1928-11-11",
+      "lunar_year": 1928,
+      "signed_lunar_month": 9,
+      "start_date": "1928-10-13"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1928-12-11",
+      "lunar_year": 1928,
+      "signed_lunar_month": 10,
+      "start_date": "1928-11-12"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1929-01-10",
+      "lunar_year": 1928,
+      "signed_lunar_month": 11,
+      "start_date": "1928-12-12"
+    }
+  ],
+  "schema_name": "ziwei_calendar_interval_year_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}
