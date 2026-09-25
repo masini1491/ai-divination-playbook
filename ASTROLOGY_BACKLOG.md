@@ -56,6 +56,30 @@ Recent Astrology closure sequence reviewed:
 
 The closed work above must not be repeatedly rediscovered as open work unless a new regression or explicit scope expansion appears.
 
+## Recommended execution order
+
+Function-importance order for currently open / deferred Astrology work:
+
+1. **AST-P1-160 — Taiwan administrative locality input normalization**
+   - first because it blocks ordinary natural-language birth-place input before deterministic natal calculation can begin.
+2. **AST-SHARED-001 — Casting/Vercel deployment isolation reconciliation**
+   - shared reliability work, not an Astrology feature; first reconcile the stale state because PR #153 is closed/unmerged while the live main-push production-smoke coupling still exists.
+3. **AST-P1-170 — North Node sign semantic claim-family admission**
+   - improves natal interpretation completeness after deterministic facts are already available; does not block chart calculation.
+4. **AST-P2-040 — Broader extended ephemeris objects**
+   - highest-value deferred expansion after the current ordinary natal path is stable.
+5. **AST-P2-010 — Interpolated Black Moon Lilith**
+   - narrower compatibility/research scope; keep definition separate from Mean/Osculating Lilith.
+6. **AST-P2-020 — Named consumer compatibility profile**
+   - useful only when an explicitly named consumer/profile is required; no universal compatibility default.
+7. **AST-P2-030 — Optional Swiss compatibility/provider lane**
+   - optional provider/license lane; current Astronomy Engine production path remains sufficient.
+
+Standing / pointer items are not numbered feature work:
+
+- `AST-P0-002` remains a standing regression/reconciliation guard and should be enforced alongside affected changes rather than treated as a one-shot feature.
+- `AST-SHARED-002` is pointer-only; canonical mutable status remains `ZIWEI_BACKLOG.md#ZW-SHARED-001`, currently `DONE`.
+
 ## P0 — correctness and reconciliation
 
 ### AST-P0-001 — Reconcile E8 extended-object readiness after ChatGPT-only feasibility research
@@ -479,6 +503,69 @@ This item is a standing reconciliation guard. It is not a request to change curr
   - explicit coordinates remain resolver-free; place/country resolution reuses compatible verified resolver/query cache when available and otherwise stays on the admitted profile-500 query-bounded shard path;
   - product scenario and discoverability regression cover the method-specific binding; Zi Wei ownership/files remain untouched.
 
+### AST-P1-160 — Taiwan administrative locality input normalization
+
+- type: FEATURE / INPUT NORMALIZATION / PLACE RESOLUTION
+- status: OPEN
+- priority: P1
+- owner: Astrology place input normalization / resolver
+- blocked_by:
+  - AST-P1-005
+- canonical_evidence:
+  - `tools/astrology_place_resolver.py`
+  - `ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json`
+  - `data/astrology/place/v1/MANIFEST.json`
+  - `tests/test_astrology_place_resolver.py`
+  - `ASTROLOGY_MATERIALIZATION.md`
+- production_observation:
+  - natural Taiwan administrative input such as `新北市樹林區` does not directly resolve under the current exact locality/alternate-name lookup;
+  - admitted locality identity `樹林區 / TW` resolves to GeoNames ID `1668875`, coordinates and `Asia/Taipei`;
+  - current production profile-500 transport already contains the bounded `樹林區` alias/candidate path, so this is not a transport-admission gap.
+- current_state:
+  - resolver normalizes only with `strip()` before exact/alternate-name lookup;
+  - `contains_search=False` intentionally preserves ambiguity safety;
+  - no deterministic Taiwan administrative hierarchy parser / prefix normalizer is currently admitted;
+  - generic web geocoding remains forbidden.
+- completion_gate:
+  - bounded deterministic normalization for common Taiwan forms such as `市/縣 → 區/鄉/鎮/市`;
+  - preserve raw input plus normalized provenance;
+  - feed normalized locality + country/admin context into the existing exact resolver rather than fuzzy contains search;
+  - same-name administrative units remain fail-closed unless deterministic country/admin context resolves them uniquely;
+  - installed resolver and query-bounded profile-500 transport preserve equivalent semantics;
+  - explicit coordinates + IANA timezone continue to bypass the resolver;
+  - no generic web geocoding or unrestricted fuzzy matching.
+
+### AST-P1-170 — North Node sign semantic claim-family admission
+
+- type: FEATURE / INTERPRETATION / CLAIM ADMISSION
+- status: OPEN
+- priority: P1
+- owner: Astrology natal semantic admission / North Node interpretation
+- blocked_by: none
+- canonical_evidence:
+  - `ASTROLOGY_PRODUCTION_ADMISSION_V1.json#/natal_semantic_policy`
+  - `ASTROLOGY_NATAL.md`
+  - `ASTROLOGY_PROVIDER_ADMISSION_V1.json`
+  - `references/astrology/PLANET_SIGN_COMPOSABLE_SEMANTICS_EVIDENCE.md`
+  - `references/astrology/planet_sign_composable_semantics_claim_family_registry.json`
+- production_observation:
+  - admitted natal facts can produce `NorthNode` longitude/sign, e.g. `NorthNode / Aries`;
+  - North Node already participates in current deterministic core major-aspect geometry;
+  - current production policy explicitly keeps `north_node_sign_interpretation = not_admitted_without_separate_claim_family`.
+- current_state:
+  - deterministic North Node sign facts are production facts;
+  - existing composable planet-function/sign-style registry deliberately excludes North Node because it is a point, not a planet;
+  - no separate source-backed North Node sign semantic claim family is admitted or tracked;
+  - North Node aspect geometry does not grant sign semantics or aspect-meaning authority.
+- completion_gate:
+  - review source-backed North Node sign-level semantic evidence and admit only a bounded claim family if evidence is sufficient;
+  - keep node semantics separate from ordinary planet-function claims;
+  - typed applicability must bind the actual `NorthNode + admitted sign fact` and retain mean-node provenance;
+  - preserve source/tradition/profile identity and fail closed on retrieval/admission miss;
+  - do not auto-admit generic karmic / past-life doctrine without separate explicit source/admission;
+  - do not expand this item into North Node aspect semantic claims; those remain a separate future claim-family question;
+  - deterministic North Node facts remain usable even when no semantic claim is admitted.
+
 ## P2 — deferred compatibility / provider expansion
 
 ### AST-P2-010 — Interpolated Black Moon Lilith
@@ -541,13 +628,14 @@ This item is a standing reconciliation guard. It is not a request to change curr
 ### AST-SHARED-001 — Casting/Vercel deployment isolation completion
 
 - type: SHARED / CI / DEPLOYMENT
-- status: IN_PROGRESS
+- status: OPEN
 - priority: SHARED
 - owner: casting runtime / repository CI
 - blocked_by: none
-- current_external_work:
-  - PR #153 `Fix casting deployment provenance gate`
-  - head at backlog review: `5a52038e394c9e1d16c6d162e5d8ecf315a6d20e`
+- reconciliation_needed:
+  - PR #153 `Fix casting deployment provenance gate` is closed/unmerged;
+  - current `.github/workflows/validation.yml` still contains a main-push `production-smoke` path that waits for the matching Vercel production deployment;
+  - therefore the prior `IN_PROGRESS` marker is stale and the item must be reconciled before any new implementation is assumed active.
 - relation_to_astrology:
   - this is not an Astrology feature blocker;
   - repository-wide validation/deployment coupling can still affect unrelated Astrology merges.
