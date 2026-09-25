@@ -51,6 +51,11 @@ class ZiWeiSihuaProviderCandidateTests(unittest.TestCase):
         self.assertEqual("matharts/ziwei",r["base_source"]["repository"])
         self.assertEqual("596f43c43ff6fbae526314c7f668bbf346445ff1",r["base_source"]["revision"])
         self.assertFalse(r["production_authority_granted"])
+        for record in r["records"]:
+            self.assertEqual("matharts/ziwei",record["source_provenance"]["base_repository"])
+            self.assertEqual("596f43c43ff6fbae526314c7f668bbf346445ff1",record["source_provenance"]["base_revision"])
+            self.assertEqual(PROFILE_ID,record["sihua_profile_id"])
+            self.assertEqual("ziwei-sihua-project-default-python",record["engine"]["provider_id"])
 
     def test_unknown_profile_and_stem_fail_closed(self):
         with self.assertRaisesRegex(ValueError,"unsupported sihua_profile_id"):
