@@ -153,9 +153,10 @@ Rejected during this pass:
 - source passages whose transformation identity cannot be unambiguously bound
   to the natal `sihua.default_v1` fact identity.
 
-The remaining production-admission work is therefore no longer “find any Four
-Transformations prose.” It is to expose the required star-location retrieval
-facts, bind the admitted sihua provider/profile into the typed optional-module
-runtime, admit this exact bounded claim set (or a smaller subset) through a
-separate production manifest, and prove conditional activation without
-cross-profile widening.
+The production-admission work described above was subsequently completed for
+this exact bounded batch: star-location retrieval facts are exposed, the
+`sihua.default_v1` provider/profile is bound through optional module `sihua_v1`,
+all 3 source-explicit claims are separately admitted, and conditional activation
+is regression-covered. This research registry itself remains historical
+`production_routable=false`; production authority comes from the admission
+manifest + runtime binding, not from this research file.

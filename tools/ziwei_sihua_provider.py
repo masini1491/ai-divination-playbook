@@ -3,7 +3,8 @@
 
 This provider exposes profile-bound Four-Transformation facts only. It does
 not create transformed-star interpretation doctrine; production interpretation
-remains limited to separately admitted claims, of which sihua_v1 adds zero.
+remains limited to separately admitted claims. The `sihua_v1` admission layer
+currently allowlists exactly 3 source-explicit, fact-gated transformed-star claims.
 """
 from __future__ import annotations
 
