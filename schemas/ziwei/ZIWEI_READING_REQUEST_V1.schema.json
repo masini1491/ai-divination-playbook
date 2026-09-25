@@ -49,7 +49,9 @@
               "const": "gregorian"
             },
             "year": {
-              "type": "integer"
+              "type": "integer",
+              "minimum": 1900,
+              "maximum": 2100
             },
             "month": {
               "type": "integer",
