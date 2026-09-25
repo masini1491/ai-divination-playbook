@@ -23,6 +23,7 @@ from tools.astrology_provider import (
     BODY_NAMES,
     _longitude_and_speed,
     _normalize_degrees,
+    _house_of,
     _signed_delta_degrees,
 )
 from tools.astrology_runtime import MAJOR_ASPECT_ORBS, gate_bundle
@@ -194,6 +195,51 @@ def _natal_planet_longitudes(natal_bundle: dict[str, Any]) -> dict[str, float]:
         raise TransitProviderInputError("natal bundle contains no supported natal planet/point longitudes")
     return output
 
+
+
+def _natal_house_cusps(natal_bundle: dict[str, Any]) -> dict[int, float]:
+    gate = gate_bundle(natal_bundle)
+    if not gate["interpretation_allowed"] or natal_bundle.get("reading_mode") != "natal":
+        raise TransitProviderInputError("natal_bundle must be an admitted natal Astrology Fact Bundle")
+    certainty = natal_bundle.get("birth_time_certainty")
+    if certainty in {"unknown", "approximate"}:
+        raise TransitProviderInputError("transit house context requires exact or rectified natal time")
+    rows = natal_bundle.get("facts", {}).get("houses", [])
+    cusps = {row.get("house_number"): float(row["cusp_longitude_deg"]) % 360.0 for row in rows if isinstance(row, dict) and isinstance(row.get("house_number"), int) and isinstance(row.get("cusp_longitude_deg"), (int, float))}
+    if set(cusps) != set(range(1, 13)):
+        raise TransitProviderInputError("transit house context requires all 12 admitted natal house cusps")
+    return cusps
+
+def transit_house_context(natal_bundle: dict[str, Any], *, at_utc: str, moving_bodies: Iterable[str]) -> list[dict[str, Any]]:
+    when = _parse_utc(at_utc)
+    cusps = _natal_house_cusps(natal_bundle)
+    rows = []
+    for body in moving_bodies:
+        if body not in BODY_NAMES or body == "NorthNode":
+            raise TransitProviderInputError(f"transit house context unsupported for body: {body}")
+        longitude, speed = _longitude_and_speed(body, when)
+        rows.append({"fact_id": f"fact:event:transit-house-context:{body.lower()}:{int(when.timestamp())}","event_kind":"transit_house_context","moving_body":body,"exact_time_utc":_iso_utc(when),"longitude_deg":longitude,"house_number":_house_of(longitude,cusps),"motion_direction":_motion_direction(speed),"speed_deg_per_day":speed})
+    return rows
+
+def search_transit_house_ingresses(natal_bundle: dict[str, Any], *, start_utc: str, end_utc: str, moving_bodies: Iterable[str]) -> list[dict[str, Any]]:
+    start,end=_validate_window(start_utc,end_utc)
+    cusps=_natal_house_cusps(natal_bundle)
+    events=[]
+    for body in moving_bodies:
+        if body not in BODY_NAMES or body == "NorthNode":
+            raise TransitProviderInputError(f"transit house search unsupported for body: {body}")
+        for house,cusp in sorted(cusps.items()):
+            for root in _find_longitude_crossings(body,cusp,start,end):
+                longitude,speed=_longitude_and_speed(body,root)
+                direction=_motion_direction(speed)
+                if direction=="stationary":
+                    continue
+                if direction=="direct":
+                    from_house=12 if house==1 else house-1; to_house=house
+                else:
+                    from_house=house; to_house=12 if house==1 else house-1
+                events.append({"fact_id":f"fact:event:transit-house-ingress:{body.lower()}:{house}:{int(root.timestamp())}","event_kind":"transit_house_ingress","moving_body":body,"exact_time_utc":_iso_utc(root),"cusp_house_number":house,"cusp_longitude_deg":cusp,"from_house":from_house,"to_house":to_house,"longitude_deg":longitude,"motion_direction":direction,"speed_deg_per_day":speed})
+    return sorted(events,key=lambda row:(row["exact_time_utc"],row["fact_id"]))
 
 def search_transit_to_natal(
     natal_bundle: dict[str, Any],
