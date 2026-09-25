@@ -369,7 +369,7 @@ This item is a standing reconciliation guard. It is not a request to change curr
 ### AST-P1-120 — Yod / Stellium / Grand Quintile policy expansion
 
 - type: FEATURE / PATTERN POLICY
-- status: OPEN
+- status: IN_PROGRESS
 - priority: P1
 - owner: Astrology pattern topology
 - blocked_by:
@@ -385,6 +385,14 @@ This item is a standing reconciliation guard. It is not a request to change curr
   - Stellium minimum-count/span/sign-boundary definition explicitly selected;
   - no exact consumer-compatibility claim without independent evidence;
   - current admitted topology behavior preserved.
+
+- closure_candidate:
+  - special projection path is separate from the existing major-pattern topology;
+  - Yod uses explicit sextile + quincunx geometry under `pattern-aspects-yod-quintile-v1` / `pattern-aspect-orbs-yod-quintile-v1`;
+  - Grand Quintile uses explicit quintile + biquintile geometry under the same named policy;
+  - Stellium uses `stellium-planets-same-sign-span10-min3-v1`: eligible planets only, minimum 3, same sign, maximum 10° span;
+  - semantic interpretation authority remains false;
+  - exact consumer / 唐綺陽 compatibility remains unclaimed.
 
 ### AST-P1-130 — Transit house search / temporal house context
 
