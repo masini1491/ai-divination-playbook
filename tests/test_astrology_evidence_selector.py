@@ -562,7 +562,7 @@ class AstrologyEvidenceSelectorTests(unittest.TestCase):
         )
         self.assertEqual([], selection["claim_requests"])
 
-    def test_e4_fortune_fact_cannot_bind_interpretation_claims(self):
+    def test_e4_fortune_rejects_unadmitted_interpretation_claims(self):
         run = run_request(load(NATAL_READING))
         typed = {
             "schema_name": "astrology_typed_evidence_selection_request",
@@ -593,7 +593,7 @@ class AstrologyEvidenceSelectorTests(unittest.TestCase):
         }
         with self.assertRaisesRegex(
             AstrologyEvidenceSelectionError,
-            "claim binding is not admitted for derived fact-only object: PartOfFortune",
+            "matched no admitted claims after fact-applicability binding",
         ):
             select_evidence(run, typed, repo_root=ROOT)
 

@@ -1,0 +1,198 @@
+{
+  "schema_name": "interpretation_claim_registry",
+  "schema_version": "0.2.0-research",
+  "record_status": "REFERENCE-ONLY",
+  "record_kind": "interpretation_claim_family_registry",
+  "record_id": "south-node-fortune-research-v1",
+  "claim_family": "south_node_part_of_fortune",
+  "production_routable": false,
+  "sources": [
+    {
+      "source_id": "source:valens-riley-lot-of-fortune",
+      "title": "Anthologies",
+      "author_or_org": "Vettius Valens; Mark T. Riley English translation",
+      "source_role": "PRIMARY_TEXT",
+      "source_kind": "public_translation",
+      "tradition_tags": [
+        "hellenistic",
+        "classical_antiquity"
+      ],
+      "publication_or_release_date": "2010 public release of translation",
+      "edition": "Mark T. Riley English translation",
+      "locator": [
+        "Book II §17, The Lot of Fortune as the Ascendant",
+        "Book IV: topical starting points for good fortune and success"
+      ],
+      "language": "English translation of Greek primary text",
+      "license_status": "publicly released translation; quotation not vendored",
+      "copyright_status": "translation rights retained/unclear; metadata plus project paraphrase only",
+      "storage_mode": [
+        "metadata_plus_locator",
+        "normalized_paraphrase"
+      ],
+      "verification_status": [
+        "identity_verified",
+        "locator_verified"
+      ],
+      "admission_status": [
+        "CLAIM_ELIGIBLE"
+      ],
+      "admission_scope": [
+        "Hellenistic Lot of Fortune natal doctrine"
+      ],
+      "excluded_scope": [
+        "scientific predictive validity",
+        "universal modern psychological meaning"
+      ],
+      "independence_status": "primary_witness"
+    },
+    {
+      "source_id": "source:lilly-christian-astrology-fortune-nodes",
+      "title": "Christian Astrology",
+      "author_or_org": "William Lilly",
+      "source_role": "PRIMARY_TEXT",
+      "source_kind": "early_modern_primary_text_web_edition",
+      "tradition_tags": [
+        "early_modern",
+        "traditional_western"
+      ],
+      "publication_or_release_date": "1647",
+      "edition": "Skyscript / public-domain original text references",
+      "locator": [
+        "CA p.82-83, Dragon's Head and Tail",
+        "CA p.749-750, Nativity of an English Merchant — wealth"
+      ],
+      "language": "English",
+      "license_status": "original text public domain; modern web presentation separate",
+      "copyright_status": "public_domain_original_text_with_modern_web_presentation",
+      "storage_mode": [
+        "metadata_plus_locator",
+        "normalized_paraphrase"
+      ],
+      "verification_status": [
+        "identity_verified",
+        "publication_verified",
+        "locator_verified"
+      ],
+      "admission_status": [
+        "CLAIM_ELIGIBLE"
+      ],
+      "admission_scope": [
+        "early-modern node doctrine",
+        "early-modern natal wealth example involving Part of Fortune"
+      ],
+      "excluded_scope": [
+        "modern karmic-node doctrine",
+        "scientific predictive validity",
+        "standalone universal South Node natal personality meaning"
+      ],
+      "independence_status": "primary_witness"
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "claim:valens-fortune-life-prosperity",
+      "layer": "L4",
+      "claim_type": "historical_doctrine",
+      "normalized_statement": "In the reviewed Valens passages, the Lot of Fortune is used as a natal starting point associated with life and with inquiry into good fortune and success; its derived places are treated analogously to the natal places.",
+      "source_refs": [
+        "source:valens-riley-lot-of-fortune"
+      ],
+      "source_locator_refs": [
+        "Book II §17",
+        "Book IV topical starting points"
+      ],
+      "tradition_tags": [
+        "hellenistic",
+        "classical_antiquity"
+      ],
+      "tradition_context_refs": [
+        "lineage:hellenistic"
+      ],
+      "historical_context_refs": [
+        "context:classical_antiquity"
+      ],
+      "applies_to": [
+        "natal",
+        "PartOfFortune",
+        "Lot of Fortune",
+        "life",
+        "good fortune",
+        "success"
+      ],
+      "scope": "historical Hellenistic Lot of Fortune doctrine",
+      "confidence_status": "supported",
+      "support_status": "single_source_supported",
+      "conflict_group_ids": [],
+      "cautions": [
+        "This is a bounded historical doctrine, not a guarantee of wealth, success, health, longevity, or scientific predictive validity."
+      ],
+      "storage_origin": "project-authored normalized paraphrase"
+    },
+    {
+      "claim_id": "claim:lilly-south-node-fortune-conjunction-diminution",
+      "layer": "L4",
+      "claim_type": "historical_doctrine",
+      "normalized_statement": "In Lilly's reviewed merchant nativity, proximity of the South Node to the Part of Fortune is one factor used in judging diminution or obstruction of expected inherited property; this is a conjunction-specific example rather than a standalone South Node personality meaning.",
+      "source_refs": [
+        "source:lilly-christian-astrology-fortune-nodes"
+      ],
+      "source_locator_refs": [
+        "CA p.749-750, Nativity of an English Merchant — wealth"
+      ],
+      "tradition_tags": [
+        "early_modern",
+        "traditional_western"
+      ],
+      "tradition_context_refs": [],
+      "historical_context_refs": [
+        "context:early_modern"
+      ],
+      "applies_to": [
+        "natal",
+        "SouthNode",
+        "PartOfFortune",
+        "conjunction",
+        "inheritance",
+        "property"
+      ],
+      "scope": "early-modern conjunction-specific natal example",
+      "confidence_status": "supported",
+      "support_status": "single_source_supported",
+      "conflict_group_ids": [],
+      "cautions": [
+        "Do not generalize this example into a standalone South Node natal personality or karmic meaning.",
+        "Do not convert the historical wealth judgment into a guaranteed financial outcome."
+      ],
+      "storage_origin": "project-authored normalized paraphrase"
+    }
+  ],
+  "conflict_groups": [],
+  "lineage_rules": {
+    "count_derivative_sources_as_independent": false,
+    "practitioner_repeat_of_primary_claim_is_new_primary_evidence": false,
+    "reference_implementation_modern_language_is_historical_evidence": false
+  },
+  "retrieval_contract": {
+    "house_axis_routes_require_l2_facts": true,
+    "minimum_l2_fact_roles": [
+      "Ascendant_or_Descendant",
+      "house_identity_or_cusp"
+    ],
+    "unknown_birth_time_house_fallback_allowed": false,
+    "auto_enforced_from_registry_metadata": false
+  },
+  "research_result": {
+    "key_decomposition": [
+      "Hellenistic Part of Fortune doctrine",
+      "early-modern South Node + Fortune conjunction example",
+      "standalone South Node semantic boundary"
+    ],
+    "production_authority_granted": false,
+    "scientific_predictive_validity_claimed": false
+  },
+  "privacy": {
+    "contains_real_birth_data": false,
+    "fixture_type": "source-evidence registry only"
+  }
+}

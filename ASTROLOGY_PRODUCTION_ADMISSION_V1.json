@@ -322,7 +322,8 @@
     "essential-dignity-expansion-research-v1",
     "transit-interpretation-research-v1",
     "saturn-moon-major-aspects-research-v1",
-    "planet-sign-composable-semantics-research-v1"
+    "planet-sign-composable-semantics-research-v1",
+    "south-node-fortune-research-v1"
   ],
   "qualified_only_registries": [
     "high-value-planet-aspects-research-v1"
@@ -418,13 +419,18 @@
             "registry_record_id": "fourth-tenth-house-axis-research-v1",
             "claim_id": "claim:houlding-fourth-house-roots-foundation-property"
           }
+        ],
+        "PartOfFortune": [
+          {
+            "registry_record_id": "south-node-fortune-research-v1",
+            "claim_id": "claim:valens-fortune-life-prosperity"
+          }
         ]
       },
       "no_admitted_claim_bindings": [
-        "SouthNode",
-        "PartOfFortune"
+        "SouthNode"
       ],
-      "interpretation_scope_note": "Descendant and ImumCoeli admit only the explicitly listed source-backed claim bindings. SouthNode and PartOfFortune remain deterministic facts without production semantic claim families."
+      "interpretation_scope_note": "Descendant and ImumCoeli retain their explicit source-backed bindings. PartOfFortune admits only the bounded Valens Lot-of-Fortune doctrine. SouthNode remains deterministic fact-only: the reviewed Lilly evidence is conjunction-specific to SouthNode + PartOfFortune, while the current derived-fact handoff does not admit that co-fact/aspect applicability shape; no standalone SouthNode semantic claim is admitted."
     }
   }
 }
