@@ -1,0 +1,58 @@
+name: TEMP One-Shot Astrology Place Publisher
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/temp-one-shot-astrology-place-publisher.yml"
+permissions:
+  contents: write
+concurrency:
+  group: astrology-place-data-publisher
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact admitted source
+        uses: actions/checkout@v4
+        with:
+          ref: 47ddfcee33c2cab64bb1ea97011dff9c878ba1e4
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --disable-pip-version-check geonamescache==3.0.2
+      - name: Generate and verify exact profile-500 corpus
+        run: |
+          rm -rf /tmp/place-v1
+          python tools/generate_astrology_place_shards.py --profiles 500 --write --output /tmp/place-v1 > /tmp/summary.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          s=json.loads(Path("/tmp/summary.json").read_text()); p=s["profiles"][0]
+          assert p["profile"] == 500
+          assert p["source_identity"]["identity_match"] is True
+          assert p["aggregate_digest"] == "6e542fd50c4d821d783c74c2f392bea087df68666ba1781970df66d47dc719a0"
+          root=Path("/tmp/place-v1/profiles/500"); files=sorted(root.rglob("*.json")); total=sum(x.stat().st_size for x in files)
+          assert len(files) == 8192 and total == 75086146
+          identity={"schema_name":"astrology_place_generated_data_identity","schema_version":"1.0.0","profile":500,"generator_id":s["generator_id"],"generator_source_commit":"47ddfcee33c2cab64bb1ea97011dff9c878ba1e4","source_identity":p["source_identity"],"aggregate_digest":p["aggregate_digest"],"generated_file_count":len(files),"generated_bytes":total}
+          Path("/tmp/place-v1/GENERATED_IDENTITY.json").write_text(json.dumps(identity,indent=2,sort_keys=True)+"\n")
+          PY
+      - name: Publish isolated data ref
+        env:
+          DATA_BRANCH: data/astrology-place-v1
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git ls-remote --exit-code --heads origin "$DATA_BRANCH" >/dev/null 2>&1; then
+            echo "Ref already exists; one-shot bridge refuses to overwrite it."
+            exit 1
+          fi
+          git checkout --orphan "$DATA_BRANCH"
+          git rm -rf . >/dev/null 2>&1 || true
+          mkdir -p data/astrology/place/v1/profiles
+          cp -R /tmp/place-v1/profiles/500 data/astrology/place/v1/profiles/500
+          cp /tmp/place-v1/GENERATED_IDENTITY.json data/astrology/place/v1/GENERATED_IDENTITY.json
+          git add data/astrology/place/v1
+          git commit -m "Publish Astrology place profile-500 data"
+          git push origin "$DATA_BRANCH"
+          echo "DATA_COMMIT=$(git rev-parse HEAD)"
