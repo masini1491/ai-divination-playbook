@@ -1,0 +1,57 @@
+name: Temporary rebuild Astrology core bundle P1-120
+
+on:
+  push:
+    branches:
+      - feature/ast-p1-120-special-pattern-policies
+    paths:
+      - .github/workflows/temp-rebuild-astrology-core-bundle-p120.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: temp-rebuild-astrology-core-bundle-p120
+  cancel-in-progress: false
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Assert exact pre-bridge parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD^)" = "36f491de88ffa69b02a3ed39ef9c94b4f9a2f0f1"
+          test "$(git status --short)" = ""
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install pinned Astrology dependency
+        run: python -m pip install "astronomy-engine==2.1.19"
+
+      - name: Rebuild and verify deterministic core bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tools/build_astrology_core_bundle.py
+          python tools/build_astrology_core_bundle.py --check
+          changed="$(git diff --name-only)"
+          test "$changed" = "runtime/astrology/CHATGPT_DETERMINISTIC_CORE_BUNDLE.json"
+
+      - name: Commit generated bundle only
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add runtime/astrology/CHATGPT_DETERMINISTIC_CORE_BUNDLE.json
+          test "$(git diff --cached --name-only)" = "runtime/astrology/CHATGPT_DETERMINISTIC_CORE_BUNDLE.json"
+          git commit -m "Rebuild Astrology core bundle for P1-120"
+          git push origin HEAD:feature/ast-p1-120-special-pattern-policies
