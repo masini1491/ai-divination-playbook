@@ -11,6 +11,11 @@ import tempfile
 import time
 from datetime import date, timedelta
 from pathlib import Path
+import sys
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 from tools.ziwei_calendar_data_poc import GregorianBirth, normalize_from_data, write_month_shard
 from tools.ziwei_calendar_provider import GregorianBirthInput, normalize_gregorian_birth
