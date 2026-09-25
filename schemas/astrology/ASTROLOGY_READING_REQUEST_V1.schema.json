@@ -261,9 +261,7 @@
       "required": [
         "start_utc",
         "end_utc",
-        "moving_bodies",
-        "natal_targets",
-        "aspects"
+        "moving_bodies"
       ],
       "properties": {
         "start_utc": {
@@ -295,7 +293,7 @@
         },
         "natal_targets": {
           "type": "array",
-          "minItems": 1,
+          "minItems": 0,
           "uniqueItems": true,
           "items": {
             "enum": [
@@ -315,7 +313,7 @@
         },
         "aspects": {
           "type": "array",
-          "minItems": 1,
+          "minItems": 0,
           "uniqueItems": true,
           "items": {
             "enum": [
@@ -334,8 +332,41 @@
         "include_ingresses": {
           "type": "boolean",
           "default": true
+        },
+        "include_transit_to_natal": {
+          "type": "boolean",
+          "default": true
+        },
+        "include_house_ingresses": {
+          "type": "boolean",
+          "default": false
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "include_transit_to_natal": {
+                "const": true
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "natal_targets",
+              "aspects"
+            ],
+            "properties": {
+              "natal_targets": {
+                "minItems": 1
+              },
+              "aspects": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
     }
   },
   "allOf": [
