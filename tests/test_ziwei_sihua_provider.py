@@ -73,7 +73,7 @@ class ZiWeiSihuaProviderCandidateTests(unittest.TestCase):
 
     def test_no_generic_outcome_doctrine_is_emitted(self):
         r=calculate_sihua("甲")
-        self.assertFalse(r["interpretation_boundary"]["transformed_star_claims_admitted"])
+        self.assertFalse(r["interpretation_boundary"]["transformed_star_claims_admitted_by_provider"])
         self.assertFalse(r["interpretation_boundary"]["generic_transform_outcome_dictionary_admitted"])
         self.assertFalse(r["interpretation_boundary"]["cross_profile_averaging_allowed"])
         text=str(r)
