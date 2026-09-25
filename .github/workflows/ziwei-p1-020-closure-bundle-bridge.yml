@@ -1,0 +1,69 @@
+name: Zi Wei P1-020 Closure Bundle Bridge
+
+on:
+  push:
+    branches:
+      - zw-p1-020-closure-cleanup
+    paths:
+      - ".github/workflows/ziwei-p1-020-closure-bundle-bridge.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  rebuild-and-verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Assert isolated branch lineage
+        run: |
+          test "$(git rev-parse HEAD^)" = "84178df56ae7740be35ed50d04043483de5525db"
+          test "$(git branch --show-current)" = "zw-p1-020-closure-cleanup"
+      - name: Install pinned calendar build dependency
+        run: python -m pip install --disable-pip-version-check -r requirements-ziwei-calendar.txt
+      - name: Rebuild Zi Wei deterministic bundle
+        run: |
+          python tools/build_ziwei_tool_bundle.py
+          python tools/build_ziwei_tool_bundle.py --check
+      - name: Run focused Zi Wei closure regression
+        run: |
+          python -m unittest \
+            tests.test_ziwei_sihua_provider \
+            tests.test_ziwei_sihua_claim_registry \
+            tests.test_ziwei_sihua_admission \
+            tests.test_ziwei_unified_runtime_v1 \
+            tests.test_ziwei_production_contract_v1 \
+            tests.test_ziwei_tool_bundle
+      - name: Run structural checker
+        run: python tools/playbook_check.py
+      - name: Remove temporary bridge and enforce bounded generated diff
+        run: |
+          rm .github/workflows/ziwei-p1-020-closure-bundle-bridge.yml
+          rm -rf tests/__pycache__ tools/__pycache__ references/ziwei/__pycache__
+          python - <<'PY'
+          import subprocess
+          changed=subprocess.check_output(
+              ["git","status","--porcelain","--untracked-files=all"],text=True
+          ).splitlines()
+          paths=[line[3:] for line in changed]
+          allowed={
+              ".github/workflows/ziwei-p1-020-closure-bundle-bridge.yml",
+              "runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json",
+          }
+          unexpected=[p for p in paths if p not in allowed]
+          assert not unexpected, unexpected
+          assert "runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json" in paths, paths
+          assert ".github/workflows/ziwei-p1-020-closure-bundle-bridge.yml" in paths, paths
+          PY
+      - name: Commit generated bundle and remove bridge
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json .github/workflows/ziwei-p1-020-closure-bundle-bridge.yml
+          git commit -m "Regenerate Zi Wei bundle after closure cleanup"
+          git push origin HEAD:zw-p1-020-closure-cleanup
