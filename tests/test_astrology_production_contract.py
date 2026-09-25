@@ -153,6 +153,12 @@ class AstrologyProductionContractTests(unittest.TestCase):
             row["pattern_topology_projection_schema"],
         )
         self.assertEqual("explicit-selector-only", row["pattern_topology_activation"])
+        self.assertEqual("tools/astrology_special_pattern_projection.py", row["special_pattern_projection"])
+        self.assertEqual(
+            "schemas/astrology/ASTROLOGY_SPECIAL_PATTERN_PROJECTION_V1.schema.json",
+            row["special_pattern_projection_schema"],
+        )
+        self.assertEqual("explicit-selector-only", row["special_pattern_activation"])
         self.assertNotIn("explicit_astrology", data["loader"]["bypass_profiles"])
 
     def test_astrology_root_owner_keeps_common_boundary_and_routes_mode_owners(self):
@@ -277,6 +283,28 @@ class AstrologyProductionContractTests(unittest.TestCase):
         )
         self.assertEqual("forbidden", policy["silent_default"])
         self.assertFalse(policy["semantic_interpretation_authority"])
+
+    def test_p1_120_special_patterns_are_explicit_and_do_not_mutate_major_topology(self):
+        manifest = json.loads((ROOT / "ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        major = manifest["orchestration"]["policy_projections"]["pattern_topology"]
+        special = manifest["orchestration"]["policy_projections"]["special_patterns"]
+        self.assertEqual("major-aspects-v1", major["required_aspect_policy_id"])
+        self.assertEqual(
+            ["T-Square", "Grand Trine", "Grand Cross", "Kite", "Mystic Rectangle", "Cradle", "Grand Sextile"],
+            major["admitted_pattern_types"],
+        )
+        self.assertEqual("explicit_selector_only", special["activation"])
+        self.assertEqual("pattern-aspects-yod-quintile-v1", special["aspect_policy_id"])
+        self.assertEqual("pattern-aspect-orbs-yod-quintile-v1", special["orb_policy_id"])
+        self.assertEqual(
+            {"conjunction": 8.0, "sextile": 5.0, "quincunx": 3.0, "quintile": 2.0, "biquintile": 2.0},
+            special["max_orb_degrees"],
+        )
+        self.assertEqual(["Yod", "Stellium", "Grand Quintile"], special["admitted_pattern_types"])
+        self.assertIsNone(special["default_participant_policy_id"])
+        self.assertEqual("forbidden", special["silent_default"])
+        self.assertFalse(special["semantic_interpretation_authority"])
+        self.assertFalse(special["exact_consumer_compatibility_claimed"])
 
 
     def test_derived_interpretation_admission_is_exact_claim_allowlist(self):

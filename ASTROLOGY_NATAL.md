@@ -93,7 +93,7 @@ runtime-admitted natal aspect graph
 
 不得從 raw longitudes繞過 E5 qualified aspect graph，也不得因 object存在就讓 angle、South Node、Part of Fortune或其他 extended point自動參與。若缺少 explicit policy selector，保持 unsupported / ask only when materially necessary；不得 silent-default。
 
-目前 Yod、Stellium、Grand Quintile與 exact consumer/唐綺陽 pattern compatibility不在此 production projection scope；依 `ASTROLOGY_PRODUCTION_ADMISSION_V1.json` fail closed。
+Yod、Stellium、Grand Quintile 另走 `tools/astrology_special_pattern_projection.py` 的 explicit special-pattern policy path；必須明確選擇 participant / aspect / orb / pattern / Stellium policy，且不改寫既有 major-pattern topology。這些 projection 只建立 deterministic geometry/topology facts，沒有 semantic interpretation authority。exact consumer/唐綺陽 pattern compatibility仍未驗證，不得宣稱相容。
 
 ## 7. Natal Interpretation Order
 

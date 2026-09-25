@@ -179,6 +179,68 @@
         "policy_definitions_owner": "ASTROLOGY_PRODUCTION_ADMISSION_V1.json#/aspect_policy/extended_participant_policies",
         "explicit_aspect_policy_selector_required": true,
         "explicit_orb_policy_selector_required": true
+      },
+      "special_patterns": {
+        "projection_id": "astrology-special-pattern-projection-v1",
+        "runtime_owner": "tools/astrology_special_pattern_projection.py",
+        "output_schema": "schemas/astrology/ASTROLOGY_SPECIAL_PATTERN_PROJECTION_V1.schema.json",
+        "output_schema_id": "astrology_special_pattern_projection@1.0.0",
+        "authority": "deterministic_topology_projection_only",
+        "activation": "explicit_selector_only",
+        "admitted_participant_policy_ids": [
+          "aspect-participants-core-bodies-v1",
+          "aspect-participants-core-plus-angles-v1",
+          "aspect-participants-core-plus-south-node-v1",
+          "aspect-participants-core-plus-fortune-v1"
+        ],
+        "aspect_policy_id": "pattern-aspects-yod-quintile-v1",
+        "aspect_targets_deg": {
+          "conjunction": 0,
+          "sextile": 60,
+          "quincunx": 150,
+          "quintile": 72,
+          "biquintile": 144
+        },
+        "orb_policy_id": "pattern-aspect-orbs-yod-quintile-v1",
+        "max_orb_degrees": {
+          "conjunction": 8,
+          "sextile": 5,
+          "quincunx": 3,
+          "quintile": 2,
+          "biquintile": 2
+        },
+        "pattern_policy_id": "special-pattern-topology-yod-stellium-grand-quintile-v1",
+        "admitted_pattern_types": [
+          "Yod",
+          "Stellium",
+          "Grand Quintile"
+        ],
+        "conjunction_cluster_policy_id": "conjunction-clusters-transitive-v1",
+        "pattern_projection_policy_id": "pattern-projection-report-all-valid-v1",
+        "stellium_policy": {
+          "policy_id": "stellium-planets-same-sign-span10-min3-v1",
+          "eligible_object_ids": [
+            "Sun",
+            "Moon",
+            "Mercury",
+            "Venus",
+            "Mars",
+            "Jupiter",
+            "Saturn",
+            "Uranus",
+            "Neptune",
+            "Pluto"
+          ],
+          "minimum_count": 3,
+          "maximum_span_deg": 10,
+          "sign_boundary_policy": "same_zodiac_sign_required",
+          "nodes_angles_lots": "excluded"
+        },
+        "policy_decision_owner": "references/astrology/AST_P1_120_POLICY_DECISION.md",
+        "default_participant_policy_id": null,
+        "silent_default": "forbidden",
+        "semantic_interpretation_authority": false,
+        "exact_consumer_compatibility_claimed": false
       }
     }
   },
