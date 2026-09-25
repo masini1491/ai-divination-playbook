@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Explicit E5 extended-aspect projection for admitted Astrology natal bundles."""
 from __future__ import annotations
-import argparse, json
+import argparse, json, math
 from itertools import combinations
 from pathlib import Path
 from typing import Any
@@ -37,10 +37,16 @@ def _aspect(left:float,right:float)->tuple[str,float]|None:
     name,orb=min(((name,abs(separation-target)) for name,target in targets.items()),key=lambda x:x[1])
     return (name,orb) if orb<=MAJOR_ASPECT_ORBS[name] else None
 
-def build_aspect_projection(bundle:dict[str,Any], *, participant_policy_id:str)->dict[str,Any]:
+def build_aspect_projection(
+    bundle:dict[str,Any], *, participant_policy_id:str, aspect_policy_id:str, orb_policy_id:str
+)->dict[str,Any]:
     policy=PARTICIPANT_POLICIES.get(participant_policy_id)
     if policy is None:
         raise AspectProjectionError("explicit admitted participant policy required: "+", ".join(sorted(PARTICIPANT_POLICIES)))
+    if aspect_policy_id!=ASPECT_POLICY_ID:
+        raise AspectProjectionError(f"explicit admitted aspect policy required: {ASPECT_POLICY_ID}")
+    if orb_policy_id!=ORB_POLICY_ID:
+        raise AspectProjectionError(f"explicit admitted orb policy required: {ORB_POLICY_ID}")
     gate=gate_bundle(bundle)
     if gate.get("status")!="admitted" or bundle.get("reading_mode")!="natal":
         raise AspectProjectionError("extended aspect projection requires an admitted natal Astrology fact bundle")
@@ -51,7 +57,9 @@ def build_aspect_projection(bundle:dict[str,Any], *, participant_policy_id:str)-
     for row in rows if isinstance(rows,list) else []:
         if not isinstance(row,dict): continue
         oid=row.get("object_id"); lon=row.get("longitude_deg"); fid=row.get("fact_id")
-        if isinstance(oid,str) and isinstance(lon,(int,float)) and isinstance(fid,str):
+        if isinstance(oid,str) and not isinstance(lon,bool) and isinstance(lon,(int,float)) and math.isfinite(float(lon)) and isinstance(fid,str):
+            if oid in by_id:
+                raise AspectProjectionError(f"duplicate admitted participant object identity: {oid}")
             by_id[oid]=(fid,float(lon)%360.0)
     required=tuple(policy["object_ids"])
     missing=[oid for oid in required if oid not in by_id]
@@ -98,9 +106,16 @@ def main()->int:
     p=argparse.ArgumentParser()
     p.add_argument("input",type=Path)
     p.add_argument("--participant-policy-id",required=True,choices=sorted(PARTICIPANT_POLICIES))
+    p.add_argument("--aspect-policy-id",required=True,choices=[ASPECT_POLICY_ID])
+    p.add_argument("--orb-policy-id",required=True,choices=[ORB_POLICY_ID])
     p.add_argument("--output",type=Path)
     a=p.parse_args(); bundle=json.loads(a.input.read_text(encoding="utf-8"))
-    result=build_aspect_projection(bundle,participant_policy_id=a.participant_policy_id)
+    result=build_aspect_projection(
+        bundle,
+        participant_policy_id=a.participant_policy_id,
+        aspect_policy_id=a.aspect_policy_id,
+        orb_policy_id=a.orb_policy_id,
+    )
     encoded=json.dumps(result,ensure_ascii=False,indent=2)+"\n"
     if a.output:a.output.write_text(encoded,encoding="utf-8")
     else:print(encoded,end="")
