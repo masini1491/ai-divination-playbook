@@ -108,6 +108,23 @@ This SHA is review evidence only, not a pin. Every maintenance task must resolve
 
 ## P1 — product architecture
 
+### ZW-P1-003 — Calendar deterministic-data architecture evaluation
+
+- type: ARCHITECTURE / CALENDAR DATA POC
+- status: IN_PROGRESS
+- priority: P1
+- owner: Zi Wei maintenance
+- blocked_by: none
+- evidence owner: `references/ziwei/ZIWEI_CALENDAR_DATA_POC.md`
+- current decision:
+  - option B (build-time pinned upstream → repo-local deterministic calendar data → project-owned resolver) is the selected target architecture;
+  - current option A remains production authority until a separate production-admission gate passes;
+  - POC uses bounded Gregorian month shards and does not vendor `third_party/lunar-python/**`;
+  - full supported-range decision, machine-generated parity corpus, deterministic rebuild/aggregate-hash validation and production materialization migration remain open.
+- scope boundary:
+  - does not modify `ZW-P1-020` Four Transformations semantics;
+  - does not create repository-layer architecture policy outside `REPOSITORY_ARCHITECTURE.md`.
+
 ### ZW-P1-001 — Unified Zi Wei runtime and typed request/result interface
 
 - type: ARCHITECTURE
