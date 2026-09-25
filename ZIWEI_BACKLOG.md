@@ -130,26 +130,28 @@ This SHA is review evidence only, not a pin. Every maintenance task must resolve
 ### ZW-P1-003 — Calendar deterministic-data architecture evaluation
 
 - type: ARCHITECTURE / CALENDAR DATA POC
-- status: IN_PROGRESS
+- status: DONE
 - priority: P1
 - owner: Zi Wei maintenance
 - blocked_by: none
 - evidence owner: `references/ziwei/ZIWEI_CALENDAR_DATA_POC.md`
 - current decision:
-  - option B (build-time pinned upstream → repo-local deterministic calendar data → project-owned resolver) is the selected target architecture;
-  - current option A remains production authority until a separate production-admission gate passes;
+  - option B (build-time pinned upstream → repo-local deterministic calendar data → project-owned resolver) is production-admitted; option A is retained only as the independent build/parity reference oracle;
   - POC uses bounded Gregorian month shards and does not vendor `third_party/lunar-python/**`;
   - full 1900-01-01..2100-12-31 machine parity is complete: 73,414 days / 204,716 comparisons / 0 mismatches in the strongest run;
   - daily-shard candidate-window footprint measured 8,525,044 bytes total;
   - compact Gregorian-year / lunar-month-interval POC completed with 73,414 ordinary-date checks / 4,824 full-hour New-Year cases / 202 year-edge 23:00 cases / 0 mismatches;
   - interval encoding uses 2,692 interval records in 202 year shards and measured 471,865 bytes total (about 94.46% smaller / 18.07x smaller than daily shards), while preserving ordinary 1-file and 23:00 cross-year at-most-2-file lookup;
-  - interval encoding is now the selected B candidate storage architecture; current option A still remains production authority;
-  - product-supported candidate range is now explicitly selected as 1900-01-01..2100-12-31; this is a product-range decision only and is not production admission;
+  - interval encoding is the admitted production storage architecture; the independent upstream reference path is not a production runtime;
+  - product-supported Gregorian production range is 1900-01-01..2100-12-31; 2101 exists only as the 2100-12-31 23:00 policy-tail shard and does not extend admitted user input;
   - exact candidate dataset is materialized at `data/calendar/ziwei_tw_interval/v1/**` with 202 Gregorian-year shards (1900..2101 including the 2101 policy tail), 2,692 intervals and 471,865 shard bytes;
   - candidate dataset aggregate SHA-256 is `4913a39e770afcd21eedc387523c572b8c4fc6469889c28f6ea75613f8984d79`; pinned installed-source inventory SHA-256 is `bf49ea69241171a8e5b5a85ca07748c88b00f5ce392f25c21617e398c9c9a712`;
   - range-parameterized builder/validator verifies the existing pinned 34-file upstream Git-blob inventory before generation, writes manifest/provenance/attribution metadata, closes exact shard inventory + per-shard/aggregate hashes and clean deterministic rebuild;
-  - dependency-free query-bounded resolver candidate now lives in `tools/ziwei_calendar_data_provider.py`: ordinary dates require one year shard; 2100-12-31 23:00 requires the 2100 + 2101 policy-tail pair; manifest/shard hash and selected-range failures are fail closed;
-  - current option A remains production authority; remaining admission blocker is binding this resolver into the production provider + query-bounded ChatGPT materialization, then updating the calendar admission manifest and production regression gate together.
+  - dependency-free query-bounded resolver is production-bound through `tools/ziwei_calendar_provider.py`: ordinary dates require one year shard; 2100-12-31 23:00 requires the 2100 + 2101 policy-tail pair; manifest/shard hash and supported-range failures are fail closed;
+  - `ZIWEI_CALENDAR_ADMISSION_V1.json` allowlists the exact dataset identity + aggregate hash and classifies pinned `lunar_python==1.4.8` as build/parity source only;
+  - ChatGPT transport bundle v2 carries 18 repo-local runtime/retrieval artifacts + exact calendar manifest, no lunar_python runtime files; year shards are same-commit query-bounded acquisitions;
+  - independent parity remains available through `tools/ziwei_calendar_upstream_reference.py`, so post-admission dataset validation does not collapse into data-vs-data self-comparison;
+  - admission bridge run `36125250303` PASSed bundle-v2 rebuild/check, admission-focused regression, bounded-diff cleanup and no-runtime-dependency assertions; PR #201 full `validate` + `casting-runtime` PASS on head `bea22c3b24a5a351480a02bcb75cce646bcb27f9`.
 - scope boundary:
   - does not modify `ZW-P1-020` Four Transformations semantics;
   - does not create repository-layer architecture policy outside `REPOSITORY_ARCHITECTURE.md`.
