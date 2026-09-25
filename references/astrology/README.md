@@ -152,13 +152,7 @@ AST-P1-010 found **no passing 10/20/40-day sampled/Hermite variant** under its p
 
 ### Mean Black Moon Lilith analytical research
 
-AST-P1-020 completed a REFERENCE-ONLY parity study for one explicit Mean Lilith fact:
-
-- [`ASTROLOGY_EXP2_MEAN_LILITH_PARITY.md`](ASTROLOGY_EXP2_MEAN_LILITH_PARITY.md) — definition, reference-path roles, frozen gates and measured result.
-- [`astrology_exp2_mean_lilith_iers2003_parity.json`](astrology_exp2_mean_lilith_iers2003_parity.json) — machine-readable parity evidence.
-- [`mean_lilith_iers2003_research.py`](mean_lilith_iers2003_research.py) — reference-only project implementation of `black_moon_lilith_mean_iers2003_v1`.
-
-The IERS-2003 secular Mean Apogee candidate passed its ERFA same-definition and XALEN/Meeus compatibility research gates. It remains **NOT production-admitted**; Mean, Osculating/True and Interpolated Lilith identities remain separate.
+AST-P1-020 REFERENCE-ONLY parity evidence: [report](ASTROLOGY_EXP2_MEAN_LILITH_PARITY.md), [metrics](astrology_exp2_mean_lilith_iers2003_parity.json), [research implementation](mean_lilith_iers2003_research.py). Production admission remains separate.
 
 ### Historical engine/timing research
 
