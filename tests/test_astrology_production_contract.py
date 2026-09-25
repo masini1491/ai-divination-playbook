@@ -31,7 +31,7 @@ class AstrologyProductionContractTests(unittest.TestCase):
             natal["known_time_derived_axes"]["object_ids"],
         )
         self.assertEqual("not_emitted", natal["known_time_derived_axes"]["unknown_time"])
-        self.assertEqual("not_admitted", natal["known_time_derived_axes"]["aspect_participation"])
+        self.assertEqual("explicit_projection_policy_only", natal["known_time_derived_axes"]["aspect_participation"])
         self.assertEqual("astronomy-engine-transit-v1", transit["provider_id"])
         self.assertEqual("geonamescache-city-v1", place["resolver_id"])
         self.assertTrue(natal["raw_birth_data_supported"])
@@ -225,7 +225,7 @@ class AstrologyProductionContractTests(unittest.TestCase):
         self.assertEqual("Ascendant + Moon - Sun", fortune["diurnal_formula"])
         self.assertEqual("Ascendant + Sun - Moon", fortune["nocturnal_formula"])
         self.assertEqual("not_emitted", fortune["unknown_time"])
-        self.assertEqual("not_admitted", fortune["aspect_participation"])
+        self.assertEqual("explicit_projection_policy_only", fortune["aspect_participation"])
 
         admitted = production["natal_provider"]["known_time_part_of_fortune"]
         self.assertEqual("fact_only_until_separately_admitted", admitted["interpretation_semantics"])
