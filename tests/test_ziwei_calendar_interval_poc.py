@@ -61,6 +61,12 @@ class ZiWeiCalendarIntervalPocTests(unittest.TestCase):
             with self.assertRaises(CalendarIntervalUnavailable):
                 normalize_from_interval_data(GregorianBirth(2000,8,16,12),Path(td))
 
+    def test_deterministic_rebuild_same_year_bytes(self):
+        with tempfile.TemporaryDirectory() as a, tempfile.TemporaryDirectory() as b:
+            pa=write_year_shard(Path(a),2000)
+            pb=write_year_shard(Path(b),2000)
+            self.assertEqual(pa.read_bytes(),pb.read_bytes())
+
     def test_candidate_edges_and_random_corpus(self):
         rng=random.Random(20260925)
         dates=[date(1900,1,1),date(2100,12,31)]

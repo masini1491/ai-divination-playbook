@@ -121,8 +121,11 @@ This SHA is review evidence only, not a pin. Every maintenance task must resolve
   - current option A remains production authority until a separate production-admission gate passes;
   - POC uses bounded Gregorian month shards and does not vendor `third_party/lunar-python/**`;
   - full 1900-01-01..2100-12-31 machine parity is complete: 73,414 days / 204,716 comparisons / 0 mismatches in the strongest run;
-  - candidate-window generated shard footprint measured 8,525,044 bytes total; one shard max measured 3,638 bytes and ordinary lookup remains one file, 23:00 cross-month at most two;
-  - remaining admission blockers are explicit product-supported-range selection, final storage encoding choice for any broader range, admitted-dataset deterministic rebuild/hash closure, and production materialization migration.
+  - daily-shard candidate-window footprint measured 8,525,044 bytes total;
+  - compact Gregorian-year / lunar-month-interval POC completed with 73,414 ordinary-date checks / 4,824 full-hour New-Year cases / 202 year-edge 23:00 cases / 0 mismatches;
+  - interval encoding uses 2,692 interval records in 202 year shards and measured 471,865 bytes total (about 94.46% smaller / 18.07x smaller than daily shards), while preserving ordinary 1-file and 23:00 cross-year at-most-2-file lookup;
+  - interval encoding is now the selected B candidate storage architecture; current option A still remains production authority;
+  - remaining admission blockers are explicit product-supported-range selection, admitted interval-dataset deterministic rebuild/hash closure, and production resolver/materialization migration.
 - scope boundary:
   - does not modify `ZW-P1-020` Four Transformations semantics;
   - does not create repository-layer architecture policy outside `REPOSITORY_ARCHITECTURE.md`.
