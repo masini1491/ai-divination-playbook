@@ -143,7 +143,8 @@ This item is a standing reconciliation guard. It is not a request to change curr
   - same-commit GitHub Connect bounded shard retrieval + exact-ref/path retrieval + returned Git blob identity: COMPLETE at connector-surface proof scope via temporary non-merge PR #208;
   - bounded alias-first → local country/ambiguity filtering → candidate-on-demand orchestration: COMPLETE at connector-surface proof scope; GitHub Connect does not expose server-side filtering;
   - connector cache-hit/network-byte telemetry: UNAVAILABLE; do not treat repeated identical retrieval as a zero-byte cache proof;
-  - validate end-to-end cold-start payload/latency and full semantic parity against real generated shards;
+  - real generated-shard bounded corpus payload + semantic route evidence: COMPLETE at profile-500 research scope via temporary non-merge PR #210 / workflow 36139602395 / artifact 10866252034;
+  - validate GitHub Connect repo-file cold-start latency against real committed generated shards; artifact transport is not accepted as equivalent;
   - only then consider changing `ASTROLOGY_MATERIALIZATION.md` current production behavior or `ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json`.
 - completion_gate:
   - deterministic generated-data provenance from the four exact admitted source datasets;
