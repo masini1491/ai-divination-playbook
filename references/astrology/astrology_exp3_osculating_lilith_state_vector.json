@@ -1,0 +1,121 @@
+{
+  "schema_name": "astrology_exp3_osculating_lilith_state_vector",
+  "schema_version": "1.0.0",
+  "authority": "REFERENCE_ONLY_RESEARCH_EVIDENCE",
+  "production_admission": "NOT_GRANTED",
+  "semantic_interpretation_admission": "NOT_GRANTED",
+  "experiment": {
+    "temporary_pr": 185,
+    "temporary_pr_merged": false,
+    "temporary_head": "2a3abfe70788a85db5cb5beb0dfc91ea6050d594",
+    "workflow_run": 36093918723,
+    "validate_job": 107941989048,
+    "result": "RESEARCH_STABILITY_PASS"
+  },
+  "candidate": {
+    "fact_id": "black_moon_lilith_osculating_lrl_aengine_v0",
+    "definition": "instantaneous lunar osculating apogee from EQJ geocentric Moon position/velocity state via Laplace-Runge-Lenz eccentricity vector; eccentricity vector points to perigee and apogee is its antipode",
+    "research_input_state_source": "astronomy-engine-2.1.19-GeoMoonState-EQJ",
+    "state_units": {
+      "position": "AU",
+      "velocity": "AU/day"
+    },
+    "calculation_frame": "J2000_mean_equatorial_EQJ_inertial_state",
+    "output_frame": "true_ecliptic_equinox_of_date",
+    "normalization": "mod_360",
+    "gm_earth_moon_au3_day2": 8.997011546044162e-10,
+    "bare_lilith_alias": false,
+    "implementation": "references/astrology/osculating_lilith_state_research.py",
+    "implementation_status": "REFERENCE_ONLY",
+    "production_state_vector_fact_admitted": false
+  },
+  "candidate_validation_window": {
+    "t_centuries_min": -0.5,
+    "t_centuries_max": 0.5,
+    "approx_calendar_window": "1950-2050",
+    "fixture_count": 17,
+    "fixture_step_centuries": 0.0625,
+    "admission_semantics": "RESEARCH_WINDOW_ONLY_NOT_PRODUCTION_DATE_ADMISSION"
+  },
+  "finite_difference_sensitivity": {
+    "dt_days": [
+      0.025,
+      0.05,
+      0.1
+    ],
+    "comparison_reference_dt_days": 0.05
+  },
+  "thresholds_frozen_before_first_execution": {
+    "state_vs_fd_0p05_max_deg": 0.25,
+    "fd_step_spread_max_deg": 0.5
+  },
+  "reference_paths": {
+    "moon_state_authority": {
+      "source": "cosinekitty/astronomy",
+      "revision": "865d3da7d8112bbc7911238052c6af4aaf877181",
+      "role": "GeoMoonState EQJ geocentric position/velocity research input"
+    },
+    "independent_architecture_reference": {
+      "source": "vedika-io/xalen-ephemeris",
+      "revision": "cc6edbec1f748ebdc4950ae6198f575c5ada73fa",
+      "role": "independent LRL osculating-apogee architecture and Earth-Moon GM identity"
+    },
+    "swiss_compatibility_only": {
+      "source": "astrorigin/pyswisseph",
+      "revision": "91ec65631badc7faf4a4b913570c944a4c1b101d",
+      "role": "SE_OSCU_APOG model-sensitive compatibility observation only",
+      "result": "REPORT_ONLY_MODEL_SENSITIVE_COMPATIBILITY"
+    }
+  },
+  "runtime_versions": {
+    "astronomy_engine": "2.1.19",
+    "pyswisseph": "2.10.03"
+  },
+  "metrics": {
+    "state_vs_fd_0p05_max_deg": 0.0736442766763048,
+    "fd_step_spread_max_deg": 0.2771757229215268,
+    "earth_only_mu_sensitivity_max_deg": 16.91063143396633,
+    "swiss_compatibility_min_deg": 0.011865695005838006,
+    "swiss_compatibility_max_deg": 0.15242307614090578,
+    "eccentricity_norm_min": 0.03501265441247618,
+    "eccentricity_norm_max": 0.07110820299102524
+  },
+  "pass": {
+    "state_vs_fd_0p05": true,
+    "fd_step_spread": true,
+    "overall_research_stability": true
+  },
+  "swiss_gate": "REPORT_ONLY_MODEL_SENSITIVE_COMPATIBILITY",
+  "notable_rows": {
+    "j2000": {
+      "t_centuries": 0,
+      "jd_tt": 2451545,
+      "candidate_deg": 252.9604426226669,
+      "fd_0p05_deg": 252.94484761119094,
+      "state_vs_fd_0p05_deg": 0.015595011475966203,
+      "swiss_osculating_apogee_deg": 252.97812365827636,
+      "swiss_compatibility_residual_deg": 0.01768103560945633,
+      "eccentricity_norm": 0.0631966407398743
+    },
+    "stability_worst": {
+      "t_centuries": -0.3125,
+      "candidate_deg": 53.93649496408847,
+      "state_vs_fd_0p05_deg": 0.0736442766763048,
+      "fd_step_spread_deg": 0.2771757229215268,
+      "swiss_compatibility_residual_deg": 0.15242307614090578
+    },
+    "mu_sensitivity_worst": {
+      "t_centuries": 0.4375,
+      "candidate_deg": 243.26963152974707,
+      "earth_only_mu_sensitivity_deg": 16.91063143396633
+    }
+  },
+  "conclusion": {
+    "research_candidate": "SUPPORTED_AS_STABLE_RESEARCH_DEFINITION",
+    "production_consequence": "NONE",
+    "state_authority_boundary": "Astronomy Engine GeoMoonState is a pinned research input capability here; this result does not admit Cartesian Moon state vectors into the production Astrology fact schema.",
+    "model_sensitivity": "Earth-only GM changes the derived apogee direction by as much as 16.91063143396633 degrees over the research fixtures; Earth-Moon GM is part of candidate identity.",
+    "swiss_boundary": "Observed Swiss proximity is compatibility evidence only. No same-definition or Swiss-exact parity gate was prospectively declared.",
+    "variant_boundary": "Mean, Osculating/True, and Interpolated Black Moon Lilith remain separate facts."
+  }
+}

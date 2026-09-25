@@ -234,17 +234,34 @@ This item is a standing reconciliation guard. It is not a request to change curr
 ### AST-P1-030 — EXP-3 Osculating / True Lilith local state-vector parity
 
 - type: RESEARCH / DERIVED FACT
-- status: OPEN
+- status: DONE
 - priority: P1
 - owner: Astrology Lilith research
-- blocked_by:
-  - AST-P1-020
+- blocked_by: none
+- canonical_research:
+  - `references/astrology/CHATGPT_ONLY_EXTENDED_EPHEMERIS_FEASIBILITY.md`
+  - `references/astrology/EXTENDED_CHART_E3_LILITH_RESEARCH.md`
+  - `references/astrology/ASTROLOGY_EXP3_OSCULATING_LILITH_STATE_VECTOR.md`
+  - `references/astrology/astrology_exp3_osculating_lilith_state_vector.json`
+  - `references/astrology/osculating_lilith_state_research.py`
 - target:
-  - test whether admitted Moon state vectors can support a project-owned instantaneous lunar-apogee derivation;
-  - keep osculating/true identity separate from Mean and Interpolated Lilith.
+  - test whether the pinned Astronomy Engine Moon state capability can support a project-owned instantaneous lunar-apogee research derivation;
+  - keep osculating/true identity separate from Mean and Interpolated Lilith;
+  - do not infer production state-vector admission from dependency capability.
+- measured_result:
+  - candidate id `black_moon_lilith_osculating_lrl_aengine_v0` uses geocentric EQJ `GeoMoonState()`, Earth-Moon-system μ, LRL eccentricity vector and ECT output longitude;
+  - temporary non-merge PR #185 / workflow run `36093918723` evaluated 17 prospective fixtures over research window `T=-0.5..+0.5` Julian centuries (~1950-2050);
+  - exact-state vs 0.05-day finite-difference max `0.0736442766763048°` passed the frozen `0.25°` gate;
+  - 0.025/0.05/0.1-day finite-difference spread max `0.2771757229215268°` passed the frozen `0.50°` gate;
+  - changing Earth-Moon μ to Earth-only μ shifted the derived direction by up to `16.91063143396633°`, establishing material model sensitivity;
+  - Swiss `SE_OSCU_APOG` residual ranged `0.011865695005838006°..0.15242307614090578°` and remains report-only; no Swiss-exact or same-definition claim is granted;
+  - required Moon state input fails closed in the retained research implementation;
+  - production calculation and semantic interpretation admission remain `NOT_GRANTED`.
+- closure:
+  - Osculating/True Lilith project-owned state-vector research → stability PASS → LRL definition + Earth-Moon μ identity resolved → model sensitivity measured → research implementation retained under `references/` → NOT production-admitted.
 - completion_gate:
   - explicit mathematical definition;
-  - exact input/state-vector authority documented;
+  - exact research input/state-vector authority documented without implying production fact admission;
   - model sensitivity reported;
   - no claim of Swiss-exact compatibility unless independently demonstrated;
   - fail closed when required state vectors are unavailable.
