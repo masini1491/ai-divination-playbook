@@ -1,0 +1,59 @@
+name: TEMP Astrology Real Shard Probe
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/temp-astrology-place-real-shard-probe.yml"
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --disable-pip-version-check geonamescache==3.0.2
+      - name: Generate real shards and commit bounded corpus
+        run: |
+          python tools/generate_astrology_place_shards.py --profiles 500 --write --output /tmp/place-v1 > /tmp/generation.json
+          python - <<'PY'
+          import hashlib,json,shutil
+          from pathlib import Path
+          import sys
+          sys.path.insert(0,"tools")
+          import generate_astrology_place_shards as g
+          queries=[("樹林區","TW"),("Tokyo","JP"),("Springfield",None),("Springfield","US"),("NoSuchPlaceForAstrologyProbe",None)]
+          root=Path("/tmp/place-v1")
+          dest=Path("research/astrology/place_real_shard_probe")
+          dest.mkdir(parents=True,exist_ok=True)
+          selected=set()
+          corpus=[]
+          for name,country in queries:
+            key=name.strip().casefold(); abid=g.alias_bucket_id(key)
+            ap=g.shard_path(root,500,"aliases",abid)
+            alias=json.loads(ap.read_text()) if ap.exists() else {"aliases":{}}
+            routes=list(alias.get("aliases",{}).get(key,[]))
+            if country: routes=[r for r in routes if str(r[1]).upper()==country.upper()]
+            routes=sorted({int(r[0]):r for r in routes}.values(),key=lambda r:(-int(r[2]),str(r[1]),str(r[3]),int(r[0])))
+            required=[int(r[0]) for r in routes[:1 if len(routes)==1 else 10]]
+            cbids=sorted({g.candidate_bucket_id(x) for x in required})
+            selected.add(ap)
+            for bid in cbids: selected.add(g.shard_path(root,500,"candidates",bid))
+            corpus.append({"name":name,"country_code":country,"alias_bucket":abid,"match_ids":[int(r[0]) for r in routes],"candidate_buckets":cbids})
+          files=[]
+          for src in sorted(selected):
+            if not src.exists(): continue
+            rel=src.relative_to(root); out=dest/rel; out.parent.mkdir(parents=True,exist_ok=True); shutil.copyfile(src,out)
+            raw=out.read_bytes(); files.append({"path":rel.as_posix(),"bytes":len(raw),"sha256":hashlib.sha256(raw).hexdigest()})
+          (dest/"CORPUS.json").write_text(json.dumps(corpus,ensure_ascii=False,sort_keys=True,separators=(",",":")))
+          (dest/"FILES.json").write_text(json.dumps(files,ensure_ascii=False,sort_keys=True,separators=(",",":")))
+          print(json.dumps({"files":files,"corpus":corpus},ensure_ascii=False))
+          PY
+      - name: Commit real generated probe shards
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add research/astrology/place_real_shard_probe
+          git commit -m "TEMP: materialize real Astrology place shard probe"
+          git push origin HEAD:research/astrology-place-real-shard-probe
