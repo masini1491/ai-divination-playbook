@@ -135,18 +135,29 @@ The committed fixture shards are deliberately partial and remain
 ## Supported date range
 
 Production range is **not changed by this POC**. The existing production
-manifest does not state an explicit Gregorian min/max even though its typed
-input validates a Python `datetime` before invoking the dependency.
+manifest does not state an explicit Gregorian min/max. The current provider
+first validates through Python `datetime`, so inputs outside Python's civil-date
+range fail before the upstream calendar call; upstream success inside that
+validator envelope is still a separate requirement and is not an admitted
+range contract.
 
-For feasibility testing only, the POC parity suite probes a candidate
-1900-01-01 through 2100-12-31 window, including both edges plus a deterministic
-random corpus. That window is not an admission decision and must not silently
-narrow or broaden current production behavior.
+Pinned `lunar-python==1.4.8` itself has regression examples well outside the
+modern birth-date window (including years 100, 1500, 3218, 9865 and lunar year
+9997), but the upstream project does not publish one explicit public supported
+year range. Therefore neither the dependency's broad executable examples nor
+Python's date range may be silently promoted into this project's production
+contract.
 
-Before B production admission, choose and document one explicit range based on
-product requirements plus verified provider parity. If preserving a broader
-current execution range is required, generator/runtime cost must be measured
-for that broader range rather than inferred from the POC window.
+For engineering feasibility, the project now has full machine parity evidence
+for the candidate window **1900-01-01 through 2100-12-31**. This is still a
+research validation window, not a production admission decision.
+
+Before B production admission, choose and document one explicit product range.
+If preserving a materially broader current execution envelope is required,
+compare at least two storage encodings before generating a large dataset:
+daily Gregorian records versus a compact lunar-month-start / interval encoding.
+The latter can preserve runtime deterministic lookup while reducing stored
+records from roughly one per Gregorian day to roughly one per lunar month.
 
 ## Parity gate before production admission
 
@@ -170,6 +181,40 @@ current admitted provider for:
 The first POC test intentionally generates temporary month shards from the
 pinned build-time dependency and resolves them through the dependency-free data
 path before comparing normalized facts with the current admitted provider.
+
+### Full candidate-window parity evidence
+
+Machine-readable result: `references/ziwei/ziwei_calendar_full_parity_1900_2100.json`.
+
+Strongest completed run (`Zi Wei Calendar Full Parity Research` run
+`36106002302`, head `ac9fdcad6898dec43dd652314e73592155698fc0`):
+
+- candidate window: `1900-01-01..2100-12-31`;
+- Gregorian days checked: **73,414**;
+- total provider-vs-data comparisons: **204,716**;
+- every day checked at ordinary time and 23:00;
+- every Gregorian month-end additionally swept across all 24 civil hours;
+- mismatches: **0**;
+- generated month shards: **2,413**;
+- shard bytes: min **3,259**, max **3,638**, mean **3532.9647741400745**;
+- elapsed: **371.844698125 s** on the GitHub runner.
+
+A later lower-cost verifier run (`36106241848`, head
+`5da64d999c5fb2cb56689a7f7fda12b520419c7d`) also PASSed with zero
+mismatches while checking every Gregorian date once, 2,756 focused 23:00
+boundary cases, 8,376 full-hour cases, 148 leap-month day-15/16 dates and 201
+lunar-year crossovers. It measured total generated shard bytes at
+**8,525,044** for the same candidate window and completed in
+**240.572740768 s**.
+
+The initial research workflow run `36105951335` failed before parity execution
+because the verifier had not inserted the repository root into `sys.path`.
+That bootstrap failure was fixed before the two successful runs and is not
+parity evidence.
+
+These results establish high-confidence parity for the candidate window and
+show bounded one-query payloads. They do **not** select the production-supported
+date range and do not admit B into production.
 
 ## Production migration gate
 
