@@ -178,3 +178,56 @@ Transformation table identity is a calculation/profile responsibility. Interpret
 - A new variant requires a concrete witness, named tradition, independent implementation profile, or explicit project decision.
 - Do not majority-vote historical witnesses.
 - When a facsimile closes an image gap, update only that witness entry and downstream synthesis that materially depends on it.
+
+
+## Deterministic provider candidate evidence
+
+The first bounded calculation candidate is implemented in:
+
+```text
+tools/ziwei_sihua_provider.py
+```
+
+Its complete 10-stem base table is pinned to:
+
+```text
+matharts/ziwei@596f43c43ff6fbae526314c7f668bbf346445ff1
+crates/ziwei/src/rules.rs
+TRANSFORMATION_STARS_BY_STEM
+```
+
+That pinned source provides:
+
+```text
+甲 廉貞 / 破軍 / 武曲 / 太陽
+乙 天機 / 天梁 / 紫微 / 太陰
+丙 天同 / 天機 / 文昌 / 廉貞
+丁 太陰 / 天同 / 天機 / 巨門
+戊 貪狼 / 太陰 / 右弼 / 天機
+己 武曲 / 貪狼 / 天梁 / 文曲
+庚 太陽 / 武曲 / 太陰 / 天同
+辛 巨門 / 太陽 / 文曲 / 文昌
+壬 天梁 / 紫微 / 左輔 / 武曲
+癸 破軍 / 巨門 / 太陰 / 貪狼
+```
+
+For `sihua.default_v1`, the provider preserves this table except for the
+already-recorded project decision:
+
+```text
+庚化科：太陰 → 天府
+```
+
+This is deliberately represented as a **project override over a pinned complete
+base table**, not relabeled as the matharts table, Quanji, Quanshu, Zhongzhou, or
+a historically unique lineage.
+
+Current candidate status:
+
+```text
+calculation/profile selector = implemented candidate
+production admission         = false
+runtime activation           = absent
+transformed-star claims      = absent
+generic 祿權科忌 outcomes      = forbidden
+```
