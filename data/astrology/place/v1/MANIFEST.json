@@ -85,10 +85,20 @@
       "bounded_alias_first_candidate_on_demand": "PASS",
       "connector_internal_filtering": "NOT_EXPOSED",
       "cache_hit_network_byte_telemetry": "NOT_EXPOSED"
+    },
+    "real_generated_shard_probe": {
+      "temporary_pr": 210,
+      "workflow_run": 36139602395,
+      "artifact_id": 10866252034,
+      "profile": 500,
+      "artifact_zip_bytes": 66184,
+      "bounded_corpus_semantics": "PASS",
+      "real_shard_identity_manifest": "PASS",
+      "repo_file_cold_start_latency": "NOT_PROVEN_BY_ARTIFACT_TRANSPORT"
     }
   },
   "unresolved_admission_gates": [
-    "real generated-shard end-to-end cold-start payload/latency and semantic parity validation",
+    "GitHub Connect repo-file cold-start latency validation against real committed generated shards",
     "cache policy must not claim connector-internal zero-byte behavior without telemetry",
     "production materialization/admission mutation"
   ]
