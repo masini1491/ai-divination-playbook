@@ -1,113 +1,59 @@
 #!/usr/bin/env python3
-"""Deterministic Gregorian → normalized lunar input provider for Zi Wei Scope-A.
+"""Production Gregorian → normalized lunar input provider for Zi Wei Scope-A.
 
-Calendar conversion is delegated to the pinned lunar-python release. Zi Wei
-normalization policy is applied separately and is always exposed in provenance.
-The v1 production profile accepts Asia/Taipei civil time only; it does not
-perform timezone conversion or true-solar-time correction.
+Production conversion is resolved through the admitted repo-local interval
+calendar dataset. lunar_python is retained only as pinned build/parity evidence.
 """
 from __future__ import annotations
-
-from dataclasses import dataclass
-from datetime import datetime
 from typing import Any
+from tools.ziwei_calendar_data_provider import (
+    CandidateGregorianBirth,
+    DATASET_ID,
+    DATASET_ROOT,
+    END_DATE,
+    START_DATE,
+    TIMEZONE,
+    load_manifest,
+    normalize_candidate_birth,
+    required_shard_paths,
+)
 
-from lunar_python import Solar
+PROVIDER_ID="ziwei-calendar-interval-data"
+PROVIDER_VERSION="2.0.0"
+PROFILE_ID="ziwei.calendar.tw_v1"
+CLOCK_MODE="civil_time"
+TRUE_SOLAR_TIME="disabled"
+LEAP_MONTH_POLICY="split_after_day_15"
+RAT_HOUR_POLICY="next_day_at_23"
+DATASET_AGGREGATE_SHA256="4913a39e770afcd21eedc387523c572b8c4fc6469889c28f6ea75613f8984d79"
+BUILD_DEPENDENCY_PACKAGE="lunar_python"
+BUILD_DEPENDENCY_VERSION="1.4.8"
+BUILD_DEPENDENCY_REPOSITORY="6tail/lunar-python"
+BUILD_DEPENDENCY_REVISION="000c8a3d74eed098d6256a28fdd51b869324c559"
+BUILD_DEPENDENCY_LICENSE="MIT"
 
-PROVIDER_ID = "ziwei-calendar-lunar-python"
-PROVIDER_VERSION = "1.0.0"
-PROFILE_ID = "ziwei.calendar.tw_v1"
-DEPENDENCY_PACKAGE = "lunar_python"
-DEPENDENCY_VERSION = "1.4.8"
-DEPENDENCY_REPOSITORY = "6tail/lunar-python"
-DEPENDENCY_REVISION = "000c8a3d74eed098d6256a28fdd51b869324c559"
-DEPENDENCY_LICENSE = "MIT"
-TIMEZONE = "Asia/Taipei"
-CLOCK_MODE = "civil_time"
-TRUE_SOLAR_TIME = "disabled"
-LEAP_MONTH_POLICY = "split_after_day_15"
-RAT_HOUR_POLICY = "next_day_at_23"
-HOUR_BRANCHES = ("子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥")
+GregorianBirthInput=CandidateGregorianBirth
 
-@dataclass(frozen=True)
-class GregorianBirthInput:
-    year: int
-    month: int
-    day: int
-    hour: int
-    minute: int = 0
-    second: int = 0
-    timezone: str = TIMEZONE
+def required_calendar_shards(data:GregorianBirthInput)->tuple[str,...]:
+    return tuple(
+        f"data/calendar/ziwei_tw_interval/v1/{path}"
+        for path in required_shard_paths(data)
+    )
 
-    def validate(self) -> None:
-        if self.timezone != TIMEZONE:
-            raise ValueError(f"timezone must be {TIMEZONE} for ziwei.calendar.tw_v1")
-        if not all(isinstance(v, int) for v in (self.year,self.month,self.day,self.hour,self.minute,self.second)):
-            raise ValueError("Gregorian birth date/time fields must be integers")
-        if not 0 <= self.hour <= 23:
-            raise ValueError("hour must be in 0..23")
-        if not 0 <= self.minute <= 59:
-            raise ValueError("minute must be in 0..59")
-        if not 0 <= self.second <= 59:
-            raise ValueError("second must be in 0..59")
-        try:
-            datetime(self.year,self.month,self.day,self.hour,self.minute,self.second)
-        except ValueError as exc:
-            raise ValueError(f"invalid Gregorian birth date/time: {exc}") from exc
-
-def hour_branch(hour: int) -> str:
-    if hour in (23,0):
-        return "子"
-    return HOUR_BRANCHES[(hour+1)//2]
-
-def _lunar_record(lunar: Any) -> dict[str,Any]:
-    signed_month=int(lunar.getMonth())
-    return {
-        "year":int(lunar.getYear()),
-        "month":abs(signed_month),
-        "signed_month":signed_month,
-        "day":int(lunar.getDay()),
-        "is_leap_month":signed_month < 0,
-        "time_branch":lunar.getTimeZhi(),
-    }
-
-def _apply_leap_month_policy(lunar_record: dict[str,Any]) -> tuple[int,str]:
-    month=int(lunar_record["month"])
-    day=int(lunar_record["day"])
-    if not lunar_record["is_leap_month"]:
-        return month,"non_leap_month"
-    if day <= 15:
-        return month,f"leap_month_{month}:day_1_15_as_same_month"
-    return (month % 12)+1,f"leap_month_{month}:day_16_plus_as_next_month"
-
-def normalize_gregorian_birth(data: GregorianBirthInput) -> dict[str,Any]:
-    data.validate()
-    try:
-        solar=Solar.fromYmdHms(data.year,data.month,data.day,data.hour,data.minute,data.second)
-    except Exception as exc:
-        raise ValueError(f"invalid Gregorian birth date/time: {exc}") from exc
-
-    raw_lunar=_lunar_record(solar.getLunar())
-
-    policy_solar=solar.nextDay(1) if data.hour == 23 else solar
-    policy_lunar=_lunar_record(policy_solar.getLunar())
-    normalized_month,leap_identity=_apply_leap_month_policy(policy_lunar)
-    branch=hour_branch(data.hour)
-
+def normalize_gregorian_birth(data:GregorianBirthInput)->dict[str,Any]:
+    resolved=normalize_candidate_birth(data)
+    manifest=load_manifest()
+    raw=dict(resolved["raw_lunar_conversion"])
+    policy=dict(resolved["policy_lunar_conversion"])
+    n=dict(resolved["normalized_natal_input"])
     provenance=(
         f"{PROVIDER_ID}@{PROVIDER_VERSION};"
-        f"dependency={DEPENDENCY_REPOSITORY}@{DEPENDENCY_REVISION};"
+        f"dataset={DATASET_ID};aggregate_sha256={DATASET_AGGREGATE_SHA256};"
+        f"build_source={BUILD_DEPENDENCY_REPOSITORY}@{BUILD_DEPENDENCY_REVISION};"
         f"profile={PROFILE_ID};timezone={TIMEZONE};clock={CLOCK_MODE};"
         f"rat_hour_policy={RAT_HOUR_POLICY};leap_month_policy={LEAP_MONTH_POLICY}"
     )
-    normalized={
-        "lunar_year":policy_lunar["year"],
-        "lunar_month":normalized_month,
-        "lunar_day":policy_lunar["day"],
-        "hour_branch":branch,
-        "calendar_provenance":provenance,
-        "leap_month_identity":leap_identity,
-    }
+    n["calendar_provenance"]=provenance
     return {
         "schema_version":"1.0.0",
         "provider":{
@@ -122,13 +68,28 @@ def normalize_gregorian_birth(data: GregorianBirthInput) -> dict[str,Any]:
             "true_solar_time":TRUE_SOLAR_TIME,
             "rat_hour_policy":RAT_HOUR_POLICY,
             "leap_month_policy":LEAP_MONTH_POLICY,
+            "supported_gregorian_range":{
+                "start":START_DATE.isoformat(),
+                "end":END_DATE.isoformat(),
+            },
+        },
+        "dataset":{
+            "dataset_id":DATASET_ID,
+            "root":"data/calendar/ziwei_tw_interval/v1",
+            "aggregate_sha256":manifest["aggregate_hash"],
+            "artifact_status":manifest["status"],
+            "artifact_production_admitted":manifest["production_admitted"],
+            "production_use":"admitted_by_ZIWEI_CALENDAR_ADMISSION_V1",
+            "required_shards":list(required_calendar_shards(data)),
         },
         "dependency":{
-            "package":DEPENDENCY_PACKAGE,
-            "version":DEPENDENCY_VERSION,
-            "repository":DEPENDENCY_REPOSITORY,
-            "revision":DEPENDENCY_REVISION,
-            "license":DEPENDENCY_LICENSE,
+            "package":BUILD_DEPENDENCY_PACKAGE,
+            "version":BUILD_DEPENDENCY_VERSION,
+            "repository":BUILD_DEPENDENCY_REPOSITORY,
+            "revision":BUILD_DEPENDENCY_REVISION,
+            "license":BUILD_DEPENDENCY_LICENSE,
+            "role":"build_parity_only",
+            "runtime_required":False,
         },
         "input":{
             "calendar":"gregorian",
@@ -136,19 +97,15 @@ def normalize_gregorian_birth(data: GregorianBirthInput) -> dict[str,Any]:
             "hour":data.hour,"minute":data.minute,"second":data.second,
             "timezone":data.timezone,
         },
-        "raw_lunar_conversion":raw_lunar,
-        "policy_lunar_conversion":{
-            **policy_lunar,
-            "rat_hour_date_shift_applied":data.hour == 23,
-            "normalized_month":normalized_month,
-            "leap_month_identity":leap_identity,
-        },
-        "normalized_natal_input":normalized,
+        "raw_lunar_conversion":raw,
+        "policy_lunar_conversion":policy,
+        "normalized_natal_input":n,
         "provenance":provenance,
         "boundaries":{
             "timezone_conversion_performed":False,
             "true_solar_time_applied":False,
             "raw_lunar_preserved":True,
             "ziwei_policy_separated_from_calendar_conversion":True,
+            "runtime_upstream_package_required":False,
         },
     }
