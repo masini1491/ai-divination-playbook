@@ -290,8 +290,11 @@ This SHA is review evidence only, not a pin. Every maintenance task must resolve
 - current_state:
   - `sihua.default_v1` exists as a project research/default-candidate identity;
   - deterministic calculation candidate now exists at `tools/ziwei_sihua_provider.py` with explicit `sihua_profile_id`, profile revision, pinned complete 10-stem base-table provenance and one explicit project override (庚科：太陰 → 天府);
-  - the candidate is intentionally NOT production-admitted and is not wired into `tools/ziwei_runtime.py`;
-  - production transformed-star interpretation claims are still absent.
+  - production-admission candidate now wires `sihua_v1` through `tools/ziwei_runtime.py`, request/result schemas and `ZIWEI_SIHUA_ADMISSION_V1.json`;
+  - `sihua_v1` adds deterministic profile-bound birth-year Four-Transformation facts and **0 new interpretation claims**;
+  - production transformed-star interpretation claims remain absent because bounded source review did not identify a clean context-independent candidate; no-source claim paths remain fail closed;
+  - generic 祿／權／科／忌 outcome doctrine and cross-profile averaging remain forbidden;
+  - deterministic ChatGPT bundle v2 source inventory includes `tools/ziwei_sihua_provider.py`; temporary regeneration workflow self-deletes after bounded verification.
 - completion_gate:
   - deterministic provider with explicit `sihua_profile_id`;
   - no cross-profile averaging;
