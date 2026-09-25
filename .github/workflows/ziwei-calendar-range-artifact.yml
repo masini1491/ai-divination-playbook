@@ -1,4 +1,4 @@
-name: Zi Wei Calendar Range Artifact
+name: Zi Wei Calendar Range Promotion Bridge
 
 on:
   push:
@@ -6,43 +6,86 @@ on:
       - zw-p1-003-calendar-range-dataset
     paths:
       - ".github/workflows/ziwei-calendar-range-artifact.yml"
-      - "tools/build_ziwei_calendar_interval_dataset.py"
-      - "tools/validate_ziwei_calendar_interval_dataset.py"
-      - "tests/test_ziwei_calendar_interval_dataset.py"
-      - "tools/build_ziwei_tool_bundle.py"
-      - "tools/ziwei_calendar_interval_poc.py"
-      - "requirements-ziwei-calendar.txt"
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
-  build-calendar-range:
+  promote-generated-dataset:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Assert isolated staging lineage
+        run: |
+          test "$(git rev-parse HEAD^)" = "18bd97efbe87d068b38d72e6fe417b164ae37319"
+          test "$(git branch --show-current)" = "zw-p1-003-calendar-range-dataset"
       - name: Install pinned Zi Wei calendar dependency
         run: python -m pip install --disable-pip-version-check -r requirements-ziwei-calendar.txt
       - name: Run targeted dataset tests
         run: python -m unittest tests.test_ziwei_calendar_interval_dataset
-      - name: Build exact candidate product range dataset
+      - name: Generate selected candidate dataset in final path
         run: |
+          rm -rf data/calendar/ziwei_tw_interval/v1
           python tools/build_ziwei_calendar_interval_dataset.py \
-            --output /tmp/ziwei-calendar-v1 \
+            --output data/calendar/ziwei_tw_interval/v1 \
             --start-year 1900 \
-            --end-year 2100
+            --end-year 2100 | tee /tmp/build-result.json
       - name: Validate exact dataset and deterministic rebuild
         run: |
           python tools/validate_ziwei_calendar_interval_dataset.py \
-            --root /tmp/ziwei-calendar-v1 \
-            --rebuild
-      - name: Upload exact generated dataset
-        uses: actions/upload-artifact@v4
-        with:
-          name: ziwei-calendar-range-1900-2100-v2
-          path: /tmp/ziwei-calendar-v1
-          if-no-files-found: error
-          retention-days: 1
+            --root data/calendar/ziwei_tw_interval/v1 \
+            --rebuild | tee /tmp/validate-result.json
+      - name: Assert accepted candidate identities
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          expected_aggregate="4913a39e770afcd21eedc387523c572b8c4fc6469889c28f6ea75613f8984d79"
+          expected_source="bf49ea69241171a8e5b5a85ca07748c88b00f5ce392f25c21617e398c9c9a712"
+          root=Path("data/calendar/ziwei_tw_interval/v1")
+          m=json.loads((root/"MANIFEST.json").read_text(encoding="utf-8"))
+          assert m["dataset_id"]=="ziwei_tw_interval_1900_2100_candidate_v1"
+          assert m["selected_product_range"]=={
+              "start_date":"1900-01-01",
+              "end_date":"2100-12-31",
+              "selected":True,
+              "production_admitted":False,
+              "status":"SELECTED_CANDIDATE_NOT_PRODUCTION_ADMITTED",
+          }
+          assert m["summary"]=={
+              "shard_count":202,
+              "interval_count":2692,
+              "total_shard_bytes":471865,
+          }
+          assert m["aggregate_hash"]==expected_aggregate
+          assert m["dependency"]["source_identity"]["sha256"]==expected_source
+          files=[p for p in root.rglob("*") if p.is_file()]
+          assert len(files)==205, len(files)
+          PY
+      - name: Remove temporary bridge and enforce bounded diff
+        run: |
+          rm .github/workflows/ziwei-calendar-range-artifact.yml
+          python - <<'PY'
+          import subprocess
+          changed=subprocess.check_output(["git","status","--porcelain"],text=True).splitlines()
+          paths=[line[3:] for line in changed]
+          allowed_prefix="data/calendar/ziwei_tw_interval/v1/"
+          allowed_workflow=".github/workflows/ziwei-calendar-range-artifact.yml"
+          unexpected=[p for p in paths if p!=allowed_workflow and not p.startswith(allowed_prefix)]
+          assert not unexpected, unexpected
+          assert allowed_workflow in paths, paths
+          data=[p for p in paths if p.startswith(allowed_prefix)]
+          assert len(data)==205, len(data)
+          PY
+      - name: Commit generated candidate dataset and remove bridge
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/calendar/ziwei_tw_interval/v1 .github/workflows/ziwei-calendar-range-artifact.yml
+          git commit -m "Materialize Zi Wei calendar candidate dataset"
+          git push origin HEAD:zw-p1-003-calendar-range-dataset
