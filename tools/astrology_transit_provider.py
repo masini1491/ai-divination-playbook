@@ -8,7 +8,8 @@ production natal provider. It emits a transit-mode Astrology Fact Bundle 1.0.
 Supported event families:
 - transit-to-natal major-aspect exact roots, including tangential station hits;
 - stations (longitude-speed zero crossings);
-- tropical zodiac ingresses / retrograde returns / direct re-ingresses.
+- tropical zodiac ingresses / retrograde returns / direct re-ingresses;
+- natal-house cusp crossings for exact-time natal charts.
 """
 from __future__ import annotations
 
@@ -28,7 +29,7 @@ from tools.astrology_provider import (
 from tools.astrology_runtime import MAJOR_ASPECT_ORBS, gate_bundle
 
 PROVIDER_ID = "astronomy-engine-transit-v1"
-PROVIDER_VERSION = "1.0.0"
+PROVIDER_VERSION = "1.1.0"
 MAX_SEARCH_DAYS = 400.0
 DEFAULT_STEP_HOURS = 3.0
 ROOT_TOLERANCE_SECONDS = 0.5
@@ -296,6 +297,91 @@ def search_stations(*, start_utc: str, end_utc: str, moving_bodies: Iterable[str
     return sorted(events, key=lambda row: (row["exact_time_utc"], row["fact_id"]))
 
 
+
+def _natal_house_cusps(natal_bundle: dict[str, Any]) -> list[float | None]:
+    gate = gate_bundle(natal_bundle)
+    if not gate["interpretation_allowed"] or natal_bundle.get("reading_mode") != "natal":
+        raise TransitProviderInputError("natal_bundle must be an admitted natal Astrology Fact Bundle")
+    if natal_bundle.get("birth_time_certainty") != "exact":
+        raise TransitProviderInputError("transit house search requires exact birth time")
+    house_system = natal_bundle.get("configuration", {}).get("house_system")
+    if house_system not in {"Whole Sign", "Placidus"}:
+        raise TransitProviderInputError("transit house search requires an admitted natal house system")
+    rows = natal_bundle.get("facts", {}).get("houses", [])
+    by_number: dict[int, float] = {}
+    for row in rows if isinstance(rows, list) else []:
+        if not isinstance(row, dict):
+            continue
+        number = row.get("house_number")
+        cusp = row.get("cusp_longitude_deg")
+        if isinstance(number, int) and 1 <= number <= 12 and isinstance(cusp, (int, float)):
+            by_number[number] = float(cusp) % 360.0
+    if set(by_number) != set(range(1, 13)):
+        raise TransitProviderInputError("transit house search requires all 12 admitted natal house cusps")
+    cusps: list[float | None] = [None] * 13
+    for house in range(1, 13):
+        cusps[house] = by_number[house]
+    return cusps
+
+
+def _house_of_longitude(longitude_deg: float, cusps: list[float | None]) -> int:
+    for house in range(1, 13):
+        a = cusps[house]
+        b = cusps[house % 12 + 1]
+        assert a is not None and b is not None
+        span = (float(b) - float(a)) % 360.0
+        if (longitude_deg - float(a)) % 360.0 < span:
+            return house
+    raise TransitProviderInputError("natal house cusp geometry is not usable for transit search")
+
+
+def search_house_ingresses(
+    natal_bundle: dict[str, Any],
+    *,
+    start_utc: str,
+    end_utc: str,
+    moving_bodies: Iterable[str],
+) -> list[dict[str, Any]]:
+    start, end = _validate_window(start_utc, end_utc)
+    cusps = _natal_house_cusps(natal_bundle)
+    house_system = natal_bundle.get("configuration", {}).get("house_system")
+    events: list[dict[str, Any]] = []
+    for body in moving_bodies:
+        if body not in BODY_NAMES or body == "NorthNode":
+            raise TransitProviderInputError(f"house ingress search unsupported for body: {body}")
+        roots: list[tuple[dt.datetime, int, float]] = []
+        for house in range(1, 13):
+            cusp = float(cusps[house])
+            for root in _find_longitude_crossings(body, cusp, start, end):
+                roots.append((root, house, cusp))
+        roots.sort(key=lambda item: item[0])
+        for index, (root, cusp_house, cusp) in enumerate(roots, start=1):
+            longitude, speed = _longitude_and_speed(body, root)
+            before_lon = _longitude_and_speed(body, root - dt.timedelta(minutes=5))[0]
+            after_lon = _longitude_and_speed(body, root + dt.timedelta(minutes=5))[0]
+            from_house = _house_of_longitude(before_lon, cusps)
+            to_house = _house_of_longitude(after_lon, cusps)
+            if from_house == to_house:
+                continue
+            events.append(
+                {
+                    "fact_id": f"fact:event:house_ingress:{body.lower()}:{from_house}:{to_house}:{index}:{int(root.timestamp())}",
+                    "event_kind": "house_ingress",
+                    "moving_body": body,
+                    "exact_time_utc": _iso_utc(root),
+                    "longitude_deg": longitude,
+                    "cusp_longitude_deg": cusp,
+                    "cusp_house_number": cusp_house,
+                    "from_house": from_house,
+                    "to_house": to_house,
+                    "house_system": house_system,
+                    "motion_direction": _motion_direction(speed),
+                    "speed_deg_per_day": speed,
+                }
+            )
+    return sorted(events, key=lambda row: (row["exact_time_utc"], row["fact_id"]))
+
+
 def search_ingresses(*, start_utc: str, end_utc: str, moving_bodies: Iterable[str]) -> list[dict[str, Any]]:
     start, end = _validate_window(start_utc, end_utc)
     sign_names = (
@@ -356,8 +442,10 @@ def build_transit_bundle(
     moving_bodies: Iterable[str],
     natal_targets: Iterable[str],
     aspects: Iterable[str],
+    include_transit_to_natal: bool = True,
     include_stations: bool = True,
     include_ingresses: bool = True,
+    include_house_ingresses: bool = False,
 ) -> dict[str, Any]:
     start, end = _validate_window(start_utc, end_utc)
     moving = tuple(dict.fromkeys(moving_bodies))
@@ -365,21 +453,27 @@ def build_transit_bundle(
     aspect_names = tuple(dict.fromkeys(aspects))
     if not moving:
         raise TransitProviderInputError("at least one moving body is required")
-    if not targets:
-        raise TransitProviderInputError("at least one natal target is required")
-    if not aspect_names:
-        raise TransitProviderInputError("at least one aspect is required")
+    if include_transit_to_natal and not targets:
+        raise TransitProviderInputError("transit-to-natal search requires at least one natal target")
+    if include_transit_to_natal and not aspect_names:
+        raise TransitProviderInputError("transit-to-natal search requires at least one aspect")
+    if not any((include_transit_to_natal, include_stations, include_ingresses, include_house_ingresses)):
+        raise TransitProviderInputError("at least one transit event family must be enabled")
     if not subject_ref or not subject_ref.strip():
         raise TransitProviderInputError("subject_ref is required")
 
-    events = search_transit_to_natal(
-        natal_bundle,
-        start_utc=start_utc,
-        end_utc=end_utc,
-        moving_bodies=moving,
-        natal_targets=targets,
-        aspects=aspect_names,
-    )
+    events: list[dict[str, Any]] = []
+    if include_transit_to_natal:
+        events.extend(
+            search_transit_to_natal(
+                natal_bundle,
+                start_utc=start_utc,
+                end_utc=end_utc,
+                moving_bodies=moving,
+                natal_targets=targets,
+                aspects=aspect_names,
+            )
+        )
     if include_stations:
         station_bodies = [body for body in moving if body not in {"Sun", "Moon", "NorthNode"}]
         if station_bodies:
@@ -388,6 +482,15 @@ def build_transit_bundle(
         ingress_bodies = [body for body in moving if body != "NorthNode"]
         if ingress_bodies:
             events.extend(search_ingresses(start_utc=start_utc, end_utc=end_utc, moving_bodies=ingress_bodies))
+    if include_house_ingresses:
+        events.extend(
+            search_house_ingresses(
+                natal_bundle,
+                start_utc=start_utc,
+                end_utc=end_utc,
+                moving_bodies=moving,
+            )
+        )
     events.sort(key=lambda row: (row["exact_time_utc"], row["fact_id"]))
 
     bundle = {
@@ -415,6 +518,12 @@ def build_transit_bundle(
             "tangential_station_angle_tolerance_deg": TANGENTIAL_STATION_ANGLE_TOLERANCE_DEG,
             "default_step_hours": DEFAULT_STEP_HOURS,
             "natal_source_provider": natal_bundle.get("provider", {}).get("provider_id"),
+            "event_families": {
+                "transit_to_natal": include_transit_to_natal,
+                "stations": include_stations,
+                "ingresses": include_ingresses,
+                "house_ingresses": include_house_ingresses,
+            },
         },
         "facts": {"objects": [], "houses": [], "aspects": [], "events": events},
     }
@@ -431,10 +540,12 @@ def main() -> int:
     parser.add_argument("--end-utc", required=True)
     parser.add_argument("--subject-ref", required=True)
     parser.add_argument("--moving-body", action="append", required=True)
-    parser.add_argument("--natal-target", action="append", required=True)
-    parser.add_argument("--aspect", action="append", required=True, choices=sorted(MAJOR_ASPECT_ORBS))
+    parser.add_argument("--natal-target", action="append")
+    parser.add_argument("--aspect", action="append", choices=sorted(MAJOR_ASPECT_ORBS))
+    parser.add_argument("--no-transit-to-natal", action="store_true")
     parser.add_argument("--no-stations", action="store_true")
     parser.add_argument("--no-ingresses", action="store_true")
+    parser.add_argument("--house-ingresses", action="store_true")
     args = parser.parse_args()
     try:
         with open(args.natal_bundle, encoding="utf-8") as handle:
@@ -445,10 +556,12 @@ def main() -> int:
             end_utc=args.end_utc,
             subject_ref=args.subject_ref,
             moving_bodies=args.moving_body,
-            natal_targets=args.natal_target,
-            aspects=args.aspect,
+            natal_targets=args.natal_target or [],
+            aspects=args.aspect or [],
+            include_transit_to_natal=not args.no_transit_to_natal,
             include_stations=not args.no_stations,
             include_ingresses=not args.no_ingresses,
+            include_house_ingresses=args.house_ingresses,
         )
     except (OSError, json.JSONDecodeError, TransitProviderInputError, RuntimeError) as exc:
         print(json.dumps({"status": "rejected", "error": str(exc)}, ensure_ascii=False, indent=2))

@@ -262,8 +262,17 @@ def validate_bundle(data: Any) -> list[dict[str, str]]:
             continue
         path = f"$.facts.events[{i}]"
         kind = event.get("event_kind")
-        if kind not in {"transit_to_natal", "station", "ingress"}:
-            _error(errors, "EVENT_KIND_UNSUPPORTED", path + ".event_kind", "production v1 admits transit_to_natal, station and ingress events only")
+        if kind not in {"transit_to_natal", "station", "ingress", "house_ingress"}:
+            _error(errors, "EVENT_KIND_UNSUPPORTED", path + ".event_kind", "production v1 admits transit_to_natal, station, ingress and house_ingress events only")
+        if kind == "house_ingress":
+            if certainty != "exact":
+                _error(errors, "HOUSE_INGRESS_EXACT_TIME_REQUIRED", path, "transit house ingress requires exact birth time")
+            if house_system not in HOUSE_SYSTEMS:
+                _error(errors, "HOUSE_INGRESS_HOUSE_SYSTEM_REQUIRED", path, "transit house ingress requires an admitted natal house system")
+            for field in ("from_house", "to_house", "cusp_house_number"):
+                value = event.get(field)
+                if not isinstance(value, int) or not 1 <= value <= 12:
+                    _error(errors, "HOUSE_INGRESS_HOUSE_INVALID", path + "." + field, field + " must be an integer 1..12")
         if data.get("reading_mode") != "transit":
             _error(errors, "EVENTS_REQUIRE_TRANSIT_MODE", path, "timing events require reading_mode=transit")
 

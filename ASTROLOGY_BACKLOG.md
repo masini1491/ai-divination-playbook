@@ -382,7 +382,7 @@ This item is a standing reconciliation guard. It is not a request to change curr
 ### AST-P1-130 — Transit house search / temporal house context
 
 - type: FEATURE / TRANSIT
-- status: OPEN
+- status: DONE
 - priority: P1
 - owner: Astrology transit calculation + interpretation
 - blocked_by: none
@@ -397,6 +397,13 @@ This item is a standing reconciliation guard. It is not a request to change curr
   - unknown/approximate natal-time fail-closed behavior;
   - separate calculation and semantic admission;
   - bounded search/runtime cost.
+- closure:
+  - added standalone `house_ingress` event family to the deterministic transit provider;
+  - request contract now supports `include_transit_to_natal` and `include_house_ingresses`, so house-only searches do not require dummy natal-target/aspect selections;
+  - house ingress roots use the admitted natal house cusp facts for Whole Sign / Placidus and retain the existing <=400-day bounded UTC window;
+  - exact birth time is required; approximate and unknown birth time fail closed;
+  - runtime gate admits the calculation fact only; transit-house semantic interpretation remains not admitted without a separate source-backed claim family;
+  - typed evidence selector can select exact house-ingress facts but does not create semantic meaning.
 
 ## P2 — deferred compatibility / provider expansion
 

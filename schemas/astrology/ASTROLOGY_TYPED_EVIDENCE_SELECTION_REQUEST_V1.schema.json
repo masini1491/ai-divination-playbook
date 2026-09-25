@@ -249,7 +249,8 @@
           "enum": [
             "transit_to_natal",
             "station",
-            "ingress"
+            "ingress",
+            "house_ingress"
           ]
         },
         "moving_body": {
@@ -298,6 +299,22 @@
         "exact_time_utc": {
           "type": "string",
           "minLength": 1
+        },
+        "from_house": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 12
+        },
+        "to_house": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 12
+        },
+        "house_system": {
+          "enum": [
+            "Whole Sign",
+            "Placidus"
+          ]
         }
       }
     },

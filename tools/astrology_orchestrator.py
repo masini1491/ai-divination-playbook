@@ -179,31 +179,45 @@ def _normalize_transit(data: Any) -> dict[str, Any]:
             "moving_bodies",
             "natal_targets",
             "aspects",
+            "include_transit_to_natal",
             "include_stations",
             "include_ingresses",
+            "include_house_ingresses",
         },
-        required={"start_utc", "end_utc", "moving_bodies", "natal_targets", "aspects"},
+        required={"start_utc", "end_utc", "moving_bodies"},
         path="$.transit",
     )
     moving_bodies = _unique_strings(transit["moving_bodies"], "$.transit.moving_bodies")
     for body in moving_bodies:
         if body not in BODY_NAMES or body == "NorthNode":
             raise OrchestrationInputError(f"$.transit.moving_bodies contains unsupported body: {body}")
-    natal_targets = _unique_strings(transit["natal_targets"], "$.transit.natal_targets")
+    include_transit_to_natal = transit.get("include_transit_to_natal", True)
+    if not isinstance(include_transit_to_natal, bool):
+        raise OrchestrationInputError("$.transit.include_transit_to_natal must be boolean")
+    natal_targets = _unique_strings(transit["natal_targets"], "$.transit.natal_targets") if "natal_targets" in transit else []
     for target in natal_targets:
         if target not in BODY_NAMES:
             raise OrchestrationInputError(f"$.transit.natal_targets contains unsupported target: {target}")
-    aspects = _unique_strings(transit["aspects"], "$.transit.aspects")
+    aspects = _unique_strings(transit["aspects"], "$.transit.aspects") if "aspects" in transit else []
     for aspect in aspects:
         if aspect not in MAJOR_ASPECT_ORBS:
             raise OrchestrationInputError(f"$.transit.aspects contains unsupported aspect: {aspect}")
+    if include_transit_to_natal and not natal_targets:
+        raise OrchestrationInputError("$.transit.natal_targets is required when include_transit_to_natal=true")
+    if include_transit_to_natal and not aspects:
+        raise OrchestrationInputError("$.transit.aspects is required when include_transit_to_natal=true")
 
     include_stations = transit.get("include_stations", True)
     include_ingresses = transit.get("include_ingresses", True)
+    include_house_ingresses = transit.get("include_house_ingresses", False)
     if not isinstance(include_stations, bool):
         raise OrchestrationInputError("$.transit.include_stations must be boolean")
     if not isinstance(include_ingresses, bool):
         raise OrchestrationInputError("$.transit.include_ingresses must be boolean")
+    if not isinstance(include_house_ingresses, bool):
+        raise OrchestrationInputError("$.transit.include_house_ingresses must be boolean")
+    if not any((include_transit_to_natal, include_stations, include_ingresses, include_house_ingresses)):
+        raise OrchestrationInputError("$.transit must enable at least one event family")
 
     return {
         "start_utc": _non_empty_string(transit["start_utc"], "$.transit.start_utc"),
@@ -211,8 +225,10 @@ def _normalize_transit(data: Any) -> dict[str, Any]:
         "moving_bodies": moving_bodies,
         "natal_targets": natal_targets,
         "aspects": aspects,
+        "include_transit_to_natal": include_transit_to_natal,
         "include_stations": include_stations,
         "include_ingresses": include_ingresses,
+        "include_house_ingresses": include_house_ingresses,
     }
 
 
@@ -291,6 +307,8 @@ def normalize_request(data: Any) -> dict[str, Any]:
     }
     if reading_mode == "transit":
         normalized["transit"] = _normalize_transit(root["transit"])
+        if normalized["transit"]["include_house_ingresses"] and certainty != "exact":
+            raise OrchestrationInputError("transit house ingress search requires birth_time_certainty=exact")
     return normalized
 
 
@@ -404,8 +422,10 @@ def run_request(data: Any) -> dict[str, Any]:
             moving_bodies=transit["moving_bodies"],
             natal_targets=transit["natal_targets"],
             aspects=transit["aspects"],
+            include_transit_to_natal=transit["include_transit_to_natal"],
             include_stations=transit["include_stations"],
             include_ingresses=transit["include_ingresses"],
+            include_house_ingresses=transit["include_house_ingresses"],
         )
         transit_gate = _admit_bundle(transit_bundle, "transit")
 
