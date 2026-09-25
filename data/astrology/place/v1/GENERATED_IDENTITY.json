@@ -1,0 +1,19 @@
+{
+  "aggregate_digest": "6e542fd50c4d821d783c74c2f392bea087df68666ba1781970df66d47dc719a0",
+  "generated_bytes": 75086146,
+  "generated_file_count": 8192,
+  "generator_id": "astrology-place-shard-generator-v1",
+  "generator_source_commit": "47ddfcee33c2cab64bb1ea97011dff9c878ba1e4",
+  "profile": 500,
+  "schema_name": "astrology_place_generated_data_identity",
+  "schema_version": "1.0.0",
+  "source_identity": {
+    "actual_bytes": 79527431,
+    "actual_sha256": "1523be8c6f083eeee946e1c27a0916474d0f0de4361a15104fcc70218bc4d55e",
+    "expected_bytes": 79527431,
+    "expected_sha256": "1523be8c6f083eeee946e1c27a0916474d0f0de4361a15104fcc70218bc4d55e",
+    "identity_match": true,
+    "path": "cities500.json",
+    "profile": 500
+  }
+}
