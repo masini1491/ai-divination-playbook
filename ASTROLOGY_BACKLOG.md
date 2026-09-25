@@ -140,8 +140,10 @@ This item is a standing reconciliation guard. It is not a request to change curr
 - remaining_gate:
   - same-repo deterministic-data format/provenance/generator contract: COMPLETE (data corpus intentionally not committed yet);
   - deterministic corpus parity beyond the original POC fixtures: COMPLETE for the frozen 13-query research corpus;
-  - define and prove same-commit GitHub Connect bounded shard retrieval + integrity verification + connector-side filtering + cache behavior;
-  - validate end-to-end cold-start payload/latency and full semantic parity;
+  - same-commit GitHub Connect exact-ref/path retrieval + returned Git blob identity: COMPLETE via temporary non-merge PR #208;
+  - bounded alias-first → local country/ambiguity filtering → candidate-on-demand orchestration: COMPLETE at connector-surface proof scope; GitHub Connect does not expose server-side filtering;
+  - connector cache-hit/network-byte telemetry: UNAVAILABLE; do not treat repeated identical retrieval as a zero-byte cache proof;
+  - validate end-to-end cold-start payload/latency and full semantic parity against real generated shards;
   - only then consider changing `ASTROLOGY_MATERIALIZATION.md` current production behavior or `ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json`.
 - completion_gate:
   - deterministic generated-data provenance from the four exact admitted source datasets;
