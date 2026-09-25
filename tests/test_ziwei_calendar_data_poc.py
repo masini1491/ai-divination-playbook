@@ -15,7 +15,7 @@ from tools.ziwei_calendar_data_poc import (
     shard_relative_path,
     write_month_shard,
 )
-from tools.ziwei_calendar_provider import GregorianBirthInput, normalize_gregorian_birth
+from tools.ziwei_calendar_upstream_reference import GregorianBirthInput, normalize_gregorian_birth
 
 ROOT=Path(__file__).resolve().parents[1]
 POC_ROOT=ROOT/"data"/"calendar"/"ziwei_tw_poc_v0"

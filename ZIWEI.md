@@ -31,7 +31,7 @@ IN:
 - 12 palace first-layer claims;
 - 52 admitted claims total;
 - admitted deterministic natal provider facts;
-- Gregorian birth datetime input via `ziwei.calendar.tw_v1` for `Asia/Taipei` civil time; explicit 民國年份 notation is deterministically converted by `tools/ziwei_year_notation.py` (`民國 N 年 → CE N+1911`) before the same Gregorian calendar adapter;
+- Gregorian birth datetime input via `ziwei.calendar.tw_v1` for `Asia/Taipei` civil time within the admitted 1900-01-01..2100-12-31 range; explicit 民國年份 notation is deterministically converted by `tools/ziwei_year_notation.py` (`民國 N 年 → CE N+1911`) before the same Gregorian calendar adapter;
 - explicit provenance, omission, conflict and safety delivery.
 
 OPTIONAL / explicit add-on:
@@ -50,7 +50,7 @@ Unsupported layers不得用模型記憶、手算、research-only claims 或其�
 
 ## 3. Deterministic Fact Boundary
 
-Language model 不得把 raw birth data 自由手算成 production chart facts。已 normalization 的農曆輸入仍可直接走 Scope-A；西元生日則必須先經 admitted `tools/ziwei_calendar_provider.py`。若使用者明確使用民國紀年，必須先以 `tools/ziwei_year_notation.py` 做 deterministic 年份 notation conversion（`民國 N 年 = 西元 N+1911 年`），保留 source/converted facts，再送入同一 Gregorian provider；不得由模型心算或把民國誤當另一種 lunar calendar。Calendar v1 僅 admission `Asia/Taipei` civil time，保留 raw lunar conversion，再明確套用 `next_day_at_23` 與 `split_after_day_15` Zi Wei policy；不得由模型自行換農曆、猜 timezone 或偷偷套真太陽時。
+Language model 不得把 raw birth data 自由手算成 production chart facts。已 normalization 的農曆輸入仍可直接走 Scope-A；西元生日則必須先經 admitted `tools/ziwei_calendar_provider.py`。若使用者明確使用民國紀年，必須先以 `tools/ziwei_year_notation.py` 做 deterministic 年份 notation conversion（`民國 N 年 = 西元 N+1911 年`），保留 source/converted facts，再送入同一 Gregorian provider；不得由模型心算或把民國誤當另一種 lunar calendar。Calendar v1 僅 admission `Asia/Taipei` civil time與 1900-01-01..2100-12-31 Gregorian input range，使用 `data/calendar/ziwei_tw_interval/v1/**` 的 admitted exact dataset；保留 raw lunar conversion，再明確套用 `next_day_at_23` 與 `split_after_day_15` Zi Wei policy。31 December 23:00 可讀下一年的 policy-tail shard，但不擴張 user-input range。不得由模型自行換農曆、猜 timezone 或偷偷套真太陽時。
 
 Production runtime:
 
@@ -75,7 +75,7 @@ legacy run_scope_a_* entrypoints
 
 `schemas/ziwei/ZIWEI_READING_REQUEST_V1.schema.json` 與 `schemas/ziwei/ZIWEI_READING_RESULT_V1.schema.json` 定義 closed-world v1 interface。Unsupported temporal scope、optional module 或 profile 必須 fail closed；不得再為每個 module/input 組合新增 `with_x_and_y` canonical runtime。
 
-若 local runtime / dependency cache 缺失，先依 `ZIWEI_MATERIALIZATION.md` 嘗試同 exact-commit deterministic transport materialization；local package miss 不等於 deterministic source unavailable。只有 admitted materialization/direct-source paths 都失敗才停在 Fact Gate；不得改用 Tarot / Meihua / Liuyao 冒充 Zi Wei reading。
+若 local runtime、calendar manifest 或 required year shard 缺失，先依 `ZIWEI_MATERIALIZATION.md` 嘗試同 exact-commit deterministic bundle + query-bounded calendar-data materialization；ordinary production 不依賴 `lunar_python` runtime。只有 admitted materialization/direct-source paths 都失敗才停在 Fact Gate；不得改用 Tarot / Meihua / Liuyao 冒充 Zi Wei reading。
 
 ## 4. Interpretation / Evidence Boundary
 
@@ -158,7 +158,7 @@ ZIWEI_BRIGHTNESS_ADMISSION_V1.json
 → optional brightness production admission truth
 
 ZIWEI_MATERIALIZATION.md + runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json
-→ ChatGPT cold-start deterministic source/dependency transport；derived cache only
+→ ChatGPT cold-start runtime + calendar-manifest transport；year shards依輸入 query-bounded same-commit取得；derived cache only
 
 references/ziwei/**
 → research evidence and historical research contracts

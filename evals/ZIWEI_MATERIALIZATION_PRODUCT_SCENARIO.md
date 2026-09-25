@@ -4,13 +4,15 @@ Supporting product scenario only; this does **not** alter the existing strict-P4
 
 ## Preconditions
 
-- User explicitly requests Zi Wei production with a Gregorian Asia/Taipei birth datetime.
+- User explicitly requests Zi Wei production with a Gregorian Asia/Taipei birth datetime inside the admitted 1900-01-01..2100-12-31 range.
 - Local Python exists.
-- Local Zi Wei runtime and/or lunar_python package is missing.
-- GitHub Connect can read the current exact-commit Zi Wei deterministic bundle.
+- Local Zi Wei runtime and/or required calendar year shard is missing.
+- GitHub Connect can read the current exact-commit Zi Wei deterministic bundle and query-bounded calendar data.
 
 ## Required behavior
 
-The assistant treats local cache/package miss as a materialization trigger, not immediate unavailability. It resolves the playbook to an exact commit, retrieves the same-commit deterministic bundle, verifies chunk/archive/per-file identities, including pinned lunar-python upstream identities and MIT license payload, writes a verified local cache and `bundle_verification.json`, then executes the materialized canonical `tools/ziwei_runtime.py` through `run_ziwei()` / `run_ziwei_transport()`; legacy `tools/ziwei_gregorian_pipeline.py` remains compatibility-only.
+The assistant treats local cache/data miss as a materialization trigger, not immediate unavailability. It resolves the playbook to an exact commit, retrieves and verifies the same-commit deterministic bundle, materializes its runtime files plus the admitted calendar manifest, derives the required Gregorian year shard path(s) from the input, retrieves only those same-commit shard(s), verifies their byte size and SHA-256 against the manifest, then executes the materialized canonical `tools/ziwei_runtime.py` through `run_ziwei()` / `run_ziwei_transport()`; legacy `tools/ziwei_gregorian_pipeline.py` remains compatibility-only.
 
-The assistant must produce deterministic Scope-A facts before `ZIWEI.md` interpretation. It must not silently pip-install a floating dependency, rewrite missing third-party source, hand-calculate lunar conversion, or immediately classify the runtime as unavailable while an admitted verified transport path remains.
+Ordinary requests require one year shard. The 31 December 23:00 cross-year edge may require the current year plus the next-year policy-tail shard. The full calendar dataset and the pinned `lunar_python` implementation are not transported into ordinary ChatGPT runtime.
+
+The assistant must produce deterministic Scope-A facts before `ZIWEI.md` interpretation. It must not silently pip-install a calendar dependency, rewrite missing shard data, hand-calculate lunar conversion, fetch a shard from a different revision, or immediately classify the runtime as unavailable while the admitted verified bundle + query-bounded data path remains available.

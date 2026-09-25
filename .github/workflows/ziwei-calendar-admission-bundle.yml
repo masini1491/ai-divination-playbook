@@ -1,0 +1,76 @@
+name: Zi Wei Calendar Admission Bundle Bridge
+
+on:
+  push:
+    branches:
+      - zw-p1-003-calendar-production-admission
+    paths:
+      - ".github/workflows/ziwei-calendar-admission-bundle.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  rebuild-and-verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Assert isolated admission lineage
+        run: |
+          test "$(git rev-parse HEAD^)" = "b2bc149665a115c18b7d92fd0d43ae02abffa2a9"
+          test "$(git branch --show-current)" = "zw-p1-003-calendar-production-admission"
+      - name: Install pinned build/parity calendar source
+        run: python -m pip install --disable-pip-version-check -r requirements-ziwei-calendar.txt
+      - name: Rebuild Zi Wei deterministic transport bundle v2
+        run: |
+          python tools/build_ziwei_tool_bundle.py
+          python tools/build_ziwei_tool_bundle.py --check
+      - name: Run admission-focused regression
+        run: |
+          python -m unittest             tests.test_ziwei_calendar_contract_v1             tests.test_ziwei_calendar_data_provider             tests.test_ziwei_calendar_data_poc             tests.test_ziwei_calendar_interval_poc             tests.test_ziwei_tool_bundle             tests.test_ziwei_materialization_discoverability             tests.test_ziwei_year_notation             tests.test_ziwei_unified_runtime_v1
+      - name: Assert bundle v2 boundary
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json")
+          b=json.loads(p.read_text(encoding="utf-8"))
+          assert b["schema_version"]==2
+          assert b["contract"]=="chunked-model-mediated-ziwei-deterministic-tool-bundle-v2"
+          assert b["calendar_data"]["dataset_id"]=="ziwei_tw_interval_1900_2100_candidate_v1"
+          assert b["calendar_data"]["aggregate_sha256"]=="4913a39e770afcd21eedc387523c572b8c4fc6469889c28f6ea75613f8984d79"
+          assert b["calendar_data"]["ordinary_query_max_files"]==1
+          assert b["calendar_data"]["rat_hour_cross_year_max_files"]==2
+          assert b["build_source"]["runtime_dependency"] is False
+          assert all(x["origin"]=="playbook" for x in b["source_files"])
+          assert not any(x["path"].startswith("lunar_python/") for x in b["source_files"])
+          assert "data/calendar/ziwei_tw_interval/v1/MANIFEST.json" in {x["path"] for x in b["source_files"]}
+          PY
+      - name: Remove temporary bridge and enforce bounded generated diff
+        run: |
+          rm .github/workflows/ziwei-calendar-admission-bundle.yml
+          rm -rf tests/__pycache__ tools/__pycache__
+          python - <<'PY'
+          import subprocess
+          changed=subprocess.check_output(["git","status","--porcelain","--untracked-files=all"],text=True).splitlines()
+          paths=[line[3:] for line in changed]
+          allowed={
+              ".github/workflows/ziwei-calendar-admission-bundle.yml",
+              "runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json",
+          }
+          unexpected=[p for p in paths if p not in allowed]
+          assert not unexpected, unexpected
+          assert allowed.issubset(set(paths)), paths
+          PY
+      - name: Commit generated bundle and remove bridge
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json .github/workflows/ziwei-calendar-admission-bundle.yml
+          git commit -m "Regenerate Zi Wei data-backed transport bundle"
+          git push origin HEAD:zw-p1-003-calendar-production-admission

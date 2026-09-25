@@ -292,7 +292,7 @@ Zi Wei 目前是 bounded natal production method，適合使用者明確要求�
 - 12 宮 first-layer claims；
 - 52 admitted claims；
 - 命宮、身宮、五行局、14 主星 placement 等 deterministic natal facts；
-- `Asia/Taipei` civil-time Gregorian birth datetime → normalized lunar input；
+- `Asia/Taipei` civil-time Gregorian birth datetime（admitted range 1900-01-01..2100-12-31）→ normalized lunar input；
 - `23:00` 晚子時採 `next_day_at_23`；
 - 閏月採 `split_after_day_15`；
 - optional `brightness_v1`：14 主星廟／旺／得／利／平／不／陷 facts，只在明確要求廟旺／亮度時啟用；
@@ -320,7 +320,7 @@ Legacy `run_scope_a_*` pipelines are compatibility adapters only; they are not t
 - current production 仍不包含四化、輔／雜星 interpretation、broader star×palace corpus 或大限／流年／流月／流日／流時；
 - raw birth data 不授權 language model 自行手算農曆、命身宮、主星 placement 或 brightness；
 - Research Zi Wei 與 Production Zi Wei 分離：research 走 [`RESEARCH_ROUTING.md`](RESEARCH_ROUTING.md) → `references/ziwei/**`；
-- ChatGPT local runtime 缺少 `lunar_python` 或 Zi Wei source 時，先依 [`ZIWEI_MATERIALIZATION.md`](ZIWEI_MATERIALIZATION.md) 嘗試 verified same-commit bundle materialization；local package miss 不等於 method unavailable。
+- ChatGPT local runtime 缺少 Zi Wei source、calendar manifest 或本次所需 year shard 時，先依 [`ZIWEI_MATERIALIZATION.md`](ZIWEI_MATERIALIZATION.md) 走 verified same-commit bundle + query-bounded calendar-data materialization；ordinary production 不需要 `lunar_python` runtime。
 
 Production owner：[`ZIWEI.md`](ZIWEI.md)。
 
@@ -384,12 +384,13 @@ ChatGPT cold-start transport：
 
 ```text
 runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json
-→ 11 repo-local Zi Wei runtime/retrieval artifacts
-→ 34 pinned lunar_python==1.4.8 runtime files
-→ exact MIT LICENSE
+→ repo-local Zi Wei runtime/retrieval artifacts + exact calendar MANIFEST
+→ no bundled lunar_python runtime
 → chunk/archive/per-file verification
-→ materialize verified runtime
-→ execute without requiring pip/network afterward
+→ query-bounded same-commit calendar shard acquisition
+   ordinary request: 1 year shard
+   31 Dec 23:00 cross-year edge: at most 2 year shards
+→ execute without requiring pip/network installation afterward
 ```
 
 Transport bundle 只是 derived cache；canonical calculation / interpretation authority 仍在 providers、pipelines、admission manifests 與 [`ZIWEI.md`](ZIWEI.md)。

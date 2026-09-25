@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Dependency-free candidate resolver for the Zi Wei repo-local calendar dataset.
+"""Dependency-free resolver for the Zi Wei repo-local interval calendar data.
 
-This module is intentionally NOT production authority yet. It proves the
-query-bounded data-backed resolver contract that a later admission change can
-bind into tools/ziwei_calendar_provider.py.
+The dataset MANIFEST is an integrity/provenance artifact, not admission
+authority. Production permission is owned separately by
+ZIWEI_CALENDAR_ADMISSION_V1.json, which allowlists the exact dataset identity,
+aggregate hash and supported input range.
 """
 from __future__ import annotations
 
