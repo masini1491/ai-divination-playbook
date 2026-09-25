@@ -43,6 +43,7 @@ PROJECT_PATHS=(
  "tools/ziwei_scope_a_pipeline.py",
  "tools/ziwei_brightness_provider.py",
  "tools/ziwei_m0_auxiliary_provider.py",
+ "tools/ziwei_sihua_provider.py",
  "tools/ziwei_brightness_pipeline.py",
  "tools/ziwei_claim_retrieval.py",
  "tools/ziwei_delivery.py",

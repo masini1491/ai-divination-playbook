@@ -16,9 +16,11 @@ data/calendar/ziwei_tw_interval/v1/MANIFEST.json
 schemas/ziwei/ZIWEI_READING_REQUEST_V1.schema.json
 schemas/ziwei/ZIWEI_READING_RESULT_V1.schema.json
 tools/ziwei_natal_provider.py
+tools/ziwei_sihua_provider.py
 tools/ziwei_claim_retrieval.py
 tools/ziwei_delivery.py
 ZIWEI_CALENDAR_ADMISSION_V1.json
+ZIWEI_SIHUA_ADMISSION_V1.json
 ```
 
 Production Gregorian calendar runtime 使用 repo-local interval data。Pinned build source：
@@ -108,6 +110,7 @@ query-bounded year shard(s) → same-commit deterministic data
 ZIWEI_CALENDAR_ADMISSION_V1.json → production calendar admission truth
 pinned lunar-python → build/parity source only
 tools/ziwei_runtime.py → canonical typed production composition
+tools/ziwei_sihua_provider.py → optional profile-bound Four-Transformation facts only
 Zi Wei providers + retrieval/delivery → deterministic facts + admitted claims
 ZIWEI.md → interpretation / output governance
 ```

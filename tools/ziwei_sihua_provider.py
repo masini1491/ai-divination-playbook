@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Research-candidate deterministic Four Transformations provider for Zi Wei.
+"""Deterministic Four Transformations provider for admitted Zi Wei sihua_v1.
 
-This provider is intentionally NOT production-admitted yet. It closes the
-calculation/profile-selection half of ZW-P1-020 while keeping interpretation
-claims and runtime activation out of production until a later admission gate.
+This provider exposes profile-bound Four-Transformation facts only. It does
+not create transformed-star interpretation doctrine; production interpretation
+remains limited to separately admitted claims, of which sihua_v1 adds zero.
 """
 from __future__ import annotations
 
@@ -13,9 +13,9 @@ from typing import Any, Mapping
 from tools.ziwei_natal_provider import STEMS
 
 PROFILE_ID="sihua.default_v1"
-PROFILE_REVISION="1.0.0-candidate"
+PROFILE_REVISION="1.0.0"
 PROVIDER_ID="ziwei-sihua-project-default-python"
-PROVIDER_VERSION="0.1.0-candidate"
+PROVIDER_VERSION="1.0.0"
 TRANSFORMS=("祿","權","科","忌")
 SOURCE_REPOSITORY="matharts/ziwei"
 SOURCE_REVISION="596f43c43ff6fbae526314c7f668bbf346445ff1"
@@ -93,11 +93,11 @@ def calculate_sihua(year_stem:str, *, sihua_profile_id:str=PROFILE_ID)->dict[str
         *(f"sihua:{year_stem}:{transform}:{star}" for transform,star in zip(TRANSFORMS,stars)),
     ]
     return {
-        "schema_version":"0.1.0-candidate",
+        "schema_version":"1.0.0",
         "provider":{
             "id":PROVIDER_ID,
             "version":PROVIDER_VERSION,
-            "authority":"RESEARCH CANDIDATE / NOT PRODUCTION ADMITTED",
+            "authority":"OPTIONAL SIHUA V1 PRODUCTION-ADMITTED FACT PROVIDER",
         },
         "profile":{
             "profile_id":PROFILE_ID,
@@ -134,5 +134,5 @@ def calculate_sihua(year_stem:str, *, sihua_profile_id:str=PROFILE_ID)->dict[str
             "generic_transform_outcome_dictionary_admitted":False,
             "cross_profile_averaging_allowed":False,
         },
-        "production_authority_granted":False,
+        "production_authority_granted":True,
     }
