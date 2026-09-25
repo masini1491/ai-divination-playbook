@@ -1,6 +1,6 @@
 {
   "schema_name": "astrology_extended_chart_e8_admission_readiness",
-  "schema_version": "0.4.0",
+  "schema_version": "0.5.0",
   "authority": "REFERENCE_ONLY",
   "production_baseline": "3346b59055a300aa8998884ccc376017483836af",
   "production_mutation_authorized": false,
@@ -205,5 +205,88 @@
     },
     "remaining_current_stack_order": [],
     "current_stack_closure": true
+  },
+  "current_research_overlay": {
+    "overlay_version": "1.0.0",
+    "authority": "REFERENCE_ONLY_RESEARCH_ELIGIBILITY",
+    "supersedes_historical_candidate_readiness": false,
+    "historical_candidate_rows_preserved": true,
+    "source_evidence": "references/astrology/CHATGPT_ONLY_EXTENDED_EPHEMERIS_FEASIBILITY.md",
+    "production_mutation_authorized": false,
+    "production_selection": null,
+    "semantics": "candidates[].readiness remains the original E8 implementation-surface judgment; this overlay records later post-PR-156 research eligibility only and does not grant production admission",
+    "eligibility_classes": [
+      "ELIGIBLE_FOR_BUNDLED_EPHEMERIS_RESEARCH",
+      "ELIGIBLE_FOR_LOCAL_ANALYTICAL_RESEARCH"
+    ],
+    "candidates": {
+      "chiron": {
+        "historical_readiness": "BLOCKED_ON_PROVIDER_OR_LICENSE",
+        "current_research_eligibility": "ELIGIBLE_FOR_BUNDLED_EPHEMERIS_RESEARCH",
+        "eligible_lanes": [
+          "BUNDLED_EPHEMERIS"
+        ],
+        "production_status": "NOT_ADMITTED"
+      },
+      "ceres": {
+        "historical_readiness": "BLOCKED_ON_PROVIDER_OR_LICENSE",
+        "current_research_eligibility": "ELIGIBLE_FOR_BUNDLED_EPHEMERIS_RESEARCH",
+        "eligible_lanes": [
+          "BUNDLED_EPHEMERIS"
+        ],
+        "production_status": "NOT_ADMITTED"
+      },
+      "pallas": {
+        "historical_readiness": "BLOCKED_ON_PROVIDER_OR_LICENSE",
+        "current_research_eligibility": "ELIGIBLE_FOR_BUNDLED_EPHEMERIS_RESEARCH",
+        "eligible_lanes": [
+          "BUNDLED_EPHEMERIS"
+        ],
+        "production_status": "NOT_ADMITTED"
+      },
+      "juno": {
+        "historical_readiness": "BLOCKED_ON_PROVIDER_OR_LICENSE",
+        "current_research_eligibility": "ELIGIBLE_FOR_BUNDLED_EPHEMERIS_RESEARCH",
+        "eligible_lanes": [
+          "BUNDLED_EPHEMERIS"
+        ],
+        "production_status": "NOT_ADMITTED"
+      },
+      "vesta": {
+        "historical_readiness": "BLOCKED_ON_PROVIDER_OR_LICENSE",
+        "current_research_eligibility": "ELIGIBLE_FOR_BUNDLED_EPHEMERIS_RESEARCH",
+        "eligible_lanes": [
+          "BUNDLED_EPHEMERIS"
+        ],
+        "production_status": "NOT_ADMITTED"
+      },
+      "black_moon_lilith_variants": {
+        "historical_readiness": "BLOCKED_ON_PROVIDER_OR_LICENSE",
+        "current_research_eligibility": "ELIGIBLE_FOR_LOCAL_ANALYTICAL_RESEARCH",
+        "eligible_lanes": [
+          "LOCAL_ANALYTICAL"
+        ],
+        "definition_boundary": "Mean and Osculating/True may be researched independently; Interpolated remains a separate compatibility definition and is not implied by this overlay",
+        "production_status": "NOT_ADMITTED"
+      },
+      "vertex": {
+        "historical_readiness": "BLOCKED_ON_PROVIDER_OR_LICENSE",
+        "current_research_eligibility": "ELIGIBLE_FOR_LOCAL_ANALYTICAL_RESEARCH",
+        "eligible_lanes": [
+          "LOCAL_ANALYTICAL"
+        ],
+        "research_form": "PROJECT_OWNED_DERIVED_GEOMETRY",
+        "production_status": "NOT_ADMITTED"
+      },
+      "equatorial_ascendant": {
+        "historical_readiness": "BLOCKED_ON_PROVIDER_OR_LICENSE",
+        "current_research_eligibility": "ELIGIBLE_FOR_LOCAL_ANALYTICAL_RESEARCH",
+        "eligible_lanes": [
+          "LOCAL_ANALYTICAL"
+        ],
+        "research_form": "PROJECT_OWNED_DERIVED_GEOMETRY",
+        "production_status": "NOT_ADMITTED"
+      }
+    }
   }
 }
