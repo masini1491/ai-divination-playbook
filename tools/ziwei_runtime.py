@@ -17,6 +17,7 @@ from tools.ziwei_brightness_provider import PROFILE_ID as BRIGHTNESS_PROFILE_ID,
 from tools.ziwei_calendar_provider import GregorianBirthInput, normalize_gregorian_birth
 from tools.ziwei_natal_provider import NormalizedNatalInput, calculate_scope_a_natal
 from tools.ziwei_m0_auxiliary_provider import PROFILE_ID as M0_PROFILE_ID, calculate_m0_auxiliary
+from tools.ziwei_sihua_provider import PROFILE_ID as SIHUA_PROFILE_ID, calculate_sihua
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -30,6 +31,7 @@ INTERPRETATION_PROFILE="ziwei.interpretation.tw_v1"
 TEMPORAL_SCOPE="natal_baseline"
 BRIGHTNESS_MODULE="brightness_v1"
 M0_MODULE="m0_auxiliary_v1"
+SIHUA_MODULE="sihua_v1"
 ADMITTED_REGISTRIES=(
     "ziwei_interpretation_claim_registry_batch1.json",
     "ziwei_interpretation_claim_registry_batch2.json",
@@ -47,6 +49,7 @@ class ZiWeiReadingRequest:
     optional_modules: tuple[str,...] = ()
     brightness_profile: str | None = None
     m0_auxiliary_profile: str | None = None
+    sihua_profile: str | None = None
 
     def validate(self) -> None:
         if not isinstance(self.request_id,str) or not self.request_id.strip():
@@ -55,7 +58,7 @@ class ZiWeiReadingRequest:
             raise ValueError(f"unsupported temporal_scope: {self.temporal_scope}")
         if not isinstance(self.birth,(GregorianBirthInput,NormalizedNatalInput)):
             raise ValueError("birth must be GregorianBirthInput or NormalizedNatalInput")
-        unknown=sorted(set(self.optional_modules)-{BRIGHTNESS_MODULE,M0_MODULE})
+        unknown=sorted(set(self.optional_modules)-{BRIGHTNESS_MODULE,M0_MODULE,SIHUA_MODULE})
         if unknown:
             raise ValueError(f"unsupported optional_modules: {','.join(unknown)}")
         if len(set(self.optional_modules)) != len(self.optional_modules):
@@ -69,6 +72,10 @@ class ZiWeiReadingRequest:
             raise ValueError("m0_auxiliary_profile requires m0_auxiliary_v1")
         if M0_MODULE in self.optional_modules and self.m0_auxiliary_profile not in (None,M0_PROFILE_ID):
             raise ValueError(f"unsupported m0_auxiliary_profile: {self.m0_auxiliary_profile}")
+        if self.sihua_profile is not None and SIHUA_MODULE not in self.optional_modules:
+            raise ValueError("sihua_profile requires sihua_v1")
+        if SIHUA_MODULE in self.optional_modules and self.sihua_profile not in (None,SIHUA_PROFILE_ID):
+            raise ValueError(f"unsupported sihua_profile: {self.sihua_profile}")
 
 def request_to_transport(request:ZiWeiReadingRequest)->dict[str,Any]:
     """Serialize the typed request into the versioned JSON transport contract."""
@@ -99,6 +106,8 @@ def request_to_transport(request:ZiWeiReadingRequest)->dict[str,Any]:
         payload["brightness_profile"]=request.brightness_profile
     if request.m0_auxiliary_profile is not None:
         payload["m0_auxiliary_profile"]=request.m0_auxiliary_profile
+    if request.sihua_profile is not None:
+        payload["sihua_profile"]=request.sihua_profile
     return payload
 
 def request_from_transport(payload:dict[str,Any])->ZiWeiReadingRequest:
@@ -106,8 +115,8 @@ def request_from_transport(payload:dict[str,Any])->ZiWeiReadingRequest:
     if not isinstance(payload,dict):
         raise ValueError("request transport must be an object")
     allowed={"schema_name","schema_version","request_id","temporal_scope","birth","optional_modules",
-             "requested_subjects","enabled_source_ids","brightness_profile","m0_auxiliary_profile"}
-    required=allowed-{"brightness_profile","m0_auxiliary_profile"}
+             "requested_subjects","enabled_source_ids","brightness_profile","m0_auxiliary_profile","sihua_profile"}
+    required=allowed-{"brightness_profile","m0_auxiliary_profile","sihua_profile"}
     unknown=set(payload)-allowed
     missing=required-set(payload)
     if unknown:
@@ -148,7 +157,7 @@ def request_from_transport(payload:dict[str,Any])->ZiWeiReadingRequest:
         request_id=payload["request_id"],birth=typed_birth,temporal_scope=payload["temporal_scope"],
         requested_subjects=tuple(payload["requested_subjects"]),enabled_source_ids=tuple(payload["enabled_source_ids"]),
         optional_modules=tuple(payload["optional_modules"]),brightness_profile=payload.get("brightness_profile"),
-        m0_auxiliary_profile=payload.get("m0_auxiliary_profile"),
+        m0_auxiliary_profile=payload.get("m0_auxiliary_profile"),sihua_profile=payload.get("sihua_profile"),
     )
     request.validate()
     return request
@@ -212,7 +221,7 @@ def _compose(chart:dict[str,Any], request:ZiWeiReadingRequest, calendar:dict[str
         "pipeline_id":"ziwei-scope-a-production-pipeline-v1",
         "pipeline_version":"1.1.0",
         "status":"PRODUCTION_ADMITTED",
-        "scope":"bounded_natal_first_layer"+("+optional_brightness_v1" if BRIGHTNESS_MODULE in modules else "")+("+optional_m0_auxiliary_v1" if M0_MODULE in modules else ""),
+        "scope":"bounded_natal_first_layer"+("+optional_brightness_v1" if BRIGHTNESS_MODULE in modules else "")+("+optional_m0_auxiliary_v1" if M0_MODULE in modules else "")+("+optional_sihua_v1" if SIHUA_MODULE in modules else ""),
         "request_id":request.request_id,
         "calculation":{
             "provider":chart["provider"], "calculation_profile":chart["calculation_profile"],
@@ -267,6 +276,14 @@ def run_ziwei(request:ZiWeiReadingRequest)->dict[str,Any]:
         unsupported["brightness"]="computed_by_optional_profile"
         chart["unsupported"]=unsupported
         chart["brightness"]=brightness
+    if SIHUA_MODULE in request.optional_modules:
+        sihua=calculate_sihua(chart["year_pillar"]["stem"],sihua_profile_id=request.sihua_profile or SIHUA_PROFILE_ID)
+        chart=dict(chart)
+        chart["retrieval_facts"]=list(chart["retrieval_facts"])+list(sihua["retrieval_facts"])
+        unsupported=dict(chart["unsupported"])
+        unsupported["four_transformations"]="computed_by_optional_sihua_profile"
+        chart["unsupported"]=unsupported
+        chart["sihua"]=sihua
     result=_compose(chart,request,calendar)
     if M0_MODULE in request.optional_modules:
         result["calculation"]["m0_auxiliary"]=chart["m0_auxiliary"]
@@ -276,6 +293,11 @@ def run_ziwei(request:ZiWeiReadingRequest)->dict[str,Any]:
         result["calculation"]["brightness"]=chart["brightness"]
         result["authority"]["brightness_profile_admitted"]=True
         result["authority"]["brightness_only_doctrine_admitted"]=False
+    if SIHUA_MODULE in request.optional_modules:
+        result["calculation"]["sihua"]=chart["sihua"]
+        result["authority"]["sihua_profile_admitted"]=True
+        result["authority"]["sihua_transformed_star_claims_admitted"]=False
+        result["authority"]["generic_sihua_outcome_doctrine_admitted"]=False
     return result
 
 def legacy_result(result:dict[str,Any], *, brightness:bool=False) -> dict[str,Any]:
