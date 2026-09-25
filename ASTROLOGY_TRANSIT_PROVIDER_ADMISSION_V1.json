@@ -2,9 +2,15 @@
   "schema_name": "astrology_transit_provider_admission",
   "schema_version": "1.0.0",
   "provider_id": "astronomy-engine-transit-v1",
-  "provider_version": "1.0.0",
+  "provider_version": "1.1.0",
   "status": "PRODUCTION_ADMITTED",
-  "scope": ["transit_to_natal_exact_aspects", "stations", "tropical_ingresses"],
+  "scope": [
+    "transit_to_natal_exact_aspects",
+    "stations",
+    "tropical_ingresses",
+    "transit_house_context",
+    "transit_house_ingresses"
+  ],
   "runtime_owner": "tools/astrology_transit_provider.py",
   "output_schema": "astrology_fact_bundle@1.0.0",
   "dependency": {
@@ -18,24 +24,47 @@
     "natal_bundle": "admitted natal Astrology Fact Bundle 1.0",
     "search_time_basis": "UTC",
     "max_search_days": 400,
-    "moving_bodies": ["Sun", "Moon", "Mercury", "Venus", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto"],
+    "moving_bodies": [
+      "Sun",
+      "Moon",
+      "Mercury",
+      "Venus",
+      "Mars",
+      "Jupiter",
+      "Saturn",
+      "Uranus",
+      "Neptune",
+      "Pluto"
+    ],
     "natal_targets": "supported natal planet/point longitudes present in admitted natal bundle",
-    "major_aspects": ["conjunction", "opposition", "trine", "square", "sextile"]
+    "major_aspects": [
+      "conjunction",
+      "opposition",
+      "trine",
+      "square",
+      "sextile"
+    ],
+    "transit_house_context": "requires admitted natal bundle with all 12 cusp_longitude_deg facts and exact or rectified birth_time_certainty"
   },
   "calculation_policy": {
     "zodiac_system": "tropical",
     "center": "geocentric",
     "canonical_event_time": "UTC",
     "root_tolerance_seconds": 0.5,
-    "default_scan_step_hours": 3.0,
-    "station_scan_step_hours": 6.0,
+    "default_scan_step_hours": 3,
+    "station_scan_step_hours": 6,
     "tangential_station_hit_detection": true,
     "tangential_station_angle_tolerance_deg": 0.0001,
     "retrograde_multiple_passages": "preserve_all_exact_roots_with_sequence",
     "ingress_boundaries": "30_degree_tropical_sign_boundaries",
-    "ingress_sequence_labels": ["direct_ingress", "retrograde_return", "direct_reingress"],
+    "ingress_sequence_labels": [
+      "direct_ingress",
+      "retrograde_return",
+      "direct_reingress"
+    ],
     "local_time_rendering": "derived_only_from_UTC_and_explicit_IANA_timezone",
-    "interpretation_authority": "none"
+    "interpretation_authority": "none",
+    "transit_house_boundary": "static admitted natal house cusps; direct crossing enters cusp house, retrograde crossing enters previous house"
   },
   "validation": {
     "production_tests": "tests/test_astrology_transit_provider.py",
@@ -48,11 +77,14 @@
     "tangential_station_exact_contact": "required",
     "mercury_station_2026_count": 6,
     "saturn_station_2026_count": 2,
-    "venus_210_boundary_2026_sequence": ["direct_ingress", "retrograde_return", "direct_reingress"],
+    "venus_210_boundary_2026_sequence": [
+      "direct_ingress",
+      "retrograde_return",
+      "direct_reingress"
+    ],
     "runtime_gate_required": true
   },
   "not_admitted": [
-    "transit house search",
     "angle/cusp transit timing beyond supplied natal target facts",
     "sidereal ingress",
     "eclipse prediction",
