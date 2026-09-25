@@ -73,6 +73,17 @@ def calculate_sihua(year_stem:str, *, sihua_profile_id:str=PROFILE_ID)->dict[str
             "star":star,
             "sihua_profile_id":PROFILE_ID,
             "profile_revision":PROFILE_REVISION,
+            "source_provenance":{
+                "base_repository":SOURCE_REPOSITORY,
+                "base_revision":SOURCE_REVISION,
+                "base_path":SOURCE_PATH,
+                "profile_decision_owner":"references/ziwei/FOUR_TRANSFORMATION_VARIANT_REGISTRY.md",
+                "profile_decision_identity":"PROJECT-DEFAULT-V1",
+            },
+            "engine":{
+                "provider_id":PROVIDER_ID,
+                "provider_version":PROVIDER_VERSION,
+            },
         }
         for transform,star in zip(TRANSFORMS,stars)
     ]
