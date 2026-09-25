@@ -26,6 +26,14 @@ RESEARCH_ROUTING.md
 → references/astrology/**
 ```
 
+### Ordinary production authority boundary
+
+Ordinary Astrology production execution MUST use the current `ai-divination-playbook` repo-local admitted authority first. It MUST NOT routinely load or consult other public Astrology repositories merely to execute an already-admitted natal / transit reading.
+
+External Astrology repositories remain reference/evidence surfaces only and MAY be consulted when the routed task explicitly requires research, comparison, provenance/source verification, licensing review, or development/admission work. A pinned external software/data dependency already represented by this repo's admitted provider/materialization contract does not by itself require re-reading that dependency's repository during an ordinary production reading.
+
+This boundary does not bypass the declared shared `ai-development-playbook` activation contract for repository-maintenance work, and it does not promote `references/astrology/**` into production authority.
+
 若使用者明確指定 Astrology，不得因 provider unavailable 就偷偷改用 Tarot / Meihua / Liuyao。
 
 ## 2. Deterministic Fact Boundary
