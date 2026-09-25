@@ -342,7 +342,7 @@ This item is a standing reconciliation guard. It is not a request to change curr
 ### AST-P1-110 — Extended aspect participant policies
 
 - type: FEATURE / POLICY
-- status: OPEN
+- status: DONE
 - priority: P1
 - owner: Astrology aspect policy
 - blocked_by:
@@ -358,6 +358,13 @@ This item is a standing reconciliation guard. It is not a request to change curr
   - explicit policy IDs;
   - no auto-include when a provider learns a new object;
   - separate semantic admission from geometric participation.
+- closure:
+  - retained `aspect-participants-core-bodies-v1` as the unchanged provider/default policy;
+  - admitted three explicit-selector projection policies: `core-plus-angles`, `core-plus-south-node`, and `core-plus-fortune`;
+  - all three reuse the existing `major-aspects-v1` + `major-aspect-orbs-v1` geometry/orb identity;
+  - angle/Fortune projections require exact birth time; South Node uses the admitted deterministic point fact;
+  - new provider objects are never auto-included; no extended default policy exists;
+  - projected aspect geometry grants no semantic interpretation authority.
 
 ### AST-P1-120 — Yod / Stellium / Grand Quintile policy expansion
 
