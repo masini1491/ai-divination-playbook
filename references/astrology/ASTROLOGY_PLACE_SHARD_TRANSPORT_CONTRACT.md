@@ -48,3 +48,18 @@ Limits:
 - tiny fixtures do not establish full generated-shard cold-start latency, worst-case payload, or full semantic parity.
 
 PR #208 was closed without merge. Production admission remains unchanged.
+
+
+## Real generated-shard probe — PR #210
+
+Status: **REAL SHARD GENERATION PASS / REPO-FILE COLD-START LATENCY STILL OPEN / NOT PRODUCTION ADMISSION**
+
+Temporary non-merge PR #210 generated real profile-500 split 3+3 shards from the exact admitted geonamescache 3.0.2 dataset. Workflow run 36139602395 succeeded and exported artifact 10866252034 (66,184-byte ZIP).
+
+The bounded corpus covered 樹林區/TW, Tokyo/JP, Springfield ambiguous, Springfield/US and not-found. Routing preserved expected semantics: 樹林區 → 1668875; Tokyo → 1850147; Springfield ambiguity remained fail-closed with the same ordered route set; not-found returned no candidate buckets.
+
+Observed real profile-500 shard sizes: alias 樹林區 13,700 B, Tokyo 18,401 B, Springfield 13,744 B; candidate shards used by the corpus were 3,714–6,120 B each. Every exported shard has a recorded SHA-256 identity in the artifact.
+
+The first probe run 36139475713 generated the same files but failed only when Actions attempted to push them because workflow permission is contents: read. That permission was intentionally not widened; the succeeding probe used an artifact.
+
+Boundary: artifact transport is not a same-commit repository file path. This probe strengthens real-shard payload/semantic evidence but does not claim GitHub Connect repo-file cold-start latency PASS. Production admission remains unchanged.
