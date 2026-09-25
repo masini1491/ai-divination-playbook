@@ -446,6 +446,29 @@ This item is a standing reconciliation guard. It is not a request to change curr
   - existing `house_ingress` search behavior is preserved;
   - stale PR #219 is superseded by the merged AST-P1-130 path plus this follow-up and is not a merge source.
 
+### AST-P1-150 — Runtime reuse / host integration binding
+
+- type: MATERIALIZATION / HOST INTEGRATION
+- status: IN_PROGRESS
+- priority: P1
+- owner: Astrology deterministic materialization
+- blocked_by: none
+- source:
+  - ChatGPT cold-start audit after Zi Wei PR #225 exposed the same shared host-transport risk at the Astrology method boundary.
+- current_state:
+  - core bundle integrity, pinned Astronomy Engine dependency, and query-bounded place-resolver transport are already admitted;
+  - Astrology materialization already probes a local marker, but current wording treats revision mismatch too aggressively as MISS and routes a real miss directly to full bundle acquisition;
+  - shared AI Development Playbook already owns generic runtime reuse, artifact handoff, direct-handoff preference, provenance/currentness separation, and layered host status.
+- completion_gate:
+  - verified local Astrology runtime reuse is explicitly first;
+  - current HEAD advancement alone does not invalidate byte-compatible materialized assets or rewrite provenance;
+  - only real cache miss / invalid identity enters Host Capability Gate;
+  - direct byte/file-aware handoff is preferred before bounded opaque bundle transport;
+  - explicit No Full-Bundle-First rule protects model-visible context;
+  - existing chunk/archive/per-file integrity and astronomy-engine==2.1.19 pin remain unchanged;
+  - explicit coordinates bypass place resolver, while place-name resolution remains resolver-specific and query-bounded;
+  - existing product scenario / regression test protects the operational binding without copying shared ownership.
+
 ## P2 — deferred compatibility / provider expansion
 
 ### AST-P2-010 — Interpolated Black Moon Lilith

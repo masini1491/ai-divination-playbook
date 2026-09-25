@@ -56,7 +56,7 @@ raw birth data
 
 Canonical runtime gate：`tools/astrology_runtime.py`；所有 generated provider bundle都必須通過它。Fact Bundle / runtime schema與 production admission以 `ASTROLOGY_PRODUCTION_ADMISSION_V1.json` + schemas為 machine truth。
 
-ChatGPT local runtime 缺少 approved provider files／`astronomy-engine` 時，local miss 不等於 Astrology deterministic facts unavailable；若 GitHub Connect exact-commit retrieval與 Python execution可用，依 `ASTROLOGY_MATERIALIZATION.md` 先嘗試 verified core materialization。Core materialization只涵蓋 explicit coordinates + IANA timezone 的 natal/transit calculation；`place`／`country` name resolution仍需 admitted `geonamescache` resolver可用或另行 verified resolver transport，不得由模型或 generic web geocoding補造。
+ChatGPT local runtime 缺少 approved provider files／`astronomy-engine` 時，local miss 不等於 Astrology deterministic facts unavailable；依 `ASTROLOGY_MATERIALIZATION.md` 必須先走 verified cache reuse / Host Capability Gate，只有 real cache miss 才進 direct handoff或 bounded bundle transport，禁止 full-bundle-first。Core materialization只涵蓋 explicit coordinates + IANA timezone 的 natal/transit calculation；`place`／`country` name resolution仍需 admitted `geonamescache` resolver或其 query-bounded verified transport，不得由模型或 generic web geocoding補造。
 
 ## 3. Mode Owners
 

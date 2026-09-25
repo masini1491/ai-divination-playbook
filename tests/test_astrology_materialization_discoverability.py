@@ -40,9 +40,35 @@ class AstrologyMaterializationDiscoverabilityTests(unittest.TestCase):
         ):
             self.assertIn(phrase,self.contract)
 
+    def test_runtime_reuse_and_host_integration_binding(self):
+        for phrase in (
+            "Runtime Reuse / Host Integration Fast Path",
+            "probe /mnt/data/divination-astrology-runtime/core_bundle_verification.json",
+            "Current `main` 前進本身 **不等於 cache automatically invalid**",
+            "Host Capability Gate / No Full-Bundle-First Rule",
+            "direct byte/file-aware handoff",
+            "不得在 cache reuse probe完成前",
+            "Acquisition: PASS | NOT ESTABLISHED",
+            "Payload handoff: VERIFIED | UNAVAILABLE | NOT ESTABLISHED",
+            "GitHub Connect acquisition PASS 不等於 filesystem materialization VERIFIED",
+        ):
+            self.assertIn(phrase,self.contract)
+
+    def test_product_scenario_prefers_cache_then_host_aware_fallback(self):
+        for phrase in (
+            "probes and verifies the local Astrology runtime cache before any bundle acquisition",
+            "direct byte/file-aware connector→filesystem handoff",
+            "must not move the whole bundle/chunks through model-visible context",
+            "acquisition success does not imply payload handoff, materialization, integrity, or execution success",
+            "whole GeoNames dataset is not transported merely to resolve one place",
+        ):
+            self.assertIn(phrase,self.scenario)
+
     def test_root_owner_routes_runtime_miss_to_materialization(self):
         text=(ROOT/"ASTROLOGY.md").read_text(encoding="utf-8")
         self.assertIn("ASTROLOGY_MATERIALIZATION.md",text)
+        self.assertIn("verified cache reuse / Host Capability Gate",text)
+        self.assertIn("禁止 full-bundle-first",text)
         self.assertIn("Core materialization只涵蓋 explicit coordinates + IANA timezone",text)
 
 if __name__=="__main__": unittest.main()
