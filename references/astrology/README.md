@@ -150,13 +150,12 @@ Current provider-neutral feasibility work remains REFERENCE-ONLY:
 
 AST-P1-010 found **no passing 10/20/40-day sampled/Hermite variant** under its prospectively frozen engineering gate. This is negative research evidence, not a production admission and not evidence that every bundled-ephemeris representation is infeasible.
 
-### Mean Black Moon Lilith analytical research
+### Black Moon Lilith research
 
-AST-P1-020 REFERENCE-ONLY parity evidence: [report](ASTROLOGY_EXP2_MEAN_LILITH_PARITY.md), [metrics](astrology_exp2_mean_lilith_iers2003_parity.json), [research implementation](mean_lilith_iers2003_research.py). Production admission remains separate.
+- Mean / AST-P1-020: [report](ASTROLOGY_EXP2_MEAN_LILITH_PARITY.md), [metrics](astrology_exp2_mean_lilith_iers2003_parity.json).
+- Osculating / AST-P1-030: [report](ASTROLOGY_EXP3_OSCULATING_LILITH_STATE_VECTOR.md), [metrics](astrology_exp3_osculating_lilith_state_vector.json).
 
-### Osculating / True Black Moon Lilith state-vector research
-
-AST-P1-030 REFERENCE-ONLY stability evidence: [report](ASTROLOGY_EXP3_OSCULATING_LILITH_STATE_VECTOR.md), [metrics](astrology_exp3_osculating_lilith_state_vector.json), [research implementation](osculating_lilith_state_research.py). The pinned Astronomy Engine Moon state API is a research input here; Cartesian Moon state vectors and Osculating Lilith remain outside production admission.
+Both are REFERENCE-ONLY; production admission remains separate.
 
 ### Historical engine/timing research
 
