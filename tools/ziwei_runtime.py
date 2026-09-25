@@ -38,6 +38,7 @@ ADMITTED_REGISTRIES=(
     "ziwei_interpretation_claim_registry_palaces_v0.json",
 )
 M0_REGISTRY="ziwei_interpretation_claim_registry_m0_auxiliary_v1.json"
+SIHUA_REGISTRY="ziwei_interpretation_claim_registry_sihua_v0.json"
 
 @dataclass(frozen=True)
 class ZiWeiReadingRequest:
@@ -170,6 +171,8 @@ def _production_registries(optional_modules:tuple[str,...]=()):
     names=list(ADMITTED_REGISTRIES)
     if M0_MODULE in optional_modules:
         names.append(M0_REGISTRY)
+    if SIHUA_MODULE in optional_modules:
+        names.append(SIHUA_REGISTRY)
     regs=_retrieval.load_registries(REF/x for x in names)
     for name,reg in zip(names,regs):
         if reg.get("production_routable") is not False:
@@ -279,7 +282,11 @@ def run_ziwei(request:ZiWeiReadingRequest)->dict[str,Any]:
     if SIHUA_MODULE in request.optional_modules:
         sihua=calculate_sihua(chart["year_pillar"]["stem"],sihua_profile_id=request.sihua_profile or SIHUA_PROFILE_ID)
         chart=dict(chart)
-        chart["retrieval_facts"]=list(chart["retrieval_facts"])+list(sihua["retrieval_facts"])
+        location_facts=[
+            "fact_available:star_locations",
+            *(f"star_branch:{star}:{branch}" for star,branch in sorted(chart["major_star_placements"].items())),
+        ]
+        chart["retrieval_facts"]=list(chart["retrieval_facts"])+list(sihua["retrieval_facts"])+location_facts
         unsupported=dict(chart["unsupported"])
         unsupported["four_transformations"]="computed_by_optional_sihua_profile"
         chart["unsupported"]=unsupported
@@ -296,7 +303,8 @@ def run_ziwei(request:ZiWeiReadingRequest)->dict[str,Any]:
     if SIHUA_MODULE in request.optional_modules:
         result["calculation"]["sihua"]=chart["sihua"]
         result["authority"]["sihua_profile_admitted"]=True
-        result["authority"]["sihua_transformed_star_claims_admitted"]=False
+        result["authority"]["sihua_transformed_star_claims_admitted"]=True
+        result["authority"]["sihua_admitted_transformed_star_claim_count"]=3
         result["authority"]["generic_sihua_outcome_doctrine_admitted"]=False
     return result
 
