@@ -275,15 +275,17 @@
       "core_transport_generator": "tools/build_astrology_core_bundle.py",
       "materialization_product_scenario": "evals/ASTROLOGY_MATERIALIZATION_PRODUCT_SCENARIO.md",
       "core_bundle_scope": "explicit-coordinates-plus-iana-timezone; place-resolver-excluded",
-      "place_resolver_materialization_status": "not-admitted-for-cold-start",
+      "place_resolver_materialization_status": "production-admitted-profile-500-query-bounded",
       "place_resolver_materialization_decision": "reports/astrology/ASTROLOGY_PLACE_RESOLVER_MATERIALIZATION_FEASIBILITY.md",
-      "place_resolver_cold_start_fallback": "require-explicit-coordinates-plus-iana-timezone",
+      "place_resolver_cold_start_fallback": "profile-500-query-bounded-shards; explicit-coordinates-plus-iana-timezone for unadmitted profiles",
       "rulership_projection": "tools/astrology_rulership_projection.py",
       "rulership_projection_schema": "schemas/astrology/ASTROLOGY_RULERSHIP_PROJECTION_V1.schema.json",
       "rulership_activation": "explicit-selector-only",
       "pattern_topology_projection": "tools/astrology_pattern_topology.py",
       "pattern_topology_projection_schema": "schemas/astrology/ASTROLOGY_PATTERN_TOPOLOGY_PROJECTION_V1.schema.json",
-      "pattern_topology_activation": "explicit-selector-only"
+      "pattern_topology_activation": "explicit-selector-only",
+      "place_resolver_materialization_manifest": "data/astrology/place/v1/MANIFEST.json",
+      "place_resolver_materialization_data_commit": "d18be87abe762433e43e844f33f4b43f7fad9f3b"
     },
     {
       "id": "method.astrology.natal",
