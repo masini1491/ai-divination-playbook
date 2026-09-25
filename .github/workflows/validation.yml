@@ -21,41 +21,41 @@ jobs:
         run: |
           set -euo pipefail
           cat > /tmp/targets <<'EOF'
-astrology/reconcile-e8-research-readiness|40dfc465986d64fe0beb1ece46690729937ff106
-astrology-derived-interpretation-admission|0d38d5b27200d1c415d42115452531a4f6e3e0f6
-astrology-e6-pattern-topology|d56d09620d6de0cf8537f9a160a512d0f7a5b4f9
-feature/admit-astrology-place-profile500-transport|5a556ca92c3da0fbc735065e50f7de90a2522a53
-feature/astrology-place-profile500-production|706c03fe56328f63c4bea0ad7ef90982898e1332
-fix/astrology-repo-local-production-authority|4bfbafa8dcdb33a9fcbd93adb69c96cd18b4e2d4
-research/astrology-exp1-sampled-results|b64f4f2aadf123bfd39b01b80c4e0b7a4398b50d
-research/astrology-exp2-mean-lilith-results|585b363f59fd4a578728028f65b9ebe945bc2995
-research/astrology-exp3-osculating-lilith-results|985a5c4bacfa45e324854440fa5332622a93e342
-research/astrology-exp4-special-points-results|7c6138c129439a8d50ae88d74fc1a6fbb8e082c9
-research/astrology-place-connect-evidence|5f12c6f21794f903dfe7e23dbae2d6b8a65713e7
-research/astrology-place-connect-evidence-close|ece539418bd5d54ff96f397b186ae216618c3f4a
-research/astrology-place-real-shard-evidence|d1cdaedb697020d24db342c8aafce0f77bd9da9a
-research/astrology-place-shard-contract|501d200ce55d8baf36c16e0ffa1ff1294af74544
-research/astrology-place-shard-poc|fbe33068c7f7f6bbdee9b10d37eb3f0549e59ca4
-research/astrology-place-shard-split-poc|8360a8c0c1dfffae114319b7a848b139a97583f7
-feature/ast-p1-100-derived-fact-semantics|f63ce005267d5d7ec9d57a4cb6c4b41f5f4f2e34
-feature/ast-p1-110-extended-aspect-policies|ed43312c57c0e605d2ea3fb79e341dddd7001976
-feature/ast-p1-120-special-pattern-policies|d6aa5797b33b89cef0916df9f5a92a64b9017d6e
-feature/ast-p1-130-transit-house-search|3a997781f9be0842a3f85d601bb52c1e215ceffd
-feature/ast-p1-140-transit-house-context|0e3b9d1e0bcb46c1dd9af65cdb445964ed3df004
-astrology-e2-live-oracle-probe|48ac20db592dabe0f7106c0775e0c28714e3cc98
-research/astrology-exp1-sampled-probe|1e4c8e64d7eec1ec86b0af8e9db4d3d0ba3698eb
-research/astrology-exp2-mean-lilith-probe|52fb14b65ce5adfe9a3c0b119e1426f58819c1ee
-research/astrology-exp3-osculating-lilith-probe|2a3abfe70788a85db5cb5beb0dfc91ea6050d594
-research/astrology-exp4-special-points-probe|13691feef30bb076068961c1f45b29e66f6b4ac5
-research/astrology-place-connect-proof|d06a041e83322ccfbff936272a98c90a546dbb32
-research/astrology-place-one-shot-publisher|b533672086266842fa325fe3ceec11d47d695c2e
-research/astrology-place-real-connect-probe|28594152cc8b5ae1f35a2959770ac68e5f5d2a44
-research/astrology-place-real-shard-probe|8c378bd6cce0f06c2b0f558296ef80f179df7052
-research/astrology-place-shard-transport-probe|fdf5fa8f3236984c05257d648b0907330a6ce7ae
-research/astrology-repo-local-authority-divination|3e36987127e52886239ea17d664b234c4e4b557b
-research/ast-p1-130-core-bundle-bridge|dfdb2db029cc576ff31345240717a763309a7726
-feature/ast-p1-130-transit-house-context|f0d613a3f2a3c51d35eab20f6035f220ffe5a6e8
-EOF
+          astrology/reconcile-e8-research-readiness|40dfc465986d64fe0beb1ece46690729937ff106
+          astrology-derived-interpretation-admission|0d38d5b27200d1c415d42115452531a4f6e3e0f6
+          astrology-e6-pattern-topology|d56d09620d6de0cf8537f9a160a512d0f7a5b4f9
+          feature/admit-astrology-place-profile500-transport|5a556ca92c3da0fbc735065e50f7de90a2522a53
+          feature/astrology-place-profile500-production|706c03fe56328f63c4bea0ad7ef90982898e1332
+          fix/astrology-repo-local-production-authority|4bfbafa8dcdb33a9fcbd93adb69c96cd18b4e2d4
+          research/astrology-exp1-sampled-results|b64f4f2aadf123bfd39b01b80c4e0b7a4398b50d
+          research/astrology-exp2-mean-lilith-results|585b363f59fd4a578728028f65b9ebe945bc2995
+          research/astrology-exp3-osculating-lilith-results|985a5c4bacfa45e324854440fa5332622a93e342
+          research/astrology-exp4-special-points-results|7c6138c129439a8d50ae88d74fc1a6fbb8e082c9
+          research/astrology-place-connect-evidence|5f12c6f21794f903dfe7e23dbae2d6b8a65713e7
+          research/astrology-place-connect-evidence-close|ece539418bd5d54ff96f397b186ae216618c3f4a
+          research/astrology-place-real-shard-evidence|d1cdaedb697020d24db342c8aafce0f77bd9da9a
+          research/astrology-place-shard-contract|501d200ce55d8baf36c16e0ffa1ff1294af74544
+          research/astrology-place-shard-poc|fbe33068c7f7f6bbdee9b10d37eb3f0549e59ca4
+          research/astrology-place-shard-split-poc|8360a8c0c1dfffae114319b7a848b139a97583f7
+          feature/ast-p1-100-derived-fact-semantics|f63ce005267d5d7ec9d57a4cb6c4b41f5f4f2e34
+          feature/ast-p1-110-extended-aspect-policies|ed43312c57c0e605d2ea3fb79e341dddd7001976
+          feature/ast-p1-120-special-pattern-policies|d6aa5797b33b89cef0916df9f5a92a64b9017d6e
+          feature/ast-p1-130-transit-house-search|3a997781f9be0842a3f85d601bb52c1e215ceffd
+          feature/ast-p1-140-transit-house-context|0e3b9d1e0bcb46c1dd9af65cdb445964ed3df004
+          astrology-e2-live-oracle-probe|48ac20db592dabe0f7106c0775e0c28714e3cc98
+          research/astrology-exp1-sampled-probe|1e4c8e64d7eec1ec86b0af8e9db4d3d0ba3698eb
+          research/astrology-exp2-mean-lilith-probe|52fb14b65ce5adfe9a3c0b119e1426f58819c1ee
+          research/astrology-exp3-osculating-lilith-probe|2a3abfe70788a85db5cb5beb0dfc91ea6050d594
+          research/astrology-exp4-special-points-probe|13691feef30bb076068961c1f45b29e66f6b4ac5
+          research/astrology-place-connect-proof|d06a041e83322ccfbff936272a98c90a546dbb32
+          research/astrology-place-one-shot-publisher|b533672086266842fa325fe3ceec11d47d695c2e
+          research/astrology-place-real-connect-probe|28594152cc8b5ae1f35a2959770ac68e5f5d2a44
+          research/astrology-place-real-shard-probe|8c378bd6cce0f06c2b0f558296ef80f179df7052
+          research/astrology-place-shard-transport-probe|fdf5fa8f3236984c05257d648b0907330a6ce7ae
+          research/astrology-repo-local-authority-divination|3e36987127e52886239ea17d664b234c4e4b557b
+          research/ast-p1-130-core-bundle-bridge|dfdb2db029cc576ff31345240717a763309a7726
+          feature/ast-p1-130-transit-house-context|f0d613a3f2a3c51d35eab20f6035f220ffe5a6e8
+          EOF
           while IFS='|' read -r branch expected; do
             [ -n "$branch" ] || continue
             ref_json="$(gh api "repos/${GITHUB_REPOSITORY}/git/ref/heads/$branch" 2>/dev/null || true)"
