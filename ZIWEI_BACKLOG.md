@@ -29,7 +29,7 @@ Last reviewed against:
 
 ```text
 ai-divination-playbook main
-fd5e22f275bdad6aa23076179e68115cce1c177e
+6240c8596447e7befeb5c63ea0e4eb8307b4df61
 ```
 
 This SHA is review evidence only, not a pin. Every maintenance task must resolve current `main` again before mutation.
@@ -279,7 +279,7 @@ This SHA is review evidence only, not a pin. Every maintenance task must resolve
 ### ZW-P1-020 — Four Transformations production admission
 
 - type: FEATURE / ADMISSION
-- status: OPEN
+- status: IN_PROGRESS
 - priority: P1
 - owner: Zi Wei Four-Transformation admission
 - blocked_by:
