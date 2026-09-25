@@ -270,6 +270,46 @@ encoding choice. It is:
 4. migrate production resolver/materialization and then update calendar
    admission authority in one bounded gate.
 
+## Deterministic interval dataset build / verification mechanism
+
+The interval candidate now has a range-parameterized research materialization
+toolchain:
+
+```text
+tools/build_ziwei_calendar_interval_dataset.py
+→ requested Gregorian year range
+→ year shards + end-year+1 policy-tail shard
+→ per-shard SHA-256
+→ canonical aggregate hash
+→ deterministic MANIFEST.json
+
+tools/validate_ziwei_calendar_interval_dataset.py
+→ manifest / dependency provenance / shard contract validation
+→ exact shard inventory
+→ per-shard hash + byte-count + interval-count validation
+→ aggregate-hash validation
+→ optional clean-room deterministic rebuild and byte-identical manifest check
+```
+
+The builder records the pinned build dependency
+`lunar_python==1.4.8` / `6tail/lunar-python@000c8a3d74eed098d6256a28fdd51b869324c559`
+and keeps `production_admitted=false`. The research builder is intentionally
+range-parameterized; it does not choose the product-supported range.
+
+Targeted regression coverage proves:
+
+- deterministic rebuild of the same range;
+- fail-closed missing shard;
+- fail-closed modified shard hash;
+- fail-closed dependency-provenance tampering;
+- invalid range rejection;
+- explicit policy-tail materialization for `end_year + 1`.
+
+This closes the **generic build/hash/rebuild mechanism**, not the later
+admitted-dataset evidence. Once a product range is selected, that exact range
+must still be materialized and its manifest/hash evidence reviewed before
+production migration.
+
 ## Production migration gate
 
 Only after parity/range/size evidence is sufficient should a later bounded

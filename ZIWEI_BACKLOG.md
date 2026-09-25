@@ -125,7 +125,8 @@ This SHA is review evidence only, not a pin. Every maintenance task must resolve
   - compact Gregorian-year / lunar-month-interval POC completed with 73,414 ordinary-date checks / 4,824 full-hour New-Year cases / 202 year-edge 23:00 cases / 0 mismatches;
   - interval encoding uses 2,692 interval records in 202 year shards and measured 471,865 bytes total (about 94.46% smaller / 18.07x smaller than daily shards), while preserving ordinary 1-file and 23:00 cross-year at-most-2-file lookup;
   - interval encoding is now the selected B candidate storage architecture; current option A still remains production authority;
-  - remaining admission blockers are explicit product-supported-range selection, admitted interval-dataset deterministic rebuild/hash closure, and production resolver/materialization migration.
+  - range-parameterized research builder/validator now closes the generic per-shard SHA-256, aggregate-hash, fail-closed manifest validation and deterministic clean rebuild mechanism;
+  - remaining admission blockers are explicit product-supported-range selection, materialization/review of that exact admitted-range dataset and hashes, and production resolver/materialization migration.
 - scope boundary:
   - does not modify `ZW-P1-020` Four Transformations semantics;
   - does not create repository-layer architecture policy outside `REPOSITORY_ARCHITECTURE.md`.
