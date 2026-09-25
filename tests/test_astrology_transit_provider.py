@@ -10,6 +10,8 @@ from tools.astrology_transit_provider import (
     search_ingresses,
     search_stations,
     search_transit_to_natal,
+    search_transit_house_ingresses,
+    transit_house_context,
 )
 
 UTC = dt.timezone.utc
@@ -184,6 +186,34 @@ class AstrologyTransitProviderTests(unittest.TestCase):
                 natal_targets=["Mercury"],
                 aspects=["conjunction"],
             )
+
+
+    def test_transit_house_context_uses_admitted_natal_cusps(self):
+        natal = _minimal_natal_bundle()
+        natal["configuration"]["house_system"] = "Whole Sign"
+        natal["facts"]["houses"] = [{"fact_id": f"fact:house:{n}", "house_number": n, "cusp_longitude_deg": float((n-1)*30)} for n in range(1,13)]
+        rows = transit_house_context(natal, at_utc="2026-01-01T00:00:00Z", moving_bodies=["Sun"])
+        self.assertEqual(1, len(rows))
+        self.assertEqual("transit_house_context", rows[0]["event_kind"])
+        self.assertTrue(1 <= rows[0]["house_number"] <= 12)
+
+    def test_transit_house_ingress_preserves_direct_and_retrograde_direction(self):
+        natal = _minimal_natal_bundle()
+        natal["configuration"]["house_system"] = "Whole Sign"
+        natal["facts"]["houses"] = [{"fact_id": f"fact:house:{n}", "house_number": n, "cusp_longitude_deg": float((n-1)*30)} for n in range(1,13)]
+        rows = search_transit_house_ingresses(natal, start_utc="2026-06-01T00:00:00Z", end_utc="2026-08-10T00:00:00Z", moving_bodies=["Mercury"])
+        self.assertTrue(rows)
+        self.assertTrue(all(r["to_house"] != r["from_house"] for r in rows))
+        self.assertTrue(all(r["motion_direction"] in {"direct","retrograde"} for r in rows))
+
+    def test_transit_house_context_rejects_approximate_or_unknown_natal_time(self):
+        for certainty in ("approximate","unknown"):
+            natal = _minimal_natal_bundle()
+            natal["birth_time_certainty"] = certainty
+            natal["configuration"]["house_system"] = "Whole Sign"
+            natal["facts"]["houses"] = [{"fact_id": f"fact:house:{n}", "house_number": n, "cusp_longitude_deg": float((n-1)*30)} for n in range(1,13)]
+            with self.assertRaisesRegex(TransitProviderInputError, "exact or rectified"):
+                transit_house_context(natal, at_utc="2026-01-01T00:00:00Z", moving_bodies=["Sun"])
 
 
 if __name__ == "__main__":
