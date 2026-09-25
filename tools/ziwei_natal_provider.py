@@ -123,6 +123,8 @@ def calculate_scope_a_natal(data: NormalizedNatalInput) -> dict[str,Any]:
     ]
     facts=[f"palace_present:{p}" for p in PALACES]
     facts.extend(f"star_present:{s}" for s in MAJOR_STARS)
+    facts.append("fact_available:star_locations")
+    facts.extend(f"star_branch:{star}:{branch}" for star,branch in stars.items())
     return {
         "schema_version":"0.1.0",
         "provider":{"id":PROVIDER_ID,"version":PROVIDER_VERSION,"authority":"G1 ADMITTED — SCOPE-A NATAL / NOT G7 PRODUCTION ADMISSION"},
