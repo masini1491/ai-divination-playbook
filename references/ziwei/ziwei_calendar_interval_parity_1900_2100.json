@@ -1,0 +1,67 @@
+{
+  "schema_name": "ziwei_calendar_interval_encoding_evidence",
+  "schema_version": "1.0.0",
+  "authority": "RESEARCH_EVIDENCE_ONLY_NOT_PRODUCTION_ADMISSION",
+  "source_repository": "masini1491/ai-divination-playbook",
+  "candidate_window": {
+    "start": "1900-01-01",
+    "end": "2100-12-31",
+    "production_admitted": false
+  },
+  "dependency": {
+    "package": "lunar_python",
+    "version": "1.4.8",
+    "repository": "6tail/lunar-python",
+    "revision": "000c8a3d74eed098d6256a28fdd51b869324c559"
+  },
+  "encoding": {
+    "shard_key": "Gregorian year",
+    "record": "lunar-month interval",
+    "ordinary_query_max_files": 1,
+    "rat_hour_cross_year_max_files": 2
+  },
+  "run": {
+    "workflow": "Zi Wei Calendar Interval Research",
+    "run_id": 36108735951,
+    "job_id": 107987125888,
+    "head_sha": "4c15473da646eff0fa931bbeebfc365060c58b9c",
+    "conclusion": "success",
+    "coverage": {
+      "every_gregorian_date_at_12": 73414,
+      "full_24_hour_new_year_cases": 4824,
+      "year_edge_23_cases": 202
+    },
+    "mismatch_count": 0,
+    "generated_year_shards": 202,
+    "interval_records": {
+      "min_per_shard": 13,
+      "max_per_shard": 14,
+      "mean_per_shard": 13.326732673267326,
+      "total": 2692
+    },
+    "shard_size_bytes": {
+      "min": 2284,
+      "max": 2444,
+      "mean": 2335.9653465346537,
+      "total": 471865
+    },
+    "elapsed_seconds": 215.04164281
+  },
+  "comparison_to_daily_poc": {
+    "daily_total_bytes": 8525044,
+    "interval_total_bytes": 471865,
+    "byte_reduction_percent": 94.46495525418989,
+    "size_ratio_daily_over_interval": 18.06670128108675
+  },
+  "conclusion": {
+    "selected_candidate_encoding": "GREGORIAN_YEAR_SHARDS_WITH_LUNAR_MONTH_INTERVALS",
+    "production_architecture_admitted": false,
+    "production_range_selected": false,
+    "remaining_gates": [
+      "explicit product-supported Gregorian range",
+      "materialize admitted interval dataset",
+      "deterministic rebuild and per-shard/aggregate hash closure",
+      "production resolver/materialization migration and admission update"
+    ]
+  }
+}

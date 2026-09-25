@@ -216,6 +216,60 @@ These results establish high-confidence parity for the candidate window and
 show bounded one-query payloads. They do **not** select the production-supported
 date range and do not admit B into production.
 
+## Storage encoding comparison
+
+A second bounded POC evaluated a more compact encoding:
+
+```text
+Gregorian-year shard
+→ 13-14 lunar-month intervals per year
+→ each interval stores lunar year, signed lunar month, Gregorian start/end, day count
+→ runtime derives lunar day from Gregorian date offset
+```
+
+This preserves the same project-owned policies (23:00 next-day shift,
+split-after-day-15 and hour-branch mapping) while avoiding one stored record per
+Gregorian date.
+
+Machine-readable result:
+`references/ziwei/ziwei_calendar_interval_parity_1900_2100.json`.
+
+Completed research run `36108735951` at head
+`4c15473da646eff0fa931bbeebfc365060c58b9c`:
+
+- candidate window: `1900-01-01..2100-12-31`;
+- every Gregorian date checked at ordinary time: **73,414**;
+- New-Year 24-hour cases: **4,824**;
+- 23:00 Gregorian-year-edge cases: **202**;
+- mismatches: **0**;
+- generated Gregorian-year shards: **202**;
+- total lunar-month interval records: **2,692**;
+- interval records per shard: min **13**, max **14**, mean **13.326732673267326**;
+- total dataset bytes: **471,865**;
+- shard bytes: min **2,284**, max **2,444**, mean **2335.9653465346537**;
+- one-query file bound remains **1 ordinary / 2 at 23:00 cross-year edge**;
+- elapsed: **215.04164281 s**.
+
+Compared with the daily-record monthly-shard POC for the same candidate window
+(**8,525,044 bytes**), interval encoding reduces generated dataset bytes by
+approximately **94.46%** (about **18.07x smaller**) while preserving zero-mismatch
+parity in the tested window and the same bounded file-count lookup contract.
+
+**Architecture decision for the B candidate:** prefer Gregorian-year shards of
+lunar-month intervals over daily Gregorian records. This is a research
+architecture choice only; it does not admit B into production and does not
+select the production-supported date range.
+
+The remaining data-admission work is therefore no longer a daily-vs-interval
+encoding choice. It is:
+
+1. select an explicit product-supported Gregorian range;
+2. materialize the admitted interval dataset for that range;
+3. close deterministic rebuild + per-shard/aggregate hash validation on the
+   admitted dataset;
+4. migrate production resolver/materialization and then update calendar
+   admission authority in one bounded gate.
+
 ## Production migration gate
 
 Only after parity/range/size evidence is sufficient should a later bounded
