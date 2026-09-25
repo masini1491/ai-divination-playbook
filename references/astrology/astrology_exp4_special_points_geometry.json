@@ -1,0 +1,167 @@
+{
+  "schema_name": "astrology_exp4_special_points_geometry",
+  "schema_version": "1.0.0",
+  "authority": "REFERENCE_ONLY_RESEARCH_EVIDENCE",
+  "production_admission": "NOT_GRANTED",
+  "semantic_interpretation_admission": "NOT_GRANTED",
+  "experiment": {
+    "temporary_pr": 187,
+    "temporary_pr_merged": false,
+    "temporary_head": "13691feef30bb076068961c1f45b29e66f6b4ac5",
+    "workflow_run": 36095412306,
+    "validate_job": 107946545846,
+    "result": "RESEARCH_GEOMETRY_PASS"
+  },
+  "candidates": {
+    "vertex": {
+      "fact_id": "vertex_prime_vertical_ecliptic_v0",
+      "definition": "western intersection of the local prime-vertical plane and ecliptic plane",
+      "canonical_name": "Vertex"
+    },
+    "equatorial_ascendant": {
+      "fact_id": "equatorial_ascendant_ra_plus_90_v0",
+      "definition": "ecliptic point whose right ascension equals ARMC plus 90 degrees",
+      "canonical_name": "Equatorial Ascendant"
+    }
+  },
+  "frame_policy": {
+    "project_input_frame": "tropical_ecliptic_of_date_project_mean_obliquity",
+    "sidereal_time_source": "astronomy-engine-2.1.19-SiderealTime",
+    "longitude_convention": "east_positive_degrees",
+    "normalization": "mod_360"
+  },
+  "fixtures": {
+    "synthetic": [
+      {
+        "armc_deg": 37,
+        "obliquity_deg": 23.4393,
+        "latitude_deg": 0
+      },
+      {
+        "armc_deg": 123,
+        "obliquity_deg": 23.4393,
+        "latitude_deg": 25
+      },
+      {
+        "armc_deg": 271,
+        "obliquity_deg": 23.4393,
+        "latitude_deg": -33
+      },
+      {
+        "armc_deg": 19,
+        "obliquity_deg": 23.4393,
+        "latitude_deg": 65
+      },
+      {
+        "armc_deg": 205,
+        "obliquity_deg": 23.4393,
+        "latitude_deg": -65
+      },
+      {
+        "armc_deg": 311,
+        "obliquity_deg": 23.4393,
+        "latitude_deg": 89
+      },
+      {
+        "armc_deg": 71,
+        "obliquity_deg": 23.4393,
+        "latitude_deg": -89
+      }
+    ],
+    "real_locations": [
+      {
+        "id": "greenwich",
+        "utc": "2026-03-20T12:00:00+00:00",
+        "latitude_deg": 51.4779,
+        "longitude_east_deg": 0
+      },
+      {
+        "id": "sydney",
+        "utc": "1990-06-15T00:00:00+00:00",
+        "latitude_deg": -33.8688,
+        "longitude_east_deg": 151.2093
+      },
+      {
+        "id": "quito",
+        "utc": "2024-09-22T00:00:00+00:00",
+        "latitude_deg": -0.1807,
+        "longitude_east_deg": -78.4678
+      },
+      {
+        "id": "tromso",
+        "utc": "2025-12-21T12:00:00+00:00",
+        "latitude_deg": 69.6492,
+        "longitude_east_deg": 18.9553
+      },
+      {
+        "id": "ushuaia",
+        "utc": "2025-06-21T12:00:00+00:00",
+        "latitude_deg": -54.8019,
+        "longitude_east_deg": -68.303
+      }
+    ]
+  },
+  "thresholds_frozen_before_first_execution": {
+    "same_input_swiss_max_deg": 1e-8,
+    "geometry_plane_abs_max": 1e-12,
+    "equasc_ra_residual_max_deg": 1e-10,
+    "project_input_swiss_max_deg": 0.05
+  },
+  "reference_paths": {
+    "swiss_formula_oracle": {
+      "source": "aloistr/swisseph",
+      "revision": "9083a12d59e98034fb2337061481ac8800c16e64",
+      "role": "same-input Vertex / Equatorial Ascendant formula parity oracle"
+    },
+    "project_time_input": {
+      "source": "cosinekitty/astronomy",
+      "revision": "865d3da7d8112bbc7911238052c6af4aaf877181",
+      "role": "SiderealTime input path"
+    },
+    "east_point_named_compatibility": {
+      "source": "CruiserOne/Astrolog",
+      "revision": "5bf172ea231c4b6ea3d7e09ca307571354a41e8a",
+      "role": "EP field receives Swiss SE_EQUASC output"
+    }
+  },
+  "runtime_versions": {
+    "astronomy_engine": "2.1.19",
+    "pyswisseph": "2.10.03"
+  },
+  "metrics": {
+    "synthetic_geometry_plane_abs_max": 5.551115123125783e-17,
+    "synthetic_equasc_ra_residual_max_deg": 2.842170943040401e-14,
+    "same_input_swiss_max_deg": 2.842170943040401e-14,
+    "project_input_swiss_max_deg": 0.0016446705079715684,
+    "vertex_project_input_swiss_max_deg": 0.0016446705079715684,
+    "equasc_project_input_swiss_max_deg": 0.0003416486268861263
+  },
+  "pass": {
+    "geometry_plane": true,
+    "equasc_ra_identity": true,
+    "same_input_swiss": true,
+    "project_input_swiss": true,
+    "overall_research_geometry": true
+  },
+  "representative_results": {
+    "greenwich": {
+      "project_armc_deg": 358.0357856568949,
+      "project_obliquity_deg": 23.435882075444503,
+      "project_vertex_deg": 250.7985218139159,
+      "project_equatorial_ascendant_deg": 88.19771042502711,
+      "swiss_vertex_deg": 250.79687714340793,
+      "swiss_equatorial_ascendant_deg": 88.19771229752016
+    }
+  },
+  "east_point_alias": {
+    "canonical_math_identity": false,
+    "named_compatibility_evidence": "Astrolog EP receives Swiss SE_EQUASC output",
+    "production_alias_admission": "NOT_GRANTED"
+  },
+  "conclusion": {
+    "research_candidate": "SUPPORTED_AS_PROJECT_OWNED_DERIVED_GEOMETRY",
+    "production_consequence": "NONE",
+    "identity_boundary": "Vertex and Equatorial Ascendant remain distinct facts.",
+    "alias_boundary": "East Point is retained as named compatibility evidence only; it is not the canonical mathematical identity and has no production alias admission."
+  }
+}

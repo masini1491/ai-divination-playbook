@@ -269,11 +269,10 @@ This item is a standing reconciliation guard. It is not a request to change curr
 ### AST-P1-040 — EXP-4 Vertex / Equatorial Ascendant formula admission study
 
 - type: RESEARCH / DERIVED GEOMETRY
-- status: OPEN
+- status: DONE
 - priority: P1
 - owner: Astrology extended-point research
-- blocked_by:
-  - AST-P0-001
+- blocked_by: none
 - subjects:
   - Vertex
   - Equatorial Ascendant
@@ -281,15 +280,28 @@ This item is a standing reconciliation guard. It is not a request to change curr
 - canonical_research:
   - `references/astrology/CHATGPT_ONLY_EXTENDED_EPHEMERIS_FEASIBILITY.md`
   - `references/astrology/EXTENDED_CHART_E4_SPECIAL_POINTS_RESEARCH.md`
-- target:
-  - establish project-owned spherical-astronomy derivations from admitted date/time/location inputs;
-  - independently validate geographic and latitude edge cases.
+  - `references/astrology/ASTROLOGY_EXP4_SPECIAL_POINTS_GEOMETRY.md`
+  - `references/astrology/astrology_exp4_special_points_geometry.json`
+  - `references/astrology/special_points_geometry_research.py`
+- measured_result:
+  - `vertex_prime_vertical_ecliptic_v0` defines Vertex as the western prime-vertical/ecliptic intersection;
+  - `equatorial_ascendant_ra_plus_90_v0` defines Equatorial Ascendant as the ecliptic point with RA = ARMC + 90°;
+  - temporary non-merge PR #187 / workflow run `36095412306` validated seven synthetic geometry fixtures including ±89° latitude and five public real-location fixtures;
+  - synthetic plane residual max `5.551115123125783e-17` passed the frozen `1e-12` gate;
+  - Equatorial Ascendant RA-identity residual max `2.842170943040401e-14°` passed the frozen `1e-10°` gate;
+  - same-input Swiss max residual `2.842170943040401e-14°` passed the frozen `1e-8°` gate;
+  - current project sidereal-time/mean-obliquity input path max Swiss residual `0.0016446705079715684°` passed the frozen `0.05°` gate;
+  - Astrolog `EP` → Swiss `SE_EQUASC` provides named East Point compatibility evidence, but canonical mathematical identity and production alias admission remain separate;
+  - no new ephemeris dependency is required;
+  - production calculation and semantic interpretation admission remain `NOT_GRANTED`.
+- closure:
+  - Vertex / Equatorial Ascendant project-owned geometry research → formula parity PASS → identities/frame conventions resolved → East Point retained as named compatibility evidence only → research implementation retained under `references/` → NOT production-admitted.
 - completion_gate:
   - formulas and frame conventions pinned;
   - synthetic + real-location fixtures;
   - Vertex and Equatorial Ascendant identities remain distinct;
-  - `East Point` alias only admitted after compatibility/source identity is resolved;
-  - no new ephemeris dependency solely for these derived points unless formula study fails.
+  - `East Point` is not production-admitted merely from compatibility evidence;
+  - no new ephemeris dependency solely for these derived points.
 
 ## P1 — interpretation and policy expansion
 
