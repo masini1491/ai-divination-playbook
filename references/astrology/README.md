@@ -152,10 +152,10 @@ AST-P1-010 found **no passing 10/20/40-day sampled/Hermite variant** under its p
 
 ### Black Moon Lilith research
 
-- Mean / AST-P1-020: [report](ASTROLOGY_EXP2_MEAN_LILITH_PARITY.md), [metrics](astrology_exp2_mean_lilith_iers2003_parity.json).
-- Osculating / AST-P1-030: [report](ASTROLOGY_EXP3_OSCULATING_LILITH_STATE_VECTOR.md), [metrics](astrology_exp3_osculating_lilith_state_vector.json).
+- AST-P1-020 Mean: [report](ASTROLOGY_EXP2_MEAN_LILITH_PARITY.md) / [JSON](astrology_exp2_mean_lilith_iers2003_parity.json).
+- AST-P1-030 Osculating: [report](ASTROLOGY_EXP3_OSCULATING_LILITH_STATE_VECTOR.md) / [JSON](astrology_exp3_osculating_lilith_state_vector.json).
 
-Both are REFERENCE-ONLY; production admission remains separate.
+REFERENCE-ONLY; production admission separate.
 
 ### Historical engine/timing research
 
