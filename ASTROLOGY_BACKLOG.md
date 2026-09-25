@@ -145,7 +145,9 @@ This item is a standing reconciliation guard. It is not a request to change curr
   - connector cache-hit/network-byte telemetry: UNAVAILABLE; do not treat repeated identical retrieval as a zero-byte cache proof;
   - real generated-shard bounded corpus payload + semantic route evidence: COMPLETE at profile-500 research scope via temporary non-merge PR #210 / workflow 36139602395 / artifact 10866252034;
   - real committed generated shard → GitHub Connect exact-ref retrieval / byte identity / bounded payload / semantic-chain product validation: COMPLETE via temporary non-merge PR #212; connector wall-clock/network latency telemetry is not exposed and must not be fabricated;
-  - research validation is complete; production admission review found a separate unresolved deployment gate: the generated corpus is not yet persisted on a production-retrievable same-revision surface, so `ASTROLOGY_MATERIALIZATION.md` behavior and resolver transport admission remain unchanged.
+  - research validation is complete; PR #215 measured the default profile-500 deployment candidate at 8,192 shard files / 75,086,146 bytes / aggregate digest `6e542fd50c4d821d783c74c2f392bea087df68666ba1781970df66d47dc719a0`;
+  - production deployment topology is now defined as dedicated generated-data ref `data/astrology-place-v1`, pinned by exact data commit from the main manifest; publisher and admission remain separate actions;
+  - generated corpus is not yet published/admitted, so `ASTROLOGY_MATERIALIZATION.md` behavior and resolver transport admission remain unchanged.
 - completion_gate:
   - deterministic generated-data provenance from the four exact admitted source datasets;
   - bounded worst-case retrieval supported by measured evidence;
