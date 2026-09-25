@@ -1,6 +1,6 @@
 {
   "schema_name": "ziwei_calendar_production_admission",
-  "schema_version": "1.0.0",
+  "schema_version": "1.1.0",
   "method": "ZiWei",
   "module": "gregorian_calendar_input_v1",
   "status": "PRODUCTION_ADMITTED_INPUT_ADAPTER",
@@ -11,7 +11,12 @@
     "timezone": "Asia/Taipei",
     "clock_mode": "civil_time",
     "true_solar_time": "disabled",
-    "output": "normalized_traditional_lunar_input_for_scope_a"
+    "output": "normalized_traditional_lunar_input_for_scope_a",
+    "accepted_year_notations": [
+      "ce",
+      "minguo"
+    ],
+    "minguo_conversion": "gregorian_year = minguo_year + 1911"
   },
   "calculation": {
     "provider_id": "ziwei-calendar-lunar-python",
@@ -36,14 +41,16 @@
     "pipeline_id": "ziwei-gregorian-input-adapter-v1",
     "supports_parent_scope_a": true,
     "supports_optional_brightness_v1": true,
-    "compatibility_adapter": "tools/ziwei_gregorian_pipeline.py"
+    "compatibility_adapter": "tools/ziwei_gregorian_pipeline.py",
+    "year_notation_owner": "tools/ziwei_year_notation.py"
   },
   "fail_closed": [
     "Asia/Taipei timezone required",
     "invalid Gregorian date/time rejected",
     "no model-memory lunar conversion",
     "no silent true-solar-time correction",
-    "raw conversion and Zi Wei normalization remain separately visible"
+    "raw conversion and Zi Wei normalization remain separately visible",
+    "Minguo year must be explicit and >= 1; pre-Republic notation is unsupported"
   ],
   "unsupported": [
     "automatic birthplace timezone resolution",

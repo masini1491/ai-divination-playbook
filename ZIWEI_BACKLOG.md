@@ -108,6 +108,25 @@ This SHA is review evidence only, not a pin. Every maintenance task must resolve
 
 ## P1 — product architecture
 
+### ZW-P1-004 — Minguo year-notation input adapter
+
+- type: INPUT NORMALIZATION / PRODUCTION ADAPTER EXTENSION
+- status: DONE
+- priority: P1
+- owner: Zi Wei maintenance
+- scope:
+  - explicit 民國 year notation only;
+  - deterministic conversion `CE year = 民國 year + 1911`;
+  - preserve existing Gregorian timezone/calendar/Zi Wei policy semantics;
+  - no natural-language freeform date parser beyond explicit Minguo year notation;
+  - no pre-Republic year notation.
+- closure:
+  - `tools/ziwei_year_notation.py` preserves source/converted facts and returns the existing typed `GregorianBirthInput`;
+  - `民國1年 → 1912`, `民國76年 → 1987`, `民國115年 → 2026` regression-covered;
+  - invalid / zero / negative Minguo years and invalid converted Gregorian dates fail closed;
+  - ordinary CE deterministic bundle remains unchanged; explicit Minguo input performs a same-commit tiny pre-runtime helper read only.
+- admission owner: `ZIWEI_CALENDAR_ADMISSION_V1.json`
+
 ### ZW-P1-003 — Calendar deterministic-data architecture evaluation
 
 - type: ARCHITECTURE / CALENDAR DATA POC
