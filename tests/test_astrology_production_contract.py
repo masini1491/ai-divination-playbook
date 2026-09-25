@@ -190,7 +190,16 @@ class AstrologyProductionContractTests(unittest.TestCase):
             participants,
         )
         self.assertTrue({"SouthNode", "Descendant", "ImumCoeli"}.isdisjoint(participants))
-        self.assertEqual("not_admitted", manifest["aspect_policy"]["extended_points_or_angles"])
+        self.assertEqual("explicit_projection_policies_only", manifest["aspect_policy"]["extended_points_or_angles"])
+        self.assertIsNone(manifest["aspect_policy"]["default_extended_policy"])
+        self.assertEqual(
+            {
+                "aspect-participants-core-plus-angles-v1",
+                "aspect-participants-core-plus-south-node-v1",
+                "aspect-participants-core-plus-fortune-v1",
+            },
+            set(manifest["aspect_policy"]["extended_participant_policy_ids"]),
+        )
         derived = manifest["natal_semantic_policy"]["derived_fact_interpretation"]
         self.assertEqual("forbidden_unless_explicitly_admitted", derived["claim_binding"])
         self.assertEqual({"Descendant", "ImumCoeli", "PartOfFortune"}, set(derived["admitted_claim_bindings"]))
