@@ -10,7 +10,8 @@ Meihua
 Liuyao
 Astrology（explicit-request only；不參與 ordinary auto-routing）
 Zi Wei Dou Shu / 紫微斗數（Scope-A v1；explicit-request only；不參與 ordinary auto-routing）
-Tarot + Meihua（只有 distinct responsibilities 真正需要時）
+Tarot + Meihua（canonical reconciliation）
+Astrology natal + Zi Wei natal baseline（explicit pair request only；canonical reconciliation）
 ```
 
 本章不負責牌位設計、起卦算法、解讀、補占或交叉驗證細節：
@@ -21,7 +22,7 @@ Tarot + Meihua（只有 distinct responsibilities 真正需要時）
 - Liuyao-specific → `LIUYAO.md`
 - Astrology-specific → `ASTROLOGY.md`
 - Zi Wei-specific → `ZIWEI.md`
-- Tarot + Meihua 已存在後怎麼整合 → `CROSS_VALIDATION.md`
+- Tarot + Meihua 或 Astrology natal + Zi Wei natal baseline 已存在後怎麼整合 → `CROSS_VALIDATION.md`
 - 新題／承接／補占／重占 → `READING_LIFECYCLE.md`
 - ChatGPT 自行抽牌／起卦 → `RUNTIME_DRAW.md`
 
@@ -238,9 +239,16 @@ Node B：如果繼續推進，合作關係的結構與轉折怎麼發展？
 
 ## 6. Cross-validation Responsibility Gate｜需要第二套方法時
 
-目前已完整定義的 cross-validation owner 是 `CROSS_VALIDATION.md` 的 Tarot × Meihua reconciliation。
+目前 canonical cross-validation owner 是 `CROSS_VALIDATION.md`，正式支援：
 
-Liuyao 或 Astrology 納入 production 後，**不因此自動宣告它們與 Tarot／Meihua／彼此的組合已具備 production-ready cross-validation contract**。
+```text
+Tarot × Meihua
+Astrology natal × Zi Wei natal baseline
+```
+
+第二組只在使用者明確同時要求 Astrology + Zi Wei、且兩側都能合法完成 natal reading 時成立；它不把 Astrology / Zi Wei 加入 ordinary auto-routing。
+
+其他 production method pair **不因各自 production-ready 就自動取得 cross-validation contract**。
 
 若要在同一使用者請求中追加第二套方法，至少必須：
 
@@ -261,7 +269,7 @@ Secondary Tarot responsibility:
 
 這可以是兩個 distinct readings，但目前不要稱為已 canonical 化的 `Liuyao + Tarot Cross-validation`。
 
-Astrology 與其他 production methods 亦同：目前可以並列成 distinct evidence tracks，但沒有 canonical Astrology × Tarot / Meihua / Liuyao reconciliation semantics。
+Astrology 與 Tarot / Meihua / Liuyao 仍只能並列成 distinct evidence tracks。Astrology × Zi Wei 只有 `natal × natal_baseline` 這個 bounded pair 具 canonical reconciliation；Astrology transit × Zi Wei natal 不屬於正式 cross-validation。
 
 ## 7. Generic / Unspecified Request｜使用者只說「幫我占」
 
