@@ -1,0 +1,76 @@
+name: Zi Wei Calendar Final Admission Bridge
+
+on:
+  push:
+    branches:
+      - zw-p1-003-calendar-final-admission
+    paths:
+      - ".github/workflows/ziwei-calendar-final-admission.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  regenerate-and-validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Assert isolated staging lineage
+        run: |
+          test "$(git rev-parse HEAD^)" = "b08c95580fa5bf872b2568f77c77227bc8ad2c7e"
+          test "$(git branch --show-current)" = "zw-p1-003-calendar-final-admission"
+      - name: Install pinned build/parity dependencies
+        run: |
+          python -m pip install --disable-pip-version-check -r requirements-ziwei-calendar.txt
+          python -m pip install --disable-pip-version-check -r requirements-astrology-provider.txt
+      - name: Run pre-generation calendar and materialization contracts
+        run: |
+          python -m unittest             tests.test_ziwei_calendar_data_provider             tests.test_ziwei_calendar_contract_v1             tests.test_ziwei_materialization_discoverability             tests.test_ziwei_year_notation
+      - name: Regenerate deterministic derived artifacts
+        run: |
+          python tools/build_ziwei_tool_bundle.py
+          python tools/build_chatgpt_load_pack.py
+          python tools/build_loader_ranges.py
+      - name: Verify generated artifacts
+        run: |
+          python tools/build_ziwei_tool_bundle.py --check
+          python tools/build_chatgpt_load_pack.py --check
+          python tools/chatgpt_load_benchmark.py --check
+          python tools/validate_loader_ranges.py
+      - name: Run interval runtime bundle smoke and focused regression
+        run: |
+          python -m unittest             tests.test_ziwei_tool_bundle             tests.test_ziwei_calendar_data_provider             tests.test_ziwei_calendar_contract_v1             tests.test_ziwei_materialization_discoverability             tests.test_ziwei_year_notation             tests.test_ziwei_unified_runtime_v1
+          python tools/playbook_check.py
+      - name: Remove temporary bridge and enforce bounded generated diff
+        run: |
+          rm .github/workflows/ziwei-calendar-final-admission.yml
+          find . -type d -name __pycache__ -prune -exec rm -rf {} +
+          python - <<'PY'
+          import subprocess
+          changed=subprocess.check_output(
+              ["git","status","--porcelain=v1","--untracked-files=all"],text=True
+          ).splitlines()
+          paths=[line[3:] for line in changed]
+          allowed={
+              ".github/workflows/ziwei-calendar-final-admission.yml",
+              "runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json",
+              "CHATGPT_LOAD_PACK.json",
+              "PLAYBOOK_INDEX.json",
+          }
+          unexpected=[p for p in paths if p not in allowed]
+          assert not unexpected, unexpected
+          assert ".github/workflows/ziwei-calendar-final-admission.yml" in paths, paths
+          assert "runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json" in paths, paths
+          PY
+      - name: Commit generated artifacts and remove bridge
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json CHATGPT_LOAD_PACK.json PLAYBOOK_INDEX.json .github/workflows/ziwei-calendar-final-admission.yml
+          git commit -m "Regenerate Zi Wei interval runtime artifacts"
+          git push origin HEAD:zw-p1-003-calendar-final-admission
