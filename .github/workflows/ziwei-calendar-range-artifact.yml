@@ -22,7 +22,7 @@ jobs:
           python-version: "3.12"
       - name: Assert isolated staging lineage
         run: |
-          test "$(git rev-parse HEAD^)" = "18bd97efbe87d068b38d72e6fe417b164ae37319"
+          test "$(git rev-parse HEAD^)" = "096ebdc2e45e46a7913d22887882403147d91f08"
           test "$(git branch --show-current)" = "zw-p1-003-calendar-range-dataset"
       - name: Install pinned Zi Wei calendar dependency
         run: python -m pip install --disable-pip-version-check -r requirements-ziwei-calendar.txt
@@ -70,9 +70,10 @@ jobs:
       - name: Remove temporary bridge and enforce bounded diff
         run: |
           rm .github/workflows/ziwei-calendar-range-artifact.yml
+          rm -rf tests/__pycache__ tools/__pycache__
           python - <<'PY'
           import subprocess
-          changed=subprocess.check_output(["git","status","--porcelain"],text=True).splitlines()
+          changed=subprocess.check_output(["git","status","--porcelain","--untracked-files=all"],text=True).splitlines()
           paths=[line[3:] for line in changed]
           allowed_prefix="data/calendar/ziwei_tw_interval/v1/"
           allowed_workflow=".github/workflows/ziwei-calendar-range-artifact.yml"
