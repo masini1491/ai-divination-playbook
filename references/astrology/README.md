@@ -140,6 +140,16 @@ Admission/evidence：
 - [`../../ASTROLOGY_TRANSIT_PROVIDER_ADMISSION_V1.json`](../../ASTROLOGY_TRANSIT_PROVIDER_ADMISSION_V1.json)
 - [`../../reports/astrology/ASTROLOGY_CALCULATION_COMPLETION_RESULTS.md`](../../reports/astrology/ASTROLOGY_CALCULATION_COMPLETION_RESULTS.md)
 
+### Extended-object compact ephemeris research
+
+Current provider-neutral feasibility work remains REFERENCE-ONLY:
+
+- [`CHATGPT_ONLY_EXTENDED_EPHEMERIS_FEASIBILITY.md`](CHATGPT_ONLY_EXTENDED_EPHEMERIS_FEASIBILITY.md) — capability lanes and ChatGPT-only runtime constraints.
+- [`ASTROLOGY_EXP1_SAMPLED_EPHEMERIS_FEASIBILITY.md`](ASTROLOGY_EXP1_SAMPLED_EPHEMERIS_FEASIBILITY.md) — AST-P1-010 measured sampled/Hermite candidate result.
+- [`astrology_exp1_sampled_ephemeris_feasibility.json`](astrology_exp1_sampled_ephemeris_feasibility.json) — machine-readable metrics and frozen feasibility gates.
+
+AST-P1-010 found **no passing 10/20/40-day sampled/Hermite variant** under its prospectively frozen engineering gate. This is negative research evidence, not a production admission and not evidence that every bundled-ephemeris representation is infeasible.
+
 ### Historical engine/timing research
 
 - [`ENGINE_COMPARISON_RESULTS.md`](ENGINE_COMPARISON_RESULTS.md)
