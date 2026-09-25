@@ -101,6 +101,14 @@ black_moon_lilith_mean_iers2003_v1
 
 This does **not** add a production provider, provider capability, public schema field, interpretation claim or output contract.
 
+The closure boundary is explicit:
+
+```text
+research parity PASS
+≠ production calculation admission
+≠ semantic interpretation admission
+```
+
 Any future production admission must separately decide:
 
 - production date window;

@@ -77,6 +77,10 @@ class AstrologyExp2MeanLilithParityTests(unittest.TestCase):
         self.assertFalse(self.data["experiment"]["temporary_pr_merged"])
         self.assertEqual("RESEARCH_PARITY_PASS", self.data["experiment"]["result"])
         self.assertEqual("NONE", self.data["conclusion"]["production_consequence"])
+        self.assertTrue(self.data["overall_research_parity_pass"])
+        self.assertIn("research parity PASS", self.report)
+        self.assertIn("production calculation admission", self.report)
+        self.assertIn("semantic interpretation admission", self.report)
 
 
 if __name__ == "__main__":

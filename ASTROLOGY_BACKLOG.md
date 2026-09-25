@@ -222,9 +222,11 @@ This item is a standing reconciliation guard. It is not a request to change curr
   - no bare `Lilith` alias was introduced;
   - research validation window is not a production-admitted date window;
   - production admission remains `NOT_GRANTED`.
+- closure:
+  - Mean Lilith project-owned analytical research → parity PASS → definition identity resolved → research implementation retained under `references/` → NOT production-admitted.
 - completion_gate:
   - no bare `Lilith` alias;
-  - prospective bounded fixtures across the admitted date window;
+  - prospective bounded fixtures across the prospectively declared research validation window;
   - comparison against at least two independent reference paths where practical;
   - residual policy documented before result review;
   - production admission remains separate.

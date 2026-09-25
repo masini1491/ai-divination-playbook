@@ -107,5 +107,6 @@
     "definition_boundary": "Mean Black Moon Lilith only. Osculating/True and Interpolated variants remain separate facts.",
     "swiss_boundary": "Swiss SE_MEAN_APOG is an ELP-hybrid mean-apogee definition and is not the same-definition oracle for this IERS secular candidate.",
     "next_stage": "Any production admission requires a separate provider/admission change with explicit date-window, API, schema, interpretation and regression decisions."
-  }
+  },
+  "overall_research_parity_pass": true
 }
