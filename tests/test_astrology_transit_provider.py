@@ -212,7 +212,7 @@ class AstrologyTransitProviderTests(unittest.TestCase):
             natal["birth_time_certainty"] = certainty
             natal["configuration"]["house_system"] = "Whole Sign"
             natal["facts"]["houses"] = [{"fact_id": f"fact:house:{n}", "house_number": n, "cusp_longitude_deg": float((n-1)*30)} for n in range(1,13)]
-            with self.assertRaisesRegex(TransitProviderInputError, "exact or rectified"):
+            with self.assertRaisesRegex(TransitProviderInputError, "admitted natal|exact or rectified"):
                 transit_house_context(natal, at_utc="2026-01-01T00:00:00Z", moving_bodies=["Sun"])
 
 
