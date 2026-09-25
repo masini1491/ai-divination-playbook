@@ -26,6 +26,9 @@ jobs:
       - name: Install Zi Wei calendar dependency
         run: python -m pip install --disable-pip-version-check -r requirements-ziwei-calendar.txt
 
+      - name: TEMP install AST-P1-020 research oracles
+        run: python -m pip install --disable-pip-version-check pyerfa==2.0.1.5 pyswisseph==2.10.3.2
+
       - name: Verify ChatGPT load pack
         run: python tools/build_chatgpt_load_pack.py --check
 
