@@ -114,8 +114,19 @@
     }
   },
   "unresolved_admission_gates": [
-    "persist generated production corpus on a same-revision surface retrievable through the admitted ChatGPT GitHub Connect path",
-    "cache policy must not claim connector-internal zero-byte behavior or latency without telemetry",
-    "production materialization/admission mutation after deployment surface exists"
-  ]
+    "publish exact profile-500 corpus to dedicated data ref and record exact data commit",
+    "verify GitHub Connect bounded retrieval from the published exact data commit",
+    "separate production materialization/admission mutation"
+  ],
+  "deployment": {
+    "status": "PUBLISHER_DEFINED_DATA_REF_NOT_YET_PUBLISHED",
+    "production_profile": 500,
+    "data_ref": "refs/heads/data/astrology-place-v1",
+    "expected_aggregate_digest": "6e542fd50c4d821d783c74c2f392bea087df68666ba1781970df66d47dc719a0",
+    "expected_generated_file_count": 8192,
+    "expected_generated_bytes": 75086146,
+    "exact_data_commit": null,
+    "publisher": ".github/workflows/publish-astrology-place-data.yml",
+    "contract": "ASTROLOGY_PLACE_SHARD_DEPLOYMENT.md"
+  }
 }
