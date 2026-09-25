@@ -288,9 +288,9 @@ This SHA is review evidence only, not a pin. Every maintenance task must resolve
   - `references/ziwei/FOUR_TRANSFORMATION_VARIANT_REGISTRY.md`
   - `references/ziwei/FOUR_TRANSFORMATION_INTERPRETATION_RESEARCH_V0.md`
 - current_state:
-  - `sihua.default_v1` exists as a project research/default-candidate identity;
-  - deterministic calculation candidate now exists at `tools/ziwei_sihua_provider.py` with explicit `sihua_profile_id`, profile revision, pinned complete 10-stem base-table provenance and one explicit project override (庚科：太陰 → 天府);
-  - production-admission candidate wires optional `sihua_v1` through `tools/ziwei_runtime.py`, typed request/result schemas and `ZIWEI_SIHUA_ADMISSION_V1.json`;
+  - `sihua.default_v1` is the admitted project composite profile identity;
+  - deterministic production provider exists at `tools/ziwei_sihua_provider.py` with explicit `sihua_profile_id`, profile revision, pinned complete 10-stem base-table provenance and one explicit project override (庚科：太陰 → 天府);
+  - optional `sihua_v1` is production-admitted through `tools/ziwei_runtime.py`, typed request/result schemas and `ZIWEI_SIHUA_ADMISSION_V1.json`;
   - natal provider exposes deterministic `fact_available:star_locations` + exact `star_branch:<star>:<branch>` predicates from its already-computed major-star placements;
   - `references/ziwei/ziwei_interpretation_claim_registry_sihua_v0.json` contributes exactly 3 primary-source, fact-gated conditional claims (貪狼化祿四墓；太陽化忌五支例外；太陰化忌四支例外) only when `sihua_v1` is enabled;
   - base admitted claim count remains 52; combined optional-module maximum becomes 59 (M0 +4, sihua +3);
