@@ -424,21 +424,12 @@
             "registry_record_id": "south-node-fortune-research-v1",
             "claim_id": "claim:valens-fortune-life-prosperity"
           }
-        ],
-        "SouthNode": [
-          {
-            "registry_record_id": "south-node-fortune-research-v1",
-            "claim_id": "claim:lilly-south-node-fortune-conjunction-diminution",
-            "requires_cofact_object_ids": [
-              "PartOfFortune"
-            ],
-            "requires_aspect": "conjunction",
-            "scope": "historical_example_only"
-          }
         ]
       },
-      "no_admitted_claim_bindings": [],
-      "interpretation_scope_note": "Descendant and ImumCoeli retain their explicit source-backed bindings. PartOfFortune admits only the bounded Valens Lot-of-Fortune doctrine. SouthNode admits no standalone meaning; its only admitted semantic binding is the Lilly SouthNode + PartOfFortune conjunction-specific historical example and requires both facts plus conjunction applicability."
+      "no_admitted_claim_bindings": [
+        "SouthNode"
+      ],
+      "interpretation_scope_note": "Descendant and ImumCoeli retain their explicit source-backed bindings. PartOfFortune admits only the bounded Valens Lot-of-Fortune doctrine. SouthNode remains deterministic fact-only: the reviewed Lilly evidence is conjunction-specific to SouthNode + PartOfFortune, while the current derived-fact handoff does not admit that co-fact/aspect applicability shape; no standalone SouthNode semantic claim is admitted."
     }
   }
 }
