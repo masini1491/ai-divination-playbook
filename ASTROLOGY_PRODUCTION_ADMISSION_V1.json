@@ -225,7 +225,9 @@
     "scope": [
       "transit_to_natal_exact_aspects",
       "stations",
-      "tropical_ingresses"
+      "tropical_ingresses",
+      "transit_house_context",
+      "transit_house_ingresses"
     ],
     "max_search_days": 400,
     "canonical_event_time": "UTC"
@@ -345,7 +347,6 @@
     "provider_unknown_birth_time_noon_substitution",
     "street_or_building_geocoding",
     "unbounded_transit_search",
-    "transit_house_search",
     "sidereal_transit_ingress",
     "unsourced_planet_in_sign_personality_templates"
   ],
