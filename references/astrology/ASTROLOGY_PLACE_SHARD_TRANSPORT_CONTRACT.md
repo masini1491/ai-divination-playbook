@@ -25,3 +25,26 @@ format contract supported
 ≠ GitHub Connect transport admitted
 ≠ production resolver materialization admitted
 ```
+
+
+## GitHub Connect exact-revision probe — PR #208
+
+Status: **BOUNDED CONNECTOR PROOF PASS / CACHE TELEMETRY UNAVAILABLE / NOT PRODUCTION ADMISSION**
+
+A temporary non-merge branch/PR used two tiny research fixtures to test the actual connected GitHub retrieval surface at exact commit `d06a041e83322ccfbff936272a98c90a546dbb32`.
+
+Observed:
+
+- the fixture path was absent at base `3442611b1158dd3bf9dcd113c4b4fec232a0a94e` and retrievable at the exact probe head, establishing ref-sensitive same-repository retrieval;
+- alias `fetch_file` returned Git blob `6d7004dd83b61352863b6bf17985ca1b5b87d587`; fetching that blob by SHA returned identical content;
+- candidate `fetch_file` returned Git blob `4802945fe3d9d79643408d018b2c693a00a5ec8a`;
+- repeated exact-ref retrieval returned the same blob/content identity;
+- the client can perform path-bounded alias-first retrieval, apply country/ambiguity filtering locally, and retrieve candidate data only after a route survives; a not-found alias can terminate before candidate retrieval.
+
+Limits:
+
+- the connector does not expose cache-hit/network-byte telemetry, so repeated identical retrieval is **not** evidence of a zero-byte connector cache hit;
+- filtering occurs in the ChatGPT orchestration layer after bounded alias retrieval, not inside the GitHub server/connector itself; therefore `connector-side filtering` is not an accurate requirement for this connector surface;
+- tiny fixtures do not establish full generated-shard cold-start latency, worst-case payload, or full semantic parity.
+
+PR #208 was closed without merge. Production admission remains unchanged.
