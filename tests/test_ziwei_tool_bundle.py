@@ -27,15 +27,20 @@ class ZiWeiToolBundleTests(unittest.TestCase):
         self.assertFalse(self.b["execution_contract"]["interpretation_authority"])
         self.assertFalse(self.b["execution_contract"]["new_claim_authority"])
 
-    def test_dependency_is_exact_and_self_contained(self):
-        d=self.b["dependency"]
+    def test_calendar_data_is_query_bounded_and_dependency_not_bundled(self):
+        d=self.b["build_dependency"]
         self.assertEqual("lunar_python",d["package"])
         self.assertEqual("1.4.8",d["version"])
         self.assertEqual("000c8a3d74eed098d6256a28fdd51b869324c559",d["revision"])
-        self.assertEqual(34,d["runtime_file_count"])
+        self.assertFalse(d["runtime_bundled"])
+        self.assertEqual(0,d["runtime_file_count"])
         self.assertFalse(self.b["execution_contract"]["dependency_install_required_after_materialization"])
-        origins={x["origin"] for x in self.b["source_files"]}
-        self.assertIn("dependency",origins); self.assertIn("dependency-license",origins)
+        self.assertTrue(self.b["execution_contract"]["calendar_shard_materialization_required_for_gregorian_input"])
+        c=self.b["calendar_data"]
+        self.assertEqual("ziwei_tw_interval_1900_2100_candidate_v1",c["dataset_id"])
+        self.assertEqual(1,c["ordinary_max_files"])
+        self.assertEqual(2,c["year_edge_23_max_files"])
+        self.assertEqual({"playbook"},{x["origin"] for x in self.b["source_files"]})
 
     def test_chunk_contract_is_bounded(self):
         a=self.b["archive"]
@@ -47,6 +52,8 @@ class ZiWeiToolBundleTests(unittest.TestCase):
             root=Path(td)
             marker=self.g.materialize(self.b,root,"test-exact-commit")
             self.assertTrue(marker["verified"])
+            shard=self.g.materialize_repo_data_file("data/calendar/ziwei_tw_interval/v1/years/2000.json",root)
+            self.assertEqual(40,len(shard["git_blob_sha"]))
             script=root/"smoke.py"
             script.write_text(
                 "import json\n"
