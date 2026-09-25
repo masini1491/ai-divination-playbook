@@ -38,6 +38,7 @@ ADMITTED_REGISTRIES=(
     "ziwei_interpretation_claim_registry_palaces_v0.json",
 )
 M0_REGISTRY="ziwei_interpretation_claim_registry_m0_auxiliary_v1.json"
+SIHUA_REGISTRY="ziwei_interpretation_claim_registry_sihua_v0.json"
 
 @dataclass(frozen=True)
 class ZiWeiReadingRequest:
@@ -170,6 +171,8 @@ def _production_registries(optional_modules:tuple[str,...]=()):
     names=list(ADMITTED_REGISTRIES)
     if M0_MODULE in optional_modules:
         names.append(M0_REGISTRY)
+    if SIHUA_MODULE in optional_modules:
+        names.append(SIHUA_REGISTRY)
     regs=_retrieval.load_registries(REF/x for x in names)
     for name,reg in zip(names,regs):
         if reg.get("production_routable") is not False:
@@ -296,7 +299,7 @@ def run_ziwei(request:ZiWeiReadingRequest)->dict[str,Any]:
     if SIHUA_MODULE in request.optional_modules:
         result["calculation"]["sihua"]=chart["sihua"]
         result["authority"]["sihua_profile_admitted"]=True
-        result["authority"]["sihua_transformed_star_claims_admitted"]=False
+        result["authority"]["sihua_transformed_star_claims_admitted"]=True
         result["authority"]["generic_sihua_outcome_doctrine_admitted"]=False
     return result
 
