@@ -72,6 +72,40 @@ class AstrologyExtendedChartE8ReadinessTests(unittest.TestCase):
             )
             self.assertTrue(rows[object_id]["requires_new_external_provider"])
 
+    def test_post_156_research_overlay_preserves_historical_rows(self):
+        overlay = self.data["current_research_overlay"]
+        self.assertEqual("REFERENCE_ONLY_RESEARCH_ELIGIBILITY", overlay["authority"])
+        self.assertFalse(overlay["supersedes_historical_candidate_readiness"])
+        self.assertTrue(overlay["historical_candidate_rows_preserved"])
+        self.assertFalse(overlay["production_mutation_authorized"])
+        self.assertIsNone(overlay["production_selection"])
+
+        rows = {row["id"]: row for row in self.data["candidates"]}
+        for object_id, item in overlay["candidates"].items():
+            self.assertEqual(rows[object_id]["readiness"], item["historical_readiness"])
+            self.assertEqual("NOT_ADMITTED", item["production_status"])
+
+    def test_post_156_research_overlay_routes_object_families_without_admission(self):
+        overlay = self.data["current_research_overlay"]["candidates"]
+        for object_id in ("chiron", "ceres", "pallas", "juno", "vesta"):
+            self.assertEqual(
+                "ELIGIBLE_FOR_BUNDLED_EPHEMERIS_RESEARCH",
+                overlay[object_id]["current_research_eligibility"],
+            )
+            self.assertEqual(["BUNDLED_EPHEMERIS"], overlay[object_id]["eligible_lanes"])
+
+        for object_id in ("black_moon_lilith_variants", "vertex", "equatorial_ascendant"):
+            self.assertEqual(
+                "ELIGIBLE_FOR_LOCAL_ANALYTICAL_RESEARCH",
+                overlay[object_id]["current_research_eligibility"],
+            )
+            self.assertEqual(["LOCAL_ANALYTICAL"], overlay[object_id]["eligible_lanes"])
+
+        self.assertIn(
+            "Interpolated remains a separate compatibility definition",
+            overlay["black_moon_lilith_variants"]["definition_boundary"],
+        )
+
     def test_compatibility_gaps_are_not_misrepresented_as_calculation_readiness(self):
         rows = {row["id"]: row for row in self.data["candidates"]}
         for object_id in (
