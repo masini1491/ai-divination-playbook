@@ -540,8 +540,8 @@ def main() -> int:
     parser.add_argument("--end-utc", required=True)
     parser.add_argument("--subject-ref", required=True)
     parser.add_argument("--moving-body", action="append", required=True)
-    parser.add_argument("--natal-target", action="append", required=True)
-    parser.add_argument("--aspect", action="append", required=True, choices=sorted(MAJOR_ASPECT_ORBS))
+    parser.add_argument("--natal-target", action="append")
+    parser.add_argument("--aspect", action="append", choices=sorted(MAJOR_ASPECT_ORBS))
     parser.add_argument("--no-transit-to-natal", action="store_true")
     parser.add_argument("--no-stations", action="store_true")
     parser.add_argument("--no-ingresses", action="store_true")
@@ -556,8 +556,8 @@ def main() -> int:
             end_utc=args.end_utc,
             subject_ref=args.subject_ref,
             moving_bodies=args.moving_body,
-            natal_targets=args.natal_target,
-            aspects=args.aspect,
+            natal_targets=args.natal_target or [],
+            aspects=args.aspect or [],
             include_transit_to_natal=not args.no_transit_to_natal,
             include_stations=not args.no_stations,
             include_ingresses=not args.no_ingresses,
