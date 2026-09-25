@@ -1,0 +1,111 @@
+{
+  "schema_name": "astrology_exp2_mean_lilith_iers2003_parity",
+  "schema_version": "1.0.0",
+  "authority": "REFERENCE_ONLY_RESEARCH_EVIDENCE",
+  "production_admission": "NOT_GRANTED",
+  "experiment": {
+    "temporary_pr": 183,
+    "temporary_pr_merged": false,
+    "temporary_head": "52fb14b65ce5adfe9a3c0b119e1426f58819c1ee",
+    "workflow_run": 36088099046,
+    "validate_job": 107924363210,
+    "result": "RESEARCH_PARITY_PASS"
+  },
+  "candidate": {
+    "fact_id": "black_moon_lilith_mean_iers2003_v1",
+    "definition": "IERS Conventions (2003) secular mean lunar apogee F + Omega - l + 180 degrees",
+    "frame": "mean_ecliptic_mean_equinox_of_date",
+    "time_argument": "TT_JULIAN_CENTURIES_FROM_J2000",
+    "normalization": "mod_360",
+    "bare_lilith_alias": false,
+    "implementation": "references/astrology/mean_lilith_iers2003_research.py",
+    "implementation_status": "REFERENCE_ONLY"
+  },
+  "candidate_validation_window": {
+    "t_centuries_min": -2,
+    "t_centuries_max": 2,
+    "approx_calendar_window": "1800-2200",
+    "fixture_count": 17,
+    "fixture_step_centuries": 0.25,
+    "admission_semantics": "RESEARCH_WINDOW_ONLY_NOT_PRODUCTION_DATE_ADMISSION"
+  },
+  "thresholds_frozen_before_first_execution": {
+    "erfa_same_definition_max_arcsec": 0.0001,
+    "xalen_meeus_compatibility_max_arcsec": 1
+  },
+  "reference_paths": {
+    "same_definition_authority": {
+      "source": "liberfa/erfa",
+      "revision": "1a8044cde5b7763295d472a6443387239127c6c8",
+      "role": "IERS/SOFA fundamental-argument execution path",
+      "result": "PASS"
+    },
+    "same_definition_architecture_crosscheck": {
+      "source": "TheDaniel166/moira",
+      "revision": "6dcc0fdaf35c16d96b544e03a509f2188603bc68",
+      "role": "independent project demonstrating F + Omega - l + pi mean-apogee architecture",
+      "result": "ARCHITECTURE_CROSSCHECK_ONLY"
+    },
+    "independent_analytical_compatibility": {
+      "source": "vedika-io/xalen-ephemeris",
+      "revision": "cc6edbec1f748ebdc4950ae6198f575c5ada73fa",
+      "role": "Meeus mean-perigee polynomial plus 180 degrees",
+      "result": "PASS"
+    },
+    "swiss_compatibility_only": {
+      "source": "astrorigin/pyswisseph",
+      "revision": "91ec65631badc7faf4a4b913570c944a4c1b101d",
+      "role": "SE_MEAN_APOG different-definition compatibility observation only",
+      "result": "REPORT_ONLY_DIFFERENT_DEFINITION"
+    }
+  },
+  "runtime_versions": {
+    "pyerfa": "2.0.1.5",
+    "pyswisseph": "2.10.03"
+  },
+  "metrics": {
+    "erfa_same_definition_max_arcsec": 2.0463630789890885e-10,
+    "xalen_meeus_compatibility_max_arcsec": 0.7098061008719014,
+    "swiss_compatibility_min_arcsec": 79.04354060146943,
+    "swiss_compatibility_max_arcsec": 416.3429715888583
+  },
+  "pass": {
+    "erfa_same_definition": true,
+    "xalen_meeus_compatibility": true,
+    "overall_research_parity": true
+  },
+  "swiss_gate": "REPORT_ONLY_DIFFERENT_DEFINITION",
+  "notable_rows": {
+    "erfa_worst": {
+      "t_centuries": -1.75,
+      "candidate_deg": 342.5478385993135,
+      "erfa_deg": 342.5478385993134,
+      "residual_arcsec": 2.0463630789890885e-10
+    },
+    "xalen_worst": {
+      "t_centuries": 2,
+      "candidate_deg": 121.33912763999619,
+      "xalen_meeus_deg": 121.33932480835756,
+      "residual_arcsec": 0.7098061008719014
+    },
+    "swiss_min": {
+      "t_centuries": 2,
+      "candidate_deg": 121.33912763999619,
+      "swiss_mean_apog_deg": 121.31717110094024,
+      "residual_arcsec": 79.04354060146943
+    },
+    "swiss_max": {
+      "t_centuries": -0.75,
+      "candidate_deg": 91.58721600030186,
+      "swiss_mean_apog_deg": 91.70286682574321,
+      "residual_arcsec": 416.3429715888583
+    }
+  },
+  "conclusion": {
+    "research_candidate": "SUPPORTED_FOR_FURTHER_ADMISSION_REVIEW",
+    "production_consequence": "NONE",
+    "definition_boundary": "Mean Black Moon Lilith only. Osculating/True and Interpolated variants remain separate facts.",
+    "swiss_boundary": "Swiss SE_MEAN_APOG is an ELP-hybrid mean-apogee definition and is not the same-definition oracle for this IERS secular candidate.",
+    "next_stage": "Any production admission requires a separate provider/admission change with explicit date-window, API, schema, interpretation and regression decisions."
+  }
+}
