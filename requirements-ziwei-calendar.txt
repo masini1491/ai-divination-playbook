@@ -1,4 +1,6 @@
-# Zi Wei Gregorian → lunar normalization production dependency.
+# Zi Wei calendar build/parity dependency only.
+# Ordinary production Gregorian normalization reads the admitted repo-local
+# interval dataset and does not import lunar_python at runtime.
 # lunar-python release: v1.4.8
 # upstream commit: 6tail/lunar-python@000c8a3d74eed098d6256a28fdd51b869324c559
 # license: MIT
