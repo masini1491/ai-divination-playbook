@@ -1,28 +1,28 @@
 #!/usr/bin/env python3
 """Build the derived ChatGPT transport bundle for deterministic Zi Wei Scope-A.
 
-The bundle contains exact repo-local Zi Wei runtime/retrieval bytes plus the
-complete Python runtime of pinned lunar_python==1.4.8. It is a transport cache,
-not a second calculation or interpretation authority.
+The v2 bundle contains repo-local production runtime/retrieval bytes only.
+Gregorian calendar data is materialized query-bounded from exact-commit year
+shards; pinned lunar_python remains build/parity evidence and is not bundled.
 """
 from __future__ import annotations
-import argparse, base64, hashlib, importlib.metadata, importlib.util, json, sys, zlib
+import argparse, base64, hashlib, importlib.metadata, importlib.util, json, zlib
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
 OUTPUT=ROOT/"runtime"/"ziwei"/"CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json"
 SOURCE_REPOSITORY="masini1491/ai-divination-playbook"
-SCHEMA_VERSION=1
+SCHEMA_VERSION=2
 AUTHORITY="derived-transport-cache-only"
-CONTRACT="chunked-model-mediated-ziwei-deterministic-tool-bundle-v1"
-CHUNK_SIZE=444
-CHUNK_RETRY_LIMIT=2
-DEPENDENCY_PACKAGE="lunar_python"
-DEPENDENCY_VERSION="1.4.8"
-DEPENDENCY_REPOSITORY="6tail/lunar-python"
-DEPENDENCY_REVISION="000c8a3d74eed098d6256a28fdd51b869324c559"
-DEPENDENCY_LICENSE="MIT"
-DEPENDENCY_LICENSE_BLOB="f02d3b9375ad9cd6eb17cabdc9723b91e257f612"
+CONTRACT="chunked-model-mediated-ziwei-deterministic-tool-bundle-v2"
+CHUNK_SIZE=444; CHUNK_RETRY_LIMIT=2
+DEPENDENCY_PACKAGE="lunar_python"; DEPENDENCY_VERSION="1.4.8"
+DEPENDENCY_REPOSITORY="6tail/lunar-python"; DEPENDENCY_REVISION="000c8a3d74eed098d6256a28fdd51b869324c559"
+DEPENDENCY_LICENSE="MIT"; DEPENDENCY_LICENSE_BLOB="f02d3b9375ad9cd6eb17cabdc9723b91e257f612"
+CALENDAR_DATASET_ID="ziwei_tw_interval_1900_2100_candidate_v1"
+CALENDAR_DATASET_ROOT="data/calendar/ziwei_tw_interval/v1"
+CALENDAR_DATASET_AGGREGATE_SHA256="4913a39e770afcd21eedc387523c572b8c4fc6469889c28f6ea75613f8984d79"
+CALENDAR_SUPPORTED_START="1900-01-01"; CALENDAR_SUPPORTED_END="2100-12-31"
 
 PROJECT_PATHS=(
  "tools/ziwei_runtime.py",
@@ -78,94 +78,56 @@ DEPENDENCY_BLOBS={
 "lunar_python/util/SolarUtil.py":"5d608b66bb82778619a0d3b66aec19e8c1585c70",
 "lunar_python/util/TaoUtil.py":"311c5347bbef2a806575041ab4b39e3551f7b83f",
 }
+
 def dependency_license_bytes()->bytes:
     dist=importlib.metadata.distribution(DEPENDENCY_PACKAGE)
     candidates=[p for p in (dist.files or ()) if Path(str(p)).name.upper()=="LICENSE"]
-    if len(candidates)!=1:
-        raise RuntimeError(f"expected exactly one installed dependency LICENSE, found {len(candidates)}")
+    if len(candidates)!=1: raise RuntimeError(f"expected exactly one installed dependency LICENSE, found {len(candidates)}")
     data=Path(dist.locate_file(candidates[0])).read_bytes()
-    if git_blob_sha(data)!=DEPENDENCY_LICENSE_BLOB:
-        raise RuntimeError(f"installed dependency LICENSE byte mismatch: {git_blob_sha(data)}")
+    if git_blob_sha(data)!=DEPENDENCY_LICENSE_BLOB: raise RuntimeError("installed dependency LICENSE byte mismatch")
     return data
 
 def sha256(data:bytes)->str: return hashlib.sha256(data).hexdigest()
-def git_blob_sha(data:bytes)->str:
-    return hashlib.sha1(f"blob {len(data)}\0".encode("ascii")+data).hexdigest()
-
+def git_blob_sha(data:bytes)->str: return hashlib.sha1(f"blob {len(data)}\0".encode("ascii")+data).hexdigest()
 def dependency_root()->Path:
     spec=importlib.util.find_spec(DEPENDENCY_PACKAGE)
-    if spec is None or not spec.submodule_search_locations:
-        raise RuntimeError(f"{DEPENDENCY_PACKAGE} is not installed")
+    if spec is None or not spec.submodule_search_locations: raise RuntimeError(f"{DEPENDENCY_PACKAGE} is not installed")
     return Path(next(iter(spec.submodule_search_locations))).parent
 
-def _entry(path:str,data:bytes,origin:str,offset:int,git_blob:str|None=None)->dict[str,object]:
-    actual_blob=git_blob_sha(data)
-    if git_blob is not None and actual_blob != git_blob:
-        raise RuntimeError(f"pinned dependency byte mismatch: {path}: {actual_blob} != {git_blob}")
-    return {"path":path,"origin":origin,"byte_size":len(data),"offset":offset,
-            "sha256":sha256(data),"git_blob_sha":actual_blob}
+def _entry(path:str,data:bytes,origin:str,offset:int)->dict[str,object]:
+    return {"path":path,"origin":origin,"byte_size":len(data),"offset":offset,"sha256":sha256(data),"git_blob_sha":git_blob_sha(data)}
 
 def build_bundle()->dict[str,object]:
     manifest=[]; parts=[]; offset=0
     for path in PROJECT_PATHS:
-        data=(ROOT/path).read_bytes()
-        manifest.append(_entry(path,data,"playbook",offset))
-        parts.append(data); offset+=len(data)
-
-    dep_root=dependency_root()
-    for path,expected_blob in DEPENDENCY_BLOBS.items():
-        data=(dep_root/path).read_bytes()
-        manifest.append(_entry(path,data,"dependency",offset,expected_blob))
-        parts.append(data); offset+=len(data)
-
-    license_bytes=dependency_license_bytes()
-    license_path="third_party/lunar-python/LICENSE"
-    manifest.append(_entry(license_path,license_bytes,"dependency-license",offset,DEPENDENCY_LICENSE_BLOB))
-    parts.append(license_bytes); offset+=len(license_bytes)
-
-    archive=b"".join(parts)
-    compressed=zlib.compress(archive,9)
-    encoded=base64.b64encode(compressed).decode("ascii")
+        data=(ROOT/path).read_bytes(); manifest.append(_entry(path,data,"playbook",offset)); parts.append(data); offset+=len(data)
+    archive=b"".join(parts); compressed=zlib.compress(archive,9); encoded=base64.b64encode(compressed).decode("ascii")
     chunks=[encoded[i:i+CHUNK_SIZE] for i in range(0,len(encoded),CHUNK_SIZE)]
     return {
-      "schema_version":SCHEMA_VERSION,"authority":AUTHORITY,"contract":CONTRACT,
-      "source_repository":SOURCE_REPOSITORY,
-      "source_revision_policy":"same-resolved-playbook-commit",
-      "source_files":manifest,
-      "dependency":{
-        "package":DEPENDENCY_PACKAGE,"version":DEPENDENCY_VERSION,
-        "repository":DEPENDENCY_REPOSITORY,"revision":DEPENDENCY_REVISION,
-        "license":DEPENDENCY_LICENSE,"license_bundle_path":license_path,
-        "runtime_file_count":len(DEPENDENCY_BLOBS),
-        "byte_identity":"pypi-installed-source-must-match-pinned-upstream-git-blobs"
-      },
-      "archive":{
-        "layout":"raw-concat-by-source_files-order","decoded_size":len(archive),"sha256":sha256(archive),
-        "compression":"zlib","encoding":"base64","compressed_size":len(compressed),"encoded_size":len(encoded),
-        "chunk_size":CHUNK_SIZE,"chunk_count":len(chunks),"reassembly":"index-ascending-concat",
-        "chunk_retry_limit":CHUNK_RETRY_LIMIT,"retry_source":"fresh-read-same-commit-bundle-failed-chunk-only"
-      },
-      "execution_contract":{
-        "must_attempt_after_verified_local_cache_miss":True,
-        "verify_each_chunk_before_reassembly":True,"verify_archive_before_unpack":True,
-        "verify_each_file_before_write_or_import":True,"preserve_calendar_provenance":True,
-        "interpretation_authority":False,"new_claim_authority":False,"dependency_install_required_after_materialization":False
-      },
-      "cache_contract":{
-        "cache_dir":"/mnt/data/divination-ziwei-runtime","marker":"bundle_verification.json",
-        "required_marker_fields":["verified","repository","playbook_commit","bundle_contract","archive_sha256","dependency","files"],
-        "reuse_only_when_all_source_file_identities_match":True
-      },
-      "chunks":[{"index":i,"encoded_length":len(c),"sha256":sha256(c.encode("ascii")),"payload":c}
-                for i,c in enumerate(chunks)]
+      "schema_version":SCHEMA_VERSION,"authority":AUTHORITY,"contract":CONTRACT,"source_repository":SOURCE_REPOSITORY,
+      "source_revision_policy":"same-resolved-playbook-commit","source_files":manifest,
+      "calendar_data":{"dataset_id":CALENDAR_DATASET_ID,"root":CALENDAR_DATASET_ROOT,"aggregate_sha256":CALENDAR_DATASET_AGGREGATE_SHA256,
+        "supported_range":{"start":CALENDAR_SUPPORTED_START,"end":CALENDAR_SUPPORTED_END},
+        "materialization":"query-bounded exact-commit year shard","ordinary_max_files":1,"year_edge_23_max_files":2},
+      "build_dependency":{"package":DEPENDENCY_PACKAGE,"version":DEPENDENCY_VERSION,"repository":DEPENDENCY_REPOSITORY,
+        "revision":DEPENDENCY_REVISION,"license":DEPENDENCY_LICENSE,"runtime_bundled":False,"runtime_file_count":0,"role":"build_parity_only"},
+      "archive":{"layout":"raw-concat-by-source_files-order","decoded_size":len(archive),"sha256":sha256(archive),"compression":"zlib",
+        "encoding":"base64","compressed_size":len(compressed),"encoded_size":len(encoded),"chunk_size":CHUNK_SIZE,"chunk_count":len(chunks),
+        "reassembly":"index-ascending-concat","chunk_retry_limit":CHUNK_RETRY_LIMIT,"retry_source":"fresh-read-same-commit-bundle-failed-chunk-only"},
+      "execution_contract":{"must_attempt_after_verified_local_cache_miss":True,"verify_each_chunk_before_reassembly":True,
+        "verify_archive_before_unpack":True,"verify_each_file_before_write_or_import":True,"preserve_calendar_provenance":True,
+        "calendar_shard_materialization_required_for_gregorian_input":True,"interpretation_authority":False,"new_claim_authority":False,
+        "dependency_install_required_after_materialization":False},
+      "cache_contract":{"cache_dir":"/mnt/data/divination-ziwei-runtime","marker":"bundle_verification.json",
+        "required_marker_fields":["verified","repository","playbook_commit","bundle_contract","archive_sha256","calendar_data","files"],
+        "reuse_only_when_all_source_file_identities_match":True},
+      "chunks":[{"index":i,"encoded_length":len(c),"sha256":sha256(c.encode("ascii")),"payload":c} for i,c in enumerate(chunks)]
     }
 
 def render(v:dict[str,object])->str: return json.dumps(v,ensure_ascii=False,indent=2)+"\n"
-
 def decode_archive(bundle:dict[str,object])->bytes:
     chunks=sorted(bundle["chunks"],key=lambda x:int(x["index"]))
-    if [int(x["index"]) for x in chunks] != list(range(len(chunks))):
-        raise ValueError("chunk indexes invalid")
+    if [int(x["index"]) for x in chunks]!=list(range(len(chunks))): raise ValueError("chunk indexes invalid")
     parts=[]
     for item in chunks:
         p=item["payload"]
@@ -177,55 +139,52 @@ def decode_archive(bundle:dict[str,object])->bytes:
     compressed=base64.b64decode(encoded,validate=True)
     if len(compressed)!=int(meta["compressed_size"]): raise ValueError("compressed_size mismatch")
     archive=zlib.decompress(compressed)
-    if len(archive)!=int(meta["decoded_size"]): raise ValueError("decoded_size mismatch")
-    if sha256(archive)!=meta["sha256"]: raise ValueError("archive sha mismatch")
+    if len(archive)!=int(meta["decoded_size"]) or sha256(archive)!=meta["sha256"]: raise ValueError("archive identity mismatch")
     return archive
 
-def verify_bundle(bundle:dict[str,object], *, compare_project:bool=True)->list[str]:
+def verify_bundle(bundle:dict[str,object],*,compare_project:bool=True)->list[str]:
     errors=[]
     try:
-        if bundle.get("schema_version")!=SCHEMA_VERSION: errors.append("schema_version mismatch")
-        if bundle.get("authority")!=AUTHORITY: errors.append("authority mismatch")
-        if bundle.get("contract")!=CONTRACT: errors.append("contract mismatch")
-        if bundle.get("source_repository")!=SOURCE_REPOSITORY: errors.append("source_repository mismatch")
-        dep=bundle.get("dependency",{})
-        for k,v in {"package":DEPENDENCY_PACKAGE,"version":DEPENDENCY_VERSION,"repository":DEPENDENCY_REPOSITORY,
-                    "revision":DEPENDENCY_REVISION,"license":DEPENDENCY_LICENSE}.items():
-            if dep.get(k)!=v: errors.append(f"dependency {k} mismatch")
+        for k,v in {"schema_version":SCHEMA_VERSION,"authority":AUTHORITY,"contract":CONTRACT,"source_repository":SOURCE_REPOSITORY}.items():
+            if bundle.get(k)!=v: errors.append(f"{k} mismatch")
+        cd=bundle.get("calendar_data",{})
+        expected_cd={"dataset_id":CALENDAR_DATASET_ID,"root":CALENDAR_DATASET_ROOT,"aggregate_sha256":CALENDAR_DATASET_AGGREGATE_SHA256}
+        for k,v in expected_cd.items():
+            if cd.get(k)!=v: errors.append(f"calendar_data {k} mismatch")
+        bd=bundle.get("build_dependency",{})
+        for k,v in {"package":DEPENDENCY_PACKAGE,"version":DEPENDENCY_VERSION,"repository":DEPENDENCY_REPOSITORY,"revision":DEPENDENCY_REVISION,"license":DEPENDENCY_LICENSE}.items():
+            if bd.get(k)!=v: errors.append(f"build_dependency {k} mismatch")
+        if bd.get("runtime_bundled") is not False or int(bd.get("runtime_file_count",-1))!=0: errors.append("build dependency runtime bundling mismatch")
         archive=decode_archive(bundle); cursor=0
         for entry in bundle["source_files"]:
+            if entry.get("origin")!="playbook": errors.append(f"non-playbook bundle origin: {entry.get('path')}")
             size=int(entry["byte_size"])
             if int(entry["offset"])!=cursor: errors.append(f"{entry['path']} offset mismatch")
             part=archive[cursor:cursor+size]
-            if sha256(part)!=entry["sha256"]: errors.append(f"{entry['path']} sha mismatch")
-            if git_blob_sha(part)!=entry["git_blob_sha"]: errors.append(f"{entry['path']} git blob mismatch")
-            if compare_project and entry["origin"]=="playbook" and part!=(ROOT/entry["path"]).read_bytes():
-                errors.append(f"{entry['path']} does not reproduce canonical bytes")
-            if entry["origin"]=="dependency":
-                expected=DEPENDENCY_BLOBS.get(entry["path"])
-                if expected!=entry["git_blob_sha"]: errors.append(f"{entry['path']} pinned upstream blob mismatch")
-            if entry["origin"]=="dependency-license" and git_blob_sha(part)!=DEPENDENCY_LICENSE_BLOB:
-                errors.append("dependency license bytes mismatch")
+            if sha256(part)!=entry["sha256"] or git_blob_sha(part)!=entry["git_blob_sha"]: errors.append(f"{entry['path']} identity mismatch")
+            if compare_project and part!=(ROOT/entry["path"]).read_bytes(): errors.append(f"{entry['path']} does not reproduce canonical bytes")
             cursor+=size
         if cursor!=len(archive): errors.append("archive has trailing bytes")
     except Exception as exc: errors.append(f"bundle decode error: {exc}")
     return errors
 
-def materialize(bundle:dict[str,object], target:Path, playbook_commit:str)->dict[str,object]:
+def materialize(bundle:dict[str,object],target:Path,playbook_commit:str)->dict[str,object]:
     errors=verify_bundle(bundle,compare_project=False)
     if errors: raise ValueError("; ".join(errors))
-    archive=decode_archive(bundle); target.mkdir(parents=True,exist_ok=True)
-    files=[]; cursor=0
+    archive=decode_archive(bundle); target.mkdir(parents=True,exist_ok=True); files=[]; cursor=0
     for entry in bundle["source_files"]:
         size=int(entry["byte_size"]); data=archive[cursor:cursor+size]; cursor+=size
         path=target/entry["path"]; path.parent.mkdir(parents=True,exist_ok=True); path.write_bytes(data)
         files.append({"path":entry["path"],"sha256":entry["sha256"],"git_blob_sha":entry["git_blob_sha"]})
-    marker={"verified":True,"repository":SOURCE_REPOSITORY,"playbook_commit":playbook_commit,
-            "bundle_contract":CONTRACT,"archive_sha256":bundle["archive"]["sha256"],
-            "dependency":bundle["dependency"],"files":files}
-    marker_path=target/bundle["cache_contract"]["marker"]
-    marker_path.write_text(json.dumps(marker,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+    marker={"verified":True,"repository":SOURCE_REPOSITORY,"playbook_commit":playbook_commit,"bundle_contract":CONTRACT,
+      "archive_sha256":bundle["archive"]["sha256"],"calendar_data":bundle["calendar_data"],"build_dependency":bundle["build_dependency"],"files":files}
+    (target/bundle["cache_contract"]["marker"]).write_text(json.dumps(marker,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     return marker
+
+def materialize_repo_data_file(repo_relative_path:str,target:Path)->dict[str,object]:
+    source=ROOT/repo_relative_path
+    data=source.read_bytes(); path=target/repo_relative_path; path.parent.mkdir(parents=True,exist_ok=True); path.write_bytes(data)
+    return {"path":repo_relative_path,"sha256":sha256(data),"git_blob_sha":git_blob_sha(data),"bytes":len(data)}
 
 def main(argv=None)->int:
     p=argparse.ArgumentParser(); p.add_argument("--check",action="store_true"); args=p.parse_args(argv)
@@ -235,7 +194,7 @@ def main(argv=None)->int:
         try: actual=json.loads(OUTPUT.read_text(encoding="utf-8"))
         except Exception as exc: print(f"FAIL Zi Wei bundle read: {exc}"); return 1
         errors=verify_bundle(actual)
-        if render(actual)!=expected_text: errors.append("committed bundle is stale relative to canonical sources/dependency")
+        if render(actual)!=expected_text: errors.append("committed bundle is stale relative to canonical sources")
         if errors:
             for e in errors: print(f"FAIL Zi Wei bundle: {e}")
             return 1
@@ -246,5 +205,4 @@ def main(argv=None)->int:
         for e in errors: print(f"FAIL Zi Wei bundle: {e}")
         return 1
     print(f"wrote {OUTPUT.relative_to(ROOT)}"); return 0
-
 if __name__=="__main__": raise SystemExit(main())
