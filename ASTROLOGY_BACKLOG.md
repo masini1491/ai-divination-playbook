@@ -316,7 +316,7 @@ This item is a standing reconciliation guard. It is not a request to change curr
 ### AST-P1-100 — Source-backed South Node / Part of Fortune interpretation admission
 
 - type: FEATURE / INTERPRETATION
-- status: OPEN
+- status: DONE
 - priority: P1
 - owner: Astrology natal interpretation evidence
 - blocked_by: none
@@ -332,6 +332,12 @@ This item is a standing reconciliation guard. It is not a request to change curr
   - typed selector/handoff exact allowlist;
   - no generic model-memory meaning;
   - facts remain usable even when no semantic claim is admitted.
+- closure:
+  - added `south-node-fortune-research-v1` with bounded primary-text evidence and explicit tradition/source scope;
+  - admitted only `claim:valens-fortune-life-prosperity` for `PartOfFortune`;
+  - kept `SouthNode` fact-only because the reviewed Lilly evidence is conjunction-specific to SouthNode + PartOfFortune and current derived-fact handoff does not enforce that co-fact/aspect applicability shape;
+  - no generic modern karmic South Node meaning is admitted;
+  - typed selector/handoff remains exact-allowlist and fail-closed.
 
 ### AST-P1-110 — Extended aspect participant policies
 
