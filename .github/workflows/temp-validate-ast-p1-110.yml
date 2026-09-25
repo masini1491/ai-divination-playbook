@@ -29,7 +29,7 @@ jobs:
           python-version: "3.12"
 
       - name: Install pinned deterministic dependencies
-        run: python -m pip install "astronomy-engine==2.1.19" "lunar-python==1.4.8"
+        run: python -m pip install "astronomy-engine==2.1.19" "lunar-python==1.4.8" "geonamescache==3.0.2"
 
       - name: Run validation and capture status
         shell: bash
