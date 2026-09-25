@@ -742,14 +742,15 @@ https://github.com/masini1491/ai-divination-playbook
 - 同一 persistent Python execution runtime。
 - 以下任一 verified deterministic cache PASS：
   - Meihua `tools/meihua_engine.py` + `/mnt/data/divination-meihua-runtime/bundle_verification.json`；或
-  - Liuyao `tools/liuyao_calendar.py` + `tools/liuyao_engine.py` + `tools/liuyao_runtime.py` + `/mnt/data/divination-liuyao-runtime/bundle_verification.json`。
+  - Liuyao `tools/liuyao_calendar.py` + `tools/liuyao_engine.py` + `tools/liuyao_runtime.py` + `/mnt/data/divination-liuyao-runtime/bundle_verification.json`；或
+  - Zi Wei `tools/ziwei_runtime.py` + `/mnt/data/divination-ziwei-runtime/bundle_verification.json` + admitted calendar manifest / required shard identity。
 - cache marker保留 `materialized_source_commit` 與各 source-file identity。
 - 有合法 Playbook freshness trigger，current HEAD可能已前進。
 
 **User stimulus**
 
 ```text
-我剛更新了 Playbook；沿用剛才的梅花／六爻結果，補完整 deterministic facts 再繼續解讀。
+我剛更新了 Playbook；沿用目前已 materialize 的 deterministic runtime／既有占卜 facts，補完本次需要的 deterministic facts 再繼續。
 ```
 
 **Expected behavior**
@@ -759,19 +760,22 @@ https://github.com/masini1491/ai-divination-playbook
 - owned source paths全部 unchanged → reuse verified local tools，僅更新 `last_checked_repository_head`；不得重新 fetch bundle、rematerialize或跑完整 acquisition。
 - source path changed／renamed／compare incomplete／舊 source commit無法比較 → 才 fallback exact current source identity verification。
 - exact bytes仍一致 → reuse cache；只有 material bytes改變或 identity無法可信證明一致才重新 acquisition。
-- 保留原 Meihua Cast Fact或 Liuyao Raw Cast + original cast_timestamp。
+- 保留原 Meihua Cast Fact或 Liuyao Raw Cast + original cast_timestamp；Zi Wei則 fresh-execute本次 request，不把先前 reading/result當成本次 execution evidence。
+- Zi Wei cache valid時先 reuse；只有 cache miss / identity不足才進 host-aware materialization，且 direct byte/file-aware handoff優先於 verified opaque bundle fallback。
 
 **Forbidden behavior**
 
 - 因 Playbook HEAD 不同就直接把 deterministic cache當 MISS。
 - 用 current HEAD覆寫既有 local bytes的 `materialized_source_commit` provenance。
-- owned source paths未變仍重新搬整個 Meihua／Liuyao deterministic bundle。
+- owned source paths未變仍重新搬整個 Meihua／Liuyao／Zi Wei deterministic bundle。
+- Zi Wei cache尚未 probe，就先把整包 bundle/chunks送進 model-visible context。
+- 把 local Zi Wei cache directory存在本身當成 verified production/runtime evidence。
 - freshness過程重卦、重抽或改原 cast timestamp。
 - 以 conversation memory取代 local marker/file identity probe。
 
 **Observable evidence**
 
-- local cache marker、materialized source commit、current observed HEAD、bounded compare changed paths、per-file identity、是否 bundle fetch/rematerialize、Cast Fact／Raw Cast preservation。
+- local cache marker、materialized source commit、current observed HEAD、bounded compare changed paths、per-file identity、是否 bundle fetch/rematerialize、host handoff route、Cast Fact／Raw Cast preservation；Zi Wei另觀察本次 fresh execution與 query-bounded shard identity。
 
 ### TAROT-BEH-022 — Ordinary reading bypasses the shared development baseline
 
@@ -925,6 +929,7 @@ https://github.com/masini1491/ai-divination-playbook
 - Cross-validation／evidence lineage → TAROT-BEH-009、014、026，必要時 002；Astrology × Zi Wei contract 變更時 026 mandatory。
 - `SESSION_HANDOFF.md` → TAROT-BEH-015，必要時 013。
 - `PLAYBOOK_INDEX.json`／machine routing → 先驗證 owner pointer，再依受影響 owner 選 scenario；Astrology capability 需 016、018。
+- Zi Wei deterministic materialization / runtime reuse / host transport → TAROT-BEH-025 + `evals/ZIWEI_MATERIALIZATION_PRODUCT_SCENARIO.md`；不因這個 method binding重複建立 shared transport framework。
 - 跨多 owner／cold-start architecture → 先跑直接受影響 scenario；無法界定才擴大 full baseline。
 
 核心原則：**Behavioral evaluation 驗證 Agent 是否真的照規則做；它不取代 deterministic checker，也不要求一般占問支付額外 Context 成本。**

@@ -22,6 +22,7 @@ class ZiWeiMaterializationDiscoverabilityTests(unittest.TestCase):
         self.assertEqual("evals/ZIWEI_MATERIALIZATION_PRODUCT_SCENARIO.md",
                          self.matrix["supporting_product_scenarios"]["ziwei-deterministic-materialization"])
         self.assertNotIn("ZIWEI-MAT-BEH-001",self.matrix["full_baseline"])
+        self.assertIn("TAROT-BEH-025",self.matrix["change_classes"]["ziwei-deterministic-materialization"])
         self.assertIn("does **not** alter the existing strict-P4",self.scenario)
 
     def test_contract_covers_query_bounded_calendar_materialization(self):
@@ -33,7 +34,22 @@ class ZiWeiMaterializationDiscoverabilityTests(unittest.TestCase):
             "lunar_python==1.4.8",
             "build/parity dependency only",
             "does not require pip/network installation afterward",
+            "probe /mnt/data/divination-ziwei-runtime/",
+            "direct byte/file-aware handoff available",
+            "No Full-Bundle-First Rule",
+            "Acquisition: PASS | NOT ESTABLISHED",
+            "Payload handoff: VERIFIED | UNAVAILABLE | NOT ESTABLISHED",
+            "local cache existence does not mean the cache identity is verified",
         ):
             self.assertIn(phrase,self.contract)
+
+    def test_product_scenario_prefers_cache_then_host_aware_fallback(self):
+        for phrase in (
+            "probes and verifies the local Zi Wei runtime cache before any bundle acquisition",
+            "direct byte/file-aware connector→filesystem handoff",
+            "must not move the whole bundle through model-visible context",
+            "acquisition success does not imply payload handoff, materialization, integrity, or execution success",
+        ):
+            self.assertIn(phrase,self.scenario)
 
 if __name__=="__main__": unittest.main()
