@@ -77,11 +77,11 @@ class AstrologyEvidenceSelectorContractTests(unittest.TestCase):
             derived["claim_binding"],
         )
         self.assertEqual(
-            {"Descendant", "ImumCoeli"},
+            {"Descendant", "ImumCoeli", "PartOfFortune"},
             set(derived["admitted_claim_bindings"]),
         )
         self.assertEqual(
-            ["SouthNode", "PartOfFortune"],
+            ["SouthNode"],
             derived["no_admitted_claim_bindings"],
         )
 
