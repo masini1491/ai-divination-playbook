@@ -340,6 +340,14 @@
         "include_house_ingresses": {
           "type": "boolean",
           "default": false
+        },
+        "include_house_context": {
+          "type": "boolean",
+          "default": false
+        },
+        "house_context_utc": {
+          "type": "string",
+          "minLength": 1
         }
       },
       "allOf": [
@@ -364,6 +372,23 @@
                 "minItems": 1
               }
             }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "include_house_context": {
+                "const": true
+              }
+            },
+            "required": [
+              "include_house_context"
+            ]
+          },
+          "then": {
+            "required": [
+              "house_context_utc"
+            ]
           }
         }
       ]

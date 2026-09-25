@@ -420,6 +420,32 @@ This item is a standing reconciliation guard. It is not a request to change curr
   - runtime gate admits the calculation fact only; transit-house semantic interpretation remains not admitted without a separate source-backed claim family;
   - typed evidence selector can select exact house-ingress facts but does not create semantic meaning.
 
+### AST-P1-140 — Point-in-time transit house context
+
+- type: FEATURE / TRANSIT
+- status: DONE
+- priority: P1
+- owner: Astrology transit calculation + interpretation
+- blocked_by:
+  - AST-P1-130
+- source:
+  - residual gap discovered while reconciling stale PR #219 against the merged AST-P1-130 implementation.
+- completion_gate:
+  - explicit UTC point-in-time selector distinct from ingress search;
+  - deterministic current-house fact authority;
+  - exact-birth-time and admitted-house-system fail-closed behavior;
+  - runtime / typed-evidence admission;
+  - no semantic interpretation authority;
+  - preserve existing <=400-day search bound and ingress behavior.
+- closure:
+  - transit provider v1.2 admits deterministic `house_context` point-in-time events;
+  - callers must explicitly provide `house_context_utc`, and the timestamp must remain inside the existing <=400-day bounded request window;
+  - exact birth time, all 12 admitted natal house cusps, and Whole Sign / Placidus are required; approximate / unknown birth time fails closed;
+  - runtime gate and typed evidence selection admit the calculation fact only;
+  - transit-house semantic interpretation authority remains unadmitted without a separate source-backed claim family;
+  - existing `house_ingress` search behavior is preserved;
+  - stale PR #219 is superseded by the merged AST-P1-130 path plus this follow-up and is not a merge source.
+
 ## P2 — deferred compatibility / provider expansion
 
 ### AST-P2-010 — Interpolated Black Moon Lilith

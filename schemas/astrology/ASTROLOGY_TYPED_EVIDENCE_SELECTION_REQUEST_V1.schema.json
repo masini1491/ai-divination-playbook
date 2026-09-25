@@ -250,7 +250,8 @@
             "transit_to_natal",
             "station",
             "ingress",
-            "house_ingress"
+            "house_ingress",
+            "house_context"
           ]
         },
         "moving_body": {
@@ -315,6 +316,11 @@
             "Whole Sign",
             "Placidus"
           ]
+        },
+        "house_number": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 12
         }
       }
     },

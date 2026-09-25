@@ -77,6 +77,8 @@ Timing window是 symbolic / methodological interpretation window，不是現實�
 
 - unadmitted pair-specific meaning → `unsupported_factor`；
 - transit-house **calculation** only admits exact-birth-time natal charts with all 12 admitted house cusps and bounded search windows; approximate/unknown birth time must fail closed；
+- transit-house deterministic calculation includes both bounded cusp-crossing search and explicit point-in-time `house_context`; both require exact birth time and all 12 admitted natal cusps；
+- point-in-time context must use explicit UTC `house_context_utc` inside the bounded request window; it is not inferred from an unrelated search endpoint；
 - transit-house semantic interpretation remains unsupported unless a separate source-backed claim family is admitted；
 - sidereal ingress、topocentric geometry等超出 admitted scope時不得模型補算；
 - user-supplied transit facts若未獨立驗證，要保留 `user_asserted` provenance；
