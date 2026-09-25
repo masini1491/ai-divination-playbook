@@ -63,7 +63,7 @@ Timing window是 symbolic / methodological interpretation window，不是現實�
 ```text
 1. establish admitted natal baseline
 2. fix bounded search window + targets
-3. deterministic transit event search
+3. deterministic transit event search；house ingress uses admitted natal cusp facts and exact birth time only
 4. runtime Fact Gate
 5. preserve exact / motion / repeated-passage state
 6. retrieve only admitted timing / semantic claims
@@ -76,7 +76,9 @@ Timing window是 symbolic / methodological interpretation window，不是現實�
 ## 6. Transit Unsupported / Uncertainty
 
 - unadmitted pair-specific meaning → `unsupported_factor`；
-- transit-house search、sidereal ingress、topocentric geometry等超出 admitted scope時不得模型補算；
+- transit-house **calculation** only admits exact-birth-time natal charts with all 12 admitted house cusps and bounded search windows; approximate/unknown birth time must fail closed；
+- transit-house semantic interpretation remains unsupported unless a separate source-backed claim family is admitted；
+- sidereal ingress、topocentric geometry等超出 admitted scope時不得模型補算；
 - user-supplied transit facts若未獨立驗證，要保留 `user_asserted` provenance；
 - deterministic event fact與 symbolic meaning必須分層表達。
 
