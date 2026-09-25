@@ -154,11 +154,10 @@ This item is a standing reconciliation guard. It is not a request to change curr
 ### AST-P1-010 — EXP-1 five-body compact ephemeris feasibility
 
 - type: RESEARCH / PROVIDER FEASIBILITY
-- status: OPEN
+- status: DONE
 - priority: P1
 - owner: Astrology extended ephemeris research
-- blocked_by:
-  - AST-P0-001
+- blocked_by: none
 - subjects:
   - Chiron
   - Ceres
@@ -168,6 +167,8 @@ This item is a standing reconciliation guard. It is not a request to change curr
 - canonical_research:
   - `references/astrology/CHATGPT_ONLY_EXTENDED_EPHEMERIS_FEASIBILITY.md`
   - `references/astrology/EXTENDED_CHART_E2_EPHEMERIS_OBJECTS_RESEARCH.md`
+  - `references/astrology/ASTROLOGY_EXP1_SAMPLED_EPHEMERIS_FEASIBILITY.md`
+  - `references/astrology/astrology_exp1_sampled_ephemeris_feasibility.json`
 - target:
   - compare bounded local representations without making a live third-party API a production runtime dependency.
 - candidate representations:
@@ -175,14 +176,19 @@ This item is a standing reconciliation guard. It is not a request to change curr
   2. piecewise Chebyshev coefficients;
   3. sampled vectors/longitude + interpolation;
   4. multi-epoch osculating elements.
-- measurement contract:
-  - artifact bytes;
-  - materialization/token cost;
-  - bounded coverage;
-  - maximum and p95 longitude residual;
-  - speed residual where relevant;
-  - worst fixture date/object;
-  - prospectively declared thresholds before validation.
+- measured_result:
+  - temporary non-merge PR #181 / workflow run `36086788978` evaluated `sampled-wrapped-longitude-hermite-v0` with 10/20/40-day spacing;
+  - source authority was NASA/JPL Horizons in build/research execution only; candidate runtime network dependency remained false;
+  - all three variants were evaluated against the same 12 E2 F/H/V fixture instants × five objects;
+  - no variant passed the prospectively frozen feasibility gate;
+  - 10-day spacing was closest: 767,760-byte float64 payload, longitude p95 4.340 arcsec, longitude max 25.284 arcsec, but speed max 0.002074545 deg/day exceeded the frozen 0.001 deg/day gate;
+  - 20/40-day spacing reduced payload but materially worsened longitude and speed residuals;
+  - Chiron remained separately measured from direct Horizons samples; no one-epoch or generic Keplerian downgrade was used;
+  - selected passing candidate remains `null`; production admission remains unchanged.
+- research_boundary:
+  - this negative result rejects only the tested sampled/Hermite candidate under the frozen gate;
+  - bounded SPK, piecewise Chebyshev and multi-epoch osculating alternatives remain unevaluated research options;
+  - their existence does not create an automatic follow-up or production task.
 - completion_gate:
   - at least one representation is evaluated under the same bounded fixture set;
   - no silent Keplerian downgrade;
