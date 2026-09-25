@@ -279,7 +279,7 @@ This SHA is review evidence only, not a pin. Every maintenance task must resolve
 ### ZW-P1-020 — Four Transformations production admission
 
 - type: FEATURE / ADMISSION
-- status: IN_PROGRESS
+- status: DONE
 - priority: P1
 - owner: Zi Wei Four-Transformation admission
 - blocked_by:
@@ -303,6 +303,14 @@ This SHA is review evidence only, not a pin. Every maintenance task must resolve
   - fixtures and admission manifest;
   - source-explicit transformed-star claims only;
   - generic 祿／權／科／忌 outcome guarantees remain forbidden.
+- completion_evidence:
+  - calculation candidate admitted by PR #205 at `b26ea0400a042652ca63493f36ed9f18c6cfb14e`;
+  - canonical closure cleanup merged by PR #206 at `5281d89a6b4caabb7c26d0b6222888e8d73d9f4a`;
+  - optional module `sihua_v1` / profile `sihua.default_v1` preserves the pinned complete 10-stem base table plus the explicit 庚科 override;
+  - exactly 3 source-explicit, fact-gated transformed-star claims are admitted; base Scope-A remains 52 and combined optional maximum is 59;
+  - generic transformation outcome doctrine, cross-profile averaging and unsourced transformed-star prose remain fail closed;
+  - deterministic ChatGPT bundle was regenerated from canonical sources and canonical read-back confirms the updated provider blob is embedded;
+  - PR #206 Validate Playbook run `36134495166`: `validate` PASS, `casting-runtime` PASS, `production-smoke` skipped and is not reported as PASS.
 
 ## P1/P2 — temporal / dynamic
 
