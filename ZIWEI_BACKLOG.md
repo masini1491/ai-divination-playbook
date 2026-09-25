@@ -406,7 +406,7 @@ This SHA is review evidence only, not a pin. Every maintenance task must resolve
 ### ZW-SHARED-001 — Astrology × Zi Wei reconciliation contract
 
 - type: SHARED / RECONCILIATION
-- status: OPEN
+- status: IN_PROGRESS
 - priority: SHARED
 - owner: cross-validation / reconciliation
 - blocked_by: none
@@ -418,6 +418,8 @@ This SHA is review evidence only, not a pin. Every maintenance task must resolve
   - define distinct evidence responsibilities;
   - define agreement / complement / conflict presentation;
   - no voting, score averaging or forced convergence.
+- canonical_contract: `CROSS_VALIDATION.md` §7
+- validation: `TAROT-BEH-026`
 
 ## Intentionally not backlog blockers
 
