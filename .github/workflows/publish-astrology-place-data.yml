@@ -1,0 +1,100 @@
+name: Publish Astrology Place Data
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_ref:
+        description: Exact ai-divination-playbook commit containing the admitted generator contract
+        required: true
+        type: string
+      expected_aggregate_digest:
+        description: Expected profile-500 aggregate digest
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: astrology-place-data-publisher
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate exact source ref
+        env:
+          SOURCE_REF: ${{ inputs.source_ref }}
+        run: |
+          case "$SOURCE_REF" in
+            [0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]) ;;
+            *) echo "source_ref must be an exact 40-char lowercase commit SHA"; exit 1 ;;
+          esac
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.source_ref }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --disable-pip-version-check geonamescache==3.0.2
+      - name: Generate and verify profile 500
+        env:
+          EXPECTED_DIGEST: ${{ inputs.expected_aggregate_digest }}
+        run: |
+          rm -rf /tmp/place-v1
+          python tools/generate_astrology_place_shards.py --profiles 500 --write --output /tmp/place-v1 > /tmp/summary.json
+          python - <<'PY'
+          import json,os
+          from pathlib import Path
+          s=json.loads(Path("/tmp/summary.json").read_text())
+          p=s["profiles"][0]
+          expected=os.environ["EXPECTED_DIGEST"]
+          assert p["profile"] == 500
+          assert p["source_identity"]["identity_match"] is True
+          assert p["aggregate_digest"] == expected, (p["aggregate_digest"], expected)
+          root=Path("/tmp/place-v1/profiles/500")
+          files=sorted(root.rglob("*.json"))
+          total=sum(x.stat().st_size for x in files)
+          assert len(files) == 8192, len(files)
+          assert total == 75086146, total
+          identity={
+            "schema_name":"astrology_place_generated_data_identity",
+            "schema_version":"1.0.0",
+            "profile":500,
+            "generator_id":s["generator_id"],
+            "generator_source_commit":os.environ["GITHUB_SHA"],
+            "source_identity":p["source_identity"],
+            "aggregate_digest":p["aggregate_digest"],
+            "generated_file_count":len(files),
+            "generated_bytes":total,
+          }
+          Path("/tmp/place-v1/GENERATED_IDENTITY.json").write_text(json.dumps(identity,indent=2,sort_keys=True)+"\n")
+          PY
+      - name: Publish generated data ref without force
+        env:
+          DATA_BRANCH: data/astrology-place-v1
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git ls-remote --exit-code --heads origin "$DATA_BRANCH" >/dev/null 2>&1; then
+            git fetch origin "$DATA_BRANCH"
+            git checkout -B "$DATA_BRANCH" "origin/$DATA_BRANCH"
+            rm -rf data/astrology/place/v1/profiles/500 data/astrology/place/v1/GENERATED_IDENTITY.json
+          else
+            git checkout --orphan "$DATA_BRANCH"
+            git rm -rf . >/dev/null 2>&1 || true
+            mkdir -p data/astrology/place/v1
+          fi
+          mkdir -p data/astrology/place/v1/profiles
+          cp -R /tmp/place-v1/profiles/500 data/astrology/place/v1/profiles/500
+          cp /tmp/place-v1/GENERATED_IDENTITY.json data/astrology/place/v1/GENERATED_IDENTITY.json
+          git add data/astrology/place/v1
+          if git diff --cached --quiet; then
+            echo "Generated data is byte-identical to current data ref."
+          else
+            git commit -m "Publish Astrology place profile-500 data"
+            git push origin "$DATA_BRANCH"
+          fi
+          echo "DATA_COMMIT=$(git rev-parse HEAD)" >> "$GITHUB_STEP_SUMMARY"
