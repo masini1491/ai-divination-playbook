@@ -11,8 +11,10 @@ class PlaceShardContractTests(unittest.TestCase):
  @classmethod
  def setUpClass(cls):
   cls.g=load_gen(); cls.m=json.loads(MAN.read_text())
- def test_manifest_freezes_nonproduction_contract(self):
-  self.assertEqual("FORMAT_CONTRACT_FROZEN_DATA_NOT_YET_COMMITTED",self.m["status"]); self.assertEqual("NOT_GRANTED",self.m["production_admission"])
+ def test_manifest_freezes_admitted_profile500_contract(self):
+  self.assertEqual("PROFILE_500_PRODUCTION_TRANSPORT_ADMITTED",self.m["status"]); self.assertEqual("PROFILE_500_ONLY",self.m["production_admission"])
+  self.assertEqual(500,self.m["deployment"]["production_profile"])
+  self.assertEqual("d18be87abe762433e43e844f33f4b43f7fad9f3b",self.m["deployment"]["exact_data_commit"])
   self.assertEqual(3,self.m["format"]["alias_hex_chars"]); self.assertEqual(3,self.m["format"]["candidate_hex_chars"])
  def test_source_hashes_match_generator_authority(self):
   self.assertEqual(set(map(str,self.g.EXPECTED_DATASETS)),set(self.m["source_datasets"]))

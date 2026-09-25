@@ -115,7 +115,7 @@ This item is a standing reconciliation guard. It is not a request to change curr
 ### AST-P1-005 — Query-bounded place-resolver shard transport admission
 
 - type: RESEARCH / MATERIALIZATION / PROVIDER TRANSPORT
-- status: OPEN
+- status: DONE
 - priority: P1
 - owner: Astrology place-resolution materialization
 - blocked_by: none
@@ -147,7 +147,9 @@ This item is a standing reconciliation guard. It is not a request to change curr
   - real committed generated shard → GitHub Connect exact-ref retrieval / byte identity / bounded payload / semantic-chain product validation: COMPLETE via temporary non-merge PR #212; connector wall-clock/network latency telemetry is not exposed and must not be fabricated;
   - research validation is complete; PR #215 measured the default profile-500 deployment candidate at 8,192 shard files / 75,086,146 bytes / aggregate digest `6e542fd50c4d821d783c74c2f392bea087df68666ba1781970df66d47dc719a0`;
   - production deployment topology is now defined as dedicated generated-data ref `data/astrology-place-v1`, pinned by exact data commit from the main manifest; publisher and admission remain separate actions;
-  - generated corpus is not yet published/admitted, so `ASTROLOGY_MATERIALIZATION.md` behavior and resolver transport admission remain unchanged.
+  - one-shot Remote Deterministic Mutation Bridge (PR #216 / workflow 36144555281) published profile 500 to `data/astrology-place-v1` at exact data commit `d18be87abe762433e43e844f33f4b43f7fad9f3b`;
+  - GitHub Connect canonical read-back verified generated identity and exact Shulin alias/candidate Git blob identities against prior product evidence;
+  - profile-500 query-bounded shard materialization is production-admitted; profiles 1000/5000/15000 remain not admitted for shard materialization and may not silently fall back to 500.
 - completion_gate:
   - deterministic generated-data provenance from the four exact admitted source datasets;
   - bounded worst-case retrieval supported by measured evidence;

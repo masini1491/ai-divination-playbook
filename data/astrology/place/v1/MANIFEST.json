@@ -1,8 +1,8 @@
 {
   "schema_name": "astrology_place_shard_dataset_manifest",
   "schema_version": "1.0.0",
-  "status": "FORMAT_CONTRACT_FROZEN_DATA_NOT_YET_COMMITTED",
-  "production_admission": "NOT_GRANTED",
+  "status": "PROFILE_500_PRODUCTION_TRANSPORT_ADMITTED",
+  "production_admission": "PROFILE_500_ONLY",
   "dataset_id": "astrology-place-geonamescache-v1",
   "path_root": "data/astrology/place/v1",
   "format": {
@@ -114,19 +114,24 @@
     }
   },
   "unresolved_admission_gates": [
-    "publish exact profile-500 corpus to dedicated data ref and record exact data commit",
-    "verify GitHub Connect bounded retrieval from the published exact data commit",
-    "separate production materialization/admission mutation"
+    "profiles 1000/5000/15000 remain not admitted for shard materialization transport"
   ],
   "deployment": {
-    "status": "PUBLISHER_DEFINED_DATA_REF_NOT_YET_PUBLISHED",
+    "status": "PUBLISHED_AND_PINNED",
     "production_profile": 500,
     "data_ref": "refs/heads/data/astrology-place-v1",
     "expected_aggregate_digest": "6e542fd50c4d821d783c74c2f392bea087df68666ba1781970df66d47dc719a0",
     "expected_generated_file_count": 8192,
     "expected_generated_bytes": 75086146,
-    "exact_data_commit": null,
+    "exact_data_commit": "d18be87abe762433e43e844f33f4b43f7fad9f3b",
     "publisher": ".github/workflows/publish-astrology-place-data.yml",
     "contract": "ASTROLOGY_PLACE_SHARD_DEPLOYMENT.md"
+  },
+  "production_readback": {
+    "exact_data_commit": "d18be87abe762433e43e844f33f4b43f7fad9f3b",
+    "generated_identity_blob": "fd9d5146e0a69ecca5cbfd5da3adf869d3542500",
+    "shulin_alias_blob": "e4bdc8b71224dcae13bbbdad1766eccd2fed292a",
+    "shulin_candidate_blob": "ce29c509649ca62d7766d2d81bf1628d89372d9f",
+    "github_connect_exact_ref_path_retrieval": "PASS"
   }
 }

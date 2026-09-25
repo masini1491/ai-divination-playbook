@@ -106,35 +106,48 @@ place/country request → resolver-specific unavailable / materialization requir
 
 不得把 resolver dependency miss升格成整個 Astrology core runtime unavailable。
 
-### 6.1 A-MAT-2 feasibility closure｜目前不 admission resolver cold-start transport
+### 6.1 A-MAT-2 query-bounded resolver materialization
 
-A-MAT-2 以 `geonamescache==3.0.2` 的 installed wheel/runtime bytes 與 current admitted resolver semantics 實測後，**目前不 admission model-mediated place-resolver materialization transport**。Evidence owner：`reports/astrology/ASTROLOGY_PLACE_RESOLVER_MATERIALIZATION_FEASIBILITY.md`。
+The original whole-package / model-mediated A-MAT-2 transport remains rejected. A separate query-bounded shard transport is production-admitted for the default profile `500` only.
 
-關鍵 evidence：
-
-- PyPI wheel下載約 **35.0 MB**；installed distribution約 **187,204,618 bytes**。
-- current resolver admitted scope實際需要的 minimum package/runtime data約 **186,949,890 bytes / 178.289 MiB**。
-- `cities500.json` 單檔約 **79,527,431 bytes**；四個 supported city datasets合計約 **178.194 MiB**。
-- `cities500` 不能單純以 `population >= threshold` 等價推導 1000／5000／15000 datasets；實測 parity皆為 false，因此不得為減少 transport成本而 silent collapse dataset semantics。
-- 初步 derived exact-alias compact index即使壓縮後仍約 **12.83 MB / 38,526 個 444-char chunks**；naive 64–1024 hash shards的 worst-case仍需數千 chunks，未達可接受的 ordinary ChatGPT cold-start transport成本。
-
-因此目前合法行為固定為：
+Canonical identity is owned by `data/astrology/place/v1/MANIFEST.json`. Current admitted corpus:
 
 ```text
-resolver runtime already available
-→ place / country input may use admitted geonamescache resolver
-
-resolver runtime unavailable + explicit coordinates + IANA timezone available
-→ continue through A-MAT-1 verified core materialization
-
-resolver runtime unavailable + only place / country name available
-→ request explicit coordinates + IANA timezone
-→ do not generic-web geocode
-→ do not model-guess coordinates/timezone
-→ do not silently substitute another population dataset/profile
+dataset: astrology-place-geonamescache-v1
+profile: 500
+data ref: refs/heads/data/astrology-place-v1
+exact data commit: d18be87abe762433e43e844f33f4b43f7fad9f3b
+aggregate digest: 6e542fd50c4d821d783c74c2f392bea087df68666ba1781970df66d47dc719a0
 ```
 
-這是 bounded **no-transport decision**，不是把 `tools/astrology_place_resolver.py` 降級或取消 production admission。未來若有新的 host-native artifact bridge、query-bounded verified shard design或其他 materially較低成本 transport，需另做 admission／parity／product validation後才能改變此邊界。
+For a place/country request when the installed resolver runtime is unavailable:
+
+```text
+normalize query = strip then casefold
+→ SHA-256(normalized query), first 3 hex
+→ GitHub Connect exact-data-commit alias shard
+→ exact alias lookup
+→ optional ISO alpha-2 country filter
+→ if zero routes: fail closed NOT_FOUND
+→ if multiple surviving routes: fail closed with first 10 deterministic candidates
+→ for one selected geoname id, SHA-256(decimal geoname id), first 3 hex
+→ GitHub Connect exact-data-commit candidate shard
+→ exact geoname-id lookup
+→ return admitted resolver fields
+```
+
+Path derivation follows the manifest:
+
+```text
+aliases/{first_hex}/{remaining_two_hex}.json
+candidates/{first_hex}/{remaining_two_hex}.json
+```
+
+Every retrieval MUST use the exact admitted data commit, not the moving data branch. Missing path, malformed schema, profile mismatch, missing alias/id, or identity mismatch fails closed. GitHub Connect does not expose connector-internal cache/network-byte/latency telemetry; do not invent those properties.
+
+This transport preserves the existing resolver semantics; it does not create a second geocoder or semantic authority. Profiles `1000`, `5000`, and `15000` remain supported by the installed `geonamescache` resolver but are **not admitted for shard materialization transport**. If a request explicitly requires one of those profiles and the installed resolver is unavailable, request explicit coordinates + IANA timezone or report the resolver-specific materialization limitation; never silently substitute profile 500.
+
+The corpus is generated from the exact admitted `geonamescache==3.0.2` / GeoNames source identity, remains CC-BY-4.0 attribution-bearing derived deterministic data, and does not become astronomical authority.
 
 ## 7. Fallback / fail closed
 
