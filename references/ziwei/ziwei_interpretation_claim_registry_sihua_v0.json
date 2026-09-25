@@ -1,0 +1,251 @@
+{
+  "schema_name": "ziwei_interpretation_claim_registry",
+  "schema_version": "0.1.1-research",
+  "record_status": "REFERENCE-ONLY",
+  "record_kind": "ziwei_interpretation_claim_family_registry",
+  "record_id": "ziwei-sihua-source-explicit-v0",
+  "production_routable": false,
+  "interpretation_profile": "ziwei.interpretation.tw_v1",
+  "claim_family": "sihua_source_explicit_v0",
+  "retrieval_preconditions": {
+    "requires_l2_facts": true,
+    "requires_l3_policy": true,
+    "requires_sihua_profile": true,
+    "requires_star_location_facts": true
+  },
+  "sources": [
+    {
+      "source_id": "SRC-NANYANG-QUANSHU-SIHUA-FOUR-GRAVES",
+      "source_role": "PRIMARY_TEXT",
+      "admission_status": [
+        "CLAIM_ELIGIBLE"
+      ],
+      "storage_mode": [
+        "metadata_locator_normalized_paraphrase"
+      ],
+      "independence_status": "primary_witness",
+      "title": "新鋟希夷陳先生紫微斗數全書",
+      "witness_identity": "Nanyang-Hall / National Archives of Japan identified witness family",
+      "locator": "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzootg44gf9",
+      "language": "zh-Hant",
+      "verification_status": [
+        "digital_text_witness_research"
+      ],
+      "admission_scope": [
+        "bounded transformed-star conditional claim"
+      ],
+      "excluded_scope": [
+        "universal transformation doctrine",
+        "scientific predictive validity",
+        "unverified glyph-level variants"
+      ],
+      "notes": [
+        "Normalized paraphrase only; this locator contains the 貪狼化祿四墓 condition."
+      ]
+    },
+    {
+      "source_id": "SRC-NANYANG-QUANSHU-SIHUA-EXCEPTIONS",
+      "source_role": "PRIMARY_TEXT",
+      "admission_status": [
+        "CLAIM_ELIGIBLE"
+      ],
+      "storage_mode": [
+        "metadata_locator_normalized_paraphrase"
+      ],
+      "independence_status": "primary_witness",
+      "title": "新鋟希夷陳先生紫微斗數全書 卷之三",
+      "witness_identity": "Nanyang-Hall / National Archives of Japan identified witness family",
+      "locator": "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzooy7dkbhh",
+      "language": "zh-Hant",
+      "verification_status": [
+        "digital_text_witness_research"
+      ],
+      "admission_scope": [
+        "bounded transformed-star exception claims"
+      ],
+      "excluded_scope": [
+        "universal 化忌 outcome dictionary",
+        "scientific predictive validity",
+        "unverified glyph-level variants"
+      ],
+      "notes": [
+        "Normalized paraphrases only; this locator records branch-conditioned 化忌 exceptions."
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "ZW-SIHUA-TANLANG-LU-001",
+      "layer": "L4",
+      "claim_type": "star_conditional",
+      "subject": "貪狼",
+      "assertion_class": "historical_conditional",
+      "normalized_statement": "南陽堂文本對貪狼化祿在四墓位置的描述顯示，其表現仍受落地位置、廟旺與其他會照條件限制；因此本 project profile 不把「貪狼化祿」壓縮成無條件財福或成功保證。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-SIHUA-FOUR-GRAVES"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzootg44gf9"
+      ],
+      "applicability": {
+        "requires": [
+          "star_present:貪狼"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "sihua_profile",
+          "star_location",
+          "dignity",
+          "supporting_transformations"
+        ],
+        "palace_scope": [
+          "any"
+        ],
+        "topology_scope": [
+          "self"
+        ],
+        "temporal_scope": "natal_baseline",
+        "conditional_activation": {
+          "mode": "fact_gated",
+          "availability_requires": [
+            "fact_available:sihua",
+            "fact_available:star_locations"
+          ],
+          "satisfies_all": [
+            "sihua_profile:sihua.default_v1",
+            "sihua:戊:祿:貪狼"
+          ],
+          "satisfies_any": [
+            "star_branch:貪狼:辰",
+            "star_branch:貪狼:戌",
+            "star_branch:貪狼:丑",
+            "star_branch:貪狼:未"
+          ],
+          "forbids": []
+        }
+      },
+      "confidence_status": "qualified",
+      "support_status": "single_source_supported",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-SIHUA-TAIYANG-JI-001",
+      "layer": "L4",
+      "claim_type": "star_conditional",
+      "subject": "太陽",
+      "assertion_class": "historical_conditional",
+      "normalized_statement": "南陽堂文本把太陽化忌落在寅、卯、辰、巳、午列為一般化忌論的條件性例外；本 claim 只保留「需結合太陽與落地位置判讀」的限定，不把化忌解成一律凶或一律吉。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-SIHUA-EXCEPTIONS"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzooy7dkbhh"
+      ],
+      "applicability": {
+        "requires": [
+          "star_present:太陽"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "sihua_profile",
+          "star_location"
+        ],
+        "palace_scope": [
+          "any"
+        ],
+        "topology_scope": [
+          "self"
+        ],
+        "temporal_scope": "natal_baseline",
+        "conditional_activation": {
+          "mode": "fact_gated",
+          "availability_requires": [
+            "fact_available:sihua",
+            "fact_available:star_locations"
+          ],
+          "satisfies_all": [
+            "sihua_profile:sihua.default_v1",
+            "sihua:甲:忌:太陽"
+          ],
+          "satisfies_any": [
+            "star_branch:太陽:寅",
+            "star_branch:太陽:卯",
+            "star_branch:太陽:辰",
+            "star_branch:太陽:巳",
+            "star_branch:太陽:午"
+          ],
+          "forbids": []
+        }
+      },
+      "confidence_status": "qualified",
+      "support_status": "single_source_supported",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-SIHUA-TAIYIN-JI-001",
+      "layer": "L4",
+      "claim_type": "star_conditional",
+      "subject": "太陰",
+      "assertion_class": "historical_conditional",
+      "normalized_statement": "南陽堂文本把太陰化忌落在酉、戌、亥、子列為一般化忌論的條件性例外；本 claim 只承認這個位置依賴性，不從「化忌」標籤推出固定事件或必然吉凶。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-SIHUA-EXCEPTIONS"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzooy7dkbhh"
+      ],
+      "applicability": {
+        "requires": [
+          "star_present:太陰"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "sihua_profile",
+          "star_location"
+        ],
+        "palace_scope": [
+          "any"
+        ],
+        "topology_scope": [
+          "self"
+        ],
+        "temporal_scope": "natal_baseline",
+        "conditional_activation": {
+          "mode": "fact_gated",
+          "availability_requires": [
+            "fact_available:sihua",
+            "fact_available:star_locations"
+          ],
+          "satisfies_all": [
+            "sihua_profile:sihua.default_v1",
+            "sihua:乙:忌:太陰"
+          ],
+          "satisfies_any": [
+            "star_branch:太陰:酉",
+            "star_branch:太陰:戌",
+            "star_branch:太陰:亥",
+            "star_branch:太陰:子"
+          ],
+          "forbids": []
+        }
+      },
+      "confidence_status": "qualified",
+      "support_status": "single_source_supported",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    }
+  ],
+  "conflict_groups": [],
+  "privacy": {
+    "contains_real_birth_data": false
+  },
+  "research_result": {
+    "production_authority_granted": false,
+    "scientific_predictive_validity_claimed": false,
+    "claim_count": 3,
+    "claim_scope": "source_explicit_transformed_star_conditionals_only",
+    "generic_transformation_outcomes_admitted": false
+  }
+}

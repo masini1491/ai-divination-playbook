@@ -291,7 +291,9 @@ This SHA is review evidence only, not a pin. Every maintenance task must resolve
   - `sihua.default_v1` exists as a project research/default-candidate identity;
   - deterministic calculation candidate now exists at `tools/ziwei_sihua_provider.py` with explicit `sihua_profile_id`, profile revision, pinned complete 10-stem base-table provenance and one explicit project override (庚科：太陰 → 天府);
   - the candidate is intentionally NOT production-admitted and is not wired into `tools/ziwei_runtime.py`;
-  - production transformed-star interpretation claims are still absent.
+  - first source-explicit transformed-star research registry now exists at `references/ziwei/ziwei_interpretation_claim_registry_sihua_v0.json` with 3 primary-source, fact-gated conditional claims (貪狼化祿四墓；太陽化忌五支例外；太陰化忌四支例外);
+  - that registry remains research-only and deliberately requires future `fact_available:star_locations` + exact `star_branch:*` facts before any claim can activate;
+  - production admission manifest/runtime wiring are still absent.
 - completion_gate:
   - deterministic provider with explicit `sihua_profile_id`;
   - no cross-profile averaging;
