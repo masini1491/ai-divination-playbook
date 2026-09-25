@@ -95,11 +95,33 @@
       "bounded_corpus_semantics": "PASS",
       "real_shard_identity_manifest": "PASS",
       "repo_file_cold_start_latency": "NOT_PROVEN_BY_ARTIFACT_TRANSPORT"
+    },
+    "real_committed_connector_probe": {
+      "temporary_pr": 212,
+      "exact_commit": "28594152cc8b5ae1f35a2959770ac68e5f5d2a44",
+      "profile": 15000,
+      "query": "樹林區",
+      "expected_geoname_id": 1668875,
+      "alias_source_bytes": 4175,
+      "candidate_source_bytes": 919,
+      "alias_blob_sha": "f9d7aaf3813e5f6125a15cca2057b14eb2e6011a",
+      "candidate_blob_sha": "b1c458406c266ecc58422b5e035b60d92abee3d5",
+      "first_observed_roundtrip_ms": {
+        "alias": 547,
+        "candidate": 422,
+        "total": 969
+      },
+      "repeat_observed_roundtrip_ms": {
+        "alias": 460,
+        "candidate": 620,
+        "total": 1080
+      },
+      "semantic_parity": "PASS",
+      "cache_network_byte_telemetry": "NOT_EXPOSED"
     }
   },
   "unresolved_admission_gates": [
-    "GitHub Connect repo-file cold-start latency validation against real committed generated shards",
     "cache policy must not claim connector-internal zero-byte behavior without telemetry",
-    "production materialization/admission mutation"
+    "production generated-corpus materialization and admission mutation"
   ]
 }
