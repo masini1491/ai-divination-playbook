@@ -9,9 +9,14 @@
   "scope": {
     "temporal_scope": "natal_baseline",
     "fact_scope": "birth_year_four_transformations",
-    "transformation_order": ["祿", "權", "科", "忌"],
-    "admitted_claims_added": 0,
-    "transformed_star_interpretation_admitted": false
+    "transformation_order": [
+      "祿",
+      "權",
+      "科",
+      "忌"
+    ],
+    "admitted_claims_added": 3,
+    "transformed_star_interpretation_admitted": true
   },
   "calculation": {
     "provider": "tools/ziwei_sihua_provider.py",
@@ -35,15 +40,31 @@
   },
   "evidence": {
     "variant_registry": "references/ziwei/FOUR_TRANSFORMATION_VARIANT_REGISTRY.md",
-    "interpretation_research": "references/ziwei/FOUR_TRANSFORMATION_INTERPRETATION_RESEARCH_V0.md"
+    "interpretation_research": "references/ziwei/FOUR_TRANSFORMATION_INTERPRETATION_RESEARCH_V0.md",
+    "claim_registry": "references/ziwei/ziwei_interpretation_claim_registry_sihua_v0.json"
   },
   "interpretation": {
-    "new_claim_corpus": false,
-    "admitted_claims_added": 0,
-    "facts_only": true,
+    "new_claim_corpus": true,
+    "admitted_claims_added": 3,
+    "facts_only": false,
+    "interpretation_profile": "ziwei.interpretation.tw_v1",
+    "claim_registry": "references/ziwei/ziwei_interpretation_claim_registry_sihua_v0.json",
+    "claim_scope": "three_source_explicit_fact_gated_transformed_star_conditionals",
+    "admitted_claim_ids": [
+      "ZW-SIHUA-TANLANG-LU-001",
+      "ZW-SIHUA-TAIYANG-JI-001",
+      "ZW-SIHUA-TAIYIN-JI-001"
+    ],
+    "required_retrieval_facts": [
+      "fact_available:sihua",
+      "fact_available:star_locations",
+      "sihua_profile:sihua.default_v1",
+      "exact sihua:<stem>:<transform>:<star>",
+      "exact star_branch:<star>:<branch>"
+    ],
     "generic_transform_outcome_dictionary": false,
     "cross_profile_averaging": false,
-    "source_explicit_transformed_star_claims_required_for_future_claim_admission": true
+    "final_prose_authority": false
   },
   "fail_closed": [
     "explicit_optional_activation_required",
@@ -52,8 +73,10 @@
     "invalid_year_stem_rejected",
     "no_cross_profile_averaging",
     "no_model_memory_transformation_table",
-    "no_transformed_star_interpretation_without_separate_source_explicit_claim_admission",
-    "no_generic_lu_quan_ke_ji_outcome_guarantees"
+    "no_generic_lu_quan_ke_ji_outcome_guarantees",
+    "only_three_allowlisted_source_explicit_transformed_star_claims",
+    "missing_star_location_facts_omit_transformed_star_claims",
+    "unadmitted_transformed_star_claim_no_model_memory_substitution"
   ],
   "scientific_predictive_validity_claimed": false
 }
