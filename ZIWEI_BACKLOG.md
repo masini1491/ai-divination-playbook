@@ -289,8 +289,9 @@ This SHA is review evidence only, not a pin. Every maintenance task must resolve
   - `references/ziwei/FOUR_TRANSFORMATION_INTERPRETATION_RESEARCH_V0.md`
 - current_state:
   - `sihua.default_v1` exists as a project research/default-candidate identity;
-  - production deterministic transformed-star provider/profile selector is absent;
-  - production transformed-star interpretation claims are absent.
+  - deterministic calculation candidate now exists at `tools/ziwei_sihua_provider.py` with explicit `sihua_profile_id`, profile revision, pinned complete 10-stem base-table provenance and one explicit project override (庚科：太陰 → 天府);
+  - the candidate is intentionally NOT production-admitted and is not wired into `tools/ziwei_runtime.py`;
+  - production transformed-star interpretation claims are still absent.
 - completion_gate:
   - deterministic provider with explicit `sihua_profile_id`;
   - no cross-profile averaging;
