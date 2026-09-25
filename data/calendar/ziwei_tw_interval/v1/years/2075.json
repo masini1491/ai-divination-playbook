@@ -1,0 +1,100 @@
+{
+  "coverage": "gregorian_year_intersection",
+  "gregorian_year": 2075,
+  "intervals": [
+    {
+      "day_count": 30,
+      "end_date": "2075-01-16",
+      "lunar_year": 2074,
+      "signed_lunar_month": 11,
+      "start_date": "2074-12-18"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2075-02-14",
+      "lunar_year": 2074,
+      "signed_lunar_month": 12,
+      "start_date": "2075-01-17"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2075-03-16",
+      "lunar_year": 2075,
+      "signed_lunar_month": 1,
+      "start_date": "2075-02-15"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2075-04-14",
+      "lunar_year": 2075,
+      "signed_lunar_month": 2,
+      "start_date": "2075-03-17"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2075-05-14",
+      "lunar_year": 2075,
+      "signed_lunar_month": 3,
+      "start_date": "2075-04-15"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2075-06-12",
+      "lunar_year": 2075,
+      "signed_lunar_month": 4,
+      "start_date": "2075-05-15"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2075-07-12",
+      "lunar_year": 2075,
+      "signed_lunar_month": 5,
+      "start_date": "2075-06-13"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2075-08-11",
+      "lunar_year": 2075,
+      "signed_lunar_month": 6,
+      "start_date": "2075-07-13"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2075-09-09",
+      "lunar_year": 2075,
+      "signed_lunar_month": 7,
+      "start_date": "2075-08-12"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2075-10-09",
+      "lunar_year": 2075,
+      "signed_lunar_month": 8,
+      "start_date": "2075-09-10"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2075-11-07",
+      "lunar_year": 2075,
+      "signed_lunar_month": 9,
+      "start_date": "2075-10-10"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2075-12-07",
+      "lunar_year": 2075,
+      "signed_lunar_month": 10,
+      "start_date": "2075-11-08"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2076-01-05",
+      "lunar_year": 2075,
+      "signed_lunar_month": 11,
+      "start_date": "2075-12-08"
+    }
+  ],
+  "schema_name": "ziwei_calendar_interval_year_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}

@@ -1,0 +1,100 @@
+{
+  "coverage": "gregorian_year_intersection",
+  "gregorian_year": 2080,
+  "intervals": [
+    {
+      "day_count": 30,
+      "end_date": "2080-01-21",
+      "lunar_year": 2079,
+      "signed_lunar_month": 12,
+      "start_date": "2079-12-23"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2080-02-20",
+      "lunar_year": 2080,
+      "signed_lunar_month": 1,
+      "start_date": "2080-01-22"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2080-03-20",
+      "lunar_year": 2080,
+      "signed_lunar_month": 2,
+      "start_date": "2080-02-21"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2080-04-19",
+      "lunar_year": 2080,
+      "signed_lunar_month": 3,
+      "start_date": "2080-03-21"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2080-05-18",
+      "lunar_year": 2080,
+      "signed_lunar_month": -3,
+      "start_date": "2080-04-20"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2080-06-17",
+      "lunar_year": 2080,
+      "signed_lunar_month": 4,
+      "start_date": "2080-05-19"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2080-07-16",
+      "lunar_year": 2080,
+      "signed_lunar_month": 5,
+      "start_date": "2080-06-18"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2080-08-14",
+      "lunar_year": 2080,
+      "signed_lunar_month": 6,
+      "start_date": "2080-07-17"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2080-09-13",
+      "lunar_year": 2080,
+      "signed_lunar_month": 7,
+      "start_date": "2080-08-15"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2080-10-12",
+      "lunar_year": 2080,
+      "signed_lunar_month": 8,
+      "start_date": "2080-09-14"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2080-11-10",
+      "lunar_year": 2080,
+      "signed_lunar_month": 9,
+      "start_date": "2080-10-13"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2080-12-10",
+      "lunar_year": 2080,
+      "signed_lunar_month": 10,
+      "start_date": "2080-11-11"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2081-01-09",
+      "lunar_year": 2080,
+      "signed_lunar_month": 11,
+      "start_date": "2080-12-11"
+    }
+  ],
+  "schema_name": "ziwei_calendar_interval_year_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}

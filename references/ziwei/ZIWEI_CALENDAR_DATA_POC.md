@@ -148,16 +148,26 @@ year range. Therefore neither the dependency's broad executable examples nor
 Python's date range may be silently promoted into this project's production
 contract.
 
-For engineering feasibility, the project now has full machine parity evidence
-for the candidate window **1900-01-01 through 2100-12-31**. This is still a
-research validation window, not a production admission decision.
+For engineering feasibility, the project has full machine parity evidence for
+**1900-01-01 through 2100-12-31**. That same window is now explicitly selected
+as the **candidate product-supported range** for option B. The selection is
+narrower than production admission: the current option-A provider remains
+authoritative until the later resolver/materialization + admission gate passes.
 
-Before B production admission, choose and document one explicit product range.
-If preserving a materially broader current execution envelope is required,
-compare at least two storage encodings before generating a large dataset:
-daily Gregorian records versus a compact lunar-month-start / interval encoding.
-The latter can preserve runtime deterministic lookup while reducing stored
-records from roughly one per Gregorian day to roughly one per lunar month.
+The exact candidate dataset is materialized at
+`data/calendar/ziwei_tw_interval/v1/**`. It contains 202 Gregorian-year shards
+for 1900..2101, where 2101 is the explicit policy-tail shard required to resolve
+2100-12-31 at 23:00 under `next_day_at_23`. The selected dataset records 2,692
+lunar-month intervals and 471,865 shard bytes. Its canonical shard aggregate
+SHA-256 is
+`4913a39e770afcd21eedc387523c572b8c4fc6469889c28f6ea75613f8984d79`.
+The verified installed-source inventory SHA-256 for the pinned 34-file upstream
+implementation is
+`bf49ea69241171a8e5b5a85ca07748c88b00f5ce392f25c21617e398c9c9a712`.
+
+This range decision does not claim that dates outside 1900..2100 are invalid in
+the upstream library. It only bounds the dataset-backed candidate that this
+project is preparing to admit.
 
 ## Parity gate before production admission
 
@@ -256,19 +266,21 @@ approximately **94.46%** (about **18.07x smaller**) while preserving zero-mismat
 parity in the tested window and the same bounded file-count lookup contract.
 
 **Architecture decision for the B candidate:** prefer Gregorian-year shards of
-lunar-month intervals over daily Gregorian records. This is a research
-architecture choice only; it does not admit B into production and does not
-select the production-supported date range.
+lunar-month intervals over daily Gregorian records. The candidate product range
+is now selected as **1900-01-01..2100-12-31**, and the exact interval dataset is
+materialized and deterministically verified. None of those steps by themselves
+admit B into production.
 
-The remaining data-admission work is therefore no longer a daily-vs-interval
-encoding choice. It is:
+The remaining data-admission work is now:
 
-1. select an explicit product-supported Gregorian range;
-2. materialize the admitted interval dataset for that range;
-3. close deterministic rebuild + per-shard/aggregate hash validation on the
-   admitted dataset;
-4. migrate production resolver/materialization and then update calendar
-   admission authority in one bounded gate.
+1. migrate the production calendar resolver to the selected repo-local interval
+   dataset with fail-closed supported-range handling;
+2. remove ordinary production dependence on `lunar_python` while retaining it
+   as the pinned build/parity dependency;
+3. update deterministic materialization/runtime transport so ordinary Zi Wei
+   production no longer carries the full calendar implementation;
+4. update `ZIWEI_CALENDAR_ADMISSION_V1.json`, production tests and regression
+   evidence together in one bounded admission gate.
 
 ## Deterministic interval dataset build / verification mechanism
 
@@ -293,22 +305,35 @@ tools/validate_ziwei_calendar_interval_dataset.py
 
 The builder records the pinned build dependency
 `lunar_python==1.4.8` / `6tail/lunar-python@000c8a3d74eed098d6256a28fdd51b869324c559`
-and keeps `production_admitted=false`. The research builder is intentionally
-range-parameterized; it does not choose the product-supported range.
+and keeps `production_admitted=false`. Before generation it verifies the
+installed dependency bytes against the existing pinned 34-file upstream
+Git-blob inventory owned by `tools/build_ziwei_tool_bundle.py`; a package
+version string alone is not accepted as source identity.
 
-Targeted regression coverage proves:
+For the selected 1900..2100 candidate, the builder additionally writes
+`MANIFEST.json`, `provenance.json` and `ATTRIBUTION.md` beside the 202 year
+shards. Targeted regression coverage proves:
 
+- explicit selected-vs-unselected range classification;
+- pinned dependency source-byte identity;
 - deterministic rebuild of the same range;
-- fail-closed missing shard;
-- fail-closed modified shard hash;
+- fail-closed missing or extra shard;
+- fail-closed modified shard/metadata hash;
 - fail-closed dependency-provenance tampering;
 - invalid range rejection;
 - explicit policy-tail materialization for `end_year + 1`.
 
-This closes the **generic build/hash/rebuild mechanism**, not the later
-admitted-dataset evidence. Once a product range is selected, that exact range
-must still be materialized and its manifest/hash evidence reviewed before
-production migration.
+GitHub Actions run `36119128011` built the selected candidate, ran 9 targeted
+tests and validated a byte-identical clean rebuild. The selected dataset was
+then promoted through an isolated temporary workflow bridge; run
+`36123559237` passed generation, clean rebuild, fixed hash/inventory assertions
+and bounded-diff checks before creating the final dataset commit. The temporary
+workflow is not present in the final tree.
+
+This closes product-range selection, exact dataset materialization, source
+identity, hash accounting and deterministic rebuild evidence. It does **not**
+close the later production resolver/materialization migration or calendar
+admission update.
 
 ## Production migration gate
 

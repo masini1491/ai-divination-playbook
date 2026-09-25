@@ -1,0 +1,100 @@
+{
+  "coverage": "gregorian_year_intersection",
+  "gregorian_year": 2059,
+  "intervals": [
+    {
+      "day_count": 29,
+      "end_date": "2059-01-13",
+      "lunar_year": 2058,
+      "signed_lunar_month": 11,
+      "start_date": "2058-12-16"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2059-02-11",
+      "lunar_year": 2058,
+      "signed_lunar_month": 12,
+      "start_date": "2059-01-14"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2059-03-13",
+      "lunar_year": 2059,
+      "signed_lunar_month": 1,
+      "start_date": "2059-02-12"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2059-04-11",
+      "lunar_year": 2059,
+      "signed_lunar_month": 2,
+      "start_date": "2059-03-14"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2059-05-11",
+      "lunar_year": 2059,
+      "signed_lunar_month": 3,
+      "start_date": "2059-04-12"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2059-06-09",
+      "lunar_year": 2059,
+      "signed_lunar_month": 4,
+      "start_date": "2059-05-12"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2059-07-09",
+      "lunar_year": 2059,
+      "signed_lunar_month": 5,
+      "start_date": "2059-06-10"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2059-08-07",
+      "lunar_year": 2059,
+      "signed_lunar_month": 6,
+      "start_date": "2059-07-10"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2059-09-06",
+      "lunar_year": 2059,
+      "signed_lunar_month": 7,
+      "start_date": "2059-08-08"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2059-10-05",
+      "lunar_year": 2059,
+      "signed_lunar_month": 8,
+      "start_date": "2059-09-07"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2059-11-04",
+      "lunar_year": 2059,
+      "signed_lunar_month": 9,
+      "start_date": "2059-10-06"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2059-12-04",
+      "lunar_year": 2059,
+      "signed_lunar_month": 10,
+      "start_date": "2059-11-05"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2060-01-03",
+      "lunar_year": 2059,
+      "signed_lunar_month": 11,
+      "start_date": "2059-12-05"
+    }
+  ],
+  "schema_name": "ziwei_calendar_interval_year_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}

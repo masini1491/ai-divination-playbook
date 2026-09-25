@@ -1,0 +1,100 @@
+{
+  "coverage": "gregorian_year_intersection",
+  "gregorian_year": 1980,
+  "intervals": [
+    {
+      "day_count": 30,
+      "end_date": "1980-01-17",
+      "lunar_year": 1979,
+      "signed_lunar_month": 11,
+      "start_date": "1979-12-19"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1980-02-15",
+      "lunar_year": 1979,
+      "signed_lunar_month": 12,
+      "start_date": "1980-01-18"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1980-03-16",
+      "lunar_year": 1980,
+      "signed_lunar_month": 1,
+      "start_date": "1980-02-16"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1980-04-14",
+      "lunar_year": 1980,
+      "signed_lunar_month": 2,
+      "start_date": "1980-03-17"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1980-05-13",
+      "lunar_year": 1980,
+      "signed_lunar_month": 3,
+      "start_date": "1980-04-15"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1980-06-12",
+      "lunar_year": 1980,
+      "signed_lunar_month": 4,
+      "start_date": "1980-05-14"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1980-07-11",
+      "lunar_year": 1980,
+      "signed_lunar_month": 5,
+      "start_date": "1980-06-13"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1980-08-10",
+      "lunar_year": 1980,
+      "signed_lunar_month": 6,
+      "start_date": "1980-07-12"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1980-09-08",
+      "lunar_year": 1980,
+      "signed_lunar_month": 7,
+      "start_date": "1980-08-11"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1980-10-08",
+      "lunar_year": 1980,
+      "signed_lunar_month": 8,
+      "start_date": "1980-09-09"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1980-11-07",
+      "lunar_year": 1980,
+      "signed_lunar_month": 9,
+      "start_date": "1980-10-09"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1980-12-06",
+      "lunar_year": 1980,
+      "signed_lunar_month": 10,
+      "start_date": "1980-11-08"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1981-01-05",
+      "lunar_year": 1980,
+      "signed_lunar_month": 11,
+      "start_date": "1980-12-07"
+    }
+  ],
+  "schema_name": "ziwei_calendar_interval_year_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}

@@ -1,0 +1,100 @@
+{
+  "coverage": "gregorian_year_intersection",
+  "gregorian_year": 2096,
+  "intervals": [
+    {
+      "day_count": 29,
+      "end_date": "2096-01-24",
+      "lunar_year": 2095,
+      "signed_lunar_month": 12,
+      "start_date": "2095-12-27"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2096-02-23",
+      "lunar_year": 2096,
+      "signed_lunar_month": 1,
+      "start_date": "2096-01-25"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2096-03-23",
+      "lunar_year": 2096,
+      "signed_lunar_month": 2,
+      "start_date": "2096-02-24"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2096-04-22",
+      "lunar_year": 2096,
+      "signed_lunar_month": 3,
+      "start_date": "2096-03-24"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2096-05-21",
+      "lunar_year": 2096,
+      "signed_lunar_month": 4,
+      "start_date": "2096-04-23"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2096-06-19",
+      "lunar_year": 2096,
+      "signed_lunar_month": -4,
+      "start_date": "2096-05-22"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2096-07-19",
+      "lunar_year": 2096,
+      "signed_lunar_month": 5,
+      "start_date": "2096-06-20"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2096-08-17",
+      "lunar_year": 2096,
+      "signed_lunar_month": 6,
+      "start_date": "2096-07-20"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2096-09-15",
+      "lunar_year": 2096,
+      "signed_lunar_month": 7,
+      "start_date": "2096-08-18"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2096-10-15",
+      "lunar_year": 2096,
+      "signed_lunar_month": 8,
+      "start_date": "2096-09-16"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2096-11-14",
+      "lunar_year": 2096,
+      "signed_lunar_month": 9,
+      "start_date": "2096-10-16"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2096-12-14",
+      "lunar_year": 2096,
+      "signed_lunar_month": 10,
+      "start_date": "2096-11-15"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2097-01-12",
+      "lunar_year": 2096,
+      "signed_lunar_month": 11,
+      "start_date": "2096-12-15"
+    }
+  ],
+  "schema_name": "ziwei_calendar_interval_year_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}

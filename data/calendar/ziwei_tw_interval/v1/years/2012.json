@@ -1,0 +1,100 @@
+{
+  "coverage": "gregorian_year_intersection",
+  "gregorian_year": 2012,
+  "intervals": [
+    {
+      "day_count": 29,
+      "end_date": "2012-01-22",
+      "lunar_year": 2011,
+      "signed_lunar_month": 12,
+      "start_date": "2011-12-25"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2012-02-21",
+      "lunar_year": 2012,
+      "signed_lunar_month": 1,
+      "start_date": "2012-01-23"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2012-03-21",
+      "lunar_year": 2012,
+      "signed_lunar_month": 2,
+      "start_date": "2012-02-22"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2012-04-20",
+      "lunar_year": 2012,
+      "signed_lunar_month": 3,
+      "start_date": "2012-03-22"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2012-05-20",
+      "lunar_year": 2012,
+      "signed_lunar_month": 4,
+      "start_date": "2012-04-21"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2012-06-18",
+      "lunar_year": 2012,
+      "signed_lunar_month": -4,
+      "start_date": "2012-05-21"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2012-07-18",
+      "lunar_year": 2012,
+      "signed_lunar_month": 5,
+      "start_date": "2012-06-19"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2012-08-16",
+      "lunar_year": 2012,
+      "signed_lunar_month": 6,
+      "start_date": "2012-07-19"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2012-09-15",
+      "lunar_year": 2012,
+      "signed_lunar_month": 7,
+      "start_date": "2012-08-17"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2012-10-14",
+      "lunar_year": 2012,
+      "signed_lunar_month": 8,
+      "start_date": "2012-09-16"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2012-11-13",
+      "lunar_year": 2012,
+      "signed_lunar_month": 9,
+      "start_date": "2012-10-15"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2012-12-12",
+      "lunar_year": 2012,
+      "signed_lunar_month": 10,
+      "start_date": "2012-11-14"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2013-01-11",
+      "lunar_year": 2012,
+      "signed_lunar_month": 11,
+      "start_date": "2012-12-13"
+    }
+  ],
+  "schema_name": "ziwei_calendar_interval_year_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}

@@ -1,0 +1,100 @@
+{
+  "coverage": "gregorian_year_intersection",
+  "gregorian_year": 2066,
+  "intervals": [
+    {
+      "day_count": 30,
+      "end_date": "2066-01-25",
+      "lunar_year": 2065,
+      "signed_lunar_month": 12,
+      "start_date": "2065-12-27"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2066-02-23",
+      "lunar_year": 2066,
+      "signed_lunar_month": 1,
+      "start_date": "2066-01-26"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2066-03-25",
+      "lunar_year": 2066,
+      "signed_lunar_month": 2,
+      "start_date": "2066-02-24"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2066-04-23",
+      "lunar_year": 2066,
+      "signed_lunar_month": 3,
+      "start_date": "2066-03-26"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2066-05-23",
+      "lunar_year": 2066,
+      "signed_lunar_month": 4,
+      "start_date": "2066-04-24"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2066-06-22",
+      "lunar_year": 2066,
+      "signed_lunar_month": 5,
+      "start_date": "2066-05-24"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2066-07-21",
+      "lunar_year": 2066,
+      "signed_lunar_month": -5,
+      "start_date": "2066-06-23"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2066-08-20",
+      "lunar_year": 2066,
+      "signed_lunar_month": 6,
+      "start_date": "2066-07-22"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2066-09-18",
+      "lunar_year": 2066,
+      "signed_lunar_month": 7,
+      "start_date": "2066-08-21"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2066-10-18",
+      "lunar_year": 2066,
+      "signed_lunar_month": 8,
+      "start_date": "2066-09-19"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2066-11-16",
+      "lunar_year": 2066,
+      "signed_lunar_month": 9,
+      "start_date": "2066-10-19"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2066-12-16",
+      "lunar_year": 2066,
+      "signed_lunar_month": 10,
+      "start_date": "2066-11-17"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2067-01-14",
+      "lunar_year": 2066,
+      "signed_lunar_month": 11,
+      "start_date": "2066-12-17"
+    }
+  ],
+  "schema_name": "ziwei_calendar_interval_year_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}

@@ -1,0 +1,100 @@
+{
+  "coverage": "gregorian_year_intersection",
+  "gregorian_year": 2040,
+  "intervals": [
+    {
+      "day_count": 29,
+      "end_date": "2040-01-13",
+      "lunar_year": 2039,
+      "signed_lunar_month": 11,
+      "start_date": "2039-12-16"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2040-02-11",
+      "lunar_year": 2039,
+      "signed_lunar_month": 12,
+      "start_date": "2040-01-14"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2040-03-12",
+      "lunar_year": 2040,
+      "signed_lunar_month": 1,
+      "start_date": "2040-02-12"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2040-04-10",
+      "lunar_year": 2040,
+      "signed_lunar_month": 2,
+      "start_date": "2040-03-13"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2040-05-10",
+      "lunar_year": 2040,
+      "signed_lunar_month": 3,
+      "start_date": "2040-04-11"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2040-06-09",
+      "lunar_year": 2040,
+      "signed_lunar_month": 4,
+      "start_date": "2040-05-11"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2040-07-08",
+      "lunar_year": 2040,
+      "signed_lunar_month": 5,
+      "start_date": "2040-06-10"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2040-08-07",
+      "lunar_year": 2040,
+      "signed_lunar_month": 6,
+      "start_date": "2040-07-09"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2040-09-05",
+      "lunar_year": 2040,
+      "signed_lunar_month": 7,
+      "start_date": "2040-08-08"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2040-10-05",
+      "lunar_year": 2040,
+      "signed_lunar_month": 8,
+      "start_date": "2040-09-06"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2040-11-04",
+      "lunar_year": 2040,
+      "signed_lunar_month": 9,
+      "start_date": "2040-10-06"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2040-12-03",
+      "lunar_year": 2040,
+      "signed_lunar_month": 10,
+      "start_date": "2040-11-05"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2041-01-02",
+      "lunar_year": 2040,
+      "signed_lunar_month": 11,
+      "start_date": "2040-12-04"
+    }
+  ],
+  "schema_name": "ziwei_calendar_interval_year_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}

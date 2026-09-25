@@ -1,0 +1,107 @@
+{
+  "coverage": "gregorian_year_intersection",
+  "gregorian_year": 1932,
+  "intervals": [
+    {
+      "day_count": 30,
+      "end_date": "1932-01-07",
+      "lunar_year": 1931,
+      "signed_lunar_month": 11,
+      "start_date": "1931-12-09"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1932-02-05",
+      "lunar_year": 1931,
+      "signed_lunar_month": 12,
+      "start_date": "1932-01-08"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1932-03-06",
+      "lunar_year": 1932,
+      "signed_lunar_month": 1,
+      "start_date": "1932-02-06"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1932-04-05",
+      "lunar_year": 1932,
+      "signed_lunar_month": 2,
+      "start_date": "1932-03-07"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1932-05-05",
+      "lunar_year": 1932,
+      "signed_lunar_month": 3,
+      "start_date": "1932-04-06"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1932-06-03",
+      "lunar_year": 1932,
+      "signed_lunar_month": 4,
+      "start_date": "1932-05-06"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1932-07-03",
+      "lunar_year": 1932,
+      "signed_lunar_month": 5,
+      "start_date": "1932-06-04"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1932-08-01",
+      "lunar_year": 1932,
+      "signed_lunar_month": 6,
+      "start_date": "1932-07-04"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1932-08-31",
+      "lunar_year": 1932,
+      "signed_lunar_month": 7,
+      "start_date": "1932-08-02"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1932-09-29",
+      "lunar_year": 1932,
+      "signed_lunar_month": 8,
+      "start_date": "1932-09-01"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1932-10-28",
+      "lunar_year": 1932,
+      "signed_lunar_month": 9,
+      "start_date": "1932-09-30"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1932-11-27",
+      "lunar_year": 1932,
+      "signed_lunar_month": 10,
+      "start_date": "1932-10-29"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1932-12-26",
+      "lunar_year": 1932,
+      "signed_lunar_month": 11,
+      "start_date": "1932-11-28"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1933-01-25",
+      "lunar_year": 1932,
+      "signed_lunar_month": 12,
+      "start_date": "1932-12-27"
+    }
+  ],
+  "schema_name": "ziwei_calendar_interval_year_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}

@@ -1,0 +1,100 @@
+{
+  "coverage": "gregorian_year_intersection",
+  "gregorian_year": 1933,
+  "intervals": [
+    {
+      "day_count": 30,
+      "end_date": "1933-01-25",
+      "lunar_year": 1932,
+      "signed_lunar_month": 12,
+      "start_date": "1932-12-27"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1933-02-23",
+      "lunar_year": 1933,
+      "signed_lunar_month": 1,
+      "start_date": "1933-01-26"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1933-03-25",
+      "lunar_year": 1933,
+      "signed_lunar_month": 2,
+      "start_date": "1933-02-24"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1933-04-24",
+      "lunar_year": 1933,
+      "signed_lunar_month": 3,
+      "start_date": "1933-03-26"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1933-05-23",
+      "lunar_year": 1933,
+      "signed_lunar_month": 4,
+      "start_date": "1933-04-25"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1933-06-22",
+      "lunar_year": 1933,
+      "signed_lunar_month": 5,
+      "start_date": "1933-05-24"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1933-07-22",
+      "lunar_year": 1933,
+      "signed_lunar_month": -5,
+      "start_date": "1933-06-23"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1933-08-20",
+      "lunar_year": 1933,
+      "signed_lunar_month": 6,
+      "start_date": "1933-07-23"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1933-09-19",
+      "lunar_year": 1933,
+      "signed_lunar_month": 7,
+      "start_date": "1933-08-21"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1933-10-18",
+      "lunar_year": 1933,
+      "signed_lunar_month": 8,
+      "start_date": "1933-09-20"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1933-11-17",
+      "lunar_year": 1933,
+      "signed_lunar_month": 9,
+      "start_date": "1933-10-19"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1933-12-16",
+      "lunar_year": 1933,
+      "signed_lunar_month": 10,
+      "start_date": "1933-11-18"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1934-01-14",
+      "lunar_year": 1933,
+      "signed_lunar_month": 11,
+      "start_date": "1933-12-17"
+    }
+  ],
+  "schema_name": "ziwei_calendar_interval_year_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}

@@ -144,8 +144,11 @@ This SHA is review evidence only, not a pin. Every maintenance task must resolve
   - compact Gregorian-year / lunar-month-interval POC completed with 73,414 ordinary-date checks / 4,824 full-hour New-Year cases / 202 year-edge 23:00 cases / 0 mismatches;
   - interval encoding uses 2,692 interval records in 202 year shards and measured 471,865 bytes total (about 94.46% smaller / 18.07x smaller than daily shards), while preserving ordinary 1-file and 23:00 cross-year at-most-2-file lookup;
   - interval encoding is now the selected B candidate storage architecture; current option A still remains production authority;
-  - range-parameterized research builder/validator now closes the generic per-shard SHA-256, aggregate-hash, fail-closed manifest validation and deterministic clean rebuild mechanism;
-  - remaining admission blockers are explicit product-supported-range selection, materialization/review of that exact admitted-range dataset and hashes, and production resolver/materialization migration.
+  - product-supported candidate range is now explicitly selected as 1900-01-01..2100-12-31; this is a product-range decision only and is not production admission;
+  - exact candidate dataset is materialized at `data/calendar/ziwei_tw_interval/v1/**` with 202 Gregorian-year shards (1900..2101 including the 2101 policy tail), 2,692 intervals and 471,865 shard bytes;
+  - candidate dataset aggregate SHA-256 is `4913a39e770afcd21eedc387523c572b8c4fc6469889c28f6ea75613f8984d79`; pinned installed-source inventory SHA-256 is `bf49ea69241171a8e5b5a85ca07748c88b00f5ce392f25c21617e398c9c9a712`;
+  - range-parameterized builder/validator verifies the existing pinned 34-file upstream Git-blob inventory before generation, writes manifest/provenance/attribution metadata, closes exact shard inventory + per-shard/aggregate hashes and clean deterministic rebuild;
+  - remaining admission blocker is production resolver/materialization migration plus the bounded calendar admission update/production regression gate; current option A remains authoritative until that gate passes.
 - scope boundary:
   - does not modify `ZW-P1-020` Four Transformations semantics;
   - does not create repository-layer architecture policy outside `REPOSITORY_ARCHITECTURE.md`.

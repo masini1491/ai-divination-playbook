@@ -1,0 +1,100 @@
+{
+  "coverage": "gregorian_year_intersection",
+  "gregorian_year": 2091,
+  "intervals": [
+    {
+      "day_count": 30,
+      "end_date": "2091-01-19",
+      "lunar_year": 2090,
+      "signed_lunar_month": 11,
+      "start_date": "2090-12-21"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2091-02-17",
+      "lunar_year": 2090,
+      "signed_lunar_month": 12,
+      "start_date": "2091-01-20"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2091-03-19",
+      "lunar_year": 2091,
+      "signed_lunar_month": 1,
+      "start_date": "2091-02-18"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2091-04-18",
+      "lunar_year": 2091,
+      "signed_lunar_month": 2,
+      "start_date": "2091-03-20"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2091-05-17",
+      "lunar_year": 2091,
+      "signed_lunar_month": 3,
+      "start_date": "2091-04-19"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2091-06-16",
+      "lunar_year": 2091,
+      "signed_lunar_month": 4,
+      "start_date": "2091-05-18"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2091-07-15",
+      "lunar_year": 2091,
+      "signed_lunar_month": 5,
+      "start_date": "2091-06-17"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2091-08-14",
+      "lunar_year": 2091,
+      "signed_lunar_month": 6,
+      "start_date": "2091-07-16"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2091-09-12",
+      "lunar_year": 2091,
+      "signed_lunar_month": 7,
+      "start_date": "2091-08-15"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2091-10-12",
+      "lunar_year": 2091,
+      "signed_lunar_month": 8,
+      "start_date": "2091-09-13"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2091-11-10",
+      "lunar_year": 2091,
+      "signed_lunar_month": 9,
+      "start_date": "2091-10-13"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2091-12-09",
+      "lunar_year": 2091,
+      "signed_lunar_month": 10,
+      "start_date": "2091-11-11"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2092-01-08",
+      "lunar_year": 2091,
+      "signed_lunar_month": 11,
+      "start_date": "2091-12-10"
+    }
+  ],
+  "schema_name": "ziwei_calendar_interval_year_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}

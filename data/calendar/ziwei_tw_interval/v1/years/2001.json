@@ -1,0 +1,100 @@
+{
+  "coverage": "gregorian_year_intersection",
+  "gregorian_year": 2001,
+  "intervals": [
+    {
+      "day_count": 29,
+      "end_date": "2001-01-23",
+      "lunar_year": 2000,
+      "signed_lunar_month": 12,
+      "start_date": "2000-12-26"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2001-02-22",
+      "lunar_year": 2001,
+      "signed_lunar_month": 1,
+      "start_date": "2001-01-24"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2001-03-24",
+      "lunar_year": 2001,
+      "signed_lunar_month": 2,
+      "start_date": "2001-02-23"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2001-04-22",
+      "lunar_year": 2001,
+      "signed_lunar_month": 3,
+      "start_date": "2001-03-25"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2001-05-22",
+      "lunar_year": 2001,
+      "signed_lunar_month": 4,
+      "start_date": "2001-04-23"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2001-06-20",
+      "lunar_year": 2001,
+      "signed_lunar_month": -4,
+      "start_date": "2001-05-23"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2001-07-20",
+      "lunar_year": 2001,
+      "signed_lunar_month": 5,
+      "start_date": "2001-06-21"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2001-08-18",
+      "lunar_year": 2001,
+      "signed_lunar_month": 6,
+      "start_date": "2001-07-21"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2001-09-16",
+      "lunar_year": 2001,
+      "signed_lunar_month": 7,
+      "start_date": "2001-08-19"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2001-10-16",
+      "lunar_year": 2001,
+      "signed_lunar_month": 8,
+      "start_date": "2001-09-17"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2001-11-14",
+      "lunar_year": 2001,
+      "signed_lunar_month": 9,
+      "start_date": "2001-10-17"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2001-12-14",
+      "lunar_year": 2001,
+      "signed_lunar_month": 10,
+      "start_date": "2001-11-15"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2002-01-12",
+      "lunar_year": 2001,
+      "signed_lunar_month": 11,
+      "start_date": "2001-12-15"
+    }
+  ],
+  "schema_name": "ziwei_calendar_interval_year_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}

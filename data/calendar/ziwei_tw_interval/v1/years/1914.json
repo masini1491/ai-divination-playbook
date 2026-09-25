@@ -1,0 +1,100 @@
+{
+  "coverage": "gregorian_year_intersection",
+  "gregorian_year": 1914,
+  "intervals": [
+    {
+      "day_count": 30,
+      "end_date": "1914-01-25",
+      "lunar_year": 1913,
+      "signed_lunar_month": 12,
+      "start_date": "1913-12-27"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1914-02-24",
+      "lunar_year": 1914,
+      "signed_lunar_month": 1,
+      "start_date": "1914-01-26"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1914-03-26",
+      "lunar_year": 1914,
+      "signed_lunar_month": 2,
+      "start_date": "1914-02-25"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1914-04-24",
+      "lunar_year": 1914,
+      "signed_lunar_month": 3,
+      "start_date": "1914-03-27"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1914-05-24",
+      "lunar_year": 1914,
+      "signed_lunar_month": 4,
+      "start_date": "1914-04-25"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1914-06-22",
+      "lunar_year": 1914,
+      "signed_lunar_month": 5,
+      "start_date": "1914-05-25"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1914-07-22",
+      "lunar_year": 1914,
+      "signed_lunar_month": -5,
+      "start_date": "1914-06-23"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1914-08-20",
+      "lunar_year": 1914,
+      "signed_lunar_month": 6,
+      "start_date": "1914-07-23"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1914-09-19",
+      "lunar_year": 1914,
+      "signed_lunar_month": 7,
+      "start_date": "1914-08-21"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1914-10-18",
+      "lunar_year": 1914,
+      "signed_lunar_month": 8,
+      "start_date": "1914-09-20"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1914-11-16",
+      "lunar_year": 1914,
+      "signed_lunar_month": 9,
+      "start_date": "1914-10-19"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1914-12-16",
+      "lunar_year": 1914,
+      "signed_lunar_month": 10,
+      "start_date": "1914-11-17"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1915-01-14",
+      "lunar_year": 1914,
+      "signed_lunar_month": 11,
+      "start_date": "1914-12-17"
+    }
+  ],
+  "schema_name": "ziwei_calendar_interval_year_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}

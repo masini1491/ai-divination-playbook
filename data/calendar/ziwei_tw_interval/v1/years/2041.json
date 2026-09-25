@@ -1,0 +1,107 @@
+{
+  "coverage": "gregorian_year_intersection",
+  "gregorian_year": 2041,
+  "intervals": [
+    {
+      "day_count": 30,
+      "end_date": "2041-01-02",
+      "lunar_year": 2040,
+      "signed_lunar_month": 11,
+      "start_date": "2040-12-04"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2041-01-31",
+      "lunar_year": 2040,
+      "signed_lunar_month": 12,
+      "start_date": "2041-01-03"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2041-03-01",
+      "lunar_year": 2041,
+      "signed_lunar_month": 1,
+      "start_date": "2041-02-01"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2041-03-31",
+      "lunar_year": 2041,
+      "signed_lunar_month": 2,
+      "start_date": "2041-03-02"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2041-04-29",
+      "lunar_year": 2041,
+      "signed_lunar_month": 3,
+      "start_date": "2041-04-01"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2041-05-29",
+      "lunar_year": 2041,
+      "signed_lunar_month": 4,
+      "start_date": "2041-04-30"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2041-06-27",
+      "lunar_year": 2041,
+      "signed_lunar_month": 5,
+      "start_date": "2041-05-30"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2041-07-27",
+      "lunar_year": 2041,
+      "signed_lunar_month": 6,
+      "start_date": "2041-06-28"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2041-08-26",
+      "lunar_year": 2041,
+      "signed_lunar_month": 7,
+      "start_date": "2041-07-28"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2041-09-24",
+      "lunar_year": 2041,
+      "signed_lunar_month": 8,
+      "start_date": "2041-08-27"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2041-10-24",
+      "lunar_year": 2041,
+      "signed_lunar_month": 9,
+      "start_date": "2041-09-25"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2041-11-23",
+      "lunar_year": 2041,
+      "signed_lunar_month": 10,
+      "start_date": "2041-10-25"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2041-12-22",
+      "lunar_year": 2041,
+      "signed_lunar_month": 11,
+      "start_date": "2041-11-24"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2042-01-21",
+      "lunar_year": 2041,
+      "signed_lunar_month": 12,
+      "start_date": "2041-12-23"
+    }
+  ],
+  "schema_name": "ziwei_calendar_interval_year_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}

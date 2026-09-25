@@ -1,0 +1,100 @@
+{
+  "coverage": "gregorian_year_intersection",
+  "gregorian_year": 1936,
+  "intervals": [
+    {
+      "day_count": 29,
+      "end_date": "1936-01-23",
+      "lunar_year": 1935,
+      "signed_lunar_month": 12,
+      "start_date": "1935-12-26"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1936-02-22",
+      "lunar_year": 1936,
+      "signed_lunar_month": 1,
+      "start_date": "1936-01-24"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1936-03-22",
+      "lunar_year": 1936,
+      "signed_lunar_month": 2,
+      "start_date": "1936-02-23"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1936-04-20",
+      "lunar_year": 1936,
+      "signed_lunar_month": 3,
+      "start_date": "1936-03-23"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1936-05-20",
+      "lunar_year": 1936,
+      "signed_lunar_month": -3,
+      "start_date": "1936-04-21"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1936-06-18",
+      "lunar_year": 1936,
+      "signed_lunar_month": 4,
+      "start_date": "1936-05-21"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1936-07-17",
+      "lunar_year": 1936,
+      "signed_lunar_month": 5,
+      "start_date": "1936-06-19"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1936-08-16",
+      "lunar_year": 1936,
+      "signed_lunar_month": 6,
+      "start_date": "1936-07-18"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1936-09-15",
+      "lunar_year": 1936,
+      "signed_lunar_month": 7,
+      "start_date": "1936-08-17"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1936-10-14",
+      "lunar_year": 1936,
+      "signed_lunar_month": 8,
+      "start_date": "1936-09-16"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1936-11-13",
+      "lunar_year": 1936,
+      "signed_lunar_month": 9,
+      "start_date": "1936-10-15"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1936-12-13",
+      "lunar_year": 1936,
+      "signed_lunar_month": 10,
+      "start_date": "1936-11-14"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1937-01-12",
+      "lunar_year": 1936,
+      "signed_lunar_month": 11,
+      "start_date": "1936-12-14"
+    }
+  ],
+  "schema_name": "ziwei_calendar_interval_year_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}

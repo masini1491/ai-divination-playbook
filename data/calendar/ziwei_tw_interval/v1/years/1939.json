@@ -1,0 +1,100 @@
+{
+  "coverage": "gregorian_year_intersection",
+  "gregorian_year": 1939,
+  "intervals": [
+    {
+      "day_count": 29,
+      "end_date": "1939-01-19",
+      "lunar_year": 1938,
+      "signed_lunar_month": 11,
+      "start_date": "1938-12-22"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1939-02-18",
+      "lunar_year": 1938,
+      "signed_lunar_month": 12,
+      "start_date": "1939-01-20"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1939-03-20",
+      "lunar_year": 1939,
+      "signed_lunar_month": 1,
+      "start_date": "1939-02-19"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1939-04-19",
+      "lunar_year": 1939,
+      "signed_lunar_month": 2,
+      "start_date": "1939-03-21"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1939-05-18",
+      "lunar_year": 1939,
+      "signed_lunar_month": 3,
+      "start_date": "1939-04-20"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1939-06-16",
+      "lunar_year": 1939,
+      "signed_lunar_month": 4,
+      "start_date": "1939-05-19"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1939-07-16",
+      "lunar_year": 1939,
+      "signed_lunar_month": 5,
+      "start_date": "1939-06-17"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1939-08-14",
+      "lunar_year": 1939,
+      "signed_lunar_month": 6,
+      "start_date": "1939-07-17"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1939-09-12",
+      "lunar_year": 1939,
+      "signed_lunar_month": 7,
+      "start_date": "1939-08-15"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1939-10-12",
+      "lunar_year": 1939,
+      "signed_lunar_month": 8,
+      "start_date": "1939-09-13"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1939-11-10",
+      "lunar_year": 1939,
+      "signed_lunar_month": 9,
+      "start_date": "1939-10-13"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1939-12-10",
+      "lunar_year": 1939,
+      "signed_lunar_month": 10,
+      "start_date": "1939-11-11"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1940-01-08",
+      "lunar_year": 1939,
+      "signed_lunar_month": 11,
+      "start_date": "1939-12-11"
+    }
+  ],
+  "schema_name": "ziwei_calendar_interval_year_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}

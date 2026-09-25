@@ -1,0 +1,107 @@
+{
+  "coverage": "gregorian_year_intersection",
+  "gregorian_year": 2057,
+  "intervals": [
+    {
+      "day_count": 29,
+      "end_date": "2057-01-04",
+      "lunar_year": 2056,
+      "signed_lunar_month": 11,
+      "start_date": "2056-12-07"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2057-02-03",
+      "lunar_year": 2056,
+      "signed_lunar_month": 12,
+      "start_date": "2057-01-05"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2057-03-04",
+      "lunar_year": 2057,
+      "signed_lunar_month": 1,
+      "start_date": "2057-02-04"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2057-04-03",
+      "lunar_year": 2057,
+      "signed_lunar_month": 2,
+      "start_date": "2057-03-05"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2057-05-03",
+      "lunar_year": 2057,
+      "signed_lunar_month": 3,
+      "start_date": "2057-04-04"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2057-06-01",
+      "lunar_year": 2057,
+      "signed_lunar_month": 4,
+      "start_date": "2057-05-04"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2057-07-01",
+      "lunar_year": 2057,
+      "signed_lunar_month": 5,
+      "start_date": "2057-06-02"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2057-07-30",
+      "lunar_year": 2057,
+      "signed_lunar_month": 6,
+      "start_date": "2057-07-02"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2057-08-29",
+      "lunar_year": 2057,
+      "signed_lunar_month": 7,
+      "start_date": "2057-07-31"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2057-09-28",
+      "lunar_year": 2057,
+      "signed_lunar_month": 8,
+      "start_date": "2057-08-30"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2057-10-27",
+      "lunar_year": 2057,
+      "signed_lunar_month": 9,
+      "start_date": "2057-09-29"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2057-11-25",
+      "lunar_year": 2057,
+      "signed_lunar_month": 10,
+      "start_date": "2057-10-28"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2057-12-25",
+      "lunar_year": 2057,
+      "signed_lunar_month": 11,
+      "start_date": "2057-11-26"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2058-01-23",
+      "lunar_year": 2057,
+      "signed_lunar_month": 12,
+      "start_date": "2057-12-26"
+    }
+  ],
+  "schema_name": "ziwei_calendar_interval_year_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}

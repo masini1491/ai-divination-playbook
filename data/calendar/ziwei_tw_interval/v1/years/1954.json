@@ -1,0 +1,107 @@
+{
+  "coverage": "gregorian_year_intersection",
+  "gregorian_year": 1954,
+  "intervals": [
+    {
+      "day_count": 30,
+      "end_date": "1954-01-04",
+      "lunar_year": 1953,
+      "signed_lunar_month": 11,
+      "start_date": "1953-12-06"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1954-02-02",
+      "lunar_year": 1953,
+      "signed_lunar_month": 12,
+      "start_date": "1954-01-05"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1954-03-04",
+      "lunar_year": 1954,
+      "signed_lunar_month": 1,
+      "start_date": "1954-02-03"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1954-04-02",
+      "lunar_year": 1954,
+      "signed_lunar_month": 2,
+      "start_date": "1954-03-05"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1954-05-02",
+      "lunar_year": 1954,
+      "signed_lunar_month": 3,
+      "start_date": "1954-04-03"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1954-05-31",
+      "lunar_year": 1954,
+      "signed_lunar_month": 4,
+      "start_date": "1954-05-03"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1954-06-29",
+      "lunar_year": 1954,
+      "signed_lunar_month": 5,
+      "start_date": "1954-06-01"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1954-07-29",
+      "lunar_year": 1954,
+      "signed_lunar_month": 6,
+      "start_date": "1954-06-30"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1954-08-27",
+      "lunar_year": 1954,
+      "signed_lunar_month": 7,
+      "start_date": "1954-07-30"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1954-09-26",
+      "lunar_year": 1954,
+      "signed_lunar_month": 8,
+      "start_date": "1954-08-28"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1954-10-26",
+      "lunar_year": 1954,
+      "signed_lunar_month": 9,
+      "start_date": "1954-09-27"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1954-11-24",
+      "lunar_year": 1954,
+      "signed_lunar_month": 10,
+      "start_date": "1954-10-27"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1954-12-24",
+      "lunar_year": 1954,
+      "signed_lunar_month": 11,
+      "start_date": "1954-11-25"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1955-01-23",
+      "lunar_year": 1954,
+      "signed_lunar_month": 12,
+      "start_date": "1954-12-25"
+    }
+  ],
+  "schema_name": "ziwei_calendar_interval_year_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}

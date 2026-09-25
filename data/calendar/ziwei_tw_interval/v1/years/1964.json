@@ -1,0 +1,100 @@
+{
+  "coverage": "gregorian_year_intersection",
+  "gregorian_year": 1964,
+  "intervals": [
+    {
+      "day_count": 30,
+      "end_date": "1964-01-14",
+      "lunar_year": 1963,
+      "signed_lunar_month": 11,
+      "start_date": "1963-12-16"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1964-02-12",
+      "lunar_year": 1963,
+      "signed_lunar_month": 12,
+      "start_date": "1964-01-15"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1964-03-13",
+      "lunar_year": 1964,
+      "signed_lunar_month": 1,
+      "start_date": "1964-02-13"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1964-04-11",
+      "lunar_year": 1964,
+      "signed_lunar_month": 2,
+      "start_date": "1964-03-14"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1964-05-11",
+      "lunar_year": 1964,
+      "signed_lunar_month": 3,
+      "start_date": "1964-04-12"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1964-06-09",
+      "lunar_year": 1964,
+      "signed_lunar_month": 4,
+      "start_date": "1964-05-12"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1964-07-08",
+      "lunar_year": 1964,
+      "signed_lunar_month": 5,
+      "start_date": "1964-06-10"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1964-08-07",
+      "lunar_year": 1964,
+      "signed_lunar_month": 6,
+      "start_date": "1964-07-09"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1964-09-05",
+      "lunar_year": 1964,
+      "signed_lunar_month": 7,
+      "start_date": "1964-08-08"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1964-10-05",
+      "lunar_year": 1964,
+      "signed_lunar_month": 8,
+      "start_date": "1964-09-06"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1964-11-03",
+      "lunar_year": 1964,
+      "signed_lunar_month": 9,
+      "start_date": "1964-10-06"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1964-12-03",
+      "lunar_year": 1964,
+      "signed_lunar_month": 10,
+      "start_date": "1964-11-04"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1965-01-02",
+      "lunar_year": 1964,
+      "signed_lunar_month": 11,
+      "start_date": "1964-12-04"
+    }
+  ],
+  "schema_name": "ziwei_calendar_interval_year_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}

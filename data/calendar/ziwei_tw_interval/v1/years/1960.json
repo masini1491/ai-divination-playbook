@@ -1,0 +1,100 @@
+{
+  "coverage": "gregorian_year_intersection",
+  "gregorian_year": 1960,
+  "intervals": [
+    {
+      "day_count": 29,
+      "end_date": "1960-01-27",
+      "lunar_year": 1959,
+      "signed_lunar_month": 12,
+      "start_date": "1959-12-30"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1960-02-26",
+      "lunar_year": 1960,
+      "signed_lunar_month": 1,
+      "start_date": "1960-01-28"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1960-03-26",
+      "lunar_year": 1960,
+      "signed_lunar_month": 2,
+      "start_date": "1960-02-27"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1960-04-25",
+      "lunar_year": 1960,
+      "signed_lunar_month": 3,
+      "start_date": "1960-03-27"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1960-05-24",
+      "lunar_year": 1960,
+      "signed_lunar_month": 4,
+      "start_date": "1960-04-26"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1960-06-23",
+      "lunar_year": 1960,
+      "signed_lunar_month": 5,
+      "start_date": "1960-05-25"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1960-07-23",
+      "lunar_year": 1960,
+      "signed_lunar_month": 6,
+      "start_date": "1960-06-24"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1960-08-21",
+      "lunar_year": 1960,
+      "signed_lunar_month": -6,
+      "start_date": "1960-07-24"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1960-09-20",
+      "lunar_year": 1960,
+      "signed_lunar_month": 7,
+      "start_date": "1960-08-22"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1960-10-19",
+      "lunar_year": 1960,
+      "signed_lunar_month": 8,
+      "start_date": "1960-09-21"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1960-11-18",
+      "lunar_year": 1960,
+      "signed_lunar_month": 9,
+      "start_date": "1960-10-20"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1960-12-17",
+      "lunar_year": 1960,
+      "signed_lunar_month": 10,
+      "start_date": "1960-11-19"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1961-01-16",
+      "lunar_year": 1960,
+      "signed_lunar_month": 11,
+      "start_date": "1960-12-18"
+    }
+  ],
+  "schema_name": "ziwei_calendar_interval_year_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}

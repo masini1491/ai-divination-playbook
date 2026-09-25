@@ -1,0 +1,107 @@
+{
+  "coverage": "gregorian_year_intersection",
+  "gregorian_year": 2046,
+  "intervals": [
+    {
+      "day_count": 30,
+      "end_date": "2046-01-06",
+      "lunar_year": 2045,
+      "signed_lunar_month": 11,
+      "start_date": "2045-12-08"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2046-02-05",
+      "lunar_year": 2045,
+      "signed_lunar_month": 12,
+      "start_date": "2046-01-07"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2046-03-07",
+      "lunar_year": 2046,
+      "signed_lunar_month": 1,
+      "start_date": "2046-02-06"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2046-04-05",
+      "lunar_year": 2046,
+      "signed_lunar_month": 2,
+      "start_date": "2046-03-08"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2046-05-05",
+      "lunar_year": 2046,
+      "signed_lunar_month": 3,
+      "start_date": "2046-04-06"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2046-06-03",
+      "lunar_year": 2046,
+      "signed_lunar_month": 4,
+      "start_date": "2046-05-06"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2046-07-03",
+      "lunar_year": 2046,
+      "signed_lunar_month": 5,
+      "start_date": "2046-06-04"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2046-08-01",
+      "lunar_year": 2046,
+      "signed_lunar_month": 6,
+      "start_date": "2046-07-04"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2046-08-31",
+      "lunar_year": 2046,
+      "signed_lunar_month": 7,
+      "start_date": "2046-08-02"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2046-09-29",
+      "lunar_year": 2046,
+      "signed_lunar_month": 8,
+      "start_date": "2046-09-01"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2046-10-28",
+      "lunar_year": 2046,
+      "signed_lunar_month": 9,
+      "start_date": "2046-09-30"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2046-11-27",
+      "lunar_year": 2046,
+      "signed_lunar_month": 10,
+      "start_date": "2046-10-29"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2046-12-26",
+      "lunar_year": 2046,
+      "signed_lunar_month": 11,
+      "start_date": "2046-11-28"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2047-01-25",
+      "lunar_year": 2046,
+      "signed_lunar_month": 12,
+      "start_date": "2046-12-27"
+    }
+  ],
+  "schema_name": "ziwei_calendar_interval_year_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}

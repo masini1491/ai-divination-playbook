@@ -1,0 +1,100 @@
+{
+  "coverage": "gregorian_year_intersection",
+  "gregorian_year": 2101,
+  "intervals": [
+    {
+      "day_count": 29,
+      "end_date": "2101-01-28",
+      "lunar_year": 2100,
+      "signed_lunar_month": 12,
+      "start_date": "2100-12-31"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2101-02-27",
+      "lunar_year": 2101,
+      "signed_lunar_month": 1,
+      "start_date": "2101-01-29"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2101-03-29",
+      "lunar_year": 2101,
+      "signed_lunar_month": 2,
+      "start_date": "2101-02-28"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2101-04-27",
+      "lunar_year": 2101,
+      "signed_lunar_month": 3,
+      "start_date": "2101-03-30"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2101-05-27",
+      "lunar_year": 2101,
+      "signed_lunar_month": 4,
+      "start_date": "2101-04-28"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2101-06-26",
+      "lunar_year": 2101,
+      "signed_lunar_month": 5,
+      "start_date": "2101-05-28"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2101-07-25",
+      "lunar_year": 2101,
+      "signed_lunar_month": 6,
+      "start_date": "2101-06-27"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2101-08-24",
+      "lunar_year": 2101,
+      "signed_lunar_month": 7,
+      "start_date": "2101-07-26"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2101-09-22",
+      "lunar_year": 2101,
+      "signed_lunar_month": -7,
+      "start_date": "2101-08-25"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2101-10-22",
+      "lunar_year": 2101,
+      "signed_lunar_month": 8,
+      "start_date": "2101-09-23"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2101-11-20",
+      "lunar_year": 2101,
+      "signed_lunar_month": 9,
+      "start_date": "2101-10-23"
+    },
+    {
+      "day_count": 29,
+      "end_date": "2101-12-19",
+      "lunar_year": 2101,
+      "signed_lunar_month": 10,
+      "start_date": "2101-11-21"
+    },
+    {
+      "day_count": 30,
+      "end_date": "2102-01-18",
+      "lunar_year": 2101,
+      "signed_lunar_month": 11,
+      "start_date": "2101-12-20"
+    }
+  ],
+  "schema_name": "ziwei_calendar_interval_year_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}

@@ -1,0 +1,100 @@
+{
+  "coverage": "gregorian_year_intersection",
+  "gregorian_year": 1949,
+  "intervals": [
+    {
+      "day_count": 30,
+      "end_date": "1949-01-28",
+      "lunar_year": 1948,
+      "signed_lunar_month": 12,
+      "start_date": "1948-12-30"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1949-02-27",
+      "lunar_year": 1949,
+      "signed_lunar_month": 1,
+      "start_date": "1949-01-29"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1949-03-28",
+      "lunar_year": 1949,
+      "signed_lunar_month": 2,
+      "start_date": "1949-02-28"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1949-04-27",
+      "lunar_year": 1949,
+      "signed_lunar_month": 3,
+      "start_date": "1949-03-29"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1949-05-27",
+      "lunar_year": 1949,
+      "signed_lunar_month": 4,
+      "start_date": "1949-04-28"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1949-06-25",
+      "lunar_year": 1949,
+      "signed_lunar_month": 5,
+      "start_date": "1949-05-28"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1949-07-25",
+      "lunar_year": 1949,
+      "signed_lunar_month": 6,
+      "start_date": "1949-06-26"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1949-08-23",
+      "lunar_year": 1949,
+      "signed_lunar_month": 7,
+      "start_date": "1949-07-26"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1949-09-21",
+      "lunar_year": 1949,
+      "signed_lunar_month": -7,
+      "start_date": "1949-08-24"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1949-10-21",
+      "lunar_year": 1949,
+      "signed_lunar_month": 8,
+      "start_date": "1949-09-22"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1949-11-19",
+      "lunar_year": 1949,
+      "signed_lunar_month": 9,
+      "start_date": "1949-10-22"
+    },
+    {
+      "day_count": 30,
+      "end_date": "1949-12-19",
+      "lunar_year": 1949,
+      "signed_lunar_month": 10,
+      "start_date": "1949-11-20"
+    },
+    {
+      "day_count": 29,
+      "end_date": "1950-01-17",
+      "lunar_year": 1949,
+      "signed_lunar_month": 11,
+      "start_date": "1949-12-20"
+    }
+  ],
+  "schema_name": "ziwei_calendar_interval_year_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}
