@@ -342,7 +342,7 @@ This item is a standing reconciliation guard. It is not a request to change curr
 ### AST-P1-110 — Extended aspect participant policies
 
 - type: FEATURE / POLICY
-- status: DONE
+- status: IN_PROGRESS
 - priority: P1
 - owner: Astrology aspect policy
 - blocked_by:
