@@ -193,8 +193,8 @@ class AstrologyProductionContractTests(unittest.TestCase):
         self.assertEqual("not_admitted", manifest["aspect_policy"]["extended_points_or_angles"])
         derived = manifest["natal_semantic_policy"]["derived_fact_interpretation"]
         self.assertEqual("forbidden_unless_explicitly_admitted", derived["claim_binding"])
-        self.assertEqual({"Descendant", "ImumCoeli"}, set(derived["admitted_claim_bindings"]))
-        self.assertEqual(["SouthNode", "PartOfFortune"], derived["no_admitted_claim_bindings"])
+        self.assertEqual({"Descendant", "ImumCoeli", "PartOfFortune"}, set(derived["admitted_claim_bindings"]))
+        self.assertEqual(["SouthNode"], derived["no_admitted_claim_bindings"])
 
 
     def test_e4_admission_is_named_fail_closed_and_fact_only(self):
