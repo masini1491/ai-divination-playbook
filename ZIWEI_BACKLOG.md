@@ -120,7 +120,9 @@ This SHA is review evidence only, not a pin. Every maintenance task must resolve
   - option B (build-time pinned upstream → repo-local deterministic calendar data → project-owned resolver) is the selected target architecture;
   - current option A remains production authority until a separate production-admission gate passes;
   - POC uses bounded Gregorian month shards and does not vendor `third_party/lunar-python/**`;
-  - full supported-range decision, machine-generated parity corpus, deterministic rebuild/aggregate-hash validation and production materialization migration remain open.
+  - full 1900-01-01..2100-12-31 machine parity is complete: 73,414 days / 204,716 comparisons / 0 mismatches in the strongest run;
+  - candidate-window generated shard footprint measured 8,525,044 bytes total; one shard max measured 3,638 bytes and ordinary lookup remains one file, 23:00 cross-month at most two;
+  - remaining admission blockers are explicit product-supported-range selection, final storage encoding choice for any broader range, admitted-dataset deterministic rebuild/hash closure, and production materialization migration.
 - scope boundary:
   - does not modify `ZW-P1-020` Four Transformations semantics;
   - does not create repository-layer architecture policy outside `REPOSITORY_ARCHITECTURE.md`.

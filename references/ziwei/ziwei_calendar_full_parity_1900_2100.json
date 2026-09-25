@@ -1,0 +1,79 @@
+{
+  "schema_name": "ziwei_calendar_full_parity_evidence",
+  "schema_version": "1.0.0",
+  "authority": "RESEARCH_EVIDENCE_ONLY_NOT_PRODUCTION_ADMISSION",
+  "source_repository": "masini1491/ai-divination-playbook",
+  "current_production_provider": "tools/ziwei_calendar_provider.py",
+  "poc_resolver": "tools/ziwei_calendar_data_poc.py",
+  "parity_verifier": "tools/ziwei_calendar_full_parity.py",
+  "dependency": {
+    "package": "lunar_python",
+    "version": "1.4.8",
+    "repository": "6tail/lunar-python",
+    "revision": "000c8a3d74eed098d6256a28fdd51b869324c559"
+  },
+  "candidate_window": {
+    "start": "1900-01-01",
+    "end": "2100-12-31",
+    "production_admitted": false
+  },
+  "strongest_run": {
+    "workflow": "Zi Wei Calendar Full Parity Research",
+    "run_id": 36106002302,
+    "job_id": 107978540358,
+    "head_sha": "ac9fdcad6898dec43dd652314e73592155698fc0",
+    "conclusion": "success",
+    "days_checked": 73414,
+    "comparisons": 204716,
+    "mismatch_count": 0,
+    "generated_month_shards": 2413,
+    "shard_size_bytes": {
+      "min": 3259,
+      "max": 3638,
+      "mean": 3532.9647741400745
+    },
+    "elapsed_seconds": 371.844698125,
+    "coverage": "every Gregorian date at ordinary time and 23:00; every Gregorian month-end additionally all 24 hours"
+  },
+  "optimized_rerun": {
+    "workflow": "Zi Wei Calendar Full Parity Research",
+    "run_id": 36106241848,
+    "job_id": 107979303624,
+    "head_sha": "5da64d999c5fb2cb56689a7f7fda12b520419c7d",
+    "conclusion": "success",
+    "mismatch_count": 0,
+    "coverage": {
+      "every_gregorian_date_at_12": 73414,
+      "boundary_23_cases": 2756,
+      "full_24_hour_cases": 8376,
+      "leap_month_day_15_16_dates": 148,
+      "lunar_year_crossovers": 201
+    },
+    "generated_month_shards": 2413,
+    "shard_size_bytes": {
+      "min": 3259,
+      "max": 3638,
+      "mean": 3532.9647741400745,
+      "total": 8525044
+    },
+    "elapsed_seconds": 240.572740768
+  },
+  "superseded_bootstrap_failure": {
+    "run_id": 36105951335,
+    "head_sha": "91858a9ff9beda7674bc79ac11424a6328dbe43e",
+    "conclusion": "failure",
+    "classification": "VERIFIER_BOOTSTRAP_IMPORT_PATH_FAILURE_BEFORE_PARITY_EXECUTION"
+  },
+  "conclusion": {
+    "architecture_target": "B_BUILD_TIME_UPSTREAM_TO_REPO_LOCAL_DETERMINISTIC_DATA",
+    "candidate_window_parity": "PASS",
+    "production_architecture_admitted": false,
+    "production_range_selected": false,
+    "remaining_gates": [
+      "explicit product-supported Gregorian range",
+      "final storage encoding for admitted range",
+      "deterministic admitted-dataset rebuild and aggregate hash closure",
+      "production provider/materialization migration"
+    ]
+  }
+}
