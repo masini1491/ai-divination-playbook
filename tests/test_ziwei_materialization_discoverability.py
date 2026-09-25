@@ -24,10 +24,10 @@ class ZiWeiMaterializationDiscoverabilityTests(unittest.TestCase):
         self.assertNotIn("ZIWEI-MAT-BEH-001",self.matrix["full_baseline"])
         self.assertIn("does **not** alter the existing strict-P4",self.scenario)
 
-    def test_contract_covers_dependency_materialization(self):
-        for phrase in ("local package miss ≠ Zi Wei unavailable","lunar_python==1.4.8",
-                       "dependency files must match pinned lunar-python upstream blob allowlist",
-                       "does not require pip/network installation afterward"):
+    def test_contract_covers_query_bounded_calendar_materialization(self):
+        for phrase in ("local miss ≠ Zi Wei unavailable","required_calendar_shards",
+                       "calendar_shards_verification.json","build/parity-only",
+                       "at most 2 shards","No pip/network package installation is required afterward"):
             self.assertIn(phrase,self.contract)
 
 if __name__=="__main__": unittest.main()
