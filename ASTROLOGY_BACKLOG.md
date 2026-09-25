@@ -199,17 +199,29 @@ This item is a standing reconciliation guard. It is not a request to change curr
 ### AST-P1-020 — EXP-2 Mean Black Moon Lilith local analytical parity
 
 - type: RESEARCH / DERIVED FACT
-- status: OPEN
+- status: DONE
 - priority: P1
 - owner: Astrology Lilith research
-- blocked_by:
-  - AST-P0-001
+- blocked_by: none
 - canonical_research:
   - `references/astrology/CHATGPT_ONLY_EXTENDED_EPHEMERIS_FEASIBILITY.md`
   - `references/astrology/EXTENDED_CHART_E3_LILITH_RESEARCH.md`
+  - `references/astrology/ASTROLOGY_EXP2_MEAN_LILITH_PARITY.md`
+  - `references/astrology/astrology_exp2_mean_lilith_iers2003_parity.json`
+  - `references/astrology/mean_lilith_iers2003_research.py`
 - target:
   - independently implement and validate one explicitly named Mean Lilith definition;
   - pin authoritative formula source, frame/equinox policy and longitude normalization.
+- measured_result:
+  - explicit fact id `black_moon_lilith_mean_iers2003_v1`;
+  - definition pinned to IERS 2003 secular mean lunar apogee `F + Omega - l + 180°`, mean ecliptic / mean equinox of date, TT centuries from J2000, modulo-360 longitude;
+  - temporary non-merge PR #183 / workflow run `36088099046` evaluated 17 prospective fixtures over research window `T=-2..+2` Julian centuries (~1800-2200);
+  - ERFA same-definition max residual `2.0463630789890885e-10 arcsec` passed the frozen `0.0001 arcsec` gate;
+  - independent XALEN/Meeus compatibility max residual `0.7098061008719014 arcsec` passed the frozen `1.0 arcsec` gate;
+  - Swiss `SE_MEAN_APOG` was explicitly report-only because it is a different ELP-hybrid definition; observed compatibility residual ranged ~79.044-416.343 arcsec;
+  - no bare `Lilith` alias was introduced;
+  - research validation window is not a production-admitted date window;
+  - production admission remains `NOT_GRANTED`.
 - completion_gate:
   - no bare `Lilith` alias;
   - prospective bounded fixtures across the admitted date window;
