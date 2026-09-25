@@ -110,8 +110,8 @@ query-bounded year shard(s) → same-commit deterministic data
 ZIWEI_CALENDAR_ADMISSION_V1.json → production calendar admission truth
 pinned lunar-python → build/parity source only
 tools/ziwei_runtime.py → canonical typed production composition
-tools/ziwei_sihua_provider.py → optional profile-bound Four-Transformation facts only
-Zi Wei providers + retrieval/delivery → deterministic facts + admitted claims
+tools/ziwei_sihua_provider.py → optional profile-bound Four-Transformation calculation facts; no interpretation authority
+Zi Wei providers + retrieval/delivery → deterministic facts + admitted claims; `sihua_v1` additionally requires bundled `ziwei_interpretation_claim_registry_sihua_v0.json`
 ZIWEI.md → interpretation / output governance
 ```
 
