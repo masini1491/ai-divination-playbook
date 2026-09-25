@@ -95,11 +95,27 @@
       "bounded_corpus_semantics": "PASS",
       "real_shard_identity_manifest": "PASS",
       "repo_file_cold_start_latency": "NOT_PROVEN_BY_ARTIFACT_TRANSPORT"
+    },
+    "real_repo_file_connect_probe": {
+      "temporary_pr": 212,
+      "exact_commit": "79e84b3124305cfc00a00cd19d814b9c56f94018",
+      "profile": 500,
+      "query": "樹林區",
+      "country_code": "TW",
+      "alias_source_bytes": 13700,
+      "candidate_source_bytes": 4774,
+      "query_visible_source_bytes": 18474,
+      "alias_git_blob": "e4bdc8b71224dcae13bbbdad1766eccd2fed292a",
+      "candidate_git_blob": "ce29c509649ca62d7766d2d81bf1628d89372d9f",
+      "exact_ref_retrieval": "PASS",
+      "original_generated_byte_identity": "PASS",
+      "semantic_chain": "PASS",
+      "connector_latency_telemetry": "NOT_EXPOSED"
     }
   },
   "unresolved_admission_gates": [
-    "GitHub Connect repo-file cold-start latency validation against real committed generated shards",
-    "cache policy must not claim connector-internal zero-byte behavior without telemetry",
-    "production materialization/admission mutation"
+    "persist generated production corpus on a same-revision surface retrievable through the admitted ChatGPT GitHub Connect path",
+    "cache policy must not claim connector-internal zero-byte behavior or latency without telemetry",
+    "production materialization/admission mutation after deployment surface exists"
   ]
 }
