@@ -382,7 +382,7 @@ This item is a standing reconciliation guard. It is not a request to change curr
 ### AST-P1-130 — Transit house search / temporal house context
 
 - type: FEATURE / TRANSIT
-- status: OPEN
+- status: DONE
 - priority: P1
 - owner: Astrology transit calculation + interpretation
 - blocked_by: none
@@ -397,6 +397,12 @@ This item is a standing reconciliation guard. It is not a request to change curr
   - unknown/approximate natal-time fail-closed behavior;
   - separate calculation and semantic admission;
   - bounded search/runtime cost.
+- closure:
+  - production transit provider v1.1 admits deterministic `transit_house_context` and `transit_house_ingress` facts against the 12 admitted natal cusp longitudes;
+  - search remains under the existing 400-day bound and reuses exact longitude root search;
+  - direct cusp crossing enters the cusp house; retrograde crossing enters the preceding house;
+  - `approximate` and `unknown` natal birth-time certainty fail closed; all 12 cusp facts are required;
+  - calculation admission does not auto-admit house semantics or event outcomes.
 
 ## P2 — deferred compatibility / provider expansion
 
