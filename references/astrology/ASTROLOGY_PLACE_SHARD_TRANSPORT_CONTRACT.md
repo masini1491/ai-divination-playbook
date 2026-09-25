@@ -63,3 +63,19 @@ Observed real profile-500 shard sizes: alias 樹林區 13,700 B, Tokyo 18,401 B,
 The first probe run 36139475713 generated the same files but failed only when Actions attempted to push them because workflow permission is contents: read. That permission was intentionally not widened; the succeeding probe used an artifact.
 
 Boundary: artifact transport is not a same-commit repository file path. This probe strengthens real-shard payload/semantic evidence but does not claim GitHub Connect repo-file cold-start latency PASS. Production admission remains unchanged.
+
+
+## Real repo-file GitHub Connect probe — PR #212
+
+Status: **REAL EXACT-REF RETRIEVAL PASS / LATENCY TELEMETRY UNAVAILABLE / NOT PRODUCTION ADMISSION**
+
+Temporary non-merge PR #212 committed two byte-identical real profile-500 generated shards from artifact 10866252034. At exact commit `79e84b3124305cfc00a00cd19d814b9c56f94018`, GitHub Connect retrieved:
+
+- alias bucket `1f6`: 13,700 source bytes; returned Git blob `e4bdc8b71224dcae13bbbdad1766eccd2fed292a`;
+- candidate bucket `a86`: 4,774 source bytes; returned Git blob `ce29c509649ca62d7766d2d81bf1628d89372d9f`.
+
+Both returned blob identities exactly equal the Git blob SHA computed from the original generated artifact bytes. The real query-visible chain is 18,474 bytes and preserves `樹林區` + `TW` → geoname `1668875` → `Shulin` / `TW` / `Asia/Taipei`.
+
+The GitHub Connect surface does not expose request wall-clock/network latency telemetry. Therefore the former literal latency-measurement gate is not observable and must not be represented by invented timing. Product evidence is instead bounded by successful exact-ref retrieval, exact byte/blob identity, measured payload size and preserved resolver semantics. Existing PR #189 worst-case corpus payload evidence and PR #210 real generated-shard evidence remain complementary.
+
+This closes the research validation portion of AST-P1-005. It does not itself solve production corpus persistence/materialization and does not grant production admission.
