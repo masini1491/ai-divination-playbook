@@ -6,6 +6,12 @@ on:
       - zw-p1-003-calendar-range-dataset
     paths:
       - ".github/workflows/ziwei-calendar-range-artifact.yml"
+      - "tools/build_ziwei_calendar_interval_dataset.py"
+      - "tools/validate_ziwei_calendar_interval_dataset.py"
+      - "tests/test_ziwei_calendar_interval_dataset.py"
+      - "tools/build_ziwei_tool_bundle.py"
+      - "tools/ziwei_calendar_interval_poc.py"
+      - "requirements-ziwei-calendar.txt"
 
 permissions:
   contents: read
@@ -20,6 +26,8 @@ jobs:
           python-version: "3.12"
       - name: Install pinned Zi Wei calendar dependency
         run: python -m pip install --disable-pip-version-check -r requirements-ziwei-calendar.txt
+      - name: Run targeted dataset tests
+        run: python -m unittest tests.test_ziwei_calendar_interval_dataset
       - name: Build exact candidate product range dataset
         run: |
           python tools/build_ziwei_calendar_interval_dataset.py \
@@ -34,7 +42,7 @@ jobs:
       - name: Upload exact generated dataset
         uses: actions/upload-artifact@v4
         with:
-          name: ziwei-calendar-range-1900-2100
+          name: ziwei-calendar-range-1900-2100-v2
           path: /tmp/ziwei-calendar-v1
           if-no-files-found: error
           retention-days: 1
