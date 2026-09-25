@@ -369,7 +369,7 @@ This item is a standing reconciliation guard. It is not a request to change curr
 ### AST-P1-120 — Yod / Stellium / Grand Quintile policy expansion
 
 - type: FEATURE / PATTERN POLICY
-- status: IN_PROGRESS
+- status: DONE
 - priority: P1
 - owner: Astrology pattern topology
 - blocked_by:
@@ -386,7 +386,7 @@ This item is a standing reconciliation guard. It is not a request to change curr
   - no exact consumer-compatibility claim without independent evidence;
   - current admitted topology behavior preserved.
 
-- closure_candidate:
+- closure:
   - special projection path is separate from the existing major-pattern topology;
   - Yod uses explicit sextile + quincunx geometry under `pattern-aspects-yod-quintile-v1` / `pattern-aspect-orbs-yod-quintile-v1`;
   - Grand Quintile uses explicit quintile + biquintile geometry under the same named policy;
