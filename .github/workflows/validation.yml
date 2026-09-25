@@ -86,6 +86,18 @@ jobs:
       - name: Verify cross-agent behavioral regression selection
         run: python tools/behavioral_eval.py --matrix evals/regression_matrix.json --change-class cross-agent-bootstrap-adapters
 
+      - name: TEMP divination review Astrology repo-local authority wording
+        env:
+          PYTHONPATH: .
+        run: |
+          python - <<'PY'
+          import json
+          from runtime.casting.core import execute_stochastic
+          print("DIVINATION_JSON_BEGIN")
+          print(json.dumps(execute_stochastic("tarot", count=5, source_commit="501d200ce55d8baf36c16e0ffa1ff1294af74544"), ensure_ascii=False, indent=2))
+          print("DIVINATION_JSON_END")
+          PY
+
       - name: Run unit tests
         run: python -m unittest discover -s tests -v
 
