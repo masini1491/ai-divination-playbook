@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ASTROLOGY_SPECIAL_PATTERN_PROJECTION_V1.schema.json",
+  "title": "Astrology Special Pattern Projection 1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_name",
+    "schema_version",
+    "status",
+    "authority",
+    "method",
+    "reading_mode",
+    "subject_ref",
+    "birth_time_certainty",
+    "participant_policy_id",
+    "aspect_policy_id",
+    "orb_policy_id",
+    "pattern_policy_id",
+    "stellium_policy_id",
+    "conjunction_cluster_policy_id",
+    "pattern_projection_policy_id",
+    "semantic_interpretation_authority",
+    "exact_consumer_compatibility_claimed",
+    "patterns"
+  ],
+  "properties": {
+    "schema_name": {
+      "const": "astrology_special_pattern_projection"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "status": {
+      "const": "projected"
+    },
+    "authority": {
+      "const": "deterministic_topology_projection_only"
+    },
+    "method": {
+      "const": "Astrology"
+    },
+    "reading_mode": {
+      "const": "natal"
+    },
+    "subject_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "birth_time_certainty": {
+      "enum": [
+        "exact",
+        "approximate",
+        "rectified"
+      ]
+    },
+    "participant_policy_id": {
+      "enum": [
+        "aspect-participants-core-bodies-v1",
+        "aspect-participants-core-plus-angles-v1",
+        "aspect-participants-core-plus-south-node-v1",
+        "aspect-participants-core-plus-fortune-v1"
+      ]
+    },
+    "aspect_policy_id": {
+      "const": "pattern-aspects-yod-quintile-v1"
+    },
+    "orb_policy_id": {
+      "const": "pattern-aspect-orbs-yod-quintile-v1"
+    },
+    "pattern_policy_id": {
+      "const": "special-pattern-topology-yod-stellium-grand-quintile-v1"
+    },
+    "stellium_policy_id": {
+      "const": "stellium-planets-same-sign-span10-min3-v1"
+    },
+    "conjunction_cluster_policy_id": {
+      "const": "conjunction-clusters-transitive-v1"
+    },
+    "pattern_projection_policy_id": {
+      "const": "pattern-projection-report-all-valid-v1"
+    },
+    "semantic_interpretation_authority": {
+      "const": false
+    },
+    "exact_consumer_compatibility_claimed": {
+      "const": false
+    },
+    "patterns": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "pattern_id",
+          "pattern_type",
+          "participant_object_ids",
+          "vertex_clusters",
+          "supporting_aspect_ids",
+          "participant_policy_id",
+          "aspect_policy_id",
+          "orb_policy_id",
+          "pattern_policy_id",
+          "stellium_policy_id",
+          "conjunction_cluster_policy_id",
+          "pattern_projection_policy_id"
+        ],
+        "properties": {
+          "pattern_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "pattern_type": {
+            "enum": [
+              "Yod",
+              "Stellium",
+              "Grand Quintile"
+            ]
+          },
+          "participant_object_ids": {
+            "type": "array",
+            "minItems": 3,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "vertex_clusters": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 5,
+            "items": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "supporting_aspect_ids": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "participant_policy_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "aspect_policy_id": {
+            "const": "pattern-aspects-yod-quintile-v1"
+          },
+          "orb_policy_id": {
+            "const": "pattern-aspect-orbs-yod-quintile-v1"
+          },
+          "pattern_policy_id": {
+            "const": "special-pattern-topology-yod-stellium-grand-quintile-v1"
+          },
+          "stellium_policy_id": {
+            "const": "stellium-planets-same-sign-span10-min3-v1"
+          },
+          "conjunction_cluster_policy_id": {
+            "const": "conjunction-clusters-transitive-v1"
+          },
+          "pattern_projection_policy_id": {
+            "const": "pattern-projection-report-all-valid-v1"
+          }
+        }
+      }
+    }
+  }
+}
