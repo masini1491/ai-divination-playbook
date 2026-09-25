@@ -30,6 +30,7 @@ jobs:
       - name: Remove temporary bridge and enforce bounded generated diff
         run: |
           rm .github/workflows/ziwei-sihua-admission-bridge.yml
+          rm -rf tests/__pycache__ tools/__pycache__
           python - <<'PY'
           import subprocess
           changed=subprocess.check_output(
