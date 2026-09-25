@@ -103,3 +103,84 @@ production authority                                = false
 ```
 
 This stage closes interpretation responsibility without changing the calculation profile or claiming predictive validity.
+
+
+## Source-explicit transformed-star evidence batch v0
+
+A first bounded research registry now exists at:
+
+```text
+references/ziwei/ziwei_interpretation_claim_registry_sihua_v0.json
+```
+
+It contains **3** `star_conditional` claims and remains
+`production_routable=false` / `production_authority_granted=false`.
+
+The batch intentionally admits only cases where the primary witness supplies a
+specific transformed-star condition that can be represented as machine facts:
+
+1. `貪狼 × 化祿` in the four-grave branches — retained as a conditionality
+   claim, not a wealth/success guarantee;
+2. `太陽 × 化忌` in 寅／卯／辰／巳／午 — retained as a source-recorded
+   exception to a universal adverse reading;
+3. `太陰 × 化忌` in 酉／戌／亥／子 — retained under the same exception
+   boundary.
+
+Source locators are the identified Nanyang-Hall digital-text witness pages.
+Every claim requires both:
+
+```text
+fact_available:sihua
+fact_available:star_locations
+```
+
+and additionally matches:
+
+```text
+sihua_profile:sihua.default_v1
++ exact sihua:<stem>:<transform>:<star> fact
++ exact star_branch:<star>:<branch> predicate
+```
+
+This is deliberate: a transformed-star label without profile and location facts
+must remain `not_computed` / `unsatisfied`.
+
+Rejected during this pass:
+
+- generic `化祿／化權／化科／化忌` outcome dictionaries;
+- practitioner case examples as general doctrine;
+- REFERENCE_ONLY practitioner material as sole claim authority;
+- source passages whose transformation identity cannot be unambiguously bound
+  to the natal `sihua.default_v1` fact identity.
+
+The remaining production-admission work is therefore no longer “find any Four
+Transformations prose.” It is to expose the required star-location retrieval
+facts, bind the admitted sihua provider/profile into the typed optional-module
+runtime, admit this exact bounded claim set (or a smaller subset) through a
+separate production manifest, and prove conditional activation without
+cross-profile widening.
+
+
+## Production-admission candidate binding
+
+The production candidate `sihua_v1` binds only the three claims in
+`ziwei_interpretation_claim_registry_sihua_v0.json`.
+
+Admission requires:
+
+```text
+explicit optional module = sihua_v1
+sihua_profile = sihua.default_v1
+fact_available:sihua
+fact_available:star_locations
+exact sihua:<stem>:<transform>:<star>
+exact star_branch:<star>:<branch>
+```
+
+The deterministic provider itself grants no interpretation authority. Claim
+authority comes from `ZIWEI_SIHUA_ADMISSION_V1.json` + production runtime
+allowlisting of the historical research registry while preserving
+`production_routable=false`.
+
+No other transformed-star claim, generic 祿／權／科／忌 outcome dictionary, or
+cross-profile averaging is admitted by this gate.
