@@ -29,8 +29,8 @@ Last reviewed against:
 
 ```text
 ai-divination-playbook main
-c7f7735c54043c3b25e04b196a88136ff4d019cb
-Add Zi Wei coordination backlog (#157)
+136547a0de8fec12deee623e45f4dcc4d05a04ed
+Align loader product manifest with regression matrix
 ```
 
 This SHA is review evidence only, not a pin. Every maintenance or implementation task must resolve current `main` again before mutation.
@@ -61,7 +61,7 @@ The closed work above must not be repeatedly rediscovered as open work unless a 
 ### AST-P0-001 — Reconcile E8 extended-object readiness after ChatGPT-only feasibility research
 
 - type: MAINTENANCE / RECONCILIATION
-- status: OPEN
+- status: DONE
 - priority: P0
 - owner: Astrology extended-chart research coordination
 - blocked_by: none
@@ -73,6 +73,13 @@ The closed work above must not be repeatedly rediscovered as open work unless a 
   - PR #156 correctly broadened D1 from a Swiss-centered three-way choice into capability lanes;
   - the candidate rows for Chiron / Ceres / Pallas / Juno / Vesta / Lilith / Vertex / Equatorial Ascendant still retain the older `BLOCKED_ON_PROVIDER_OR_LICENSE` research class;
   - that historical class is useful evidence, but fresh gap reviews can read it as if local analytical / bundled-ephemeris feasibility had not been established.
+- closure:
+  - preserved every historical `candidates[].readiness` row, including `BLOCKED_ON_PROVIDER_OR_LICENSE`;
+  - added `current_research_overlay` as a separate machine-readable post-PR-156 research-eligibility layer;
+  - Chiron/Ceres/Pallas/Juno/Vesta route to `BUNDLED_EPHEMERIS` research;
+  - Mean/Osculating Lilith family research and Vertex/Equatorial Ascendant route to `LOCAL_ANALYTICAL` research, while Interpolated Lilith remains a separate compatibility definition;
+  - overlay explicitly keeps `production_mutation_authorized = false`, `production_selection = null`, and all affected factors `NOT_ADMITTED`;
+  - Markdown readiness review now explains historical-readiness vs current-research-eligibility semantics.
 - completion_gate:
   - preserve historical E8 evidence rather than rewriting it as if the later research existed at the time;
   - add explicit current-state/supersession metadata or a new readiness layer;
