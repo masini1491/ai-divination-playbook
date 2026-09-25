@@ -1,0 +1,22 @@
+{
+  "coverage": "partial_fixture_only",
+  "gregorian_month": 4,
+  "gregorian_year": 2023,
+  "records": [
+    {
+      "day": 5,
+      "lunar_day": 15,
+      "lunar_year": 2023,
+      "signed_lunar_month": -2
+    },
+    {
+      "day": 6,
+      "lunar_day": 16,
+      "lunar_year": 2023,
+      "signed_lunar_month": -2
+    }
+  ],
+  "schema_name": "ziwei_calendar_day_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}

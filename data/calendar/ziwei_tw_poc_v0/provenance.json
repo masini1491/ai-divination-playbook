@@ -1,0 +1,14 @@
+{
+  "dataset_id": "ziwei_tw_calendar_poc_v0",
+  "generator": "tools/ziwei_calendar_data_poc.py",
+  "license_note": "Upstream implementation is MIT licensed; this POC stores derived calendar facts and preserves upstream identity for reproducibility.",
+  "production_authority": false,
+  "schema_name": "ziwei_calendar_dataset_provenance",
+  "source": {
+    "package": "lunar_python",
+    "repository": "6tail/lunar-python",
+    "revision": "000c8a3d74eed098d6256a28fdd51b869324c559",
+    "version": "1.4.8"
+  },
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}

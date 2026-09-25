@@ -1,0 +1,35 @@
+{
+  "aggregate_hash": "152e988c5f566260abadf991b7c85dd0cd4919f44c0b74d074292ac0ac3a3aa5",
+  "aggregate_hash_algorithm": "sha256(path + NUL + bytes + NUL, lexicographic path order)",
+  "candidate_production_range": {
+    "status": "UNDECIDED_PENDING_FULL_PARITY_AND_PRODUCT_RANGE_DECISION"
+  },
+  "dataset_id": "ziwei_tw_calendar_poc_v0",
+  "format_version": "0.1.0-poc",
+  "one_query_contract": {
+    "ordinary_date_max_files": 1,
+    "rat_hour_cross_month_max_files": 2,
+    "shard_key": "Gregorian YYYY/MM",
+    "shard_path_template": "years/YYYY/MM.json"
+  },
+  "production_admitted": false,
+  "record_contract": {
+    "day": "Gregorian day-of-month",
+    "lunar_day": "raw traditional-lunar day",
+    "lunar_year": "raw traditional-lunar year",
+    "signed_lunar_month": "positive=ordinary lunar month; negative=leap lunar month"
+  },
+  "sample_shards": [
+    {
+      "path": "years/2000/08.json",
+      "sha256": "391b3f7325aa2c513a4e2cdcaa3ee769f967e5bbe66789a5db66b62e0b3c5d35"
+    },
+    {
+      "path": "years/2023/04.json",
+      "sha256": "a0347132b5c1810d6dc84c47e1325ca117e8d92420582d1e6c87c14bce7d800d"
+    }
+  ],
+  "schema_name": "ziwei_calendar_dataset_manifest",
+  "status": "RESEARCH_POC_NOT_PRODUCTION",
+  "timezone_scope": "Asia/Taipei civil-time input only; dataset records are date keyed and timezone-neutral after accepted input validation"
+}

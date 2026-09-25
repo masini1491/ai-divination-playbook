@@ -1,0 +1,22 @@
+{
+  "coverage": "partial_fixture_only",
+  "gregorian_month": 8,
+  "gregorian_year": 2000,
+  "records": [
+    {
+      "day": 16,
+      "lunar_day": 17,
+      "lunar_year": 2000,
+      "signed_lunar_month": 7
+    },
+    {
+      "day": 17,
+      "lunar_day": 18,
+      "lunar_year": 2000,
+      "signed_lunar_month": 7
+    }
+  ],
+  "schema_name": "ziwei_calendar_day_shard",
+  "schema_version": "0.1.0-poc",
+  "status": "RESEARCH_POC_NOT_PRODUCTION"
+}
