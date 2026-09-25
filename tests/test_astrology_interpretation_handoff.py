@@ -200,7 +200,7 @@ class AstrologyInterpretationHandoffTests(unittest.TestCase):
         ):
             build_handoff(run, request, repo_root=ROOT)
 
-    def test_exact_reference_pipeline_rejects_e4_fact_only_claim_binding(self):
+    def test_exact_reference_pipeline_rejects_unadmitted_e4_claim_binding(self):
         run = admitted_run()
         run["fact_bundles"]["natal"]["facts"]["objects"].append(
             {
