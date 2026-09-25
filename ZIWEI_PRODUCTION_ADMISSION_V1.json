@@ -103,7 +103,8 @@
     "temporal_scope": "natal_baseline",
     "optional_modules": [
       "brightness_v1",
-      "m0_auxiliary_v1"
+      "m0_auxiliary_v1",
+      "sihua_v1"
     ],
     "compatibility_adapters": [
       "tools/ziwei_scope_a_pipeline.py",
@@ -123,6 +124,16 @@
       ],
       "claim_scope": "bounded_auxiliary_role_policy_only",
       "historical_semantic_core_admitted": false
+    },
+    {
+      "module_id": "sihua_v1",
+      "admission_manifest": "ZIWEI_SIHUA_ADMISSION_V1.json",
+      "provider": "tools/ziwei_sihua_provider.py",
+      "profile_id": "sihua.default_v1",
+      "admitted_claims_added": 0,
+      "admitted_research_registries": [],
+      "claim_scope": "facts_only_no_transformed_star_claims",
+      "transformed_star_interpretation_admitted": false
     }
   ]
 }
