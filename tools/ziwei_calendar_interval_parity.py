@@ -15,7 +15,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0,str(ROOT))
 
 from tools.ziwei_calendar_interval_poc import GregorianBirth, normalize_from_interval_data, write_year_shard
-from tools.ziwei_calendar_provider import GregorianBirthInput, normalize_gregorian_birth
+from tools.ziwei_calendar_lunar_python_reference import GregorianBirthInput, normalize_gregorian_birth
 
 def comparable_current(result):
     return {
