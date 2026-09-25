@@ -63,5 +63,17 @@
     "silent city disambiguation",
     "location accuracy guarantee"
   ],
-  "astronomical_authority": false
+  "astronomical_authority": false,
+  "materialization_transport": {
+    "status": "PRODUCTION_ADMITTED_PROFILE_500_ONLY",
+    "dataset_id": "astrology-place-geonamescache-v1",
+    "profile": 500,
+    "main_manifest": "data/astrology/place/v1/MANIFEST.json",
+    "data_ref": "refs/heads/data/astrology-place-v1",
+    "exact_data_commit": "d18be87abe762433e43e844f33f4b43f7fad9f3b",
+    "aggregate_digest": "6e542fd50c4d821d783c74c2f392bea087df68666ba1781970df66d47dc719a0",
+    "retrieval": "query-bounded alias-first then candidate-on-demand via GitHub Connect exact commit/path",
+    "fail_closed": true,
+    "other_profiles": "NOT_ADMITTED_FOR_SHARD_MATERIALIZATION"
+  }
 }
