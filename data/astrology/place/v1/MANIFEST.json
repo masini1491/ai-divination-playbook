@@ -76,12 +76,20 @@
       "1000": 50244,
       "5000": 21831,
       "15000": 10431
+    },
+    "github_connect_probe": {
+      "temporary_pr": 208,
+      "temporary_head": "d06a041e83322ccfbff936272a98c90a546dbb32",
+      "exact_revision_path_retrieval": "PASS",
+      "returned_blob_identity": "PASS",
+      "bounded_alias_first_candidate_on_demand": "PASS",
+      "connector_internal_filtering": "NOT_EXPOSED",
+      "cache_hit_network_byte_telemetry": "NOT_EXPOSED"
     }
   },
   "unresolved_admission_gates": [
-    "same-commit GitHub Connect exact-revision retrieval proof",
-    "connector-side integrity/filtering implementation proof",
-    "real connector cold-start latency/product validation",
+    "real generated-shard end-to-end cold-start payload/latency and semantic parity validation",
+    "cache policy must not claim connector-internal zero-byte behavior without telemetry",
     "production materialization/admission mutation"
   ]
 }
