@@ -296,7 +296,7 @@ Zi Wei 目前是 bounded natal production method，適合使用者明確要求�
 - `23:00` 晚子時採 `next_day_at_23`；
 - 閏月採 `split_after_day_15`；
 - optional `brightness_v1`：14 主星廟／旺／得／利／平／不／陷 facts，只在明確要求廟旺／亮度時啟用；
-- optional `sihua_v1`：`sihua.default_v1` 生年四化 profile-bound deterministic facts；新增 interpretation claims = 0；
+- optional `sihua_v1`：`sihua.default_v1` 生年四化 profile-bound deterministic facts + 3 條 source-explicit、fact-gated transformed-star claims；
 - provenance、omission、conflict、uncertainty 與 safety delivery。
 
 主要 production flow：
@@ -308,7 +308,7 @@ explicit Zi Wei request
 → tools/ziwei_calendar_provider.py（西元生日）或 normalized lunar input
 → tools/ziwei_natal_provider.py
 → optional tools/ziwei_brightness_provider.py
-→ optional tools/ziwei_sihua_provider.py（facts only）
+→ optional tools/ziwei_sihua_provider.py + 3 source-explicit fact-gated claims
 → tools/ziwei_claim_retrieval.py + tools/ziwei_delivery.py
 → typed Zi Wei result
 → ZIWEI.md bounded synthesis
@@ -375,7 +375,7 @@ tools/ziwei_runtime.py                  # canonical typed composition + JSON tra
 tools/ziwei_calendar_provider.py         # admitted Gregorian normalization provider
 tools/ziwei_natal_provider.py            # admitted natal fact provider
 tools/ziwei_brightness_provider.py       # optional admitted brightness facts
-tools/ziwei_sihua_provider.py             # optional admitted Four-Transformation facts; 0 new claims
+tools/ziwei_sihua_provider.py             # optional admitted Four-Transformation facts + 3 bounded source-explicit claims
 tools/ziwei_claim_retrieval.py           # production claim retrieval
 tools/ziwei_delivery.py                  # bounded delivery execution
 tools/ziwei_gregorian_pipeline.py        # legacy compatibility adapter
