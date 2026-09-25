@@ -157,10 +157,6 @@ AST-P1-010 found **no passing 10/20/40-day sampled/Hermite variant** under its p
 
 REFERENCE-ONLY; not production.
 
-### Special-point research
-
-AST-P1-040 Vertex/Equasc: [report](ASTROLOGY_EXP4_SPECIAL_POINTS_GEOMETRY.md) / [JSON](astrology_exp4_special_points_geometry.json). REFERENCE-ONLY; not production.
-
 ### Historical engine/timing research
 
 - [`ENGINE_COMPARISON_RESULTS.md`](ENGINE_COMPARISON_RESULTS.md)
