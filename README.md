@@ -17,7 +17,7 @@ Zi Wei Dou Shu / 紫微斗數（explicit-request only；Scope-A natal first laye
 - Tarot / Meihua / Liuyao 參與 ordinary method routing；
 - Astrology Production v1 已正式可用，但只在使用者明確要求「用占星／看本命盤／看行運」時啟用，不加入 ordinary auto-routing；
 - Zi Wei Scope-A Production v1 已正式可用，但只在使用者明確要求「用紫微／看紫微命盤」時啟用，不加入 ordinary auto-routing；目前支援 bounded natal first layer、Asia/Taipei 西元生日輸入與 optional brightness facts；
-- Tarot + Meihua 已有 canonical cross-validation contract；其他 method pair 在沒有專門 reconciliation contract 前，不宣稱為正式 cross-validation。
+- Tarot + Meihua 與 Astrology natal + Zi Wei natal baseline 已有 canonical reconciliation contract；其他 method pair 在沒有專門 contract 前，不宣稱為正式 cross-validation。
 
 > **AI / ChatGPT 快速入口：** 實際使用本手冊時，直接從 [`CHAT_INIT.md`](CHAT_INIT.md) 開始並依 task routing 只讀最低必要文件／sections；不需要先完整閱讀本 README，也不要為了「熟悉手冊」掃描整個 Repository。
 >
@@ -515,7 +515,7 @@ BACKTEST JUDGMENT
 | [`ZIWEI.md`](ZIWEI.md) | Zi Wei Scope-A Production v1 method owner、Gregorian input、brightness / unsupported-layer boundary |
 | [`ZIWEI_MATERIALIZATION.md`](ZIWEI_MATERIALIZATION.md) | Zi Wei ChatGPT deterministic bundle、verification、cache / fail-closed materialization contract |
 | [`RUNTIME_DRAW.md`](RUNTIME_DRAW.md) | Runtime Draw / Cast、cache、source、provenance、fail closed |
-| [`CROSS_VALIDATION.md`](CROSS_VALIDATION.md) | 目前正式 Tarot × Meihua reconciliation / evidence lineage |
+| [`CROSS_VALIDATION.md`](CROSS_VALIDATION.md) | canonical Tarot × Meihua + Astrology natal × Zi Wei natal-baseline reconciliation / evidence lineage |
 | [`READING_LIFECYCLE.md`](READING_LIFECYCLE.md) | 新題、承接、條件世界、補占、重占、現實更新、完成、回測 |
 | [`READING_RECORD.md`](READING_RECORD.md) | durable reading identity、append-only evidence layers、storage boundary |
 | [`CHATGPT_OUTPUT.md`](CHATGPT_OUTPUT.md) | user-visible output / Copy-ready / Pre-Send |
@@ -529,13 +529,14 @@ BACKTEST JUDGMENT
 
 ## Cross-validation 現況
 
-目前完整 canonical reconciliation owner 仍是：
+目前 canonical reconciliation owner 是 `CROSS_VALIDATION.md`，正式 pair 為：
 
 ```text
 Tarot + Meihua
+Astrology natal + Zi Wei natal baseline
 ```
 
-Liuyao、Astrology 與 Zi Wei 都已是 production methods，但 **production-ready 不等於已存在任意 pairwise cross-validation contract**。
+Liuyao、Astrology 與 Zi Wei 都已是 production methods，但 **production-ready 不等於任意 pairwise 組合都有 cross-validation contract**。Astrology × Zi Wei 也只承認目前已定義的 natal × natal-baseline bounded scope。
 
 在新增專門 reconciliation contract 前，不把下列組合宣稱為 canonical cross-validation：
 
@@ -548,7 +549,6 @@ Astrology + Liuyao
 Zi Wei + Tarot
 Zi Wei + Meihua
 Zi Wei + Liuyao
-Zi Wei + Astrology
 ```
 
 可以在同一使用者請求中形成 distinct readings 或 bounded derived synthesis，但必須保留各自 responsibility 與 evidence lineage。
