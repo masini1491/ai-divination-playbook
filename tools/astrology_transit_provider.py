@@ -8,8 +8,7 @@ production natal provider. It emits a transit-mode Astrology Fact Bundle 1.0.
 Supported event families:
 - transit-to-natal major-aspect exact roots, including tangential station hits;
 - stations (longitude-speed zero crossings);
-- tropical zodiac ingresses / retrograde returns / direct re-ingresses;
-- natal-house context and bounded natal-cusp crossings for exact/rectified birth time.
+- tropical zodiac ingresses / retrograde returns / direct re-ingresses.
 """
 from __future__ import annotations
 
