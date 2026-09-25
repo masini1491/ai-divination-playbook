@@ -50,10 +50,9 @@ jobs:
           (dest/"FILES.json").write_text(json.dumps(files,ensure_ascii=False,sort_keys=True,separators=(",",":")))
           print(json.dumps({"files":files,"corpus":corpus},ensure_ascii=False))
           PY
-      - name: Commit real generated probe shards
-        run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git add research/astrology/place_real_shard_probe
-          git commit -m "TEMP: materialize real Astrology place shard probe"
-          git push origin HEAD:research/astrology-place-real-shard-probe
+      - name: Upload real generated probe shards
+        uses: actions/upload-artifact@v4
+        with:
+          name: astrology-place-real-shard-probe
+          path: research/astrology/place_real_shard_probe
+          if-no-files-found: error
