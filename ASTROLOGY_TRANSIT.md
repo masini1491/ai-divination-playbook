@@ -76,7 +76,9 @@ Timing window是 symbolic / methodological interpretation window，不是現實�
 ## 6. Transit Unsupported / Uncertainty
 
 - unadmitted pair-specific meaning → `unsupported_factor`；
-- transit-house search、sidereal ingress、topocentric geometry等超出 admitted scope時不得模型補算；
+- transit-house context / cusp-crossing search僅可使用 admitted natal 12 cusp facts，且 natal birth-time certainty 必須為 `exact` 或 `rectified`；`approximate` / `unknown` fail closed；
+- transit-house deterministic fact只描述 moving body 位於／跨越哪個 natal house；house semantic meaning仍需獨立 admitted claim，不因幾何 admission 自動取得；
+- sidereal ingress、topocentric geometry等超出 admitted scope時不得模型補算；
 - user-supplied transit facts若未獨立驗證，要保留 `user_asserted` provenance；
 - deterministic event fact與 symbolic meaning必須分層表達。
 
