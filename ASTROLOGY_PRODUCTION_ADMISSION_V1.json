@@ -225,10 +225,22 @@
     "scope": [
       "transit_to_natal_exact_aspects",
       "stations",
-      "tropical_ingresses"
+      "tropical_ingresses",
+      "transit_house_ingress_exact_roots"
     ],
     "max_search_days": 400,
-    "canonical_event_time": "UTC"
+    "canonical_event_time": "UTC",
+    "provider_version": "1.1.0",
+    "transit_house_policy": {
+      "calculation": "admitted_for_exact_birth_time_only",
+      "admitted_house_systems": [
+        "Whole Sign",
+        "Placidus"
+      ],
+      "semantic_interpretation": "not_admitted_without_separate_claim_family",
+      "approximate_birth_time": "fail_closed",
+      "unknown_birth_time": "fail_closed"
+    }
   },
   "fact_bundle_schema": "astrology_fact_bundle@1.0.0",
   "fact_bundle_schema_path": "schemas/astrology/ASTROLOGY_FACT_BUNDLE_V1.schema.json",
@@ -345,9 +357,9 @@
     "provider_unknown_birth_time_noon_substitution",
     "street_or_building_geocoding",
     "unbounded_transit_search",
-    "transit_house_search",
     "sidereal_transit_ingress",
-    "unsourced_planet_in_sign_personality_templates"
+    "unsourced_planet_in_sign_personality_templates",
+    "transit_house_semantic_interpretation_without_separate_claim_family"
   ],
   "high_stakes_guardrails": [
     "no_deterministic_death_prediction",
