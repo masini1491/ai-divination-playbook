@@ -153,7 +153,7 @@
       "nocturnal_formula": "Ascendant + Sun - Moon",
       "normalization": "mod_360",
       "unknown_time": "not_emitted",
-      "aspect_participation": "not_admitted"
+      "aspect_participation": "explicit_projection_policy_only"
     },
     "aspect_generation": {
       "participant_policy_id": "aspect-participants-core-bodies-v1",
@@ -197,7 +197,10 @@
           "aspect-participants-core-plus-south-node-v1",
           "aspect-participants-core-plus-fortune-v1"
         ],
-        "semantic_interpretation_authority": false
+        "semantic_interpretation_authority": false,
+        "explicit_aspect_policy_selector_required": true,
+        "explicit_orb_policy_selector_required": true,
+        "policy_definitions_owner": "ASTROLOGY_PRODUCTION_ADMISSION_V1.json#/aspect_policy/extended_participant_policies"
       }
     }
   },
