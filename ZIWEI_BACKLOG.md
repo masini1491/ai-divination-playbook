@@ -148,7 +148,8 @@ This SHA is review evidence only, not a pin. Every maintenance task must resolve
   - exact candidate dataset is materialized at `data/calendar/ziwei_tw_interval/v1/**` with 202 Gregorian-year shards (1900..2101 including the 2101 policy tail), 2,692 intervals and 471,865 shard bytes;
   - candidate dataset aggregate SHA-256 is `4913a39e770afcd21eedc387523c572b8c4fc6469889c28f6ea75613f8984d79`; pinned installed-source inventory SHA-256 is `bf49ea69241171a8e5b5a85ca07748c88b00f5ce392f25c21617e398c9c9a712`;
   - range-parameterized builder/validator verifies the existing pinned 34-file upstream Git-blob inventory before generation, writes manifest/provenance/attribution metadata, closes exact shard inventory + per-shard/aggregate hashes and clean deterministic rebuild;
-  - remaining admission blocker is production resolver/materialization migration plus the bounded calendar admission update/production regression gate; current option A remains authoritative until that gate passes.
+  - dependency-free query-bounded resolver candidate now lives in `tools/ziwei_calendar_data_provider.py`: ordinary dates require one year shard; 2100-12-31 23:00 requires the 2100 + 2101 policy-tail pair; manifest/shard hash and selected-range failures are fail closed;
+  - current option A remains production authority; remaining admission blocker is binding this resolver into the production provider + query-bounded ChatGPT materialization, then updating the calendar admission manifest and production regression gate together.
 - scope boundary:
   - does not modify `ZW-P1-020` Four Transformations semantics;
   - does not create repository-layer architecture policy outside `REPOSITORY_ARCHITECTURE.md`.

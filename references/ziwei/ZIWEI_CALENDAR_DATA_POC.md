@@ -335,6 +335,33 @@ identity, hash accounting and deterministic rebuild evidence. It does **not**
 close the later production resolver/materialization migration or calendar
 admission update.
 
+## Query-bounded resolver candidate
+
+`tools/ziwei_calendar_data_provider.py` is the dependency-free resolver
+candidate for the next migration gate. It is deliberately **not** wired into
+`tools/ziwei_calendar_provider.py` yet, so current production authority remains
+unchanged while resolver behavior is validated independently.
+
+Candidate contract:
+
+- ordinary input → one `years/YYYY.json` shard;
+- 31 December at 23:00 → raw-year shard + next-year policy-tail shard;
+- selected input range is 1900-01-01..2100-12-31;
+- 2101 is only a materialized policy tail and is not a user-input admission
+  extension;
+- dataset manifest identity/status/range must match the selected candidate;
+- every shard must match the manifest path, byte count, SHA-256, year and
+  interval count before use;
+- missing/tampered/ambiguous data fails closed;
+- runtime resolver imports no `lunar_python`.
+
+Targeted candidate tests compare documented boundaries plus a fixed 200-case
+random corpus against the current admitted provider, and separately cover
+one-vs-two-shard routing and manifest/shard failure paths. The next gate is to
+validate and merge this candidate without changing production authority; only a
+later bounded admission PR may bind it into the production provider and
+materialization path.
+
 ## Production migration gate
 
 Only after parity/range/size evidence is sufficient should a later bounded
