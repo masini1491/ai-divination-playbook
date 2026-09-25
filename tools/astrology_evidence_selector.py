@@ -116,7 +116,7 @@ def _validate_request(data: Any) -> dict[str, Any]:
             allowed = set(required)
         elif kind == "event":
             required = common | {"event_kind"}
-            allowed = common | {"event_kind", "moving_body", "natal_target", "aspect", "passage_index", "transition", "ingress_type", "from_sign", "to_sign", "exact_time_utc"}
+            allowed = common | {"event_kind", "moving_body", "natal_target", "aspect", "passage_index", "transition", "ingress_type", "from_sign", "to_sign", "from_house", "to_house", "house_system", "exact_time_utc"}
         else:
             raise AstrologyEvidenceSelectionError(f"{path}.selector_kind is unsupported")
         _exact_keys(raw, allowed=allowed, required=required, path=path)
@@ -263,7 +263,12 @@ def _selector_applicability(selector: dict[str, Any]) -> set[str]:
         tags.update({selector["left_object_id"], selector["right_object_id"], selector["aspect"]})
     else:
         event_kind = selector["event_kind"]
-        tags.add({"transit_to_natal": "transit-to-natal", "station": "station", "ingress": "ingress"}[event_kind])
+        tags.add({"transit_to_natal": "transit-to-natal", "station": "station", "ingress": "ingress", "house_ingress": "house ingress"}[event_kind])
+        if event_kind == "house_ingress":
+            if "from_house" in selector:
+                tags.add(f"from house {selector['from_house']}")
+            if "to_house" in selector:
+                tags.add(f"to house {selector['to_house']}")
         if event_kind == "transit_to_natal":
             tags.add("exact passage")
     return tags
