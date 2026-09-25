@@ -207,7 +207,7 @@ cheap HEAD/ref probe
 - 需要拆題／牌位／條件世界／時間窗 → `QUESTION_DESIGN.md`。
 - continuation / Reality Update / completion / backtest → `READING_LIFECYCLE.md`。
 - durable save / cross-chat / audit → `READING_RECORD.md`。
-- Tarot × Meihua reconciliation → `CROSS_VALIDATION.md`。
+- cross-validation → `CROSS_VALIDATION.md`。
 - behavioral regression → `BEHAVIORAL_EVAL.md` + selected scenarios。
 - machine owner discovery → `PLAYBOOK_INDEX.json`。
 - material session-health risk → `SESSION_HANDOFF.md`。

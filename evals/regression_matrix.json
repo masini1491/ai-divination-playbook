@@ -26,7 +26,8 @@
     "TAROT-BEH-022",
     "TAROT-BEH-023",
     "TAROT-BEH-024",
-    "TAROT-BEH-025"
+    "TAROT-BEH-025",
+    "TAROT-BEH-026"
   ],
   "change_classes": {
     "bootstrap-access": [
@@ -42,7 +43,8 @@
       "TAROT-BEH-002",
       "TAROT-BEH-001",
       "TAROT-BEH-016",
-      "TAROT-BEH-018"
+      "TAROT-BEH-018",
+      "TAROT-BEH-026"
     ],
     "astrology-production": [
       "TAROT-BEH-016",
@@ -79,6 +81,7 @@
     "cross-validation": [
       "TAROT-BEH-009",
       "TAROT-BEH-014",
+      "TAROT-BEH-026",
       "TAROT-BEH-002"
     ],
     "session-continuity": [

@@ -872,6 +872,42 @@ https://github.com/masini1491/ai-divination-playbook
 
 - Whether shared baseline was unnecessarily loaded、destination identity/disclosure decision、context minimization/redaction/STOP behavior。
 
+### TAROT-BEH-026 — Astrology natal × Zi Wei natal reconciliation preserves scope and lineage
+
+**Premise / authority**
+
+- Astrology Production v1 natal reading is available.
+- Zi Wei Scope-A natal baseline is available.
+- User explicitly requests both methods for the same person / natal question.
+- `CROSS_VALIDATION.md` is the canonical reconciliation owner.
+
+**User stimulus**
+
+```text
+占星跟紫微一起看我的本命底盤，幫我交叉驗證；如果兩邊有衝突也直接說。
+```
+
+**Expected behavior**
+
+- Complete Astrology natal and Zi Wei natal-baseline readings independently under their own owners before reconciliation.
+- Compare only question-relevant higher-level natal themes supported by each admitted reading.
+- Classify synthesis as `AGREEMENT` / `COMPLEMENT` / `TENSION` / `UNRESOLVED` / `NOT_COMPARABLE` as applicable.
+- Preserve method-specific evidence lineage and unsupported factors.
+- Agreement is symbolic / interpretive consistency only; no objective probability or empirical-validity promotion.
+- If Astrology transit is additionally requested, keep it as a distinct dynamic track; do not call transit × Zi Wei natal formal cross-validation.
+
+**Forbidden behavior**
+
+- Treating Astrology house ↔ Zi Wei palace, planet ↔ 主星, or other cross-system factors as one-to-one identities without separate admission.
+- Voting, score averaging, or choosing a winning method to erase a conflict.
+- Using one method to fill the other method's unsupported fact / claim and then reporting agreement.
+- Calling Astrology transit × Zi Wei natal baseline canonical cross-validation.
+- Rewriting source readings to force convergence.
+
+**Observable evidence**
+
+- owner routing, reading-mode/scope identity, source fact/claim lineage, reconciliation state, conflict wording, absence of invented cross-system mappings.
+
 ## Regression Selection｜最低充分回歸
 
 不要求每次修改都跑全部 scenarios；依 mutation scope 選直接相關項目：
@@ -886,7 +922,7 @@ https://github.com/masini1491/ai-divination-playbook
 - project-native privacy / private-context inference-egress → TAROT-BEH-022、024；shared-baseline boundary 同時變更時另加 023。
 - `CHATGPT_OUTPUT.md` / output-core / Pre-Send Gate → TAROT-BEH-004、009、010、019、020；若同時修改 question-delivery copy surface，另加 001／002。
 - Astrology rule layering / mode-owner normalization → TAROT-BEH-016、017、018；若同時修改 loader，再加 loader-optimization。
-- Cross-validation／evidence lineage → TAROT-BEH-009、014，必要時 002。
+- Cross-validation／evidence lineage → TAROT-BEH-009、014、026，必要時 002；Astrology × Zi Wei contract 變更時 026 mandatory。
 - `SESSION_HANDOFF.md` → TAROT-BEH-015，必要時 013。
 - `PLAYBOOK_INDEX.json`／machine routing → 先驗證 owner pointer，再依受影響 owner 選 scenario；Astrology capability 需 016、018。
 - 跨多 owner／cold-start architecture → 先跑直接受影響 scenario；無法界定才擴大 full baseline。

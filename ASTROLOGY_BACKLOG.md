@@ -466,6 +466,13 @@ This item is a standing reconciliation guard. It is not a request to change curr
   - online casting production smoke is path-bounded rather than a general main-push dependency;
   - unrelated Astrology main changes no longer inherit live Vercel availability as a gate.
 
+### AST-SHARED-002 — Astrology × Zi Wei reconciliation pointer
+
+- type: SHARED POINTER ONLY
+- canonical coordination owner: `ZIWEI_BACKLOG.md#ZW-SHARED-001`
+- canonical technical contract: `CROSS_VALIDATION.md` §7
+- mutable status is **not** tracked here; follow the Zi Wei backlog owner to avoid divergent shared state.
+
 ## Intentionally not backlog blockers
 
 The following are already-closed capabilities or deliberate product boundaries and must not be repeatedly rediscovered as blockers:

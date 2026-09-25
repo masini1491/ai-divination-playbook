@@ -311,6 +311,15 @@
       "kind": "contract"
     },
     {
+      "id": "cross-validation.astrology-ziwei-natal",
+      "owner": "CROSS_VALIDATION.md",
+      "section": "7. Astrology natal × Zi Wei natal baseline reconciliation",
+      "kind": "contract",
+      "activation": "explicit-pair-request-only",
+      "astrology_scope": "natal",
+      "ziwei_scope": "natal_baseline"
+    },
+    {
       "id": "output.chatgpt",
       "owner": "CHATGPT_OUTPUT.md",
       "section": "Section Router｜依任務只讀最低必要段落",

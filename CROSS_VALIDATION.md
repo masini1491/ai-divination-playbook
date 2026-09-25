@@ -1,12 +1,21 @@
-# 塔羅 × 梅花易數交叉驗證
+# Cross-validation｜跨方法 reconciliation
 
-本章只處理**塔羅與梅花易數同時存在時，兩套系統如何分工、比對與處理衝突**。
+本章是 production cross-validation / reconciliation 的 canonical owner。目前正式支援兩組 pair：
+
+```text
+Tarot × Meihua
+Astrology natal × Zi Wei natal baseline
+```
+
+其他 method pair 若沒有本檔明確 contract，仍只能保持 distinct readings + derived synthesis，不得宣稱為正式 cross-validation。
+
+本檔只定義**不同方法已各自合法產生結果後，如何分工、比對、保留衝突與 evidence lineage**；不改寫任何 method owner 的 calculation、interpretation admission 或 routing authority。
 
 新題／承接／補占／現實更新／完成／舊占回測等跨方法生命週期，統一以 [`READING_LIFECYCLE.md`](READING_LIFECYCLE.md) 為 authority；ChatGPT 最終呈現格式與信心語言則依 [`CHATGPT_OUTPUT.md`](CHATGPT_OUTPUT.md)。
 
 ## 1. 先各自回答，再綜合
 
-塔羅與梅花不應互相強迫一致。
+任何已 admission 的 pair 都必須先完成各自方法內的判讀，再進 reconciliation。塔羅與梅花不應互相強迫一致；Astrology 與 Zi Wei 亦同。
 
 推薦流程：
 
@@ -44,7 +53,7 @@
 
 ## 3. 衝突時不要投票
 
-若塔羅與梅花易數不一致，不採「二比一」或「哪套比較準」處理。
+若兩套方法不一致，不採「二比一」、「平均分數」或「哪套比較準」處理。
 
 先檢查：
 
@@ -114,7 +123,117 @@
 3. 重新定義第二套占卜的問題身份；
 4. 最後只說明兩者如何形成時間上的前後承接，而不是宣稱它們彼此驗證。
 
-## 7. 交叉驗證內容模板
+## 7. Astrology natal × Zi Wei natal baseline reconciliation
+
+此 pair 只有在**同一 subject 的 natal baseline**都已依各自 production owner 合法完成時，才取得 canonical reconciliation authority：
+
+```text
+Astrology
+→ ASTROLOGY.md
+→ ASTROLOGY_NATAL.md
+→ admitted deterministic facts / claims
+→ independent natal reading
+
+Zi Wei
+→ ZIWEI.md
+→ admitted natal_baseline facts / claims
+→ independent natal reading
+
+兩邊都完成
+→ 本節 reconciliation
+```
+
+### 7.1 Distinct evidence responsibilities
+
+兩套方法不需要把技術語彙翻成彼此的等價物。reconciliation 比較的是**已由各自 method owner 支持的上位 natal themes / question-relevant conclusions**，而不是原始因子名稱。
+
+可比較：
+
+- 同一使用者原題下，兩套 natal reading 是否對某個高階主題呈現相同方向；
+- 一套提供的 admitted natal layer 是否補充另一套沒有回答的不同面向；
+- 兩套對同一高階主題是否有實質 tension；
+- 哪些問題仍因任一側 scope / claim / fact 不足而未知。
+
+不可自行建立：
+
+- Astrology house ↔ Zi Wei palace 的一對一等價表；
+- planet / sign / aspect ↔ 主星／宮位／亮度／輔星的一對一映射；
+- 「第七宮 = 夫妻宮」等未另行 admission 的 cross-system semantic identity；
+- 由兩套方法同向而推導客觀 probability、empirical validity 或較高現實證據等級。
+
+### 7.2 Comparable scope gate
+
+目前 canonical comparable scope 是：
+
+```text
+Astrology natal
+×
+Zi Wei natal_baseline
+```
+
+下列不屬於本 contract：
+
+- Astrology transit × Zi Wei natal baseline；
+- Astrology dynamic timing × 未 production-admitted 的 Zi Wei dynamic timing；
+- Astrology research-only claim × Zi Wei production claim；
+- Zi Wei unsupported dynamic / broader contextual layer × Astrology production interpretation。
+
+若使用者同時要求 Astrology transit 與 Zi Wei，目前可以：
+
+1. 保留 Astrology transit 為獨立 dynamic reading；
+2. 保留 Zi Wei natal baseline 為獨立 natal reading；
+3. 只對各自已回答的不同責任作 bounded derived synthesis；
+4. **不得稱為正式 Astrology × Zi Wei cross-validation。**
+
+### 7.3 Reconciliation states
+
+對每個實際被比較的上位主題，只能使用下列狀態：
+
+- `AGREEMENT`：兩套已 admitted readings 對同一高階主題方向相容；
+- `COMPLEMENT`：回答的是不同但可共同理解原題的面向，沒有形成同題 corroboration；
+- `TENSION`：兩套對同一高階主題存在實質差異，但不足以宣告哪套勝出；
+- `UNRESOLVED`：scope、fact、claim、question identity 或 comparability 不足；
+- `NOT_COMPARABLE`：層級不同（例如 transit vs natal）或需要未 admission cross-system mapping 才能比較。
+
+`AGREEMENT` 只代表 symbolic / interpretive consistency。不得把兩套方法算成兩票、平均 confidence、提高成客觀機率或現實證明。
+
+### 7.4 Conflict handling
+
+若出現 `TENSION`：
+
+1. 先確認 subject / question scope 相同；
+2. 確認 Astrology 使用的是 natal owner，不是 transit／research-only layer；
+3. 確認 Zi Wei 只使用 admitted natal Scope-A + 明確啟用的 optional module；
+4. 檢查是否其實是 `COMPLEMENT` 或 `NOT_COMPARABLE`；
+5. 若仍衝突，保留兩條 source lineage，輸出 `TENSION` / `UNRESOLVED`。
+
+禁止：
+
+- 投票；
+- score averaging；
+- 以其中一套覆寫另一套；
+- 為了消除衝突新增未 admitted cross-system semantic mapping；
+- 用一套方法的 unsupported layer由另一套補洞後再宣稱「兩邊一致」。
+
+### 7.5 Astrology × Zi Wei output template
+
+不要求固定逐欄輸出，但最低語義結構應可辨識：
+
+```text
+Astrology natal 主結論：
+Zi Wei natal 主結論：
+可比較的共同主題：
+AGREEMENT：
+COMPLEMENT：
+TENSION / UNRESOLVED：
+NOT_COMPARABLE：
+仍不能共同推出的事項：
+evidence lineage / scope boundary：
+```
+
+如果沒有真正可比較的共同主題，不為了完成模板硬產生 `AGREEMENT`。
+
+## 8. 交叉驗證內容模板
 
 以下只是內容欄位參考，不要求每次固定全部輸出；實際呈現依 `CHATGPT_OUTPUT.md`。
 
@@ -138,4 +257,4 @@
 仍不能由兩者共同推出的事項：
 ```
 
-核心原則：**Cross-validation 是責任分工後的 reconciliation，不是多抽一套來增加票數。**
+核心原則：**Cross-validation 是責任分工後的 reconciliation，不是多一套方法就多一票；沒有 admission 的跨系統映射，不得為了漂亮整合而現場創造。**
