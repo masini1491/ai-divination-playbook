@@ -449,7 +449,7 @@ This item is a standing reconciliation guard. It is not a request to change curr
 ### AST-P1-150 — Runtime reuse / host integration binding
 
 - type: MATERIALIZATION / HOST INTEGRATION
-- status: IN_PROGRESS
+- status: DONE
 - priority: P1
 - owner: Astrology deterministic materialization
 - blocked_by: none
@@ -457,8 +457,8 @@ This item is a standing reconciliation guard. It is not a request to change curr
   - ChatGPT cold-start audit after Zi Wei PR #225 exposed the same shared host-transport risk at the Astrology method boundary.
 - current_state:
   - core bundle integrity, pinned Astronomy Engine dependency, and query-bounded place-resolver transport are already admitted;
-  - Astrology materialization already probes a local marker, but current wording treats revision mismatch too aggressively as MISS and routes a real miss directly to full bundle acquisition;
-  - shared AI Development Playbook already owns generic runtime reuse, artifact handoff, direct-handoff preference, provenance/currentness separation, and layered host status.
+  - Astrology materialization already probes a local marker, but prior wording treated revision mismatch too aggressively as MISS and routed a real miss directly to full bundle acquisition;
+  - shared AI Development Playbook owns generic runtime reuse, artifact handoff, direct-handoff preference, provenance/currentness separation, and layered host status.
 - completion_gate:
   - verified local Astrology runtime reuse is explicitly first;
   - current HEAD advancement alone does not invalidate byte-compatible materialized assets or rewrite provenance;
@@ -468,6 +468,16 @@ This item is a standing reconciliation guard. It is not a request to change curr
   - existing chunk/archive/per-file integrity and astronomy-engine==2.1.19 pin remain unchanged;
   - explicit coordinates bypass place resolver, while place-name resolution remains resolver-specific and query-bounded;
   - existing product scenario / regression test protects the operational binding without copying shared ownership.
+- closure:
+  - `ASTROLOGY_MATERIALIZATION.md` now binds shared Runtime Asset Reuse / Artifact Handoff / Inbound Verified Transport semantics to Astrology's concrete cache, core bundle and resolver split;
+  - `/mnt/data/divination-astrology-runtime/core_bundle_verification.json` is probed before bundle acquisition, but directory or marker existence alone remains insufficient evidence;
+  - materially unchanged cached bytes may be reused across newer repository HEAD observations without rewriting `materialized_source_commit` provenance;
+  - real cache miss / invalid identity enters a Host Capability Gate: direct byte/file-aware handoff first, bounded verified opaque bundle fallback second;
+  - No Full-Bundle-First explicitly prevents full bundle/chunk transfer into model-visible context before cache reuse and handoff necessity are established;
+  - layered host status uses the shared Acquisition / Payload handoff / Materialization / Integrity / Execution vocabulary;
+  - `astronomy-engine==2.1.19`, chunk/archive/per-file integrity gates, and cold-start bundle fallback remain unchanged;
+  - explicit coordinates remain resolver-free; place/country resolution reuses compatible verified resolver/query cache when available and otherwise stays on the admitted profile-500 query-bounded shard path;
+  - product scenario and discoverability regression cover the method-specific binding; Zi Wei ownership/files remain untouched.
 
 ## P2 — deferred compatibility / provider expansion
 
