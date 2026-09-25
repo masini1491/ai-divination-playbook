@@ -158,6 +158,24 @@
         },
         "silent_default": "forbidden",
         "semantic_interpretation_authority": false
+      },
+      "extended_aspects": {
+        "projection_id": "astrology-extended-aspect-projection-v1",
+        "runtime_owner": "tools/astrology_aspect_projection.py",
+        "output_schema": "schemas/astrology/ASTROLOGY_ASPECT_PROJECTION_V1.schema.json",
+        "output_schema_id": "astrology_aspect_projection@1.0.0",
+        "authority": "deterministic_policy_projection_only",
+        "activation": "explicit_selector_only",
+        "admitted_participant_policy_ids": [
+          "aspect-participants-core-plus-angles-v1",
+          "aspect-participants-core-plus-south-node-v1",
+          "aspect-participants-core-plus-fortune-v1"
+        ],
+        "required_aspect_policy_id": "major-aspects-v1",
+        "required_orb_policy_id": "major-aspect-orbs-v1",
+        "default_participant_policy_id": null,
+        "auto_include_new_objects": false,
+        "semantic_interpretation_authority": false
       }
     }
   },
@@ -306,12 +324,18 @@
       "Pluto",
       "NorthNode"
     ],
-    "extended_points_or_angles": "not_admitted",
+    "extended_points_or_angles": "explicit_projection_policies_only",
     "participant_policy_id": "aspect-participants-core-bodies-v1",
     "aspect_policy_id": "major-aspects-v1",
     "orb_policy_id": "major-aspect-orbs-v1",
     "auto_include_new_objects": false,
-    "extended_policy_activation": "explicit_selector_only"
+    "extended_policy_activation": "explicit_selector_only",
+    "extended_participant_policy_ids": [
+      "aspect-participants-core-plus-angles-v1",
+      "aspect-participants-core-plus-south-node-v1",
+      "aspect-participants-core-plus-fortune-v1"
+    ],
+    "default_extended_policy": null
   },
   "source_policy": {
     "required_source_admission_any": [
