@@ -9,7 +9,8 @@ Supported event families:
 - transit-to-natal major-aspect exact roots, including tangential station hits;
 - stations (longitude-speed zero crossings);
 - tropical zodiac ingresses / retrograde returns / direct re-ingresses;
-- natal-house cusp crossings for exact-time natal charts.
+- natal-house cusp crossings for exact-time natal charts;
+- point-in-time transit-house context for exact-time natal charts.
 """
 from __future__ import annotations
 
@@ -29,7 +30,7 @@ from tools.astrology_provider import (
 from tools.astrology_runtime import MAJOR_ASPECT_ORBS, gate_bundle
 
 PROVIDER_ID = "astronomy-engine-transit-v1"
-PROVIDER_VERSION = "1.1.0"
+PROVIDER_VERSION = "1.2.0"
 MAX_SEARCH_DAYS = 400.0
 DEFAULT_STEP_HOURS = 3.0
 ROOT_TOLERANCE_SECONDS = 0.5
@@ -335,6 +336,35 @@ def _house_of_longitude(longitude_deg: float, cusps: list[float | None]) -> int:
     raise TransitProviderInputError("natal house cusp geometry is not usable for transit search")
 
 
+def transit_house_context(
+    natal_bundle: dict[str, Any],
+    *,
+    at_utc: str,
+    moving_bodies: Iterable[str],
+) -> list[dict[str, Any]]:
+    when = _parse_utc(at_utc)
+    cusps = _natal_house_cusps(natal_bundle)
+    house_system = natal_bundle.get("configuration", {}).get("house_system")
+    rows: list[dict[str, Any]] = []
+    for body in dict.fromkeys(moving_bodies):
+        if body not in BODY_NAMES or body == "NorthNode":
+            raise TransitProviderInputError(f"transit house context unsupported for body: {body}")
+        longitude, speed = _longitude_and_speed(body, when)
+        house_number = _house_of_longitude(longitude, cusps)
+        rows.append({
+            "fact_id": f"fact:event:house_context:{body.lower()}:{house_number}:{int(when.timestamp())}",
+            "event_kind": "house_context",
+            "moving_body": body,
+            "exact_time_utc": _iso_utc(when),
+            "longitude_deg": longitude,
+            "house_number": house_number,
+            "house_system": house_system,
+            "motion_direction": _motion_direction(speed),
+            "speed_deg_per_day": speed,
+        })
+    return sorted(rows, key=lambda row: (row["moving_body"], row["fact_id"]))
+
+
 def search_house_ingresses(
     natal_bundle: dict[str, Any],
     *,
@@ -446,6 +476,8 @@ def build_transit_bundle(
     include_stations: bool = True,
     include_ingresses: bool = True,
     include_house_ingresses: bool = False,
+    include_house_context: bool = False,
+    house_context_utc: str | None = None,
 ) -> dict[str, Any]:
     start, end = _validate_window(start_utc, end_utc)
     moving = tuple(dict.fromkeys(moving_bodies))
@@ -457,8 +489,14 @@ def build_transit_bundle(
         raise TransitProviderInputError("transit-to-natal search requires at least one natal target")
     if include_transit_to_natal and not aspect_names:
         raise TransitProviderInputError("transit-to-natal search requires at least one aspect")
-    if not any((include_transit_to_natal, include_stations, include_ingresses, include_house_ingresses)):
+    if not any((include_transit_to_natal, include_stations, include_ingresses, include_house_ingresses, include_house_context)):
         raise TransitProviderInputError("at least one transit event family must be enabled")
+    if include_house_context:
+        if not house_context_utc:
+            raise TransitProviderInputError("house_context_utc is required when include_house_context=true")
+        context_time = _parse_utc(house_context_utc)
+        if context_time < start or context_time > end:
+            raise TransitProviderInputError("house_context_utc must fall within start_utc..end_utc")
     if not subject_ref or not subject_ref.strip():
         raise TransitProviderInputError("subject_ref is required")
 
@@ -491,6 +529,8 @@ def build_transit_bundle(
                 moving_bodies=moving,
             )
         )
+    if include_house_context:
+        events.extend(transit_house_context(natal_bundle, at_utc=house_context_utc or "", moving_bodies=moving))
     events.sort(key=lambda row: (row["exact_time_utc"], row["fact_id"]))
 
     bundle = {
@@ -523,6 +563,7 @@ def build_transit_bundle(
                 "stations": include_stations,
                 "ingresses": include_ingresses,
                 "house_ingresses": include_house_ingresses,
+                "house_context": include_house_context,
             },
         },
         "facts": {"objects": [], "houses": [], "aspects": [], "events": events},
@@ -546,6 +587,8 @@ def main() -> int:
     parser.add_argument("--no-stations", action="store_true")
     parser.add_argument("--no-ingresses", action="store_true")
     parser.add_argument("--house-ingresses", action="store_true")
+    parser.add_argument("--house-context", action="store_true")
+    parser.add_argument("--house-context-utc")
     args = parser.parse_args()
     try:
         with open(args.natal_bundle, encoding="utf-8") as handle:
@@ -562,6 +605,8 @@ def main() -> int:
             include_stations=not args.no_stations,
             include_ingresses=not args.no_ingresses,
             include_house_ingresses=args.house_ingresses,
+            include_house_context=args.house_context,
+            house_context_utc=args.house_context_utc,
         )
     except (OSError, json.JSONDecodeError, TransitProviderInputError, RuntimeError) as exc:
         print(json.dumps({"status": "rejected", "error": str(exc)}, ensure_ascii=False, indent=2))

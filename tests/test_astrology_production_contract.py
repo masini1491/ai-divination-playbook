@@ -33,6 +33,12 @@ class AstrologyProductionContractTests(unittest.TestCase):
         self.assertEqual("not_emitted", natal["known_time_derived_axes"]["unknown_time"])
         self.assertEqual("explicit_projection_policy_only", natal["known_time_derived_axes"]["aspect_participation"])
         self.assertEqual("astronomy-engine-transit-v1", transit["provider_id"])
+        self.assertEqual("1.2.0", transit["provider_version"])
+        self.assertIn("transit_house_point_in_time_context", transit["scope"])
+        self.assertEqual(
+            "admitted_with_explicit_utc_timestamp_inside_bounded_request_window",
+            transit["transit_house_policy"]["point_in_time_context"],
+        )
         self.assertEqual("geonamescache-city-v1", place["resolver_id"])
         self.assertTrue(natal["raw_birth_data_supported"])
         self.assertEqual(400, transit["max_search_days"])

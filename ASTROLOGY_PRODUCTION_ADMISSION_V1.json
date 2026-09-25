@@ -309,11 +309,12 @@
       "transit_to_natal_exact_aspects",
       "stations",
       "tropical_ingresses",
-      "transit_house_ingress_exact_roots"
+      "transit_house_ingress_exact_roots",
+      "transit_house_point_in_time_context"
     ],
     "max_search_days": 400,
     "canonical_event_time": "UTC",
-    "provider_version": "1.1.0",
+    "provider_version": "1.2.0",
     "transit_house_policy": {
       "calculation": "admitted_for_exact_birth_time_only",
       "admitted_house_systems": [
@@ -322,7 +323,8 @@
       ],
       "semantic_interpretation": "not_admitted_without_separate_claim_family",
       "approximate_birth_time": "fail_closed",
-      "unknown_birth_time": "fail_closed"
+      "unknown_birth_time": "fail_closed",
+      "point_in_time_context": "admitted_with_explicit_utc_timestamp_inside_bounded_request_window"
     }
   },
   "fact_bundle_schema": "astrology_fact_bundle@1.0.0",

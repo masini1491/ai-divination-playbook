@@ -183,6 +183,8 @@ def _normalize_transit(data: Any) -> dict[str, Any]:
             "include_stations",
             "include_ingresses",
             "include_house_ingresses",
+            "include_house_context",
+            "house_context_utc",
         },
         required={"start_utc", "end_utc", "moving_bodies"},
         path="$.transit",
@@ -210,13 +212,21 @@ def _normalize_transit(data: Any) -> dict[str, Any]:
     include_stations = transit.get("include_stations", True)
     include_ingresses = transit.get("include_ingresses", True)
     include_house_ingresses = transit.get("include_house_ingresses", False)
+    include_house_context = transit.get("include_house_context", False)
     if not isinstance(include_stations, bool):
         raise OrchestrationInputError("$.transit.include_stations must be boolean")
     if not isinstance(include_ingresses, bool):
         raise OrchestrationInputError("$.transit.include_ingresses must be boolean")
     if not isinstance(include_house_ingresses, bool):
         raise OrchestrationInputError("$.transit.include_house_ingresses must be boolean")
-    if not any((include_transit_to_natal, include_stations, include_ingresses, include_house_ingresses)):
+    if not isinstance(include_house_context, bool):
+        raise OrchestrationInputError("$.transit.include_house_context must be boolean")
+    house_context_utc = transit.get("house_context_utc")
+    if include_house_context and house_context_utc is None:
+        raise OrchestrationInputError("$.transit.house_context_utc is required when include_house_context=true")
+    if house_context_utc is not None:
+        house_context_utc = _non_empty_string(house_context_utc, "$.transit.house_context_utc")
+    if not any((include_transit_to_natal, include_stations, include_ingresses, include_house_ingresses, include_house_context)):
         raise OrchestrationInputError("$.transit must enable at least one event family")
 
     return {
@@ -229,6 +239,8 @@ def _normalize_transit(data: Any) -> dict[str, Any]:
         "include_stations": include_stations,
         "include_ingresses": include_ingresses,
         "include_house_ingresses": include_house_ingresses,
+        "include_house_context": include_house_context,
+        "house_context_utc": house_context_utc,
     }
 
 
@@ -309,6 +321,8 @@ def normalize_request(data: Any) -> dict[str, Any]:
         normalized["transit"] = _normalize_transit(root["transit"])
         if normalized["transit"]["include_house_ingresses"] and certainty != "exact":
             raise OrchestrationInputError("transit house ingress search requires birth_time_certainty=exact")
+        if normalized["transit"]["include_house_context"] and certainty != "exact":
+            raise OrchestrationInputError("transit house context requires birth_time_certainty=exact")
     return normalized
 
 
@@ -426,6 +440,8 @@ def run_request(data: Any) -> dict[str, Any]:
             include_stations=transit["include_stations"],
             include_ingresses=transit["include_ingresses"],
             include_house_ingresses=transit["include_house_ingresses"],
+            include_house_context=transit["include_house_context"],
+            house_context_utc=transit["house_context_utc"],
         )
         transit_gate = _admit_bundle(transit_bundle, "transit")
 
