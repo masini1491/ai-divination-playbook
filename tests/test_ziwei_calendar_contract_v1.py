@@ -15,9 +15,13 @@ class ZiWeiCalendarContractV1Tests(unittest.TestCase):
     def test_manifest_pins_dependency_and_boundary(self):
         m=json.loads((ROOT/"ZIWEI_CALENDAR_ADMISSION_V1.json").read_text(encoding="utf-8"))
         self.assertEqual("PRODUCTION_ADMITTED_INPUT_ADAPTER",m["status"])
-        self.assertEqual("lunar_python",m["calculation"]["dependency_package"])
-        self.assertEqual("1.4.8",m["calculation"]["dependency_version"])
-        self.assertEqual("000c8a3d74eed098d6256a28fdd51b869324c559",m["calculation"]["dependency_revision"])
+        self.assertEqual("ziwei-calendar-interval-data",m["calculation"]["provider_id"])
+        self.assertEqual("2.0.0",m["calculation"]["provider_version"])
+        self.assertEqual("ziwei_tw_interval_1900_2100_candidate_v1",m["calculation"]["dataset_id"])
+        self.assertEqual("4913a39e770afcd21eedc387523c572b8c4fc6469889c28f6ea75613f8984d79",m["calculation"]["dataset_aggregate_sha256"])
+        self.assertTrue(m["calculation"]["dataset_production_use_admitted"])
+        self.assertFalse(m["calculation"]["build_parity_dependency"]["runtime_required"])
+        self.assertEqual({"start":"1900-01-01","end":"2100-12-31"},m["scope"]["supported_gregorian_range"])
         self.assertEqual("Asia/Taipei",m["scope"]["timezone"])
         self.assertEqual("next_day_at_23",m["policy"]["rat_hour_policy"])
         self.assertEqual("split_after_day_15",m["policy"]["leap_month_policy"])
@@ -55,6 +59,18 @@ class ZiWeiCalendarContractV1Tests(unittest.TestCase):
             normalize_gregorian_birth(GregorianBirthInput(2000,8,16,5,30,timezone="UTC"))
         with self.assertRaises(ValueError):
             normalize_gregorian_birth(GregorianBirthInput(2023,2,30,12,0))
+
+    def test_supported_range_and_policy_tail_fail_closed(self):
+        with self.assertRaisesRegex(ValueError,"outside admitted range"):
+            normalize_gregorian_birth(GregorianBirthInput(1899,12,31,12,0))
+        with self.assertRaisesRegex(ValueError,"outside admitted range"):
+            normalize_gregorian_birth(GregorianBirthInput(2101,1,1,0,0))
+        tail=normalize_gregorian_birth(GregorianBirthInput(2100,12,31,23,0))
+        self.assertEqual(
+            ["data/calendar/ziwei_tw_interval/v1/years/2100.json","data/calendar/ziwei_tw_interval/v1/years/2101.json"],
+            tail["dataset"]["required_shards"],
+        )
+        self.assertFalse(tail["dependency"]["runtime_required"])
 
     def test_gregorian_pipeline_reaches_scope_a(self):
         r=run_scope_a_gregorian(
