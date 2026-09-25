@@ -55,27 +55,64 @@ explicit 民國 year
 
 converted Gregorian date仍必須落在 admitted 1900-01-01..2100-12-31 range。
 
-## 3. Preferred cold-start path
+## 3. Zi Wei ChatGPT Runtime Reuse / Host Integration Fast Path
+
+Shared generic semantics remain owned by the activated AI Development Playbook:
+`CHATGPT_RUNTIME_EXECUTION.md` → `Runtime Asset Reuse Fast Path` / `Artifact Handoff / Materialization Gate`,
+and `GITHUB_OPERATIONS.md` → `Inbound Verified Transport`.
+This section only binds those shared rules to Zi Wei's concrete cache, bundle and calendar-shard layout.
 
 ```text
 explicit Zi Wei Gregorian request
 → resolve ai-divination-playbook current main to exact commit
-→ verify/reuse matching /mnt/data/divination-ziwei-runtime cache
-→ cache MISS / invalid
-   → fetch same-commit runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json
-   → verify chunk/archive/per-file identities
-   → materialize repo-local runtime + calendar MANIFEST.json
+→ probe /mnt/data/divination-ziwei-runtime/
+→ cheap identity / integrity / executability verification
+   → exact compatible verified cache
+      → REUSE materialized runtime
+   → cache MISS / invalid / materially changed / identity insufficient
+      → Host Capability Gate
+         → direct byte/file-aware handoff available
+            → same-commit direct materialization of required runtime assets + calendar MANIFEST.json
+         → direct handoff unavailable
+            → fetch same-commit runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json
+            → bounded verified opaque transport
+            → verify chunk/archive/per-file identities
+            → deterministic reassembly + materialization
 → derive required shard path(s) from Gregorian input
    ordinary Gregorian request → 1 year shard
    31 December 23:00 cross-year edge → at most 2 year shards
-→ fetch only required same-commit data/calendar/ziwei_tw_interval/v1/years/YYYY.json
-→ verify each shard path + byte count + SHA-256 against bundled manifest
+→ reuse matching verified shard if present; otherwise fetch only required same-commit years/YYYY.json
+→ verify each shard path + byte count + SHA-256 against admitted manifest
 → execute tools/ziwei_runtime.py
 → deterministic Scope-A facts / admitted claims
 → ZIWEI.md bounded synthesis
 ```
 
-Calendar shards are **query-bounded** data acquisitions，不得為方便把完整202-shard dataset塞進 bundle或 active Context。successful materialization **does not require pip/network installation afterward**；GitHub Connect exact-commit shard retrieval本身仍是 acquisition step。
+### Cache Identity Probe
+
+Local cache existence alone is only a reuse candidate, not production evidence. Before reuse, verify the lowest sufficient machine-visible identity for the current execution contract: repository / materialized source revision, bundle or per-file identity, admitted calendar manifest identity, required runtime files, and executability. If current `main` advanced, compare only materially relevant owned source identities; a newer repository HEAD does not by itself invalidate byte-identical cached assets, and must not overwrite the cached bytes' original provenance.
+
+### Host Capability Gate / No Full-Bundle-First Rule
+
+On a real cache miss, determine the available connector→execution handoff before moving the bundle through model-visible context. Prefer a direct byte/file-aware handoff when the host exposes one. Only when direct handoff is unavailable and exact bytes are still required may the existing bundle's bounded verified opaque transport be used.
+
+**Do not fetch or dump the full bundle/chunk payload into model-visible context before cache reuse and host-handoff necessity have been established.** Model-visible base64/chunk content proves acquisition visibility only; it is not automatic filesystem materialization.
+
+Calendar shards remain **query-bounded** data acquisitions，不得為方便把完整202-shard dataset塞進 bundle或 active Context。successful materialization **does not require pip/network installation afterward**；GitHub Connect exact-commit shard retrieval本身仍是 acquisition step。
+
+### Layered Host Status
+
+When host capability or materialization is relevant, keep the shared evidence layers distinct:
+
+```text
+Acquisition: PASS | NOT ESTABLISHED
+Payload handoff: VERIFIED | UNAVAILABLE | NOT ESTABLISHED
+Materialization: VERIFIED | NOT ESTABLISHED
+Integrity: VERIFIED | NOT ESTABLISHED | FAIL
+Execution: RUN | NOT RUN | FAILED
+```
+
+A PASS at an earlier layer does not promote a later layer. In particular, GitHub Connect acquisition PASS does not mean the runtime exists on the filesystem, and local cache existence does not mean the cache identity is verified.
 
 ## 4. Verified cache
 
