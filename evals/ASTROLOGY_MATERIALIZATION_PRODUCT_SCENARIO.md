@@ -6,17 +6,21 @@ Supporting product scenario only; this **does not** alter the existing strict-P4
 
 - User explicitly requests Astrology production and supplies explicit latitude / longitude + IANA timezone.
 - Local Python exists.
-- Local Astrology core tools and/or `astronomy-engine` package are missing.
+- A previously verified Astrology runtime may already exist under `/mnt/data/divination-astrology-runtime/`, or this may be a real cache miss.
 - `geonamescache` may also be missing.
-- GitHub Connect can read the current exact-commit Astrology deterministic core bundle.
+- GitHub Connect can resolve current Astrology canonical identity and, only when materialization is necessary, read the required exact-commit runtime transport.
 
 ## Required behavior
 
-The assistant treats local core-cache/package miss as a materialization trigger, not immediate Astrology unavailability. It resolves the Playbook to an exact commit, retrieves the same-commit core bundle, verifies chunk/archive/per-file identities including pinned `astronomy-engine==2.1.19` PyPI runtime-file SHA-256 identities, source provenance, and MIT license payload, writes a verified local cache plus `core_bundle_verification.json`, then executes the materialized Astrology provider/orchestrator.
+The assistant resolves the current repository identity, then **probes and verifies the local Astrology runtime cache before any bundle acquisition**. Directory existence or conversation memory alone is insufficient. If current HEAD advanced but materially relevant cached source/dependency identities remain unchanged, the original materialized bytes may be reused without rewriting their source provenance.
 
-For explicit coordinates input, the orchestrator must not require or import the place resolver as a hard dependency. The assistant must produce an admitted Astrology Fact Bundle and pass `tools/astrology_runtime.py` before interpretation.
+Only on a real cache miss / invalid identity does the assistant enter the Host Capability Gate. It prefers a direct byte/file-aware connector→filesystem handoff when available. If direct handoff is unavailable, it may use the same-commit core bundle as bounded verified opaque transport with the existing chunk/archive/per-file integrity gates and pinned `astronomy-engine==2.1.19` PyPI runtime-file SHA-256 identities. It **must not move the whole bundle/chunks through model-visible context before cache reuse and host-handoff necessity are established**.
 
-The assistant must not silently pip-install a floating dependency, rewrite missing Astronomy Engine source, use generic web geocoding, hand-calculate chart facts, or classify all Astrology runtime as unavailable merely because `geonamescache` is absent.
+For explicit coordinates input, the orchestrator must not require or import the place resolver as a hard dependency. For place/country input, a compatible verified local resolver/query cache may be reused; otherwise only the admitted profile-500 query-bounded shard path is allowed. The whole GeoNames dataset is not transported merely to resolve one place.
+
+The assistant must produce an admitted Astrology Fact Bundle and pass `tools/astrology_runtime.py` before interpretation. Host evidence remains layered: acquisition success does not imply payload handoff, materialization, integrity, or execution success.
+
+The assistant must not silently pip-install a floating dependency, rewrite missing Astronomy Engine source, use generic web geocoding, hand-calculate chart facts, classify all Astrology runtime as unavailable merely because `geonamescache` is absent, or invalidate a byte-compatible verified cache only because current HEAD changed.
 
 ## Non-claim
 
