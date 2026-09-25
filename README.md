@@ -296,7 +296,7 @@ Zi Wei 目前是 bounded natal production method，適合使用者明確要求�
 - `23:00` 晚子時採 `next_day_at_23`；
 - 閏月採 `split_after_day_15`；
 - optional `brightness_v1`：14 主星廟／旺／得／利／平／不／陷 facts，只在明確要求廟旺／亮度時啟用；
-- optional `sihua_v1`：`sihua.default_v1` 生年四化 profile-bound deterministic facts；新增 interpretation claims = 0；
+- optional `sihua_v1`：`sihua.default_v1` 生年四化 profile-bound deterministic facts + 3 條 source-explicit、fact-gated transformed-star conditional claims；
 - provenance、omission、conflict、uncertainty 與 safety delivery。
 
 主要 production flow：
@@ -308,7 +308,7 @@ explicit Zi Wei request
 → tools/ziwei_calendar_provider.py（西元生日）或 normalized lunar input
 → tools/ziwei_natal_provider.py
 → optional tools/ziwei_brightness_provider.py
-→ optional tools/ziwei_sihua_provider.py（facts only）
+→ optional tools/ziwei_sihua_provider.py + bounded sihua claim registry
 → tools/ziwei_claim_retrieval.py + tools/ziwei_delivery.py
 → typed Zi Wei result
 → ZIWEI.md bounded synthesis
@@ -319,7 +319,7 @@ Legacy `run_scope_a_*` pipelines are compatibility adapters only; they are not t
 重要邊界：
 
 - Zi Wei **不參與 ordinary auto-routing**；
-- current production 可選擇計算 profile-bound 生年四化 facts，但仍不包含未另行 admission 的 transformed-star 四化 interpretation、非 M0 輔／雜星 interpretation、broader star×palace corpus 或大限／流年／流月／流日／流時；
+- current production 可選擇計算 profile-bound 生年四化 facts，並只允許 3 條另行 admission 的 source-explicit transformed-star 四化 conditional claims；仍不包含其他未 admission 的四化 interpretation、非 M0 輔／雜星 interpretation、broader star×palace corpus 或大限／流年／流月／流日／流時；
 - raw birth data 不授權 language model 自行手算農曆、命身宮、主星 placement 或 brightness；
 - Research Zi Wei 與 Production Zi Wei 分離：research 走 [`RESEARCH_ROUTING.md`](RESEARCH_ROUTING.md) → `references/ziwei/**`；
 - ChatGPT local runtime 缺少 Zi Wei source、calendar manifest 或本次所需 year shard 時，先依 [`ZIWEI_MATERIALIZATION.md`](ZIWEI_MATERIALIZATION.md) 走 verified same-commit bundle + query-bounded calendar-data materialization；ordinary production 不需要 `lunar_python` runtime。
@@ -375,7 +375,7 @@ tools/ziwei_runtime.py                  # canonical typed composition + JSON tra
 tools/ziwei_calendar_provider.py         # admitted Gregorian normalization provider
 tools/ziwei_natal_provider.py            # admitted natal fact provider
 tools/ziwei_brightness_provider.py       # optional admitted brightness facts
-tools/ziwei_sihua_provider.py             # optional admitted Four-Transformation facts; 0 new claims
+tools/ziwei_sihua_provider.py             # optional admitted Four-Transformation facts; interpretation authority remains in separate 3-claim admission
 tools/ziwei_claim_retrieval.py           # production claim retrieval
 tools/ziwei_delivery.py                  # bounded delivery execution
 tools/ziwei_gregorian_pipeline.py        # legacy compatibility adapter
@@ -427,7 +427,7 @@ tools/astrology_output_guard.py
 | Meihua | 事件演化、主客／體用、轉折、節奏與象徵應期 | Canonical stochastic core (`runtime/casting/core.py`) via full Runtime adapter (`runtime/casting/randomizer.py`) | [`MEIHUA.md`](MEIHUA.md) |
 | Liuyao | 單一具體事件是否成立、阻礙來源、較具體 outcome / timing | local Randomizer three-coin Raw Cast + local deterministic engine/calendar/runtime | [`LIUYAO.md`](LIUYAO.md) |
 | Astrology | 本命盤、行運與 admitted natal/transit factors；explicit-request only | local deterministic place resolver + natal/transit providers + Fact Gate | [`ASTROLOGY.md`](ASTROLOGY.md) |
-| Zi Wei | bounded natal first layer；52 admitted claims；optional brightness；explicit-request only | Gregorian calendar adapter + local natal provider/pipeline + verified ChatGPT transport bundle | [`ZIWEI.md`](ZIWEI.md) |
+| Zi Wei | bounded natal first layer；52 base claims；optional M0 +4 / sihua +3；explicit-request only | Gregorian calendar adapter + local natal provider/pipeline + verified ChatGPT transport bundle | [`ZIWEI.md`](ZIWEI.md) |
 
 ## Authority boundary
 
