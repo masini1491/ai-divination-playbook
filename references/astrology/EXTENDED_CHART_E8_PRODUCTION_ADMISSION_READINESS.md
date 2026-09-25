@@ -69,6 +69,38 @@ The factor requires an extended astronomical calculation authority not present i
 
 The generic architecture is understood, but exact consumer-compatible behavior is unknown and must not be guessed.
 
+## 2A. Current research overlay after ChatGPT-only feasibility work
+
+The readiness rows below are intentionally preserved as **historical E8 implementation-surface judgments**. They answer whether the original production surface had an admitted calculation/provider/license path at the time of the E8 review.
+
+PR #156 and `CHATGPT_ONLY_EXTENDED_EPHEMERIS_FEASIBILITY.md` add a separate current research layer:
+
+| Factor / family | Historical E8 readiness | Current research eligibility | Eligible lane | Production consequence |
+|---|---|---|---|---|
+| Chiron | BLOCKED_ON_PROVIDER_OR_LICENSE | research eligible | BUNDLED_EPHEMERIS | none; still not admitted |
+| Ceres / Pallas / Juno / Vesta | BLOCKED_ON_PROVIDER_OR_LICENSE | research eligible | BUNDLED_EPHEMERIS | none; still not admitted |
+| Mean / Osculating Black Moon Lilith | BLOCKED_ON_PROVIDER_OR_LICENSE | research eligible after explicit definition split | LOCAL_ANALYTICAL | none; still not admitted |
+| Interpolated Black Moon Lilith | historical family row retained | separate compatibility-definition research only | no implicit lane from this overlay | none |
+| Vertex | BLOCKED_ON_PROVIDER_OR_LICENSE | research eligible as project-owned derived geometry | LOCAL_ANALYTICAL | none; still not admitted |
+| Equatorial Ascendant | BLOCKED_ON_PROVIDER_OR_LICENSE | research eligible as project-owned derived geometry | LOCAL_ANALYTICAL | none; still not admitted |
+
+Interpretation rule:
+
+```text
+candidates[].readiness
+→ historical E8 implementation-surface judgment
+
+current_research_overlay
+→ later research eligibility only
+
+research eligibility
+≠ calculation admission
+≠ semantic admission
+≠ production provider selection
+```
+
+Therefore a fresh gap review must not read `BLOCKED_ON_PROVIDER_OR_LICENSE` as “research may not proceed.” It means the original E8 production surface lacked an admitted provider/license path. The later overlay permits bounded research into local analytical or bundled-ephemeris alternatives while keeping `production_selection = null`.
+
 ## 3. Admission readiness matrix
 
 | Factor / family | Readiness | Current-stack path | Remaining gate |
@@ -235,9 +267,9 @@ Fortune + geometric-altitude sect   admission-ready candidate after implementati
 rulership policy families           ready if explicit named policy selected
 aspect participant architecture     ready if explicit named policy selected
 pattern topology architecture       ready if explicit aspect/orb policy selected
-E2 extended bodies                  blocked on provider/license + bounded validation policy
-E3 Lilith variants                  blocked on provider/license; identity itself resolved
-Vertex / Equatorial Ascendant       blocked on calculation-provider/formula admission
+E2 extended bodies                  historical provider/license block; bundled-ephemeris research now eligible
+E3 Lilith variants                  historical provider/license block; Mean/Osculating local-analytical research now eligible
+Vertex / Equatorial Ascendant       historical provider/formula block; project-owned geometry research now eligible
 East Point alias                    compatibility-policy gated
 exact 唐綺陽 pattern compatibility  unresolved / do not claim
 production mutation                 NOT AUTHORIZED BY THIS REVIEW
