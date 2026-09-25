@@ -3,7 +3,8 @@
 
 This provider exposes profile-bound Four-Transformation facts only. It does
 not create transformed-star interpretation doctrine; production interpretation
-remains limited to separately admitted claims, of which sihua_v1 adds zero.
+is separately allowlisted by ZIWEI_SIHUA_ADMISSION_V1.json and the source-explicit
+claim registry.
 """
 from __future__ import annotations
 
@@ -130,7 +131,7 @@ def calculate_sihua(year_stem:str, *, sihua_profile_id:str=PROFILE_ID)->dict[str
         "by_transform":{record["transform_kind"]:record["star"] for record in records},
         "retrieval_facts":retrieval_facts,
         "interpretation_boundary":{
-            "transformed_star_claims_admitted":False,
+            "transformed_star_claims_admitted_by_provider":False,
             "generic_transform_outcome_dictionary_admitted":False,
             "cross_profile_averaging_allowed":False,
         },
