@@ -150,12 +150,12 @@ Current provider-neutral feasibility work remains REFERENCE-ONLY:
 
 AST-P1-010 found **no passing 10/20/40-day sampled/Hermite variant** under its prospectively frozen engineering gate. This is negative research evidence, not a production admission and not evidence that every bundled-ephemeris representation is infeasible.
 
-### Black Moon Lilith research
+### Lilith research
 
 - AST-P1-020 Mean: [report](ASTROLOGY_EXP2_MEAN_LILITH_PARITY.md) / [JSON](astrology_exp2_mean_lilith_iers2003_parity.json).
 - AST-P1-030 Osculating: [report](ASTROLOGY_EXP3_OSCULATING_LILITH_STATE_VECTOR.md) / [JSON](astrology_exp3_osculating_lilith_state_vector.json).
 
-REFERENCE-ONLY; production admission separate.
+REFERENCE-ONLY; not production.
 
 ### Historical engine/timing research
 
