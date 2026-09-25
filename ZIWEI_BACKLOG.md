@@ -406,20 +406,20 @@ This SHA is review evidence only, not a pin. Every maintenance task must resolve
 ### ZW-SHARED-001 — Astrology × Zi Wei reconciliation contract
 
 - type: SHARED / RECONCILIATION
-- status: IN_PROGRESS
+- status: DONE
 - priority: SHARED
 - owner: cross-validation / reconciliation
 - blocked_by: none
-- current_state:
-  - both methods are production-routable only by explicit request;
-  - no canonical Astrology × Zi Wei cross-validation semantics exist;
-  - independent readings must not be mislabeled as formal cross-validation.
-- target:
-  - define distinct evidence responsibilities;
-  - define agreement / complement / conflict presentation;
-  - no voting, score averaging or forced convergence.
-- canonical_contract: `CROSS_VALIDATION.md` §7
-- validation: `TAROT-BEH-026`
+- closure:
+  - canonical contract: `CROSS_VALIDATION.md` §7;
+  - admitted pair is bounded to `Astrology natal × Zi Wei natal_baseline`;
+  - reconciliation states: `AGREEMENT / COMPLEMENT / TENSION / UNRESOLVED / NOT_COMPARABLE`;
+  - method-specific evidence lineage is preserved; no house↔palace / planet↔star one-to-one mapping is implied;
+  - Astrology transit × Zi Wei natal remains outside formal cross-validation;
+  - no voting, score averaging, objective-probability promotion or forced convergence;
+  - routing / bootstrap / machine index synchronized;
+  - behavioral regression: `TAROT-BEH-026`.
+- astrology_backlog: pointer-only at `AST-SHARED-002`; mutable shared status remains owned here.
 
 ## Intentionally not backlog blockers
 
