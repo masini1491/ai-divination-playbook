@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 import unittest
 
-from tools.ziwei_natal_provider import NormalizedNatalInput
+from tools.ziwei_natal_provider import BRANCHES, NormalizedNatalInput, calculate_scope_a_natal
 from tools.ziwei_runtime import (
     SIHUA_MODULE,
     ZiWeiReadingRequest,
@@ -19,18 +19,22 @@ class ZiWeiSihuaAdmissionTests(unittest.TestCase):
     def setUp(self):
         self.birth=NormalizedNatalInput(1987,5,20,"酉","synthetic:sihua-admission")
 
-    def test_manifest_admits_facts_only_zero_claim_module(self):
+    def test_manifest_admits_exact_three_source_explicit_claims(self):
         m=json.loads((ROOT/"ZIWEI_SIHUA_ADMISSION_V1.json").read_text(encoding="utf-8"))
         self.assertEqual("PRODUCTION_ADMITTED_OPTIONAL_MODULE",m["status"])
         self.assertEqual(SIHUA_MODULE,m["module_id"])
         self.assertEqual(SIHUA_PROFILE_ID,m["profile_id"])
-        self.assertEqual(0,m["scope"]["admitted_claims_added"])
-        self.assertFalse(m["scope"]["transformed_star_interpretation_admitted"])
-        self.assertTrue(m["interpretation"]["facts_only"])
+        self.assertEqual(3,m["scope"]["admitted_claims_added"])
+        self.assertTrue(m["scope"]["transformed_star_interpretation_admitted"])
+        self.assertTrue(m["interpretation"]["new_claim_corpus"])
+        self.assertEqual(
+            "three_source_explicit_fact_gated_transformed_star_conditionals",
+            m["interpretation"]["claim_scope"],
+        )
         self.assertFalse(m["interpretation"]["generic_transform_outcome_dictionary"])
         self.assertFalse(m["interpretation"]["cross_profile_averaging"])
 
-    def test_runtime_emits_profile_bound_sihua_facts_without_new_claims(self):
+    def test_runtime_emits_profile_bound_sihua_and_no_unmatched_claim_widening(self):
         base=run_ziwei(ZiWeiReadingRequest(
             request_id="sihua-base",birth=self.birth,requested_subjects=("紫微",)
         ))
@@ -50,12 +54,50 @@ class ZiWeiSihuaAdmissionTests(unittest.TestCase):
             result["calculation"]["unsupported"]["four_transformations"],
         )
         self.assertTrue(result["authority"]["sihua_profile_admitted"])
-        self.assertFalse(result["authority"]["sihua_transformed_star_claims_admitted"])
+        self.assertTrue(result["authority"]["sihua_transformed_star_claims_admitted"])
         self.assertFalse(result["authority"]["generic_sihua_outcome_doctrine_admitted"])
         self.assertEqual(
             base["interpretation"]["selected_claim_ids"],
             result["interpretation"]["selected_claim_ids"],
         )
+
+    def _find_tanlang_four_grave_birth(self):
+        targets={"辰","戌","丑","未"}
+        for month in range(1,13):
+            for day in range(1,31):
+                for hour_branch in BRANCHES:
+                    birth=NormalizedNatalInput(
+                        1988,month,day,hour_branch,
+                        "synthetic:sihua-activation-search",
+                    )
+                    chart=calculate_scope_a_natal(birth)
+                    self.assertEqual("戊",chart["year_pillar"]["stem"])
+                    if chart["major_star_placements"]["貪狼"] in targets:
+                        return birth,chart["major_star_placements"]["貪狼"]
+        self.fail("no deterministic 貪狼四墓 fixture found")
+
+    def test_source_explicit_tanlang_claim_activates_only_with_exact_facts(self):
+        birth,branch=self._find_tanlang_four_grave_birth()
+        result=run_ziwei(ZiWeiReadingRequest(
+            request_id="sihua-tanlang-active",
+            birth=birth,
+            requested_subjects=("貪狼",),
+            optional_modules=(SIHUA_MODULE,),
+            sihua_profile=SIHUA_PROFILE_ID,
+        ))
+        self.assertIn(branch,{"辰","戌","丑","未"})
+        self.assertEqual("貪狼",result["calculation"]["sihua"]["by_transform"]["祿"])
+        self.assertIn(
+            "ZW-SIHUA-TANLANG-LU-001",
+            result["interpretation"]["selected_claim_ids"],
+        )
+        selected={
+            x["claim_id"]:x
+            for x in result["interpretation"]["selected_claims"]
+        }
+        claim=selected["ZW-SIHUA-TANLANG-LU-001"]
+        self.assertEqual("貪狼",claim["subject"])
+        self.assertEqual("historical_conditional",claim["assertion_class"])
 
     def test_transport_round_trip_preserves_profile_selector(self):
         request=ZiWeiReadingRequest(
@@ -77,14 +119,19 @@ class ZiWeiSihuaAdmissionTests(unittest.TestCase):
                 request_id="bad-selector",birth=self.birth,sihua_profile=SIHUA_PROFILE_ID,
             ))
 
-    def test_root_admission_keeps_claim_counts_unchanged(self):
+    def test_root_admission_counts_only_exact_bounded_claims(self):
         m=json.loads((ROOT/"ZIWEI_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
         self.assertEqual(52,m["scope"]["admitted_claims"])
-        self.assertEqual(56,m["scope"]["maximum_admitted_claims_with_optional_modules"])
+        self.assertEqual(59,m["scope"]["maximum_admitted_claims_with_optional_modules"])
+        self.assertEqual(3,m["scope"]["optional_sihua_claims"])
         self.assertIn(SIHUA_MODULE,m["runtime"]["optional_modules"])
         entry=next(x for x in m["optional_module_admissions"] if x["module_id"]==SIHUA_MODULE)
-        self.assertEqual(0,entry["admitted_claims_added"])
-        self.assertFalse(entry["transformed_star_interpretation_admitted"])
+        self.assertEqual(3,entry["admitted_claims_added"])
+        self.assertEqual(
+            ["ziwei_interpretation_claim_registry_sihua_v0.json"],
+            entry["admitted_research_registries"],
+        )
+        self.assertTrue(entry["transformed_star_interpretation_admitted"])
 
 if __name__=="__main__":
     unittest.main()
