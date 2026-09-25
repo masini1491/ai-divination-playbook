@@ -1,4 +1,5 @@
 name: Temporary diagnose AST-P1-110 validation
+# final P1-110 validation trigger
 
 on:
   push:
