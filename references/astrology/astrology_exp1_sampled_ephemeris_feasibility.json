@@ -1,0 +1,244 @@
+{
+  "schema_name": "astrology_exp1_sampled_ephemeris_feasibility",
+  "schema_version": "1.0.0",
+  "authority": "REFERENCE_ONLY_RESEARCH_EVIDENCE",
+  "production_admission": "NOT_GRANTED",
+  "experiment": {
+    "temporary_pr": 181,
+    "temporary_pr_merged": false,
+    "temporary_head": "1e4c8e64d7eec1ec86b0af8e9db4d3d0ba3698eb",
+    "workflow_run": 36086788978,
+    "validate_job": 107920351813,
+    "result": "NO_PASSING_VARIANT"
+  },
+  "source_authority": {
+    "provider": "NASA/JPL Horizons",
+    "api": "Horizons API",
+    "observed_signature": {
+      "source": "NASA/JPL Horizons API",
+      "version": "1.2"
+    },
+    "center": "500@399",
+    "ephem_type": "OBSERVER",
+    "quantities": [
+      31
+    ],
+    "apparent": "AIRLESS",
+    "time_type": "UT",
+    "ordinary_runtime_network_required": false
+  },
+  "representation": {
+    "id": "sampled-wrapped-longitude-hermite-v0",
+    "source_grid_days": 10,
+    "variant_spacing_days": [
+      10,
+      20,
+      40
+    ],
+    "lookup_points_per_object": 4,
+    "interpolation": "cubic Hermite with centered slopes from four local wrapped-longitude samples",
+    "full_artifact_committed": false
+  },
+  "objects": [
+    "Chiron",
+    "Ceres",
+    "Pallas",
+    "Juno",
+    "Vesta"
+  ],
+  "coverage": {
+    "start": "1825-04-01T00:00:00+00:00",
+    "stop": "2350-10-01T00:00:00+00:00",
+    "validation_fixture_ids": [
+      "E2-F01",
+      "E2-F02",
+      "E2-F03",
+      "E2-F04",
+      "E2-H01",
+      "E2-H02",
+      "E2-H03",
+      "E2-H04",
+      "E2-V01",
+      "E2-V02",
+      "E2-V03",
+      "E2-V04"
+    ],
+    "validation_rows_per_variant": 60
+  },
+  "thresholds_frozen_before_first_execution": {
+    "longitude_p95_arcsec_max": 10,
+    "longitude_max_arcsec_max": 30,
+    "speed_max_deg_per_day": 0.001,
+    "binary_payload_bytes_max": 1048576,
+    "single_query_raw_payload_bytes_max": 64
+  },
+  "variants": {
+    "10": {
+      "spacing_days": 10,
+      "sample_count_per_object": 19194,
+      "binary_float64_payload_bytes": 767760,
+      "binary_sha256": "d058832a4879e274bd8c5b017a56fb398b51c54e435f884f3f31ee2c8d4cf260",
+      "base64_float64_ascii_chars": 1023680,
+      "canonical_json_bytes": 1110382,
+      "canonical_json_sha256": "3dc187370cd5d002f75f9d67a73a32f793dc7a25082bb056057fdcd4af7a2b25",
+      "single_query_raw_payload_bytes": 32,
+      "single_query_json_bytes_max": 75,
+      "longitude_p95_arcsec": 4.339714453931265,
+      "longitude_max_arcsec": 25.284071250075613,
+      "speed_p95_deg_per_day": 0.0010144795344619317,
+      "speed_max_deg_per_day": 0.0020745450001214694,
+      "feasibility_pass": false,
+      "failed_gates": [
+        "speed_max_deg_per_day"
+      ],
+      "worst_longitude": {
+        "fixture_id": "E2-F01",
+        "object_id": "Pallas",
+        "longitude_arcsec": 25.284071250075613
+      },
+      "worst_speed": {
+        "fixture_id": "E2-F03",
+        "object_id": "Vesta",
+        "speed_deg_per_day": 0.0020745450001214694
+      },
+      "per_object": {
+        "Chiron": {
+          "longitude_max_arcsec": 1.32990024302444,
+          "speed_max_deg_per_day": 0.00024647500004135875
+        },
+        "Ceres": {
+          "longitude_max_arcsec": 4.967704687544483,
+          "speed_max_deg_per_day": 0.0007130049999986565
+        },
+        "Pallas": {
+          "longitude_max_arcsec": 25.284071250075613,
+          "speed_max_deg_per_day": 0.0020033450000482844
+        },
+        "Juno": {
+          "longitude_max_arcsec": 6.525616986652949,
+          "speed_max_deg_per_day": 0.0018954985409009861
+        },
+        "Vesta": {
+          "longitude_max_arcsec": 3.9512273400418962,
+          "speed_max_deg_per_day": 0.0020745450001214694
+        }
+      }
+    },
+    "20": {
+      "spacing_days": 20,
+      "sample_count_per_object": 9597,
+      "binary_float64_payload_bytes": 383880,
+      "binary_sha256": "b0895434129b67908b9fdd1b4117c95d1fa9f3ecedce067757d5eeaadc4b595c",
+      "base64_float64_ascii_chars": 511840,
+      "canonical_json_bytes": 555210,
+      "canonical_json_sha256": "7f9118a286c6072643170641def3ed5445b5fc8e66bf0d56e61b1905def59f17",
+      "single_query_raw_payload_bytes": 32,
+      "single_query_json_bytes_max": 74,
+      "longitude_p95_arcsec": 28.95954806958798,
+      "longitude_max_arcsec": 204.04025753904307,
+      "speed_p95_deg_per_day": 0.007739240000047692,
+      "speed_max_deg_per_day": 0.01235966816400405,
+      "feasibility_pass": false,
+      "failed_gates": [
+        "longitude_p95_arcsec",
+        "longitude_max_arcsec",
+        "speed_max_deg_per_day"
+      ],
+      "worst_longitude": {
+        "fixture_id": "E2-F01",
+        "object_id": "Pallas",
+        "longitude_arcsec": 204.04025753904307
+      },
+      "worst_speed": {
+        "fixture_id": "E2-F01",
+        "object_id": "Pallas",
+        "speed_deg_per_day": 0.01235966816400405
+      },
+      "per_object": {
+        "Chiron": {
+          "longitude_max_arcsec": 7.3652259680329735,
+          "speed_max_deg_per_day": 0.0009317628415788093
+        },
+        "Ceres": {
+          "longitude_max_arcsec": 35.92252440004131,
+          "speed_max_deg_per_day": 0.0029809824999986745
+        },
+        "Pallas": {
+          "longitude_max_arcsec": 204.04025753904307,
+          "speed_max_deg_per_day": 0.01235966816400405
+        },
+        "Juno": {
+          "longitude_max_arcsec": 28.95954806958798,
+          "speed_max_deg_per_day": 0.009862053851838526
+        },
+        "Vesta": {
+          "longitude_max_arcsec": 105.92396482498998,
+          "speed_max_deg_per_day": 0.007979392500121196
+        }
+      }
+    },
+    "40": {
+      "spacing_days": 40,
+      "sample_count_per_object": 4799,
+      "binary_float64_payload_bytes": 191960,
+      "binary_sha256": "095704be5aa275bfeda3fffdfa7bda9a6c4c044cfa77ca90077dd7ddc7c2f926",
+      "base64_float64_ascii_chars": 255948,
+      "canonical_json_bytes": 277711,
+      "canonical_json_sha256": "bb23be1d1bc6de3854925c4cd871f9f5d19e8cce03864b7ecc02758b2a4fa1ad",
+      "single_query_raw_payload_bytes": 32,
+      "single_query_json_bytes_max": 74,
+      "longitude_p95_arcsec": 961.7449950000264,
+      "longitude_max_arcsec": 3091.833763374086,
+      "speed_p95_deg_per_day": 0.020648005582021733,
+      "speed_max_deg_per_day": 0.040729316981868185,
+      "feasibility_pass": false,
+      "failed_gates": [
+        "longitude_p95_arcsec",
+        "longitude_max_arcsec",
+        "speed_max_deg_per_day"
+      ],
+      "worst_longitude": {
+        "fixture_id": "E2-F01",
+        "object_id": "Pallas",
+        "longitude_arcsec": 3091.833763374086
+      },
+      "worst_speed": {
+        "fixture_id": "E2-H01",
+        "object_id": "Juno",
+        "speed_deg_per_day": 0.040729316981868185
+      },
+      "per_object": {
+        "Chiron": {
+          "longitude_max_arcsec": 87.23322800046844,
+          "speed_max_deg_per_day": 0.0022404281555111136
+        },
+        "Ceres": {
+          "longitude_max_arcsec": 527.6751870262274,
+          "speed_max_deg_per_day": 0.01604069894668053
+        },
+        "Pallas": {
+          "longitude_max_arcsec": 3091.833763374086,
+          "speed_max_deg_per_day": 0.023215939751034975
+        },
+        "Juno": {
+          "longitude_max_arcsec": 961.7449950000264,
+          "speed_max_deg_per_day": 0.040729316981868185
+        },
+        "Vesta": {
+          "longitude_max_arcsec": 1620.710212500046,
+          "speed_max_deg_per_day": 0.025850205272662408
+        }
+      }
+    }
+  },
+  "selected_coarsest_passing_spacing_days": null,
+  "conclusion": {
+    "sampled_hermite_candidate": "REJECTED_UNDER_FROZEN_ENGINEERING_FEASIBILITY_GATE",
+    "closest_variant_days": 10,
+    "closest_variant_summary": "10-day spacing passed artifact-size, raw-query-payload, longitude-p95 and longitude-max gates but failed the frozen speed-max gate.",
+    "chiron_treatment": "Reported separately and sourced directly from Horizons samples; no one-epoch or generic Keplerian downgrade was used.",
+    "runtime_boundary": "Live Horizons access occurred only in the temporary GitHub Actions research probe. The candidate runtime representation itself requires no live network.",
+    "remaining_representations": "Bounded SPK excerpt, piecewise Chebyshev and multi-epoch osculating representations were not evaluated by this experiment.",
+    "production_consequence": "NONE"
+  }
+}
