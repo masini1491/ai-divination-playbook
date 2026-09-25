@@ -194,11 +194,11 @@ def _normalize_transit(data: Any) -> dict[str, Any]:
     include_transit_to_natal = transit.get("include_transit_to_natal", True)
     if not isinstance(include_transit_to_natal, bool):
         raise OrchestrationInputError("$.transit.include_transit_to_natal must be boolean")
-    natal_targets = _unique_strings(transit.get("natal_targets", []), "$.transit.natal_targets")
+    natal_targets = _unique_strings(transit["natal_targets"], "$.transit.natal_targets") if "natal_targets" in transit else []
     for target in natal_targets:
         if target not in BODY_NAMES:
             raise OrchestrationInputError(f"$.transit.natal_targets contains unsupported target: {target}")
-    aspects = _unique_strings(transit.get("aspects", []), "$.transit.aspects")
+    aspects = _unique_strings(transit["aspects"], "$.transit.aspects") if "aspects" in transit else []
     for aspect in aspects:
         if aspect not in MAJOR_ASPECT_ORBS:
             raise OrchestrationInputError(f"$.transit.aspects contains unsupported aspect: {aspect}")
