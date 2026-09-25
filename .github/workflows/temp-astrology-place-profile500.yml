@@ -1,0 +1,37 @@
+name: TEMP Astrology Profile500 Production Tree
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/temp-astrology-place-profile500.yml"
+permissions:
+  contents: read
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --disable-pip-version-check geonamescache==3.0.2
+      - name: Generate profile 500 production candidate
+        run: |
+          rm -rf /tmp/place-v1
+          python tools/generate_astrology_place_shards.py --profiles 500 --write --output /tmp/place-v1 > /tmp/summary.json
+          tar -C /tmp/place-v1 -czf /tmp/profile500.tar.gz profiles/500
+          python - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          root=Path("/tmp/place-v1/profiles/500")
+          files=sorted(p for p in root.rglob("*.json"))
+          total=sum(p.stat().st_size for p in files)
+          print("PROFILE500_FILE_COUNT="+str(len(files)))
+          print("PROFILE500_BYTES="+str(total))
+          print("PROFILE500_TGZ_BYTES="+str(Path("/tmp/profile500.tar.gz").stat().st_size))
+          print("PROFILE500_SUMMARY="+Path("/tmp/summary.json").read_text().replace("\n",""))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: astrology-place-profile500-production-candidate
+          path: /tmp/profile500.tar.gz
+          if-no-files-found: error
