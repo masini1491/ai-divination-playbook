@@ -7,6 +7,7 @@ calendar dataset. lunar_python is retained only as pinned build/parity evidence.
 from __future__ import annotations
 from typing import Any
 from tools.ziwei_calendar_data_provider import (
+    CalendarDataUnavailable,
     CandidateGregorianBirth,
     DATASET_ID,
     DATASET_ROOT,
@@ -34,14 +35,21 @@ BUILD_DEPENDENCY_LICENSE="MIT"
 
 GregorianBirthInput=CandidateGregorianBirth
 
+def _admission_call(fn, *args):
+    try:
+        return fn(*args)
+    except CalendarDataUnavailable as exc:
+        message=str(exc)
+        if "outside selected candidate range" in message:
+            message=message.replace("outside selected candidate range","outside admitted range")
+        raise ValueError(message) from exc
+
 def required_calendar_shards(data:GregorianBirthInput)->tuple[str,...]:
-    return tuple(
-        f"data/calendar/ziwei_tw_interval/v1/{path}"
-        for path in required_shard_paths(data)
-    )
+    paths=_admission_call(required_shard_paths,data)
+    return tuple(f"data/calendar/ziwei_tw_interval/v1/{path}" for path in paths)
 
 def normalize_gregorian_birth(data:GregorianBirthInput)->dict[str,Any]:
-    resolved=normalize_candidate_birth(data)
+    resolved=_admission_call(normalize_candidate_birth,data)
     manifest=load_manifest()
     raw=dict(resolved["raw_lunar_conversion"])
     policy=dict(resolved["policy_lunar_conversion"])
