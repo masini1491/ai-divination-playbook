@@ -29,10 +29,32 @@ Last reviewed against:
 
 ```text
 ai-divination-playbook main
-6240c8596447e7befeb5c63ea0e4eb8307b4df61
+f8dd8ab591c4922948b62aaaa557b2235a062937
 ```
 
 This SHA is review evidence only, not a pin. Every maintenance task must resolve current `main` again before mutation.
+
+## Recommended implementation order
+
+This order is a coordination priority, not production authority. It is optimized for functional importance: correctness/applicability first, then major new capability, then natal semantic resolution, then broader input/profile expansion.
+
+1. **ZW-P1-025 — Natal palace occupancy and empty-palace applicability facts**
+2. **ZW-P1-030 — Dynamic calculation runtime**
+3. **ZW-P1-040 — Dynamic interpretation claim corpus**
+4. **ZW-P2-060 — Sparse same-palace major-star combination claims**
+5. **ZW-P2-050 — Body-Palace overlay interpretation admission**
+6. **ZW-P2-020 — Sparse star×palace contextual claims**
+7. **ZW-P2-010 — M1 high-impact auxiliary stars**
+8. **ZW-P2-030 — Non-Asia/Taipei civil-time input normalization**
+9. **ZW-P2-040 — True-solar-time policy**
+
+Ordering rationale:
+
+- correctness / exact applicability outranks semantic enrichment;
+- dynamic calculation must precede dynamic interpretation;
+- same-palace pair semantics and Body-Palace overlay deepen ordinary natal reading without replacing existing L5 composition;
+- sparse source-explicit contextual expansion outranks broad auxiliary/input policy expansion for current natal reading quality;
+- non-Asia/Taipei and true-solar support remain later profile/input expansion for the current product audience.
 
 ## P0 — correctness and reconciliation
 
@@ -312,6 +334,43 @@ This SHA is review evidence only, not a pin. Every maintenance task must resolve
   - deterministic ChatGPT bundle was regenerated from canonical sources and canonical read-back confirms the updated provider blob is embedded;
   - PR #206 Validate Playbook run `36134495166`: `validate` PASS, `casting-runtime` PASS, `production-smoke` skipped and is not reported as PASS.
 
+## P1 — natal applicability correctness
+
+### ZW-P1-025 — Natal palace occupancy and empty-palace applicability facts
+
+- type: FEATURE / DETERMINISTIC FACTS / CLAIM APPLICABILITY
+- status: OPEN
+- priority: P1
+- owner: Zi Wei natal provider + interpretation retrieval
+- blocked_by: none
+- problem:
+  - current natal provider computes 14 major-star branches, twelve-palace layout and opposite/Sanfang topology;
+  - current retrieval facts expose `palace_present:<palace>`, `star_present:<star>`, `fact_available:star_locations` and `star_branch:<star>:<branch>`;
+  - it does not expose per-palace major-star membership / count or an exact `empty_palace:<palace>` predicate;
+  - admitted palace methodology already refers to empty-palace / opposite / Sanfang handling, but those claims currently remain `context_only` and cannot distinguish whether the current chart is actually empty in that palace.
+- canonical_research:
+  - `tools/ziwei_natal_provider.py`
+  - `references/ziwei/PRODUCTION_NATAL_PROVIDER_ADMISSION_V0.md`
+  - `references/ziwei/ziwei_interpretation_claim_registry_palaces_v0.json`
+  - `references/ziwei/INTERPRETATION_RUNTIME_CONTRACTS_V0.md`
+- target:
+  - deterministic per-palace major-star membership;
+  - deterministic major-star count / empty-palace predicate;
+  - explicit fact-availability identity sufficient for exact claim applicability;
+  - reuse existing palace geometry / opposite / Sanfang topology rather than creating a parallel geometry system.
+- completion_gate:
+  - exact star→palace and palace→major-star membership is deterministic and regression-covered;
+  - empty-palace state is machine-visible and derived only from admitted major-star placements;
+  - existing empty-palace conditional methodology can be fact-gated where source/admission warrants it;
+  - raw occupancy facts remain separate from interpretation policy;
+  - calculation provider does not hard-code "borrow from opposite" doctrine;
+  - deterministic bundle / schemas / admission surfaces are updated only if the runtime contract materially requires it;
+  - required CI passes and canonical read-back verifies no unrelated semantic widening.
+- production_boundary:
+  - `empty_palace` is a calculation/applicability fact, not an interpretation conclusion;
+  - opposite / Sanfang / borrowing semantics remain source-backed interpretation responsibility;
+  - no new palace geometry and no model-memory doctrine.
+
 ## P1/P2 — temporal / dynamic
 
 ### ZW-P1-030 — Dynamic calculation runtime
@@ -393,6 +452,62 @@ This SHA is review evidence only, not a pin. Every maintenance task must resolve
   - no exhaustive 14×12 Cartesian dictionary;
   - only sparse source-explicit overrides where evidence justifies them.
 
+### ZW-P2-050 — Body-Palace overlay interpretation admission
+
+- type: FEATURE / INTERPRETATION / NATAL OVERLAY
+- status: DEFERRED
+- priority: P2
+- owner: Zi Wei interpretation evidence
+- blocked_by: none
+- problem:
+  - natal provider already computes `body_palace.branch` with canonical policy `overlay_not_thirteenth_palace`;
+  - research architecture explicitly reserves a `body-palace overlay` composition dimension;
+  - current admitted 52-claim natal corpus contains no Body-Palace semantic claim family, so production can report the Body Palace location but cannot use it for chart-specific interpretation.
+- canonical_research:
+  - `references/ziwei/INTERPRETATION_ARCHITECTURE_V0.md`
+  - `references/ziwei/INTERPRETATION_RUNTIME_CONTRACTS_V0.md`
+  - `references/ziwei/SOURCE_RECONCILIATION_V1.md`
+  - `references/ziwei/CALCULATION_ENGINE_RESEARCH.md`
+  - `references/ziwei/ziwei_interpretation_claim_registry_palaces_v0.json`
+- completion_gate:
+  - source-explicit Body-Palace domain / methodology evidence;
+  - exact overlay-to-existing-palace applicability;
+  - any required machine fact / profile identity is explicit and regression-covered;
+  - bounded synthesis with palace/star evidence preserves provenance and conflict identity;
+  - interpretation admission is separate from already-admitted Body-Palace calculation.
+- production_boundary:
+  - Body Palace remains an overlay, never a thirteenth ordinary palace;
+  - calculation identity alone does not create user-facing doctrine;
+  - no model-memory fallback when source-explicit semantic evidence is unavailable.
+
+### ZW-P2-060 — Sparse same-palace major-star combination claims
+
+- type: FEATURE / INTERPRETATION / SPARSE OVERRIDES
+- status: DEFERRED
+- priority: P2
+- owner: Zi Wei interpretation evidence
+- blocked_by: none
+- problem:
+  - current production supports independent major-star core claims + palace-domain claims and bounded L5 synthesis;
+  - research architecture explicitly reserves `same-palace combination` as a separate composition dimension;
+  - current admitted registries contain no source-explicit major-star-pair claim family for combinations such as 武曲×天相、廉貞×天府、天同×巨門、太陽×天梁.
+- canonical_research:
+  - `references/ziwei/INTERPRETATION_ARCHITECTURE_V0.md`
+  - `references/ziwei/INTERPRETATION_RUNTIME_CONTRACTS_V0.md`
+  - `references/ziwei/ziwei_interpretation_claim_registry_batch1.json`
+  - `references/ziwei/ziwei_interpretation_claim_registry_batch2.json`
+- completion_gate:
+  - only source-explicit sparse pair claims are eligible;
+  - exact same-palace pair applicability facts / provenance are machine-matchable;
+  - tradition/profile/conflict identity is preserved;
+  - pair-specific claims outrank generic composition only inside their admitted scope;
+  - absence of a pair-specific claim continues to use existing bounded L5 composition;
+  - regression coverage prevents Cartesian expansion or model-memory pair doctrine.
+- production_boundary:
+  - no exhaustive 14×14 Cartesian dictionary;
+  - this item is distinct from `ZW-P2-020` star×palace contextual claims;
+  - no pair-specific historical claim may be invented from two independently admitted star-core meanings.
+
 ### ZW-P2-030 — Non-Asia/Taipei civil-time input normalization
 
 - type: FEATURE / INPUT
@@ -452,6 +567,8 @@ The following are current policy choices or already-closed capabilities and must
 - ordinary unspecified-user auto-routing — intentionally disabled, not an open defect;
 - project-wide universal brightness default — not required while brightness remains explicit/profile-bound;
 - full 14×12 star×palace dictionary — intentionally rejected;
+- exhaustive 14×14 same-palace major-star pair dictionary — intentionally rejected; only sparse source-explicit pair overrides may be considered under `ZW-P2-060`;
+- Five-Element Bureau user-facing semantics — current Scope-A treats 五行局 as a deterministic chart-construction / placement fact, not an independent interpretation factor; calculation identity must not be promoted into 金四局／木三局／水二局／土五局／火六局 personality or fate doctrine without a separate future evidence/admission decision;
 - scientific/objective predictive-validity claim — not a project goal.
 
 ## Update rule
