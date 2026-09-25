@@ -288,7 +288,10 @@
       "place_resolver_materialization_data_commit": "d18be87abe762433e43e844f33f4b43f7fad9f3b",
       "extended_aspect_projection": "tools/astrology_aspect_projection.py",
       "extended_aspect_projection_schema": "schemas/astrology/ASTROLOGY_ASPECT_PROJECTION_V1.schema.json",
-      "extended_aspect_activation": "explicit-selector-only"
+      "extended_aspect_activation": "explicit-selector-only",
+      "special_pattern_projection": "tools/astrology_special_pattern_projection.py",
+      "special_pattern_projection_schema": "schemas/astrology/ASTROLOGY_SPECIAL_PATTERN_PROJECTION_V1.schema.json",
+      "special_pattern_activation": "explicit-selector-only"
     },
     {
       "id": "method.astrology.natal",
