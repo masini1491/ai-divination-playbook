@@ -320,7 +320,7 @@ Legacy `run_scope_a_*` pipelines are compatibility adapters only; they are not t
 - current production 仍不包含四化、輔／雜星 interpretation、broader star×palace corpus 或大限／流年／流月／流日／流時；
 - raw birth data 不授權 language model 自行手算農曆、命身宮、主星 placement 或 brightness；
 - Research Zi Wei 與 Production Zi Wei 分離：research 走 [`RESEARCH_ROUTING.md`](RESEARCH_ROUTING.md) → `references/ziwei/**`；
-- ChatGPT local runtime 缺少 `lunar_python` 或 Zi Wei source 時，先依 [`ZIWEI_MATERIALIZATION.md`](ZIWEI_MATERIALIZATION.md) 嘗試 verified same-commit bundle materialization；local package miss 不等於 method unavailable。
+- ChatGPT local runtime 缺少 Zi Wei source 或 Gregorian input 所需 calendar year shard 時，先依 [`ZIWEI_MATERIALIZATION.md`](ZIWEI_MATERIALIZATION.md) 嘗試 verified same-commit bundle materialization；local package miss 不等於 method unavailable。
 
 Production owner：[`ZIWEI.md`](ZIWEI.md)。
 
