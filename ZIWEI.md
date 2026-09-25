@@ -38,7 +38,7 @@ OPTIONAL / explicit add-on:
 
 - `brightness_v1`: 14 主星 profile-bound brightness facts（廟／旺／得／利／平／不／陷），只用來滿足既有 admitted claim 的 dignity applicability；不得生成 brightness-only doctrine。
 - `m0_auxiliary_v1`: 左輔／右弼／文昌／文曲四星的 profile-bound natal placement + self/sanfang modifier facts；只 admission 4 個 bounded auxiliary-role **policy** claims 與既有 major-star conditional activation，不代表 blanket minor-star admission，也不代表四星各自 historical semantic core 已 production admission。
-- `sihua_v1`: `sihua.default_v1` profile-bound 生年四化 deterministic facts；只 admission calculation facts，**新增 interpretation claims = 0**。不得由四化 label 自動推導通用吉凶，也不得跨 profile 平均；transformed-star interpretation 需另有 source-explicit claim admission。
+- `sihua_v1`: `sihua.default_v1` profile-bound 生年四化 deterministic facts + 3 條 source-explicit、fact-gated transformed-star conditionals（貪狼化祿四墓、太陽化忌五支例外、太陰化忌四支例外）。不得由四化 label 自動推導通用吉凶，也不得跨 profile 平均；未符合 exact profile / sihua / star-location facts 時不得啟動。
 
 OUT / fail closed:
 
@@ -66,7 +66,8 @@ typed Zi Wei request
 → optional_modules includes m0_auxiliary_v1
    → tools/ziwei_m0_auxiliary_provider.py
 → optional_modules includes sihua_v1
-   → tools/ziwei_sihua_provider.py (facts only; 0 new interpretation claims)
+   → tools/ziwei_sihua_provider.py
+   → 3 source-explicit transformed-star claims（exact fact-gated）
 → tools/ziwei_claim_retrieval.py
 → tools/ziwei_delivery.py
 → typed Zi Wei result
@@ -158,7 +159,7 @@ tools/ziwei_m0_auxiliary_provider.py + ZIWEI_M0_AUXILIARY_ADMISSION_V1.json
 → optional M0 左輔／右弼／文昌／文曲 placement / modifier facts + bounded auxiliary-role policy claim admission; independent historical star semantics remain outside this admission
 
 tools/ziwei_sihua_provider.py + ZIWEI_SIHUA_ADMISSION_V1.json
-→ optional profile-bound 生年四化 facts only; no transformed-star interpretation corpus is admitted by this module
+→ optional profile-bound 生年四化 facts + exactly 3 source-explicit fact-gated transformed-star claims; generic transformation doctrine remains unadmitted
 
 ZIWEI_BRIGHTNESS_ADMISSION_V1.json
 → optional brightness production admission truth
