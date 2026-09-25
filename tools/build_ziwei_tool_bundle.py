@@ -51,6 +51,7 @@ PROJECT_PATHS=(
  "references/ziwei/ziwei_interpretation_claim_registry_batch2.json",
  "references/ziwei/ziwei_interpretation_claim_registry_palaces_v0.json",
  "references/ziwei/ziwei_interpretation_claim_registry_m0_auxiliary_v1.json",
+ "references/ziwei/ziwei_interpretation_claim_registry_sihua_v0.json",
 )
 DEPENDENCY_BLOBS={
 "lunar_python/__init__.py":"373688d6a5c8b65322df473345adc195a811709b",
