@@ -17,7 +17,7 @@ from tools.ziwei_calendar_data_provider import (
     required_shard_paths,
     required_shard_years,
 )
-from tools.ziwei_calendar_provider import GregorianBirthInput, normalize_gregorian_birth
+from tools.ziwei_calendar_upstream_reference import GregorianBirthInput, normalize_gregorian_birth
 
 ROOT=Path(__file__).resolve().parents[1]
 

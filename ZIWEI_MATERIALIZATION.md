@@ -2,125 +2,114 @@
 
 Status: **TASK-SPECIFIC CANONICAL CONTRACT**
 
-本檔只在 explicit Zi Wei production 已命中 `ZIWEI.md`，但 ChatGPT local runtime 缺少 verified Zi Wei deterministic tools 或 `lunar_python` runtime 時載入。它不取得 routing、interpretation、claim admission 或 research authority。
+本檔只在 explicit Zi Wei production 已命中 `ZIWEI.md`，但 ChatGPT local runtime 缺少 verified Zi Wei deterministic tools、calendar manifest 或本次 Gregorian input 所需 year shard 時載入。它不取得 routing、interpretation、claim admission 或 research authority。
 
 ## 1. Canonical authority
 
-Repo-local authority 仍是：
+Repo-local authority：
 
 ```text
 tools/ziwei_runtime.py
 tools/ziwei_calendar_provider.py
-tools/ziwei_gregorian_pipeline.py
-tools/ziwei_natal_provider.py
+tools/ziwei_calendar_data_provider.py
+data/calendar/ziwei_tw_interval/v1/MANIFEST.json
 schemas/ziwei/ZIWEI_READING_REQUEST_V1.schema.json
 schemas/ziwei/ZIWEI_READING_RESULT_V1.schema.json
-tools/ziwei_scope_a_pipeline.py
-tools/ziwei_brightness_provider.py
-tools/ziwei_m0_auxiliary_provider.py
-tools/ziwei_brightness_pipeline.py
+tools/ziwei_natal_provider.py
 tools/ziwei_claim_retrieval.py
 tools/ziwei_delivery.py
-3 base admitted claim registries + optional M0 auxiliary claim registry
+ZIWEI_CALENDAR_ADMISSION_V1.json
 ```
 
-Gregorian calendar dependency authority固定為：
+Production Gregorian calendar runtime 使用 repo-local interval data。Pinned build source：
 
 ```text
 lunar_python==1.4.8
 6tail/lunar-python@000c8a3d74eed098d6256a28fdd51b869324c559
 MIT
+build/parity dependency only
 ```
 
-`runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json` 只是 CI-generated **derived transport cache**；不得成為第二套 calculation / interpretation authority。
+ordinary production runtime **不 import、pip install 或 materialize lunar_python**。
 
-## 2. Local miss is not source unavailability
+`runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json` 仍只是 CI-generated **derived transport cache**；不得成為第二套 calculation / interpretation authority。
 
-聊天室 Python 沒有 `lunar_python`、沒有 repo checkout、或 `/mnt/data` 沒有 Zi Wei files，本身都不等於 Zi Wei deterministic runtime unavailable。若 GitHub Connect exact-commit retrieval 與 Python execution 都可用，必須先嘗試同 commit bundle materialization。
+## 2. Local cache miss is not source unavailability
+
+**local cache miss ≠ Zi Wei unavailable**。聊天室沒有 repo checkout、沒有 Zi Wei source、沒有 calendar manifest 或缺少本次需要的 year shard，都先走 same-commit verified materialization；不得由模型手算補齊。
 
 ### Explicit Minguo-year notation pre-adapter
 
-If the user explicitly supplies a Taiwan Minguo year notation (for example
-`民國76年`), resolve and execute `tools/ziwei_year_notation.py` from the same
-exact Playbook commit **before** Gregorian calendar normalization:
+明確民國紀年仍先取同 exact commit 的 `tools/ziwei_year_notation.py`：
 
 ```text
 explicit 民國 year
 → same-commit tools/ziwei_year_notation.py
-→ deterministic CE year = 民國 year + 1911
+→ deterministic CE year
 → GregorianBirthInput
-→ ordinary Zi Wei deterministic runtime/materialization path
+→ ordinary Zi Wei materialization path
 ```
 
-This tiny notation adapter is intentionally **not bundled** into
-`CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json` because it is only needed for explicit
-Minguo notation and executes before the deterministic chart runtime. Ordinary CE
-inputs therefore pay zero extra bundle bytes. If same-commit helper retrieval or
-execution fails, do not model-calculate the conversion; fail closed on that
-notation input.
+converted Gregorian date仍必須落在 admitted 1900-01-01..2100-12-31 range。
 
 ## 3. Preferred cold-start path
 
 ```text
-explicit Zi Wei request
+explicit Zi Wei Gregorian request
 → resolve ai-divination-playbook current main to exact commit
-→ probe /mnt/data/divination-ziwei-runtime/bundle_verification.json
+→ verify/reuse matching /mnt/data/divination-ziwei-runtime cache
 → cache MISS / invalid
    → fetch same-commit runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json
-   → validate schema / authority / contract
-   → verify every chunk length + SHA-256
-   → index-order concat
-   → base64 decode + zlib decompress
-   → verify archive size + SHA-256
-   → slice every source_file by offset / byte_size
-   → verify per-file SHA-256 + Git blob identity
-   → dependency files must match pinned lunar-python upstream blob allowlist
-   → write exact paths under /mnt/data/divination-ziwei-runtime/
-   → write + fresh-read bundle_verification.json
-   → prepend verified cache root to Python sys.path
-→ execute tools/ziwei_runtime.py (`run_ziwei`)
+   → verify chunk/archive/per-file identities
+   → materialize repo-local runtime + calendar MANIFEST.json
+→ derive required shard path(s) from Gregorian input
+   ordinary Gregorian request → 1 year shard
+   31 December 23:00 cross-year edge → at most 2 year shards
+→ fetch only required same-commit data/calendar/ziwei_tw_interval/v1/years/YYYY.json
+→ verify each shard path + byte count + SHA-256 against bundled manifest
+→ execute tools/ziwei_runtime.py
 → deterministic Scope-A facts / admitted claims
 → ZIWEI.md bounded synthesis
 ```
 
-Bundle includes the complete Python runtime files of pinned `lunar_python==1.4.8`, so successful materialization **does not require pip/network installation afterward**.
-
-Chunk mismatch只 retry 同一 exact commit bundle 的失敗 chunk；archive/per-file identity PASS 前不得 import / execute。不得用模型重寫缺少的 dependency source。
+Calendar shards are **query-bounded** data acquisitions，不得為方便把完整202-shard dataset塞進 bundle或 active Context。successful materialization **does not require pip/network installation afterward**；GitHub Connect exact-commit shard retrieval本身仍是 acquisition step。
 
 ## 4. Verified cache
 
-Default cache:
+Default cache：
 
 ```text
 /mnt/data/divination-ziwei-runtime/
 bundle_verification.json
+data/calendar/ziwei_tw_interval/v1/MANIFEST.json
+data/calendar/ziwei_tw_interval/v1/years/<needed>.json
 ```
 
-marker 必須綁定 repository、playbook commit、bundle contract、archive SHA、dependency identity與所有 files。聊天重開不得假設 cache 仍存在；identity 不符即視為 MISS。
+marker必須綁定 repository、playbook commit、bundle contract、archive SHA、calendar dataset identity、build-source provenance與 materialized files。year shard只能在同 commit manifest identity一致時 reuse。
 
 ## 5. Fallback / fail closed
 
-bundle 無法取得或驗證時，才可退回同 exact commit 的 direct repo-source + pinned upstream dependency source materialization。仍須 byte-preserving、逐檔 identity verification。
+Bundle無法取得／驗證，或 required same-commit shard無法取得／通過 manifest identity驗證時，可退回同 exact commit 的 direct repo-source materialization；authority與 hash contract不變。
 
-只有 bundle 與 direct exact-source 路徑都無法成立，或 Python execution 不可用／verified source import execution failure，才分類：
+只有 admitted bundle/direct-source路徑與 query-bounded calendar data都無法成立，或 Python execution不可用／verified source execution failure，才分類：
 
 ```text
 ZI WEI DETERMINISTIC RUNTIME UNAVAILABLE
 ```
 
-此時不得由模型手算農曆、命身宮、主星 placement 或 brightness 冒充 verified facts，也不得 fallback 到 Tarot / Meihua / Liuyao 冒充 Zi Wei。
+不得 fallback到模型手算農曆，也不得改用 Tarot / Meihua / Liuyao冒充 Zi Wei。
 
 ## 6. Authority boundary
 
 ```text
 GitHub Connect → acquisition authority
-bundle → derived transport cache only
-this contract → handoff / verification / cache policy only
-pinned lunar-python → Gregorian/lunar dependency bytes
+bundle → runtime + calendar-manifest derived transport cache
+query-bounded year shard(s) → same-commit deterministic data
+ZIWEI_CALENDAR_ADMISSION_V1.json → production calendar admission truth
+pinned lunar-python → build/parity source only
 tools/ziwei_runtime.py → canonical typed production composition
-Zi Wei providers + production retrieval/delivery tools → deterministic facts + admitted claim binding
-legacy pipelines → compatibility adapters only
+Zi Wei providers + retrieval/delivery → deterministic facts + admitted claims
 ZIWEI.md → interpretation / output governance
 ```
 
-核心原則：**local package miss ≠ Zi Wei unavailable；先 materialize exact verified runtime，再做 Fact Gate。**
+核心原則：**transport runtime與calendar data分離；bundle不搬完整dataset，ordinary request只取最低充分1個 shard，跨年晚子時最多2個，全部綁同 exact commit與manifest hash後才執行。**

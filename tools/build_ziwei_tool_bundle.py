@@ -2,8 +2,10 @@
 """Build the derived ChatGPT transport bundle for deterministic Zi Wei Scope-A.
 
 The bundle contains exact repo-local Zi Wei runtime/retrieval bytes plus the
-complete Python runtime of pinned lunar_python==1.4.8. It is a transport cache,
-not a second calculation or interpretation authority.
+admitted calendar dataset manifest. Calendar year shards remain query-bounded
+same-commit acquisitions and are not embedded in the bundle. Pinned
+lunar_python remains build/parity provenance only. The bundle is a transport
+cache, not a second calculation or interpretation authority.
 """
 from __future__ import annotations
 import argparse, base64, hashlib, importlib.metadata, importlib.util, json, sys, zlib
@@ -12,9 +14,9 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 OUTPUT=ROOT/"runtime"/"ziwei"/"CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json"
 SOURCE_REPOSITORY="masini1491/ai-divination-playbook"
-SCHEMA_VERSION=1
+SCHEMA_VERSION=2
 AUTHORITY="derived-transport-cache-only"
-CONTRACT="chunked-model-mediated-ziwei-deterministic-tool-bundle-v1"
+CONTRACT="chunked-model-mediated-ziwei-deterministic-tool-bundle-v2"
 CHUNK_SIZE=444
 CHUNK_RETRY_LIMIT=2
 DEPENDENCY_PACKAGE="lunar_python"
@@ -23,12 +25,19 @@ DEPENDENCY_REPOSITORY="6tail/lunar-python"
 DEPENDENCY_REVISION="000c8a3d74eed098d6256a28fdd51b869324c559"
 DEPENDENCY_LICENSE="MIT"
 DEPENDENCY_LICENSE_BLOB="f02d3b9375ad9cd6eb17cabdc9723b91e257f612"
+CALENDAR_MANIFEST_PATH="data/calendar/ziwei_tw_interval/v1/MANIFEST.json"
+CALENDAR_DATASET_ID="ziwei_tw_interval_1900_2100_candidate_v1"
+CALENDAR_AGGREGATE_SHA256="4913a39e770afcd21eedc387523c572b8c4fc6469889c28f6ea75613f8984d79"
+CALENDAR_RANGE_START="1900-01-01"
+CALENDAR_RANGE_END="2100-12-31"
 
 PROJECT_PATHS=(
  "tools/ziwei_runtime.py",
  "schemas/ziwei/ZIWEI_READING_REQUEST_V1.schema.json",
  "schemas/ziwei/ZIWEI_READING_RESULT_V1.schema.json",
  "tools/ziwei_calendar_provider.py",
+ "tools/ziwei_calendar_data_provider.py",
+ "data/calendar/ziwei_tw_interval/v1/MANIFEST.json",
  "tools/ziwei_gregorian_pipeline.py",
  "tools/ziwei_natal_provider.py",
  "tools/ziwei_scope_a_pipeline.py",
@@ -112,16 +121,14 @@ def build_bundle()->dict[str,object]:
         manifest.append(_entry(path,data,"playbook",offset))
         parts.append(data); offset+=len(data)
 
-    dep_root=dependency_root()
-    for path,expected_blob in DEPENDENCY_BLOBS.items():
-        data=(dep_root/path).read_bytes()
-        manifest.append(_entry(path,data,"dependency",offset,expected_blob))
-        parts.append(data); offset+=len(data)
-
-    license_bytes=dependency_license_bytes()
-    license_path="third_party/lunar-python/LICENSE"
-    manifest.append(_entry(license_path,license_bytes,"dependency-license",offset,DEPENDENCY_LICENSE_BLOB))
-    parts.append(license_bytes); offset+=len(license_bytes)
+    calendar_manifest=json.loads((ROOT/CALENDAR_MANIFEST_PATH).read_text(encoding="utf-8"))
+    selected=calendar_manifest.get("selected_product_range",{})
+    if calendar_manifest.get("dataset_id")!=CALENDAR_DATASET_ID:
+        raise RuntimeError("calendar dataset id mismatch")
+    if calendar_manifest.get("aggregate_hash")!=CALENDAR_AGGREGATE_SHA256:
+        raise RuntimeError("calendar dataset aggregate hash mismatch")
+    if selected.get("start_date")!=CALENDAR_RANGE_START or selected.get("end_date")!=CALENDAR_RANGE_END:
+        raise RuntimeError("calendar dataset selected range mismatch")
 
     archive=b"".join(parts)
     compressed=zlib.compress(archive,9)
@@ -129,15 +136,25 @@ def build_bundle()->dict[str,object]:
     chunks=[encoded[i:i+CHUNK_SIZE] for i in range(0,len(encoded),CHUNK_SIZE)]
     return {
       "schema_version":SCHEMA_VERSION,"authority":AUTHORITY,"contract":CONTRACT,
-      "source_repository":SOURCE_REPOSITORY,
-      "source_revision_policy":"same-resolved-playbook-commit",
+      "source_repository":SOURCE_REPOSITORY,"source_revision_policy":"same-resolved-playbook-commit",
       "source_files":manifest,
-      "dependency":{
+      "calendar_data":{
+        "dataset_id":CALENDAR_DATASET_ID,
+        "manifest_path":CALENDAR_MANIFEST_PATH,
+        "aggregate_sha256":CALENDAR_AGGREGATE_SHA256,
+        "supported_input_range":{"start":CALENDAR_RANGE_START,"end":CALENDAR_RANGE_END},
+        "ordinary_query_max_files":1,
+        "rat_hour_cross_year_max_files":2,
+        "shard_path_template":"data/calendar/ziwei_tw_interval/v1/years/{year:04d}.json",
+        "acquisition":"same-commit-query-bounded-github-connect",
+        "verify_against_manifest_before_execution":True,
+      },
+      "build_source":{
         "package":DEPENDENCY_PACKAGE,"version":DEPENDENCY_VERSION,
         "repository":DEPENDENCY_REPOSITORY,"revision":DEPENDENCY_REVISION,
-        "license":DEPENDENCY_LICENSE,"license_bundle_path":license_path,
-        "runtime_file_count":len(DEPENDENCY_BLOBS),
-        "byte_identity":"pypi-installed-source-must-match-pinned-upstream-git-blobs"
+        "license":DEPENDENCY_LICENSE,
+        "runtime_dependency":False,
+        "byte_identity_owner":"tools/build_ziwei_tool_bundle.py::DEPENDENCY_BLOBS",
       },
       "archive":{
         "layout":"raw-concat-by-source_files-order","decoded_size":len(archive),"sha256":sha256(archive),
@@ -149,15 +166,18 @@ def build_bundle()->dict[str,object]:
         "must_attempt_after_verified_local_cache_miss":True,
         "verify_each_chunk_before_reassembly":True,"verify_archive_before_unpack":True,
         "verify_each_file_before_write_or_import":True,"preserve_calendar_provenance":True,
-        "interpretation_authority":False,"new_claim_authority":False,"dependency_install_required_after_materialization":False
+        "calendar_shard_materialization_required_before_gregorian_execution":True,
+        "calendar_shard_query_max_files":2,
+        "interpretation_authority":False,"new_claim_authority":False,
+        "dependency_install_required_after_materialization":False
       },
       "cache_contract":{
         "cache_dir":"/mnt/data/divination-ziwei-runtime","marker":"bundle_verification.json",
-        "required_marker_fields":["verified","repository","playbook_commit","bundle_contract","archive_sha256","dependency","files"],
+        "required_marker_fields":["verified","repository","playbook_commit","bundle_contract","archive_sha256","calendar_data","build_source","files"],
         "reuse_only_when_all_source_file_identities_match":True
       },
-      "chunks":[{"index":i,"encoded_length":len(c),"sha256":sha256(c.encode("ascii")),"payload":c}
-                for i,c in enumerate(chunks)]
+      "chunks":[{"index":i,"encoded_length":len(x),"sha256":sha256(x.encode("ascii")),"payload":x}
+                for i,x in enumerate(chunks)]
     }
 
 def render(v:dict[str,object])->str: return json.dumps(v,ensure_ascii=False,indent=2)+"\n"
@@ -188,26 +208,40 @@ def verify_bundle(bundle:dict[str,object], *, compare_project:bool=True)->list[s
         if bundle.get("authority")!=AUTHORITY: errors.append("authority mismatch")
         if bundle.get("contract")!=CONTRACT: errors.append("contract mismatch")
         if bundle.get("source_repository")!=SOURCE_REPOSITORY: errors.append("source_repository mismatch")
-        dep=bundle.get("dependency",{})
-        for k,v in {"package":DEPENDENCY_PACKAGE,"version":DEPENDENCY_VERSION,"repository":DEPENDENCY_REPOSITORY,
-                    "revision":DEPENDENCY_REVISION,"license":DEPENDENCY_LICENSE}.items():
-            if dep.get(k)!=v: errors.append(f"dependency {k} mismatch")
+        cal=bundle.get("calendar_data",{})
+        expected_cal={
+            "dataset_id":CALENDAR_DATASET_ID,
+            "manifest_path":CALENDAR_MANIFEST_PATH,
+            "aggregate_sha256":CALENDAR_AGGREGATE_SHA256,
+        }
+        for k,v in expected_cal.items():
+            if cal.get(k)!=v: errors.append(f"calendar_data {k} mismatch")
+        build=bundle.get("build_source",{})
+        for k,v in {"package":DEPENDENCY_PACKAGE,"version":DEPENDENCY_VERSION,
+                    "repository":DEPENDENCY_REPOSITORY,"revision":DEPENDENCY_REVISION,
+                    "license":DEPENDENCY_LICENSE,"runtime_dependency":False}.items():
+            if build.get(k)!=v: errors.append(f"build_source {k} mismatch")
         archive=decode_archive(bundle); cursor=0
+        seen={}
         for entry in bundle["source_files"]:
             size=int(entry["byte_size"])
             if int(entry["offset"])!=cursor: errors.append(f"{entry['path']} offset mismatch")
             part=archive[cursor:cursor+size]
             if sha256(part)!=entry["sha256"]: errors.append(f"{entry['path']} sha mismatch")
             if git_blob_sha(part)!=entry["git_blob_sha"]: errors.append(f"{entry['path']} git blob mismatch")
-            if compare_project and entry["origin"]=="playbook" and part!=(ROOT/entry["path"]).read_bytes():
+            if entry["origin"]!="playbook": errors.append(f"{entry['path']} unexpected non-playbook origin")
+            if compare_project and part!=(ROOT/entry["path"]).read_bytes():
                 errors.append(f"{entry['path']} does not reproduce canonical bytes")
-            if entry["origin"]=="dependency":
-                expected=DEPENDENCY_BLOBS.get(entry["path"])
-                if expected!=entry["git_blob_sha"]: errors.append(f"{entry['path']} pinned upstream blob mismatch")
-            if entry["origin"]=="dependency-license" and git_blob_sha(part)!=DEPENDENCY_LICENSE_BLOB:
-                errors.append("dependency license bytes mismatch")
+            seen[entry["path"]]=part
             cursor+=size
         if cursor!=len(archive): errors.append("archive has trailing bytes")
+        manifest_bytes=seen.get(CALENDAR_MANIFEST_PATH)
+        if manifest_bytes is None:
+            errors.append("calendar manifest missing from bundle")
+        else:
+            m=json.loads(manifest_bytes.decode("utf-8"))
+            if m.get("dataset_id")!=CALENDAR_DATASET_ID: errors.append("bundled calendar dataset id mismatch")
+            if m.get("aggregate_hash")!=CALENDAR_AGGREGATE_SHA256: errors.append("bundled calendar aggregate mismatch")
     except Exception as exc: errors.append(f"bundle decode error: {exc}")
     return errors
 
@@ -222,7 +256,7 @@ def materialize(bundle:dict[str,object], target:Path, playbook_commit:str)->dict
         files.append({"path":entry["path"],"sha256":entry["sha256"],"git_blob_sha":entry["git_blob_sha"]})
     marker={"verified":True,"repository":SOURCE_REPOSITORY,"playbook_commit":playbook_commit,
             "bundle_contract":CONTRACT,"archive_sha256":bundle["archive"]["sha256"],
-            "dependency":bundle["dependency"],"files":files}
+            "calendar_data":bundle["calendar_data"],"build_source":bundle["build_source"],"files":files}
     marker_path=target/bundle["cache_contract"]["marker"]
     marker_path.write_text(json.dumps(marker,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     return marker

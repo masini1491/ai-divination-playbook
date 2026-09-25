@@ -6,9 +6,14 @@ This note records the method-scoped calendar A/B evaluation under the repository
 topology owned by `REPOSITORY_ARCHITECTURE.md`. It does not create a second
 repository-layer architecture policy.
 
-## Current production dependency audit
+## Evaluated baseline production dependency audit
 
-At the evaluated baseline, `tools/ziwei_calendar_provider.py` imports only
+> Current-state reconciliation: the A-path described in this section is the
+> historical production baseline used for A/B evaluation. Production now uses
+> the admitted repo-local interval-data resolver; the pinned upstream path is
+> retained as a build/parity reference oracle only.
+
+At the evaluated baseline, `tools/ziwei_calendar_provider.py` imported only
 `Solar` from `lunar_python`. The production call surface is:
 
 ```text
@@ -331,16 +336,17 @@ and bounded-diff checks before creating the final dataset commit. The temporary
 workflow is not present in the final tree.
 
 This closes product-range selection, exact dataset materialization, source
-identity, hash accounting and deterministic rebuild evidence. It does **not**
-close the later production resolver/materialization migration or calendar
-admission update.
+identity, hash accounting and deterministic rebuild evidence. The later
+resolver/materialization/admission gate is now also closed by the production
+admission described below.
 
 ## Query-bounded resolver candidate
 
-`tools/ziwei_calendar_data_provider.py` is the dependency-free resolver
-candidate for the next migration gate. It is deliberately **not** wired into
-`tools/ziwei_calendar_provider.py` yet, so current production authority remains
-unchanged while resolver behavior is validated independently.
+`tools/ziwei_calendar_data_provider.py` is the dependency-free resolver now
+bound by the production `tools/ziwei_calendar_provider.py`. Dataset integrity
+metadata remains separate from admission authority:
+`ZIWEI_CALENDAR_ADMISSION_V1.json` allowlists the exact dataset id, aggregate
+hash and supported Gregorian range.
 
 Candidate contract:
 
@@ -355,30 +361,46 @@ Candidate contract:
 - missing/tampered/ambiguous data fails closed;
 - runtime resolver imports no `lunar_python`.
 
-Targeted candidate tests compare documented boundaries plus a fixed 200-case
-random corpus against the current admitted provider, and separately cover
-one-vs-two-shard routing and manifest/shard failure paths. The next gate is to
-validate and merge this candidate without changing production authority; only a
-later bounded admission PR may bind it into the production provider and
-materialization path.
+Before production admission, targeted candidate tests compared documented
+boundaries plus a fixed 200-case random corpus against the then-admitted
+lunar-python provider. After admission, the former A path is preserved as
+`tools/ziwei_calendar_upstream_reference.py` so build/parity checks retain an
+independent oracle rather than degenerating into data-vs-data self-comparison.
+Runtime tests separately cover one-vs-two-shard routing and manifest/shard
+failure paths.
 
-## Production migration gate
+## Production migration closure
 
-Only after parity/range/size evidence is sufficient should a later bounded
-admission change:
+The bounded admission gate is now implemented as:
 
 ```text
-production:
-data/calendar/<admitted-version>/**
-+ project-owned calendar resolver
+production runtime:
+ZIWEI_CALENDAR_ADMISSION_V1.json
+→ tools/ziwei_calendar_provider.py
+→ tools/ziwei_calendar_data_provider.py
+→ data/calendar/ziwei_tw_interval/v1/MANIFEST.json
+→ 1 required year shard
+   OR 2 shards only at the 31 Dec 23:00 cross-year edge
 
 build / parity validation:
-lunar_python==1.4.8
+tools/ziwei_calendar_upstream_reference.py
+→ pinned lunar_python==1.4.8
 ```
 
-At that point update the existing calendar admission manifest, materialization
-contract/bundle, requirements classification and production tests together.
-Until then, `ZIWEI_CALENDAR_ADMISSION_V1.json` and
-`tools/ziwei_calendar_provider.py` remain current production authority.
+The admitted input range is 1900-01-01..2100-12-31. The admission manifest
+allowlists dataset `ziwei_tw_interval_1900_2100_candidate_v1` at aggregate
+SHA-256
+`4913a39e770afcd21eedc387523c572b8c4fc6469889c28f6ea75613f8984d79`.
+
+ChatGPT transport bundle v2 carries runtime/retrieval source plus the exact
+calendar manifest, but no lunar_python runtime and no full 202-shard dataset.
+Required year shards are acquired from the same exact Playbook commit and
+verified against the manifest before Gregorian execution.
+
+Admission bridge run `36125250303` PASSed deterministic bundle regeneration,
+focused admission regression, bounded-diff cleanup and bundle-boundary
+assertions. PR #201 full repository `validate` and `casting-runtime` also
+PASSed on head `bea22c3b24a5a351480a02bcb75cce646bcb27f9` before coordination
+closure bookkeeping.
 
 This work is independent from `ZW-P1-020` Four Transformations admission.
