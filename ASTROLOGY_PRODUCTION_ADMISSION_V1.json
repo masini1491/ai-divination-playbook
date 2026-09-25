@@ -322,7 +322,8 @@
     "essential-dignity-expansion-research-v1",
     "transit-interpretation-research-v1",
     "saturn-moon-major-aspects-research-v1",
-    "planet-sign-composable-semantics-research-v1"
+    "planet-sign-composable-semantics-research-v1",
+    "south-node-fortune-research-v1"
   ],
   "qualified_only_registries": [
     "high-value-planet-aspects-research-v1"
@@ -386,8 +387,7 @@
       "fact_only_object_ids": [
         "SouthNode",
         "Descendant",
-        "ImumCoeli",
-        "PartOfFortune"
+        "ImumCoeli"
       ],
       "claim_binding": "forbidden_unless_explicitly_admitted",
       "admitted_claim_bindings": {
@@ -418,13 +418,27 @@
             "registry_record_id": "fourth-tenth-house-axis-research-v1",
             "claim_id": "claim:houlding-fourth-house-roots-foundation-property"
           }
+        ],
+        "PartOfFortune": [
+          {
+            "registry_record_id": "south-node-fortune-research-v1",
+            "claim_id": "claim:valens-fortune-life-prosperity"
+          }
+        ],
+        "SouthNode": [
+          {
+            "registry_record_id": "south-node-fortune-research-v1",
+            "claim_id": "claim:lilly-south-node-fortune-conjunction-diminution",
+            "requires_cofact_object_ids": [
+              "PartOfFortune"
+            ],
+            "requires_aspect": "conjunction",
+            "scope": "historical_example_only"
+          }
         ]
       },
-      "no_admitted_claim_bindings": [
-        "SouthNode",
-        "PartOfFortune"
-      ],
-      "interpretation_scope_note": "Descendant and ImumCoeli admit only the explicitly listed source-backed claim bindings. SouthNode and PartOfFortune remain deterministic facts without production semantic claim families."
+      "no_admitted_claim_bindings": [],
+      "interpretation_scope_note": "Descendant and ImumCoeli retain their explicit source-backed bindings. PartOfFortune admits only the bounded Valens Lot-of-Fortune doctrine. SouthNode admits no standalone meaning; its only admitted semantic binding is the Lilly SouthNode + PartOfFortune conjunction-specific historical example and requires both facts plus conjunction applicability."
     }
   }
 }
