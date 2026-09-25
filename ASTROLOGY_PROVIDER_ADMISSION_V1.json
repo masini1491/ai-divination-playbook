@@ -187,7 +187,18 @@
         "sextile": 5
       },
       "extended_points_or_angles": "not_admitted",
-      "auto_include_new_objects": false
+      "auto_include_new_objects": false,
+      "extended_projection": {
+        "runtime_owner": "tools/astrology_aspect_projection.py",
+        "default_provider_generation_unchanged": true,
+        "explicit_policy_only": true,
+        "admitted_participant_policy_ids": [
+          "aspect-participants-core-plus-angles-v1",
+          "aspect-participants-core-plus-south-node-v1",
+          "aspect-participants-core-plus-fortune-v1"
+        ],
+        "semantic_interpretation_authority": false
+      }
     }
   },
   "provenance": {
