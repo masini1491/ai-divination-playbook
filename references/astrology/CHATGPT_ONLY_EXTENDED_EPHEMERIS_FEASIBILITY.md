@@ -294,4 +294,18 @@ build-time authoritative data / local analytical formulas
 → fail closed when the required artifact/definition is unavailable.
 
 Production admission remains unchanged by this report.
+
+### AST-P2-041 follow-up result
+
+A prospectively frozen follow-up tested independent-segment piecewise Chebyshev longitude models over the same five E2 objects and validation fixtures. No declared variant passed every gate. The three shorter candidates met fixture accuracy and size limits but failed the added segment-boundary speed-continuity requirement; the 120-day candidate also exceeded fixture-speed and boundary-longitude limits.
+
+```text
+sampled/Hermite v0                      rejected
+independent-segment Chebyshev v0         rejected
+bounded SPK                              unevaluated
+continuity-constrained/overlap Chebyshev unevaluated
+multi-epoch osculating                   unevaluated
+```
+
+This negative result rejects only the declared independent-segment family; it does not establish that Chebyshev or bundled ephemerides in general are infeasible.
 ```

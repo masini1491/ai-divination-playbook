@@ -1,0 +1,128 @@
+{
+  "schema_name": "astrology_p2_041_chebyshev_feasibility",
+  "schema_version": "1.0.0",
+  "authority": "REFERENCE_ONLY_RESEARCH_EVIDENCE",
+  "production_admission": "NOT_GRANTED",
+  "experiment": {
+    "pre_execution_contract_commit": "2ac7a91e743fd460a639095d12dd470d72a51634",
+    "temporary_pr": 236,
+    "temporary_pr_merged": false,
+    "temporary_head": "47e5b052a22b2d9dd59dcf3af09b77364106b523",
+    "workflow_run_number": 832,
+    "workflow_run_id": 36216994624,
+    "validate_job": 108334821215,
+    "execution_status": "PASS",
+    "research_result": "NO_PASSING_VARIANT"
+  },
+  "source_authority": {
+    "provider": "NASA/JPL Horizons",
+    "api": "Horizons API",
+    "observed_signature": {
+      "source": "NASA/JPL Horizons API",
+      "version": "1.2"
+    },
+    "center": "500@399",
+    "ephem_type": "OBSERVER",
+    "quantities": [
+      31
+    ],
+    "apparent": "AIRLESS",
+    "time_type": "UT",
+    "ordinary_runtime_network_required": false
+  },
+  "representation": {
+    "id": "piecewise-chebyshev-wrapped-longitude-v0",
+    "source_grid_days": 5,
+    "fit": "ordinary least-squares Chebyshev fit over all 5-day source points in each segment",
+    "speed": "analytic derivative of fitted Chebyshev polynomial",
+    "segment_blending": false
+  },
+  "thresholds_frozen_before_first_execution": {
+    "longitude_p95_arcsec_max": 10,
+    "longitude_max_arcsec_max": 30,
+    "speed_max_deg_per_day": 0.001,
+    "binary_payload_bytes_max": 1048576,
+    "single_query_raw_payload_bytes_max": 64,
+    "boundary_longitude_jump_arcsec_max": 30,
+    "boundary_speed_jump_deg_per_day_max": 0.001
+  },
+  "variants": {
+    "cheb-d5-w45": {
+      "degree": 5,
+      "segment_width_days": 45,
+      "binary_float64_payload_bytes": 1023840,
+      "binary_sha256": "fcac5edd1428ba938e9f0f7237d83a19b2840967158189322a7107642131e27b",
+      "single_query_raw_payload_bytes": 48,
+      "longitude_p95_arcsec": 0.7368418073838257,
+      "longitude_max_arcsec": 1.4080207551955937,
+      "speed_max_deg_per_day": 0.0002925685629507624,
+      "boundary_longitude_jump_arcsec_max": 2.0751200559743666,
+      "boundary_speed_jump_deg_per_day_max": 0.0014925800065183487,
+      "failed_gates": [
+        "boundary_speed_jump_deg_per_day_max"
+      ],
+      "feasibility_pass": false
+    },
+    "cheb-d7-w60": {
+      "degree": 7,
+      "segment_width_days": 60,
+      "binary_float64_payload_bytes": 1023680,
+      "binary_sha256": "3c8997b160bd8d9c2c6d5d77e94669b18108aab572d3e04cd0ec18e73466b290",
+      "single_query_raw_payload_bytes": 64,
+      "longitude_p95_arcsec": 0.8918483561387802,
+      "longitude_max_arcsec": 1.1946249452194024,
+      "speed_max_deg_per_day": 0.00021592071798254286,
+      "boundary_longitude_jump_arcsec_max": 0.3693639864877696,
+      "boundary_speed_jump_deg_per_day_max": 0.0024565966224533997,
+      "failed_gates": [
+        "boundary_speed_jump_deg_per_day_max"
+      ],
+      "feasibility_pass": false
+    },
+    "cheb-d7-w80": {
+      "degree": 7,
+      "segment_width_days": 80,
+      "binary_float64_payload_bytes": 768000,
+      "binary_sha256": "c209477af4cce91222f277a245775db55007430a2a3555e75d7f1bd3a4f70241",
+      "single_query_raw_payload_bytes": 64,
+      "longitude_p95_arcsec": 1.9563963414157115,
+      "longitude_max_arcsec": 2.6744153036929674,
+      "speed_max_deg_per_day": 0.0004241695525470657,
+      "boundary_longitude_jump_arcsec_max": 3.2164780295602213,
+      "boundary_speed_jump_deg_per_day_max": 0.0036515642913003687,
+      "failed_gates": [
+        "boundary_speed_jump_deg_per_day_max"
+      ],
+      "feasibility_pass": false
+    },
+    "cheb-d7-w120": {
+      "degree": 7,
+      "segment_width_days": 120,
+      "binary_float64_payload_bytes": 512000,
+      "binary_sha256": "2e510cc71b558daa60afe3b91a3be07e4a2e7825880c08227ab5a772eb652190",
+      "single_query_raw_payload_bytes": 64,
+      "longitude_p95_arcsec": 2.829567099001906,
+      "longitude_max_arcsec": 13.855733780007995,
+      "speed_max_deg_per_day": 0.003373776572567988,
+      "boundary_longitude_jump_arcsec_max": 52.13774098720023,
+      "boundary_speed_jump_deg_per_day_max": 0.018494318106896335,
+      "failed_gates": [
+        "speed_max_deg_per_day",
+        "boundary_longitude_jump_arcsec_max",
+        "boundary_speed_jump_deg_per_day_max"
+      ],
+      "feasibility_pass": false
+    }
+  },
+  "passing_variants": [],
+  "conclusion": {
+    "candidate_family": "REJECTED_UNDER_FROZEN_ENGINEERING_FEASIBILITY_GATE",
+    "near_miss": "D5/W45, D7/W60 and D7/W80 passed all fixture accuracy/size gates and boundary-longitude gate but failed boundary-speed continuity.",
+    "production_consequence": "NONE",
+    "remaining_representations": [
+      "bounded SPK excerpt",
+      "continuity-constrained or overlap/blended Chebyshev under a new prospective contract",
+      "multi-epoch osculating elements"
+    ]
+  }
+}
