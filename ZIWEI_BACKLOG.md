@@ -468,11 +468,21 @@ Ordering rationale:
 - owner: Zi Wei temporal runtime
 - blocked_by: none
 - stage_progress:
-  - decadal / 大限: IMPLEMENTED_CANDIDATE — bounded calculation-only provider + V2 dynamic transport + admission; canonical Zi Wei bundle regenerated; bootstrap detail kept in method owner, regenerated ChatGPT load pack and load-budget check PASS; awaiting formal PR validation / merge / canonical read-back;
+  - decadal / 大限: DONE — bounded calculation-only provider + V2 dynamic transport + admission merged and canonically read back; interpretation remains separately unadmitted;
   - yearly / 流年: OPEN;
   - monthly / 流月: BLOCKED_BY_YEARLY;
   - daily / 流日: BLOCKED_BY_MONTHLY;
   - hourly / 流時: BLOCKED_BY_DAILY;
+- decadal_stage_evidence:
+  - implementation merged by PR #261 at `f31a9c1089da36bbee4da82def4fb1766838e745`;
+  - provider `ziwei-decadal-quanji-common-python@1.0.0` / profile `decadal.quanji_common_v1` is production-admitted for calculation only, with `age_basis=traditional_nominal_age`;
+  - explicit V2 dynamic request/result contracts admit only `temporal_scope=decadal`; existing V1 natal request/result remain closed to `natal_baseline`;
+  - explicit `gender` + `target_lunar_year` are required; no prose/memory gender inference, no natal fallback, and yearly/monthly/daily/hourly remain unsupported;
+  - canonical bundle read-back matches main provider/runtime/V2-schema Git blob identities and now carries 130 bounded transport chunks;
+  - PR #261 Validate Playbook run `36267237273`: `validate` PASS and `casting-runtime` PASS; load pack, load budget, Zi Wei bundle, unit suite and structural checker all passed;
+  - successful main-push run `36267370007`: `validate` PASS and `casting-runtime` PASS; unit suite, structural checker, exact-main Zi Wei handoff preparation and upload all passed;
+  - main-push artifact `10914591363` / `ziwei-deterministic-handoff-f31a9c1089da36bbee4da82def4fb1766838e745` was published with digest `sha256:dd355858cf0b2877197d05e3b61aaf818575551e8282cb630057a38ff262928d`;
+  - no dynamic interpretation claim family was admitted; natal 52 claims were not promoted into decadal predictions.
 - sequence:
   1. decadal / 大限
   2. yearly / 流年
@@ -500,13 +510,13 @@ Ordering rationale:
 ### ZW-P1-040 — Dynamic interpretation claim corpus
 
 - type: FEATURE / INTERPRETATION
-- status: BLOCKED
+- status: OPEN
 - priority: P1/P2
 - owner: Zi Wei temporal interpretation
 - blocked_by:
   - corresponding admitted calculation stage in ZW-P1-030
 - stage_progress:
-  - decadal interpretation: ELIGIBLE_AFTER_DECADAL_CALCULATION_MERGE — do not start before canonical decadal calculation admission read-back;
+  - decadal interpretation: READY — decadal calculation admission merged and canonically read back; interpretation still requires its own source-backed claim admission;
   - yearly interpretation: BLOCKED_BY_YEARLY_CALCULATION;
   - monthly / daily / hourly: BLOCKED_BY_CORRESPONDING_CALCULATION_LAYER;
 - staging_rule:
