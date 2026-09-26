@@ -95,6 +95,7 @@ class AstrologyProductionContractTests(unittest.TestCase):
         data = json.loads((ROOT / "ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json").read_text(encoding="utf-8"))
         self.assertEqual("astrology_place_resolver_admission", data["schema_name"])
         self.assertEqual("PRODUCTION_ADMITTED", data["status"])
+        self.assertEqual("1.1.0", data["resolver_version"])
         self.assertEqual("geonamescache", data["dependency"]["package"])
         self.assertEqual("3.0.2", data["dependency"]["version"])
         self.assertEqual("MIT", data["dependency"]["software_license"])
@@ -102,6 +103,11 @@ class AstrologyProductionContractTests(unittest.TestCase):
         self.assertTrue(data["dependency"]["attribution_required"])
         self.assertFalse(data["resolution_policy"]["network_required"])
         self.assertFalse(data["resolution_policy"]["auto_pick_largest_population_when_ambiguous"])
+        tw = data["resolution_policy"]["taiwan_admin_locality_normalization"]
+        self.assertEqual("taiwan-admin-locality-v1", tw["policy_id"])
+        self.assertEqual("runtime/astrology/TW_ADMIN_LOCALITY_V1.json", tw["policy_path"])
+        self.assertEqual("fail_closed", tw["unsupported_or_mismatched_pair"])
+        self.assertFalse(tw["coordinates_authority"])
         self.assertIn("country_name_or_code_to_unique_iana_timezone", data["scope"])
         self.assertEqual("fail_closed", data["resolution_policy"]["country_multiple_timezones"])
 

@@ -91,6 +91,30 @@ class AstrologyOrchestratorTests(unittest.TestCase):
         self.assertNotIn("resolver", result["input_resolution"])
         self.assertNotIn("transit", result["fact_bundles"])
 
+    def test_full_taiwan_admin_locality_runs_through_existing_place_resolver(self):
+        request = {
+            "schema_name": "astrology_reading_request",
+            "schema_version": "1.0.0",
+            "reading_mode": "natal",
+            "subject_ref": "fixture-taiwan-admin-locality",
+            "birth": {
+                "local_datetime": "1987-05-07T05:17:00",
+                "birth_time_certainty": "exact",
+                "house_system": "Whole Sign",
+                "location": {"place": {"name": "新北市樹林區"}},
+            },
+        }
+        result = run_request(request)
+        self.assertEqual("admitted", result["status"])
+        resolution = result["input_resolution"]
+        self.assertEqual("offline_place_resolver", resolution["resolution_mode"])
+        self.assertEqual(1668875, resolution["resolved"]["geoname_id"])
+        self.assertEqual("Asia/Taipei", resolution["resolved"]["timezone_name"])
+        self.assertEqual(
+            "taiwan-admin-locality-v1",
+            resolution["query"]["normalization"]["normalization_policy_id"],
+        )
+
     def test_unknown_time_country_only_natal_emits_invariant_signs(self):
         request = {
             "schema_name": "astrology_reading_request",

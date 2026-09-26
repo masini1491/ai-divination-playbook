@@ -11,14 +11,18 @@ from __future__ import annotations
 import argparse
 import json
 from dataclasses import dataclass
+from functools import lru_cache
+from pathlib import Path
 from typing import Any
 
 import geonamescache
 
 RESOLVER_ID = "geonamescache-city-v1"
-RESOLVER_VERSION = "1.0.0"
+RESOLVER_VERSION = "1.1.0"
 GEONAMESCACHE_VERSION = geonamescache.__version__
 GEONAMESCACHE_SOURCE_REVISION = "df4f6497b321f7981645ab0c5c77d3354c63bd01"
+TAIWAN_ADMIN_POLICY_PATH = Path(__file__).resolve().parents[1] / "runtime" / "astrology" / "TW_ADMIN_LOCALITY_V1.json"
+TAIWAN_ADMIN_POLICY_ID = "taiwan-admin-locality-v1"
 
 
 class PlaceResolutionError(ValueError):
@@ -62,6 +66,80 @@ def _candidate(row: dict[str, Any]) -> PlaceCandidate:
     )
 
 
+@lru_cache(maxsize=1)
+def _taiwan_admin_policy() -> dict[str, Any]:
+    try:
+        data = json.loads(TAIWAN_ADMIN_POLICY_PATH.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise PlaceResolutionError("Taiwan administrative locality policy unavailable or malformed") from exc
+    if (
+        data.get("schema_name") != "astrology_taiwan_admin_locality_policy"
+        or data.get("policy_id") != TAIWAN_ADMIN_POLICY_ID
+        or data.get("status") != "PRODUCTION_ADMITTED_INPUT_NORMALIZATION"
+        or data.get("country_code") != "TW"
+        or not isinstance(data.get("hierarchy"), dict)
+    ):
+        raise PlaceResolutionError("Taiwan administrative locality policy identity mismatch")
+    return data
+
+
+def normalize_place_query(name: str, *, country_code: str | None = None) -> dict[str, Any]:
+    if not name or not name.strip():
+        raise PlaceResolutionError("place name is required")
+    raw_name = name.strip()
+    supplied_country = country_code.upper() if country_code else None
+    canonical = raw_name.replace("台", "臺")
+    policy = _taiwan_admin_policy()
+    hierarchy: dict[str, list[str]] = policy["hierarchy"]
+    admin_area = next((city for city in hierarchy if canonical.startswith(city)), None)
+
+    if admin_area is None:
+        return {
+            "raw_name": raw_name,
+            "normalized_name": raw_name,
+            "supplied_country_code": supplied_country,
+            "effective_country_code": supplied_country,
+            "normalization_policy_id": None,
+            "admin_area": None,
+            "hierarchy_validated": False,
+            "script_normalization_applied": False,
+        }
+
+    if supplied_country is not None and supplied_country != "TW":
+        raise PlaceResolutionError(
+            "Taiwan administrative locality input conflicts with supplied country_code; fail closed"
+        )
+
+    remainder = canonical[len(admin_area):]
+    if not remainder:
+        return {
+            "raw_name": raw_name,
+            "normalized_name": canonical,
+            "supplied_country_code": supplied_country,
+            "effective_country_code": "TW",
+            "normalization_policy_id": TAIWAN_ADMIN_POLICY_ID,
+            "admin_area": admin_area,
+            "hierarchy_validated": True,
+            "script_normalization_applied": canonical != raw_name,
+        }
+
+    if remainder not in hierarchy[admin_area]:
+        raise PlaceResolutionError(
+            "Taiwan administrative locality hierarchy mismatch or unsupported locality; fail closed"
+        )
+
+    return {
+        "raw_name": raw_name,
+        "normalized_name": remainder,
+        "supplied_country_code": supplied_country,
+        "effective_country_code": "TW",
+        "normalization_policy_id": TAIWAN_ADMIN_POLICY_ID,
+        "admin_area": admin_area,
+        "hierarchy_validated": True,
+        "script_normalization_applied": canonical != raw_name,
+    }
+
+
 def search_place_candidates(
     name: str,
     *,
@@ -74,9 +152,10 @@ def search_place_candidates(
         raise PlaceResolutionError("min_city_population must be one of 500, 1000, 5000, 15000")
 
     cache = geonamescache.GeonamesCache(min_city_population=min_city_population)
-    query = name.strip()
+    normalization = normalize_place_query(name, country_code=country_code)
+    query = normalization["normalized_name"]
     rows = cache.search_cities(query, case_sensitive=False, contains_search=False)
-    country = country_code.upper() if country_code else None
+    country = normalization["effective_country_code"]
     if country:
         rows = [row for row in rows if str(row.get("countrycode", "")).upper() == country]
 
@@ -110,6 +189,7 @@ def resolve_place(
         )
 
     candidate = candidates[0]
+    normalization = normalize_place_query(name, country_code=country_code)
     return {
         "resolver": {
             "resolver_id": RESOLVER_ID,
@@ -119,7 +199,11 @@ def resolve_place(
             "dataset_origin": "GeoNames",
             "dataset_license": "CC-BY-4.0",
         },
-        "query": {"name": name, "country_code": country_code},
+        "query": {
+            "name": name,
+            "country_code": country_code,
+            "normalization": normalization,
+        },
         "resolved": candidate.as_dict(),
     }
 

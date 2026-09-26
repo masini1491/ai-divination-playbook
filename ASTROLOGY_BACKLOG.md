@@ -506,26 +506,22 @@ This item is a standing reconciliation guard. It is not a request to change curr
 ### AST-P1-160 — Taiwan administrative locality input normalization
 
 - type: FEATURE / INPUT NORMALIZATION / PLACE RESOLUTION
-- status: OPEN
+- status: DONE
 - priority: P1
 - owner: Astrology place input normalization / resolver
 - blocked_by:
   - AST-P1-005
 - canonical_evidence:
   - `tools/astrology_place_resolver.py`
+  - `runtime/astrology/TW_ADMIN_LOCALITY_V1.json`
   - `ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json`
   - `data/astrology/place/v1/MANIFEST.json`
   - `tests/test_astrology_place_resolver.py`
   - `ASTROLOGY_MATERIALIZATION.md`
 - production_observation:
-  - natural Taiwan administrative input such as `新北市樹林區` does not directly resolve under the current exact locality/alternate-name lookup;
+  - natural Taiwan administrative input such as `新北市樹林區` did not directly resolve under the prior exact locality/alternate-name lookup;
   - admitted locality identity `樹林區 / TW` resolves to GeoNames ID `1668875`, coordinates and `Asia/Taipei`;
-  - current production profile-500 transport already contains the bounded `樹林區` alias/candidate path, so this is not a transport-admission gap.
-- current_state:
-  - resolver normalizes only with `strip()` before exact/alternate-name lookup;
-  - `contains_search=False` intentionally preserves ambiguity safety;
-  - no deterministic Taiwan administrative hierarchy parser / prefix normalizer is currently admitted;
-  - generic web geocoding remains forbidden.
+  - profile-500 transport already contained the bounded `樹林區` alias/candidate path, so the gap was input normalization rather than transport admission.
 - completion_gate:
   - bounded deterministic normalization for common Taiwan forms such as `市/縣 → 區/鄉/鎮/市`;
   - preserve raw input plus normalized provenance;
@@ -534,6 +530,15 @@ This item is a standing reconciliation guard. It is not a request to change curr
   - installed resolver and query-bounded profile-500 transport preserve equivalent semantics;
   - explicit coordinates + IANA timezone continue to bypass the resolver;
   - no generic web geocoding or unrestricted fuzzy matching.
+- closure:
+  - added versioned `taiwan-admin-locality-v1` policy with 22 county/city values and 371 exact county/city × township/district pairs;
+  - policy applies bounded `台→臺` script normalization only inside recognized Taiwan administrative parsing, validates the hierarchy pair, then emits only the validated locality token plus effective country `TW`;
+  - `新北市樹林區` now resolves through the existing exact GeoNames resolver to GeoNames ID `1668875` / `Asia/Taipei`;
+  - invalid pairs such as `新北市中正區` and conflicting explicit country codes fail closed;
+  - resolver v1.1 preserves `contains_search=False`; the policy is not coordinate authority and supplies no geocoding result itself;
+  - ChatGPT query-bounded transport applies the same policy before alias-shard hashing, so installed resolver and cold-start profile-500 transport share the same normalization semantics;
+  - explicit coordinates + IANA timezone remain resolver-free;
+  - external precedent was reviewed only as development cross-check: `moskytw/zipcodetw@1b348c344a9eaa50c7666e9046a91cf38cbb447b` (MIT) demonstrates `台→臺` normalization and administrative-unit tokenization; no external runtime dependency or network geocoder was introduced.
 
 ### AST-P1-170 — North Node sign semantic claim-family admission
 
