@@ -17,6 +17,7 @@ Reviewed Playbook baseline: `masini1491/ai-divination-playbook@6bd58ea5bb61849c2
 | `Shoresh613/astro-script` | `18f4a3e291a557b2ef47c7fb5e27b108f1bcf4b7` | transit / timing / unknown-time degradation patterns | README claims MIT, but referenced `LICENSE.md` is absent at reviewed revision; treat license as unresolved | REFERENCE-ONLY |
 | `kounkt/tri-horoscope` | `11318426c52c222eea108583ca45420c864825ca` | MIT alternative deterministic chart engine; fact/interpretation separation | MIT | REFERENCE-ONLY |
 | `cosinekitty/astronomy` | `865d3da7d8112bbc7911238052c6af4aaf877181` | lower-level astronomy engine / independent deterministic astronomy reference | MIT | REFERENCE-ONLY |
+| `g-battaglia/libephemeris` | `37ffb0555b7a9f5083b4f1b6dc1a0f10feeb85fa` | independent interpolated lunar-apsis definition / compatibility-boundary research | AGPL-3.0 | REFERENCE-ONLY |
 
 ## 2. `aloistr/swisseph`
 
@@ -191,3 +192,24 @@ Reviewed revision `82df4c1c285cb470625373a716bab86c343e4b6e` carries an MIT lice
 - no South Node meaning, North Node aspect meaning, Vedic Rahu/Ketu system, or evolutionary-astrology doctrine is promoted;
 - the source does not choose this Playbook's node calculation definition. Production continues to use the separately admitted **mean North Node** provenance from `ASTROLOGY_PROVIDER_ADMISSION_V1.json`;
 - the external repository remains REFERENCE-ONLY at repository level; production claim authority, if any, comes only from an explicitly admitted bounded claim registry.
+
+## 9. `g-battaglia/libephemeris`
+
+### Observed evidence
+
+Reviewed revision `37ffb0555b7a9f5083b4f1b6dc1a0f10feeb85fa` is AGPL-3.0. Its interpolated-apogee methodology defines a smooth lunar-apogee curve anchored to actual JPL DE440 apogee passages, then represented by a Delaunay-argument series plus a residual interpolation model. The project explicitly distinguishes this curve from both mean apogee and instantaneous osculating apogee.
+
+Its comparison documentation also records that `INTP_APOG` / `INTP_PERG` remain an intentional divergence from Swiss between apsis passages. This is evidence that the label "interpolated apogee" does not by itself establish one provider-neutral numerical identity.
+
+### Useful research contribution
+
+- independent evidence that Interpolated Lilith is a separately designed smooth apsis product, not a trivial arithmetic interpolation between Mean and Osculating Lilith;
+- precedent for defining a named interpolated-apsis model from physical apsis passages while keeping its identity explicit;
+- evidence that reproducible local models can intentionally diverge from Swiss and therefore must not be marketed as Swiss-exact without direct validation.
+
+### Not adopted
+
+- AGPL source code, generated coefficients, residual tables and implementation details are not copied into this Playbook;
+- `libephemeris` does not gain production provider authority;
+- its `INTP_APOG` identity is not silently equated with Swiss `SE_INTP_APOG`;
+- no production Interpolated Lilith definition is selected by this source review.
