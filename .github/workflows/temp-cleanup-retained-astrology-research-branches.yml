@@ -1,0 +1,92 @@
+name: TEMP Cleanup Retained Astrology Research Branches
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/temp-cleanup-retained-astrology-research-branches.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: maintenance/astrology-retained-ref-cleanup-20260926
+          fetch-depth: 0
+
+      - name: Fail-closed preflight exact identities
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected_main="499fa9649587bec670dd222fda70ef15a9648bee"
+          actual_main="$(git ls-remote --heads origin refs/heads/main | awk '{print $1}')"
+          test "$actual_main" = "$expected_main" || { echo "main drift expected=$expected_main actual=$actual_main"; exit 1; }
+
+          targets=(
+            "da10658332c921ad8c5f455236a899edd9c73287 research/ast-p2-040-f32-transport-contract"
+            "bdc7a104671d82fe8f0ba26b6e2d4558dc43725f research/ast-p2-040-production-contract"
+            "fa733431928bcf32db54af5c3a6fb7737a7c4dee research/astrology-domicile-claim-family-20260913"
+            "4f0a021ad0363c7975da5d451993104d3381a9c0 research/astrology-house-system-evidence"
+            "10ac0dd9cb97540c7b5b1e14e7d0e4000bd31ecd maintenance/astrology-retained-research-evidence-20260926"
+          )
+          for item in "${targets[@]}"; do
+            expected="${item%% *}"
+            branch="${item#* }"
+            actual="$(git ls-remote --heads origin "refs/heads/$branch" | awk '{print $1}')"
+            test -n "$actual" || { echo "missing target: $branch"; exit 1; }
+            test "$actual" = "$expected" || { echo "target drift: $branch expected=$expected actual=$actual"; exit 1; }
+          done
+
+          retained=(
+            "0052ba1c0a3b65238b4f9ec3a94a1aff47e341ea data/astrology-extended-ephemeris-v1"
+            "d18be87abe762433e43e844f33f4b43f7fad9f3b data/astrology-place-v1"
+          )
+          for item in "${retained[@]}"; do
+            expected="${item%% *}"
+            branch="${item#* }"
+            actual="$(git ls-remote --heads origin "refs/heads/$branch" | awk '{print $1}')"
+            test "$actual" = "$expected" || { echo "retained authority drift: $branch expected=$expected actual=$actual"; exit 1; }
+          done
+          echo "PASS exact identity preflight"
+
+      - name: Delete closure-complete refs
+        shell: bash
+        run: |
+          set -euo pipefail
+          for branch in \
+            research/ast-p2-040-f32-transport-contract \
+            research/ast-p2-040-production-contract \
+            research/astrology-domicile-claim-family-20260913 \
+            research/astrology-house-system-evidence \
+            maintenance/astrology-retained-research-evidence-20260926
+          do
+            git push origin --delete "$branch"
+          done
+
+      - name: Verify cleanup and retained authorities
+        shell: bash
+        run: |
+          set -euo pipefail
+          for branch in \
+            research/ast-p2-040-f32-transport-contract \
+            research/ast-p2-040-production-contract \
+            research/astrology-domicile-claim-family-20260913 \
+            research/astrology-house-system-evidence \
+            maintenance/astrology-retained-research-evidence-20260926
+          do
+            actual="$(git ls-remote --heads origin "refs/heads/$branch")"
+            test -z "$actual" || { echo "target still exists: $branch"; exit 1; }
+          done
+          test "$(git ls-remote --heads origin refs/heads/data/astrology-extended-ephemeris-v1 | awk '{print $1}')" = "0052ba1c0a3b65238b4f9ec3a94a1aff47e341ea"
+          test "$(git ls-remote --heads origin refs/heads/data/astrology-place-v1 | awk '{print $1}')" = "d18be87abe762433e43e844f33f4b43f7fad9f3b"
+          echo "PASS cleanup verification"
+
+      - name: Delete temporary cleanup branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git push origin --delete "maintenance/astrology-retained-ref-cleanup-20260926"
