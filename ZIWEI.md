@@ -79,7 +79,7 @@ legacy run_scope_a_* entrypoints
 → tools/ziwei_runtime.py
 ```
 
-`schemas/ziwei/ZIWEI_READING_REQUEST_V1.schema.json` 與 `schemas/ziwei/ZIWEI_READING_RESULT_V1.schema.json` 定義 closed-world v1 interface。V1 natal transport 的 unsupported temporal scope、optional module 或 profile 必須 fail closed；不得靜默把 V1 schema 擴成 dynamic。Explicit decadal calculation 使用獨立 V2 typed dynamic contract；yearly／monthly／daily／hourly 仍 fail closed。不得再為每個 module/input 組合新增 `with_x_and_y` canonical runtime。
+`schemas/ziwei/ZIWEI_READING_REQUEST_V1.schema.json` 與 `schemas/ziwei/ZIWEI_READING_RESULT_V1.schema.json` 定義 closed-world v1 interface。V1 natal transport 的 unsupported temporal scope、optional module 或 profile 必須 fail closed；不得靜默把 V1 schema 擴成 dynamic。Explicit decadal calculation 保留 V2 typed dynamic contract；V3 typed dynamic contract 另 admission `decadal|yearly`，其中 yearly 僅接受 explicit `target_lunar_year` / lunar-year boundary，且需相容的 decadal parent。monthly／daily／hourly 仍 fail closed。不得再為每個 module/input 組合新增 `with_x_and_y` canonical runtime。
 
 若 local runtime、calendar manifest 或 required year shard 缺失，先依 `ZIWEI_MATERIALIZATION.md` 走 verified runtime reuse / host-aware materialization fast path；verified cache可安全重用時不得為形式重新搬 bundle，真正 cache miss 才依 host capability依序選 direct byte/file handoff、successful exact-main Zi Wei handoff artifact，再到既有 same-commit bounded opaque bundle fallback；calendar data仍保持 same-commit query-bounded acquisition，year shards不進 handoff artifact，ordinary production 也不依賴 `lunar_python` runtime。只有 admitted materialization/direct-source paths 都失敗才停在 Fact Gate；不得改用 Tarot / Meihua / Liuyao 冒充 Zi Wei reading。
 

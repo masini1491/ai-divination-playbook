@@ -469,7 +469,7 @@ Ordering rationale:
 - blocked_by: none
 - stage_progress:
   - decadal / 大限: DONE — bounded calculation-only provider + V2 dynamic transport + admission merged and canonically read back; interpretation remains separately unadmitted;
-  - yearly / 流年: OPEN;
+  - yearly / 流年: IMPLEMENTED_CANDIDATE — bounded yearly provider + V3 dynamic transport + explicit lunar-year boundary + target-year Si Hua facts; awaiting PR validation / merge / canonical read-back;
   - monthly / 流月: BLOCKED_BY_YEARLY;
   - daily / 流日: BLOCKED_BY_MONTHLY;
   - hourly / 流時: BLOCKED_BY_DAILY;

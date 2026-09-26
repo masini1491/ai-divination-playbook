@@ -26,7 +26,7 @@ D13 Interpretation claims
 D14 Validation / admission
 ```
 
-第一階段以 D0–D6、D10、D12、D14 為主。D13 的 architecture / source-policy / runtime-facing contracts v0 已完成 research admission；完整 claim corpus 仍未 admission。D9 的 interpretation responsibility 已 research-closed，但 project-wide brightness table/profile 尚未選定；D7 依 bounded taxonomy 路由。D11 的 interpretation responsibility 已 research-closed；production calculation 現已分層處理，`decadal` 第一層由 `ZIWEI_DECADAL_ADMISSION_V1.json` admission，yearly／monthly／daily／hourly 仍未 admission。
+第一階段以 D0–D6、D10、D12、D14 為主。D13 的 architecture / source-policy / runtime-facing contracts v0 已完成 research admission；完整 claim corpus 仍未 admission。D9 的 interpretation responsibility 已 research-closed，但 project-wide brightness table/profile 尚未選定；D7 依 bounded taxonomy 路由。D11 的 interpretation responsibility 已 research-closed；production calculation 現已分層處理，`decadal` 由 `ZIWEI_DECADAL_ADMISSION_V1.json` admission；`yearly` calculation-only 由 `ZIWEI_YEARLY_ADMISSION_V1.json` admission；monthly／daily／hourly仍未 admission。
 
 ## Normalized architecture
 
@@ -185,7 +185,7 @@ natal / decadal / yearly / monthly / daily / hourly = distinct scopes
 dynamic fact = profile/boundary/provenance bound
 missing dynamic layer = do not infer
 natal claim != automatic flow prediction
-dynamic calculation runtime/provider = decadal calculation-only admitted; yearly/monthly/daily/hourly not admitted
+dynamic calculation runtime/provider = decadal + yearly calculation-only admitted; monthly/daily/hourly not admitted
 ```
 
 ### Decadal
@@ -285,3 +285,7 @@ The following remain research gaps or future expansion candidates, but are **not
 6. 上述兩個明確 image gaps（只有取得可驗證 facsimile 時才重開）。
 
 Interpretation Architecture v0 的完成不建立 production provider、production runtime、ordinary routing 或 canonical production profile。
+
+### Yearly production profile
+
+`yearly.year_branch_common_v1` binds the yearly Life Palace to the explicit target traditional-lunar year's Earthly Branch and lays the twelve yearly palace roles in reverse order from that branch. The target-year Heavenly Stem is passed to the separately admitted `sihua.default_v1` fact provider; this grants calculation facts only, not yearly interpretation. Production v1 accepts only explicit `target_lunar_year` with `year_boundary=lunar_year_explicit_v1`; Li-Chun/solar-term target selection and automatic current-year inference remain unadmitted. Primary implementation evidence: `matharts/ziwei@596f43c43ff6fbae526314c7f668bbf346445ff1`; comparator: `SylarLong/iztro@2c7ef9be669df7b19d1799f4dce335fed3794f78`.
