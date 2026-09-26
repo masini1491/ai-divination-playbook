@@ -3,7 +3,7 @@
   "schema_version": "1.0.0",
   "provider_id": "astrology-extended-ephemeris-c1-v1",
   "provider_version": "1.0.0",
-  "status": "AWAITING_DATA_PUBLISH",
+  "status": "PRODUCTION_ADMITTED",
   "activation": "explicit_request_only",
   "scope": [
     "natal_known_time_explicit_extended_objects"
@@ -25,12 +25,16 @@
     "coverage_start": "1825-04-01T00:00:00+00:00",
     "admitted_output_window_end": "2350-10-01T00:00:00+00:00",
     "data_ref": "refs/heads/data/astrology-extended-ephemeris-v1",
-    "exact_data_commit": null,
+    "exact_data_commit": "0052ba1c0a3b65238b4f9ec3a94a1aff47e341ea",
     "query_bounded_single_shard": true,
     "shard_count": 17,
     "max_raw_shard_bytes": 30720,
     "max_base64_transport_chars": 40960,
-    "materialization": "GitHub Connect exact-data-commit fetch_file encoding=base64 for one required binary shard"
+    "materialization": "GitHub Connect exact-data-commit fetch_file encoding=base64 for one required binary shard",
+    "manifest_path": "data/astrology/extended_ephemeris/v1/MANIFEST.json",
+    "generated_identity_path": "data/astrology/extended_ephemeris/v1/GENERATED_IDENTITY.json",
+    "expected_manifest_blob": "38099b3b2e47c4b38f8e87a11c008cd861c0d659",
+    "expected_generated_identity_blob": "366825c626fb39047d7ee5a3652f4a8ec4494187"
   },
   "source": {
     "provider": "NASA/JPL Horizons",
@@ -81,7 +85,21 @@
       "speed_max_deg_per_day": 0.001
     },
     "exact_artifact_readback": "PASS",
-    "admission_gate": "exact data branch publish + exact-commit GitHub Connect readback still required"
+    "admission_gate": "SATISFIED",
+    "publisher": {
+      "workflow_run": 36222976811,
+      "source_commit": "e367b637b93d21a18ec95f48c4a052299eafdbd7",
+      "exact_data_commit": "0052ba1c0a3b65238b4f9ec3a94a1aff47e341ea",
+      "status": "PASS"
+    },
+    "exact_data_commit_readback": {
+      "status": "PASS",
+      "manifest_blob": "38099b3b2e47c4b38f8e87a11c008cd861c0d659",
+      "generated_identity_blob": "366825c626fb39047d7ee5a3652f4a8ec4494187",
+      "first_shard_blob": "012274fca6d3dd6ab0116e29ffaab006a0cd1df6",
+      "last_shard_blob": "12f794263132018d9501c9d186d95c76c36dce2e",
+      "max_compact_base64_chars": 40960
+    }
   },
   "interpretation_semantics": "not_admitted_without_separate_claim_family",
   "scientific_predictive_validity_claimed": false
