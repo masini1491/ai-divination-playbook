@@ -212,6 +212,16 @@
           "blanket_minor_star_admission": false,
           "claim_scope": "bounded_auxiliary_role_policy_only",
           "historical_semantic_core_admitted": false
+        },
+        "sihua_v1": {
+          "activation": "explicit-module-only",
+          "pipeline": "tools/ziwei_runtime.py",
+          "provider": "tools/ziwei_sihua_provider.py",
+          "admission_manifest": "ZIWEI_SIHUA_ADMISSION_V1.json",
+          "profile_id": "sihua.default_v1",
+          "admitted_claims_added": 3,
+          "claim_scope": "three_source_explicit_fact_gated_transformed_star_conditionals",
+          "generic_sihua_outcome_doctrine_admitted": false
         }
       },
       "gregorian_input": {
@@ -235,7 +245,10 @@
         "tools/ziwei_brightness_pipeline.py",
         "tools/ziwei_gregorian_pipeline.py"
       ],
-      "maximum_claim_count_with_optional_modules": 56
+      "maximum_claim_count_with_optional_modules": 59,
+      "exact_main_handoff_artifact": "ziwei-deterministic-handoff-${{ github.sha }}",
+      "exact_main_handoff_retention_days": 90,
+      "exact_main_handoff_includes_calendar_shards": false
     },
     {
       "id": "method.astrology",
