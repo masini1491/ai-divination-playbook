@@ -73,10 +73,15 @@ Function-importance order for currently open / deferred Astrology work:
 6. **AST-P2-030 — Optional Swiss compatibility/provider lane**
    - optional provider/license lane; current Astronomy Engine production path remains sufficient.
 
+Current blocker-resolution research:
+
+- **AST-P2-041 — Piecewise Chebyshev five-body feasibility**
+  - IN_PROGRESS; prospectively frozen round-2 representation test for Chiron + Ceres/Pallas/Juno/Vesta under the existing EXP-1 oracle/coverage/accuracy/size contract plus piecewise continuity gates.
+
 Blocked / outcome-dependent item:
 
 - **AST-P2-040 — Broader extended ephemeris objects**
-  - do not expand object count yet: AST-P1-010 completed as research, but its sampled/Hermite candidates did **not** prove a passing five-body transport/precision architecture. Resume only after a five-body lane such as bounded SPK, piecewise Chebyshev, or another prospectively validated representation satisfies the architecture gate.
+  - do not expand object count yet: AST-P1-010 completed as research, but its sampled/Hermite candidates did **not** prove a passing five-body transport/precision architecture. AST-P2-041 now tests the piecewise-Chebyshev lane; AST-P2-040 remains blocked unless some five-body representation actually passes the architecture gate.
 
 Standing / pointer items are not numbered feature work:
 
@@ -645,6 +650,45 @@ This item is a standing reconciliation guard. It is not a request to change curr
   - Swiss is an optional compatibility/provider lane, not a mandatory Astrology foundation;
   - license posture and technical admission are separate gates;
   - no production dependency is authorized by the current research.
+
+### AST-P2-041 — Piecewise Chebyshev five-body ephemeris feasibility
+
+- type: RESEARCH / PROVIDER FEASIBILITY
+- status: IN_PROGRESS
+- priority: P2
+- owner: Astrology extended ephemeris research
+- blocked_by: none
+- canonical_contract:
+  - `references/astrology/ASTROLOGY_P2_041_CHEBYSHEV_FEASIBILITY_CONTRACT.md`
+  - `references/astrology/astrology_p2_041_chebyshev_feasibility_contract.json`
+- inherited_evidence:
+  - `references/astrology/ASTROLOGY_EXP1_SAMPLED_EPHEMERIS_FEASIBILITY.md`
+  - `references/astrology/astrology_exp1_sampled_ephemeris_feasibility.json`
+  - `references/astrology/extended_chart_e2_oracle_manifest.json`
+- research_question:
+  - can a query-local piecewise Chebyshev longitude representation satisfy the already-frozen five-body EXP-1 accuracy/size gates where sampled/Hermite failed?
+- frozen_candidate_family:
+  - source: NASA/JPL Horizons research-only observer longitude, same E2 object identities and source contract;
+  - source grid: 5 days;
+  - variants: degree 5 / width 45 d; degree 7 / width 60 d; degree 7 / width 80 d; degree 7 / width 120 d;
+  - segment fit: local wrapped-longitude unwrap + Chebyshev least-squares fit on normalized `[-1,1]`;
+  - speed: analytic derivative of the fitted Chebyshev polynomial;
+  - ordinary runtime network dependency: forbidden.
+- frozen_gate:
+  - longitude p95 ≤ 10 arcsec;
+  - longitude max ≤ 30 arcsec;
+  - speed max ≤ 0.001 deg/day;
+  - coefficient binary payload ≤ 1,048,576 bytes;
+  - one-query raw coefficient payload ≤ 64 bytes;
+  - boundary longitude jump max ≤ 30 arcsec;
+  - boundary speed jump max ≤ 0.001 deg/day.
+- completion_gate:
+  - execute all frozen variants without post-result threshold widening;
+  - preserve the 12 existing E2 F/H/V validation instants × 5 objects;
+  - report artifact bytes, longitude p95/max, speed max, boundary continuity maxima, worst object/fixture/boundary and source signature;
+  - PASS only if one complete variant satisfies every frozen gate;
+  - FAIL does not prove all Chebyshev/SPK/bundled-ephemeris approaches impossible; it closes only this declared candidate family;
+  - no production calculation/provider admission follows automatically from a feasibility PASS.
 
 ### AST-P2-040 — Broader extended ephemeris objects
 
