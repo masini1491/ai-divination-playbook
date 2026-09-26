@@ -1,0 +1,57 @@
+name: Zi Wei P1-030 Load Pack Bridge
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/ziwei-p1-030-load-pack-bridge.yml"
+      - "CHAT_INIT.md"
+      - "PLAYBOOK_INDEX.json"
+      - "ZIWEI.md"
+
+permissions:
+  contents: write
+
+jobs:
+  regenerate-and-verify:
+    if: github.head_ref == 'zw-p1-030-decadal-calculation-v1'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Regenerate ChatGPT load pack
+        run: |
+          python tools/build_chatgpt_load_pack.py
+          python tools/build_chatgpt_load_pack.py --check
+          python tools/chatgpt_load_benchmark.py --check
+      - name: Remove bridge and enforce generated-only diff
+        run: |
+          rm .github/workflows/ziwei-p1-030-load-pack-bridge.yml
+          find . -type d -name __pycache__ -prune -exec rm -rf {} +
+          python - <<'PY'
+          import subprocess
+          changed=subprocess.check_output(
+              ["git","status","--porcelain=v1","--untracked-files=all"],text=True
+          ).splitlines()
+          paths=[line[3:] for line in changed]
+          allowed={
+              ".github/workflows/ziwei-p1-030-load-pack-bridge.yml",
+              "CHATGPT_LOAD_PACK.json",
+          }
+          unexpected=[p for p in paths if p not in allowed]
+          assert not unexpected, unexpected
+          assert ".github/workflows/ziwei-p1-030-load-pack-bridge.yml" in paths, paths
+          assert "CHATGPT_LOAD_PACK.json" in paths, paths
+          PY
+      - name: Commit regenerated load pack and remove bridge
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add CHATGPT_LOAD_PACK.json .github/workflows/ziwei-p1-030-load-pack-bridge.yml
+          git commit -m "Regenerate ChatGPT load pack after P1-030 routing cleanup"
+          git push origin HEAD:${{ github.head_ref }}
