@@ -1,0 +1,86 @@
+name: TEMP Cleanup Completed Astrology Branches
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/temp-cleanup-completed-astrology-branches.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: maintenance/astrology-branch-cleanup-20260926-v2
+          fetch-depth: 0
+
+      - name: Fail-closed preflight exact branch identities
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > /tmp/targets.txt <<'EOF'
+5d04cab413a154cc244159492900526f1ce4013b chore/close-ast-p2-040
+a87249b2edf247e0527337639a53a96f2da04f3f chore/reconcile-astrology-backlog-after-p2-040
+b439ae0c68afa20f097dddbe6e6254c54d33b2db feature/ast-p1-150-runtime-reuse-host-binding
+7f65542c01415c777f4471628b9fdb120a0f6f81 feature/ast-p1-160-taiwan-locality-normalization
+55511ef7c32d95de56083f4263638ccc5d43f286 feature/ast-p1-170-north-node-sign-semantics
+cad0924db627028f4f28b86e742ecc98008045eb feature/ast-p2-040-extended-ephemeris
+0df0f786172baab7df4c9cde982d3aaf3a97662d feature/ast-p2-040-infrastructure-clean
+b3722ccce664acc660721e067342279f63b51d5e feature/ast-p2-040-production-admission
+958d69dcad34437676128dc3731860677c44fe83 fix/ast-p2-040-publisher-root
+fa568d4b35247ad42f7ef55e96b02a9ee916019e maintenance/astrology-backlog-gap-order-20260926
+7f09af1ecce4cb77108bd503971ca142b2cb418b maintenance/astrology-p2-order-reconcile
+c6d9247ad0d634d61d8ef661bb28f94f809e3748 research/ast-p2-010-interpolated-lilith
+b27806a88b7bdf70ea4c4558bb8a36e73b8fd75f research/ast-p2-040-connector-packaging-contract
+4de04d1a1de3af8040ce1dbc9875f318e1b74cd1 research/ast-p2-040-f32-transport-probe
+07067b18203689fbf8183bace447dc591e80707e research/ast-p2-040-production-probe
+2ac7a91e743fd460a639095d12dd470d72a51634 research/ast-p2-041-chebyshev-contract
+b6a83b82af96d1b9bbd0d684ee2924a731c6f455 research/ast-p2-041-chebyshev-probe
+47e5b052a22b2d9dd59dcf3af09b77364106b523 research/ast-p2-041-chebyshev-probe-clean
+a9387e2f032b69f1636a851ca8787c36d5081d19 research/ast-p2-041-chebyshev-result
+6786fb20128c204f525971d06bdd1827620f318f research/ast-p2-042-continuity-contract
+6d60eef7176a53cd7cab0955e460a591e8f4c7cc research/ast-p2-042-continuity-probe
+027856d96afd2d2495fbf18973327aabb2900242 research/ast-p2-042-continuity-result
+26ecc105ced5b8915b3fb0f906142c4ebfb92888 research/astrology-place-connect-closure
+14037d3694a78063937dee43f4bf93a5344f7e4c research/astrology-wrapper-retirement-readiness-20260913
+EOF
+          while read -r expected branch; do
+            actual="$(git ls-remote --heads origin "refs/heads/$branch" | awk '{print $1}')"
+            if [ -z "$actual" ]; then
+              echo "missing target branch: $branch"
+              exit 1
+            fi
+            if [ "$actual" != "$expected" ]; then
+              echo "target advanced: $branch expected=$expected actual=$actual"
+              exit 1
+            fi
+          done < /tmp/targets.txt
+          echo "All target branch identities match the audited allowlist."
+
+      - name: Delete audited completed Astrology branches
+        shell: bash
+        run: |
+          set -euo pipefail
+          while read -r expected branch; do
+            echo "Deleting $branch @ $expected"
+            git push origin --delete "$branch"
+          done < /tmp/targets.txt
+
+      - name: Verify retained authority branches still exist
+        shell: bash
+        run: |
+          set -euo pipefail
+          for branch in             data/astrology-extended-ephemeris-v1             data/astrology-place-v1             research/ast-p2-040-f32-transport-contract             research/ast-p2-040-production-contract             research/astrology-domicile-claim-family-20260913             research/astrology-house-system-evidence
+          do
+            git ls-remote --exit-code --heads origin "refs/heads/$branch" >/dev/null
+          done
+
+      - name: Delete temporary cleanup branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git push origin --delete "maintenance/astrology-branch-cleanup-20260926-v2"
