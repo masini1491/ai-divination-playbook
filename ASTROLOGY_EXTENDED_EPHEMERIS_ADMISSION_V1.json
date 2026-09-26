@@ -25,10 +25,11 @@
     "representation_id": "c1-cheb-d7-w60",
     "coverage_start": "1825-04-01T00:00:00+00:00",
     "admitted_output_window_end": "2350-10-01T00:00:00+00:00",
-    "storage_encoding": "base64_per_shard",
+    "storage_encoding": "binary_git_blob_query_transport_base64",
     "query_bounded_single_shard": true,
     "shard_count": 34,
-    "max_encoded_shard_chars": 40960
+    "max_encoded_shard_chars": 40960,
+    "materialization": "GitHub Connect fetch_file encoding=base64 for required shard, then exact-byte decode"
   },
   "source": {
     "provider": "NASA/JPL Horizons",
