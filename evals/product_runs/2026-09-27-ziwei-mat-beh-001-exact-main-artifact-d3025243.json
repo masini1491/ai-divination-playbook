@@ -1,0 +1,66 @@
+{
+  "scenario_id": "ZIWEI-MAT-BEH-001",
+  "playbook_sha": "d3025243568f79a8d68ef957907b39fb62eba9b9",
+  "classification": "PASS",
+  "run_kind": "formal_followup",
+  "run_time": "2026-09-27T02:25:18+08:00",
+  "stimulus": "Validate the exact-main connector-backed Zi Wei deterministic handoff artifact path from a successful main-push validation run using a bounded normalized-lunar Scope-A runtime smoke.",
+  "observed_actions": [
+    "Current ai-divination-playbook main was resolved through GitHub Connect to exact commit d3025243568f79a8d68ef957907b39fb62eba9b9.",
+    "Validate Playbook main-push run 36262398945 completed successfully with validate=PASS and casting-runtime=PASS; unit tests, structural checker, Zi Wei handoff preparation, and Zi Wei artifact upload all passed.",
+    "The run published artifact ziwei-deterministic-handoff-d3025243568f79a8d68ef957907b39fb62eba9b9 (artifact id 10912972000, 57348 bytes) with GitHub digest sha256:341868711cd5866d9b040969934fb9b7ecccf49ce59067b5574b38bd4de42362.",
+    "GitHub connector download_workflow_artifact returned a reusable connector-backed ZIP file reference, which was intentionally materialized into the execution filesystem through Files materialization.",
+    "Execution-container SHA-256 of the materialized ZIP exactly matched the GitHub artifact digest.",
+    "The ZIP contained HANDOFF_MANIFEST.json, PLAYBOOK_COMMIT, runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json, and tools/build_ziwei_tool_bundle.py only.",
+    "HANDOFF_MANIFEST.json parsed as valid JSON; source_repository and playbook_commit matched the expected repository and exact main commit; PLAYBOOK_COMMIT also matched exactly; calendar_shards_included was false.",
+    "Every manifest-listed payload file matched its declared byte_size and SHA-256.",
+    "The artifact-contained canonical Zi Wei bundle verifier returned zero errors with compare_project=false.",
+    "The canonical materializer reconstructed 20 runtime/schema/registry/calendar-manifest files, wrote a verified cache marker bound to the exact playbook commit, and verified archive SHA-256 c2723f57b8345acb3a06f608dcea72885f2049216e9672ea6f6be7806e189ce3.",
+    "The materialized calendar contract retained ordinary_query_max_files=1 and rat_hour_cross_year_max_files=2; no calendar year shard was packaged in the handoff artifact.",
+    "With PYTHONPATH limited to the materialized cache and Python invoked with -S, a synthetic normalized-lunar Scope-A request returned status=PRODUCTION_ADMITTED, pipeline ziwei-scope-a-production-pipeline-v1@1.2.0, provider ziwei-scope-a-natal-python@0.2.0, 39 selected claims, and palace_occupancy in the production calculation result."
+  ],
+  "classification_reason": "PASS. The exact-main publishing enhancement closes the observed host-transport gap: after verified cache miss and absent direct repo-file bridge, successful main validation exposes a connector-backed Zi Wei artifact that can be downloaded, byte-materialized, verified against GitHub digest plus exact commit/manifest identities, passed through the existing canonical bundle verifier/materializer, and executed in an isolated Python runtime. Calendar year shards remain excluded and query-bounded; the prior same-commit bounded opaque bundle path remains the fallback when the temporary artifact is absent, expired, unavailable, or invalid.",
+  "notes": {
+    "environment": "ChatGPT product session with GitHub connector, Files materialization, and execution container; no universal product/session availability claim is made.",
+    "workflow_run_id": 36262398945,
+    "artifact_id": 10912972000,
+    "artifact_name": "ziwei-deterministic-handoff-d3025243568f79a8d68ef957907b39fb62eba9b9",
+    "artifact_size_bytes": 57348,
+    "artifact_digest": "sha256:341868711cd5866d9b040969934fb9b7ecccf49ce59067b5574b38bd4de42362",
+    "artifact_expires_at": "2026-12-25T18:24:00Z",
+    "archive_sha256": "c2723f57b8345acb3a06f608dcea72885f2049216e9672ea6f6be7806e189ce3",
+    "materialized_file_count": 20,
+    "calendar_contract": {
+      "ordinary_query_max_files": 1,
+      "rat_hour_cross_year_max_files": 2,
+      "calendar_shards_included_in_artifact": false
+    },
+    "request_fixture": {
+      "input_type": "normalized_lunar",
+      "lunar_year": 1987,
+      "lunar_month": 5,
+      "lunar_day": 20,
+      "hour_branch": "酉",
+      "calendar_provenance": "artifact-smoke"
+    },
+    "runtime_result": {
+      "status": "PRODUCTION_ADMITTED",
+      "pipeline_id": "ziwei-scope-a-production-pipeline-v1",
+      "pipeline_version": "1.2.0",
+      "provider_id": "ziwei-scope-a-natal-python",
+      "provider_version": "0.2.0",
+      "scope": "bounded_natal_first_layer",
+      "selected_claim_count": 39,
+      "palace_occupancy_present": true,
+      "production_authority_granted": true,
+      "ordinary_auto_routing": false,
+      "final_prose_authority": false
+    },
+    "non_claims": [
+      "Does not make Actions artifacts permanent or source-of-truth storage.",
+      "Does not prove artifact availability for arbitrary historical or non-main commits.",
+      "Does not package or bypass query-bounded calendar year shards.",
+      "Does not alter Zi Wei calculation, interpretation, calendar, request/result schema, claim corpus, or admission authority."
+    ]
+  }
+}
