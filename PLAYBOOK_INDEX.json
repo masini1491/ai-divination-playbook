@@ -291,7 +291,13 @@
       "extended_aspect_activation": "explicit-selector-only",
       "special_pattern_projection": "tools/astrology_special_pattern_projection.py",
       "special_pattern_projection_schema": "schemas/astrology/ASTROLOGY_SPECIAL_PATTERN_PROJECTION_V1.schema.json",
-      "special_pattern_activation": "explicit-selector-only"
+      "special_pattern_activation": "explicit-selector-only",
+      "extended_ephemeris_provider": "tools/astrology_extended_ephemeris.py",
+      "extended_ephemeris_admission_manifest": "ASTROLOGY_EXTENDED_EPHEMERIS_ADMISSION_V1.json",
+      "extended_ephemeris_activation": "explicit-request-only-known-time-natal",
+      "extended_ephemeris_request_selector": "extended_objects",
+      "extended_ephemeris_materialization_data_commit": "0052ba1c0a3b65238b4f9ec3a94a1aff47e341ea",
+      "extended_ephemeris_dataset_sha256": "580bb2a8ef463dfc6527ea611f27daad3562cb1fa5698391b3e2baeba64987bf"
     },
     {
       "id": "method.astrology.natal",
