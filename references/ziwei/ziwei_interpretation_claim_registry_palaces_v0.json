@@ -101,7 +101,7 @@
       "claim_type": "palace_domain",
       "subject": "命宮",
       "assertion_class": "historical_core",
-      "normalized_statement": "命宮是身命與全盤主要判讀起點，承載本人整體狀態與核心表現；不能只用單一星曜關鍵字取代整體宮位判讀。",
+      "normalized_statement": "命宮是身命與全盤主要判讀起點，承載本人整體狀態與核心表現；判讀需合看本宮、財帛、官祿、遷移等三方四正，不能只用單一星曜關鍵字取代整體宮位判讀。",
       "source_refs": [
         "SRC-NANYANG-QUANSHU-PALACES"
       ],
@@ -140,7 +140,7 @@
       "claim_type": "palace_conditional",
       "subject": "命宮",
       "assertion_class": "historical_conditional",
-      "normalized_statement": "命宮判讀必須合看財帛、官祿、遷移等三方四正；命宮無正曜時也不得視為無訊息，而須回看對宮與會照。",
+      "normalized_statement": "命宮無十四主星正曜時不得視為無訊息，須回看對宮與會照；此規則只在本命盤命宮確實為空宮時啟用。",
       "source_refs": [
         "SRC-NANYANG-QUANSHU-PALACES"
       ],
@@ -166,9 +166,13 @@
         ],
         "temporal_scope": "natal_baseline",
         "conditional_activation": {
-          "mode": "context_only",
-          "availability_requires": [],
-          "satisfies_all": [],
+          "mode": "fact_gated",
+          "availability_requires": [
+            "fact_available:palace_occupancy"
+          ],
+          "satisfies_all": [
+            "empty_palace:命宮"
+          ],
           "satisfies_any": [],
           "forbids": []
         }
@@ -351,7 +355,7 @@
       "claim_type": "palace_domain",
       "subject": "子女宮",
       "assertion_class": "historical_core",
-      "normalized_statement": "子女宮的歷史核心範圍是子女、後代及與子女相關的狀態。",
+      "normalized_statement": "子女宮的歷史核心範圍是子女、後代及與子女相關的狀態；古典方法需先看本宮，再合看對宮與三方四正。",
       "source_refs": [
         "SRC-NANYANG-QUANSHU-PALACES"
       ],
@@ -388,7 +392,7 @@
       "claim_type": "palace_conditional",
       "subject": "子女宮",
       "assertion_class": "historical_conditional",
-      "normalized_statement": "子女宮古典方法要求先看本宮，再看對宮與三方四正；空宮時尤其不能跳過拓撲關係。",
+      "normalized_statement": "子女宮無十四主星正曜時尤其不能跳過對宮與三方四正；此規則只在本命盤子女宮確實為空宮時啟用。",
       "source_refs": [
         "SRC-NANYANG-QUANSHU-PALACES"
       ],
@@ -414,9 +418,13 @@
         ],
         "temporal_scope": "natal_baseline",
         "conditional_activation": {
-          "mode": "context_only",
-          "availability_requires": [],
-          "satisfies_all": [],
+          "mode": "fact_gated",
+          "availability_requires": [
+            "fact_available:palace_occupancy"
+          ],
+          "satisfies_all": [
+            "empty_palace:子女宮"
+          ],
           "satisfies_any": [],
           "forbids": []
         }
