@@ -417,8 +417,7 @@ Ordering rationale:
 - status: OPEN
 - priority: P1
 - owner: Zi Wei deterministic materialization
-- blocked_by:
-  - ZW-P1-025
+- blocked_by: none
 - problem:
   - current Zi Wei fast path correctly probes/reuses verified local cache and prefers direct byte/file-aware connector→filesystem handoff;
   - when direct handoff is unavailable, the current fallback moves the exact-commit deterministic bundle through bounded verified opaque transport;
