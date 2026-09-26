@@ -168,9 +168,7 @@ REFERENCE-ONLY; not production.
 
 ### House-system evidence
 
-- [`HOUSE_SYSTEM_EVIDENCE.md`](HOUSE_SYSTEM_EVIDENCE.md) — Whole Sign / Equal / quadrant-Placidus 的 calculation identity、歷史 evidence、historiographic conflict、layered-use hypothesis 與 high-latitude boundary。
-
-此 dossier 保留其原始 post-v1 research evidence；在升格進 `main` 前已重新與 current production boundary 對照：正式 house systems 仍只有 `Whole Sign` / `Placidus`，Placidus 仍維持 `|latitude| <= 66°` fail-closed，exact angles 與 house cusps 仍是不同 fact identity。這是 REFERENCE-ONLY evidence promotion，不新增 house system、不改 production policy，也不建立 predictive-superiority claim。
+- [`HOUSE_SYSTEM_EVIDENCE.md`](HOUSE_SYSTEM_EVIDENCE.md) — post-v1 REFERENCE-ONLY evidence；不改 production policy。
 
 ### Unknown birth-time sensitivity
 
