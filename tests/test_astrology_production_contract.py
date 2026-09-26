@@ -25,6 +25,7 @@ class AstrologyProductionContractTests(unittest.TestCase):
         place = data["place_resolver"]
         self.assertEqual("astronomy-engine-natal-v1", natal["provider_id"])
         self.assertEqual("1.3.0", natal["provider_version"])
+        self.assertEqual("mean", natal["north_node_definition"])
         self.assertIn("natal_known_time_derived_axes", natal["scope"])
         self.assertEqual(
             ["SouthNode", "Descendant", "ImumCoeli"],
@@ -59,6 +60,7 @@ class AstrologyProductionContractTests(unittest.TestCase):
         self.assertEqual("astrology_provider_admission", data["schema_name"])
         self.assertEqual("PRODUCTION_ADMITTED", data["status"])
         self.assertEqual("1.3.0", data["provider_version"])
+        self.assertEqual("mean", data["calculation_policy"]["north_node_definition"])
         self.assertEqual(
             [
                 "natal",
@@ -347,6 +349,27 @@ class AstrologyProductionContractTests(unittest.TestCase):
             ic,
         )
 
+
+
+    def test_p1_170_north_node_semantic_admission_is_bounded_and_separate(self):
+        production = json.loads((ROOT / "ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        provider = json.loads((ROOT / "ASTROLOGY_PROVIDER_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        registry = json.loads((ROOT / "references" / "astrology" / "north_node_sign_semantics_claim_family_registry.json").read_text(encoding="utf-8"))
+
+        self.assertEqual("mean", provider["calculation_policy"]["north_node_definition"])
+        self.assertEqual(provider["calculation_policy"]["north_node_definition"], production["natal_provider"]["north_node_definition"])
+        policy = production["natal_semantic_policy"]
+        self.assertEqual("mean", policy["north_node_definition_required"])
+        self.assertEqual("compose_admitted_north_node_function_plus_sign_style_claims", policy["north_node_sign_interpretation"])
+        self.assertEqual(
+            {"aspect_meanings", "generic_karmic_doctrine", "past_life_doctrine", "soul_evolution_doctrine", "SouthNode_semantics"},
+            set(policy["north_node_semantic_exclusions"]),
+        )
+        self.assertIn("north-node-sign-semantics-research-v1", production["admitted_research_registries"])
+        self.assertEqual("north-node-sign-semantics-research-v1", registry["record_id"])
+        self.assertEqual(["claim:north-node-function:growth-edge"], [row["claim_id"] for row in registry["claims"]])
+        self.assertIn("north_node_aspect_semantic_interpretation_without_separate_claim_family", production["unsupported_scopes"])
+        self.assertIn("generic_nodal_karmic_or_past_life_doctrine_without_separate_claim_family", production["unsupported_scopes"])
 
 if __name__ == "__main__":
     unittest.main()

@@ -185,6 +185,7 @@ class CurrentRegistryCompatibilityTests(unittest.TestCase):
             "domicile_claim_family_registry.json",
             "saturn_moon_aspect_claim_family_registry.json",
             "planet_sign_composable_semantics_claim_family_registry.json",
+            "north_node_sign_semantics_claim_family_registry.json",
         )
         for name in names:
             data = json.loads((self.here / name).read_text(encoding="utf-8"))

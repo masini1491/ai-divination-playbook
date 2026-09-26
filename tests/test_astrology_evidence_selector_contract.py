@@ -113,6 +113,15 @@ class AstrologyEvidenceSelectorContractTests(unittest.TestCase):
         self.assertIn("North Node aspect meanings", source["excluded_scope"])
         self.assertEqual("north_node_function", registry["claims"][0]["claim_type"])
         self.assertEqual(["context:modern_contemporary"], registry["claims"][0]["historical_context_refs"])
+        import sys
+        reference_dir = ROOT / "references" / "astrology"
+        sys.path.insert(0, str(reference_dir))
+        try:
+            from validate_interpretation_claim_registry import validate_registry
+            taxonomy = load(reference_dir / "tradition_taxonomy_example.json")
+            self.assertEqual([], validate_registry(registry, taxonomy))
+        finally:
+            sys.path.pop(0)
 
     def test_index_publishes_all_selector_local_paths(self):
         index = load(INDEX)
