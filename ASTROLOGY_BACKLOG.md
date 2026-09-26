@@ -718,6 +718,12 @@ This item is a standing reconciliation guard. It is not a request to change curr
   - `tools/generate_astrology_extended_ephemeris.py`
   - `tests/test_astrology_extended_ephemeris_admission.py`
   - `runtime/astrology/CHATGPT_DETERMINISTIC_CORE_BUNDLE.json`
+- historical_frozen_evidence:
+  - `references/astrology/ASTROLOGY_P2_040_PRODUCTION_ADMISSION_CONTRACT.md`
+  - `references/astrology/astrology_p2_040_production_admission_contract.json`
+  - `references/astrology/ASTROLOGY_P2_040_F32_TRANSPORT_CONTRACT.md`
+  - `references/astrology/astrology_p2_040_f32_transport_contract.json`
+  - these preserve the prospectively frozen pre-execution review inputs; final production authority remains the current admission manifest, runtime owners and exact admitted data commit.
 - closure:
   - Chiron/Ceres/Pallas/Juno/Vesta are production-admitted only through explicit `extended_objects` requests for known-time natal calculation facts;
   - provider `astrology-extended-ephemeris-c1-v1` is pinned to exact data commit `0052ba1c0a3b65238b4f9ec3a94a1aff47e341ea`;

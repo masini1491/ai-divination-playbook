@@ -166,6 +166,12 @@ REFERENCE-ONLY; not production.
 
 這些歷史 probes 本身仍是 research evidence。Current production provider authority 來自獨立 admission manifests、runtime owners 與 production regressions，不是舊 probe 自動升格。
 
+### House-system evidence
+
+- [`HOUSE_SYSTEM_EVIDENCE.md`](HOUSE_SYSTEM_EVIDENCE.md) — Whole Sign / Equal / quadrant-Placidus 的 calculation identity、歷史 evidence、historiographic conflict、layered-use hypothesis 與 high-latitude boundary。
+
+此 dossier 保留其原始 post-v1 research evidence；在升格進 `main` 前已重新與 current production boundary 對照：正式 house systems 仍只有 `Whole Sign` / `Placidus`，Placidus 仍維持 `|latitude| <= 66°` fail-closed，exact angles 與 house cusps 仍是不同 fact identity。這是 REFERENCE-ONLY evidence promotion，不新增 house system、不改 production policy，也不建立 predictive-superiority claim。
+
 ### Unknown birth-time sensitivity
 
 - [`UNKNOWN_TIME_SENSITIVITY_RESULTS.md`](UNKNOWN_TIME_SENSITIVITY_RESULTS.md)
