@@ -449,7 +449,7 @@ Ordering rationale:
   - implementation merged by PR #258 at `d3025243568f79a8d68ef957907b39fb62eba9b9`;
   - successful main-push Validate Playbook run `36262398945` produced `validate` PASS and `casting-runtime` PASS; unit tests, structural checker, Zi Wei handoff preparation, and Zi Wei artifact upload all passed;
   - exact-main artifact `10912972000` / `ziwei-deterministic-handoff-d3025243568f79a8d68ef957907b39fb62eba9b9` was published at 57,348 bytes with GitHub digest `sha256:341868711cd5866d9b040969934fb9b7ecccf49ce59067b5574b38bd4de42362`;
-  - connector download + Files materialization reproduced ZIP bytes whose SHA-256 exactly matched the GitHub artifact digest;
+  - connector download materialized the connector-backed ZIP into the execution filesystem; its SHA-256 exactly matched the GitHub artifact digest;
   - `PLAYBOOK_COMMIT`, `HANDOFF_MANIFEST.json`, repository/commit identity, `calendar_shards_included=false`, and every manifest payload size/SHA-256 verified exactly;
   - artifact-contained canonical bundle verifier returned zero errors; materializer reconstructed 20 files with archive SHA-256 `c2723f57b8345acb3a06f608dcea72885f2049216e9672ea6f6be7806e189ce3` and preserved calendar query bounds 1 ordinary / 2 cross-year shards;
   - isolated `python -S` runtime smoke from the materialized cache returned `PRODUCTION_ADMITTED`, pipeline `1.2.0`, provider `0.2.0`, 39 selected claims and production `palace_occupancy` facts;
