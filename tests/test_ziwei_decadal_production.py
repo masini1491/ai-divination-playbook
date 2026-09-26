@@ -78,9 +78,10 @@ class ZiWeiDecadalProductionTests(unittest.TestCase):
         self.assertFalse(d["interpretation_admitted"])
         self.assertNotIn("decadal",a["unsupported_scopes"])
         self.assertNotIn("yearly",a["unsupported_scopes"])
+        self.assertNotIn("monthly",a["unsupported_scopes"])
         scopes={x["temporal_scope"] for x in a["separate_temporal_calculation_admissions"]}
-        self.assertEqual({"decadal","yearly"},scopes)
-        self.assertIn("monthly",a["unsupported_scopes"])
+        self.assertEqual({"decadal","yearly","monthly"},scopes)
+        self.assertIn("daily",a["unsupported_scopes"])
 
 if __name__=="__main__":
     unittest.main()
