@@ -38,6 +38,18 @@ class ZiWeiPalaceClaimRegistryValidationTests(unittest.TestCase):
         self.assertEqual('PRESERVE_SCOPE_DIFFERENCE',groups['CG-NUPU-SCOPE-001']['resolution_status'])
         self.assertFalse(data['production_routable'])
         self.assertFalse(data['research_result']['production_authority_granted'])
+        self.assertEqual(24,data['research_result']['claim_count'])
+        by_id={x['claim_id']:x for x in data['claims']}
+        for claim_id,palace in (
+            ('ZW-PAL-MING-COND-002','命宮'),
+            ('ZW-PAL-CHILD-COND-002','子女宮'),
+        ):
+            activation=by_id[claim_id]['applicability']['conditional_activation']
+            self.assertEqual('fact_gated',activation['mode'])
+            self.assertEqual(['fact_available:palace_occupancy'],activation['availability_requires'])
+            self.assertEqual([f'empty_palace:{palace}'],activation['satisfies_all'])
+        self.assertNotIn('無正曜',by_id['ZW-PAL-MING-DOM-001']['normalized_statement'])
+        self.assertNotIn('空宮時',by_id['ZW-PAL-CHILD-DOM-001']['normalized_statement'])
 
     def test_v01_does_not_silently_accept_palace_claim_types(self):
         data=json.loads(PALACE.read_text(encoding='utf-8'))
