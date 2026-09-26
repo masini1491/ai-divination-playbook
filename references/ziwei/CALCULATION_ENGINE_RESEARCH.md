@@ -185,7 +185,7 @@ natal / decadal / yearly / monthly / daily / hourly = distinct scopes
 dynamic fact = profile/boundary/provenance bound
 missing dynamic layer = do not infer
 natal claim != automatic flow prediction
-dynamic calculation runtime/provider = decadal + yearly + monthly + daily calculation-only admitted; hourly not admitted
+dynamic calculation runtime/provider = decadal + yearly + monthly + daily + hourly calculation-only admitted
 ```
 
 ### Decadal
@@ -297,3 +297,7 @@ Interpretation Architecture v0 的完成不建立 production provider、producti
 ### Daily production profile
 
 `daily.monthly_parent_lunar_day_v1` binds the daily Life Palace to the already-admitted compatible monthly Life Palace and advances by the explicit normalized lunar day ordinal: `daily Life Palace = monthly Life Palace + lunar_day - 1` around the twelve branches. Pinned implementation reconciliation is direct: `SylarLong/iztro@2c7ef9be669df7b19d1799f4dce335fed3794f78` computes `dailyIndex = monthlyIndex + lunarDay - 1`, while `RedSC1/js-ephemeris-lite@559d4957bc063a6e03a3c810066be4eccf3ea2be` advances the monthly parent branch by `day - 1`. Production v1 deliberately admits only palace calculation facts from an explicit `normalized_lunar_day` target carrying lunar year/month/day, leap-month identity and calendar provenance. It does **not** reconstruct physical day pillars, timestamp/day-divide boundaries, daily Si Hua, flow stars, hourly facts or interpretation. Leap-month behavior remains inherited from the admitted monthly parent, including the existing leap-month-12 day 16+ cross-year fail-closed boundary.
+
+### Hourly production profile
+
+`hourly.daily_parent_hour_branch_next_day_23_v1` binds the hourly Life Palace to the already-admitted compatible daily Life Palace and advances by the explicit hour-branch index: `hourly Life Palace = daily Life Palace + hour_branch_index` around the twelve branches. Pinned implementation reconciliation is direct: `SylarLong/iztro@2c7ef9be669df7b19d1799f4dce335fed3794f78` computes `hourlyIndex = dailyIndex + hour-branch index`, while `RedSC1/js-ephemeris-lite@559d4957bc063a6e03a3c810066be4eccf3ea2be` advances the daily parent branch by the resolved hour index. Both implementations separately model late-Rat/day-boundary behavior; therefore the project does not treat branch progression as proof of a unique Rat-hour doctrine. Production v1 binds only the already-admitted project calendar policy `next_day_at_23` from `ZIWEI_CALENDAR_ADMISSION_V1.json`, and requires an explicit `normalized_lunar_hour` target carrying lunar year/month/day, leap identity, `hour_branch`, Rat-hour policy identity and calendar provenance. Alternate late-Rat assignment, physical hour pillars, hourly Si Hua, flow stars and interpretation are not admitted.
