@@ -1,0 +1,88 @@
+{
+  "schema_name": "astrology_extended_ephemeris_admission",
+  "schema_version": "1.0.0",
+  "provider_id": "astrology-extended-ephemeris-c1-v1",
+  "provider_version": "1.0.0",
+  "status": "AWAITING_DATA_PUBLISH",
+  "activation": "explicit_request_only",
+  "scope": [
+    "natal_known_time_explicit_extended_objects"
+  ],
+  "object_ids": [
+    "Chiron",
+    "Ceres",
+    "Pallas",
+    "Juno",
+    "Vesta"
+  ],
+  "output_schema": "astrology_fact_bundle@1.0.0",
+  "runtime_owner": "tools/astrology_extended_ephemeris.py",
+  "generator_owner": "tools/generate_astrology_extended_ephemeris.py",
+  "dataset": {
+    "dataset_id": "astrology-extended-ephemeris-c1-f32-v1",
+    "expected_sha256": "580bb2a8ef463dfc6527ea611f27daad3562cb1fa5698391b3e2baeba64987bf",
+    "representation_id": "c1-cheb-d7-w60-f32-c0mod360-v1",
+    "coverage_start": "1825-04-01T00:00:00+00:00",
+    "admitted_output_window_end": "2350-10-01T00:00:00+00:00",
+    "data_ref": "refs/heads/data/astrology-extended-ephemeris-v1",
+    "exact_data_commit": null,
+    "query_bounded_single_shard": true,
+    "shard_count": 17,
+    "max_raw_shard_bytes": 30720,
+    "max_base64_transport_chars": 40960,
+    "materialization": "GitHub Connect exact-data-commit fetch_file encoding=base64 for one required binary shard"
+  },
+  "source": {
+    "provider": "NASA/JPL Horizons",
+    "build_time_only": true,
+    "runtime_network_required": false,
+    "center": "500@399",
+    "ephem_type": "OBSERVER",
+    "quantities": [
+      31
+    ],
+    "apparent": "AIRLESS",
+    "time_type": "UT",
+    "source_grid_days": 5
+  },
+  "calculation_policy": {
+    "zodiac_system": "tropical",
+    "center": "geocentric",
+    "fact_authority": "longitude_speed_motion_sign_known_time_house_only",
+    "birth_time_certainty": [
+      "exact",
+      "approximate"
+    ],
+    "transit": "not_admitted",
+    "unknown_time": "not_admitted",
+    "default_aspect_participation": false,
+    "semantic_interpretation_authority": false
+  },
+  "validation": {
+    "float64_probe": {
+      "run_id": 36220243631,
+      "artifact_id": 10898847593,
+      "rows": 120,
+      "longitude_p95_arcsec": 1.5654947796974739,
+      "longitude_max_arcsec": 3.481865835192366,
+      "speed_max_deg_per_day": 0.0004186880790266745
+    },
+    "float32_transport_probe": {
+      "run_id": 36220971390,
+      "artifact_id": 10899550330,
+      "rows": 80,
+      "longitude_p95_arcsec": 1.9489102128,
+      "longitude_max_arcsec": 3.0210931803,
+      "speed_max_deg_per_day": 0.000360685081
+    },
+    "thresholds": {
+      "longitude_p95_arcsec_max": 10,
+      "longitude_max_arcsec_max": 30,
+      "speed_max_deg_per_day": 0.001
+    },
+    "exact_artifact_readback": "PASS",
+    "admission_gate": "exact data branch publish + exact-commit GitHub Connect readback still required"
+  },
+  "interpretation_semantics": "not_admitted_without_separate_claim_family",
+  "scientific_predictive_validity_claimed": false
+}

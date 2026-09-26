@@ -1,0 +1,129 @@
+name: Publish Astrology Extended Ephemeris Data
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "tools/generate_astrology_extended_ephemeris.py"
+      - "ASTROLOGY_EXTENDED_EPHEMERIS_ADMISSION_V1.json"
+      - ".github/workflows/publish-astrology-extended-ephemeris.yml"
+  workflow_dispatch:
+    inputs:
+      source_ref:
+        description: Exact ai-divination-playbook commit containing the admitted generator contract
+        required: true
+        type: string
+      expected_dataset_digest:
+        description: Expected aggregate coefficient dataset digest
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: astrology-extended-ephemeris-publisher
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      EXPECTED_DIGEST: 580bb2a8ef463dfc6527ea611f27daad3562cb1fa5698391b3e2baeba64987bf
+      DATA_BRANCH: data/astrology-extended-ephemeris-v1
+    steps:
+      - name: Resolve exact source ref
+        id: source
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          DISPATCH_REF: ${{ inputs.source_ref }}
+          DISPATCH_DIGEST: ${{ inputs.expected_dataset_digest }}
+          PUSH_REF: ${{ github.sha }}
+        run: |
+          if [ "$EVENT_NAME" = "workflow_dispatch" ]; then
+            SOURCE_REF="$DISPATCH_REF"
+            [ "$DISPATCH_DIGEST" = "$EXPECTED_DIGEST" ] || { echo "dispatch digest mismatch"; exit 1; }
+          else
+            SOURCE_REF="$PUSH_REF"
+          fi
+          case "$SOURCE_REF" in
+            [0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]) ;;
+            *) echo "source_ref must be an exact 40-char lowercase commit SHA"; exit 1 ;;
+          esac
+          echo "source_ref=$SOURCE_REF" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.source.outputs.source_ref }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Generate exact admitted candidate corpus
+        env:
+          SOURCE_REF: ${{ steps.source.outputs.source_ref }}
+        run: |
+          rm -rf /tmp/extended-v1
+          python tools/generate_astrology_extended_ephemeris.py \
+            --write \
+            --output /tmp/extended-v1 \
+            --expected-digest "$EXPECTED_DIGEST" > /tmp/summary.json
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          summary=json.loads(Path("/tmp/summary.json").read_text())
+          assert summary["dataset_sha256"] == os.environ["EXPECTED_DIGEST"]
+          assert summary["raw_byte_size"] == 511840
+          assert summary["shard_count"] == 17
+          root=Path(summary["root"])
+          manifest=json.loads((root/"MANIFEST.json").read_text())
+          assert manifest["representation"]["id"] == "c1-cheb-d7-w60-f32-c0mod360-v1"
+          assert manifest["representation"]["record_layout"] == "segment-major, object-major, 8 float32 coefficients"
+          assert manifest["dataset"]["sha256"] == os.environ["EXPECTED_DIGEST"]
+          assert max(x["byte_size"] for x in manifest["dataset"]["shards"]) <= 30720
+          assert manifest["runtime"]["network_required"] is False
+          identity={
+            "schema_name":"astrology_extended_ephemeris_generated_data_identity",
+            "schema_version":"1.0.0",
+            "dataset_id":manifest["dataset_id"],
+            "representation_id":manifest["representation"]["id"],
+            "generator_source_commit":os.environ["SOURCE_REF"],
+            "dataset_sha256":manifest["dataset"]["sha256"],
+            "generated_shard_count":manifest["dataset"]["shard_count"],
+            "generated_bytes":manifest["dataset"]["raw_byte_size"],
+            "source":manifest["source"],
+          }
+          (root/"GENERATED_IDENTITY.json").write_text(json.dumps(identity,indent=2,sort_keys=True)+"\n")
+          PY
+
+      - name: Publish generated data ref without force
+        env:
+          SOURCE_REF: ${{ steps.source.outputs.source_ref }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git ls-remote --exit-code --heads origin "$DATA_BRANCH" >/dev/null 2>&1; then
+            git fetch origin "$DATA_BRANCH"
+            git checkout -B "$DATA_BRANCH" "origin/$DATA_BRANCH"
+            rm -rf data/astrology/extended_ephemeris/v1
+          else
+            git checkout --orphan "$DATA_BRANCH"
+            git rm -rf . >/dev/null 2>&1 || true
+          fi
+          mkdir -p data/astrology/extended_ephemeris
+          cp -R /tmp/extended-v1 data/astrology/extended_ephemeris/v1
+          git add data/astrology/extended_ephemeris/v1
+          if git diff --cached --quiet; then
+            echo "Generated data is byte-identical to current data ref."
+          else
+            git commit -m "Publish Astrology extended ephemeris v1 data"
+            git push origin "$DATA_BRANCH"
+          fi
+          {
+            echo "SOURCE_REF=$SOURCE_REF"
+            echo "DATA_COMMIT=$(git rev-parse HEAD)"
+            echo "DATASET_SHA256=$EXPECTED_DIGEST"
+          } >> "$GITHUB_STEP_SUMMARY"
