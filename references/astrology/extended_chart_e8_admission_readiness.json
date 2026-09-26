@@ -171,7 +171,10 @@
         "BUNDLED_EPHEMERIS"
       ],
       "research_evidence": "references/astrology/CHATGPT_ONLY_EXTENDED_EPHEMERIS_FEASIBILITY.md",
-      "production_selection": null
+      "production_selection": null,
+      "feasibility_evidence": "references/astrology/astrology_p2_042_continuity_chebyshev_feasibility.json",
+      "research_front_runner": "c1-cheb-d7-w60",
+      "feasibility_status": "BUNDLED_EPHEMERIS_ARCHITECTURE_FEASIBILITY_PASS"
     },
     "D2_policy_activation_style": {
       "status": "SELECTED_FOR_CURRENT_STACK_LANE",
@@ -226,7 +229,10 @@
         "eligible_lanes": [
           "BUNDLED_EPHEMERIS"
         ],
-        "production_status": "NOT_ADMITTED"
+        "production_status": "NOT_ADMITTED",
+        "feasibility_evidence": "references/astrology/astrology_p2_042_continuity_chebyshev_feasibility.json",
+        "research_front_runner": "c1-cheb-d7-w60",
+        "feasibility_status": "ARCHITECTURE_FEASIBILITY_PASS_PENDING_PRODUCTION_ADMISSION"
       },
       "ceres": {
         "historical_readiness": "BLOCKED_ON_PROVIDER_OR_LICENSE",
@@ -234,7 +240,10 @@
         "eligible_lanes": [
           "BUNDLED_EPHEMERIS"
         ],
-        "production_status": "NOT_ADMITTED"
+        "production_status": "NOT_ADMITTED",
+        "feasibility_evidence": "references/astrology/astrology_p2_042_continuity_chebyshev_feasibility.json",
+        "research_front_runner": "c1-cheb-d7-w60",
+        "feasibility_status": "ARCHITECTURE_FEASIBILITY_PASS_PENDING_PRODUCTION_ADMISSION"
       },
       "pallas": {
         "historical_readiness": "BLOCKED_ON_PROVIDER_OR_LICENSE",
@@ -242,7 +251,10 @@
         "eligible_lanes": [
           "BUNDLED_EPHEMERIS"
         ],
-        "production_status": "NOT_ADMITTED"
+        "production_status": "NOT_ADMITTED",
+        "feasibility_evidence": "references/astrology/astrology_p2_042_continuity_chebyshev_feasibility.json",
+        "research_front_runner": "c1-cheb-d7-w60",
+        "feasibility_status": "ARCHITECTURE_FEASIBILITY_PASS_PENDING_PRODUCTION_ADMISSION"
       },
       "juno": {
         "historical_readiness": "BLOCKED_ON_PROVIDER_OR_LICENSE",
@@ -250,7 +262,10 @@
         "eligible_lanes": [
           "BUNDLED_EPHEMERIS"
         ],
-        "production_status": "NOT_ADMITTED"
+        "production_status": "NOT_ADMITTED",
+        "feasibility_evidence": "references/astrology/astrology_p2_042_continuity_chebyshev_feasibility.json",
+        "research_front_runner": "c1-cheb-d7-w60",
+        "feasibility_status": "ARCHITECTURE_FEASIBILITY_PASS_PENDING_PRODUCTION_ADMISSION"
       },
       "vesta": {
         "historical_readiness": "BLOCKED_ON_PROVIDER_OR_LICENSE",
@@ -258,7 +273,10 @@
         "eligible_lanes": [
           "BUNDLED_EPHEMERIS"
         ],
-        "production_status": "NOT_ADMITTED"
+        "production_status": "NOT_ADMITTED",
+        "feasibility_evidence": "references/astrology/astrology_p2_042_continuity_chebyshev_feasibility.json",
+        "research_front_runner": "c1-cheb-d7-w60",
+        "feasibility_status": "ARCHITECTURE_FEASIBILITY_PASS_PENDING_PRODUCTION_ADMISSION"
       },
       "black_moon_lilith_variants": {
         "historical_readiness": "BLOCKED_ON_PROVIDER_OR_LICENSE",

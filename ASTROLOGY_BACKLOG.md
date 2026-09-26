@@ -75,13 +75,13 @@ Function-importance order for currently open / deferred Astrology work:
 
 Recent blocker-resolution result:
 
-- **AST-P2-041 — Piecewise Chebyshev five-body feasibility — DONE**
-  - no complete passing variant; D5/W45, D7/W60 and D7/W80 passed fixture accuracy/size gates but failed the frozen boundary-speed continuity gate.
+- **AST-P2-042 — Continuity-constrained / overlap Chebyshev feasibility — DONE / PASS**
+  - three frozen variants passed every architecture gate; `c1-cheb-d7-w60` is the current research front-runner and preserves a one-segment / 64-byte ordinary query envelope.
 
-Blocked / outcome-dependent item:
+Next actionable item:
 
 - **AST-P2-040 — Broader extended ephemeris objects**
-  - remains blocked: sampled/Hermite and the tested independent-segment Chebyshev v0 both failed their frozen architecture gates. Bounded SPK, continuity-constrained/overlap Chebyshev, or another prospectively validated representation remains possible.
+  - architecture blocker is now cleared by AST-P2-042, but production admission remains a separate review. No extended object is admitted yet.
 
 Standing / pointer items are not numbered feature work:
 
@@ -675,26 +675,53 @@ This item is a standing reconciliation guard. It is not a request to change curr
   - AST-P2-040 remains blocked;
   - bounded SPK and continuity-constrained/overlap Chebyshev remain separate future research options.
 
+### AST-P2-042 — Continuity-constrained / overlap Chebyshev five-body feasibility
+
+- type: RESEARCH / PROVIDER FEASIBILITY
+- status: DONE
+- priority: P2
+- owner: Astrology extended ephemeris research
+- blocked_by: none
+- canonical_evidence:
+  - `references/astrology/ASTROLOGY_P2_042_CONTINUITY_CHEBYSHEV_FEASIBILITY_CONTRACT.md`
+  - `references/astrology/astrology_p2_042_continuity_chebyshev_feasibility_contract.json`
+  - `references/astrology/ASTROLOGY_P2_042_CONTINUITY_CHEBYSHEV_FEASIBILITY_RESULT.md`
+  - `references/astrology/astrology_p2_042_continuity_chebyshev_feasibility.json`
+- closure:
+  - contract frozen before first execution at `6786fb20128c204f525971d06bdd1827620f318f`;
+  - PR #238 / head `6d60eef7176a53cd7cab0955e460a591e8f4c7cc` executed in Validate Playbook run #835;
+  - `c1-cheb-d5-w45`, `c1-cheb-d7-w60`, and `overlap-cheb-d7-w60-p15` passed every frozen gate;
+  - `overlap-cheb-d5-w45-p10` failed only boundary-speed continuity;
+  - `c1-cheb-d7-w60` is the current research front-runner because it combines exact C1 continuity with the strongest observed worst-case 5-day-grid longitude margin while remaining within the ~1 MiB / 64-byte envelope;
+  - no production provider/calculation admission was granted.
+- consequence:
+  - the five-body transport/precision architecture prerequisite is satisfied for research coordination;
+  - AST-P2-040 is unblocked for a separate production-admission review;
+  - feasibility PASS does not by itself admit Chiron, Ceres, Pallas, Juno or Vesta.
+
 ### AST-P2-040 — Broader extended ephemeris objects
 
 - type: FEATURE / PROVIDER
-- status: BLOCKED
+- status: OPEN
 - priority: P2
 - owner: Astrology extended ephemeris
-- blocked_by:
-  - five-body transport/precision architecture proof
+- blocked_by: none
 - current_state:
-  - AST-P1-010 is DONE as a research characterization task, not as a positive architecture admission;
-  - the evaluated 10/20/40-day sampled-wrapped-longitude Hermite candidates all failed the prospectively frozen feasibility gate;
-  - bounded SPK, piecewise Chebyshev, and multi-epoch osculating alternatives remain unevaluated research lanes;
-  - therefore the prerequisite outcome for broader object-count expansion is not yet satisfied even though AST-P1-010 itself is closed.
-- unblock_gate:
-  - at least one five-body local representation must pass a prospectively declared transport/precision gate under bounded ChatGPT materialization constraints;
-  - provider/data provenance, coverage, failure behavior, and runtime transport must be explicit;
-  - production calculation admission remains a separate gate after feasibility.
+  - AST-P1-010 rejected sampled/Hermite under its frozen gate;
+  - AST-P2-041 rejected independently fitted hard-switched Chebyshev segments because of boundary-speed discontinuity;
+  - AST-P2-042 prospectively demonstrated three passing one-segment-query Chebyshev variants;
+  - `c1-cheb-d7-w60` is the current research front-runner, not a production selection;
+  - production provider/calculation manifests remain unchanged and the five extended objects remain NOT_ADMITTED.
+- next_gate:
+  - define deterministic artifact generation and source provenance;
+  - define immutable artifact identity / checksum / materialization and fail-closed coverage behavior;
+  - implement or specify a project-owned runtime evaluator with one-segment lookup;
+  - establish production numeric validation beyond the feasibility fixtures/grid used by AST-P2-042;
+  - integrate provider/admission manifests and object provenance without auto-expanding aspect participants or interpretation authority;
+  - run regression / materialization evidence before any production admission decision.
 - rule:
-  - do not expand object count before the five-body transport/precision architecture is proven;
-  - no opportunistic auto-admission from an upstream catalog.
+  - architecture feasibility PASS is necessary but not sufficient for production admission;
+  - no opportunistic auto-admission from an upstream catalog or research artifact.
 
 ## SHARED / parallel
 

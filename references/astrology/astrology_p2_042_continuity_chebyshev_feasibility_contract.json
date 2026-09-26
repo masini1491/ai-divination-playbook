@@ -1,0 +1,151 @@
+{
+  "schema_name": "astrology_p2_042_continuity_chebyshev_feasibility_contract",
+  "schema_version": "1.0.0",
+  "authority": "REFERENCE_ONLY_RESEARCH_CONTRACT",
+  "production_admission": "NOT_GRANTED",
+  "frozen_before_first_execution": true,
+  "baseline_commit": "4a95d5910712c5d069917f90ce1b78161e994c60",
+  "parent_result": "references/astrology/astrology_p2_041_chebyshev_feasibility.json",
+  "research_question": "Can single-segment-query Chebyshev representations remove the AST-P2-041 segment-boundary speed discontinuity without widening the existing five-body accuracy, artifact-size, or query-payload gates?",
+  "source_authority": {
+    "provider": "NASA/JPL Horizons",
+    "api": "Horizons API",
+    "center": "500@399",
+    "ephem_type": "OBSERVER",
+    "quantities": [
+      31
+    ],
+    "apparent": "AIRLESS",
+    "time_type": "UT",
+    "extra_precision": true,
+    "ordinary_runtime_network_required": false
+  },
+  "objects": [
+    {
+      "object_id": "Chiron",
+      "horizons_command": "2060;"
+    },
+    {
+      "object_id": "Ceres",
+      "horizons_command": "1;"
+    },
+    {
+      "object_id": "Pallas",
+      "horizons_command": "2;"
+    },
+    {
+      "object_id": "Juno",
+      "horizons_command": "3;"
+    },
+    {
+      "object_id": "Vesta",
+      "horizons_command": "4;"
+    }
+  ],
+  "coverage": {
+    "start": "1825-04-01T00:00:00+00:00",
+    "validation_stop": "2350-10-01T00:00:00+00:00",
+    "source_grid_days": 5,
+    "validation_fixture_ids": [
+      "E2-F01",
+      "E2-F02",
+      "E2-F03",
+      "E2-F04",
+      "E2-H01",
+      "E2-H02",
+      "E2-H03",
+      "E2-H04",
+      "E2-V01",
+      "E2-V02",
+      "E2-V03",
+      "E2-V04"
+    ],
+    "fixture_validation_rows_per_variant": 60,
+    "source_grid_validation": "all available 5-day source samples inside the declared validation window",
+    "segment_padding": "source collection may extend only enough to complete the final segment and declared overlap-training window; output coverage remains the declared validation window"
+  },
+  "representation_family": {
+    "family_id": "single-segment-query-continuity-chebyshev-v0",
+    "longitude_preprocess": "local unwrap with 360-degree branch alignment where continuity constraints require it",
+    "normalized_core_domain": "[-1,1]",
+    "speed": "analytic derivative of the fitted Chebyshev polynomial",
+    "segment_selection": "deterministic floor from coverage start; one stored segment per ordinary query",
+    "runtime_blending": false,
+    "full_artifact_committed": false
+  },
+  "variants": [
+    {
+      "id": "c1-cheb-d5-w45",
+      "mechanism": "sequential equality-constrained least squares",
+      "degree": 5,
+      "segment_width_days": 45,
+      "fit_padding_days": 0,
+      "continuity_constraints": [
+        "left_endpoint_longitude",
+        "left_endpoint_speed"
+      ],
+      "first_segment": "ordinary least squares",
+      "coefficients_per_query": 6,
+      "raw_query_bytes": 48,
+      "theoretical_binary_bytes": 1023840
+    },
+    {
+      "id": "c1-cheb-d7-w60",
+      "mechanism": "sequential equality-constrained least squares",
+      "degree": 7,
+      "segment_width_days": 60,
+      "fit_padding_days": 0,
+      "continuity_constraints": [
+        "left_endpoint_longitude",
+        "left_endpoint_speed"
+      ],
+      "first_segment": "ordinary least squares",
+      "coefficients_per_query": 8,
+      "raw_query_bytes": 64,
+      "theoretical_binary_bytes": 1023680
+    },
+    {
+      "id": "overlap-cheb-d5-w45-p10",
+      "mechanism": "overlap-trained ordinary least squares with hard core-segment switch",
+      "degree": 5,
+      "segment_width_days": 45,
+      "fit_padding_days": 10,
+      "continuity_constraints": [],
+      "coefficients_per_query": 6,
+      "raw_query_bytes": 48,
+      "theoretical_binary_bytes": 1023840
+    },
+    {
+      "id": "overlap-cheb-d7-w60-p15",
+      "mechanism": "overlap-trained ordinary least squares with hard core-segment switch",
+      "degree": 7,
+      "segment_width_days": 60,
+      "fit_padding_days": 15,
+      "continuity_constraints": [],
+      "coefficients_per_query": 8,
+      "raw_query_bytes": 64,
+      "theoretical_binary_bytes": 1023680
+    }
+  ],
+  "thresholds_frozen_before_first_execution": {
+    "fixture_longitude_p95_arcsec_max": 10,
+    "fixture_longitude_max_arcsec_max": 30,
+    "fixture_speed_max_deg_per_day": 0.001,
+    "source_grid_longitude_p95_arcsec_max": 10,
+    "source_grid_longitude_max_arcsec_max": 30,
+    "binary_payload_bytes_max": 1048576,
+    "single_query_raw_payload_bytes_max": 64,
+    "boundary_longitude_jump_arcsec_max": 30,
+    "boundary_speed_jump_deg_per_day_max": 0.001
+  },
+  "rules": [
+    "Do not widen thresholds or change candidate degree/width/padding after observing results.",
+    "A variant passes only if every frozen gate passes.",
+    "Use direct Horizons truth at the existing 12 E2 validation instants; derive fixture truth speed by the existing ±1 hour central-difference contract.",
+    "Use the complete in-window 5-day source grid as an additional longitude-only anti-drift validation surface.",
+    "C1 variants must preserve a one-segment runtime lookup; continuity is encoded in coefficients, not runtime two-segment blending.",
+    "Overlap-trained variants may use neighboring source samples at build time but ordinary runtime still selects exactly one core segment.",
+    "No production mutation or provider admission follows automatically from feasibility.",
+    "If every declared variant fails, the result rejects only this declared continuity/overlap candidate family; bounded SPK and other architectures remain separate research."
+  ]
+}
