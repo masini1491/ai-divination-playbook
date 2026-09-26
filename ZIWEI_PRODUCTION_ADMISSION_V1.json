@@ -65,7 +65,6 @@
     "brightness_conditioned_interpretation",
     "four_transformation_interpretation_beyond_admitted_source_explicit_claims",
     "star_palace_cartesian_claims",
-    "daily",
     "hourly",
     "dynamic_prediction"
   ],
@@ -155,6 +154,19 @@
         "monthly"
       ],
       "interpretation_authority": false
+    },
+    "separate_dynamic_runtime_v5": {
+      "runtime_id": "ziwei-production-runtime-v5",
+      "runtime_version": "5.0.0",
+      "request_schema": "schemas/ziwei/ZIWEI_DYNAMIC_REQUEST_V5.schema.json",
+      "result_schema": "schemas/ziwei/ZIWEI_DYNAMIC_RESULT_V5.schema.json",
+      "admitted_temporal_scopes": [
+        "decadal",
+        "yearly",
+        "monthly",
+        "daily"
+      ],
+      "interpretation_authority": false
     }
   },
   "optional_module_admissions": [
@@ -218,6 +230,18 @@
       "status": "PRODUCTION_ADMITTED_CALCULATION_ONLY",
       "interpretation_admitted": false,
       "parent_scope": "yearly"
+    },
+    {
+      "temporal_scope": "daily",
+      "module_id": "daily_calculation_v1",
+      "admission_manifest": "ZIWEI_DAILY_ADMISSION_V1.json",
+      "provider": "tools/ziwei_daily_provider.py",
+      "runtime_owner": "tools/ziwei_runtime.py",
+      "runtime_id": "ziwei-production-runtime-v5",
+      "profile_id": "daily.monthly_parent_lunar_day_v1",
+      "status": "PRODUCTION_ADMITTED_CALCULATION_ONLY",
+      "interpretation_admitted": false,
+      "parent_scope": "monthly"
     }
   ]
 }
