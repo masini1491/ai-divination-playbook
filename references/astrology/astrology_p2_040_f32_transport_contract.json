@@ -1,0 +1,113 @@
+{
+  "schema_name": "astrology_p2_040_f32_transport_contract",
+  "schema_version": "1.0.0",
+  "authority": "PROSPECTIVE_TRANSPORT_ADMISSION_CONTRACT",
+  "production_admission": "NOT_YET_GRANTED",
+  "baseline_commit": "7ae74ac1255b705fbbf95591e82c14fe48107412",
+  "parent_double_probe": {
+    "run_id": 36220243631,
+    "artifact_id": 10898847593,
+    "dataset_sha256": "460b310131149b012b615dde15fcf892b85142fd2490fa1c5f35613697b93cc3"
+  },
+  "projection": {
+    "id": "c1-cheb-d7-w60-f32-c0mod360-v1",
+    "source_representation": "c1-cheb-d7-w60 float64",
+    "transform": [
+      "for each object/segment replace coefficient c0 with c0 mod 360 degrees",
+      "cast all eight coefficients to IEEE-754 float32 little-endian"
+    ],
+    "semantic_equivalence": "adding/subtracting integer multiples of 360 to c0 preserves modulo-360 longitude and does not change derivative",
+    "segment_width_days": 60,
+    "degree": 7,
+    "coefficients_per_object_segment": 8,
+    "transport_segments_per_shard": 192,
+    "shard_count": 17,
+    "max_raw_shard_bytes": 30720,
+    "max_base64_transport_chars": 40960,
+    "expected_total_raw_bytes": 511840,
+    "ordinary_runtime_network_required": false
+  },
+  "validation": {
+    "fixtures": [
+      {
+        "fixture_id": "P2-040-Q01",
+        "utc": "1834-02-11T01:13:00Z"
+      },
+      {
+        "fixture_id": "P2-040-Q02",
+        "utc": "1866-12-16T07:37:00Z"
+      },
+      {
+        "fixture_id": "P2-040-Q03",
+        "utc": "1899-10-20T13:53:00Z"
+      },
+      {
+        "fixture_id": "P2-040-Q04",
+        "utc": "1932-08-24T19:23:00Z"
+      },
+      {
+        "fixture_id": "P2-040-Q05",
+        "utc": "1965-06-28T01:13:00Z"
+      },
+      {
+        "fixture_id": "P2-040-Q06",
+        "utc": "1998-05-02T07:37:00Z"
+      },
+      {
+        "fixture_id": "P2-040-Q07",
+        "utc": "2031-03-06T13:53:00Z"
+      },
+      {
+        "fixture_id": "P2-040-Q08",
+        "utc": "2064-01-08T19:23:00Z"
+      },
+      {
+        "fixture_id": "P2-040-Q09",
+        "utc": "2096-11-11T01:13:00Z"
+      },
+      {
+        "fixture_id": "P2-040-Q10",
+        "utc": "2129-09-16T07:37:00Z"
+      },
+      {
+        "fixture_id": "P2-040-Q11",
+        "utc": "2162-07-21T13:53:00Z"
+      },
+      {
+        "fixture_id": "P2-040-Q12",
+        "utc": "2195-05-25T19:23:00Z"
+      },
+      {
+        "fixture_id": "P2-040-Q13",
+        "utc": "2228-03-29T01:13:00Z"
+      },
+      {
+        "fixture_id": "P2-040-Q14",
+        "utc": "2261-01-31T07:37:00Z"
+      },
+      {
+        "fixture_id": "P2-040-Q15",
+        "utc": "2293-12-05T13:53:00Z"
+      },
+      {
+        "fixture_id": "P2-040-Q16",
+        "utc": "2326-10-09T19:23:00Z"
+      }
+    ],
+    "rows": 80,
+    "thresholds": {
+      "longitude_p95_arcsec_max": 10,
+      "longitude_max_arcsec_max": 30,
+      "speed_max_deg_per_day": 0.001
+    },
+    "direct_oracle_speed": "Horizons t-1h/t+1h central difference",
+    "rule": "No threshold, transform, degree, width, or shard size may change after first execution."
+  },
+  "additional_gates": {
+    "decoded_shard_sha256": true,
+    "query_transport_max_base64_chars": 40960,
+    "missing_shard_fail_closed": true,
+    "digest_mismatch_fail_closed": true,
+    "out_of_coverage_fail_closed": true
+  }
+}

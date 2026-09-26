@@ -1,0 +1,210 @@
+{
+  "schema_name": "astrology_p2_040_extended_ephemeris_production_admission_contract",
+  "schema_version": "1.0.0",
+  "authority": "PROSPECTIVE_ADMISSION_REVIEW_CONTRACT",
+  "production_admission": "NOT_YET_GRANTED",
+  "frozen_before_production_probe": true,
+  "baseline_commit": "7ae74ac1255b705fbbf95591e82c14fe48107412",
+  "candidate_provider": {
+    "provider_id": "astrology-extended-ephemeris-c1-v1",
+    "provider_version": "1.0.0-candidate",
+    "scope": [
+      "natal_known_time_explicit_extended_objects"
+    ],
+    "activation": "explicit_request_only",
+    "objects": [
+      "Chiron",
+      "Ceres",
+      "Pallas",
+      "Juno",
+      "Vesta"
+    ],
+    "output_authority": "deterministic_calculation_facts_only",
+    "semantic_interpretation_authority": false,
+    "default_aspect_participation": false,
+    "unknown_time": false,
+    "transit": false
+  },
+  "source_authority": {
+    "provider": "NASA/JPL Horizons",
+    "api": "Horizons API",
+    "expected_signature": {
+      "source": "NASA/JPL Horizons API",
+      "version": "1.2"
+    },
+    "center": "500@399",
+    "ephem_type": "OBSERVER",
+    "quantities": [
+      31
+    ],
+    "apparent": "AIRLESS",
+    "time_type": "UT",
+    "extra_precision": true,
+    "source_grid_days": 5,
+    "build_time_network_only": true,
+    "ordinary_runtime_network_required": false
+  },
+  "representation": {
+    "family_id": "c1-cheb-d7-w60",
+    "degree": 7,
+    "segment_width_days": 60,
+    "coefficients_per_object_segment": 8,
+    "float_encoding": "IEEE-754 float64 little-endian",
+    "object_order": [
+      "Chiron",
+      "Ceres",
+      "Pallas",
+      "Juno",
+      "Vesta"
+    ],
+    "coverage_start": "1825-04-01T00:00:00Z",
+    "coverage_stop_exclusive": "2350-10-06T00:00:00Z",
+    "admitted_output_window_end": "2350-10-01T00:00:00Z",
+    "segment_count": 3199,
+    "segments_per_shard": 96,
+    "shard_count": 34,
+    "max_raw_shard_bytes": 30720,
+    "max_base64_shard_chars": 40960,
+    "one_object_query_raw_bytes": 64,
+    "all_five_query_raw_bytes": 320,
+    "runtime_lookup": "one date shard + one segment + requested object coefficients",
+    "runtime_blending": false
+  },
+  "data_contract": {
+    "root": "data/astrology/extended_ephemeris/v1",
+    "manifest": "data/astrology/extended_ephemeris/v1/MANIFEST.json",
+    "shard_path_pattern": "data/astrology/extended_ephemeris/v1/shards/{shard_index:02d}.bin",
+    "generator": "tools/generate_astrology_extended_ephemeris.py",
+    "evaluator": "tools/astrology_extended_ephemeris.py",
+    "artifact_identity": "manifest dataset digest + per-shard SHA-256 + Git blob SHA",
+    "runtime_retrieval": "GitHub Connect exact admitted data revision / query-bounded single shard",
+    "missing_or_mismatch": "fail_closed"
+  },
+  "prospective_validation": {
+    "fixture_policy": "24 previously unobserved UTC instants stratified across the admitted span",
+    "fixtures": [
+      {
+        "fixture_id": "P2-040-V01",
+        "utc": "1836-03-12T03:17:00Z"
+      },
+      {
+        "fixture_id": "P2-040-V02",
+        "utc": "1858-02-02T09:43:00Z"
+      },
+      {
+        "fixture_id": "P2-040-V03",
+        "utc": "1879-12-27T15:29:00Z"
+      },
+      {
+        "fixture_id": "P2-040-V04",
+        "utc": "1901-11-19T21:11:00Z"
+      },
+      {
+        "fixture_id": "P2-040-V05",
+        "utc": "1923-10-12T03:17:00Z"
+      },
+      {
+        "fixture_id": "P2-040-V06",
+        "utc": "1945-09-04T09:43:00Z"
+      },
+      {
+        "fixture_id": "P2-040-V07",
+        "utc": "1967-07-28T15:29:00Z"
+      },
+      {
+        "fixture_id": "P2-040-V08",
+        "utc": "1989-06-19T21:11:00Z"
+      },
+      {
+        "fixture_id": "P2-040-V09",
+        "utc": "2011-05-12T03:17:00Z"
+      },
+      {
+        "fixture_id": "P2-040-V10",
+        "utc": "2033-04-04T09:43:00Z"
+      },
+      {
+        "fixture_id": "P2-040-V11",
+        "utc": "2055-02-25T15:29:00Z"
+      },
+      {
+        "fixture_id": "P2-040-V12",
+        "utc": "2077-01-17T21:11:00Z"
+      },
+      {
+        "fixture_id": "P2-040-V13",
+        "utc": "2098-12-11T03:17:00Z"
+      },
+      {
+        "fixture_id": "P2-040-V14",
+        "utc": "2120-11-03T09:43:00Z"
+      },
+      {
+        "fixture_id": "P2-040-V15",
+        "utc": "2142-09-26T15:29:00Z"
+      },
+      {
+        "fixture_id": "P2-040-V16",
+        "utc": "2164-08-19T21:11:00Z"
+      },
+      {
+        "fixture_id": "P2-040-V17",
+        "utc": "2186-07-12T03:17:00Z"
+      },
+      {
+        "fixture_id": "P2-040-V18",
+        "utc": "2208-06-04T09:43:00Z"
+      },
+      {
+        "fixture_id": "P2-040-V19",
+        "utc": "2230-04-27T15:29:00Z"
+      },
+      {
+        "fixture_id": "P2-040-V20",
+        "utc": "2252-03-20T21:11:00Z"
+      },
+      {
+        "fixture_id": "P2-040-V21",
+        "utc": "2274-02-10T03:17:00Z"
+      },
+      {
+        "fixture_id": "P2-040-V22",
+        "utc": "2296-01-03T09:43:00Z"
+      },
+      {
+        "fixture_id": "P2-040-V23",
+        "utc": "2317-11-27T15:29:00Z"
+      },
+      {
+        "fixture_id": "P2-040-V24",
+        "utc": "2339-10-20T21:11:00Z"
+      }
+    ],
+    "direct_oracle_speed": "Horizons t-1h/t+1h central difference",
+    "rows": 120,
+    "thresholds": {
+      "longitude_p95_arcsec_max": 10,
+      "longitude_max_arcsec_max": 30,
+      "speed_max_deg_per_day": 0.001
+    },
+    "rule": "Do not widen thresholds after observing these fixtures."
+  },
+  "materialization_gates": {
+    "deterministic_manifest_rebuild": true,
+    "query_bounded_single_shard_max_base64_chars": 40960,
+    "per_shard_hash_verification": true,
+    "manifest_dataset_digest_verification": true,
+    "out_of_coverage_fail_closed": true,
+    "missing_shard_fail_closed": true,
+    "wrong_shard_digest_fail_closed": true,
+    "requested_object_allowlist_only": true
+  },
+  "admission_boundaries": [
+    "No semantic meaning for Chiron/Ceres/Pallas/Juno/Vesta is admitted by this calculation lane.",
+    "Extended objects are not added to default natal aspect participants.",
+    "No extended-object transit search is admitted.",
+    "No unknown-time extended-object facts are admitted.",
+    "No live Horizons dependency is allowed in ordinary runtime.",
+    "No Swiss Ephemeris production dependency is introduced."
+  ]
+}
