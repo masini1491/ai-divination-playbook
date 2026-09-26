@@ -81,7 +81,7 @@ Recent blocker-resolution result:
 Next actionable item:
 
 - **AST-P2-040 — Broader extended ephemeris objects**
-  - architecture blocker is now cleared by AST-P2-042, but production admission remains a separate review. No extended object is admitted yet.
+  - production-admission implementation is in final review: Chiron/Ceres/Pallas/Juno/Vesta are scoped as explicit known-time natal calculation facts only, pinned to the dedicated generated-data commit; semantic interpretation, default aspect participation, unknown-time and transit remain closed. Mark DONE only after merge + main/readback + CI closure.
 
 Standing / pointer items are not numbered feature work:
 

@@ -392,6 +392,21 @@
           }
         }
       ]
+    },
+    "extended_objects": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "description": "Explicit known-time natal request for production-admitted extended ephemeris calculation facts only. Does not grant semantic interpretation or default aspect participation.",
+      "items": {
+        "enum": [
+          "Chiron",
+          "Ceres",
+          "Pallas",
+          "Juno",
+          "Vesta"
+        ]
+      }
     }
   },
   "allOf": [
@@ -488,6 +503,33 @@
                 "const": "unknown"
               }
             }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "extended_objects"
+        ]
+      },
+      "then": {
+        "properties": {
+          "reading_mode": {
+            "const": "natal"
+          },
+          "birth": {
+            "properties": {
+              "birth_time_certainty": {
+                "enum": [
+                  "exact",
+                  "approximate"
+                ]
+              }
+            },
+            "required": [
+              "birth_time_certainty"
+            ]
           }
         }
       }

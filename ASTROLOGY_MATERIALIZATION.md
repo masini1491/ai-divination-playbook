@@ -200,6 +200,42 @@ This transport preserves the existing resolver semantics; it does not create a s
 
 The corpus is generated from the exact admitted `geonamescache==3.0.2` / GeoNames source identity, remains CC-BY-4.0 attribution-bearing derived deterministic data, and does not become astronomical authority.
 
+
+### 6.2 Extended ephemeris query-bounded materialization
+
+Chiron / Ceres / Pallas / Juno / Vesta 的 production calculation facts 使用獨立 generated-data lane；它不屬於 Astronomy Engine core bundle，也不要求 ordinary runtime 連線 Horizons。
+
+Canonical admission：
+
+```text
+provider: astrology-extended-ephemeris-c1-v1
+dataset: astrology-extended-ephemeris-c1-f32-v1
+data ref: refs/heads/data/astrology-extended-ephemeris-v1
+exact data commit: 0052ba1c0a3b65238b4f9ec3a94a1aff47e341ea
+dataset SHA-256: 580bb2a8ef463dfc6527ea611f27daad3562cb1fa5698391b3e2baeba64987bf
+representation: c1-cheb-d7-w60-f32-c0mod360-v1
+```
+
+只有 explicit known-time natal request 的 `extended_objects` selector 才啟動：
+
+```text
+exact admitted data commit
+→ fetch MANIFEST.json + GENERATED_IDENTITY.json
+→ verify dataset / representation / generator-source identities
+→ derive one required shard from UTC instant
+→ GitHub Connect fetch_file(encoding=base64) for that shard only
+→ strip transport whitespace
+→ base64 decode exact binary bytes
+→ verify byte_size + SHA-256 + Git blob identity
+→ materialize under /mnt/data/divination-astrology-runtime/extended_ephemeris/v1/
+→ tools/astrology_extended_ephemeris.py
+→ Astrology Fact Gate
+```
+
+Maximum admitted shard = 30,720 raw bytes / 40,960 compact base64 characters. Missing manifest/identity/shard, wrong digest/blob, unsupported object, out-of-coverage date or generator-source mismatch全部 fail closed。不得 fallback live Horizons、Swiss Ephemeris、模型手算或其他近似軌道。
+
+Generated-data branch 的 `GENERATED_CANDIDATE_ONLY` 不是 production authority；production admission 只由 main 的 `ASTROLOGY_EXTENDED_EPHEMERIS_ADMISSION_V1.json` 授權並 pin exact data commit。
+
 ## 7. Fallback / fail closed
 
 Core bundle無法取得或驗證時，可退回同 exact commit repo-source + pinned upstream Astronomy Engine exact-source materialization；仍須 byte-preserving、逐檔 identity verification。

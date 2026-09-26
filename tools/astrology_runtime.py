@@ -51,6 +51,13 @@ NATAL_ASPECT_PARTICIPANT_OBJECT_IDS = {
     "Pluto",
     "NorthNode",
 }
+EXTENDED_EPHEMERIS_OBJECT_IDS = {"Chiron", "Ceres", "Pallas", "Juno", "Vesta"}
+EXTENDED_EPHEMERIS_PROVIDER_ID = "astrology-extended-ephemeris-c1-v1"
+EXTENDED_EPHEMERIS_PROVIDER_VERSION = "1.0.0"
+EXTENDED_EPHEMERIS_DATASET_ID = "astrology-extended-ephemeris-c1-f32-v1"
+EXTENDED_EPHEMERIS_DATASET_SHA256 = "580bb2a8ef463dfc6527ea611f27daad3562cb1fa5698391b3e2baeba64987bf"
+EXTENDED_EPHEMERIS_REPRESENTATION_ID = "c1-cheb-d7-w60-f32-c0mod360-v1"
+EXTENDED_EPHEMERIS_DATA_COMMIT = "0052ba1c0a3b65238b4f9ec3a94a1aff47e341ea"
 FORBIDDEN_FACT_SOURCES = {"model_calculated", "memory_inferred"}
 
 
@@ -195,6 +202,62 @@ def validate_bundle(data: Any) -> list[dict[str, str]]:
                     object_or_house_ids.add(fact_id)
                 if collection_name == "objects":
                     object_rows_by_fact_id[fact_id] = row
+
+    extended_rows: list[tuple[int, dict[str, Any]]] = []
+    for i, row in enumerate(objects):
+        if isinstance(row, dict) and row.get("object_id") in EXTENDED_EPHEMERIS_OBJECT_IDS:
+            extended_rows.append((i, row))
+
+    extended_provider = data.get("provider", {}).get("extended_ephemeris") if isinstance(data.get("provider"), dict) else None
+    if extended_rows:
+        if data.get("reading_mode") != "natal":
+            _error(errors, "EXTENDED_EPHEMERIS_NATAL_ONLY", "$.reading_mode", "extended ephemeris objects are admitted only for natal readings")
+        if certainty not in {"exact", "approximate"}:
+            _error(errors, "EXTENDED_EPHEMERIS_KNOWN_TIME_REQUIRED", "$.birth_time_certainty", "extended ephemeris objects require exact or approximate birth time")
+        if fact_source != "approved_provider":
+            _error(errors, "EXTENDED_EPHEMERIS_APPROVED_PROVIDER_REQUIRED", "$.fact_source", "extended ephemeris objects require approved_provider provenance")
+        if not isinstance(extended_provider, dict):
+            _error(errors, "EXTENDED_EPHEMERIS_PROVIDER_REQUIRED", "$.provider.extended_ephemeris", "extended ephemeris provider provenance is required")
+        else:
+            expected_provider = {
+                "provider_id": EXTENDED_EPHEMERIS_PROVIDER_ID,
+                "provider_version": EXTENDED_EPHEMERIS_PROVIDER_VERSION,
+                "dataset_id": EXTENDED_EPHEMERIS_DATASET_ID,
+                "dataset_sha256": EXTENDED_EPHEMERIS_DATASET_SHA256,
+                "representation_id": EXTENDED_EPHEMERIS_REPRESENTATION_ID,
+                "exact_data_commit": EXTENDED_EPHEMERIS_DATA_COMMIT,
+                "ordinary_runtime_network_required": False,
+                "semantic_interpretation_authority": False,
+                "default_aspect_participation": False,
+            }
+            for key, expected in expected_provider.items():
+                if extended_provider.get(key) != expected:
+                    _error(errors, "EXTENDED_EPHEMERIS_PROVIDER_IDENTITY_MISMATCH", "$.provider.extended_ephemeris." + key, f"must equal admitted extended ephemeris {key}")
+            requested = extended_provider.get("requested_object_ids")
+            actual = [row.get("object_id") for _, row in extended_rows]
+            if not isinstance(requested, list) or len(requested) != len(set(requested)) or set(requested) != set(actual):
+                _error(errors, "EXTENDED_EPHEMERIS_REQUESTED_OBJECTS_MISMATCH", "$.provider.extended_ephemeris.requested_object_ids", "requested object ids must exactly match emitted extended object facts")
+
+        for i, row in extended_rows:
+            path = f"$.facts.objects[{i}]"
+            if row.get("object_type") != "minor_planet":
+                _error(errors, "EXTENDED_EPHEMERIS_OBJECT_TYPE_INVALID", path + ".object_type", "extended ephemeris objects must use object_type=minor_planet")
+            for field in ("longitude_deg", "speed_deg_per_day"):
+                if not _finite_number(row.get(field)):
+                    _error(errors, "EXTENDED_EPHEMERIS_NUMERIC_FACT_REQUIRED", path + "." + field, field + " must be finite")
+            if row.get("motion") not in {"direct", "retrograde", "stationary"}:
+                _error(errors, "EXTENDED_EPHEMERIS_MOTION_INVALID", path + ".motion", "motion must be direct, retrograde, or stationary")
+            expected_row_identity = {
+                "dataset_id": EXTENDED_EPHEMERIS_DATASET_ID,
+                "dataset_sha256": EXTENDED_EPHEMERIS_DATASET_SHA256,
+                "representation_id": EXTENDED_EPHEMERIS_REPRESENTATION_ID,
+                "exact_data_commit": EXTENDED_EPHEMERIS_DATA_COMMIT,
+            }
+            for key, expected in expected_row_identity.items():
+                if row.get(key) != expected:
+                    _error(errors, "EXTENDED_EPHEMERIS_ROW_IDENTITY_MISMATCH", path + "." + key, f"must equal admitted extended ephemeris {key}")
+    elif extended_provider is not None:
+        _error(errors, "EXTENDED_EPHEMERIS_PROVIDER_WITHOUT_FACTS", "$.provider.extended_ephemeris", "extended ephemeris provider provenance requires emitted extended object facts")
 
     for i, aspect in enumerate(aspects):
         if not isinstance(aspect, dict):

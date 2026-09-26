@@ -611,5 +611,39 @@
       ],
       "interpretation_scope_note": "Descendant and ImumCoeli retain their explicit source-backed bindings. PartOfFortune admits only the bounded Valens Lot-of-Fortune doctrine. SouthNode remains deterministic fact-only: the reviewed Lilly evidence is conjunction-specific to SouthNode + PartOfFortune, while the current derived-fact handoff does not admit that co-fact/aspect applicability shape; no standalone SouthNode semantic claim is admitted."
     }
+  },
+  "extended_ephemeris_provider": {
+    "provider_id": "astrology-extended-ephemeris-c1-v1",
+    "provider_version": "1.0.0",
+    "admission_manifest": "ASTROLOGY_EXTENDED_EPHEMERIS_ADMISSION_V1.json",
+    "runtime_owner": "tools/astrology_extended_ephemeris.py",
+    "activation": "explicit_request_only",
+    "request_selector": "extended_objects",
+    "scope": [
+      "natal_known_time_explicit_extended_objects"
+    ],
+    "object_ids": [
+      "Chiron",
+      "Ceres",
+      "Pallas",
+      "Juno",
+      "Vesta"
+    ],
+    "dataset_id": "astrology-extended-ephemeris-c1-f32-v1",
+    "exact_data_commit": "0052ba1c0a3b65238b4f9ec3a94a1aff47e341ea",
+    "dataset_sha256": "580bb2a8ef463dfc6527ea611f27daad3562cb1fa5698391b3e2baeba64987bf",
+    "authority": "deterministic_calculation_facts_only",
+    "output_facts": [
+      "longitude_deg",
+      "speed_deg_per_day",
+      "motion",
+      "sign",
+      "sign_degree",
+      "known_time_house_number"
+    ],
+    "default_aspect_participation": false,
+    "semantic_interpretation_authority": false,
+    "unknown_time": "not_admitted",
+    "transit": "not_admitted"
   }
 }

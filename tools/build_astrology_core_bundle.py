@@ -25,6 +25,7 @@ PROJECT_PATHS=(
  "tools/astrology_provider.py",
  "tools/astrology_transit_provider.py",
  "tools/astrology_orchestrator.py",
+ "tools/astrology_extended_ephemeris.py",
  "tools/astrology_rulership_projection.py",
  "tools/astrology_aspect_projection.py",
  "tools/astrology_pattern_topology.py",

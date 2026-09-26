@@ -19,6 +19,8 @@ PROVIDER_VERSION = "1.0.0"
 DATASET_ID = "astrology-extended-ephemeris-c1-f32-v1"
 DATASET_SHA256 = "580bb2a8ef463dfc6527ea611f27daad3562cb1fa5698391b3e2baeba64987bf"
 REPRESENTATION_ID = "c1-cheb-d7-w60-f32-c0mod360-v1"
+EXACT_DATA_COMMIT = "0052ba1c0a3b65238b4f9ec3a94a1aff47e341ea"
+GENERATOR_SOURCE_COMMIT = "e367b637b93d21a18ec95f48c4a052299eafdbd7"
 OBJECT_IDS = ("Chiron", "Ceres", "Pallas", "Juno", "Vesta")
 MANIFEST_RELATIVE = Path("data/astrology/extended_ephemeris/v1/MANIFEST.json")
 CACHE_ROOT = Path("/mnt/data/divination-astrology-runtime/extended_ephemeris/v1")
@@ -58,22 +60,32 @@ def _default_data_root() -> Path:
 def load_manifest(data_root: Path | None = None) -> tuple[Path, dict[str,Any]]:
     root=Path(data_root) if data_root is not None else _default_data_root()
     path=root/"MANIFEST.json"
+    identity_path=root/"GENERATED_IDENTITY.json"
     try:
         manifest=json.loads(path.read_text(encoding="utf-8"))
+        identity=json.loads(identity_path.read_text(encoding="utf-8"))
     except (OSError,json.JSONDecodeError) as exc:
-        raise ExtendedEphemerisError("extended ephemeris manifest unavailable or invalid") from exc
+        raise ExtendedEphemerisError("extended ephemeris manifest/identity unavailable or invalid") from exc
     if manifest.get("schema_name")!="astrology_extended_ephemeris_dataset":
         raise ExtendedEphemerisError("extended ephemeris manifest schema mismatch")
     if manifest.get("dataset_id")!=DATASET_ID:
         raise ExtendedEphemerisError("extended ephemeris dataset id mismatch")
-    if manifest.get("production_admission")!="PRODUCTION_ADMITTED":
-        raise ExtendedEphemerisError("extended ephemeris dataset is not production-admitted")
+    if manifest.get("production_admission")!="GENERATED_CANDIDATE_ONLY":
+        raise ExtendedEphemerisError("extended ephemeris generated-data status mismatch")
     if manifest.get("dataset",{}).get("sha256")!=DATASET_SHA256:
         raise ExtendedEphemerisError("extended ephemeris dataset digest mismatch")
     if manifest.get("representation",{}).get("id")!=REPRESENTATION_ID:
         raise ExtendedEphemerisError("extended ephemeris representation mismatch")
     if tuple(manifest.get("representation",{}).get("object_order",()))!=OBJECT_IDS:
         raise ExtendedEphemerisError("extended ephemeris object order mismatch")
+    if identity.get("schema_name")!="astrology_extended_ephemeris_generated_data_identity":
+        raise ExtendedEphemerisError("extended ephemeris generated identity schema mismatch")
+    if identity.get("dataset_id")!=DATASET_ID or identity.get("dataset_sha256")!=DATASET_SHA256:
+        raise ExtendedEphemerisError("extended ephemeris generated identity mismatch")
+    if identity.get("representation_id")!=REPRESENTATION_ID:
+        raise ExtendedEphemerisError("extended ephemeris generated representation mismatch")
+    if identity.get("generator_source_commit")!=GENERATOR_SOURCE_COMMIT:
+        raise ExtendedEphemerisError("extended ephemeris generator source commit mismatch")
     return root,manifest
 
 def required_shard_for_utc(utc: str | dt.datetime, manifest: dict[str,Any]) -> dict[str,Any]:
@@ -190,6 +202,7 @@ def evaluate_object(
         "dataset_id":DATASET_ID,
         "dataset_sha256":DATASET_SHA256,
         "representation_id":REPRESENTATION_ID,
+        "exact_data_commit":EXACT_DATA_COMMIT,
     }
 
 def build_extended_object_rows(

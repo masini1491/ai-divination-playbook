@@ -21,6 +21,11 @@ from tools.astrology_provider import (
     build_natal_bundle,
     build_unknown_time_natal_bundle,
 )
+from tools.astrology_extended_ephemeris import (
+    OBJECT_IDS as EXTENDED_EPHEMERIS_OBJECT_IDS,
+    ExtendedEphemerisError,
+    build_extended_object_rows,
+)
 from tools.astrology_runtime import MAJOR_ASPECT_ORBS, gate_bundle
 from tools.astrology_transit_provider import TransitProviderInputError, build_transit_bundle
 
@@ -248,7 +253,7 @@ def normalize_request(data: Any) -> dict[str, Any]:
     root = _object(data, "$")
     _exact_keys(
         root,
-        allowed={"schema_name", "schema_version", "reading_mode", "subject_ref", "birth", "transit"},
+        allowed={"schema_name", "schema_version", "reading_mode", "subject_ref", "birth", "transit", "extended_objects"},
         required={"schema_name", "schema_version", "reading_mode", "subject_ref", "birth"},
         path="$",
     )
@@ -317,6 +322,16 @@ def normalize_request(data: Any) -> dict[str, Any]:
         "subject_ref": _non_empty_string(root["subject_ref"], "$.subject_ref"),
         "birth": normalized_birth,
     }
+    if "extended_objects" in root:
+        extended_objects = _unique_strings(root["extended_objects"], "$.extended_objects")
+        unsupported = [object_id for object_id in extended_objects if object_id not in EXTENDED_EPHEMERIS_OBJECT_IDS]
+        if unsupported:
+            raise OrchestrationInputError(f"$.extended_objects contains unsupported object(s): {unsupported}")
+        if reading_mode != "natal":
+            raise OrchestrationInputError("$.extended_objects is admitted only when reading_mode=natal")
+        if certainty == "unknown":
+            raise OrchestrationInputError("$.extended_objects requires exact or approximate birth time")
+        normalized["extended_objects"] = extended_objects
     if reading_mode == "transit":
         normalized["transit"] = _normalize_transit(root["transit"])
         if normalized["transit"]["include_house_ingresses"] and certainty != "exact":
@@ -392,6 +407,11 @@ def _engine_provenance(
         "runtime_gate": "tools/astrology_runtime.py",
         "location_resolution_mode": input_resolution.get("resolution_mode"),
     }
+    extended_provider = natal_bundle.get("provider", {}).get("extended_ephemeris")
+    if isinstance(extended_provider, dict):
+        result["extended_ephemeris_provider_id"] = extended_provider.get("provider_id")
+        result["extended_ephemeris_provider_version"] = extended_provider.get("provider_version")
+        result["extended_ephemeris_data_commit"] = extended_provider.get("exact_data_commit")
     if input_resolution.get("resolver"):
         result["place_resolver_id"] = input_resolution["resolver"].get("resolver_id")
         result["place_resolver_version"] = input_resolution["resolver"].get("resolver_version")
@@ -422,6 +442,14 @@ def run_request(data: Any) -> dict[str, Any]:
             subject_ref=normalized["subject_ref"],
             birth_time_certainty=birth["birth_time_certainty"],
         )
+    if normalized.get("extended_objects"):
+        extended_rows, extended_provider = build_extended_object_rows(
+            normalized["extended_objects"],
+            natal_bundle["provider"]["resolved_utc_iso"],
+            house_facts=natal_bundle["facts"]["houses"],
+        )
+        natal_bundle["facts"]["objects"].extend(extended_rows)
+        natal_bundle["provider"]["extended_ephemeris"] = extended_provider
     natal_gate = _admit_bundle(natal_bundle, "natal")
 
     transit_bundle: dict[str, Any] | None = None
@@ -497,6 +525,7 @@ def main() -> int:
         OrchestrationInputError,
         ProviderInputError,
         TransitProviderInputError,
+        ExtendedEphemerisError,
         RuntimeError,
     ) as exc:
         result = {
