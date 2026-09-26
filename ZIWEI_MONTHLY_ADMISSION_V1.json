@@ -1,0 +1,80 @@
+{
+  "schema_name": "ziwei_monthly_production_admission",
+  "schema_version": "1.0.0",
+  "method": "ZiWei",
+  "module": "monthly_calculation_v1",
+  "status": "PRODUCTION_ADMITTED_CALCULATION_ONLY",
+  "activation": "explicit_ziwei_monthly_request_only",
+  "parent_admission": "ZIWEI_YEARLY_ADMISSION_V1.json",
+  "temporal_scope": "monthly",
+  "profile": {
+    "profile_id": "monthly.doujun_effective_month_split15_v1",
+    "historical_uniqueness_claimed": false,
+    "rules": {
+      "doujun": "target_year_branch_minus_birth_effective_month_plus_birth_hour",
+      "life_palace": "doujun_plus_effective_month_minus_1",
+      "palace_roles": "reverse_from_monthly_life_palace",
+      "month_boundary": "lunar_month_split_after_day_15_v1",
+      "leap_month_policy": "split_after_day_15",
+      "palace_month_strategy": "effective_month"
+    }
+  },
+  "calculation": {
+    "provider_id": "ziwei-monthly-doujun-python",
+    "provider_version": "1.0.0",
+    "runtime_owner": "tools/ziwei_monthly_provider.py",
+    "engine_revision": "project-reconstruction-v1",
+    "target_calendar_identity": "normalized_traditional_lunar_month"
+  },
+  "parent_scope": {
+    "required": "yearly",
+    "profile_id": "yearly.year_branch_common_v1",
+    "compatibility": "same target lunar year; monthly target must resolve under the admitted yearly parent"
+  },
+  "calendar_policy": {
+    "owner": "ZIWEI_CALENDAR_ADMISSION_V1.json",
+    "leap_month_policy": "split_after_day_15",
+    "target_input": "explicit normalized lunar year/month/day + is_leap_month + provenance",
+    "cross_year_leap_month_12_day_16_plus": "NOT_ADMITTED"
+  },
+  "pipeline": {
+    "runtime_owner": "tools/ziwei_runtime.py",
+    "runtime_id": "ziwei-production-runtime-v4",
+    "runtime_version": "4.0.0",
+    "request_schema": "schemas/ziwei/ZIWEI_DYNAMIC_REQUEST_V4.schema.json",
+    "result_schema": "schemas/ziwei/ZIWEI_DYNAMIC_RESULT_V4.schema.json"
+  },
+  "source_evidence": {
+    "primary": {
+      "repository": "RedSC1/js-ephemeris-lite",
+      "revision": "559d4957bc063a6e03a3c810066be4eccf3ea2be",
+      "path": "packages/ziwei/src/limits.ts"
+    },
+    "comparator": {
+      "repository": "SylarLong/iztro",
+      "revision": "2c7ef9be669df7b19d1799f4dce335fed3794f78",
+      "path": "src/astro/FunctionalAstrolabe.ts"
+    },
+    "project_research": "references/ziwei/CALCULATION_ENGINE_RESEARCH.md"
+  },
+  "fail_closed": [
+    "no gender inference from prose or memory",
+    "no monthly calculation without compatible admitted yearly parent",
+    "target monthly input must carry explicit normalized-lunar calendar provenance",
+    "leap month 12 day 16+ cross-year rollover rejected",
+    "no monthly fallback to yearly/decadal/natal facts",
+    "no monthly Si Hua or flow-star reconstruction",
+    "no daily/hourly calculation",
+    "no dynamic interpretation without separate ZW-P1-040 admission"
+  ],
+  "unsupported": [
+    "monthly_sihua",
+    "flow_stars",
+    "daily",
+    "hourly",
+    "dynamic_interpretation",
+    "leap_month_12_day_16_plus_cross_year"
+  ],
+  "scientific_predictive_validity_claimed": false,
+  "ordinary_auto_routing": false
+}

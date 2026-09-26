@@ -278,6 +278,23 @@
           "year_boundary_profile": "lunar_year_explicit_v1",
           "gender_required": true,
           "yearly_sihua_profile": "sihua.default_v1"
+        },
+        "monthly_v1": {
+          "activation": "explicit-monthly-request-only",
+          "runtime": "tools/ziwei_runtime.py",
+          "provider": "tools/ziwei_monthly_provider.py",
+          "admission_manifest": "ZIWEI_MONTHLY_ADMISSION_V1.json",
+          "profile_id": "monthly.doujun_effective_month_split15_v1",
+          "request_schema": "schemas/ziwei/ZIWEI_DYNAMIC_REQUEST_V4.schema.json",
+          "result_schema": "schemas/ziwei/ZIWEI_DYNAMIC_RESULT_V4.schema.json",
+          "parent_scope": "yearly",
+          "calculation_status": "production-admitted",
+          "interpretation_status": "not-admitted",
+          "target_calendar": "normalized_traditional_lunar_month",
+          "month_boundary_profile": "lunar_month_split_after_day_15_v1",
+          "leap_month_policy": "split_after_day_15",
+          "leap_month_12_day_16_plus_cross_year": "not-admitted",
+          "gender_required": true
         }
       }
     },

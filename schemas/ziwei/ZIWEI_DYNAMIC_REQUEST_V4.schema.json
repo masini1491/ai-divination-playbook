@@ -1,0 +1,281 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Zi Wei Production v4 Dynamic Reading Request",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_name",
+    "schema_version",
+    "request_id",
+    "temporal_scope",
+    "birth",
+    "gender",
+    "target",
+    "requested_subjects",
+    "enabled_source_ids"
+  ],
+  "properties": {
+    "schema_name": {
+      "const": "ziwei_dynamic_request"
+    },
+    "schema_version": {
+      "const": "4.0.0"
+    },
+    "request_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "temporal_scope": {
+      "enum": [
+        "decadal",
+        "yearly",
+        "monthly"
+      ]
+    },
+    "birth": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "input_type",
+            "year",
+            "month",
+            "day",
+            "hour",
+            "minute",
+            "second",
+            "timezone"
+          ],
+          "properties": {
+            "input_type": {
+              "const": "gregorian"
+            },
+            "year": {
+              "type": "integer"
+            },
+            "month": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 12
+            },
+            "day": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 31
+            },
+            "hour": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 23
+            },
+            "minute": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 59
+            },
+            "second": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 59
+            },
+            "timezone": {
+              "const": "Asia/Taipei"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "input_type",
+            "lunar_year",
+            "lunar_month",
+            "lunar_day",
+            "hour_branch",
+            "calendar_provenance",
+            "leap_month_identity"
+          ],
+          "properties": {
+            "input_type": {
+              "const": "normalized_lunar"
+            },
+            "lunar_year": {
+              "type": "integer"
+            },
+            "lunar_month": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 12
+            },
+            "lunar_day": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 30
+            },
+            "hour_branch": {
+              "enum": [
+                "子",
+                "丑",
+                "寅",
+                "卯",
+                "辰",
+                "巳",
+                "午",
+                "未",
+                "申",
+                "酉",
+                "戌",
+                "亥"
+              ]
+            },
+            "calendar_provenance": {
+              "type": "string",
+              "minLength": 1
+            },
+            "leap_month_identity": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      ]
+    },
+    "gender": {
+      "enum": [
+        "male",
+        "female"
+      ]
+    },
+    "target": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "input_type",
+            "lunar_year"
+          ],
+          "properties": {
+            "input_type": {
+              "const": "lunar_year"
+            },
+            "lunar_year": {
+              "type": "integer"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "input_type",
+            "lunar_year",
+            "lunar_month",
+            "lunar_day",
+            "is_leap_month",
+            "calendar_provenance"
+          ],
+          "properties": {
+            "input_type": {
+              "const": "normalized_lunar_month"
+            },
+            "lunar_year": {
+              "type": "integer"
+            },
+            "lunar_month": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 12
+            },
+            "lunar_day": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 30
+            },
+            "is_leap_month": {
+              "type": "boolean"
+            },
+            "calendar_provenance": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      ]
+    },
+    "requested_subjects": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "enabled_source_ids": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "temporal_scope": {
+            "const": "monthly"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "target": {
+            "properties": {
+              "input_type": {
+                "const": "normalized_lunar_month"
+              }
+            },
+            "required": [
+              "input_type",
+              "lunar_year",
+              "lunar_month",
+              "lunar_day",
+              "is_leap_month",
+              "calendar_provenance"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "temporal_scope": {
+            "enum": [
+              "decadal",
+              "yearly"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "target": {
+            "properties": {
+              "input_type": {
+                "const": "lunar_year"
+              }
+            },
+            "required": [
+              "input_type",
+              "lunar_year"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

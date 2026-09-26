@@ -26,7 +26,7 @@ D13 Interpretation claims
 D14 Validation / admission
 ```
 
-第一階段以 D0–D6、D10、D12、D14 為主。D13 的 architecture / source-policy / runtime-facing contracts v0 已完成 research admission；完整 claim corpus 仍未 admission。D9 的 interpretation responsibility 已 research-closed，但 project-wide brightness table/profile 尚未選定；D7 依 bounded taxonomy 路由。D11 的 interpretation responsibility 已 research-closed；production calculation 現已分層處理，`decadal` 由 `ZIWEI_DECADAL_ADMISSION_V1.json` admission；`yearly` calculation-only 由 `ZIWEI_YEARLY_ADMISSION_V1.json` admission；monthly／daily／hourly仍未 admission。
+第一階段以 D0–D6、D10、D12、D14 為主。D13 的 architecture / source-policy / runtime-facing contracts v0 已完成 research admission；完整 claim corpus 仍未 admission。D9 的 interpretation responsibility 已 research-closed，但 project-wide brightness table/profile 尚未選定；D7 依 bounded taxonomy 路由。D11 的 interpretation responsibility 已 research-closed；production calculation 現已分層處理，`decadal` 由 `ZIWEI_DECADAL_ADMISSION_V1.json` admission；`yearly` calculation-only 由 `ZIWEI_YEARLY_ADMISSION_V1.json` admission；`monthly` calculation-only 由 `ZIWEI_MONTHLY_ADMISSION_V1.json` admission；daily／hourly仍未 admission。
 
 ## Normalized architecture
 
@@ -185,7 +185,7 @@ natal / decadal / yearly / monthly / daily / hourly = distinct scopes
 dynamic fact = profile/boundary/provenance bound
 missing dynamic layer = do not infer
 natal claim != automatic flow prediction
-dynamic calculation runtime/provider = decadal + yearly calculation-only admitted; monthly/daily/hourly not admitted
+dynamic calculation runtime/provider = decadal + yearly + monthly calculation-only admitted; daily/hourly not admitted
 ```
 
 ### Decadal
@@ -289,3 +289,7 @@ Interpretation Architecture v0 的完成不建立 production provider、producti
 ### Yearly production profile
 
 `yearly.year_branch_common_v1` binds the yearly Life Palace to the explicit target traditional-lunar year's Earthly Branch and lays the twelve yearly palace roles in reverse order from that branch. The target-year Heavenly Stem is passed to the separately admitted `sihua.default_v1` fact provider; this grants calculation facts only, not yearly interpretation. Production v1 accepts only explicit `target_lunar_year` with `year_boundary=lunar_year_explicit_v1`; Li-Chun/solar-term target selection and automatic current-year inference remain unadmitted. Primary implementation evidence: `matharts/ziwei@596f43c43ff6fbae526314c7f668bbf346445ff1`; comparator: `SylarLong/iztro@2c7ef9be669df7b19d1799f4dce335fed3794f78`.
+
+### Monthly production profile
+
+`monthly.doujun_effective_month_split15_v1` binds the monthly Life Palace to a Liu-Nian Dou-Jun derived from the admitted target-year branch, normalized birth effective lunar month and birth hour branch, then advances by the target effective lunar month. The target month uses the project calendar profile `split_after_day_15`: non-leap months remain unchanged; leap days 1–15 stay in the logical month; leap days 16+ advance to the next effective month. Production v1 rejects leap-month 12 day 16+ because the resulting cross-year parent identity has not yet been reconciled. Primary implementation evidence: `RedSC1/js-ephemeris-lite@559d4957bc063a6e03a3c810066be4eccf3ea2be`; comparator: `SylarLong/iztro@2c7ef9be669df7b19d1799f4dce335fed3794f78`. No monthly Si Hua, flow-star, daily/hourly or interpretation authority is implied.

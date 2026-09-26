@@ -470,7 +470,7 @@ Ordering rationale:
 - stage_progress:
   - decadal / 大限: DONE — bounded calculation-only provider + V2 dynamic transport + admission merged and canonically read back; interpretation remains separately unadmitted;
   - yearly / 流年: DONE — bounded calculation-only provider + V3 dynamic transport + explicit lunar-year boundary + compatible decadal parent + target-year Si Hua facts merged and canonically read back; interpretation remains separately unadmitted;
-  - monthly / 流月: OPEN;
+  - monthly / 流月: IMPLEMENTED_CANDIDATE — bounded monthly provider + V4 dynamic transport + yearly parent + split-after-day-15 leap policy; leap-month-12 cross-year edge remains fail-closed; focused regressions PASS; Zi Wei bundle regenerated and verified; ChatGPT load pack regenerated/verified with no committed diff; load budget PASS; awaiting formal PR validation / merge / canonical read-back;
   - daily / 流日: BLOCKED_BY_MONTHLY;
   - hourly / 流時: BLOCKED_BY_DAILY;
 - decadal_stage_evidence:
@@ -494,6 +494,15 @@ Ordering rationale:
   - successful main-push run `36274097883`: `validate` PASS and `casting-runtime` PASS; unit suite, structural checker, exact-main Zi Wei handoff preparation and upload all passed;
   - main-push artifact `10916846230` / `ziwei-deterministic-handoff-6e1f7b50dfe1358572a02361afa922f65e2932b5` was published at 63,319 bytes with digest `sha256:8ba3e01f281b04138101d98ad3d1a11d0a4cee0fecd6655443c932882c6c97e4`;
   - monthly / daily / hourly and all dynamic interpretation remain unadmitted.
+- monthly_stage_candidate_evidence:
+  - monthly bridge run `36277520547` completed successfully after the parent-stage regression reconciliation;
+  - focused monthly regressions PASS;
+  - canonical Zi Wei deterministic bundle regenerated and `--check` PASS; `tests.test_ziwei_tool_bundle` PASS;
+  - ChatGPT load pack regenerated and `--check` PASS; resulting committed load-pack diff is a verified no-op;
+  - ChatGPT load budget PASS;
+  - temporary `.github/workflows/ziwei-p1-030-monthly-bridge.yml` removed by the bridge;
+  - generated-cache bot commit `46e100f6abba938c8cb74e4490c098bd97a40523` updated only the Zi Wei deterministic bundle and removed the temporary bridge;
+  - latest bot-head Validate Playbook is `action_required`, so this human-authored evidence commit exists to re-trigger formal PR validation before merge.
 - sequence:
   1. decadal / 大限
   2. yearly / 流年
