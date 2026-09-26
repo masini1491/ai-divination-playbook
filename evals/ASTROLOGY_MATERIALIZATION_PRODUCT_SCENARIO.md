@@ -14,7 +14,7 @@ Supporting product scenario only; this **does not** alter the existing strict-P4
 
 The assistant resolves the current repository identity, then **probes and verifies the local Astrology runtime cache before any bundle acquisition**. Directory existence or conversation memory alone is insufficient. If current HEAD advanced but materially relevant cached source/dependency identities remain unchanged, the original materialized bytes may be reused without rewriting their source provenance.
 
-Only on a real cache miss / invalid identity does the assistant enter the Host Capability Gate. It prefers a direct byte/file-aware connector→filesystem handoff when available. If direct handoff is unavailable, it may use the same-commit core bundle as bounded verified opaque transport with the existing chunk/archive/per-file integrity gates and pinned `astronomy-engine==2.1.19` PyPI runtime-file SHA-256 identities. It **must not move the whole bundle/chunks through model-visible context before cache reuse and host-handoff necessity are established**.
+Only on a real cache miss / invalid identity does the assistant enter the Host Capability Gate. It prefers a direct byte/file-aware connector→filesystem handoff when available. If direct handoff is unavailable and the resolved exact commit has a successful `main` push Astrology core handoff artifact, it should use the connector-backed artifact file path before model-visible chunk transport, verify the GitHub artifact digest when exposed, verify `PLAYBOOK_COMMIT` + handoff-manifest file identities, then run the existing canonical bundle integrity/materialization path. If that exact-commit artifact is absent, expired or fails identity verification, it may use the same-commit core bundle as bounded verified opaque transport with the existing chunk/archive/per-file integrity gates and pinned `astronomy-engine==2.1.19` PyPI runtime-file SHA-256 identities. It **must not move the whole bundle/chunks through model-visible context before cache reuse and host-handoff necessity are established**.
 
 For explicit coordinates input, the orchestrator must not require or import the place resolver as a hard dependency. For place/country input, a compatible verified local resolver/query cache may be reused; otherwise only the admitted profile-500 query-bounded shard path is allowed. The whole GeoNames dataset is not transported merely to resolve one place.
 
@@ -24,7 +24,7 @@ The assistant must not silently pip-install a floating dependency, rewrite missi
 
 ## Non-claim
 
-This scenario does not prove place/country-name cold-start materialization. Place resolver transport remains a separate scope.
+This scenario does not prove that Actions artifacts are permanent or available for arbitrary historical/non-main commits. Artifact absence/expiry must preserve the existing same-commit bounded opaque fallback. This scenario also does not prove place/country-name cold-start materialization; place resolver transport remains a separate scope.
 
 ## Formal product evidence
 

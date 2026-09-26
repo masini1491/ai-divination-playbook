@@ -29,8 +29,8 @@ Last reviewed against:
 
 ```text
 ai-divination-playbook main
-cb1722ea5e52484f48811cd9e28404c0a4ca9c49
-Merge AST-P2-040 extended ephemeris production admission
+499fa9649587bec670dd222fda70ef15a9648bee
+Preserve retained Astrology research evidence (#249)
 ```
 
 This SHA is review evidence only, not a pin. Every maintenance or implementation task must resolve current `main` again before mutation.
@@ -60,16 +60,14 @@ The closed work above must not be repeatedly rediscovered as open work unless a 
 
 Function-importance order for currently open / deferred Astrology work:
 
-1. **AST-P1-160 — Taiwan administrative locality input normalization**
-   - first because it blocks ordinary natural-language birth-place input before deterministic natal calculation can begin.
-2. **AST-SHARED-001 — Casting/Vercel deployment isolation reconciliation**
-   - shared reliability work, not an Astrology feature; first reconcile the stale state because PR #153 is closed/unmerged while the live main-push production-smoke coupling still exists.
-3. **AST-P1-170 — North Node sign semantic claim-family admission**
-   - DONE; bounded mean-North-Node sign semantics are admitted without expanding karmic/past-life or aspect semantics.
-4. **AST-P2-020 — Named consumer compatibility profile**
-   - DEFERRED; useful only when an explicitly named consumer/profile is required and its component policies are evidence-backed.
-5. **AST-P2-030 — Optional Swiss compatibility/provider lane**
-   - DEFERRED; optional provider/license lane only when explicit Swiss compatibility is required. Current Astronomy Engine + project-owned extended ephemeris paths remain sufficient for admitted production scope.
+1. **AST-P1-180 — Exact-main connector-backed core handoff artifact publishing**
+   - IN_PROGRESS; closes the observed cold-start operational friction where host artifact→filesystem handoff exists but a successful current-main validation run publishes no ready-to-download Astrology core artifact.
+2. **AST-P2-020 — Named consumer compatibility profile**
+   - DEFERRED; start only when a concrete named consumer/profile requires compatibility.
+3. **AST-P2-030 — Optional Swiss compatibility/provider lane**
+   - DEFERRED; start only when explicit Swiss compatibility/provider demand appears.
+
+Already-DONE items such as AST-P1-160, AST-P1-170 and AST-SHARED-001 are not execution-order candidates and must not be rediscovered as open work.
 
 Recent blocker-resolution result:
 
@@ -595,6 +593,39 @@ This item is a standing reconciliation guard. It is not a request to change curr
   - added fail-closed checks for wrong sign, missing/unadmitted provider provenance, explicit non-mean node definition, and attempts to use generic `object_core` for the Node-function registry;
   - provider runtime/core bundle was not changed; mean provenance is closed by exact admitted provider identity/version plus explicit provider/admission manifest policy;
   - PR #232 candidate `47211cbb73411dd560d783ba5d8f643d1fd4cbd5` passed Validate Playbook run #824, including `Run unit tests`, `Run structural checker`, Astrology core-bundle verification, rule-layering checks and casting-runtime.
+
+
+### AST-P1-180 — Exact-main connector-backed core handoff artifact publishing
+
+- type: MATERIALIZATION / HOST INTEGRATION / CI HANDOFF
+- status: IN_PROGRESS
+- priority: P1
+- owner: Astrology deterministic materialization / repository CI
+- blocked_by: none
+- source:
+  - production cold-start feedback showed two separate failures: an initial premature stop despite the existing Host Capability Gate, followed by a more precise host audit proving connector-backed artifact file handoff works while current-main validation publishes no Astrology core artifact;
+  - current `ASTROLOGY-MAT-BEH-001` already covers direct-handoff miss → bounded verified transport, so this item must not duplicate the existing behavioral scenario or reopen AST-P1-150.
+- observed_current_state:
+  - GitHub connector `download_workflow_artifact` can return a connector-backed file reference that Files materialization can place on the execution filesystem;
+  - the 2026-09-24 formal product run proved a one-time exact-commit Actions artifact can survive GitHub artifact digest verification, bundle integrity verification, filesystem materialization and isolated Astrology execution;
+  - current main push validation run `36227691302` for `499fa9649587bec670dd222fda70ef15a9648bee` has `Artifacts = []`;
+  - therefore the remaining gap is artifact **availability/publication**, not calculation architecture, bundle integrity, behavioral routing or host file handoff capability.
+- completion_gate:
+  - successful `main` push validation publishes a uniquely named artifact bound to exact `github.sha`;
+  - artifact payload contains only the same-commit derived core bundle, canonical bundle verifier, `PLAYBOOK_COMMIT` and a machine-readable handoff manifest;
+  - PR validation does not publish the production handoff artifact;
+  - artifact remains transport-only and does not become calculation/admission/source authority;
+  - cold-start order remains verified cache → direct byte/file handoff → exact-commit connector-backed artifact → existing same-commit bounded opaque chunk fallback;
+  - artifact missing/expired/identity mismatch fails over to the existing fallback rather than declaring Astrology unavailable;
+  - exact-main artifact is downloaded through GitHub connector, materialized through the host file surface, verified against GitHub artifact digest when exposed, checked for exact commit/manifest identities, then passed through the existing bundle integrity/materialization gate;
+  - synthetic explicit-coordinate Astrology execution reaches admitted runtime status from that downloaded artifact;
+  - merge, main-push CI, artifact read-back and the formal product smoke evidence are recorded before status becomes DONE.
+- non_goals:
+  - do not reopen AST-P1-150;
+  - do not add another materialization behavioral scenario;
+  - do not change Astronomy Engine version, calculation admission, place-resolver scope or extended-ephemeris transport;
+  - do not make Actions artifacts permanent source-of-truth storage.
+
 
 ## P2 — deferred compatibility / provider expansion
 
