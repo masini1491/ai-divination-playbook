@@ -472,7 +472,7 @@ Ordering rationale:
   - yearly / 流年: DONE — bounded calculation-only provider + V3 dynamic transport + explicit lunar-year boundary + compatible decadal parent + target-year Si Hua facts merged and canonically read back; interpretation remains separately unadmitted;
   - monthly / 流月: DONE — bounded calculation-only provider + V4 dynamic transport + compatible yearly parent + split-after-day-15 leap policy merged and canonically read back; interpretation remains separately unadmitted;
   - daily / 流日: DONE — bounded calculation-only provider + V5 dynamic transport + compatible monthly parent + explicit normalized-lunar-day identity merged and canonically read back; interpretation remains separately unadmitted;
-  - hourly / 流時: IMPLEMENTED_CANDIDATE — bounded hourly provider + V6 dynamic transport + compatible daily parent + explicit normalized-lunar-hour identity + project `next_day_at_23` Rat-hour policy; physical hour pillar / alternate Rat-hour policy / hourly Si Hua / flow stars remain fail-closed; awaiting bridge-generated caches / formal PR validation / merge / canonical read-back;
+  - hourly / 流時: IMPLEMENTED_CANDIDATE — bounded hourly provider + V6 dynamic transport + compatible daily parent + explicit normalized-lunar-hour identity + project `next_day_at_23` Rat-hour policy; physical hour pillar / alternate Rat-hour policy / hourly Si Hua / flow stars remain fail-closed; focused regressions PASS; Zi Wei bundle regenerated and verified; ChatGPT load pack regenerated/verified; load budget PASS; awaiting formal PR validation / merge / canonical read-back;
 - decadal_stage_evidence:
   - implementation merged by PR #261 at `f31a9c1089da36bbee4da82def4fb1766838e745`;
   - provider `ziwei-decadal-quanji-common-python@1.0.0` / profile `decadal.quanji_common_v1` is production-admitted for calculation only, with `age_basis=traditional_nominal_age`;
@@ -526,7 +526,10 @@ Ordering rationale:
   - V6 is additive and admits `decadal|yearly|monthly|daily|hourly`; V5 remains daily-max, V4 monthly-max, V3 yearly-max, V2 decadal-only and V1 natal-only;
   - hourly target identity is explicit `normalized_lunar_hour` with lunar year/month/day, leap flag, `hour_branch`, `rat_hour_policy=next_day_at_23` and calendar provenance;
   - physical hour pillar, alternate Rat-hour policy, hourly Si Hua, flow stars and dynamic interpretation remain unadmitted;
-  - generated Zi Wei bundle/load-pack regeneration is delegated to the registered temporary hourly bridge and is not hand-edited.
+  - generated Zi Wei bundle/load-pack regeneration is delegated to the registered temporary hourly bridge and is not hand-edited;
+  - hourly bridge run `36279918280` completed successfully: focused hourly regressions PASS, Zi Wei bundle regeneration/check PASS, ChatGPT load-pack regeneration/check PASS, load-budget PASS;
+  - generated-cache bot commit `50c6ea5f045d2aa3743f69e9d1c342b098688ca0` updated only `runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json` and removed the temporary hourly bridge;
+  - latest bot-head Validate Playbook is `action_required`, so this human-authored evidence commit exists to re-trigger formal PR validation before merge.
 - sequence:
   1. decadal / 大限
   2. yearly / 流年
