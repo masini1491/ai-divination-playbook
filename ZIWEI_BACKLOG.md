@@ -471,7 +471,7 @@ Ordering rationale:
   - decadal / 大限: DONE — bounded calculation-only provider + V2 dynamic transport + admission merged and canonically read back; interpretation remains separately unadmitted;
   - yearly / 流年: DONE — bounded calculation-only provider + V3 dynamic transport + explicit lunar-year boundary + compatible decadal parent + target-year Si Hua facts merged and canonically read back; interpretation remains separately unadmitted;
   - monthly / 流月: DONE — bounded calculation-only provider + V4 dynamic transport + compatible yearly parent + split-after-day-15 leap policy merged and canonically read back; interpretation remains separately unadmitted;
-  - daily / 流日: OPEN;
+  - daily / 流日: IMPLEMENTED_CANDIDATE — bounded daily provider + V5 dynamic transport + compatible monthly parent + explicit normalized-lunar-day identity; day pillar / timestamp day-divide / daily Si Hua / flow stars remain fail-closed; focused regressions PASS; Zi Wei bundle regenerated and verified; ChatGPT load pack regenerated/verified; load budget PASS; awaiting formal PR validation / merge / canonical read-back;
   - hourly / 流時: BLOCKED_BY_DAILY;
 - decadal_stage_evidence:
   - implementation merged by PR #261 at `f31a9c1089da36bbee4da82def4fb1766838e745`;
@@ -506,6 +506,17 @@ Ordering rationale:
   - exact-main canonical read-back confirms monthly provider, monthly admission, root V4 runtime admission, V4 request/result schemas, PLAYBOOK_INDEX routing, and canonical bundle source membership;
   - successful main-push run `36277901629`: `validate` PASS and `casting-runtime` PASS; unit suite, structural checker, exact-main Zi Wei handoff preparation and upload all passed;
   - exact-main artifact `10916659950` / `ziwei-deterministic-handoff-35b5a2e7c87791610d5a465736e17abf97304dd6` was published at 66,442 bytes with digest `sha256:e9e6408c8781360e7d661cbd16316c3ff486d785e786d04a7ec29d08c045d7ab`.
+- daily_stage_candidate_evidence:
+  - pinned primary `RedSC1/js-ephemeris-lite@559d4957bc063a6e03a3c810066be4eccf3ea2be` advances the monthly parent branch by lunar `day - 1`;
+  - pinned comparator `SylarLong/iztro@2c7ef9be669df7b19d1799f4dce335fed3794f78` computes `dailyIndex = monthlyIndex + lunarDay - 1`;
+  - candidate profile `daily.monthly_parent_lunar_day_v1` therefore admits palace calculation only from a compatible monthly parent;
+  - V5 is additive and admits `decadal|yearly|monthly|daily`; V4 remains monthly-max, V3 yearly-max, V2 decadal-only and V1 natal-only;
+  - daily target identity is explicit `normalized_lunar_day` with lunar year/month/day, leap flag and calendar provenance;
+  - physical day pillar, timestamp/day-divide inference, daily Si Hua, flow stars, hourly calculation and dynamic interpretation remain unadmitted;
+  - generated Zi Wei bundle/load-pack regeneration is delegated to the registered temporary daily bridge and is not hand-edited;
+  - daily bridge run `36278853192` completed successfully: focused daily regressions PASS, Zi Wei bundle regeneration/check PASS, ChatGPT load-pack regeneration/check PASS, load-budget PASS;
+  - generated-cache bot commit `667d6c8639d2302d701b9eeff0c3931ebe9b5aa0` updated only `runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json` and removed the temporary daily bridge;
+  - latest bot-head Validate Playbook is `action_required`, so this human-authored evidence commit exists to re-trigger formal PR validation before merge.
 - sequence:
   1. decadal / 大限
   2. yearly / 流年
