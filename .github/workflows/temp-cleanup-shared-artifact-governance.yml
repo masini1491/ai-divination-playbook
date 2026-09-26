@@ -1,0 +1,42 @@
+name: TEMP Cleanup Shared Artifact Governance Branch
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/temp-cleanup-shared-artifact-governance.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: maintenance/shared-artifact-governance-cleanup-20260927
+          fetch-depth: 0
+
+      - name: Fail-closed preflight
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git ls-remote --heads origin refs/heads/main | awk '{print $1}')" = "40d5636f05cad30988f3587c479f11d0e3376147"
+          test "$(git ls-remote --heads origin refs/heads/maintenance/reconcile-shared-artifact-handoff-governance | awk '{print $1}')" = "d2246690877f320f10224a2dea3e83af0a141e41"
+          test "$(git ls-remote --heads origin refs/heads/data/astrology-extended-ephemeris-v1 | awk '{print $1}')" = "0052ba1c0a3b65238b4f9ec3a94a1aff47e341ea"
+          test "$(git ls-remote --heads origin refs/heads/data/astrology-place-v1 | awk '{print $1}')" = "d18be87abe762433e43e844f33f4b43f7fad9f3b"
+
+      - name: Delete merged reconciliation branch
+        run: git push origin --delete maintenance/reconcile-shared-artifact-handoff-governance
+
+      - name: Verify cleanup and retained authorities
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -z "$(git ls-remote --heads origin refs/heads/maintenance/reconcile-shared-artifact-handoff-governance)"
+          test "$(git ls-remote --heads origin refs/heads/data/astrology-extended-ephemeris-v1 | awk '{print $1}')" = "0052ba1c0a3b65238b4f9ec3a94a1aff47e341ea"
+          test "$(git ls-remote --heads origin refs/heads/data/astrology-place-v1 | awk '{print $1}')" = "d18be87abe762433e43e844f33f4b43f7fad9f3b"
+
+      - name: Delete temporary cleanup branch
+        run: git push origin --delete maintenance/shared-artifact-governance-cleanup-20260927
