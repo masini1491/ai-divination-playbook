@@ -308,4 +308,21 @@ multi-epoch osculating                   unevaluated
 ```
 
 This negative result rejects only the declared independent-segment family; it does not establish that Chebyshev or bundled ephemerides in general are infeasible.
+
+### AST-P2-042 continuity follow-up
+
+The next prospectively frozen round preserved the same one-segment query envelope while testing C1 equality-constrained fits and overlap-trained hard-switch fits.
+
+Result:
+
+```text
+c1-cheb-d5-w45              PASS
+c1-cheb-d7-w60              PASS
+overlap-cheb-d5-w45-p10     FAIL — boundary speed continuity
+overlap-cheb-d7-w60-p15     PASS
+```
+
+The full 5-day source grid was added as a longitude anti-drift validation surface before execution. `c1-cheb-d7-w60` passed every frozen gate with a 1,023,680-byte coefficient payload, 64-byte one-query payload, 2.094 arcsec fixture longitude max, 0.000336 deg/day fixture speed max, 9.140 arcsec full-grid longitude max, and C1 boundary value/speed discontinuity at floating-point noise.
+
+This establishes a viable **BUNDLED_EPHEMERIS architecture candidate** under the research gate. It does not select or admit a production provider. Production still requires artifact generation/provenance, integrity/materialization, runtime evaluator ownership, broader numeric validation, coverage/failure semantics and manifest integration.
 ```
