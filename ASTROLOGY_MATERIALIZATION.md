@@ -158,7 +158,20 @@ exact data commit: d18be87abe762433e43e844f33f4b43f7fad9f3b
 aggregate digest: 6e542fd50c4d821d783c74c2f392bea087df68666ba1781970df66d47dc719a0
 ```
 
-For a place/country request，先檢查 admitted resolver runtime / 已驗證 query result or shard cache 是否仍符合 exact data-commit + profile identity；compatible 時可 reuse。只有 resolver/runtime/cache真正不可用或 identity不足時才進 query-bounded transport：
+For a place/country request，先檢查 admitted resolver runtime / 已驗證 query result or shard cache 是否仍符合 exact data-commit + profile identity；compatible 時可 reuse。只有 resolver/runtime/cache真正不可用或 identity不足時才進 query-bounded transport。
+
+Taiwan full administrative locality input must first apply the same method-owned policy used by `tools/astrology_place_resolver.py`:
+
+```text
+same-commit runtime/astrology/TW_ADMIN_LOCALITY_V1.json
+→ bounded 台→臺 script normalization
+→ exact county/city prefix match
+→ exact county/city × township/district hierarchy validation
+→ valid pair: query = validated township/district, effective country = TW
+→ invalid/mismatched pair: fail closed
+```
+
+The policy file is input-normalization evidence only; it never supplies coordinates. After normalization, the existing admitted GeoNames alias/candidate transport remains the sole coordinate/timezone resolution path. Do not fetch the whole GeoNames corpus and do not use fuzzy contains search.
 
 ```text
 normalize query = strip then casefold

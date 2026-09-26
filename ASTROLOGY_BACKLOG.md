@@ -506,13 +506,14 @@ This item is a standing reconciliation guard. It is not a request to change curr
 ### AST-P1-160 — Taiwan administrative locality input normalization
 
 - type: FEATURE / INPUT NORMALIZATION / PLACE RESOLUTION
-- status: OPEN
+- status: IN_PROGRESS
 - priority: P1
 - owner: Astrology place input normalization / resolver
 - blocked_by:
   - AST-P1-005
 - canonical_evidence:
   - `tools/astrology_place_resolver.py`
+  - `runtime/astrology/TW_ADMIN_LOCALITY_V1.json`
   - `ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json`
   - `data/astrology/place/v1/MANIFEST.json`
   - `tests/test_astrology_place_resolver.py`

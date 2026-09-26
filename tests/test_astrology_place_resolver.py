@@ -4,6 +4,7 @@ import unittest
 
 from tools.astrology_place_resolver import (
     PlaceResolutionError,
+    normalize_place_query,
     resolve_country_timezone,
     resolve_place,
     search_place_candidates,
@@ -28,6 +29,34 @@ class AstrologyPlaceResolverTests(unittest.TestCase):
         self.assertEqual("Asia/Taipei", row["timezone_name"])
         self.assertAlmostEqual(25.0478, row["latitude"], delta=0.35)
         self.assertAlmostEqual(121.5319, row["longitude"], delta=0.35)
+
+    def test_full_taiwan_admin_locality_normalizes_and_resolves(self):
+        normalized = normalize_place_query("新北市樹林區")
+        self.assertEqual("樹林區", normalized["normalized_name"])
+        self.assertEqual("TW", normalized["effective_country_code"])
+        self.assertEqual("新北市", normalized["admin_area"])
+        self.assertTrue(normalized["hierarchy_validated"])
+
+        result = resolve_place("新北市樹林區")
+        row = result["resolved"]
+        self.assertEqual(1668875, row["geoname_id"])
+        self.assertEqual("TW", row["country_code"])
+        self.assertEqual("Asia/Taipei", row["timezone_name"])
+        self.assertEqual("taiwan-admin-locality-v1", result["query"]["normalization"]["normalization_policy_id"])
+
+    def test_taiwan_script_variant_normalizes_before_hierarchy_match(self):
+        normalized = normalize_place_query("台北市中正區")
+        self.assertEqual("中正區", normalized["normalized_name"])
+        self.assertEqual("臺北市", normalized["admin_area"])
+        self.assertTrue(normalized["script_normalization_applied"])
+
+    def test_invalid_taiwan_admin_pair_fails_closed(self):
+        with self.assertRaisesRegex(PlaceResolutionError, "hierarchy mismatch"):
+            normalize_place_query("新北市中正區")
+
+    def test_taiwan_admin_input_conflicting_country_fails_closed(self):
+        with self.assertRaisesRegex(PlaceResolutionError, "conflicts with supplied country_code"):
+            resolve_place("新北市樹林區", country_code="JP")
 
     def test_taiwan_country_resolves_unique_timezone_without_coordinates(self):
         result = resolve_country_timezone("Taiwan", country_code="TW")

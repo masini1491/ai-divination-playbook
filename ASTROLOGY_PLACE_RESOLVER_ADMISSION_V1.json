@@ -2,7 +2,7 @@
   "schema_name": "astrology_place_resolver_admission",
   "schema_version": "1.0.0",
   "resolver_id": "geonamescache-city-v1",
-  "resolver_version": "1.0.0",
+  "resolver_version": "1.1.0",
   "status": "PRODUCTION_ADMITTED",
   "scope": [
     "city_or_locality_name_to_coordinates_and_iana_timezone",
@@ -34,7 +34,19 @@
     "not_found": "fail_closed",
     "auto_pick_largest_population_when_ambiguous": false,
     "country_timezone": "admit only when offline country city dataset resolves to exactly one IANA timezone",
-    "country_multiple_timezones": "fail_closed"
+    "country_multiple_timezones": "fail_closed",
+    "taiwan_admin_locality_normalization": {
+      "status": "PRODUCTION_ADMITTED",
+      "policy_id": "taiwan-admin-locality-v1",
+      "policy_path": "runtime/astrology/TW_ADMIN_LOCALITY_V1.json",
+      "input_shape": "recognized Taiwan county/city prefix + exact township/district token",
+      "script_variant": "台→臺 only inside bounded Taiwan administrative matching",
+      "hierarchy_validation": "exact repo-owned county/city × township/district allowlist",
+      "effective_country_code": "TW",
+      "downstream_resolution": "existing exact name/alternate-name match; contains_search remains false",
+      "unsupported_or_mismatched_pair": "fail_closed",
+      "coordinates_authority": false
+    }
   },
   "output": [
     "geoname_id",
@@ -52,7 +64,8 @@
     "fixtures": [
       "Tokyo, JP",
       "Taipei, TW",
-      "Springfield ambiguity"
+      "Springfield ambiguity",
+      "新北市樹林區 → 樹林區/TW"
     ]
   },
   "not_admitted": [
@@ -61,7 +74,8 @@
     "building-level geocoding",
     "network geocoder fallback",
     "silent city disambiguation",
-    "location accuracy guarantee"
+    "location accuracy guarantee",
+    "fuzzy Taiwan administrative contains matching"
   ],
   "astronomical_authority": false,
   "materialization_transport": {
