@@ -1,0 +1,73 @@
+name: TEMP Cleanup AST-P1-180 Branches
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/temp-cleanup-ast-p1-180-branches.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: maintenance/ast-p1-180-branch-cleanup-20260926
+          fetch-depth: 0
+
+      - name: Fail-closed preflight exact identities
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git ls-remote --heads origin refs/heads/main | awk '{print $1}')" = "5c129871120b6a9e4d361d49c605c6c93b35aaea"
+          targets=(
+            "dd57a78fe35b717c330b76f2ffe041629bce799d feature/ast-p1-180-exact-main-handoff-artifact"
+            "96cf85f0e65e20a93f718d2b71f3cbd32fd90bd9 fix/ast-p1-180-handoff-manifest-json"
+            "eb2a6cbced9bb74d7546dee9491deda460fa958e chore/close-ast-p1-180"
+          )
+          for item in "${targets[@]}"; do
+            expected="${item%% *}"
+            branch="${item#* }"
+            actual="$(git ls-remote --heads origin "refs/heads/$branch" | awk '{print $1}')"
+            test -n "$actual" || { echo "missing target: $branch"; exit 1; }
+            test "$actual" = "$expected" || { echo "target drift: $branch expected=$expected actual=$actual"; exit 1; }
+          done
+          test "$(git ls-remote --heads origin refs/heads/data/astrology-extended-ephemeris-v1 | awk '{print $1}')" = "0052ba1c0a3b65238b4f9ec3a94a1aff47e341ea"
+          test "$(git ls-remote --heads origin refs/heads/data/astrology-place-v1 | awk '{print $1}')" = "d18be87abe762433e43e844f33f4b43f7fad9f3b"
+          echo "PASS exact identity preflight"
+
+      - name: Delete merged AST-P1-180 branches
+        shell: bash
+        run: |
+          set -euo pipefail
+          for branch in \
+            feature/ast-p1-180-exact-main-handoff-artifact \
+            fix/ast-p1-180-handoff-manifest-json \
+            chore/close-ast-p1-180
+          do
+            git push origin --delete "$branch"
+          done
+
+      - name: Verify cleanup and retained authorities
+        shell: bash
+        run: |
+          set -euo pipefail
+          for branch in \
+            feature/ast-p1-180-exact-main-handoff-artifact \
+            fix/ast-p1-180-handoff-manifest-json \
+            chore/close-ast-p1-180
+          do
+            test -z "$(git ls-remote --heads origin "refs/heads/$branch")" || { echo "target still exists: $branch"; exit 1; }
+          done
+          test "$(git ls-remote --heads origin refs/heads/data/astrology-extended-ephemeris-v1 | awk '{print $1}')" = "0052ba1c0a3b65238b4f9ec3a94a1aff47e341ea"
+          test "$(git ls-remote --heads origin refs/heads/data/astrology-place-v1 | awk '{print $1}')" = "d18be87abe762433e43e844f33f4b43f7fad9f3b"
+          echo "PASS cleanup verification"
+
+      - name: Delete temporary cleanup branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git push origin --delete "maintenance/ast-p1-180-branch-cleanup-20260926"
