@@ -166,10 +166,6 @@ REFERENCE-ONLY; not production.
 
 這些歷史 probes 本身仍是 research evidence。Current production provider authority 來自獨立 admission manifests、runtime owners 與 production regressions，不是舊 probe 自動升格。
 
-### House-system evidence
-
-- [`HOUSE_SYSTEM_EVIDENCE.md`](HOUSE_SYSTEM_EVIDENCE.md) — post-v1 REFERENCE-ONLY evidence；不改 production policy。
-
 ### Unknown birth-time sensitivity
 
 - [`UNKNOWN_TIME_SENSITIVITY_RESULTS.md`](UNKNOWN_TIME_SENSITIVITY_RESULTS.md)
