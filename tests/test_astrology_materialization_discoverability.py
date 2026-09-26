@@ -86,6 +86,8 @@ class AstrologyMaterializationDiscoverabilityTests(unittest.TestCase):
             self.assertIn(phrase,self.contract)
         self.assertIn("connector-backed artifact file path before model-visible chunk transport",self.scenario)
         self.assertIn("Artifact absence/expiry must preserve the existing same-commit bounded opaque fallback",self.scenario)
+        self.assertIn("print(json.dumps(manifest",self.workflow)
+        self.assertNotIn("write_text(json.dumps(manifest",self.workflow)
 
     def test_root_owner_routes_runtime_miss_to_materialization(self):
         text=(ROOT/"ASTROLOGY.md").read_text(encoding="utf-8")
