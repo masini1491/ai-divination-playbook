@@ -1,0 +1,83 @@
+{
+  "schema_name": "ziwei_yearly_production_admission",
+  "schema_version": "1.0.0",
+  "method": "ZiWei",
+  "module": "yearly_calculation_v1",
+  "status": "PRODUCTION_ADMITTED_CALCULATION_ONLY",
+  "activation": "explicit_ziwei_yearly_request_only",
+  "parent_admission": "ZIWEI_DECADAL_ADMISSION_V1.json",
+  "temporal_scope": "yearly",
+  "profile": {
+    "profile_id": "yearly.year_branch_common_v1",
+    "historical_uniqueness_claimed": false,
+    "rules": {
+      "life_palace": "target_lunar_year_branch",
+      "palace_roles": "reverse_from_yearly_life_palace",
+      "year_boundary": "lunar_year_explicit_v1",
+      "age_basis": "traditional_nominal_age"
+    }
+  },
+  "calculation": {
+    "provider_id": "ziwei-yearly-year-branch-python",
+    "provider_version": "1.0.0",
+    "runtime_owner": "tools/ziwei_yearly_provider.py",
+    "engine_revision": "project-reconstruction-v1",
+    "target_calendar_identity": "traditional_lunar_year"
+  },
+  "parent_scope": {
+    "required": "decadal",
+    "profile_id": "decadal.quanji_common_v1",
+    "compatibility": "same explicit target_lunar_year must resolve inside parent decadal"
+  },
+  "sihua": {
+    "provider": "tools/ziwei_sihua_provider.py",
+    "profile_id": "sihua.default_v1",
+    "input": "target_lunar_year_stem",
+    "interpretation_authority": false
+  },
+  "pipeline": {
+    "runtime_owner": "tools/ziwei_runtime.py",
+    "runtime_id": "ziwei-production-runtime-v3",
+    "runtime_version": "3.0.0",
+    "request_schema": "schemas/ziwei/ZIWEI_DYNAMIC_REQUEST_V3.schema.json",
+    "result_schema": "schemas/ziwei/ZIWEI_DYNAMIC_RESULT_V3.schema.json"
+  },
+  "source_evidence": {
+    "primary": {
+      "repository": "matharts/ziwei",
+      "revision": "596f43c43ff6fbae526314c7f668bbf346445ff1",
+      "path": "crates/ziwei/src/rules.rs"
+    },
+    "comparator": {
+      "repository": "SylarLong/iztro",
+      "revision": "2c7ef9be669df7b19d1799f4dce335fed3794f78",
+      "path": "src/astro/FunctionalAstrolabe.ts"
+    },
+    "project_research": "references/ziwei/CALCULATION_ENGINE_RESEARCH.md"
+  },
+  "boundary_policy": {
+    "admitted": "explicit target_lunar_year only",
+    "not_admitted": [
+      "solar-term/lichun target boundary",
+      "automatic current-year inference",
+      "cross-boundary timestamp selection"
+    ]
+  },
+  "fail_closed": [
+    "no gender inference from prose or memory",
+    "no yearly calculation without compatible admitted decadal parent",
+    "no yearly fallback to natal or decadal facts",
+    "no monthly/daily/hourly calculation",
+    "no flow-star reconstruction",
+    "no dynamic interpretation without separate ZW-P1-040 admission"
+  ],
+  "unsupported": [
+    "monthly",
+    "daily",
+    "hourly",
+    "flow_stars",
+    "dynamic_interpretation"
+  ],
+  "scientific_predictive_validity_claimed": false,
+  "ordinary_auto_routing": false
+}
