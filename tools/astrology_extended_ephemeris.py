@@ -6,7 +6,6 @@ C1 Chebyshev coefficient manifest plus exactly the shard required by the query.
 """
 from __future__ import annotations
 
-import base64
 import datetime as dt
 import hashlib
 import json
@@ -97,21 +96,13 @@ def required_shard_for_utc(utc: str | dt.datetime, manifest: dict[str,Any]) -> d
 def _load_decoded_shard(root: Path, shard: dict[str,Any]) -> bytes:
     path=root/shard["path"]
     try:
-        encoded=path.read_text(encoding="ascii").strip()
+        raw=path.read_bytes()
     except OSError as exc:
         raise ExtendedEphemerisError("required extended ephemeris shard missing") from exc
-    if len(encoded)!=int(shard["encoded_length"]):
-        raise ExtendedEphemerisError("extended ephemeris encoded shard length mismatch")
-    if _sha256(encoded.encode("ascii"))!=shard["encoded_sha256"]:
-        raise ExtendedEphemerisError("extended ephemeris encoded shard digest mismatch")
-    try:
-        raw=base64.b64decode(encoded,validate=True)
-    except Exception as exc:
-        raise ExtendedEphemerisError("extended ephemeris shard base64 invalid") from exc
     if len(raw)!=int(shard["byte_size"]) or _sha256(raw)!=shard["sha256"]:
-        raise ExtendedEphemerisError("extended ephemeris decoded shard identity mismatch")
+        raise ExtendedEphemerisError("extended ephemeris shard identity mismatch")
     if _git_blob_sha(raw)!=shard["git_blob_sha"]:
-        raise ExtendedEphemerisError("extended ephemeris decoded Git blob identity mismatch")
+        raise ExtendedEphemerisError("extended ephemeris Git blob identity mismatch")
     return raw
 
 def _basis(x: float, count: int) -> list[float]:
