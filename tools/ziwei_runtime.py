@@ -20,6 +20,7 @@ from tools.ziwei_m0_auxiliary_provider import PROFILE_ID as M0_PROFILE_ID, calcu
 from tools.ziwei_sihua_provider import PROFILE_ID as SIHUA_PROFILE_ID, calculate_sihua
 from tools.ziwei_decadal_provider import DecadalTarget, calculate_decadal
 from tools.ziwei_yearly_provider import YearlyTarget, calculate_yearly
+from tools.ziwei_monthly_provider import MonthlyTarget, calculate_monthly
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -37,6 +38,10 @@ DYNAMIC_V3_RUNTIME_ID="ziwei-production-runtime-v3"
 DYNAMIC_V3_RUNTIME_VERSION="3.0.0"
 DYNAMIC_V3_REQUEST_SCHEMA="schemas/ziwei/ZIWEI_DYNAMIC_REQUEST_V3.schema.json"
 DYNAMIC_V3_RESULT_SCHEMA="schemas/ziwei/ZIWEI_DYNAMIC_RESULT_V3.schema.json"
+DYNAMIC_V4_RUNTIME_ID="ziwei-production-runtime-v4"
+DYNAMIC_V4_RUNTIME_VERSION="4.0.0"
+DYNAMIC_V4_REQUEST_SCHEMA="schemas/ziwei/ZIWEI_DYNAMIC_REQUEST_V4.schema.json"
+DYNAMIC_V4_RESULT_SCHEMA="schemas/ziwei/ZIWEI_DYNAMIC_RESULT_V4.schema.json"
 INTERPRETATION_PROFILE="ziwei.interpretation.tw_v1"
 TEMPORAL_SCOPE="natal_baseline"
 BRIGHTNESS_MODULE="brightness_v1"
@@ -548,5 +553,135 @@ def run_ziwei_dynamic_v3_transport(payload:dict[str,Any])->dict[str,Any]:
     return run_ziwei_dynamic_v3(ZiWeiDynamicV3Request(
         request_id=payload["request_id"],birth=typed_birth,gender=payload["gender"],
         target_lunar_year=payload["target_lunar_year"],temporal_scope=payload["temporal_scope"],
+        requested_subjects=tuple(payload["requested_subjects"]),enabled_source_ids=tuple(payload["enabled_source_ids"]),
+    ))
+
+
+@dataclass(frozen=True)
+class ZiWeiDynamicV4Request:
+    request_id: str
+    birth: GregorianBirthInput | NormalizedNatalInput
+    gender: Literal["male","female"]
+    temporal_scope: Literal["decadal","yearly","monthly"]
+    target: dict[str,Any]
+    requested_subjects: tuple[str,...] = ()
+    enabled_source_ids: tuple[str,...] = ()
+
+    def validate(self)->None:
+        if not isinstance(self.request_id,str) or not self.request_id.strip():
+            raise ValueError("request_id is required")
+        if self.temporal_scope not in ("decadal","yearly","monthly"):
+            raise ValueError(f"unsupported temporal_scope: {self.temporal_scope}")
+        if not isinstance(self.birth,(GregorianBirthInput,NormalizedNatalInput)):
+            raise ValueError("birth must be GregorianBirthInput or NormalizedNatalInput")
+        if self.gender not in ("male","female"):
+            raise ValueError("gender must be male or female")
+        if not isinstance(self.target,dict):
+            raise ValueError("target must be an object")
+        if self.temporal_scope in ("decadal","yearly"):
+            if set(self.target)!={"input_type","lunar_year"} or self.target.get("input_type")!="lunar_year":
+                raise ValueError("decadal/yearly v4 target must be {input_type:lunar_year,lunar_year}")
+            if not isinstance(self.target.get("lunar_year"),int):
+                raise ValueError("target lunar_year must be an integer")
+        else:
+            expected={"input_type","lunar_year","lunar_month","lunar_day","is_leap_month","calendar_provenance"}
+            if set(self.target)!=expected or self.target.get("input_type")!="normalized_lunar_month":
+                raise ValueError("monthly v4 target fields mismatch")
+            if not isinstance(self.target["lunar_year"],int):
+                raise ValueError("monthly target lunar_year must be integer")
+            if not isinstance(self.target["lunar_month"],int) or not 1 <= self.target["lunar_month"] <= 12:
+                raise ValueError("monthly target lunar_month must be in 1..12")
+            if not isinstance(self.target["lunar_day"],int) or not 1 <= self.target["lunar_day"] <= 30:
+                raise ValueError("monthly target lunar_day must be in 1..30")
+            if not isinstance(self.target["is_leap_month"],bool):
+                raise ValueError("monthly target is_leap_month must be boolean")
+            if not isinstance(self.target["calendar_provenance"],str) or not self.target["calendar_provenance"].strip():
+                raise ValueError("monthly target calendar_provenance is required")
+        for name,values in (("requested_subjects",self.requested_subjects),("enabled_source_ids",self.enabled_source_ids)):
+            if any(not isinstance(x,str) or not x for x in values):
+                raise ValueError(f"{name} must contain non-empty strings")
+            if len(set(values))!=len(values):
+                raise ValueError(f"{name} must contain unique items")
+
+
+def run_ziwei_dynamic_v4(request:ZiWeiDynamicV4Request)->dict[str,Any]:
+    request.validate()
+    natal,calendar=_normalize_birth(request.birth)
+    if request.temporal_scope=="decadal":
+        calculation=calculate_decadal(natal,DecadalTarget(gender=request.gender,target_lunar_year=request.target["lunar_year"]))
+        scope="bounded_decadal_calculation_v1"
+        reason="ZW-P1-040 decadal interpretation not yet admitted"
+    elif request.temporal_scope=="yearly":
+        calculation=calculate_yearly(natal,YearlyTarget(gender=request.gender,target_lunar_year=request.target["lunar_year"]))
+        scope="bounded_yearly_calculation_v1"
+        reason="ZW-P1-040 yearly interpretation not yet admitted"
+    elif request.temporal_scope=="monthly":
+        calculation=calculate_monthly(
+            natal,
+            MonthlyTarget(
+                gender=request.gender,
+                target_lunar_year=request.target["lunar_year"],
+                target_lunar_month=request.target["lunar_month"],
+                target_lunar_day=request.target["lunar_day"],
+                target_is_leap_month=request.target["is_leap_month"],
+                target_calendar_provenance=request.target["calendar_provenance"],
+            ),
+        )
+        scope="bounded_monthly_calculation_v1"
+        reason="ZW-P1-040 monthly interpretation not yet admitted"
+    else:
+        raise ValueError(f"unsupported temporal_scope: {request.temporal_scope}")
+    result={
+        "schema_name":"ziwei_dynamic_result","schema_version":"4.0.0",
+        "runtime":{
+            "runtime_id":DYNAMIC_V4_RUNTIME_ID,"runtime_version":DYNAMIC_V4_RUNTIME_VERSION,
+            "request_schema":DYNAMIC_V4_REQUEST_SCHEMA,"result_schema":DYNAMIC_V4_RESULT_SCHEMA,
+            "temporal_scope":request.temporal_scope,
+        },
+        "status":"PRODUCTION_ADMITTED_CALCULATION_ONLY","scope":scope,"request_id":request.request_id,
+        "calculation":calculation,
+        "interpretation":{"status":"NOT_ADMITTED","reason":reason},
+        "authority":{"calculation_authority_granted":True,"interpretation_authority_granted":False,"ordinary_auto_routing":False},
+    }
+    if calendar is not None:
+        result["input_adapter"]={"pipeline_id":"ziwei-gregorian-input-adapter-v1","pipeline_version":"1.0.0","calendar":calendar}
+    return result
+
+
+def run_ziwei_dynamic_v4_transport(payload:dict[str,Any])->dict[str,Any]:
+    if not isinstance(payload,dict):
+        raise ValueError("dynamic v4 request transport must be an object")
+    allowed={"schema_name","schema_version","request_id","temporal_scope","birth","gender","target","requested_subjects","enabled_source_ids"}
+    unknown=set(payload)-allowed; missing=allowed-set(payload)
+    if unknown: raise ValueError(f"unknown dynamic v4 request fields: {','.join(sorted(unknown))}")
+    if missing: raise ValueError(f"missing dynamic v4 request fields: {','.join(sorted(missing))}")
+    if payload["schema_name"]!="ziwei_dynamic_request" or payload["schema_version"]!="4.0.0":
+        raise ValueError("unsupported Zi Wei dynamic v4 request schema")
+    if payload["temporal_scope"] not in ("decadal","yearly","monthly"):
+        raise ValueError(f"unsupported temporal_scope: {payload['temporal_scope']}")
+    birth=payload["birth"]
+    if not isinstance(birth,dict):
+        raise ValueError("birth must be an object")
+    input_type=birth.get("input_type")
+    if input_type=="gregorian":
+        expected={"input_type","year","month","day","hour","minute","second","timezone"}
+        if set(birth)!=expected: raise ValueError("gregorian birth fields mismatch")
+        typed_birth=GregorianBirthInput(year=birth["year"],month=birth["month"],day=birth["day"],hour=birth["hour"],minute=birth["minute"],second=birth["second"],timezone=birth["timezone"])
+    elif input_type=="normalized_lunar":
+        expected={"input_type","lunar_year","lunar_month","lunar_day","hour_branch","calendar_provenance","leap_month_identity"}
+        if set(birth)!=expected: raise ValueError("normalized_lunar birth fields mismatch")
+        typed_birth=NormalizedNatalInput(lunar_year=birth["lunar_year"],lunar_month=birth["lunar_month"],lunar_day=birth["lunar_day"],hour_branch=birth["hour_branch"],calendar_provenance=birth["calendar_provenance"],leap_month_identity=birth["leap_month_identity"])
+    else:
+        raise ValueError(f"unsupported birth input_type: {input_type}")
+    if not isinstance(payload["target"],dict):
+        raise ValueError("target must be an object")
+    for name in ("requested_subjects","enabled_source_ids"):
+        values=payload[name]
+        if not isinstance(values,list) or any(not isinstance(x,str) or not x for x in values):
+            raise ValueError(f"{name} must be an array of non-empty strings")
+        if len(set(values))!=len(values): raise ValueError(f"{name} must contain unique items")
+    return run_ziwei_dynamic_v4(ZiWeiDynamicV4Request(
+        request_id=payload["request_id"],birth=typed_birth,gender=payload["gender"],
+        temporal_scope=payload["temporal_scope"],target=dict(payload["target"]),
         requested_subjects=tuple(payload["requested_subjects"]),enabled_source_ids=tuple(payload["enabled_source_ids"]),
     ))
