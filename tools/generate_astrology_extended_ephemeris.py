@@ -307,7 +307,7 @@ def build_coefficients(source: dict[str, list[float]]):
 
 
 def write_dataset(coeffs, signature, source_digests):
-    root = OUTPUT / "data" / "astrology" / "extended_ephemeris" / "v1"
+    root = OUTPUT
     shards_dir = root / "shards"
     shards_dir.mkdir(parents=True, exist_ok=True)
     shard_meta = []
