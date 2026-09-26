@@ -21,9 +21,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with: { ref: ${{ github.head_ref }}, fetch-depth: 0 }
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
       - uses: actions/setup-python@v5
-        with: { python-version: "3.13" }
+        with:
+          python-version: "3.13"
       - run: python -m pip install --disable-pip-version-check -r requirements-ziwei-calendar.txt
       - name: Run yearly focused regressions
         run: |
