@@ -1,0 +1,30 @@
+name: TEMP AST-P2-040 F32 Transport Probe
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "tools/astrology_p2_040_f32_transport_probe.py"
+      - ".github/workflows/astrology-p2-040-f32-transport-probe.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Run frozen P2-040 float32 transport probe
+        run: python tools/astrology_p2_040_f32_transport_probe.py
+      - name: Upload exact float32 dataset and result
+        uses: actions/upload-artifact@v4
+        with:
+          name: astrology-p2-040-f32-transport-artifact
+          path: tmp/astrology-p2-040-f32-artifact
+          if-no-files-found: error
+          retention-days: 7
