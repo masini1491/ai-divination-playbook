@@ -469,8 +469,8 @@ Ordering rationale:
 - blocked_by: none
 - stage_progress:
   - decadal / 大限: DONE — bounded calculation-only provider + V2 dynamic transport + admission merged and canonically read back; interpretation remains separately unadmitted;
-  - yearly / 流年: IMPLEMENTED_CANDIDATE — bounded yearly provider + V3 dynamic transport + explicit lunar-year boundary + target-year Si Hua facts; awaiting PR validation / merge / canonical read-back;
-  - monthly / 流月: BLOCKED_BY_YEARLY;
+  - yearly / 流年: DONE — bounded calculation-only provider + V3 dynamic transport + explicit lunar-year boundary + compatible decadal parent + target-year Si Hua facts merged and canonically read back; interpretation remains separately unadmitted;
+  - monthly / 流月: OPEN;
   - daily / 流日: BLOCKED_BY_MONTHLY;
   - hourly / 流時: BLOCKED_BY_DAILY;
 - decadal_stage_evidence:
@@ -483,6 +483,17 @@ Ordering rationale:
   - successful main-push run `36267370007`: `validate` PASS and `casting-runtime` PASS; unit suite, structural checker, exact-main Zi Wei handoff preparation and upload all passed;
   - main-push artifact `10914591363` / `ziwei-deterministic-handoff-f31a9c1089da36bbee4da82def4fb1766838e745` was published with digest `sha256:dd355858cf0b2877197d05e3b61aaf818575551e8282cb630057a38ff262928d`;
   - no dynamic interpretation claim family was admitted; natal 52 claims were not promoted into decadal predictions.
+- yearly_stage_evidence:
+  - implementation merged by PR #264 at `6e1f7b50dfe1358572a02361afa922f65e2932b5`;
+  - provider `ziwei-yearly-year-branch-python@1.0.0` / profile `yearly.year_branch_common_v1` is production-admitted for calculation only with `year_boundary=lunar_year_explicit_v1`;
+  - explicit V3 dynamic request/result contracts admit `decadal|yearly`; V2 remains decadal-only and V1 remains natal-only;
+  - same explicit `target_lunar_year` must resolve inside an admitted `decadal.quanji_common_v1` parent; no yearly fallback to natal/decadal facts;
+  - target-year Heavenly Stem reuses admitted `sihua.default_v1` for calculation facts only; no yearly interpretation or generic Four-Transformation prediction is granted;
+  - canonical bundle read-back matches main provider/runtime/V3-schema Git blob identities and carries 135 bounded transport chunks;
+  - PR #264 final Validate Playbook run `36273965471`: `validate` PASS and `casting-runtime` PASS;
+  - successful main-push run `36274097883`: `validate` PASS and `casting-runtime` PASS; unit suite, structural checker, exact-main Zi Wei handoff preparation and upload all passed;
+  - main-push artifact `10916846230` / `ziwei-deterministic-handoff-6e1f7b50dfe1358572a02361afa922f65e2932b5` was published at 63,319 bytes with digest `sha256:8ba3e01f281b04138101d98ad3d1a11d0a4cee0fecd6655443c932882c6c97e4`;
+  - monthly / daily / hourly and all dynamic interpretation remain unadmitted.
 - sequence:
   1. decadal / 大限
   2. yearly / 流年
@@ -517,7 +528,7 @@ Ordering rationale:
   - corresponding admitted calculation stage in ZW-P1-030
 - stage_progress:
   - decadal interpretation: READY — decadal calculation admission merged and canonically read back; interpretation still requires its own source-backed claim admission;
-  - yearly interpretation: BLOCKED_BY_YEARLY_CALCULATION;
+  - yearly interpretation: READY — yearly calculation admission merged and canonically read back; interpretation still requires its own source-backed claim admission;
   - monthly / daily / hourly: BLOCKED_BY_CORRESPONDING_CALCULATION_LAYER;
 - staging_rule:
   - decadal interpretation may start after decadal calculation admission;
