@@ -66,12 +66,10 @@ Function-importance order for currently open / deferred Astrology work:
    - shared reliability work, not an Astrology feature; first reconcile the stale state because PR #153 is closed/unmerged while the live main-push production-smoke coupling still exists.
 3. **AST-P1-170 — North Node sign semantic claim-family admission**
    - DONE; bounded mean-North-Node sign semantics are admitted without expanding karmic/past-life or aspect semantics.
-4. **AST-P2-010 — Interpolated Black Moon Lilith**
-   - next actionable deferred research item because AST-P1-020 / AST-P1-030 are DONE.
-5. **AST-P2-020 — Named consumer compatibility profile**
-   - useful only when an explicitly named consumer/profile is required; no universal compatibility default.
-6. **AST-P2-030 — Optional Swiss compatibility/provider lane**
-   - optional provider/license lane; current Astronomy Engine production path remains sufficient.
+4. **AST-P2-020 — Named consumer compatibility profile**
+   - DEFERRED; useful only when an explicitly named consumer/profile is required and its component policies are evidence-backed.
+5. **AST-P2-030 — Optional Swiss compatibility/provider lane**
+   - DEFERRED; optional provider/license lane only when explicit Swiss compatibility is required. Current Astronomy Engine + project-owned extended ephemeris paths remain sufficient for admitted production scope.
 
 Recent blocker-resolution result:
 
@@ -708,25 +706,31 @@ This item is a standing reconciliation guard. It is not a request to change curr
 ### AST-P2-040 — Broader extended ephemeris objects
 
 - type: FEATURE / PROVIDER
-- status: OPEN
+- status: DONE
 - priority: P2
 - owner: Astrology extended ephemeris
 - blocked_by: none
-- current_state:
-  - AST-P1-010 rejected sampled/Hermite under its frozen gate;
-  - AST-P2-041 rejected independently fitted hard-switched Chebyshev segments because of boundary-speed discontinuity;
-  - AST-P2-042 prospectively demonstrated three passing one-segment-query Chebyshev variants;
-  - `c1-cheb-d7-w60` is the current research front-runner, not a production selection;
-  - production provider/calculation manifests remain unchanged and the five extended objects remain NOT_ADMITTED.
-- next_gate:
-  - define deterministic artifact generation and source provenance;
-  - define immutable artifact identity / checksum / materialization and fail-closed coverage behavior;
-  - implement or specify a project-owned runtime evaluator with one-segment lookup;
-  - establish production numeric validation beyond the feasibility fixtures/grid used by AST-P2-042;
-  - integrate provider/admission manifests and object provenance without auto-expanding aspect participants or interpretation authority;
-  - run regression / materialization evidence before any production admission decision.
+- canonical_evidence:
+  - `ASTROLOGY_EXTENDED_EPHEMERIS_ADMISSION_V1.json`
+  - `ASTROLOGY_PRODUCTION_ADMISSION_V1.json`
+  - `ASTROLOGY_MATERIALIZATION.md`
+  - `tools/astrology_extended_ephemeris.py`
+  - `tools/generate_astrology_extended_ephemeris.py`
+  - `tests/test_astrology_extended_ephemeris_admission.py`
+  - `runtime/astrology/CHATGPT_DETERMINISTIC_CORE_BUNDLE.json`
+- closure:
+  - Chiron/Ceres/Pallas/Juno/Vesta are production-admitted only through explicit `extended_objects` requests for known-time natal calculation facts;
+  - provider `astrology-extended-ephemeris-c1-v1` is pinned to exact data commit `0052ba1c0a3b65238b4f9ec3a94a1aff47e341ea`;
+  - admitted dataset SHA-256 is `580bb2a8ef463dfc6527ea611f27daad3562cb1fa5698391b3e2baeba64987bf`, using `c1-cheb-d7-w60-f32-c0mod360-v1`;
+  - corrected generated-data publisher run `36222976811` produced 17 query-bounded float32 shards and canonical exact-commit read-back passed manifest, generated identity and shard Git blob checks;
+  - production PR #245 merged at `cb1722ea5e52484f48811cd9e28404c0a4ca9c49`;
+  - main push Validate Playbook run `36224576380` passed validate, casting-runtime, unit tests and structural checker;
+  - deterministic core materialization includes the extended evaluator and preserves no-network ordinary runtime behavior;
+  - Fact Gate rejects spoofed dataset/provider identities and keeps default aspect participation closed;
+  - semantic interpretation authority, unknown-time extended facts and transit extended-object paths remain NOT_ADMITTED.
 - rule:
-  - architecture feasibility PASS is necessary but not sufficient for production admission;
+  - calculation admission does not imply interpretation admission;
+  - generated-data branch status alone is not production authority; main admission manifest + exact pinned data commit remain authoritative;
   - no opportunistic auto-admission from an upstream catalog or research artifact.
 
 ## SHARED / parallel
