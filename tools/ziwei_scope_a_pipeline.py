@@ -7,7 +7,7 @@ from tools.ziwei_natal_provider import NormalizedNatalInput
 from tools.ziwei_runtime import ZiWeiReadingRequest, legacy_result, run_ziwei
 
 PIPELINE_ID="ziwei-scope-a-production-pipeline-v1"
-PIPELINE_VERSION="1.1.0"
+PIPELINE_VERSION="1.2.0"
 INTERPRETATION_PROFILE="ziwei.interpretation.tw_v1"
 TEMPORAL_SCOPE="natal_baseline"
 
