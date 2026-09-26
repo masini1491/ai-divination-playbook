@@ -633,27 +633,25 @@ This item is a standing reconciliation guard. It is not a request to change curr
 ### AST-SHARED-001 — Casting/Vercel deployment isolation completion
 
 - type: SHARED / CI / DEPLOYMENT
-- status: IN_PROGRESS
+- status: DONE
 - priority: SHARED
 - owner: casting runtime / repository CI
 - blocked_by: none
 - reconciliation:
-  - PR #153 is closed/unmerged, but its provenance-tree design and `runtime/casting/vercel.json` path-bounded deployment behavior are already present byte-for-byte on current main;
-  - the remaining gap is only GitHub Actions topology: general `.github/workflows/validation.yml` still runs the live Vercel smoke on every main push.
-- implementation:
-  - keep local casting contract validation in the general validation workflow;
-  - move live Vercel smoke to `.github/workflows/casting-production-smoke.yml`;
-  - trigger that workflow only for `main` pushes changing `runtime/casting/**`;
-  - preserve the existing deployed-ancestor + `runtime/casting` tree-equivalence provenance gate.
-- relation_to_astrology:
-  - this is not an Astrology feature blocker;
-  - repository-wide validation/deployment coupling must not make unrelated Astrology merges depend on live Vercel availability.
-- completion_gate:
-  - merge/read-back of the final deployment-isolation design;
-  - `runtime/casting/vercel.json` remains path-bounded;
-  - online casting production smoke is path-bounded rather than a general main-push dependency;
-  - unrelated Astrology/Zi Wei/docs main changes no longer inherit live Vercel availability as a gate;
-  - deployment provenance contract tests protect both workflow separation and runtime-tree identity semantics.
+  - PR #153 was closed/unmerged, but its provenance-tree design and `runtime/casting/vercel.json` path-bounded deployment behavior were already present byte-for-byte on main;
+  - the remaining gap was GitHub Actions topology: general `.github/workflows/validation.yml` still ran live Vercel smoke on every main push.
+- closure:
+  - local casting contract validation remains in the general `.github/workflows/validation.yml` workflow;
+  - live Vercel smoke moved to `.github/workflows/casting-production-smoke.yml`;
+  - the live smoke is triggered only by `main` pushes changing `runtime/casting/**`;
+  - existing deployed-ancestor + `runtime/casting` tree-equivalence provenance semantics are preserved;
+  - `runtime/casting/vercel.json` remains path-bounded through its existing `ignoreCommand`;
+  - unrelated Astrology / Zi Wei / docs / governance main changes no longer inherit live Vercel availability as a validation gate;
+  - `tests/casting/test_deployment_provenance_contract.py` protects both workflow separation and runtime-tree provenance behavior.
+
+- completion_evidence:
+  - PR #231 candidate validation: `validate` PASS and `casting-runtime` PASS;
+  - PR validation intentionally does not run the live production-smoke workflow because that workflow is main-push + `runtime/casting/**` path-bounded.
 ### AST-SHARED-002 — Astrology × Zi Wei reconciliation pointer
 
 - type: SHARED POINTER ONLY
