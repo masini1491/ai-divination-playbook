@@ -74,7 +74,7 @@ method + minimum question contract fixed
 其他最低規則：
 
 - Astrology v1 與 Zi Wei Scope-A v1 都是 explicit-request only；不得因題目看起來像星盤／命盤題就加入 ordinary auto-routing。
-- Zi Wei interpretation production 仍以 admitted `natal_baseline` Scope-A 為主；explicit decadal request 可使用另行 admission 的 calculation-only dynamic runtime，但不得把 natal claims 自動當大限解讀。Yearly／monthly／daily／hourly及任何未 admission dynamic semantics不得由模型補造。
+- Zi Wei production 只支援 admitted `natal_baseline` Scope-A；brightness、輔星、四化與 dynamic scopes 不得由模型補造。
 - Astrology raw birth data 在 interpretation 前必須通過 admitted deterministic Fact Gate；模型不得手算 planets / houses / aspects 冒充 engine facts。
 - Liuyao Raw Cast 與 deterministic Structured Method Fact 分層；engine unavailable 時保留 Raw Cast，不重起、不手算冒充 engine。
 - 只有缺失資訊會 materially 改變 question identity、主要 judgment function、horizon、completion rule、position responsibility、casting/fact source 或 execution viability 時才澄清。
