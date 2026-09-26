@@ -592,15 +592,29 @@ This item is a standing reconciliation guard. It is not a request to change curr
 ### AST-P2-010 — Interpolated Black Moon Lilith
 
 - type: RESEARCH / COMPATIBILITY
-- status: DEFERRED
+- status: DONE
 - priority: P2
 - owner: Astrology Lilith research
-- blocked_by:
-  - AST-P1-020
-  - AST-P1-030
+- blocked_by: none
+- canonical_research:
+  - `references/astrology/ASTROLOGY_P2_010_INTERPOLATED_LILITH_DEFINITION.md`
+  - `references/astrology/EXTENDED_CHART_E3_LILITH_RESEARCH.md`
+  - `references/astrology/extended_chart_e3_e7_policy_manifest.json`
+  - `references/astrology/extended_chart_e8_admission_readiness.json`
+- current_state:
+  - Mean and Osculating/True Lilith research prerequisites are DONE and remain separate mathematical identities;
+  - Swiss `SE_INTP_APOG` exposes a distinct interpolated lunar-apogee product with its own iterative Moon-model algorithm;
+  - an independent modern implementation (`g-battaglia/libephemeris`) defines a different smooth DE440-anchored apsis-passage curve and explicitly documents non-zero divergence from Swiss between passages;
+  - therefore `Interpolated Lilith` is not treated as one provider-neutral mathematical identity and no project-wide default definition is selected.
+- closure:
+  - research characterized Interpolated Lilith as a compatibility-definition family rather than a generic interpolation of Mean and Osculating Lilith;
+  - exact Swiss compatibility, if ever required, belongs to an explicit named Swiss/provider lane and inherits its license/admission gates;
+  - independently defined smooth apsis curves may be researched as separate named products but must not be mislabeled as Swiss-exact `SE_INTP_APOG`;
+  - no production calculation fact, bare `Lilith` alias, semantic interpretation, or default provider was admitted.
 - rule:
   - treat as a separate definition/product;
-  - never alias to Mean or Osculating Lilith.
+  - never alias to Mean or Osculating Lilith;
+  - require an explicit named definition/provider before any future calculation admission.
 
 ### AST-P2-020 — Named consumer compatibility profile
 

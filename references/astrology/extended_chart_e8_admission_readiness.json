@@ -266,8 +266,14 @@
         "eligible_lanes": [
           "LOCAL_ANALYTICAL"
         ],
-        "definition_boundary": "Mean and Osculating/True may be researched independently; Interpolated remains a separate compatibility definition and is not implied by this overlay",
-        "production_status": "NOT_ADMITTED"
+        "definition_boundary": "Mean and Osculating/True may be researched independently; Interpolated remains a separate compatibility definition. AST-P2-010 found no provider-neutral default identity and requires an explicit named definition/provider.",
+        "production_status": "NOT_ADMITTED",
+        "interpolated_research_status": "CHARACTERIZED_NO_PROVIDER_NEUTRAL_DEFAULT",
+        "interpolated_research_evidence": "references/astrology/ASTROLOGY_P2_010_INTERPOLATED_LILITH_DEFINITION.md",
+        "interpolated_named_targets": {
+          "swiss_se_intp_apog": "REFERENCE_ONLY_COMPATIBILITY_TARGET",
+          "independent_named_curve": "ALLOWED_AS_SEPARATE_RESEARCH_PRODUCT"
+        }
       },
       "vertex": {
         "historical_readiness": "BLOCKED_ON_PROVIDER_OR_LICENSE",

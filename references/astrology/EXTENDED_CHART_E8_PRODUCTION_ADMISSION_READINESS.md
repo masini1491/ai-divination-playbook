@@ -80,7 +80,7 @@ PR #156 and `CHATGPT_ONLY_EXTENDED_EPHEMERIS_FEASIBILITY.md` add a separate curr
 | Chiron | BLOCKED_ON_PROVIDER_OR_LICENSE | research eligible | BUNDLED_EPHEMERIS | none; still not admitted |
 | Ceres / Pallas / Juno / Vesta | BLOCKED_ON_PROVIDER_OR_LICENSE | research eligible | BUNDLED_EPHEMERIS | none; still not admitted |
 | Mean / Osculating Black Moon Lilith | BLOCKED_ON_PROVIDER_OR_LICENSE | research eligible after explicit definition split | LOCAL_ANALYTICAL | none; still not admitted |
-| Interpolated Black Moon Lilith | historical family row retained | separate compatibility-definition research only | no implicit lane from this overlay | none |
+| Interpolated Black Moon Lilith | historical family row retained | AST-P2-010 characterized: no provider-neutral default identity | explicit named definition/provider only | none; still not admitted |
 | Vertex | BLOCKED_ON_PROVIDER_OR_LICENSE | research eligible as project-owned derived geometry | LOCAL_ANALYTICAL | none; still not admitted |
 | Equatorial Ascendant | BLOCKED_ON_PROVIDER_OR_LICENSE | research eligible as project-owned derived geometry | LOCAL_ANALYTICAL | none; still not admitted |
 
@@ -100,6 +100,8 @@ research eligibility
 ```
 
 Therefore a fresh gap review must not read `BLOCKED_ON_PROVIDER_OR_LICENSE` as “research may not proceed.” It means the original E8 production surface lacked an admitted provider/license path. The later overlay permits bounded research into local analytical or bundled-ephemeris alternatives while keeping `production_selection = null`.
+
+AST-P2-010 adds one narrower compatibility finding: `Interpolated Black Moon Lilith` is a **named-definition family**, not a project-default mathematical identity. Swiss `SE_INTP_APOG` and independently defined smooth apsis curves may share the user-facing label while differing numerically between passages. Any future admission must name the target definition/provider explicitly and must not infer Swiss-exact compatibility from the generic word "Interpolated".
 
 ## 3. Admission readiness matrix
 
