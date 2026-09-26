@@ -38,6 +38,11 @@ class AstrologyExtendedEphemerisInfrastructureTests(unittest.TestCase):
         self.assertNotIn("--force",text)
         self.assertIn("generated_bytes",text)
 
+    def test_generator_output_is_dataset_root_not_nested_repo_path(self):
+        text=(ROOT/"tools/generate_astrology_extended_ephemeris.py").read_text()
+        self.assertIn("root = OUTPUT",text)
+        self.assertNotIn('root = OUTPUT / "data" / "astrology" / "extended_ephemeris" / "v1"',text)
+
     def test_evaluator_has_no_network_fallback(self):
         text=(ROOT/"tools/astrology_extended_ephemeris.py").read_text()
         self.assertNotIn("urllib",text)
