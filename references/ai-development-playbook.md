@@ -6,7 +6,7 @@ Declared baseline：`main`
 
 Project AI mode：`ChatGPT-Only`
 
-Last reviewed source revision：`7bc4110e72e9c13f7f49efab52899329fe8bc0ea`
+Last reviewed source revision：`1aea805c0674960945d5588842a18bc37f0c96d9`
 
 Relationship：**common AI engineering baseline + conditional activation**。這不是 divination method authority，也不是要求 ordinary reading 每次載入 shared Playbook。
 
@@ -40,7 +40,7 @@ Shared `REPORTING.md` 是窄化的 adoption-level exception：substantive user-f
 
 - capability / permission / authority layering；
 - Action Contract Closure 與 completion-evidence closure；
-- GitHub operation response-shape、mutation/read-back、workflow-trigger evidence、terminal residue cleanup；
+- GitHub operation response-shape、mutation/read-back、workflow-trigger evidence、connector-backed artifact/file handoff、optional exact-revision handoff artifact、producer-vs-consumer closure、artifact lifecycle與 terminal residue cleanup → upstream `GITHUB_OPERATIONS.md`；local Astrology / Zi Wei materialization owners只保留 method-specific binding，不複製 shared framework；
 - repository-level absence-claim coverage；
 - AI Context / hot-cold / retrieval-cost governance；
 - generic coordination-surface semantics、multi peer/domain-scoped coordination rules、persistence / promotion / execution admission → upstream `AI_CONTEXT.md` / `REPOSITORY_EXECUTION.md`；
