@@ -126,3 +126,19 @@ Yod、Stellium、Grand Quintile 另走 `tools/astrology_special_pattern_projecti
 ## Explicit extended-aspect projections
 
 The natal provider's default aspect graph remains `aspect-participants-core-bodies-v1`. Extended aspect geometry is available only through `tools/astrology_aspect_projection.py` with explicit admitted participant, aspect, and orb policy selectors. No silent default or automatic inclusion is allowed. Angle/Fortune policies require exact birth time. Projection output is deterministic geometry only; semantic interpretation requires separately admitted source-backed claims.
+
+
+## Explicit extended ephemeris facts
+
+使用者明確要求 Chiron / Ceres / Pallas / Juno / Vesta 且出生時間為 exact / approximate 時，可透過 `extended_objects` selector 啟動 `ASTROLOGY_EXTENDED_EPHEMERIS_ADMISSION_V1.json` 的獨立 provider lane。
+
+此 lane 只 admission deterministic calculation facts：
+
+- longitude / sign / degree；
+- speed / motion；
+- 已有 admitted houses 時的 known-time house placement。
+
+它**不**因此 admission 該天體的象徵語意、星座語意、宮位語意、相位語意或人格／事件判讀。沒有另外 source-backed semantic claim family 時，interpretation 必須維持 `unsupported_factor`。
+
+Extended objects 不加入 default natal aspect graph；若未來要參與 aspect，仍須另外 explicit participant / aspect / orb policy admission。Unknown birth time 與 transit extended-object path目前都不 admission。
+
