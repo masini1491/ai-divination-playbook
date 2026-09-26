@@ -29,8 +29,8 @@ Last reviewed against:
 
 ```text
 ai-divination-playbook main
-499fa9649587bec670dd222fda70ef15a9648bee
-Preserve retained Astrology research evidence (#249)
+0d736dc5d5eaf59b05ee0d5f2fe0e39d1ecb0ad2
+Fix Astrology handoff manifest JSON (#252)
 ```
 
 This SHA is review evidence only, not a pin. Every maintenance or implementation task must resolve current `main` again before mutation.
@@ -58,16 +58,16 @@ The closed work above must not be repeatedly rediscovered as open work unless a 
 
 ## Recommended execution order
 
-Function-importance order for currently open / deferred Astrology work:
+There is currently no active one-shot Astrology P0/P1 feature work after AST-P1-180 closure.
 
-1. **AST-P1-180 — Exact-main connector-backed core handoff artifact publishing**
-   - IN_PROGRESS; closes the observed cold-start operational friction where host artifact→filesystem handoff exists but a successful current-main validation run publishes no ready-to-download Astrology core artifact.
-2. **AST-P2-020 — Named consumer compatibility profile**
+Deferred work remains:
+
+1. **AST-P2-020 — Named consumer compatibility profile**
    - DEFERRED; start only when a concrete named consumer/profile requires compatibility.
-3. **AST-P2-030 — Optional Swiss compatibility/provider lane**
+2. **AST-P2-030 — Optional Swiss compatibility/provider lane**
    - DEFERRED; start only when explicit Swiss compatibility/provider demand appears.
 
-Already-DONE items such as AST-P1-160, AST-P1-170 and AST-SHARED-001 are not execution-order candidates and must not be rediscovered as open work.
+`AST-P0-002` remains a standing reconciliation guard, not a one-shot feature. Already-DONE items must not be rediscovered as open work.
 
 Recent blocker-resolution result:
 
@@ -598,34 +598,35 @@ This item is a standing reconciliation guard. It is not a request to change curr
 ### AST-P1-180 — Exact-main connector-backed core handoff artifact publishing
 
 - type: MATERIALIZATION / HOST INTEGRATION / CI HANDOFF
-- status: IN_PROGRESS
+- status: DONE
 - priority: P1
 - owner: Astrology deterministic materialization / repository CI
 - blocked_by: none
+- canonical_evidence:
+  - `.github/workflows/validation.yml`
+  - `ASTROLOGY_MATERIALIZATION.md`
+  - `evals/ASTROLOGY_MATERIALIZATION_PRODUCT_SCENARIO.md`
+  - `evals/product_runs/2026-09-26-astrology-mat-beh-001-exact-main-artifact-0d736dc5.json`
+  - `tests/test_astrology_materialization_discoverability.py`
 - source:
-  - production cold-start feedback showed two separate failures: an initial premature stop despite the existing Host Capability Gate, followed by a more precise host audit proving connector-backed artifact file handoff works while current-main validation publishes no Astrology core artifact;
-  - current `ASTROLOGY-MAT-BEH-001` already covers direct-handoff miss → bounded verified transport, so this item must not duplicate the existing behavioral scenario or reopen AST-P1-150.
-- observed_current_state:
-  - GitHub connector `download_workflow_artifact` can return a connector-backed file reference that Files materialization can place on the execution filesystem;
-  - the 2026-09-24 formal product run proved a one-time exact-commit Actions artifact can survive GitHub artifact digest verification, bundle integrity verification, filesystem materialization and isolated Astrology execution;
-  - current main push validation run `36227691302` for `499fa9649587bec670dd222fda70ef15a9648bee` has `Artifacts = []`;
-  - therefore the remaining gap is artifact **availability/publication**, not calculation architecture, bundle integrity, behavioral routing or host file handoff capability.
-- completion_gate:
-  - successful `main` push validation publishes a uniquely named artifact bound to exact `github.sha`;
-  - artifact payload contains only the same-commit derived core bundle, canonical bundle verifier, `PLAYBOOK_COMMIT` and a machine-readable handoff manifest;
-  - PR validation does not publish the production handoff artifact;
-  - artifact remains transport-only and does not become calculation/admission/source authority;
-  - cold-start order remains verified cache → direct byte/file handoff → exact-commit connector-backed artifact → existing same-commit bounded opaque chunk fallback;
-  - artifact missing/expired/identity mismatch fails over to the existing fallback rather than declaring Astrology unavailable;
-  - exact-main artifact is downloaded through GitHub connector, materialized through the host file surface, verified against GitHub artifact digest when exposed, checked for exact commit/manifest identities, then passed through the existing bundle integrity/materialization gate;
-  - synthetic explicit-coordinate Astrology execution reaches admitted runtime status from that downloaded artifact;
-  - merge, main-push CI, artifact read-back and the formal product smoke evidence are recorded before status becomes DONE.
+  - production cold-start feedback first exposed premature-stop non-compliance, then a more precise host audit proved connector-backed artifact file handoff works while successful current-main validation published no ready-to-download Astrology core artifact;
+  - existing `ASTROLOGY-MAT-BEH-001` already covered direct-handoff miss → bounded verified transport, so this item did not duplicate the behavioral scenario or reopen AST-P1-150.
+- closure:
+  - successful `main` push validation now publishes `astrology-core-handoff-<exact github.sha>` only after the normal validation steps pass; PR validation skips both prepare/upload steps;
+  - artifact payload is limited to same-commit `CHATGPT_DETERMINISTIC_CORE_BUNDLE.json`, canonical verifier, `PLAYBOOK_COMMIT` and `HANDOFF_MANIFEST.json`;
+  - artifact remains temporary transport convenience with 90-day retention, not source/calculation/admission authority;
+  - `ASTROLOGY_MATERIALIZATION.md` now orders cold start as verified cache → direct byte/file handoff → exact-main connector-backed artifact → existing same-commit bounded opaque chunk fallback;
+  - first main artifact at `ec2294457778eb99105e012136d7f6fdc8755e2b` correctly matched its GitHub digest but smoke testing caught invalid manifest JSON caused by literal `\\n`; bounded repair PR #252 fixed the writer and added regression coverage;
+  - repaired main `0d736dc5d5eaf59b05ee0d5f2fe0e39d1ecb0ad2` passed Validate Playbook run `36228860402`, including unit tests, structural checker, artifact preparation and upload;
+  - artifact `10901344879` / `astrology-core-handoff-0d736dc5d5eaf59b05ee0d5f2fe0e39d1ecb0ad2` was connector-downloaded and intentionally Files-rematerialized; execution-container SHA-256 exactly matched GitHub digest `c572c9c739675963268cf1378eee88587d7a243e4c9c022bab35fa9ba7e1435d`;
+  - manifest JSON, exact commit marker and every manifest payload hash passed; canonical bundle verifier returned zero errors; 12 runtime/dependency files materialized with archive SHA-256 `0e2fa80fa9a7bfacde612723e3f19cb6dd28261e5c01d4f7f43d353b85dd736b`;
+  - isolated `python -S` synthetic explicit-coordinate natal execution returned `status=admitted`, `interpretation_allowed=true`, provider `astronomy-engine-natal-v1@1.3.0`, `fact_source=approved_provider`, `calculation_verification=verified_provider`, and an admitted runtime gate with no errors;
+  - artifact absence/expiry/identity failure remains a route miss only and falls through to the prior same-commit bounded opaque transport instead of declaring Astrology unavailable.
 - non_goals:
-  - do not reopen AST-P1-150;
-  - do not add another materialization behavioral scenario;
-  - do not change Astronomy Engine version, calculation admission, place-resolver scope or extended-ephemeris transport;
-  - do not make Actions artifacts permanent source-of-truth storage.
-
+  - AST-P1-150 remains DONE and is not reopened;
+  - no new behavioral scenario was added;
+  - Astronomy Engine version, calculation admission, place-resolver scope and extended-ephemeris transport remain unchanged;
+  - Actions artifacts do not become permanent source-of-truth storage.
 
 ## P2 — deferred compatibility / provider expansion
 
