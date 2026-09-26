@@ -29,29 +29,38 @@ Last reviewed against:
 
 ```text
 ai-divination-playbook main
-f8dd8ab591c4922948b62aaaa557b2235a062937
+5c129871120b6a9e4d361d49c605c6c93b35aaea
 ```
 
 This SHA is review evidence only, not a pin. Every maintenance task must resolve current `main` again before mutation.
 
 ## Recommended implementation order
 
-This order is a coordination priority, not production authority. It is optimized for functional importance: correctness/applicability first, then major new capability, then natal semantic resolution, then broader input/profile expansion.
+This order is a coordination priority, not production authority. It is optimized for functional importance: correctness/applicability first, then deterministic host transport, then staged dynamic capability, then natal semantic resolution, then broader input/profile expansion.
+
+Standing guard (enforced alongside affected changes, not a one-shot feature):
+
+- **ZW-P0-003 — Keep Zi Wei production stack / transport / admission synchronized**
+
+Execution order:
 
 1. **ZW-P1-025 — Natal palace occupancy and empty-palace applicability facts**
-2. **ZW-P1-030 — Dynamic calculation runtime**
-3. **ZW-P1-040 — Dynamic interpretation claim corpus**
-4. **ZW-P2-060 — Sparse same-palace major-star combination claims**
-5. **ZW-P2-050 — Body-Palace overlay interpretation admission**
-6. **ZW-P2-020 — Sparse star×palace contextual claims**
-7. **ZW-P2-010 — M1 high-impact auxiliary stars**
-8. **ZW-P2-030 — Non-Asia/Taipei civil-time input normalization**
-9. **ZW-P2-040 — True-solar-time policy**
+2. **ZW-P1-026 — Exact-main Zi Wei deterministic handoff artifact**
+3. **ZW-P1-030 — Dynamic calculation runtime**
+4. **ZW-P1-040 — Dynamic interpretation claim corpus**
+5. **ZW-P2-060 — Sparse same-palace major-star combination claims**
+6. **ZW-P2-050 — Body-Palace overlay interpretation admission**
+7. **ZW-P2-020 — Sparse star×palace contextual claims**
+8. **ZW-P2-010 — M1 high-impact auxiliary stars**
+9. **ZW-P2-030 — Non-Asia/Taipei civil-time input normalization**
+10. **ZW-P2-040 — True-solar-time policy**
 
 Ordering rationale:
 
 - correctness / exact applicability outranks semantic enrichment;
-- dynamic calculation must precede dynamic interpretation;
+- exact-main handoff is a bounded host-transport improvement that should land before the larger dynamic-runtime surface grows;
+- dynamic calculation and interpretation are admitted **layer by layer** (decadal → yearly → monthly → daily → hourly) rather than as one monolithic waterfall;
+- same-palace and star×palace contextual claims should reuse the canonical occupancy/applicability facts from `ZW-P1-025`, not derive a parallel geometry path;
 - same-palace pair semantics and Body-Palace overlay deepen ordinary natal reading without replacing existing L5 composition;
 - sparse source-explicit contextual expansion outranks broad auxiliary/input policy expansion for current natal reading quality;
 - non-Asia/Taipei and true-solar support remain later profile/input expansion for the current product audience.
@@ -128,6 +137,34 @@ Ordering rationale:
   - production selection fails closed for undemonstrated fact-gated conditions;
   - 52-claim admitted corpus count is unchanged.
 
+### ZW-P0-003 — Keep Zi Wei production stack / transport / admission synchronized
+
+- type: MAINTENANCE / REGRESSION
+- status: OPEN
+- priority: P0
+- owner: Zi Wei production maintenance
+- blocked_by: none
+- canonical_evidence:
+  - `ZIWEI.md`
+  - `ZIWEI_PRODUCTION_ADMISSION_V1.json`
+  - `ZIWEI_CALENDAR_ADMISSION_V1.json`
+  - `ZIWEI_MATERIALIZATION.md`
+  - `PLAYBOOK_INDEX.json`
+  - `tools/ziwei_runtime.py`
+  - `schemas/ziwei/ZIWEI_READING_REQUEST_V1.schema.json`
+  - `schemas/ziwei/ZIWEI_READING_RESULT_V1.schema.json`
+- problem:
+  - Zi Wei production capabilities span runtime, typed schemas, admission manifests, deterministic bundle/materialization, machine index, backlog/current-state owners and behavioral/structural validation;
+  - prior feature admissions required follow-up closure/reconciliation work when one of those surfaces lagged behind the merged implementation;
+  - upcoming dynamic-scope work materially increases the risk of schema/admission/transport/current-state drift.
+- completion_gate:
+  - any future Zi Wei production scope change updates every materially affected owner in the same bounded change;
+  - runtime/schema/admission/bundle/materialization/index/backlog identities remain mutually consistent;
+  - no derived transport artifact is promoted to source authority;
+  - no completed production capability is repeatedly rediscovered as open because a coordination/current-state surface was left stale;
+  - affected behavioral/structural validation and canonical read-back close in the same work unit.
+- rule:
+  - this is a standing reconciliation guard, not a request to change current production behavior immediately.
 ## P1 — product architecture
 
 ### ZW-P1-004 — Minguo year-notation input adapter
@@ -365,12 +402,44 @@ Ordering rationale:
   - raw occupancy facts remain separate from interpretation policy;
   - calculation provider does not hard-code "borrow from opposite" doctrine;
   - deterministic bundle / schemas / admission surfaces are updated only if the runtime contract materially requires it;
+  - new occupancy/applicability facts are explicitly natal-baseline scoped (or inherit an unambiguous natal-baseline scope) and cannot collide with future dynamic-scope facts;
   - required CI passes and canonical read-back verifies no unrelated semantic widening.
 - production_boundary:
   - `empty_palace` is a calculation/applicability fact, not an interpretation conclusion;
   - opposite / Sanfang / borrowing semantics remain source-backed interpretation responsibility;
   - no new palace geometry and no model-memory doctrine.
 
+## P1 — host transport
+
+### ZW-P1-026 — Exact-main Zi Wei deterministic handoff artifact
+
+- type: MAINTENANCE / HOST TRANSPORT
+- status: OPEN
+- priority: P1
+- owner: Zi Wei deterministic materialization
+- blocked_by:
+  - ZW-P1-025
+- problem:
+  - current Zi Wei fast path correctly probes/reuses verified local cache and prefers direct byte/file-aware connector→filesystem handoff;
+  - when direct handoff is unavailable, the current fallback moves the exact-commit deterministic bundle through bounded verified opaque transport;
+  - the current bundle is compact but still contains 120 model-visible chunks, while the GitHub connector now exposes exact workflow-artifact listing/download primitives;
+  - Astrology has validated an exact-main Actions handoff artifact as a temporary connector-backed transport convenience without changing source authority.
+- target:
+  - publish an exact-main Zi Wei deterministic handoff artifact from successful main-push validation;
+  - artifact carries only the deterministic bundle, canonical bundle verifier, `PLAYBOOK_COMMIT` and machine-readable handoff manifest;
+  - calendar year shards remain query-bounded same-commit acquisitions and are not packed into the handoff artifact.
+- completion_gate:
+  - cache reuse remains first;
+  - direct byte/file-aware handoff remains preferred when available;
+  - exact-main workflow artifact becomes the next fallback before model-visible opaque bundle transport;
+  - artifact name / manifest binds exact repository commit and payload file identities;
+  - downloaded artifact bytes / digest are verified when exposed by GitHub, then internal manifest/file identities are verified before bundle materialization;
+  - artifact expiration/unavailability degrades only this transport path and falls back to the existing verified opaque bundle;
+  - artifact is explicitly non-authoritative: it does not replace Git-tracked bundle, production admission or canonical source files;
+  - ordinary calendar request remains 1 shard and 31 December 23:00 cross-year edge remains at most 2 shards;
+  - regression / CI / canonical read-back confirm no production-semantic widening.
+- production_boundary:
+  - host transport only; no Zi Wei calculation, interpretation or calendar semantics change.
 ## P1/P2 — temporal / dynamic
 
 ### ZW-P1-030 — Dynamic calculation runtime
@@ -379,14 +448,17 @@ Ordering rationale:
 - status: OPEN
 - priority: P1/P2
 - owner: Zi Wei temporal runtime
-- blocked_by:
-  - ZW-P1-020
+- blocked_by: none
 - sequence:
   1. decadal / 大限
   2. yearly / 流年
   3. monthly / 流月
   4. daily / 流日
   5. hourly / 流時
+- staging_rule:
+  - admit calculation one contiguous temporal layer at a time;
+  - a child layer cannot be admitted without compatible parent-scope identity;
+  - each admitted layer may unlock the corresponding `ZW-P1-040` interpretation stage without waiting for all five calculation layers to finish.
 - canonical_research:
   - `references/ziwei/TEMPORAL_CONTEXT_INTERPRETATION_RESEARCH_V0.md`
   - `references/ziwei/CALCULATION_ENGINE_RESEARCH.md`
@@ -396,6 +468,9 @@ Ordering rationale:
   - boundary/profile identity;
   - relevant sihua/auxiliary profile identity where applicable;
   - engine/revision provenance;
+  - explicit typed request/result schema evolution strategy for dynamic scopes;
+  - current V1 natal-only closed-world contracts remain compatible and are not silently widened;
+  - target timestamp/calendar identity and temporal provenance are machine-visible;
   - no natal fallback when requested dynamic layer is unavailable.
 
 ### ZW-P1-040 — Dynamic interpretation claim corpus
@@ -405,14 +480,21 @@ Ordering rationale:
 - priority: P1/P2
 - owner: Zi Wei temporal interpretation
 - blocked_by:
-  - ZW-P1-030
+  - corresponding admitted calculation stage in ZW-P1-030
+- staging_rule:
+  - decadal interpretation may start after decadal calculation admission;
+  - yearly interpretation may start after yearly calculation admission;
+  - monthly / daily / hourly follow the same layer-local gate;
+  - the umbrella item remains open until the intended dynamic interpretation scope is closed, but later calculation layers do not block already-eligible earlier interpretation work.
 - rule:
   - natal 52 claims must not be silently reused as flow prediction claims.
 - completion_gate:
-  - scope-normalized claim schema/corpus;
+  - scope-normalized claim schema/corpus per admitted temporal layer;
   - temporal applicability and provenance;
+  - parent/child scope compatibility;
   - conflict/safety handling;
-  - admission separate from dynamic calculation availability.
+  - admission separate from dynamic calculation availability;
+  - no generic flow prediction filler when a layer has calculation facts but no admitted interpretation claim.
 
 ## P2 — later expansion
 
@@ -447,10 +529,12 @@ Ordering rationale:
 - status: DEFERRED
 - priority: P2
 - owner: Zi Wei interpretation evidence
-- blocked_by: none
+- blocked_by:
+  - ZW-P1-025
 - rule:
   - no exhaustive 14×12 Cartesian dictionary;
-  - only sparse source-explicit overrides where evidence justifies them.
+  - only sparse source-explicit overrides where evidence justifies them;
+  - exact star×palace applicability must reuse the canonical occupancy facts from `ZW-P1-025`, not a parallel geometry derivation.
 
 ### ZW-P2-050 — Body-Palace overlay interpretation admission
 
@@ -486,7 +570,8 @@ Ordering rationale:
 - status: DEFERRED
 - priority: P2
 - owner: Zi Wei interpretation evidence
-- blocked_by: none
+- blocked_by:
+  - ZW-P1-025
 - problem:
   - current production supports independent major-star core claims + palace-domain claims and bounded L5 synthesis;
   - research architecture explicitly reserves `same-palace combination` as a separate composition dimension;
@@ -498,7 +583,7 @@ Ordering rationale:
   - `references/ziwei/ziwei_interpretation_claim_registry_batch2.json`
 - completion_gate:
   - only source-explicit sparse pair claims are eligible;
-  - exact same-palace pair applicability facts / provenance are machine-matchable;
+  - exact same-palace pair applicability facts / provenance are machine-matchable and derive from the canonical occupancy facts admitted by `ZW-P1-025`;
   - tradition/profile/conflict identity is preserved;
   - pair-specific claims outrank generic composition only inside their admitted scope;
   - absence of a pair-specific claim continues to use existing bounded L5 composition;
