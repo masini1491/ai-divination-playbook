@@ -52,7 +52,8 @@ FIXTURES = [
     ("P2-040-Q14","2261-01-31T07:37:00Z"),
     ("P2-040-Q15","2293-12-05T13:53:00Z"),
     ("P2-040-Q16","2326-10-09T19:23:00Z"),
-]THRESHOLDS = {
+]
+THRESHOLDS = {
     "longitude_p95_arcsec_max": 10.0,
     "longitude_max_arcsec_max": 30.0,
     "speed_max_deg_per_day": 0.001,
