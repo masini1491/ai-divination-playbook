@@ -47,7 +47,7 @@ jobs:
           027856d96afd2d2495fbf18973327aabb2900242 research/ast-p2-042-continuity-result
           26ecc105ced5b8915b3fb0f906142c4ebfb92888 research/astrology-place-connect-closure
           14037d3694a78063937dee43f4bf93a5344f7e4c research/astrology-wrapper-retirement-readiness-20260913
-EOF
+          EOF
           while read -r expected branch; do
             actual="$(git ls-remote --heads origin "refs/heads/$branch" | awk '{print $1}')"
             if [ -z "$actual" ]; then
