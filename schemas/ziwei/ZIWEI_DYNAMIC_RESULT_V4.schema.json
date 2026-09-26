@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Zi Wei Production v4 Dynamic Reading Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_name",
+    "schema_version",
+    "runtime",
+    "status",
+    "scope",
+    "request_id",
+    "calculation",
+    "interpretation",
+    "authority"
+  ],
+  "properties": {
+    "schema_name": {
+      "const": "ziwei_dynamic_result"
+    },
+    "schema_version": {
+      "const": "4.0.0"
+    },
+    "runtime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "runtime_id",
+        "runtime_version",
+        "request_schema",
+        "result_schema",
+        "temporal_scope"
+      ],
+      "properties": {
+        "runtime_id": {
+          "const": "ziwei-production-runtime-v4"
+        },
+        "runtime_version": {
+          "const": "4.0.0"
+        },
+        "request_schema": {
+          "const": "schemas/ziwei/ZIWEI_DYNAMIC_REQUEST_V4.schema.json"
+        },
+        "result_schema": {
+          "const": "schemas/ziwei/ZIWEI_DYNAMIC_RESULT_V4.schema.json"
+        },
+        "temporal_scope": {
+          "enum": [
+            "decadal",
+            "yearly",
+            "monthly"
+          ]
+        }
+      }
+    },
+    "status": {
+      "const": "PRODUCTION_ADMITTED_CALCULATION_ONLY"
+    },
+    "scope": {
+      "enum": [
+        "bounded_decadal_calculation_v1",
+        "bounded_yearly_calculation_v1",
+        "bounded_monthly_calculation_v1"
+      ]
+    },
+    "request_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "calculation": {
+      "type": "object"
+    },
+    "interpretation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "reason"
+      ],
+      "properties": {
+        "status": {
+          "const": "NOT_ADMITTED"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "calculation_authority_granted",
+        "interpretation_authority_granted",
+        "ordinary_auto_routing"
+      ],
+      "properties": {
+        "calculation_authority_granted": {
+          "const": true
+        },
+        "interpretation_authority_granted": {
+          "const": false
+        },
+        "ordinary_auto_routing": {
+          "const": false
+        }
+      }
+    },
+    "input_adapter": {
+      "type": "object"
+    }
+  }
+}
