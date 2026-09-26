@@ -185,7 +185,7 @@ natal / decadal / yearly / monthly / daily / hourly = distinct scopes
 dynamic fact = profile/boundary/provenance bound
 missing dynamic layer = do not infer
 natal claim != automatic flow prediction
-dynamic calculation runtime/provider = decadal + yearly + monthly calculation-only admitted; daily/hourly not admitted
+dynamic calculation runtime/provider = decadal + yearly + monthly + daily calculation-only admitted; hourly not admitted
 ```
 
 ### Decadal
@@ -293,3 +293,7 @@ Interpretation Architecture v0 的完成不建立 production provider、producti
 ### Monthly production profile
 
 `monthly.doujun_effective_month_split15_v1` binds the monthly Life Palace to a Liu-Nian Dou-Jun derived from the admitted target-year branch, normalized birth effective lunar month and birth hour branch, then advances by the target effective lunar month. The target month uses the project calendar profile `split_after_day_15`: non-leap months remain unchanged; leap days 1–15 stay in the logical month; leap days 16+ advance to the next effective month. Production v1 rejects leap-month 12 day 16+ because the resulting cross-year parent identity has not yet been reconciled. Primary implementation evidence: `RedSC1/js-ephemeris-lite@559d4957bc063a6e03a3c810066be4eccf3ea2be`; comparator: `SylarLong/iztro@2c7ef9be669df7b19d1799f4dce335fed3794f78`. No monthly Si Hua, flow-star, daily/hourly or interpretation authority is implied.
+
+### Daily production profile
+
+`daily.monthly_parent_lunar_day_v1` binds the daily Life Palace to the already-admitted compatible monthly Life Palace and advances by the explicit normalized lunar day ordinal: `daily Life Palace = monthly Life Palace + lunar_day - 1` around the twelve branches. Pinned implementation reconciliation is direct: `SylarLong/iztro@2c7ef9be669df7b19d1799f4dce335fed3794f78` computes `dailyIndex = monthlyIndex + lunarDay - 1`, while `RedSC1/js-ephemeris-lite@559d4957bc063a6e03a3c810066be4eccf3ea2be` advances the monthly parent branch by `day - 1`. Production v1 deliberately admits only palace calculation facts from an explicit `normalized_lunar_day` target carrying lunar year/month/day, leap-month identity and calendar provenance. It does **not** reconstruct physical day pillars, timestamp/day-divide boundaries, daily Si Hua, flow stars, hourly facts or interpretation. Leap-month behavior remains inherited from the admitted monthly parent, including the existing leap-month-12 day 16+ cross-year fail-closed boundary.
