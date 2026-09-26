@@ -86,9 +86,9 @@ class RepositoryArchitectureContractTests(unittest.TestCase):
             text,
         )
         self.assertIn("Method-scoped coordination topology", text)
+        self.assertIn("connector-backed artifact/file handoff", text)
+        self.assertIn("producer-vs-consumer closure", text)
         self.assertNotIn(
-            "connector-backed artifact/file handoff",
-            "producer-vs-consumer closure",
             "TASKS / BACKLOG / coordination surfaces（除非本 Repo未來另行 opt-in）",
             text,
         )
