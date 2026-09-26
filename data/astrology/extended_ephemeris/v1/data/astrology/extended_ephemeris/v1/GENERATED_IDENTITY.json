@@ -1,0 +1,34 @@
+{
+  "dataset_id": "astrology-extended-ephemeris-c1-f32-v1",
+  "dataset_sha256": "580bb2a8ef463dfc6527ea611f27daad3562cb1fa5698391b3e2baeba64987bf",
+  "generated_bytes": 511840,
+  "generated_shard_count": 17,
+  "generator_source_commit": "13f462902cfca4df9c349def7f19d7904d80f98a",
+  "representation_id": "c1-cheb-d7-w60-f32-c0mod360-v1",
+  "schema_name": "astrology_extended_ephemeris_generated_data_identity",
+  "schema_version": "1.0.0",
+  "source": {
+    "api": "Horizons API",
+    "apparent": "AIRLESS",
+    "center": "500@399",
+    "ephem_type": "OBSERVER",
+    "extra_precision": true,
+    "object_source_grid_sha256": {
+      "Ceres": "bd9b5925bef08957f74ef9cfbbd7db269ae074ea05c110fdb9d6e644daa200d4",
+      "Chiron": "56e579fffef2a8fb31c8e8850bb2aabbfaa7cbb2ed3420c71a5b952a63e00e23",
+      "Juno": "4cd9e8f47a323889863a01b53fde185cac8d712ed7c5c74bf27f764e1dfb5a2a",
+      "Pallas": "46a9a5e9265047bfa4a5fa11db4c4cbd2efabb86b2312674d3a2b5f5e64e8bbc",
+      "Vesta": "4a9cca5b0e4b01967a483f37bdc796a5fdea248a685ddcf132ebbb5181c147e3"
+    },
+    "observed_signature": {
+      "source": "NASA/JPL Horizons API",
+      "version": "1.2"
+    },
+    "provider": "NASA/JPL Horizons",
+    "quantities": [
+      31
+    ],
+    "source_grid_days": 5,
+    "time_type": "UT"
+  }
+}
