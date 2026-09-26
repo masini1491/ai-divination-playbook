@@ -470,7 +470,7 @@ Ordering rationale:
 - stage_progress:
   - decadal / 大限: DONE — bounded calculation-only provider + V2 dynamic transport + admission merged and canonically read back; interpretation remains separately unadmitted;
   - yearly / 流年: DONE — bounded calculation-only provider + V3 dynamic transport + explicit lunar-year boundary + compatible decadal parent + target-year Si Hua facts merged and canonically read back; interpretation remains separately unadmitted;
-  - monthly / 流月: OPEN;
+  - monthly / 流月: IMPLEMENTED_CANDIDATE — bounded monthly provider + V4 dynamic transport + yearly parent + split-after-day-15 leap policy; leap-month-12 cross-year edge remains fail-closed; awaiting PR validation / merge / canonical read-back;
   - daily / 流日: BLOCKED_BY_MONTHLY;
   - hourly / 流時: BLOCKED_BY_DAILY;
 - decadal_stage_evidence:
