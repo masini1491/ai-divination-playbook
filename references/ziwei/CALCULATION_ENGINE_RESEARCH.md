@@ -26,7 +26,7 @@ D13 Interpretation claims
 D14 Validation / admission
 ```
 
-第一階段以 D0–D6、D10、D12、D14 為主。D13 的 architecture / source-policy / runtime-facing contracts v0 已完成 research admission；完整 claim corpus 仍未 admission。D9 的 interpretation responsibility 已 research-closed，但 project-wide brightness table/profile 尚未選定；D7 依 bounded taxonomy 路由。D11 的 interpretation responsibility 已 research-closed，但 deterministic dynamic-chart runtime/provider 尚未 admission。
+第一階段以 D0–D6、D10、D12、D14 為主。D13 的 architecture / source-policy / runtime-facing contracts v0 已完成 research admission；完整 claim corpus 仍未 admission。D9 的 interpretation responsibility 已 research-closed，但 project-wide brightness table/profile 尚未選定；D7 依 bounded taxonomy 路由。D11 的 interpretation responsibility 已 research-closed；production calculation 現已分層處理，`decadal` 第一層由 `ZIWEI_DECADAL_ADMISSION_V1.json` admission，yearly／monthly／daily／hourly 仍未 admission。
 
 ## Normalized architecture
 
@@ -185,7 +185,7 @@ natal / decadal / yearly / monthly / daily / hourly = distinct scopes
 dynamic fact = profile/boundary/provenance bound
 missing dynamic layer = do not infer
 natal claim != automatic flow prediction
-dynamic calculation runtime/provider = not admitted
+dynamic calculation runtime/provider = decadal calculation-only admitted; yearly/monthly/daily/hourly not admitted
 ```
 
 ### Decadal
@@ -209,7 +209,7 @@ first start age = bureau number
 
 Project default 改用明確 profile identity：
 
-`decadal.quanji_common_v1 = Life Palace start + bureau-number start age + standard direction`。
+`decadal.quanji_common_v1 = Life Palace start + bureau-number start age + standard direction`。Production v1 另明確綁定 `age_basis=traditional_nominal_age`：以目標農曆年計算虛歲 `target_lunar_year - birth_lunar_year + 1`；此 age-basis identity 參照 pinned `matharts/ziwei@596f43c43ff6fbae526314c7f668bbf346445ff1` 的大限 domain model，並與 research profile 分開保留 provenance。
 
 ## Research default candidate v1
 
