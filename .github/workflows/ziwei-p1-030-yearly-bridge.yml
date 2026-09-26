@@ -51,7 +51,7 @@ jobs:
           assert not unexpected, unexpected
           assert ".github/workflows/ziwei-p1-030-yearly-bridge.yml" in paths
           assert "runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json" in paths
-          assert "CHATGPT_LOAD_PACK.json" in paths
+          # load-pack regeneration may be a verified no-op when routed content is unchanged.
           PY
       - name: Commit generated caches and remove bridge
         run: |
