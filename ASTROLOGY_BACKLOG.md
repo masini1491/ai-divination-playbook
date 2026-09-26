@@ -65,15 +65,18 @@ Function-importance order for currently open / deferred Astrology work:
 2. **AST-SHARED-001 — Casting/Vercel deployment isolation reconciliation**
    - shared reliability work, not an Astrology feature; first reconcile the stale state because PR #153 is closed/unmerged while the live main-push production-smoke coupling still exists.
 3. **AST-P1-170 — North Node sign semantic claim-family admission**
-   - improves natal interpretation completeness after deterministic facts are already available; does not block chart calculation.
-4. **AST-P2-040 — Broader extended ephemeris objects**
-   - highest-value deferred expansion after the current ordinary natal path is stable.
-5. **AST-P2-010 — Interpolated Black Moon Lilith**
-   - narrower compatibility/research scope; keep definition separate from Mean/Osculating Lilith.
-6. **AST-P2-020 — Named consumer compatibility profile**
+   - DONE; bounded mean-North-Node sign semantics are admitted without expanding karmic/past-life or aspect semantics.
+4. **AST-P2-010 — Interpolated Black Moon Lilith**
+   - next actionable deferred research item because AST-P1-020 / AST-P1-030 are DONE.
+5. **AST-P2-020 — Named consumer compatibility profile**
    - useful only when an explicitly named consumer/profile is required; no universal compatibility default.
-7. **AST-P2-030 — Optional Swiss compatibility/provider lane**
+6. **AST-P2-030 — Optional Swiss compatibility/provider lane**
    - optional provider/license lane; current Astronomy Engine production path remains sufficient.
+
+Blocked / outcome-dependent item:
+
+- **AST-P2-040 — Broader extended ephemeris objects**
+  - do not expand object count yet: AST-P1-010 completed as research, but its sampled/Hermite candidates did **not** prove a passing five-body transport/precision architecture. Resume only after a five-body lane such as bounded SPK, piecewise Chebyshev, or another prospectively validated representation satisfies the architecture gate.
 
 Standing / pointer items are not numbered feature work:
 
@@ -632,11 +635,20 @@ This item is a standing reconciliation guard. It is not a request to change curr
 ### AST-P2-040 — Broader extended ephemeris objects
 
 - type: FEATURE / PROVIDER
-- status: DEFERRED
+- status: BLOCKED
 - priority: P2
 - owner: Astrology extended ephemeris
 - blocked_by:
-  - AST-P1-010
+  - five-body transport/precision architecture proof
+- current_state:
+  - AST-P1-010 is DONE as a research characterization task, not as a positive architecture admission;
+  - the evaluated 10/20/40-day sampled-wrapped-longitude Hermite candidates all failed the prospectively frozen feasibility gate;
+  - bounded SPK, piecewise Chebyshev, and multi-epoch osculating alternatives remain unevaluated research lanes;
+  - therefore the prerequisite outcome for broader object-count expansion is not yet satisfied even though AST-P1-010 itself is closed.
+- unblock_gate:
+  - at least one five-body local representation must pass a prospectively declared transport/precision gate under bounded ChatGPT materialization constraints;
+  - provider/data provenance, coverage, failure behavior, and runtime transport must be explicit;
+  - production calculation admission remains a separate gate after feasibility.
 - rule:
   - do not expand object count before the five-body transport/precision architecture is proven;
   - no opportunistic auto-admission from an upstream catalog.
