@@ -62,7 +62,7 @@ admitted natal object fact
 
 The caller chooses only the applicability **scope**. The selector derives the actual object/sign values from the matched admitted fact. This prevents a caller from redirecting a Sun-in-Pisces fact to an Aries semantic claim.
 
-North Node is deliberately excluded from `sign_style` binding because the current fact model classifies it as a point, not a planet, and no separate node semantic claim family has been admitted.
+North Node remains deliberately excluded from the ordinary planet `sign_style` binding because the fact model classifies it as a point, not a planet. AST-P1-170 admits North Node semantics only through the separate `north-node-sign-semantics-research-v1` claim family plus dedicated typed applicability that preserves mean-node provenance; this registry does not reclassify North Node as a planet.
 
 ## Source/admission boundary
 
