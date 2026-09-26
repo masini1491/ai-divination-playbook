@@ -24,8 +24,13 @@ class ZiWeiProductionContractV1Tests(unittest.TestCase):
             ["ziwei_interpretation_claim_registry_sihua_v0.json"],
             sihua["admitted_research_registries"],
         )
-        self.assertEqual("1.1.0",m["pipeline"]["pipeline_version"])
+        self.assertEqual("0.2.0",m["calculation"]["provider_version"])
+        self.assertEqual("1.2.0",m["pipeline"]["pipeline_version"])
         self.assertEqual("conditional_activation_v1",m["pipeline"]["conditional_activation_contract"])
+        self.assertEqual(
+            "fact_available:palace_occupancy",
+            m["calculation"]["palace_occupancy_facts"]["fact_available"],
+        )
         self.assertFalse(m["admission_decision"]["g8_ordinary_routing_admitted"])
         self.assertFalse(m["admission_decision"]["scientific_predictive_validity_claimed"])
 
@@ -36,9 +41,34 @@ class ZiWeiProductionContractV1Tests(unittest.TestCase):
         self.assertFalse(r["authority"]["ordinary_auto_routing"])
         self.assertFalse(r["authority"]["final_prose_authority"])
         self.assertEqual("ziwei.scope_a.natal_v0",r["calculation"]["calculation_profile"]["profile_id"])
+        self.assertEqual("0.2.0",r["calculation"]["provider"]["version"])
+        self.assertEqual("1.2.0",r["pipeline_version"])
+        self.assertIn("palace_occupancy",r["calculation"])
         self.assertGreater(len(r["interpretation"]["selected_claim_ids"]),0)
         self.assertTrue(r["interpretation"]["conditional_evaluations"])
         self.assertIn("PRESENT_CONFLICT_SEPARATELY",r["delivery"]["actions"])
+
+
+    def test_empty_palace_conditionals_are_exactly_fact_gated(self):
+        r=run_scope_a_natal(
+            NormalizedNatalInput(1987,5,20,"酉","synthetic:production-test"),
+            request_id="empty-palace",
+            requested_subjects=("命宮","子女宮"),
+        )
+        ids=set(r["interpretation"]["selected_claim_ids"])
+        self.assertNotIn("ZW-PAL-MING-COND-002",ids)
+        self.assertIn("ZW-PAL-CHILD-COND-002",ids)
+        states={x["claim_id"]:x for x in r["interpretation"]["conditional_evaluations"]}
+        self.assertEqual("unsatisfied",states["ZW-PAL-MING-COND-002"]["state"])
+        self.assertEqual("satisfied",states["ZW-PAL-CHILD-COND-002"]["state"])
+        self.assertEqual(
+            ["fact_available:palace_occupancy"],
+            states["ZW-PAL-CHILD-COND-002"]["availability_requires"],
+        )
+        self.assertEqual(
+            ["empty_palace:子女宮"],
+            states["ZW-PAL-CHILD-COND-002"]["matched_satisfies_all"],
+        )
 
     def test_research_registries_remain_historically_non_routable(self):
         m=json.loads((ROOT/"ZIWEI_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
