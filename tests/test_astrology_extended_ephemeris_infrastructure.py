@@ -16,15 +16,16 @@ from tools.astrology_extended_ephemeris import (
 ROOT=Path(__file__).resolve().parents[1]
 
 class AstrologyExtendedEphemerisInfrastructureTests(unittest.TestCase):
-    def test_admission_is_fail_closed_pending_data_publish(self):
+    def test_admission_is_exact_data_commit_pinned_after_publish(self):
         data=json.loads((ROOT/"ASTROLOGY_EXTENDED_EPHEMERIS_ADMISSION_V1.json").read_text())
-        self.assertEqual("AWAITING_DATA_PUBLISH",data["status"])
+        self.assertEqual("PRODUCTION_ADMITTED",data["status"])
         self.assertEqual("explicit_request_only",data["activation"])
         self.assertEqual(list(OBJECT_IDS),data["object_ids"])
         self.assertEqual(DATASET_ID,data["dataset"]["dataset_id"])
         self.assertEqual(DATASET_SHA256,data["dataset"]["expected_sha256"])
         self.assertEqual(REPRESENTATION_ID,data["dataset"]["representation_id"])
-        self.assertIsNone(data["dataset"]["exact_data_commit"])
+        self.assertEqual("0052ba1c0a3b65238b4f9ec3a94a1aff47e341ea",data["dataset"]["exact_data_commit"])
+        self.assertEqual("SATISFIED",data["validation"]["admission_gate"])
         self.assertFalse(data["calculation_policy"]["default_aspect_participation"])
         self.assertFalse(data["calculation_policy"]["semantic_interpretation_authority"])
         self.assertEqual("not_admitted",data["calculation_policy"]["transit"])
