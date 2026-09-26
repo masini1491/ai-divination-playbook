@@ -111,6 +111,25 @@ jobs:
           if-no-files-found: error
           retention-days: 90
 
+      - name: Prepare exact-commit Zi Wei deterministic handoff artifact
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          set -euo pipefail
+          mkdir -p handoff/ziwei/runtime/ziwei handoff/ziwei/tools
+          cp runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json handoff/ziwei/runtime/ziwei/
+          cp tools/build_ziwei_tool_bundle.py handoff/ziwei/tools/
+          printf '%s\n' "$GITHUB_SHA" > handoff/ziwei/PLAYBOOK_COMMIT
+          python -c 'import hashlib,json,os; from pathlib import Path; root=Path("handoff/ziwei"); rels=["runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json","tools/build_ziwei_tool_bundle.py","PLAYBOOK_COMMIT"]; files={r:{"byte_size":(root/r).stat().st_size,"sha256":hashlib.sha256((root/r).read_bytes()).hexdigest()} for r in rels}; manifest={"schema_version":1,"authority":"workflow-handoff-metadata-only","source_repository":"masini1491/ai-divination-playbook","playbook_commit":os.environ["GITHUB_SHA"],"bundle_path":rels[0],"verifier_path":rels[1],"calendar_shards_included":False,"files":files}; print(json.dumps(manifest,ensure_ascii=False,indent=2),file=(root/"HANDOFF_MANIFEST.json").open("w",encoding="utf-8"))'
+
+      - name: Upload exact-commit Zi Wei deterministic handoff artifact
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ziwei-deterministic-handoff-${{ github.sha }}
+          path: handoff/ziwei/
+          if-no-files-found: error
+          retention-days: 90
+
   casting-runtime:
     runs-on: ubuntu-latest
     steps:
