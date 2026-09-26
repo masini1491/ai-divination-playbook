@@ -468,7 +468,7 @@ Ordering rationale:
 - owner: Zi Wei temporal runtime
 - blocked_by: none
 - stage_progress:
-  - decadal / 大限: IMPLEMENTED_CANDIDATE — bounded calculation-only provider + V2 dynamic transport + admission; awaiting PR validation / merge / canonical read-back;
+  - decadal / 大限: IMPLEMENTED_CANDIDATE — bounded calculation-only provider + V2 dynamic transport + admission; canonical Zi Wei bundle and ChatGPT load pack regenerated successfully; awaiting formal PR validation / merge / canonical read-back;
   - yearly / 流年: OPEN;
   - monthly / 流月: BLOCKED_BY_YEARLY;
   - daily / 流日: BLOCKED_BY_MONTHLY;
