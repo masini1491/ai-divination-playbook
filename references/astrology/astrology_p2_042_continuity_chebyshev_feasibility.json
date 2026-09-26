@@ -1,0 +1,142 @@
+{
+  "schema_name": "astrology_p2_042_continuity_chebyshev_feasibility",
+  "schema_version": "1.0.0",
+  "authority": "REFERENCE_ONLY_RESEARCH_EVIDENCE",
+  "production_admission": "NOT_GRANTED",
+  "experiment": {
+    "pre_execution_contract_commit": "6786fb20128c204f525971d06bdd1827620f318f",
+    "temporary_pr": 238,
+    "temporary_pr_merged": false,
+    "temporary_head": "6d60eef7176a53cd7cab0955e460a591e8f4c7cc",
+    "workflow_run_number": 835,
+    "workflow_run_id": 36218219868,
+    "validate_job": 108338359011,
+    "execution_status": "PASS",
+    "research_result": "PASSING_VARIANT_EXISTS"
+  },
+  "source_authority": {
+    "provider": "NASA/JPL Horizons",
+    "api": "Horizons API",
+    "observed_signature": {
+      "source": "NASA/JPL Horizons API",
+      "version": "1.2"
+    },
+    "center": "500@399",
+    "ephem_type": "OBSERVER",
+    "quantities": [
+      31
+    ],
+    "apparent": "AIRLESS",
+    "time_type": "UT",
+    "ordinary_runtime_network_required": false
+  },
+  "representation": {
+    "family_id": "single-segment-query-continuity-chebyshev-v0",
+    "source_grid_days": 5,
+    "runtime_blending": false,
+    "runtime_network_required": false
+  },
+  "thresholds_frozen_before_first_execution": {
+    "fixture_longitude_p95_arcsec_max": 10,
+    "fixture_longitude_max_arcsec_max": 30,
+    "fixture_speed_max_deg_per_day": 0.001,
+    "source_grid_longitude_p95_arcsec_max": 10,
+    "source_grid_longitude_max_arcsec_max": 30,
+    "binary_payload_bytes_max": 1048576,
+    "single_query_raw_payload_bytes_max": 64,
+    "boundary_longitude_jump_arcsec_max": 30,
+    "boundary_speed_jump_deg_per_day_max": 0.001
+  },
+  "variants": {
+    "c1-cheb-d5-w45": {
+      "mechanism": "c1",
+      "degree": 5,
+      "segment_width_days": 45,
+      "fit_padding_days": 0,
+      "binary_float64_payload_bytes": 1023840,
+      "binary_sha256": "26f2484b661fe1c5520e3a3b2c37f3251d22818ff6ce7ee1963e1a84844891ae",
+      "single_query_raw_payload_bytes": 48,
+      "fixture_longitude_p95_arcsec": 1.4044694899553178,
+      "fixture_longitude_max_arcsec": 3.3066723814386023,
+      "fixture_speed_max_deg_per_day": 0.00030344745076604784,
+      "source_grid_longitude_p95_arcsec": 1.1761517851937242,
+      "source_grid_longitude_max_arcsec": 17.5802393451022,
+      "boundary_longitude_jump_arcsec_max": 5.2386894822120667e-8,
+      "boundary_speed_jump_deg_per_day_max": 2.220446049250313e-16,
+      "failed_gates": [],
+      "feasibility_pass": true
+    },
+    "c1-cheb-d7-w60": {
+      "mechanism": "c1",
+      "degree": 7,
+      "segment_width_days": 60,
+      "fit_padding_days": 0,
+      "binary_float64_payload_bytes": 1023680,
+      "binary_sha256": "90485f0b7ff4b8e7e492b24fae3774cb2eec1bf4b6549401929b45460fa00363",
+      "single_query_raw_payload_bytes": 64,
+      "fixture_longitude_p95_arcsec": 1.0591044896386848,
+      "fixture_longitude_max_arcsec": 2.0936156061793554,
+      "fixture_speed_max_deg_per_day": 0.00033591935882493207,
+      "source_grid_longitude_p95_arcsec": 1.6886234278899792,
+      "source_grid_longitude_max_arcsec": 9.139838422458979,
+      "boundary_longitude_jump_arcsec_max": 5.2386894822120667e-8,
+      "boundary_speed_jump_deg_per_day_max": 3.3306690738754696e-16,
+      "failed_gates": [],
+      "feasibility_pass": true
+    },
+    "overlap-cheb-d5-w45-p10": {
+      "mechanism": "overlap",
+      "degree": 5,
+      "segment_width_days": 45,
+      "fit_padding_days": 10,
+      "binary_float64_payload_bytes": 1023840,
+      "binary_sha256": "d38d2c55c67e19ed2e14ec9890702641962bea1e64b08db40627eadd72e0c6f8",
+      "single_query_raw_payload_bytes": 48,
+      "fixture_longitude_p95_arcsec": 3.743367545871479,
+      "fixture_longitude_max_arcsec": 15.133623827227893,
+      "fixture_speed_max_deg_per_day": 0.000990411289765153,
+      "source_grid_longitude_p95_arcsec": 3.7813602759342757,
+      "source_grid_longitude_max_arcsec": 29.37489544709706,
+      "boundary_longitude_jump_arcsec_max": 6.314139838104893,
+      "boundary_speed_jump_deg_per_day_max": 0.0018344053366308385,
+      "failed_gates": [
+        "boundary_speed_jump_deg_per_day_max"
+      ],
+      "feasibility_pass": false
+    },
+    "overlap-cheb-d7-w60-p15": {
+      "mechanism": "overlap",
+      "degree": 7,
+      "segment_width_days": 60,
+      "fit_padding_days": 15,
+      "binary_float64_payload_bytes": 1023680,
+      "binary_sha256": "6927a73efa47284d29b5518e327d163e50c9ef29954efb8528382b48c03345c3",
+      "single_query_raw_payload_bytes": 64,
+      "fixture_longitude_p95_arcsec": 3.776905602376246,
+      "fixture_longitude_max_arcsec": 9.662990944900685,
+      "fixture_speed_max_deg_per_day": 0.00019503929564321232,
+      "source_grid_longitude_p95_arcsec": 3.2664347898503365,
+      "source_grid_longitude_max_arcsec": 18.41632890746041,
+      "boundary_longitude_jump_arcsec_max": 12.519279345349332,
+      "boundary_speed_jump_deg_per_day_max": 0.00046688477799283756,
+      "failed_gates": [],
+      "feasibility_pass": true
+    }
+  },
+  "passing_variants": [
+    "c1-cheb-d5-w45",
+    "c1-cheb-d7-w60",
+    "overlap-cheb-d7-w60-p15"
+  ],
+  "research_front_runner": {
+    "variant_id": "c1-cheb-d7-w60",
+    "rationale": "Among passing candidates it preserves exact C1 boundary continuity and the strongest observed worst-case source-grid longitude margin while staying within the same ~1 MiB artifact and 64-byte query envelope.",
+    "production_selection": false
+  },
+  "conclusion": {
+    "architecture_feasibility": "PASS",
+    "unblock_effect": "AST-P2-040 five-body transport/precision architecture proof prerequisite is satisfied for research coordination.",
+    "production_consequence": "NONE",
+    "next_gate": "Separate production-admission review must define artifact generation/provenance, materialization/integrity, runtime evaluator, broader numeric validation/failure behavior, provider manifest integration, and extended-object policy boundaries."
+  }
+}
