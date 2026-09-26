@@ -29,8 +29,8 @@ Last reviewed against:
 
 ```text
 ai-divination-playbook main
-136547a0de8fec12deee623e45f4dcc4d05a04ed
-Align loader product manifest with regression matrix
+cb1722ea5e52484f48811cd9e28404c0a4ca9c49
+Merge AST-P2-040 extended ephemeris production admission
 ```
 
 This SHA is review evidence only, not a pin. Every maintenance or implementation task must resolve current `main` again before mutation.
@@ -78,10 +78,16 @@ Recent blocker-resolution result:
 - **AST-P2-042 — Continuity-constrained / overlap Chebyshev feasibility — DONE / PASS**
   - three frozen variants passed every architecture gate; `c1-cheb-d7-w60` is the current research front-runner and preserves a one-segment / 64-byte ordinary query envelope.
 
-Next actionable item:
+Recent production-admission closure:
 
-- **AST-P2-040 — Broader extended ephemeris objects**
-  - production-admission implementation is in final review: Chiron/Ceres/Pallas/Juno/Vesta are scoped as explicit known-time natal calculation facts only, pinned to the dedicated generated-data commit; semantic interpretation, default aspect participation, unknown-time and transit remain closed. Mark DONE only after merge + main/readback + CI closure.
+- **AST-P2-040 — Broader extended ephemeris objects — DONE**
+  - Chiron/Ceres/Pallas/Juno/Vesta are production-admitted as explicit known-time natal calculation facts only.
+  - provider: `astrology-extended-ephemeris-c1-v1`; exact data commit: `0052ba1c0a3b65238b4f9ec3a94a1aff47e341ea`; dataset SHA-256: `580bb2a8ef463dfc6527ea611f27daad3562cb1fa5698391b3e2baeba64987bf`.
+  - query-bounded materialization uses 17 float32 C1 Chebyshev shards; maximum shard transport is 30,720 raw bytes / 40,960 compact base64 characters.
+  - final admission merged in PR #245 at main `cb1722ea5e52484f48811cd9e28404c0a4ca9c49`.
+  - canonical main read-back verified admission manifest, machine index, pinned data commit and derived core bundle.
+  - main push Validate Playbook run `36224576380` passed `validate`, `casting-runtime`, unit tests and structural checker.
+  - semantic interpretation, default aspect participation, unknown-time and transit extended-object paths remain closed.
 
 Standing / pointer items are not numbered feature work:
 
