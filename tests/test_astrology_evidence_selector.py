@@ -57,6 +57,40 @@ def natal_typed_request() -> dict:
     }
 
 
+def north_node_typed_request() -> dict:
+    return {
+        "schema_name": "astrology_typed_evidence_selection_request",
+        "schema_version": "1.0.0",
+        "question_id": "typed-north-node-sign",
+        "question": "What bounded symbolic North Node sign interpretation is admitted?",
+        "fact_selectors": [{
+            "selector_id": "node", "selector_kind": "object", "bundle": "natal",
+            "cardinality": "exactly_one", "object_id": "NorthNode", "object_type": "point",
+        }],
+        "claim_selectors": [
+            {
+                "selector_id": "node-function",
+                "registry_record_id": "north-node-sign-semantics-research-v1",
+                "semantic_profile": "composable-symbolic-modern-v1",
+                "claim_type": "north_node_function",
+                "applicability_scope": "north_node_core",
+                "applies_to_all": ["natal"],
+                "fact_selector_ids": ["node"],
+            },
+            {
+                "selector_id": "node-sign-style",
+                "registry_record_id": "planet-sign-composable-semantics-research-v1",
+                "semantic_profile": "composable-symbolic-modern-v1",
+                "claim_type": "sign_style",
+                "applicability_scope": "north_node_sign_style",
+                "applies_to_all": ["natal"],
+                "fact_selector_ids": ["node"],
+            },
+        ],
+        "unsupported_factors": [],
+    }
+
+
 class AstrologyEvidenceSelectorTests(unittest.TestCase):
     def test_natal_typed_selection_materializes_existing_handoff_request(self):
         run = run_request(load(NATAL_READING))
@@ -597,6 +631,48 @@ class AstrologyEvidenceSelectorTests(unittest.TestCase):
         ):
             select_evidence(run, typed, repo_root=ROOT)
 
+
+
+    def test_north_node_sign_semantics_use_separate_claim_family_and_actual_sign(self):
+        run = run_request(load(NATAL_READING))
+        node = next(row for row in run["fact_bundles"]["natal"]["facts"]["objects"] if row.get("object_id") == "NorthNode")
+        selection = select_evidence(run, north_node_typed_request(), repo_root=ROOT)
+        self.assertEqual(
+            {"claim:north-node-function:growth-edge", "claim:sign-style:" + node["sign"].lower()},
+            {row["claim_id"] for row in selection["claim_requests"]},
+        )
+        handoff = build_handoff(run, selection_to_interpretation_request(selection), repo_root=ROOT)
+        self.assertEqual("ready_for_bounded_interpretation", handoff["status"])
+        self.assertEqual({"north_node_function", "sign_style"}, {row["claim_type"] for row in handoff["selected_claims"]})
+
+    def test_north_node_sign_semantics_cannot_be_redirected_to_wrong_sign(self):
+        run = run_request(load(NATAL_READING))
+        node = next(row for row in run["fact_bundles"]["natal"]["facts"]["objects"] if row.get("object_id") == "NorthNode")
+        wrong = next(sign for sign in ["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"] if sign != node["sign"])
+        typed = north_node_typed_request()
+        typed["claim_selectors"][1]["applies_to_all"] = ["natal", wrong]
+        with self.assertRaisesRegex(AstrologyEvidenceSelectionError, "matched no admitted claims"):
+            select_evidence(run, typed, repo_root=ROOT)
+
+    def test_north_node_semantics_fail_closed_when_provider_mean_provenance_is_missing(self):
+        run = run_request(load(NATAL_READING))
+        run["fact_bundles"]["natal"]["provider"]["provider_version"] = "unadmitted-version"
+        with self.assertRaisesRegex(AstrologyEvidenceSelectionError, "requires mean NorthNode provenance"):
+            select_evidence(run, north_node_typed_request(), repo_root=ROOT)
+
+    def test_north_node_semantics_reject_explicit_non_mean_definition(self):
+        run = run_request(load(NATAL_READING))
+        node = next(row for row in run["fact_bundles"]["natal"]["facts"]["objects"] if row.get("object_id") == "NorthNode")
+        node["node_definition"] = "true"
+        with self.assertRaisesRegex(AstrologyEvidenceSelectionError, "requires mean NorthNode provenance"):
+            select_evidence(run, north_node_typed_request(), repo_root=ROOT)
+
+    def test_north_node_function_registry_requires_dedicated_core_scope(self):
+        run = run_request(load(NATAL_READING))
+        typed = north_node_typed_request()
+        typed["claim_selectors"][0]["applicability_scope"] = "object_core"
+        with self.assertRaisesRegex(AstrologyEvidenceSelectionError, "requires applicability_scope=north_node_core"):
+            select_evidence(run, typed, repo_root=ROOT)
 
 if __name__ == "__main__":
     unittest.main()

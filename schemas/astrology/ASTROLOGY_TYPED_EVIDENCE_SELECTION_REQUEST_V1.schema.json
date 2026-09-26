@@ -377,7 +377,9 @@
             "selector_shape",
             "object_core",
             "sign_style",
-            "object_sign_pair"
+            "object_sign_pair",
+            "north_node_core",
+            "north_node_sign_style"
           ],
           "default": "selector_shape",
           "description": "Controls which applicability tags are derived deterministically from matched facts. object_core binds object_id; sign_style binds the admitted sign from a planet fact; object_sign_pair binds both. Omitted preserves legacy selector-shape binding."
