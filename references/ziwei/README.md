@@ -28,6 +28,7 @@ research-only scaffold
 - optional brightness profile：`ziwei.brightness.iztro_v1` 已 admitted，僅 explicit add-on
 - deterministic ChatGPT materialization：`ZIWEI_MATERIALIZATION.md` + bundle 已建立
 - ordinary unspecified auto-routing：仍刻意為 false
+- decadal / 大限 calculation：`decadal.quanji_common_v1` calculation-only production admission candidate；dynamic interpretation仍未 admission；yearly／monthly／daily／hourly仍未 admission
 - broader contextual / auxiliary / Four-Transformation / dynamic interpretation：仍未 production-admitted
 - 科學／客觀預測有效性：未聲稱
 
