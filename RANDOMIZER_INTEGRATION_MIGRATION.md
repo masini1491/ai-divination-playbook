@@ -373,16 +373,21 @@ Python 3.12
 → structural checker
 ```
 
-Current Randomizer validation class:
+Current Randomizer validation classes:
 
 ```text
-Python 3.13
+general validation.yml
+→ Python 3.13
 → OpenAPI JSON validation
 → unit + contract tests
-→ main-push Vercel production smoke
+
+casting-production-smoke.yml
+→ main push only
+→ paths: runtime/casting/**
+→ Vercel production smoke
 ```
 
-Current monorepo deployment semantics are path-bounded: Vercel may skip a Git deployment when `runtime/casting/**` is unchanged. Therefore main-push production smoke validates that the deployed `runtime_source_commit` is an ancestor of current main and that its `runtime/casting` Git tree exactly matches current main. Exact equality with the monorepo HEAD is required only when that HEAD is the deployed casting-source commit; unrelated Astrology/docs/governance commits must not force a redundant casting deployment.
+Current monorepo deployment semantics are path-bounded at both deployment and online-smoke layers. Vercel may skip a Git deployment when `runtime/casting/**` is unchanged, and the live production smoke workflow is triggered only when `runtime/casting/**` changes on `main`. The smoke still validates that the deployed `runtime_source_commit` is an ancestor of current main and that its `runtime/casting` Git tree exactly matches current main. Exact equality with the monorepo HEAD is required only when that HEAD is the deployed casting-source commit; unrelated Astrology/docs/governance commits neither force a redundant casting deployment nor inherit live Vercel availability as a general validation gate.
 
 Migration may normalize Python versions later only as a separately evidenced compatibility decision. Version normalization is not required to prove repository consolidation.
 

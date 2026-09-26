@@ -5,13 +5,25 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-WORKFLOW = ROOT / ".github" / "workflows" / "validation.yml"
+VALIDATION_WORKFLOW = ROOT / ".github" / "workflows" / "validation.yml"
+PRODUCTION_SMOKE_WORKFLOW = ROOT / ".github" / "workflows" / "casting-production-smoke.yml"
 VERCEL_CONFIG = ROOT / "runtime" / "casting" / "vercel.json"
 
 
 class CastingDeploymentProvenanceContractTests(unittest.TestCase):
+    def test_production_smoke_is_path_bounded_and_separate_from_general_validation(self):
+        validation = VALIDATION_WORKFLOW.read_text(encoding="utf-8")
+        workflow = PRODUCTION_SMOKE_WORKFLOW.read_text(encoding="utf-8")
+
+        self.assertNotIn("production-smoke:", validation)
+        self.assertIn("name: Casting Production Smoke", workflow)
+        self.assertIn("branches: [main]", workflow)
+        self.assertIn("paths:", workflow)
+        self.assertIn('"runtime/casting/**"', workflow)
+        self.assertNotIn("pull_request:", workflow)
+
     def test_production_smoke_validates_deployed_runtime_tree_not_monorepo_head_identity(self):
-        workflow = WORKFLOW.read_text(encoding="utf-8")
+        workflow = PRODUCTION_SMOKE_WORKFLOW.read_text(encoding="utf-8")
 
         self.assertIn("fetch-depth: 0", workflow)
         self.assertIn('CURRENT_SHA: ${{ github.sha }}', workflow)
