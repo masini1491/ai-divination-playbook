@@ -262,6 +262,7 @@
     "unknown_time_requires_exact_coordinates": false,
     "unknown_time_requires_iana_timezone": true,
     "provider_version": "1.3.0",
+    "north_node_definition": "mean",
     "known_time_derived_axes": {
       "object_ids": [
         "SouthNode",
@@ -489,6 +490,7 @@
     "transit-interpretation-research-v1",
     "saturn-moon-major-aspects-research-v1",
     "planet-sign-composable-semantics-research-v1",
+    "north-node-sign-semantics-research-v1",
     "south-node-fortune-research-v1"
   ],
   "qualified_only_registries": [
@@ -513,6 +515,8 @@
     "unbounded_transit_search",
     "sidereal_transit_ingress",
     "unsourced_planet_in_sign_personality_templates",
+    "north_node_aspect_semantic_interpretation_without_separate_claim_family",
+    "generic_nodal_karmic_or_past_life_doctrine_without_separate_claim_family",
     "transit_house_semantic_interpretation_without_separate_claim_family"
   ],
   "high_stakes_guardrails": [
@@ -537,13 +541,22 @@
     "planet_sign_interpretation": "compose_admitted_planet_function_plus_sign_style_claims",
     "exact_planet_sign_pair_meaning": "requires_separately_admitted_pair_specific_claim",
     "fixed_personality_template": "forbidden",
-    "north_node_sign_interpretation": "not_admitted_without_separate_claim_family",
+    "north_node_sign_interpretation": "compose_admitted_north_node_function_plus_sign_style_claims",
+    "north_node_definition_required": "mean",
+    "north_node_semantic_exclusions": [
+      "aspect_meanings",
+      "generic_karmic_doctrine",
+      "past_life_doctrine",
+      "soul_evolution_doctrine",
+      "SouthNode_semantics"
+    ],
     "source_binding": "typed_fact_applicability_required",
     "semantic_profile_required_for_planet_sign_registry": "composable-symbolic-modern-v1",
+    "semantic_profile_required_for_north_node_sign_registry": "composable-symbolic-modern-v1",
     "silent_default_semantic_profile": "forbidden",
     "semantic_profiles": {
       "composable-symbolic-modern-v1": {
-        "scope": "bounded composable planet-function + sign-style symbolic interpretation",
+        "scope": "bounded composable symbolic interpretation for admitted planet functions and separately admitted mean-North-Node function + sign style",
         "historical_context": "context:modern_contemporary",
         "doctrine_status": "project semantic profile, not a canonical astrology school",
         "scientific_or_psychometric_validity": false

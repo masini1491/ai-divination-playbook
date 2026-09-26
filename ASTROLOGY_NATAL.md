@@ -113,7 +113,8 @@ Yod、Stellium、Grand Quintile 另走 `tools/astrology_special_pattern_projecti
 ## 8. Natal Unsupported / Uncertainty
 
 - 無 house fact → 不從 Sun sign猜 house；
-- planet-in-sign interpretation 優先組合 production-admitted 的 planet-function + sign-style claims；該 composable semantics registry 必須由 typed request 明確選擇 production manifest 所列 semantic profile，不得在 tradition / framework 未指定時 silent-default。此 profile 是 project semantic profile，不得冒充 canonical astrology school。不得把兩者合成固定人格診斷。Exact planet/sign pair meaning只有在另有 pair-specific admitted claim時才可使用；無 source-backed claim（包含目前未另行 admission 的 North Node sign semantics）→ `unsupported_factor`；
+- planet-in-sign interpretation 優先組合 production-admitted 的 planet-function + sign-style claims；該 composable semantics registry 必須由 typed request 明確選擇 production manifest 所列 semantic profile，不得在 tradition / framework 未指定時 silent-default。此 profile 是 project semantic profile，不得冒充 canonical astrology school。不得把兩者合成固定人格診斷。Exact planet/sign pair meaning只有在另有 pair-specific admitted claim時才可使用；無 source-backed claim → `unsupported_factor`；
+- North Node sign interpretation 只允許 `north-node-sign-semantics-research-v1` 的 bounded `north_node_function` 與既有 admitted sign-style composition。typed selection 必須以 `north_node_core` / `north_node_sign_style` 綁定實際 `NorthNode` point、實際 sign，並保留 production-admitted **mean North Node** provenance；普通 planet `sign_style` scope 仍不得接受 point。此 admission 不包含 North Node aspect meanings、South Node semantics、generic karma / past-life / soul-evolution doctrine，缺任一 admission 或 provenance gate 時保持 `unsupported_factor`；
 - `user_asserted` chart facts要標示未獨立重算；
 - birth-time uncertainty materially影響 house/angle時必須揭露；unknown-time invariant-only bundle不得被描述成完整星盤；
 - unknown-time 被 provider省略的天體代表該 local-date window 內 sign 無法達到 admission certainty，不得由模型補猜；

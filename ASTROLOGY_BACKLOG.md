@@ -543,7 +543,7 @@ This item is a standing reconciliation guard. It is not a request to change curr
 ### AST-P1-170 — North Node sign semantic claim-family admission
 
 - type: FEATURE / INTERPRETATION / CLAIM ADMISSION
-- status: OPEN
+- status: IN_PROGRESS
 - priority: P1
 - owner: Astrology natal semantic admission / North Node interpretation
 - blocked_by: none
@@ -553,6 +553,8 @@ This item is a standing reconciliation guard. It is not a request to change curr
   - `ASTROLOGY_PROVIDER_ADMISSION_V1.json`
   - `references/astrology/PLANET_SIGN_COMPOSABLE_SEMANTICS_EVIDENCE.md`
   - `references/astrology/planet_sign_composable_semantics_claim_family_registry.json`
+  - `references/astrology/NORTH_NODE_SIGN_SEMANTICS_EVIDENCE.md`
+  - `references/astrology/north_node_sign_semantics_claim_family_registry.json`
 - production_observation:
   - admitted natal facts can produce `NorthNode` longitude/sign, e.g. `NorthNode / Aries`;
   - North Node already participates in current deterministic core major-aspect geometry;
