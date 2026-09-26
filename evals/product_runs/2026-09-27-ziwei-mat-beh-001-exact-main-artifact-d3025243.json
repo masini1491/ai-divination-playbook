@@ -9,7 +9,7 @@
     "Current ai-divination-playbook main was resolved through GitHub Connect to exact commit d3025243568f79a8d68ef957907b39fb62eba9b9.",
     "Validate Playbook main-push run 36262398945 completed successfully with validate=PASS and casting-runtime=PASS; unit tests, structural checker, Zi Wei handoff preparation, and Zi Wei artifact upload all passed.",
     "The run published artifact ziwei-deterministic-handoff-d3025243568f79a8d68ef957907b39fb62eba9b9 (artifact id 10912972000, 57348 bytes) with GitHub digest sha256:341868711cd5866d9b040969934fb9b7ecccf49ce59067b5574b38bd4de42362.",
-    "GitHub connector download_workflow_artifact returned a reusable connector-backed ZIP file reference, which was intentionally materialized into the execution filesystem through Files materialization.",
+    "GitHub connector download_workflow_artifact returned a reusable connector-backed ZIP file reference and materialized the ZIP into the execution filesystem.",
     "Execution-container SHA-256 of the materialized ZIP exactly matched the GitHub artifact digest.",
     "The ZIP contained HANDOFF_MANIFEST.json, PLAYBOOK_COMMIT, runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json, and tools/build_ziwei_tool_bundle.py only.",
     "HANDOFF_MANIFEST.json parsed as valid JSON; source_repository and playbook_commit matched the expected repository and exact main commit; PLAYBOOK_COMMIT also matched exactly; calendar_shards_included was false.",
@@ -21,7 +21,7 @@
   ],
   "classification_reason": "PASS. The exact-main publishing enhancement closes the observed host-transport gap: after verified cache miss and absent direct repo-file bridge, successful main validation exposes a connector-backed Zi Wei artifact that can be downloaded, byte-materialized, verified against GitHub digest plus exact commit/manifest identities, passed through the existing canonical bundle verifier/materializer, and executed in an isolated Python runtime. Calendar year shards remain excluded and query-bounded; the prior same-commit bounded opaque bundle path remains the fallback when the temporary artifact is absent, expired, unavailable, or invalid.",
   "notes": {
-    "environment": "ChatGPT product session with GitHub connector, Files materialization, and execution container; no universal product/session availability claim is made.",
+    "environment": "ChatGPT product session with GitHub connector-backed artifact download/materialization and execution container; no universal product/session availability claim is made.",
     "workflow_run_id": 36262398945,
     "artifact_id": 10912972000,
     "artifact_name": "ziwei-deterministic-handoff-d3025243568f79a8d68ef957907b39fb62eba9b9",
