@@ -71,8 +71,15 @@ explicit Astrology natal/transit request
          → direct byte/file-aware connector→filesystem handoff available
             → direct verified materialization of required same-commit core assets
          → direct handoff unavailable
-            → fetch same-commit runtime/astrology/CHATGPT_DETERMINISTIC_CORE_BUNDLE.json
-            → bounded verified opaque transport
+            → exact resolved commit has a successful main-push Astrology core handoff artifact?
+               → yes: download exact-commit artifact through GitHub connector
+               → materialize connector-backed file payload
+               → verify artifact digest when exposed by GitHub
+               → verify PLAYBOOK_COMMIT + HANDOFF_MANIFEST.json exact commit/file identities
+               → load bundled canonical verifier + core bundle
+               → materialize with the same chunk/archive/per-file integrity gates
+               → no / expired / unavailable: fetch same-commit runtime/astrology/CHATGPT_DETERMINISTIC_CORE_BUNDLE.json
+            → bounded verified opaque transport fallback
             → verify every chunk length + SHA-256
             → index-order concat
             → base64 decode + zlib decompress
@@ -98,7 +105,9 @@ Identity不足、material source changed、dependency impact unresolved、compar
 
 ### Host Capability Gate / No Full-Bundle-First Rule
 
-只有 real cache miss / invalid identity 才判斷 connector→execution handoff。Host提供 direct byte/file-aware handoff時優先使用；沒有 direct bridge不代表 runtime unavailable，仍可使用既有 bounded verified opaque bundle fallback。
+只有 real cache miss / invalid identity 才判斷 connector→execution handoff。Host提供 direct byte/file-aware handoff時優先使用。Direct bridge unavailable時，若 resolved exact commit存在成功的 `main` push validation handoff artifact，優先使用該 connector-backed file payload；只有 artifact不存在、已過期、下載/identity驗證失敗或 resolved commit沒有對應 main-push artifact時，才進既有 bounded verified opaque bundle fallback。
+
+Main-push handoff artifact只是 **temporary transport convenience**，不是 source authority、不是 production admission、也不取代 Git-tracked core bundle。Artifact名稱必須包含 exact playbook commit；payload至少包含同 commit的 `CHATGPT_DETERMINISTIC_CORE_BUNDLE.json`、canonical bundle verifier、`PLAYBOOK_COMMIT` 與 machine-readable handoff manifest。下載後若 GitHub connector提供 artifact digest，先驗 downloaded artifact bytes與該 digest；再驗 `PLAYBOOK_COMMIT`、manifest repository/commit與各 payload file SHA-256。任一 mismatch直接停止 artifact route，不把錯誤 bytes餵給 verifier。Actions artifact可能依 retention policy過期；availability miss只代表此 fast path不可用，不得升格成 Astrology runtime unavailable。
 
 **不得在 cache reuse probe完成前，或 host handoff necessity尚未成立前，就把 full bundle / chunks 搬進 model-visible context。** Model-visible chunk/base64只證明 acquisition visibility；不等於 filesystem materialization。
 
@@ -253,6 +262,7 @@ ASTROLOGY DETERMINISTIC CORE RUNTIME UNAVAILABLE
 ```text
 GitHub Connect → current source acquisition authority
 core bundle → derived transport cache only
+main-push handoff artifact → temporary exact-commit connector-backed transport only
 this contract → core handoff / verification / cache policy only
 Astronomy Engine → pinned astronomical calculation dependency
 Astrology providers/runtime → deterministic production facts + Fact Gate

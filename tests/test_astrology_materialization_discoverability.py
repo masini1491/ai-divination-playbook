@@ -10,6 +10,7 @@ class AstrologyMaterializationDiscoverabilityTests(unittest.TestCase):
         self.matrix=json.loads((ROOT/"evals"/"regression_matrix.json").read_text(encoding="utf-8"))
         self.contract=(ROOT/"ASTROLOGY_MATERIALIZATION.md").read_text(encoding="utf-8")
         self.scenario=(ROOT/"evals"/"ASTROLOGY_MATERIALIZATION_PRODUCT_SCENARIO.md").read_text(encoding="utf-8")
+        self.workflow=(ROOT/".github"/"workflows"/"validation.yml").read_text(encoding="utf-8")
 
     def test_index_exposes_core_transport_without_owner_change(self):
         c=next(x for x in self.index["capabilities"] if x["id"]=="method.astrology")
@@ -63,6 +64,28 @@ class AstrologyMaterializationDiscoverabilityTests(unittest.TestCase):
             "whole GeoNames dataset is not transported merely to resolve one place",
         ):
             self.assertIn(phrase,self.scenario)
+
+    def test_main_push_publishes_exact_commit_core_handoff_artifact(self):
+        for phrase in (
+            "Prepare exact-commit Astrology core handoff artifact",
+            "Upload exact-commit Astrology core handoff artifact",
+            "github.event_name == 'push' && github.ref == 'refs/heads/main'",
+            "astrology-core-handoff-${{ github.sha }}",
+            "PLAYBOOK_COMMIT",
+            "HANDOFF_MANIFEST.json",
+            "retention-days: 90",
+        ):
+            self.assertIn(phrase,self.workflow)
+        for phrase in (
+            "successful main-push Astrology core handoff artifact",
+            "verify artifact digest when exposed by GitHub",
+            "PLAYBOOK_COMMIT + HANDOFF_MANIFEST.json",
+            "temporary transport convenience",
+            "artifact不存在、已過期",
+        ):
+            self.assertIn(phrase,self.contract)
+        self.assertIn("connector-backed artifact file path before model-visible chunk transport",self.scenario)
+        self.assertIn("Artifact absence/expiry must preserve the existing same-commit bounded opaque fallback",self.scenario)
 
     def test_root_owner_routes_runtime_miss_to_materialization(self):
         text=(ROOT/"ASTROLOGY.md").read_text(encoding="utf-8")
