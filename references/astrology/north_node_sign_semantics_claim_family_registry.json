@@ -1,0 +1,135 @@
+{
+  "schema_name": "interpretation_claim_registry",
+  "schema_version": "0.2.0-research",
+  "record_status": "REFERENCE-ONLY",
+  "record_kind": "interpretation_claim_family_registry",
+  "record_id": "north-node-sign-semantics-research-v1",
+  "claim_family": "bounded North Node function for sign-level composition",
+  "production_routable": false,
+  "retrieval_preconditions": {
+    "requires_l2_facts": true,
+    "requires_l3_policy": true
+  },
+  "sources": [
+    {
+      "source_id": "source:aryaminus-north-node-western-growth-edge",
+      "title": "Western Tropical — interpretation ruleset",
+      "author_or_org": "aryaminus/astro contributors",
+      "source_role": "REFERENCE_IMPLEMENTATION",
+      "source_kind": "repository",
+      "tradition_tags": [
+        "western",
+        "modern",
+        "symbolic"
+      ],
+      "immutable_revision": "82df4c1c285cb470625373a716bab86c343e4b6e",
+      "locator": [
+        "skills/astrology/references/western.md",
+        "LICENSE"
+      ],
+      "language": "English",
+      "license_status": "verified_permissive",
+      "license_identifier": "MIT",
+      "copyright_status": "copyrighted",
+      "storage_mode": [
+        "metadata_plus_locator",
+        "normalized_paraphrase"
+      ],
+      "verification_status": [
+        "identity_verified",
+        "revision_verified",
+        "license_verified",
+        "locator_verified"
+      ],
+      "admission_status": [
+        "CLAIM_ELIGIBLE"
+      ],
+      "admission_scope": [
+        "bounded North Node developmental direction / growth-edge symbolic function",
+        "modern-Western sign-level compositional interpretation"
+      ],
+      "excluded_scope": [
+        "North Node aspect meanings",
+        "South Node semantics",
+        "generic karmic doctrine",
+        "past-life doctrine",
+        "soul-evolution doctrine",
+        "fate or obligation certainty",
+        "Vedic Rahu/Ketu doctrine",
+        "true-versus-mean node calculation authority",
+        "scientific predictive validity"
+      ],
+      "independence_status": "derivative_practitioner_synthesis",
+      "derivative_relationship": "Reviewed modern-Western practitioner/reference synthesis; this registry stores only a narrower project-authored normalized paraphrase.",
+      "notes": [
+        "The external repository remains REFERENCE-ONLY at repository level; CLAIM_ELIGIBLE is limited to the bounded reviewed statement and locator.",
+        "Production node calculation identity is independently owned by the admitted provider manifest and is not inferred from this interpretation source."
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "claim:north-node-function:growth-edge",
+      "layer": "L4",
+      "claim_type": "north_node_function",
+      "normalized_statement": "In a bounded modern symbolic natal reading, the North Node is used as a developmental direction or growth edge, emphasizing qualities that may feel less familiar and are cultivated deliberately.",
+      "source_refs": [
+        "source:aryaminus-north-node-western-growth-edge"
+      ],
+      "source_locator_refs": [
+        "skills/astrology/references/western.md"
+      ],
+      "tradition_tags": [
+        "western",
+        "modern",
+        "symbolic"
+      ],
+      "tradition_context_refs": [],
+      "historical_context_refs": [
+        "context:modern_contemporary"
+      ],
+      "meta_context_refs": [],
+      "applies_to": [
+        "natal",
+        "NorthNode"
+      ],
+      "scope": "bounded symbolic North Node function for natal sign-level composition",
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": [],
+      "cautions": [
+        "Symbolic interpretation is not scientific personality measurement, diagnosis, or fate prediction.",
+        "Do not infer karma, past lives, soul evolution, South Node meaning, or North Node aspect meaning from this claim.",
+        "Compose only with the actual admitted NorthNode sign through the dedicated mean-node provenance gate."
+      ],
+      "storage_origin": "project-authored normalized paraphrase"
+    }
+  ],
+  "conflict_groups": [],
+  "lineage_rules": [
+    "NorthNode remains a point and is not reclassified as a planet.",
+    "Deterministic NorthNode sign/longitude and mean-node definition remain owned by production provider/admission policy.",
+    "The North Node function claim requires dedicated north_node_core applicability with mean-node provenance.",
+    "Sign style is reused only through dedicated north_node_sign_style applicability bound to the actual admitted NorthNode sign.",
+    "North Node aspect meanings, South Node semantics, generic karmic doctrine and past-life doctrine remain outside this claim family.",
+    "A retrieval or provenance miss never permits model-memory invention."
+  ],
+  "research_result": {
+    "production_authority_granted": false,
+    "scientific_predictive_validity_claimed": false,
+    "architecture_reference": "Separate North Node function semantics from deterministic node calculation and from reusable sign-style semantics."
+  },
+  "privacy": {
+    "contains_real_birth_data": false,
+    "fixture_type": "source-evidence registry only"
+  },
+  "selection_policy": {
+    "required_semantic_profile": "composable-symbolic-modern-v1",
+    "silent_default_allowed": false,
+    "profile_kind": "project_semantic_profile_not_tradition",
+    "required_applicability_scopes_by_claim_type": {
+      "north_node_function": "north_node_core"
+    },
+    "rationale": "North Node is a point with independently owned mean-node calculation provenance; a dedicated typed core scope prevents generic object_core from silently granting Node semantics."
+  }
+}

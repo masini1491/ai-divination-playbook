@@ -543,7 +543,7 @@ This item is a standing reconciliation guard. It is not a request to change curr
 ### AST-P1-170 — North Node sign semantic claim-family admission
 
 - type: FEATURE / INTERPRETATION / CLAIM ADMISSION
-- status: OPEN
+- status: DONE
 - priority: P1
 - owner: Astrology natal semantic admission / North Node interpretation
 - blocked_by: none
@@ -553,15 +553,22 @@ This item is a standing reconciliation guard. It is not a request to change curr
   - `ASTROLOGY_PROVIDER_ADMISSION_V1.json`
   - `references/astrology/PLANET_SIGN_COMPOSABLE_SEMANTICS_EVIDENCE.md`
   - `references/astrology/planet_sign_composable_semantics_claim_family_registry.json`
+  - `references/astrology/NORTH_NODE_SIGN_SEMANTICS_EVIDENCE.md`
+  - `references/astrology/north_node_sign_semantics_claim_family_registry.json`
+  - `tools/astrology_evidence_selector.py`
+  - `tests/test_astrology_evidence_selector.py`
+  - `tests/test_astrology_evidence_selector_contract.py`
+  - `tests/test_astrology_production_contract.py`
 - production_observation:
-  - admitted natal facts can produce `NorthNode` longitude/sign, e.g. `NorthNode / Aries`;
-  - North Node already participates in current deterministic core major-aspect geometry;
-  - current production policy explicitly keeps `north_node_sign_interpretation = not_admitted_without_separate_claim_family`.
+  - admitted natal facts produce `NorthNode` longitude/sign as an `object_type=point` deterministic fact;
+  - production provider/admission now explicitly records `north_node_definition = mean`;
+  - North Node remains eligible for deterministic core major-aspect geometry, but that geometry grants no aspect semantic authority.
 - current_state:
-  - deterministic North Node sign facts are production facts;
-  - existing composable planet-function/sign-style registry deliberately excludes North Node because it is a point, not a planet;
-  - no separate source-backed North Node sign semantic claim family is admitted or tracked;
-  - North Node aspect geometry does not grant sign semantics or aspect-meaning authority.
+  - bounded North Node sign interpretation is production-admitted as composition of a separate `north_node_function` claim plus the actual admitted sign-style claim;
+  - source-backed Node function evidence is pinned to `aryaminus/astro@82df4c1c285cb470625373a716bab86c343e4b6e` (MIT) and stored only as metadata/locator plus project-authored normalized paraphrase;
+  - dedicated typed scopes `north_node_core` and `north_node_sign_style` bind the actual `NorthNode` point and sign while preserving mean-node provenance;
+  - ordinary planet `sign_style` applicability remains planet-only and was not widened to generic points;
+  - North Node aspect meanings, South Node semantics, generic karmic doctrine, past-life doctrine and soul-evolution doctrine remain outside this admission.
 - completion_gate:
   - review source-backed North Node sign-level semantic evidence and admit only a bounded claim family if evidence is sufficient;
   - keep node semantics separate from ordinary planet-function claims;
@@ -569,7 +576,13 @@ This item is a standing reconciliation guard. It is not a request to change curr
   - preserve source/tradition/profile identity and fail closed on retrieval/admission miss;
   - do not auto-admit generic karmic / past-life doctrine without separate explicit source/admission;
   - do not expand this item into North Node aspect semantic claims; those remain a separate future claim-family question;
-  - deterministic North Node facts remain usable even when no semantic claim is admitted.
+  - deterministic North Node facts remain usable even when semantic selection is not requested.
+- closure:
+  - admitted `north-node-sign-semantics-research-v1` with one bounded `north_node_function` claim: developmental direction / unfamiliar growth edge in the explicit `composable-symbolic-modern-v1` project semantic profile;
+  - reused existing sign-style claims only through `north_node_sign_style`, so the selected sign is derived from the matched admitted NorthNode fact rather than caller redirection;
+  - added fail-closed checks for wrong sign, missing/unadmitted provider provenance, explicit non-mean node definition, and attempts to use generic `object_core` for the Node-function registry;
+  - provider runtime/core bundle was not changed; mean provenance is closed by exact admitted provider identity/version plus explicit provider/admission manifest policy;
+  - PR #232 candidate `47211cbb73411dd560d783ba5d8f643d1fd4cbd5` passed Validate Playbook run #824, including `Run unit tests`, `Run structural checker`, Astrology core-bundle verification, rule-layering checks and casting-runtime.
 
 ## P2 — deferred compatibility / provider expansion
 

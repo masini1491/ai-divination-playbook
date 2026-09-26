@@ -13,6 +13,7 @@ Reviewed Playbook baseline: `masini1491/ai-divination-playbook@6bd58ea5bb61849c2
 | `aloistr/swisseph` | `91339e55d2351f32548d8a8d5bca6aa93b4f6da7` | ephemeris / astronomical calculation reference | dual-license: AGPL or Swiss Ephemeris Professional License | REFERENCE-ONLY |
 | `theriftlab/immanuel-python` | `46190726ebe012f43c93d163745682e806975759` | structured chart-data model / serialization reference | AGPL-3.0 | REFERENCE-ONLY |
 | `wvanderen/astrology-skill` | `a9339b3c7151313530aa5002572c6612a2cfd59f` | retrieval-first interpretation architecture / no-calculation boundary | root runtime MIT; optional Swiss-Ephemeris-based calculator separately AGPL | REFERENCE-ONLY |
+| `aryaminus/astro` | `82df4c1c285cb470625373a716bab86c343e4b6e` | bounded modern-Western North Node symbolic-function evidence | MIT | REFERENCE-ONLY |
 | `Shoresh613/astro-script` | `18f4a3e291a557b2ef47c7fb5e27b108f1bcf4b7` | transit / timing / unknown-time degradation patterns | README claims MIT, but referenced `LICENSE.md` is absent at reviewed revision; treat license as unresolved | REFERENCE-ONLY |
 | `kounkt/tri-horoscope` | `11318426c52c222eea108583ca45420c864825ca` | MIT alternative deterministic chart engine; fact/interpretation separation | MIT | REFERENCE-ONLY |
 | `cosinekitty/astronomy` | `865d3da7d8112bbc7911238052c6af4aaf877181` | lower-level astronomy engine / independent deterministic astronomy reference | MIT | REFERENCE-ONLY |
@@ -170,3 +171,23 @@ Astronomy Engine
 ```
 
 No engine has been selected. The next research step should be a bounded comparison on a small set of synthetic / public test inputs, with explicit configuration parity and no private birth data committed to the repository.
+
+## 8. `aryaminus/astro`
+
+### Observed evidence
+
+Reviewed revision `82df4c1c285cb470625373a716bab86c343e4b6e` carries an MIT license. Its Western tropical reference separates chart facts from interpretation and describes the nodal axis with the bounded symbolic statement that the North Node is an unfamiliar growth edge. The same ruleset separately defines sign qualities as the style or mode through which a chart factor is expressed.
+
+### Useful research contribution
+
+- permissive-license evidence for a bounded North Node developmental / growth-edge symbolic function;
+- source support for composing that function with an independently admitted sign-style claim;
+- a narrow modern-Western symbolic precedent that does not require importing the repository's calculator or broader doctrine.
+
+### Not adopted
+
+- no source code or interpretive corpus is vendored;
+- no `soul`, `karma`, `past-life`, fate, or reincarnation doctrine is admitted by this source review;
+- no South Node meaning, North Node aspect meaning, Vedic Rahu/Ketu system, or evolutionary-astrology doctrine is promoted;
+- the source does not choose this Playbook's node calculation definition. Production continues to use the separately admitted **mean North Node** provenance from `ASTROLOGY_PROVIDER_ADMISSION_V1.json`;
+- the external repository remains REFERENCE-ONLY at repository level; production claim authority, if any, comes only from an explicitly admitted bounded claim registry.

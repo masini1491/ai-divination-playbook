@@ -48,6 +48,7 @@
   "calculation_policy": {
     "zodiac_system": "tropical",
     "center": "geocentric",
+    "north_node_definition": "mean",
     "bodies": [
       "Sun",
       "Moon",

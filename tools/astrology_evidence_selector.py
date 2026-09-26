@@ -26,7 +26,7 @@ SELECTION_SCHEMA_VERSION = "1.0.0"
 SELECTOR_ID = "astrology-typed-evidence-selector-v1"
 SELECTOR_VERSION = "1.0.0"
 PRODUCTION_MANIFEST_PATH = "ASTROLOGY_PRODUCTION_ADMISSION_V1.json"
-APPLICABILITY_SCOPES = {"selector_shape", "object_core", "sign_style", "object_sign_pair"}
+APPLICABILITY_SCOPES = {"selector_shape", "object_core", "sign_style", "object_sign_pair", "north_node_core", "north_node_sign_style"}
 HOUSE_NAMES = {
     1: "first house", 2: "second house", 3: "third house", 4: "fourth house",
     5: "fifth house", 6: "sixth house", 7: "seventh house", 8: "eighth house",
@@ -276,11 +276,55 @@ def _selector_applicability(selector: dict[str, Any]) -> set[str]:
     return tags
 
 
+def _require_mean_north_node_provenance(
+    run: dict[str, Any],
+    bundle_name: str,
+    rows: list[dict[str, Any]],
+    manifest: dict[str, Any],
+    selector_id: str,
+) -> None:
+    if bundle_name != "natal":
+        raise AstrologyEvidenceSelectionError(
+            f"North Node semantic applicability requires natal facts for selector {selector_id}"
+        )
+    if any(row.get("object_id") != "NorthNode" or row.get("object_type") != "point" for row in rows):
+        raise AstrologyEvidenceSelectionError(
+            f"North Node semantic applicability requires NorthNode point facts for selector {selector_id}"
+        )
+
+    for row in rows:
+        explicit = row.get("node_definition")
+        if explicit is not None:
+            if explicit != "mean":
+                raise AstrologyEvidenceSelectionError(
+                    f"North Node semantic applicability requires mean NorthNode provenance for selector {selector_id}"
+                )
+            continue
+
+        bundle = run.get("fact_bundles", {}).get(bundle_name)
+        provider = bundle.get("provider", {}) if isinstance(bundle, dict) else {}
+        admitted = manifest.get("natal_provider", {})
+        if not (
+            isinstance(bundle, dict)
+            and bundle.get("fact_source") == "approved_provider"
+            and bundle.get("calculation_verification") == "verified_provider"
+            and isinstance(provider, dict)
+            and isinstance(admitted, dict)
+            and provider.get("provider_id") == admitted.get("provider_id")
+            and provider.get("provider_version") == admitted.get("provider_version")
+            and admitted.get("north_node_definition") == "mean"
+        ):
+            raise AstrologyEvidenceSelectionError(
+                f"North Node semantic applicability requires mean NorthNode provenance for selector {selector_id}"
+            )
+
+
 def _fact_bound_applicability(
     run: dict[str, Any],
     selector: dict[str, Any],
     refs: list[dict[str, str]],
     applicability_scope: str,
+    manifest: dict[str, Any],
 ) -> set[str]:
     if applicability_scope == "selector_shape":
         return _selector_applicability(selector)
@@ -302,7 +346,7 @@ def _fact_bound_applicability(
         )
 
     tags = {bundle}
-    if applicability_scope in {"object_core", "object_sign_pair"}:
+    if applicability_scope in {"object_core", "object_sign_pair", "north_node_core"}:
         object_ids = {row.get("object_id") for row in rows if isinstance(row.get("object_id"), str)}
         if len(object_ids) != 1:
             raise AstrologyEvidenceSelectionError(
@@ -319,6 +363,19 @@ def _fact_bound_applicability(
         if len(signs) != 1:
             raise AstrologyEvidenceSelectionError(
                 f"sign applicability binding requires one admitted sign for selector {selector['selector_id']}"
+            )
+        tags.update(signs)
+
+    if applicability_scope in {"north_node_core", "north_node_sign_style"}:
+        _require_mean_north_node_provenance(
+            run, bundle, rows, manifest, selector["selector_id"]
+        )
+
+    if applicability_scope == "north_node_sign_style":
+        signs = {row.get("sign") for row in rows if isinstance(row.get("sign"), str) and row.get("sign")}
+        if len(signs) != 1:
+            raise AstrologyEvidenceSelectionError(
+                f"North Node sign applicability requires one admitted sign for selector {selector['selector_id']}"
             )
         tags.update(signs)
 
@@ -452,7 +509,26 @@ def _select_claims(registry_index: dict[str, dict[str, Any]], selector: dict[str
     matches: list[dict[str, str]] = []
     for registry_id, registry in candidates:
         policy = registry.get("selection_policy", {})
-        required_profile = policy.get("required_semantic_profile") if isinstance(policy, dict) else None
+        if not isinstance(policy, dict):
+            policy = {}
+        scope_requirements = policy.get("required_applicability_scopes_by_claim_type", {})
+        if scope_requirements is not None and not isinstance(scope_requirements, dict):
+            raise AstrologyEvidenceSelectionError(
+                f"registry {registry_id} has invalid required_applicability_scopes_by_claim_type"
+            )
+        required_scope = scope_requirements.get(selector["claim_type"]) if isinstance(scope_requirements, dict) else None
+        if required_scope is not None:
+            if required_scope not in APPLICABILITY_SCOPES:
+                raise AstrologyEvidenceSelectionError(
+                    f"registry {registry_id} requires unsupported applicability_scope={required_scope}"
+                )
+            if selector["applicability_scope"] != required_scope:
+                if requested_registry == registry_id:
+                    raise AstrologyEvidenceSelectionError(
+                        f"claim selector {selector['selector_id']} requires applicability_scope={required_scope} for registry {registry_id}"
+                    )
+                continue
+        required_profile = policy.get("required_semantic_profile")
         if isinstance(required_profile, str) and required_profile:
             if requested_profile != required_profile:
                 if requested_registry == registry_id:
@@ -542,6 +618,7 @@ def select_evidence(reading_run: Any, typed_request: Any, *, repo_root: Path | N
                     selectors_by_id[selector_id],
                     refs_by_selector[selector_id],
                     applicability_scope,
+                    manifest,
                 )
             )
         matches = _select_claims(registries, selector, required_applicability)
