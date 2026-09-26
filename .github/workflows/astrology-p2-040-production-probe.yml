@@ -1,0 +1,30 @@
+name: TEMP AST-P2-040 Production Probe
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "tools/astrology_p2_040_production_probe.py"
+      - ".github/workflows/astrology-p2-040-production-probe.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Run frozen AST-P2-040 production probe
+        run: python tools/astrology_p2_040_production_probe.py
+      - name: Upload exact generated dataset and result
+        uses: actions/upload-artifact@v4
+        with:
+          name: astrology-p2-040-production-artifact
+          path: tmp/astrology-p2-040-artifact
+          if-no-files-found: error
+          retention-days: 7
