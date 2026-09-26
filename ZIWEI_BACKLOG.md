@@ -422,7 +422,7 @@ Ordering rationale:
 ### ZW-P1-026 — Exact-main Zi Wei deterministic handoff artifact
 
 - type: MAINTENANCE / HOST TRANSPORT
-- status: OPEN
+- status: IN_PROGRESS
 - priority: P1
 - owner: Zi Wei deterministic materialization
 - blocked_by: none
@@ -445,6 +445,10 @@ Ordering rationale:
   - artifact is explicitly non-authoritative: it does not replace Git-tracked bundle, production admission or canonical source files;
   - ordinary calendar request remains 1 shard and 31 December 23:00 cross-year edge remains at most 2 shards;
   - regression / CI / canonical read-back confirm no production-semantic widening.
+- implementation_state:
+  - candidate mirrors the already-validated Astrology exact-main artifact pattern without creating a second handoff framework;
+  - machine index reconciliation also corrects the already-admitted `sihua_v1` discoverability and combined optional maximum from 56 to 59 under standing guard `ZW-P0-003`;
+  - DONE remains gated on main-push artifact publication plus representative consumer-side download/materialization/integrity/runtime smoke under the shared artifact-handoff closure rule.
 - production_boundary:
   - host transport only; no Zi Wei calculation, interpretation or calendar semantics change.
 ## P1/P2 — temporal / dynamic
