@@ -1,0 +1,79 @@
+{
+  "schema_name": "ziwei_decadal_production_admission",
+  "schema_version": "1.0.0",
+  "method": "ZiWei",
+  "module": "decadal_calculation_v1",
+  "status": "PRODUCTION_ADMITTED_CALCULATION_ONLY",
+  "activation": "explicit_ziwei_decadal_request_only",
+  "parent_admission": "ZIWEI_PRODUCTION_ADMISSION_V1.json",
+  "temporal_scope": "decadal",
+  "profile": {
+    "profile_id": "decadal.quanji_common_v1",
+    "historical_uniqueness_claimed": false,
+    "rules": {
+      "direction": "yang_male_yin_female_forward_else_reverse",
+      "first_palace": "life_palace",
+      "first_start_age": "five_element_bureau_number",
+      "age_basis": "traditional_nominal_age",
+      "period_length_years": 10
+    }
+  },
+  "calculation": {
+    "provider_id": "ziwei-decadal-quanji-common-python",
+    "provider_version": "1.0.0",
+    "runtime_owner": "tools/ziwei_decadal_provider.py",
+    "parent_natal_provider": "tools/ziwei_natal_provider.py",
+    "engine_revision": "project-reconstruction-v1",
+    "target_calendar_identity": "traditional_lunar_year"
+  },
+  "pipeline": {
+    "runtime_owner": "tools/ziwei_runtime.py",
+    "runtime_id": "ziwei-production-runtime-v2",
+    "runtime_version": "2.0.0",
+    "request_schema": "schemas/ziwei/ZIWEI_DYNAMIC_REQUEST_V2.schema.json",
+    "result_schema": "schemas/ziwei/ZIWEI_DYNAMIC_RESULT_V2.schema.json"
+  },
+  "source_evidence": {
+    "project_research": "references/ziwei/CALCULATION_ENGINE_RESEARCH.md#Decadal",
+    "source_registry": "references/ziwei/SOURCE_REGISTRY.md",
+    "age_basis_reference": {
+      "repository": "matharts/ziwei",
+      "revision": "596f43c43ff6fbae526314c7f668bbf346445ff1",
+      "path": "CONTEXT.md"
+    },
+    "comparator_reference": {
+      "repository": "BingerYuan/zwds",
+      "revision": "5e1fdee1122f64116d2401e2a4654bb395708858",
+      "path": "ziwei/大小限.go",
+      "license_boundary": "reference_only_unresolved_license"
+    }
+  },
+  "parent_scope": {
+    "required": "natal_baseline",
+    "provider_id": "ziwei-scope-a-natal-python",
+    "provider_version": "0.2.0",
+    "profile_id": "ziwei.scope_a.natal_v0"
+  },
+  "request_requirements": [
+    "explicit gender",
+    "explicit target_lunar_year",
+    "admitted natal birth input"
+  ],
+  "fail_closed": [
+    "no gender inference from prose or memory",
+    "target before first admitted decadal rejected",
+    "target outside admitted 12-decade range rejected",
+    "yearly/monthly/daily/hourly requests rejected",
+    "no natal fallback when decadal requested",
+    "no dynamic interpretation without separate ZW-P1-040 admission"
+  ],
+  "unsupported": [
+    "yearly",
+    "monthly",
+    "daily",
+    "hourly",
+    "dynamic_interpretation"
+  ],
+  "scientific_predictive_validity_claimed": false,
+  "ordinary_auto_routing": false
+}
