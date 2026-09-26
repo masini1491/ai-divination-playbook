@@ -311,6 +311,22 @@
           "day_boundary_profile": "explicit_lunar_day_identity_v1",
           "day_pillar_status": "not-admitted",
           "gender_required": true
+        },
+        "hourly_v1": {
+          "activation": "explicit-hourly-request-only",
+          "runtime": "tools/ziwei_runtime.py",
+          "provider": "tools/ziwei_hourly_provider.py",
+          "admission_manifest": "ZIWEI_HOURLY_ADMISSION_V1.json",
+          "profile_id": "hourly.daily_parent_hour_branch_next_day_23_v1",
+          "request_schema": "schemas/ziwei/ZIWEI_DYNAMIC_REQUEST_V6.schema.json",
+          "result_schema": "schemas/ziwei/ZIWEI_DYNAMIC_RESULT_V6.schema.json",
+          "parent_scope": "daily",
+          "calculation_status": "production-admitted",
+          "interpretation_status": "not-admitted",
+          "target_calendar": "normalized_traditional_lunar_hour",
+          "rat_hour_policy": "next_day_at_23",
+          "physical_hour_pillar_status": "not-admitted",
+          "gender_required": true
         }
       }
     },
