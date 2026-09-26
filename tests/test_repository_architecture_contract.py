@@ -82,11 +82,13 @@ class RepositoryArchitectureContractTests(unittest.TestCase):
             encoding="utf-8"
         )
         self.assertIn(
-            "Last reviewed source revision：`7bc4110e72e9c13f7f49efab52899329fe8bc0ea`",
+            "Last reviewed source revision：`1aea805c0674960945d5588842a18bc37f0c96d9`",
             text,
         )
         self.assertIn("Method-scoped coordination topology", text)
         self.assertNotIn(
+            "connector-backed artifact/file handoff",
+            "producer-vs-consumer closure",
             "TASKS / BACKLOG / coordination surfaces（除非本 Repo未來另行 opt-in）",
             text,
         )
