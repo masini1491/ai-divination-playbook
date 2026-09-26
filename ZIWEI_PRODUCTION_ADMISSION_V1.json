@@ -65,7 +65,6 @@
     "brightness_conditioned_interpretation",
     "four_transformation_interpretation_beyond_admitted_source_explicit_claims",
     "star_palace_cartesian_claims",
-    "decadal",
     "yearly",
     "monthly",
     "daily",
@@ -80,7 +79,8 @@
     "registered_conflict_preserved",
     "missing_required_fact_omits_claim",
     "undemonstrated_conditional_claim_omitted",
-    "empty_palace_claim_requires_verified_palace_occupancy"
+    "empty_palace_claim_requires_verified_palace_occupancy",
+    "decadal_requires_explicit_gender_and_target_lunar_year"
   ],
   "high_stakes_guardrails": [
     "no_deterministic_health_or_death_prediction",
@@ -124,7 +124,17 @@
       "tools/ziwei_scope_a_pipeline.py",
       "tools/ziwei_brightness_pipeline.py",
       "tools/ziwei_gregorian_pipeline.py"
-    ]
+    ],
+    "separate_dynamic_runtime": {
+      "runtime_id": "ziwei-production-runtime-v2",
+      "runtime_version": "2.0.0",
+      "request_schema": "schemas/ziwei/ZIWEI_DYNAMIC_REQUEST_V2.schema.json",
+      "result_schema": "schemas/ziwei/ZIWEI_DYNAMIC_RESULT_V2.schema.json",
+      "admitted_temporal_scopes": [
+        "decadal"
+      ],
+      "interpretation_authority": false
+    }
   },
   "optional_module_admissions": [
     {
@@ -150,6 +160,19 @@
       ],
       "claim_scope": "three_source_explicit_fact_gated_transformed_star_conditionals",
       "transformed_star_interpretation_admitted": true
+    }
+  ],
+  "separate_temporal_calculation_admissions": [
+    {
+      "temporal_scope": "decadal",
+      "module_id": "decadal_calculation_v1",
+      "admission_manifest": "ZIWEI_DECADAL_ADMISSION_V1.json",
+      "provider": "tools/ziwei_decadal_provider.py",
+      "runtime_owner": "tools/ziwei_runtime.py",
+      "runtime_id": "ziwei-production-runtime-v2",
+      "profile_id": "decadal.quanji_common_v1",
+      "status": "PRODUCTION_ADMITTED_CALCULATION_ONLY",
+      "interpretation_admitted": false
     }
   ]
 }

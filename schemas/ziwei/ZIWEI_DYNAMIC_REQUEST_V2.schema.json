@@ -1,0 +1,166 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Zi Wei Production v2 Dynamic Reading Request",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_name",
+    "schema_version",
+    "request_id",
+    "temporal_scope",
+    "birth",
+    "gender",
+    "target_lunar_year",
+    "requested_subjects",
+    "enabled_source_ids"
+  ],
+  "properties": {
+    "schema_name": {
+      "const": "ziwei_dynamic_request"
+    },
+    "schema_version": {
+      "const": "2.0.0"
+    },
+    "request_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "temporal_scope": {
+      "const": "decadal"
+    },
+    "birth": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "input_type",
+            "year",
+            "month",
+            "day",
+            "hour",
+            "minute",
+            "second",
+            "timezone"
+          ],
+          "properties": {
+            "input_type": {
+              "const": "gregorian"
+            },
+            "year": {
+              "type": "integer"
+            },
+            "month": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 12
+            },
+            "day": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 31
+            },
+            "hour": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 23
+            },
+            "minute": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 59
+            },
+            "second": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 59
+            },
+            "timezone": {
+              "const": "Asia/Taipei"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "input_type",
+            "lunar_year",
+            "lunar_month",
+            "lunar_day",
+            "hour_branch",
+            "calendar_provenance",
+            "leap_month_identity"
+          ],
+          "properties": {
+            "input_type": {
+              "const": "normalized_lunar"
+            },
+            "lunar_year": {
+              "type": "integer"
+            },
+            "lunar_month": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 12
+            },
+            "lunar_day": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 30
+            },
+            "hour_branch": {
+              "enum": [
+                "子",
+                "丑",
+                "寅",
+                "卯",
+                "辰",
+                "巳",
+                "午",
+                "未",
+                "申",
+                "酉",
+                "戌",
+                "亥"
+              ]
+            },
+            "calendar_provenance": {
+              "type": "string",
+              "minLength": 1
+            },
+            "leap_month_identity": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      ]
+    },
+    "gender": {
+      "enum": [
+        "male",
+        "female"
+      ]
+    },
+    "target_lunar_year": {
+      "type": "integer"
+    },
+    "requested_subjects": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "enabled_source_ids": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  }
+}

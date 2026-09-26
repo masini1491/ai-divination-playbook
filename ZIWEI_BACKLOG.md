@@ -463,10 +463,16 @@ Ordering rationale:
 ### ZW-P1-030 — Dynamic calculation runtime
 
 - type: FEATURE / CALCULATION
-- status: OPEN
+- status: IN_PROGRESS
 - priority: P1/P2
 - owner: Zi Wei temporal runtime
 - blocked_by: none
+- stage_progress:
+  - decadal / 大限: IMPLEMENTED_CANDIDATE — bounded calculation-only provider + V2 dynamic transport + admission; canonical Zi Wei bundle regenerated; bootstrap detail kept in method owner, regenerated ChatGPT load pack and load-budget check PASS; awaiting formal PR validation / merge / canonical read-back;
+  - yearly / 流年: OPEN;
+  - monthly / 流月: BLOCKED_BY_YEARLY;
+  - daily / 流日: BLOCKED_BY_MONTHLY;
+  - hourly / 流時: BLOCKED_BY_DAILY;
 - sequence:
   1. decadal / 大限
   2. yearly / 流年
@@ -499,6 +505,10 @@ Ordering rationale:
 - owner: Zi Wei temporal interpretation
 - blocked_by:
   - corresponding admitted calculation stage in ZW-P1-030
+- stage_progress:
+  - decadal interpretation: ELIGIBLE_AFTER_DECADAL_CALCULATION_MERGE — do not start before canonical decadal calculation admission read-back;
+  - yearly interpretation: BLOCKED_BY_YEARLY_CALCULATION;
+  - monthly / daily / hourly: BLOCKED_BY_CORRESPONDING_CALCULATION_LAYER;
 - staging_rule:
   - decadal interpretation may start after decadal calculation admission;
   - yearly interpretation may start after yearly calculation admission;

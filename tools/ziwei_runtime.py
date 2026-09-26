@@ -18,6 +18,7 @@ from tools.ziwei_calendar_provider import GregorianBirthInput, normalize_gregori
 from tools.ziwei_natal_provider import NormalizedNatalInput, calculate_scope_a_natal
 from tools.ziwei_m0_auxiliary_provider import PROFILE_ID as M0_PROFILE_ID, calculate_m0_auxiliary
 from tools.ziwei_sihua_provider import PROFILE_ID as SIHUA_PROFILE_ID, calculate_sihua
+from tools.ziwei_decadal_provider import DecadalTarget, calculate_decadal
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -27,6 +28,10 @@ RUNTIME_ID="ziwei-production-runtime-v1"
 RUNTIME_VERSION="1.0.0"
 REQUEST_SCHEMA="schemas/ziwei/ZIWEI_READING_REQUEST_V1.schema.json"
 RESULT_SCHEMA="schemas/ziwei/ZIWEI_READING_RESULT_V1.schema.json"
+DYNAMIC_RUNTIME_ID="ziwei-production-runtime-v2"
+DYNAMIC_RUNTIME_VERSION="2.0.0"
+DYNAMIC_REQUEST_SCHEMA="schemas/ziwei/ZIWEI_DYNAMIC_REQUEST_V2.schema.json"
+DYNAMIC_RESULT_SCHEMA="schemas/ziwei/ZIWEI_DYNAMIC_RESULT_V2.schema.json"
 INTERPRETATION_PROFILE="ziwei.interpretation.tw_v1"
 TEMPORAL_SCOPE="natal_baseline"
 BRIGHTNESS_MODULE="brightness_v1"
@@ -314,3 +319,135 @@ def legacy_result(result:dict[str,Any], *, brightness:bool=False) -> dict[str,An
         legacy["pipeline_id"]="ziwei-scope-a-brightness-production-pipeline-v1"
         legacy["pipeline_version"]="1.0.0"
     return legacy
+
+
+@dataclass(frozen=True)
+class ZiWeiDecadalRequest:
+    request_id: str
+    birth: GregorianBirthInput | NormalizedNatalInput
+    gender: Literal["male","female"]
+    target_lunar_year: int
+    temporal_scope: Literal["decadal"] = "decadal"
+    requested_subjects: tuple[str,...] = ()
+    enabled_source_ids: tuple[str,...] = ()
+
+    def validate(self) -> None:
+        if not isinstance(self.request_id,str) or not self.request_id.strip():
+            raise ValueError("request_id is required")
+        if self.temporal_scope != "decadal":
+            raise ValueError(f"unsupported temporal_scope: {self.temporal_scope}")
+        if not isinstance(self.birth,(GregorianBirthInput,NormalizedNatalInput)):
+            raise ValueError("birth must be GregorianBirthInput or NormalizedNatalInput")
+        if self.gender not in ("male","female"):
+            raise ValueError("gender must be male or female")
+        if not isinstance(self.target_lunar_year,int):
+            raise ValueError("target_lunar_year must be an integer")
+        for name,values in (
+            ("requested_subjects",self.requested_subjects),
+            ("enabled_source_ids",self.enabled_source_ids),
+        ):
+            if any(not isinstance(x,str) or not x for x in values):
+                raise ValueError(f"{name} must contain non-empty strings")
+            if len(set(values)) != len(values):
+                raise ValueError(f"{name} must contain unique items")
+
+
+def run_ziwei_decadal(request:ZiWeiDecadalRequest)->dict[str,Any]:
+    """Execute admitted decadal calculation only; interpretation remains closed."""
+    request.validate()
+    natal,calendar=_normalize_birth(request.birth)
+    calculation=calculate_decadal(
+        natal,
+        DecadalTarget(gender=request.gender,target_lunar_year=request.target_lunar_year),
+    )
+    result={
+        "schema_name":"ziwei_dynamic_result",
+        "schema_version":"2.0.0",
+        "runtime":{
+            "runtime_id":DYNAMIC_RUNTIME_ID,
+            "runtime_version":DYNAMIC_RUNTIME_VERSION,
+            "request_schema":DYNAMIC_REQUEST_SCHEMA,
+            "result_schema":DYNAMIC_RESULT_SCHEMA,
+            "temporal_scope":"decadal",
+        },
+        "status":"PRODUCTION_ADMITTED_CALCULATION_ONLY",
+        "scope":"bounded_decadal_calculation_v1",
+        "request_id":request.request_id,
+        "calculation":calculation,
+        "interpretation":{
+            "status":"NOT_ADMITTED",
+            "reason":"ZW-P1-040 decadal interpretation not yet admitted",
+        },
+        "authority":{
+            "calculation_authority_granted":True,
+            "interpretation_authority_granted":False,
+            "ordinary_auto_routing":False,
+        },
+    }
+    if calendar is not None:
+        result["input_adapter"]={
+            "pipeline_id":"ziwei-gregorian-input-adapter-v1",
+            "pipeline_version":"1.0.0",
+            "calendar":calendar,
+        }
+    return result
+
+
+def run_ziwei_dynamic_transport(payload:dict[str,Any])->dict[str,Any]:
+    """Parse the closed-world v2 decadal transport and execute calculation only."""
+    if not isinstance(payload,dict):
+        raise ValueError("dynamic request transport must be an object")
+    allowed={
+        "schema_name","schema_version","request_id","temporal_scope","birth","gender",
+        "target_lunar_year","requested_subjects","enabled_source_ids",
+    }
+    required=allowed
+    unknown=set(payload)-allowed
+    missing=required-set(payload)
+    if unknown:
+        raise ValueError(f"unknown dynamic request fields: {','.join(sorted(unknown))}")
+    if missing:
+        raise ValueError(f"missing dynamic request fields: {','.join(sorted(missing))}")
+    if payload["schema_name"]!="ziwei_dynamic_request" or payload["schema_version"]!="2.0.0":
+        raise ValueError("unsupported Zi Wei dynamic request schema")
+    if payload["temporal_scope"]!="decadal":
+        raise ValueError(f"unsupported temporal_scope: {payload['temporal_scope']}")
+    birth=payload["birth"]
+    if not isinstance(birth,dict):
+        raise ValueError("birth must be an object")
+    input_type=birth.get("input_type")
+    if input_type=="gregorian":
+        expected={"input_type","year","month","day","hour","minute","second","timezone"}
+        if set(birth)!=expected:
+            raise ValueError("gregorian birth fields mismatch")
+        typed_birth=GregorianBirthInput(
+            year=birth["year"],month=birth["month"],day=birth["day"],hour=birth["hour"],
+            minute=birth["minute"],second=birth["second"],timezone=birth["timezone"],
+        )
+    elif input_type=="normalized_lunar":
+        expected={"input_type","lunar_year","lunar_month","lunar_day","hour_branch","calendar_provenance","leap_month_identity"}
+        if set(birth)!=expected:
+            raise ValueError("normalized_lunar birth fields mismatch")
+        typed_birth=NormalizedNatalInput(
+            lunar_year=birth["lunar_year"],lunar_month=birth["lunar_month"],lunar_day=birth["lunar_day"],
+            hour_branch=birth["hour_branch"],calendar_provenance=birth["calendar_provenance"],
+            leap_month_identity=birth["leap_month_identity"],
+        )
+    else:
+        raise ValueError(f"unsupported birth input_type: {input_type}")
+    for name in ("requested_subjects","enabled_source_ids"):
+        values=payload[name]
+        if not isinstance(values,list) or any(not isinstance(x,str) or not x for x in values):
+            raise ValueError(f"{name} must be an array of non-empty strings")
+        if len(set(values))!=len(values):
+            raise ValueError(f"{name} must contain unique items")
+    request=ZiWeiDecadalRequest(
+        request_id=payload["request_id"],
+        birth=typed_birth,
+        gender=payload["gender"],
+        target_lunar_year=payload["target_lunar_year"],
+        temporal_scope=payload["temporal_scope"],
+        requested_subjects=tuple(payload["requested_subjects"]),
+        enabled_source_ids=tuple(payload["enabled_source_ids"]),
+    )
+    return run_ziwei_decadal(request)
