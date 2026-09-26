@@ -81,7 +81,7 @@ legacy run_scope_a_* entrypoints
 
 `schemas/ziwei/ZIWEI_READING_REQUEST_V1.schema.json` 與 `schemas/ziwei/ZIWEI_READING_RESULT_V1.schema.json` 定義 closed-world v1 interface。Unsupported temporal scope、optional module 或 profile 必須 fail closed；不得再為每個 module/input 組合新增 `with_x_and_y` canonical runtime。
 
-若 local runtime、calendar manifest 或 required year shard 缺失，先依 `ZIWEI_MATERIALIZATION.md` 走 verified runtime reuse / host-aware materialization fast path；verified cache可安全重用時不得為形式重新搬 bundle，真正 cache miss 才依 host capability選 direct handoff或既有 deterministic bundle fallback，calendar data仍保持 same-commit query-bounded acquisition；ordinary production 不依賴 `lunar_python` runtime。只有 admitted materialization/direct-source paths 都失敗才停在 Fact Gate；不得改用 Tarot / Meihua / Liuyao 冒充 Zi Wei reading。
+若 local runtime、calendar manifest 或 required year shard 缺失，先依 `ZIWEI_MATERIALIZATION.md` 走 verified runtime reuse / host-aware materialization fast path；verified cache可安全重用時不得為形式重新搬 bundle，真正 cache miss 才依 host capability依序選 direct byte/file handoff、successful exact-main Zi Wei handoff artifact，再到既有 same-commit bounded opaque bundle fallback；calendar data仍保持 same-commit query-bounded acquisition，year shards不進 handoff artifact，ordinary production 也不依賴 `lunar_python` runtime。只有 admitted materialization/direct-source paths 都失敗才停在 Fact Gate；不得改用 Tarot / Meihua / Liuyao 冒充 Zi Wei reading。
 
 ## 4. Interpretation / Evidence Boundary
 

@@ -74,10 +74,18 @@ explicit Zi Wei Gregorian request
          → direct byte/file-aware handoff available
             → same-commit direct materialization of required runtime assets + calendar MANIFEST.json
          → direct handoff unavailable
-            → fetch same-commit runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json
-            → bounded verified opaque transport
-            → verify chunk/archive/per-file identities
-            → deterministic reassembly + materialization
+            → exact resolved commit has a successful main-push Zi Wei deterministic handoff artifact?
+               → yes: download exact-commit artifact through GitHub connector
+               → materialize connector-backed file payload
+               → verify artifact digest when exposed by GitHub
+               → verify PLAYBOOK_COMMIT + HANDOFF_MANIFEST.json exact commit/file identities
+               → load bundled canonical verifier + deterministic bundle
+               → materialize with the same chunk/archive/per-file integrity gates
+               → no / expired / unavailable / identity failure:
+                  → fetch same-commit runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json
+                  → bounded verified opaque transport
+                  → verify chunk/archive/per-file identities
+                  → deterministic reassembly + materialization
 → derive required shard path(s) from Gregorian input
    ordinary Gregorian request → 1 year shard
    31 December 23:00 cross-year edge → at most 2 year shards
@@ -94,7 +102,9 @@ Local cache existence alone is only a reuse candidate, not production evidence. 
 
 ### Host Capability Gate / No Full-Bundle-First Rule
 
-On a real cache miss, determine the available connector→execution handoff before moving the bundle through model-visible context. Prefer a direct byte/file-aware handoff when the host exposes one. Only when direct handoff is unavailable and exact bytes are still required may the existing bundle's bounded verified opaque transport be used.
+On a real cache miss, determine the available connector→execution handoff before moving the bundle through model-visible context. Prefer a direct byte/file-aware handoff when the host exposes one. If direct handoff is unavailable and the resolved exact commit has a successful main-push Zi Wei deterministic handoff artifact, prefer that connector-backed file payload. Only when the artifact is absent, expired, unavailable, fails download/identity verification, or the resolved commit has no matching main-push artifact may the existing bundle's bounded verified opaque transport be used.
+
+The main-push handoff artifact is a **temporary transport convenience**, not source authority, production admission, calculation authority, interpretation authority, or durable release storage. Its artifact name includes the exact playbook commit. Payload is limited to the same-commit `runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json`, canonical `tools/build_ziwei_tool_bundle.py` verifier/materializer, `PLAYBOOK_COMMIT`, and machine-readable `HANDOFF_MANIFEST.json`. Calendar year shards are explicitly excluded and remain same-commit query-bounded acquisitions. After download, verify the GitHub artifact digest when exposed, then verify `PLAYBOOK_COMMIT + HANDOFF_MANIFEST.json` exact commit/file identities, manifest repository/commit, `calendar_shards_included=false`, and every declared payload byte size/SHA-256 before giving bytes to the canonical bundle verifier. Any mismatch stops the artifact route and falls back only to an already-admitted exact-source transport path.
 
 **Do not fetch or dump the full bundle/chunk payload into model-visible context before cache reuse and host-handoff necessity have been established.** Model-visible base64/chunk content proves acquisition visibility only; it is not automatic filesystem materialization.
 
@@ -129,7 +139,7 @@ marker必須綁定 repository、playbook commit、bundle contract、archive SHA�
 
 ## 5. Fallback / fail closed
 
-Bundle無法取得／驗證，或 required same-commit shard無法取得／通過 manifest identity驗證時，可退回同 exact commit 的 direct repo-source materialization；authority與 hash contract不變。
+Artifact缺失／過期／不可下載／identity驗證失敗只代表這條 transport fast path不可用，必須退回既有 same-commit bounded opaque bundle或其他已 admission 的 exact-source materialization route；不得推導 Zi Wei source/runtime unavailable。Bundle無法取得／驗證，或 required same-commit shard無法取得／通過 manifest identity驗證時，可退回同 exact commit 的 direct repo-source materialization；authority與 hash contract不變。
 
 只有 admitted bundle/direct-source路徑與 query-bounded calendar data都無法成立，或 Python execution不可用／verified source execution failure，才分類：
 
@@ -143,6 +153,7 @@ ZI WEI DETERMINISTIC RUNTIME UNAVAILABLE
 
 ```text
 GitHub Connect → acquisition authority
+main-push handoff artifact → temporary exact-commit connector-backed transport only
 bundle → runtime + calendar-manifest derived transport cache
 query-bounded year shard(s) → same-commit deterministic data
 ZIWEI_CALENDAR_ADMISSION_V1.json → production calendar admission truth
