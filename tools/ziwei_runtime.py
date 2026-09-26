@@ -15,7 +15,7 @@ from tools import ziwei_claim_retrieval as _retrieval
 from tools import ziwei_delivery as _delivery
 from tools.ziwei_brightness_provider import PROFILE_ID as BRIGHTNESS_PROFILE_ID, calculate_brightness
 from tools.ziwei_calendar_provider import GregorianBirthInput, normalize_gregorian_birth
-from tools.ziwei_natal_provider import NormalizedNatalInput, calculate_scope_a_natal
+from tools.ziwei_natal_provider import BRANCHES, NormalizedNatalInput, calculate_scope_a_natal
 from tools.ziwei_m0_auxiliary_provider import PROFILE_ID as M0_PROFILE_ID, calculate_m0_auxiliary
 from tools.ziwei_sihua_provider import PROFILE_ID as SIHUA_PROFILE_ID, calculate_sihua
 from tools.ziwei_decadal_provider import DecadalTarget, calculate_decadal
