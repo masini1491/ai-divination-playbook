@@ -73,10 +73,15 @@ Function-importance order for currently open / deferred Astrology work:
 6. **AST-P2-030 — Optional Swiss compatibility/provider lane**
    - optional provider/license lane; current Astronomy Engine production path remains sufficient.
 
+Recent blocker-resolution result:
+
+- **AST-P2-041 — Piecewise Chebyshev five-body feasibility — DONE**
+  - no complete passing variant; D5/W45, D7/W60 and D7/W80 passed fixture accuracy/size gates but failed the frozen boundary-speed continuity gate.
+
 Blocked / outcome-dependent item:
 
 - **AST-P2-040 — Broader extended ephemeris objects**
-  - do not expand object count yet: AST-P1-010 completed as research, but its sampled/Hermite candidates did **not** prove a passing five-body transport/precision architecture. Resume only after a five-body lane such as bounded SPK, piecewise Chebyshev, or another prospectively validated representation satisfies the architecture gate.
+  - remains blocked: sampled/Hermite and the tested independent-segment Chebyshev v0 both failed their frozen architecture gates. Bounded SPK, continuity-constrained/overlap Chebyshev, or another prospectively validated representation remains possible.
 
 Standing / pointer items are not numbered feature work:
 
@@ -645,6 +650,30 @@ This item is a standing reconciliation guard. It is not a request to change curr
   - Swiss is an optional compatibility/provider lane, not a mandatory Astrology foundation;
   - license posture and technical admission are separate gates;
   - no production dependency is authorized by the current research.
+
+### AST-P2-041 — Piecewise Chebyshev five-body ephemeris feasibility
+
+- type: RESEARCH / PROVIDER FEASIBILITY
+- status: DONE
+- priority: P2
+- owner: Astrology extended ephemeris research
+- blocked_by: none
+- canonical_evidence:
+  - `references/astrology/ASTROLOGY_P2_041_CHEBYSHEV_FEASIBILITY_CONTRACT.md`
+  - `references/astrology/astrology_p2_041_chebyshev_feasibility_contract.json`
+  - `references/astrology/ASTROLOGY_P2_041_CHEBYSHEV_FEASIBILITY_RESULT.md`
+  - `references/astrology/astrology_p2_041_chebyshev_feasibility.json`
+- closure:
+  - contract frozen before execution at `2ac7a91e743fd460a639095d12dd470d72a51634`;
+  - PR #236 / head `47e5b052a22b2d9dd59dcf3af09b77364106b523` executed in Validate Playbook run #832;
+  - no frozen variant passed every gate;
+  - D5/W45, D7/W60 and D7/W80 failed only boundary-speed continuity;
+  - D7/W120 also failed fixture-speed and boundary-longitude gates;
+  - no production admission was granted.
+- consequence:
+  - independent-segment Chebyshev v0 is rejected;
+  - AST-P2-040 remains blocked;
+  - bounded SPK and continuity-constrained/overlap Chebyshev remain separate future research options.
 
 ### AST-P2-040 — Broader extended ephemeris objects
 
