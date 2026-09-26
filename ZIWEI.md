@@ -30,7 +30,7 @@ IN:
 - 14 major-star first-layer claims;
 - 12 palace first-layer claims;
 - 52 admitted claims total;
-- admitted deterministic natal provider facts;
+- admitted deterministic natal provider facts, including natal-baseline per-palace major-star occupancy / count / empty-palace applicability facts;
 - Gregorian birth datetime input via `ziwei.calendar.tw_v1` for `Asia/Taipei` civil time within the admitted 1900-01-01..2100-12-31 range; explicit 民國年份 notation is deterministically converted by `tools/ziwei_year_notation.py` (`民國 N 年 → CE N+1911`) before the same Gregorian calendar adapter;
 - explicit provenance, omission, conflict and safety delivery.
 
@@ -61,6 +61,8 @@ typed Zi Wei request
 → Gregorian birth → tools/ziwei_calendar_provider.py
    OR normalized traditional-lunar birth
 → tools/ziwei_natal_provider.py
+   → major-star placements + palace occupancy facts
+   → empty-palace facts may activate only source-explicit fact-gated palace conditionals
 → optional_modules includes brightness_v1
    → tools/ziwei_brightness_provider.py
 → optional_modules includes m0_auxiliary_v1
@@ -88,6 +90,7 @@ Production v1 只可使用 pipeline allowlist 選出的 admitted claims。Resear
 - no admitted claim → omit / insufficient;
 - missing fact → do not guess;
 - conditional rule relevance ≠ demonstrated chart condition;
+- `empty_palace:<palace>` is a raw natal applicability fact derived from admitted major-star placements, not a borrowing/opposite interpretation conclusion;
 - `context_only` conditional rules may remain active as methodology/profile/safety context;
 - `fact_gated` conditional claims enter selected claims only when activation = `satisfied`; `not_computed` / `unsatisfied` remain explicit omissions/evaluations;
 - registered conflict → preserve and present separately;
