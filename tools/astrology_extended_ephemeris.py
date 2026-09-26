@@ -16,9 +16,9 @@ from typing import Any
 
 PROVIDER_ID = "astrology-extended-ephemeris-c1-v1"
 PROVIDER_VERSION = "1.0.0"
-DATASET_ID = "astrology-extended-ephemeris-c1-v1"
-DATASET_SHA256 = "460b310131149b012b615dde15fcf892b85142fd2490fa1c5f35613697b93cc3"
-REPRESENTATION_ID = "c1-cheb-d7-w60"
+DATASET_ID = "astrology-extended-ephemeris-c1-f32-v1"
+DATASET_SHA256 = "580bb2a8ef463dfc6527ea611f27daad3562cb1fa5698391b3e2baeba64987bf"
+REPRESENTATION_ID = "c1-cheb-d7-w60-f32-c0mod360-v1"
 OBJECT_IDS = ("Chiron", "Ceres", "Pallas", "Juno", "Vesta")
 MANIFEST_RELATIVE = Path("data/astrology/extended_ephemeris/v1/MANIFEST.json")
 CACHE_ROOT = Path("/mnt/data/divination-astrology-runtime/extended_ephemeris/v1")
@@ -166,12 +166,12 @@ def evaluate_object(
     segment=int(shard["segment_index"])
     within=segment-int(shard["first_segment"])
     obj_index=objects.index(object_id)
-    record_size=coeff_count*8
+    record_size=coeff_count*4
     offset=(within*len(objects)+obj_index)*record_size
     record=raw[offset:offset+record_size]
     if len(record)!=record_size:
         raise ExtendedEphemerisError("extended ephemeris coefficient record truncated")
-    coeff=list(struct.unpack("<"+"d"*coeff_count,record))
+    coeff=list(struct.unpack("<"+"f"*coeff_count,record))
     start=dt.datetime.fromisoformat(rep["coverage_start"])
     offset_days=(when-start).total_seconds()/86400.0
     local_days=offset_days-segment*width
