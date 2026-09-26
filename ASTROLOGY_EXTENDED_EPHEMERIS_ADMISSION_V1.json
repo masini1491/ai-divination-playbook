@@ -1,0 +1,81 @@
+{
+  "schema_name": "astrology_extended_ephemeris_admission",
+  "schema_version": "1.0.0",
+  "provider_id": "astrology-extended-ephemeris-c1-v1",
+  "provider_version": "1.0.0",
+  "status": "PRODUCTION_ADMITTED",
+  "activation": "explicit_request_only",
+  "scope": [
+    "natal_known_time_explicit_extended_objects"
+  ],
+  "object_ids": [
+    "Chiron",
+    "Ceres",
+    "Pallas",
+    "Juno",
+    "Vesta"
+  ],
+  "output_schema": "astrology_fact_bundle@1.0.0",
+  "runtime_owner": "tools/astrology_extended_ephemeris.py",
+  "generator_owner": "tools/generate_astrology_extended_ephemeris.py",
+  "dataset": {
+    "dataset_id": "astrology-extended-ephemeris-c1-v1",
+    "manifest_path": "data/astrology/extended_ephemeris/v1/MANIFEST.json",
+    "sha256": "460b310131149b012b615dde15fcf892b85142fd2490fa1c5f35613697b93cc3",
+    "representation_id": "c1-cheb-d7-w60",
+    "coverage_start": "1825-04-01T00:00:00+00:00",
+    "admitted_output_window_end": "2350-10-01T00:00:00+00:00",
+    "storage_encoding": "base64_per_shard",
+    "query_bounded_single_shard": true,
+    "shard_count": 34,
+    "max_encoded_shard_chars": 40960
+  },
+  "source": {
+    "provider": "NASA/JPL Horizons",
+    "build_time_only": true,
+    "runtime_network_required": false,
+    "center": "500@399",
+    "ephem_type": "OBSERVER",
+    "quantities": [
+      31
+    ],
+    "apparent": "AIRLESS",
+    "time_type": "UT",
+    "source_grid_days": 5
+  },
+  "calculation_policy": {
+    "zodiac_system": "tropical",
+    "center": "geocentric",
+    "fact_authority": "longitude_speed_motion_sign_known_time_house_only",
+    "birth_time_certainty": [
+      "exact",
+      "approximate"
+    ],
+    "transit": "not_admitted",
+    "unknown_time": "not_admitted",
+    "default_aspect_participation": false,
+    "semantic_interpretation_authority": false
+  },
+  "validation": {
+    "production_contract": "references/astrology/astrology_p2_040_production_admission_contract.json",
+    "probe_run_id": 36220243631,
+    "probe_artifact_id": 10898847593,
+    "prospective_rows": 120,
+    "longitude_p95_arcsec": 1.5654947796974739,
+    "longitude_max_arcsec": 3.481865835192366,
+    "speed_max_deg_per_day": 0.0004186880790266745,
+    "thresholds": {
+      "longitude_p95_arcsec_max": 10,
+      "longitude_max_arcsec_max": 30,
+      "speed_max_deg_per_day": 0.001
+    },
+    "fail_closed_checks": [
+      "unsupported_object",
+      "out_of_coverage",
+      "missing_shard",
+      "digest_mismatch"
+    ]
+  },
+  "interpretation_semantics": "not_admitted_without_separate_claim_family",
+  "scientific_predictive_validity_claimed": false
+}
