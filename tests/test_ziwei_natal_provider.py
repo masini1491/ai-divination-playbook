@@ -27,6 +27,8 @@ class ZiWeiScopeANatalProviderTests(unittest.TestCase):
         self.assertEqual(chart["ziwei_branch"],"午")
         self.assertEqual(chart["major_star_placements"]["天府"],"戌")
         self.assertEqual(chart["major_star_placements"]["破軍"],"申")
+        self.assertEqual("0.2.0",chart["schema_version"])
+        self.assertEqual("0.2.0",chart["provider"]["version"])
 
     def test_topology_and_scope_a_retrieval_tokens_are_complete(self):
         chart=calculate_scope_a_natal(NormalizedNatalInput(1987,5,20,"酉","synthetic"))
@@ -44,7 +46,30 @@ class ZiWeiScopeANatalProviderTests(unittest.TestCase):
         }
         self.assertEqual(14,len(expected_locations))
         self.assertTrue(expected_locations.issubset(facts))
-        self.assertEqual(41,len(facts))
+        self.assertIn("fact_available:palace_occupancy",facts)
+        occupancy=chart["palace_occupancy"]
+        self.assertEqual(12,len(occupancy))
+        expected_star_in_palace=set()
+        expected_counts=set()
+        expected_empty=set()
+        branch_to_palace={x["branch"]:x["palace"] for x in chart["palaces"]}
+        for star,branch in chart["major_star_placements"].items():
+            expected_star_in_palace.add(f"star_in_palace:{star}:{branch_to_palace[branch]}")
+        for palace,record in occupancy.items():
+            self.assertEqual("natal_baseline",record["temporal_scope"])
+            self.assertEqual(record["major_star_count"],len(record["major_stars"]))
+            self.assertEqual(record["empty_major_star_palace"],record["major_star_count"]==0)
+            expected_counts.add(f"major_star_count:{palace}:{record['major_star_count']}")
+            if record["empty_major_star_palace"]:
+                expected_empty.add(f"empty_palace:{palace}")
+        self.assertEqual(14,len(expected_star_in_palace))
+        self.assertTrue(expected_star_in_palace.issubset(facts))
+        self.assertTrue(expected_counts.issubset(facts))
+        self.assertTrue(expected_empty.issubset(facts))
+        self.assertEqual(
+            42+len(expected_star_in_palace)+len(expected_counts)+len(expected_empty),
+            len(facts),
+        )
         self.assertEqual(chart["topology"]["命宮"]["opposite_palace"],"遷移宮")
         self.assertEqual(set(chart["topology"]["命宮"]["sanfang_palaces"]),{"財帛宮","官祿宮"})
         self.assertFalse(chart["production_authority_granted"])

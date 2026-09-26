@@ -16,19 +16,20 @@
       ],
       "expected_selected": [
         "ZW-B1-ZIWEI-CORE-001",
-        "ZW-PAL-MING-DOM-001",
-        "ZW-PAL-MING-COND-002"
+        "ZW-PAL-MING-DOM-001"
       ],
       "classification": "PARTIAL_EXECUTABLE_CONTEXT_BLOCKED",
       "blocked_dependencies": [
-        "auxiliary_claims:左輔/右弼"
+        "auxiliary_claims:左輔/右弼",
+        "palace_occupancy:命宮"
       ],
       "expected_omitted": [
-        "ZW-B1-ZIWEI-COND-002"
+        "ZW-B1-ZIWEI-COND-002",
+        "ZW-PAL-MING-COND-002"
       ],
       "expected_conditional_states": {
         "ZW-B1-ZIWEI-COND-002": "not_computed",
-        "ZW-PAL-MING-COND-002": "not_required"
+        "ZW-PAL-MING-COND-002": "not_computed"
       }
     },
     {
@@ -43,19 +44,20 @@
       ],
       "expected_selected": [
         "ZW-B1-ZIWEI-CORE-001",
-        "ZW-PAL-MING-DOM-001",
-        "ZW-PAL-MING-COND-002"
+        "ZW-PAL-MING-DOM-001"
       ],
       "classification": "PARTIAL_EXECUTABLE_CONTEXT_BLOCKED",
       "blocked_dependencies": [
-        "malefic_context_claims"
+        "malefic_context_claims",
+        "palace_occupancy:命宮"
       ],
       "expected_omitted": [
-        "ZW-B1-ZIWEI-COND-002"
+        "ZW-B1-ZIWEI-COND-002",
+        "ZW-PAL-MING-COND-002"
       ],
       "expected_conditional_states": {
         "ZW-B1-ZIWEI-COND-002": "not_computed",
-        "ZW-PAL-MING-COND-002": "not_required"
+        "ZW-PAL-MING-COND-002": "not_computed"
       }
     },
     {

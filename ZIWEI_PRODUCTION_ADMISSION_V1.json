@@ -18,14 +18,26 @@
   },
   "calculation": {
     "provider_id": "ziwei-scope-a-natal-python",
-    "provider_version": "0.1.0",
+    "provider_version": "0.2.0",
     "runtime_owner": "tools/ziwei_natal_provider.py",
     "profile_id": "ziwei.scope_a.natal_v0",
-    "input_boundary": "normalized_traditional_lunar_only"
+    "input_boundary": "normalized_traditional_lunar_only",
+    "palace_occupancy_facts": {
+      "status": "production_admitted_natal_baseline",
+      "fact_available": "fact_available:palace_occupancy",
+      "per_palace": [
+        "major_star_count:<palace>:<count>",
+        "empty_palace:<palace>"
+      ],
+      "per_star": [
+        "star_in_palace:<star>:<palace>"
+      ],
+      "interpretation_boundary": "raw occupancy/applicability facts only; no borrowing doctrine"
+    }
   },
   "pipeline": {
     "pipeline_id": "ziwei-scope-a-production-pipeline-v1",
-    "pipeline_version": "1.1.0",
+    "pipeline_version": "1.2.0",
     "runtime_owner": "tools/ziwei_runtime.py",
     "interpretation_profile": "ziwei.interpretation.tw_v1",
     "delivery_contract": "references/ziwei/UNCERTAINTY_SAFETY_DELIVERY_CONTRACT_V0.md",
@@ -67,7 +79,8 @@
     "unadmitted_claim_no_model_memory_substitution",
     "registered_conflict_preserved",
     "missing_required_fact_omits_claim",
-    "undemonstrated_conditional_claim_omitted"
+    "undemonstrated_conditional_claim_omitted",
+    "empty_palace_claim_requires_verified_palace_occupancy"
   ],
   "high_stakes_guardrails": [
     "no_deterministic_health_or_death_prediction",

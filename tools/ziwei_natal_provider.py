@@ -25,7 +25,7 @@ BUREAU_LABELS = {2:"水二局",3:"木三局",4:"金四局",5:"土五局",6:"火�
 PROFILE_ID = "ziwei.scope_a.natal_v0"
 RESEARCH_PROFILE = "ziwei.baseline.tw_v1"
 PROVIDER_ID = "ziwei-scope-a-natal-python"
-PROVIDER_VERSION = "0.1.0"
+PROVIDER_VERSION = "0.2.0"
 
 @dataclass(frozen=True)
 class NormalizedNatalInput:
@@ -107,6 +107,21 @@ def _topology(layout: dict[str,str]) -> dict[str,dict[str,Any]]:
         }
     return result
 
+def _palace_occupancy(layout: dict[str,str], stars: dict[str,str]) -> dict[str,dict[str,Any]]:
+    branch_by_palace={palace:branch for branch,palace in layout.items()}
+    result={}
+    for palace in PALACES:
+        branch=branch_by_palace[palace]
+        major_stars=[star for star in MAJOR_STARS if stars[star]==branch]
+        result[palace]={
+            "branch":branch,
+            "major_stars":major_stars,
+            "major_star_count":len(major_stars),
+            "empty_major_star_palace":not major_stars,
+            "temporal_scope":"natal_baseline",
+        }
+    return result
+
 def calculate_scope_a_natal(data: NormalizedNatalInput) -> dict[str,Any]:
     data.validate()
     year_stem,year_branch=_year_pillar(data.lunar_year)
@@ -121,12 +136,20 @@ def calculate_scope_a_natal(data: NormalizedNatalInput) -> dict[str,Any]:
         {"branch":b,"palace":layout[b],"stem":stems[i]}
         for i,b in enumerate(yin_order)
     ]
+    occupancy=_palace_occupancy(layout,stars)
     facts=[f"palace_present:{p}" for p in PALACES]
     facts.extend(f"star_present:{s}" for s in MAJOR_STARS)
     facts.append("fact_available:star_locations")
     facts.extend(f"star_branch:{star}:{branch}" for star,branch in stars.items())
+    facts.append("fact_available:palace_occupancy")
+    for palace in PALACES:
+        record=occupancy[palace]
+        facts.append(f"major_star_count:{palace}:{record['major_star_count']}")
+        facts.extend(f"star_in_palace:{star}:{palace}" for star in record["major_stars"])
+        if record["empty_major_star_palace"]:
+            facts.append(f"empty_palace:{palace}")
     return {
-        "schema_version":"0.1.0",
+        "schema_version":"0.2.0",
         "provider":{"id":PROVIDER_ID,"version":PROVIDER_VERSION,"authority":"G1 ADMITTED — SCOPE-A NATAL / NOT G7 PRODUCTION ADMISSION"},
         "calculation_profile":{
             "profile_id":PROFILE_ID,
@@ -154,6 +177,7 @@ def calculate_scope_a_natal(data: NormalizedNatalInput) -> dict[str,Any]:
         "ziwei_branch":ziwei,
         "major_star_placements":stars,
         "palaces":palace_records,
+        "palace_occupancy":occupancy,
         "topology":_topology(layout),
         "retrieval_facts":facts,
         "unsupported":{

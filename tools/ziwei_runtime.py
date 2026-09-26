@@ -222,7 +222,7 @@ def _compose(chart:dict[str,Any], request:ZiWeiReadingRequest, calendar:dict[str
             "optional_modules":modules,
         },
         "pipeline_id":"ziwei-scope-a-production-pipeline-v1",
-        "pipeline_version":"1.1.0",
+        "pipeline_version":"1.2.0",
         "status":"PRODUCTION_ADMITTED",
         "scope":"bounded_natal_first_layer"+("+optional_brightness_v1" if BRIGHTNESS_MODULE in modules else "")+("+optional_m0_auxiliary_v1" if M0_MODULE in modules else "")+("+optional_sihua_v1" if SIHUA_MODULE in modules else ""),
         "request_id":request.request_id,
@@ -232,7 +232,8 @@ def _compose(chart:dict[str,Any], request:ZiWeiReadingRequest, calendar:dict[str
             "year_pillar":chart["year_pillar"], "life_palace":chart["life_palace"],
             "body_palace":chart["body_palace"], "five_element_bureau":chart["five_element_bureau"],
             "ziwei_branch":chart["ziwei_branch"], "major_star_placements":chart["major_star_placements"],
-            "palaces":chart["palaces"], "topology":chart["topology"], "unsupported":chart["unsupported"],
+            "palaces":chart["palaces"], "palace_occupancy":chart["palace_occupancy"],
+            "topology":chart["topology"], "unsupported":chart["unsupported"],
         },
         "interpretation":{
             "profile":INTERPRETATION_PROFILE, "temporal_scope":TEMPORAL_SCOPE,

@@ -376,7 +376,7 @@ Ordering rationale:
 ### ZW-P1-025 — Natal palace occupancy and empty-palace applicability facts
 
 - type: FEATURE / DETERMINISTIC FACTS / CLAIM APPLICABILITY
-- status: OPEN
+- status: IN_PROGRESS
 - priority: P1
 - owner: Zi Wei natal provider + interpretation retrieval
 - blocked_by: none
@@ -404,6 +404,11 @@ Ordering rationale:
   - deterministic bundle / schemas / admission surfaces are updated only if the runtime contract materially requires it;
   - new occupancy/applicability facts are explicitly natal-baseline scoped (or inherit an unambiguous natal-baseline scope) and cannot collide with future dynamic-scope facts;
   - required CI passes and canonical read-back verifies no unrelated semantic widening.
+- implementation_state:
+  - bounded implementation branch adds natal-baseline palace occupancy facts and fact-gates the existing empty-palace conditionals without widening the 52-claim corpus;
+  - temporary PR bridge regenerated the deterministic Zi Wei bundle with the canonical generator and passed focused provider / palace-registry / production-contract / bundle tests;
+  - candidate remains IN_PROGRESS until formal PR validation, merge and canonical read-back complete;
+  - DONE remains gated on merge + canonical read-back + required CI / generated-bundle verification.
 - production_boundary:
   - `empty_palace` is a calculation/applicability fact, not an interpretation conclusion;
   - opposite / Sanfang / borrowing semantics remain source-backed interpretation responsibility;

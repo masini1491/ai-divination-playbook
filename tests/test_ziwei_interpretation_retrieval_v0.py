@@ -75,7 +75,10 @@ class ZiWeiExecutableRetrievalV0Tests(unittest.TestCase):
         self.assertIn("ZW-B1-ZIWEI-CORE-001",ids)
         self.assertNotIn("ZW-B1-ZIWEI-COND-002",ids)
         self.assertIn("ZW-PAL-MING-DOM-001",ids)
-        self.assertIn("ZW-PAL-MING-COND-002",ids)
+        self.assertNotIn("ZW-PAL-MING-COND-002",ids)
+        self.assertEqual("not_computed",self.activation(r,"ZW-PAL-MING-COND-002")["state"])
+        reasons={x["claim_id"]:x["reason"] for x in r["omissions"]}
+        self.assertEqual("conditional_fact_not_computed",reasons["ZW-PAL-MING-COND-002"])
         frame=compose_frame(p,r)
         self.assertIn("紫微",frame["subject_claims"])
         self.assertIn("命宮",frame["subject_claims"])
