@@ -98,9 +98,9 @@ temporal-context interpretation responsibility = CLOSED — RESEARCH
 scope taxonomy                           = CLOSED — RESEARCH
 dynamic fact provenance contract         = CLOSED — RESEARCH
 dynamic calculation runtime/provider     = ADMITTED — DECADAL/YEARLY/MONTHLY/DAILY/HOURLY CALCULATION-ONLY
-dynamic claim corpus                     = DECADAL METHODOLOGY V1 ONLY; YEARLY/MONTHLY/DAILY/HOURLY NOT ADMITTED
-executable retrieval/composition         = ADMITTED — NATAL + EXPLICIT DECADAL SCOPE
-production authority                     = BOUNDED DECADAL METHODOLOGY ONLY
+dynamic claim corpus                     = DECADAL METHODOLOGY V1 + YEARLY METHODOLOGY V1; MONTHLY/DAILY/HOURLY NOT ADMITTED
+executable retrieval/composition         = ADMITTED — NATAL + EXPLICIT DECADAL + EXPLICIT YEARLY SCOPE
+production authority                     = BOUNDED DECADAL/YEARLY METHODOLOGY ONLY
 ```
 
-This historical research closure has since been superseded in two bounded ways: `ZW-P1-030` admitted calculation-only runtime layers through hourly, and `ZW-P1-040` decadal v1 admits exactly two source-backed methodology claims through V7. The decadal slice treats the computed decade period and life-palace position as ten-year context and requires finer-scope corroboration before finer event claims. It does **not** admit natal-claim promotion, generic decadal auspicious/inauspicious doctrine, concrete-event prediction, or yearly/monthly/daily/hourly interpretation.
+This historical research closure has since been superseded in two bounded ways: `ZW-P1-030` admitted calculation-only runtime layers through hourly, and `ZW-P1-040` decadal v1 admits exactly two source-backed methodology claims through V7, and yearly v1 adds exactly three bounded methodology claims through V8. The decadal slice treats the computed decade period and life-palace position as ten-year context. The yearly slice requires same-layer sanfang/opposition context, compatible decadal-parent composition, and no generic yearly-fortune filler. Neither slice admits natal/parent-claim promotion or concrete-event prediction; target-year Si Hua remains calculation context only, and monthly/daily/hourly interpretation remains unadmitted.

@@ -4,7 +4,7 @@
 
 它不是 production method router，也不把 `references/**` 內的研究線自動升級成正式占卜方法。
 
-目前 production method selection 仍由 `METHOD_ROUTING.md` 負責。Astrology 與 Zi Wei Scope-A 已有 bounded production v1，但都只有 explicit-request activation；普通未指定方法的 auto-routing 仍是：
+目前 production method selection 仍由 `METHOD_ROUTING.md` 負責。Astrology 與 Zi Wei 已有 bounded production authority，但都只有 explicit-request activation；普通未指定方法的 auto-routing 仍是：
 
 ```text
 Tarot
@@ -72,11 +72,11 @@ Research authority：
 REFERENCE-ONLY / RESEARCH-ONLY
 ```
 
-Research history remains non-production-routable by itself. Bounded production authority is separately owned by `ZIWEI.md` + `ZIWEI_PRODUCTION_ADMISSION_V1.json`.
+Research history remains non-production-routable；production authority 另由 `ZIWEI.md` + `ZIWEI_PRODUCTION_ADMISSION_V1.json` 擁有。
 
-目前已建立 deterministic calculation、source/tradition、profile divergence，以及 interpretation architecture / provenance-preserving composition / future admission 的研究架構。研究 default candidate 以「一般使用者載入 ChatGPT 後的主觀貼合／命中感」為產品目標之一，但 Tarot 覆核只屬 research decision evidence；**不等於科學驗證、客觀預測效度或唯一正統來源**。
+目前研究涵蓋 deterministic calculation、source/tradition、profile divergence 與 interpretation / provenance architecture。研究 default candidate 以「一般使用者載入 ChatGPT 後的主觀貼合／命中感」為產品目標之一，但 Tarot 覆核只屬 research decision evidence；**不等於科學驗證、客觀預測效度或唯一正統來源**。
 
-不得因 research dossier 本身而取得 production authority。Scope-A production v1 是另外的 explicit admission；它仍不加入 ordinary auto-selection，也不建立 production cross-validation。
+Research dossier 不授予 production authority；Zi Wei 仍為 explicit admission、不得加入 ordinary auto-selection 或建立 production cross-validation。
 
 ### Palmistry
 
@@ -144,7 +144,7 @@ CHAT_INIT.md
 → production method owner
 ```
 
-Astrology production v1 與 Zi Wei Scope-A production v1 都不因 repository 有 research dossier 就成為 ordinary auto-routing candidate。
+Astrology production 與 Zi Wei production 都不因 repository 有 research dossier 就成為 ordinary auto-routing candidate。
 
 若使用者明確指定 production Astrology：
 
@@ -159,7 +159,7 @@ CHAT_INIT.md
 ```text
 CHAT_INIT.md
 → ZIWEI.md
-→ admitted Scope-A pipeline / fail-closed boundary
+→ admitted Zi Wei runtime / fail-closed boundary
 ```
 
 Palmistry 仍不得因有 research dossier而成為 ordinary auto-routing candidate。
@@ -255,7 +255,7 @@ judgment gap
 → explicit admission decision
 ```
 
-Astrology v1 與 Zi Wei Scope-A v1 都是這個 sequence 的 bounded implementation，不是繞過 sequence 的例外。
+Astrology v1 與 Zi Wei current production admissions 都是這個 sequence 的 bounded implementation，不是繞過 sequence 的例外。
 
 修改本檔或 `PLAYBOOK_INDEX.json` 的 research pointer **不能跳過上述 sequence**。
 

@@ -30,7 +30,8 @@ research-only scaffold
 - ordinary unspecified auto-routing：仍刻意為 false
 - dynamic calculation：`decadal → yearly → monthly → daily → hourly` 五層 calculation-only 已依 V2–V6 分層 production-admitted；
 - decadal / 大限 interpretation：V7 只 admission 2 條 bounded methodology claims，用已計算的大限區間／命宮位置建立十年 context，並要求較細事件等待 lower-layer evidence；不 admission natal-claim promotion、generic吉凶或具體事件預測；
-- yearly／monthly／daily／hourly interpretation，以及 broader contextual star×palace / 未另 admission 的 auxiliary / Four-Transformation interpretation：仍未 production-admitted
+- yearly / 流年 interpretation：V8 只 admission 3 條 bounded methodology claims，要求同層三方／對照、compatible 大限 parent 合參與 no-generic-yearly-filler；target-year 四化仍是 calculation context，不自動 admission 流年四化斷語；
+- monthly／daily／hourly interpretation，以及 broader contextual star×palace / 未另 admission 的 auxiliary / Four-Transformation interpretation：仍未 production-admitted
 - 科學／客觀預測有效性：未聲稱
 
 ## Production boundary
