@@ -773,6 +773,15 @@ Ordering rationale:
   - no star×palace doctrine inferred solely from independent star-core + palace-domain meanings;
   - no guaranteed office, wealth, marriage, illness or death outcome.
 
+#### 2026-09-28 bounded extension — 貪狼×夫妻宮
+
+- status: IN_PROGRESS
+- shared_development_playbook_reviewed: `masini1491/ai-development-playbook@5713f23f1a306bed7b6346edaaa0226a248949dd`
+- research_evidence: `STAR_PALACE_CONTEXTUAL_RESEARCH_V2.md` marks `貪狼×夫妻宮` historical bounded semantics as materially distinct / admission-candidate; Nihai spouse-age heuristic remains practitioner-only / deferred.
+- intended_production_delta: add exactly one historical-bounded `貪狼×夫妻宮` claim to existing `sparse_star_palace_context_v1`; exact applicability remains `fact_available:palace_occupancy` + `star_in_palace:貪狼:夫妻宮`; base natal 61 → 62; maximum optional 78 → 79; star×palace 2 → 3; pipeline remains `1.5.0`.
+- production_boundary: no deterministic marriage failure, multiple-marriage, affair or fixed-spouse-characteristic prediction; no Cartesian expansion.
+- completion_gate: registry / admission / root manifest / index / docs / tests synchronized; shared reviewed-revision evidence updated without pinning declared baseline `main`; canonical generators refresh derived caches; formal PR CI + merge + exact-main CI/artifact + canonical read-back before DONE.
+
 ### ZW-P2-050 — Body-Palace overlay interpretation admission
 
 - type: FEATURE / INTERPRETATION / NATAL OVERLAY

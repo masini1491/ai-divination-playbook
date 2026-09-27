@@ -294,7 +294,7 @@ Zi Wei 目前是 bounded natal production method，適合使用者明確要求�
 - 命宮、身宮、五行局、14 主星 placement 等 deterministic natal facts；身宮另 deterministic 投影到既有十二宮之一，不建立第十三宮；
 - same-palace pair claims只在 canonical occupancy facts 同時證明兩星落入 admitted 同一宮位時啟動；沒有 pair-specific source evidence 時維持原 bounded composition，不用模型記憶補齊；
 - Body-Palace overlay interpretation只 admission `身宮` methodology + `夫妻宮`／`財帛宮`／`官祿宮`／`遷移宮` 四個 exact overlay context；其他身宮落宮不補造語義；
-- sparse star×palace contextual interpretation只 admission `天相×命宮`、`天梁×官祿宮` 兩條 source-explicit overrides；必須由 canonical `star_in_palace` fact 精確命中，其他組合維持既有 bounded composition；
+- sparse star×palace contextual interpretation只 admission `天相×命宮`、`天梁×官祿宮`、`貪狼×夫妻宮` 三條 source-explicit overrides；前兩條為 practitioner-bounded，`貪狼×夫妻宮` 為 historical-bounded，必須由 canonical `star_in_palace` fact 精確命中；Nihai 配偶年齡 heuristic 仍不 admission，其他組合維持既有 bounded composition；
 - explicit-IANA civil-time Gregorian birth datetime（admitted local-date range 1900-01-01..2100-12-31）→ shared DST-safe validation → normalized lunar input；
 - `23:00` 晚子時採 `next_day_at_23`；
 - 閏月採 `split_after_day_15`；

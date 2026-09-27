@@ -6,7 +6,7 @@ Declared baseline：`main`
 
 Project AI mode：`ChatGPT-Only`
 
-Last reviewed source revision：`1aea805c0674960945d5588842a18bc37f0c96d9`
+Last reviewed source revision：`5713f23f1a306bed7b6346edaaa0226a248949dd`
 
 Relationship：**common AI engineering baseline + conditional activation**。這不是 divination method authority，也不是要求 ordinary reading 每次載入 shared Playbook。
 
