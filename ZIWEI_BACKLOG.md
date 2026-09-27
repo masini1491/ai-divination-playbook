@@ -723,27 +723,35 @@ Ordering rationale:
 ### ZW-P2-060 — Sparse same-palace major-star combination claims
 
 - type: FEATURE / INTERPRETATION / SPARSE OVERRIDES
-- status: DEFERRED
+- status: IN_PROGRESS
 - priority: P2
 - owner: Zi Wei interpretation evidence
 - blocked_by:
-  - ZW-P1-025
-- problem:
-  - current production supports independent major-star core claims + palace-domain claims and bounded L5 synthesis;
-  - research architecture explicitly reserves `same-palace combination` as a separate composition dimension;
-  - current admitted registries contain no source-explicit major-star-pair claim family for combinations such as 武曲×天相、廉貞×天府、天同×巨門、太陽×天梁.
+  - ZW-P1-025 — CLOSED
+- evidence_decision:
+  - pinned practitioner corpus `Renhuai123/nihai-tianji-corpus@c90006168195c0650328b7199669eb6a2d0cac93` supports exactly two bounded `武曲×天相` claims in the current pass: `兄弟宮` and `官祿宮`;
+  - reviewed `廉貞×天府` and `天同×巨門` passages establish co-occupancy/case context but not isolated pair-specific semantics; `太陽×天梁` did not yield a source-explicit semantic rule in the bounded pass;
+  - therefore missing candidates remain unadmitted rather than filled from model memory.
 - canonical_research:
   - `references/ziwei/INTERPRETATION_ARCHITECTURE_V0.md`
   - `references/ziwei/INTERPRETATION_RUNTIME_CONTRACTS_V0.md`
-  - `references/ziwei/ziwei_interpretation_claim_registry_batch1.json`
-  - `references/ziwei/ziwei_interpretation_claim_registry_batch2.json`
+  - `references/ziwei/SAME_PALACE_MAJOR_STAR_PAIR_RESEARCH_V1.md`
+  - `references/ziwei/ziwei_interpretation_claim_registry_same_palace_pairs_v1.json`
+- implementation_candidate:
+  - schema `0.3.0-research` adds explicit `same_palace_pair` identity with `pair_members[]` / `subjects[]`;
+  - exact applicability reuses `fact_available:palace_occupancy` + two canonical `star_in_palace:<star>:<same palace>` facts;
+  - `tools/ziwei_claim_retrieval.py` gives pair claims higher specificity than generic star/palace claims and keeps generic claims as bounded context;
+  - default natal runtime loads the separately admitted 2-claim pair registry; no new geometry provider or optional selector is introduced;
+  - base natal claim count becomes 54 = 52 first-layer + 2 sparse pair claims; optional M0 + Sihua maximum becomes 61.
 - completion_gate:
   - only source-explicit sparse pair claims are eligible;
   - exact same-palace pair applicability facts / provenance are machine-matchable and derive from the canonical occupancy facts admitted by `ZW-P1-025`;
   - tradition/profile/conflict identity is preserved;
   - pair-specific claims outrank generic composition only inside their admitted scope;
   - absence of a pair-specific claim continues to use existing bounded L5 composition;
-  - regression coverage prevents Cartesian expansion or model-memory pair doctrine.
+  - regression coverage prevents Cartesian expansion or model-memory pair doctrine;
+  - registry/schema/runtime/admission/index/materialization/bundle/current docs remain synchronized;
+  - canonical generator outputs, formal PR CI, merge, exact-main CI/artifact and canonical read-back complete before `DONE`.
 - production_boundary:
   - no exhaustive 14×14 Cartesian dictionary;
   - this item is distinct from `ZW-P2-020` star×palace contextual claims;
