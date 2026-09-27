@@ -103,7 +103,7 @@ Current Astrology production already provides evidence for the core semantics of
 - DST-ambiguous `America/New_York` wall time fails closed;
 - fixed offset is not accepted as timezone identity.
 
-Those existing method-local behaviors are precedent/evidence, not yet a shared implementation owner.
+Those method-local behaviors remain regression precedent/evidence; the canonical shared implementation is `tools/civil_time_normalizer.py` under `CIVIL_TIME_NORMALIZER_ADMISSION_V1.json`.
 
 ### Zi Wei
 

@@ -29,8 +29,8 @@ Last reviewed against:
 
 ```text
 ai-divination-playbook main
-d1e07424465d9f8e6445c2e2e895e43df92008e2
-Close AST-P1-190 shared civil-time normalizer (#299)
+7e2cc51f4b86d43bd1cf7dd0ee05b81917f455eb
+Close Zi Wei P2-030 civil-time normalization (#306)
 ```
 
 This SHA is review evidence only, not a pin. Every maintenance or implementation task must resolve current `main` again before mutation.
@@ -920,8 +920,8 @@ This item is a standing reconciliation guard. It is not a request to change curr
   - exact-main validation run `36295281032` passed `casting-runtime`, unit tests, structural checker, and exact-main Astrology handoff artifact preparation/upload;
   - no provider/runtime/admission semantics were changed by contract closure.
 - followup:
-  - implementation/admission is separate at `AST-P1-190`;
-  - `ZW-P2-030` remains blocked until the shared implementation/admission is ready for consumption.
+  - shared implementation/admission is complete at `AST-P1-190`;
+  - Zi Wei consumer expansion is complete at `ZIWEI_BACKLOG.md#ZW-P2-030`; future timezone/profile expansion requires a new explicit scope/admission decision rather than treating this shared contract as still blocked.
 
 
 ## Intentionally not backlog blockers

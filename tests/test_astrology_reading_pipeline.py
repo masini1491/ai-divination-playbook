@@ -47,6 +47,19 @@ class AstrologyReadingPipelineTests(unittest.TestCase):
         self.assertIn("Unsupported / unavailable factors:", result["rendered_text"])
         self.assertIn("Required disclosures:", result["rendered_text"])
 
+    def test_omitted_house_system_reaches_final_output_with_default_disclosure(self):
+        reading = load(READING)
+        reading["birth"].pop("house_system", None)
+        result = run_pipeline(reading, load(INTERPRETATION), load(OUTPUT), repo_root=ROOT)
+        birth = result["stages"]["reading_run"]["normalized_request"]["birth"]
+        self.assertEqual("Placidus", birth["house_system"])
+        self.assertEqual("project_default", birth["house_system_selection"])
+        disclosure = "\n".join(result["stages"]["user_facing_output"]["required_disclosures"])
+        self.assertIn("Placidus (project default)", disclosure)
+        self.assertIn("Whole Sign is also supported", disclosure)
+        self.assertIn("House system: Placidus (project default).", result["rendered_text"])
+        self.assertIn("Whole Sign is also supported", result["rendered_text"])
+
     def test_output_draft_cannot_escape_handoff(self):
         output = load(OUTPUT)
         output["conclusion"]["claim_refs"][0]["claim_id"] = "claim:not-selected"
