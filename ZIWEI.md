@@ -11,7 +11,7 @@ Zi Wei production 不參與 ordinary auto-routing。只有使用者明確要求�
 ```text
 explicit Zi Wei production
 → ZIWEI.md
-→ Gregorian birth datetime (Asia/Taipei; CE or explicit 民國 year notation) → admitted year-notation/calendar adapters
+→ Gregorian birth datetime + explicit IANA timezone (CE or explicit 民國 year notation) → shared civil-time validation → admitted year-notation/calendar adapters
    OR already-normalized lunar input + provenance
 → tools/ziwei_runtime.py (`run_ziwei`)
 → admitted natal_baseline facts
@@ -31,7 +31,7 @@ IN — natal core:
 - 12 palace first-layer claims;
 - 52 admitted claims total;
 - admitted deterministic natal provider facts, including natal-baseline per-palace major-star occupancy / count / empty-palace applicability facts;
-- Gregorian birth datetime input via `ziwei.calendar.tw_v1` for `Asia/Taipei` civil time within the admitted 1900-01-01..2100-12-31 range; explicit 民國年份 notation is deterministically converted by `tools/ziwei_year_notation.py` (`民國 N 年 → CE N+1911`) before the same Gregorian calendar adapter;
+- Gregorian birth datetime input via `ziwei.calendar.civil_v2` with an explicit IANA timezone within the admitted local-date range 1900-01-01..2100-12-31; `civil-time-zoneinfo-v1` validates DST/local-wall-time identity, and Gregorian→lunar conversion uses validated local calendar fields rather than UTC-rebased fields; explicit 民國年份 notation is deterministically converted by `tools/ziwei_year_notation.py` (`民國 N 年 → CE N+1911`) before the same adapter;
 - explicit provenance, omission, conflict and safety delivery.
 
 SEPARATELY ADMITTED TEMPORAL LAYERS:
