@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Any
 
 SCHEMA_NAME = 'ziwei_interpretation_claim_registry'
-SUPPORTED_SCHEMA_VERSIONS = {'0.1.0-research','0.1.1-research','0.2.0-research','0.2.1-research','0.3.0-research'}
+SUPPORTED_SCHEMA_VERSIONS = {'0.1.0-research','0.1.1-research','0.2.0-research','0.2.1-research','0.3.0-research','0.4.0-research'}
 HARDENED_CONDITIONAL_VERSIONS = {'0.1.1-research','0.2.1-research'}
 SOURCE_ROLES = {'PRIMARY_TEXT','SCHOLARLY_SECONDARY','PRACTITIONER_REFERENCE','REFERENCE_IMPLEMENTATION','PROJECT_SYNTHESIS'}
 ADMISSION = {'REFERENCE_ONLY','CLAIM_ELIGIBLE','EVALUATION_ONLY','REJECTED'}
@@ -18,6 +18,7 @@ CLAIM_TYPES_BY_VERSION = {
     '0.2.0-research': {'star_core','star_conditional','palace_domain','palace_conditional','methodology'},
     '0.2.1-research': {'star_core','star_conditional','palace_domain','palace_conditional','methodology'},
     '0.3.0-research': {'star_core','star_conditional','palace_domain','palace_conditional','same_palace_pair','methodology'},
+    '0.4.0-research': {'star_core','star_conditional','palace_domain','palace_conditional','same_palace_pair','body_palace_overlay','methodology'},
 }
 ASSERTION_CLASSES = {'historical_core','historical_conditional','named_tradition','practitioner_heuristic','case_inference','project_adoption'}
 CONFIDENCE = {'supported','qualified','provisional','conflicted','unsupported'}
@@ -99,6 +100,15 @@ def validate(data:Any)->list[dict[str,str]]:
                 err(errors,'PAIR_SUBJECTS_REQUIRED',p+'.subjects','same_palace_pair requires non-empty subjects')
             elif isinstance(pair_members,list) and not set(pair_members).issubset(set(subjects)):
                 err(errors,'PAIR_SUBJECTS_MISSING_MEMBERS',p+'.subjects','subjects must include both pair members')
+        if c.get('claim_type')=='body_palace_overlay':
+            overlay_palace=c.get('overlay_palace')
+            subjects=c.get('subjects')
+            if not nonempty_str(overlay_palace):
+                err(errors,'BODY_OVERLAY_PALACE_REQUIRED',p+'.overlay_palace','body_palace_overlay requires one existing palace identity')
+            if not str_array(subjects) or not subjects:
+                err(errors,'BODY_OVERLAY_SUBJECTS_REQUIRED',p+'.subjects','body_palace_overlay requires non-empty subjects')
+            elif '身宮' not in subjects or (isinstance(overlay_palace,str) and overlay_palace not in subjects):
+                err(errors,'BODY_OVERLAY_SUBJECTS_INVALID',p+'.subjects','subjects must include 身宮 and overlay_palace')
         refs=c.get('source_refs')
         if not str_array(refs): err(errors,'SOURCE_REFS_REQUIRED',p+'.source_refs','non-empty string array required'); refs=[]
         if refs==[]: err(errors,'SOURCE_REFS_NONEMPTY',p+'.source_refs','must not be empty')
@@ -150,7 +160,7 @@ def validate(data:Any)->list[dict[str,str]]:
         if gid in conflict_ids: err(errors,'CONFLICT_ID_DUPLICATE',p+'.conflict_group_id','must be unique')
         conflict_ids.add(gid)
         allowed_resolutions={'PRESERVE_CONFLICT','RESOLVED_BY_PROFILE'}
-        if schema_version in {'0.2.0-research','0.2.1-research','0.3.0-research'}: allowed_resolutions.add('PRESERVE_SCOPE_DIFFERENCE')
+        if schema_version in {'0.2.0-research','0.2.1-research','0.3.0-research','0.4.0-research'}: allowed_resolutions.add('PRESERVE_SCOPE_DIFFERENCE')
         if g.get('resolution_status') not in allowed_resolutions: err(errors,'CONFLICT_RESOLUTION_INVALID',p+'.resolution_status',f'unsupported for schema {schema_version}')
         refs=g.get('claim_refs')
         if not isinstance(refs,list): err(errors,'CONFLICT_CLAIM_REFS_REQUIRED',p+'.claim_refs','array required'); refs=[]
