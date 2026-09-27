@@ -29,8 +29,8 @@ Last reviewed against:
 
 ```text
 ai-divination-playbook main
-0d736dc5d5eaf59b05ee0d5f2fe0e39d1ecb0ad2
-Fix Astrology handoff manifest JSON (#252)
+d3214b101ec3c86692c5c5aa0f4cc5130fcc8f30
+Close Zi Wei hourly interpretation and ZW-P1-040 (#293)
 ```
 
 This SHA is review evidence only, not a pin. Every maintenance or implementation task must resolve current `main` again before mutation.
@@ -58,13 +58,18 @@ The closed work above must not be repeatedly rediscovered as open work unless a 
 
 ## Recommended execution order
 
-There is currently no active one-shot Astrology P0/P1 feature work after AST-P1-180 closure.
+Current near-term shared/input work:
+
+1. **AST-SHARED-003 — Shared civil-time normalization contract**
+   - IN_PROGRESS; freeze one cross-method IANA/DST/local-vs-UTC contract for Astrology and Zi Wei without changing runtime authority.
+2. **AST-P1-190 — Shared civil-time normalizer extraction/admission**
+   - OPEN; starts only after AST-SHARED-003 contract closure, with Astrology as the first implementation consumer.
 
 Deferred work remains:
 
-1. **AST-P2-020 — Named consumer compatibility profile**
+3. **AST-P2-020 — Named consumer compatibility profile**
    - DEFERRED; start only when a concrete named consumer/profile requires compatibility.
-2. **AST-P2-030 — Optional Swiss compatibility/provider lane**
+4. **AST-P2-030 — Optional Swiss compatibility/provider lane**
    - DEFERRED; start only when explicit Swiss compatibility/provider demand appears.
 
 `AST-P0-002` remains a standing reconciliation guard, not a one-shot feature. Already-DONE items must not be rediscovered as open work.
@@ -628,6 +633,32 @@ This item is a standing reconciliation guard. It is not a request to change curr
   - Astronomy Engine version, calculation admission, place-resolver scope and extended-ephemeris transport remain unchanged;
   - Actions artifacts do not become permanent source-of-truth storage.
 
+
+### AST-P1-190 — Shared civil-time normalizer extraction/admission
+
+- type: FEATURE / INPUT NORMALIZATION / CROSS-METHOD DETERMINISTIC ADAPTER
+- status: OPEN
+- priority: P1
+- owner: shared civil-time implementation with Astrology as first consumer
+- blocked_by:
+  - AST-SHARED-003
+- current_state:
+  - Astrology already production-validates IANA timezone input, Sydney civil time, DST nonexistent/ambiguous fail-closed behavior, and rejection of fixed-offset-only timezone identity inside `tools/astrology_provider.py`;
+  - Zi Wei production Gregorian input remains `Asia/Taipei`-only and must not duplicate a second generic timezone/DST resolver.
+- completion_gate:
+  - extract or otherwise establish one project-owned shared deterministic civil-time normalizer that implements `CIVIL_TIME_NORMALIZATION.md`;
+  - preserve current Astrology production semantics and parity while making Astrology a consumer of the shared adapter;
+  - expose validated local civil datetime and resolved UTC instant as distinct facts with IANA timezone provenance;
+  - keep DST gap/fold behavior fail-closed unless a separately admitted explicit disambiguation selector exists;
+  - add focused cross-method regression fixtures before Zi Wei consumes the adapter;
+  - do not widen Zi Wei timezone admission in this item.
+- non_goals:
+  - no birthplace→timezone guessing;
+  - no true-solar-time correction;
+  - no change to Astrology calculation/interpretation authority;
+  - no Zi Wei Gregorian→lunar production admission beyond `Asia/Taipei`.
+
+
 ## P2 — deferred compatibility / provider expansion
 
 ### AST-P2-010 — Interpolated Black Moon Lilith
@@ -801,6 +832,39 @@ This item is a standing reconciliation guard. It is not a request to change curr
 - canonical coordination owner: `ZIWEI_BACKLOG.md#ZW-SHARED-001`
 - canonical technical contract: `CROSS_VALIDATION.md` §7
 - mutable status is **not** tracked here; follow the Zi Wei backlog owner to avoid divergent shared state.
+
+### AST-SHARED-003 — Shared civil-time normalization contract
+
+- type: SHARED / DETERMINISTIC INPUT CONTRACT
+- status: IN_PROGRESS
+- priority: SHARED
+- owner: cross-method civil-time normalization
+- blocked_by: none
+- canonical_contract:
+  - `CIVIL_TIME_NORMALIZATION.md`
+- consumers:
+  - Astrology known-time / unknown-time deterministic input paths
+  - `ZIWEI_BACKLOG.md#ZW-P2-030`
+- current_evidence:
+  - Astrology production already admits explicit IANA timezone input and preserves resolved UTC provenance;
+  - `tests/test_astrology_provider.py` covers `Australia/Sydney`, DST-nonexistent and DST-ambiguous `America/New_York` fail-closed behavior, and rejection of fixed offsets as timezone identity;
+  - Zi Wei calendar admission remains intentionally `Asia/Taipei`-only.
+- contract_boundary:
+  - shared semantics validate local civil wall time against an explicit/admitted IANA timezone and preserve both validated local identity and resolved UTC instant;
+  - DST gaps fail closed; DST folds fail closed unless a separately admitted explicit disambiguation selector exists;
+  - birthplace→timezone resolution stays separate and may not be guessed;
+  - Zi Wei must perform Gregorian→lunar conversion from validated **local civil Gregorian fields**, not from UTC-rebased calendar fields;
+  - true-solar-time remains outside this contract and stays under `ZW-P2-040`.
+- completion_gate:
+  - canonical contract merged on main;
+  - machine routing points to the shared owner;
+  - Astrology and Zi Wei coordination surfaces point to one shared contract without duplicating technical authority;
+  - structural regression protects the single-owner / pointer topology;
+  - canonical read-back + required CI PASS.
+- followup:
+  - implementation/admission is separate at `AST-P1-190`;
+  - `ZW-P2-030` remains blocked until the shared implementation/admission is ready for consumption.
+
 
 ## Intentionally not backlog blockers
 

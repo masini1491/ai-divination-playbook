@@ -34,6 +34,24 @@ class RepositoryArchitectureContractTests(unittest.TestCase):
         self.assertEqual("contract", row["kind"])
         self.assertEqual("repo-level", row["scope"])
 
+    def test_shared_civil_time_contract_has_single_coordination_owner(self) -> None:
+        contract = (ROOT / "CIVIL_TIME_NORMALIZATION.md").read_text(encoding="utf-8")
+        astrology = (ROOT / "ASTROLOGY_BACKLOG.md").read_text(encoding="utf-8")
+        ziwei = (ROOT / "ZIWEI_BACKLOG.md").read_text(encoding="utf-8")
+        index = json.loads((ROOT / "PLAYBOOK_INDEX.json").read_text(encoding="utf-8"))
+        rows = {row["id"]: row for row in index["capabilities"]}
+
+        self.assertIn("CROSS-METHOD DETERMINISTIC INPUT CONTRACT", contract)
+        self.assertIn("AST-SHARED-003", astrology)
+        self.assertIn("AST-P1-190", astrology)
+        self.assertIn("CIVIL_TIME_NORMALIZATION.md", ziwei)
+        self.assertIn("ASTROLOGY_BACKLOG.md#AST-SHARED-003", ziwei)
+        self.assertIn("ASTROLOGY_BACKLOG.md#AST-P1-190", ziwei)
+        row = rows["input.civil-time-normalization"]
+        self.assertEqual("CIVIL_TIME_NORMALIZATION.md", row["owner"])
+        self.assertEqual("ASTROLOGY_BACKLOG.md#AST-SHARED-003", row["coordination_owner"])
+        self.assertEqual("ZIWEI_BACKLOG.md#ZW-P2-030", row["ziwei_consumer"])
+
     def test_runtime_and_data_are_distinct_layers(self) -> None:
         text = (ROOT / "REPOSITORY_ARCHITECTURE.md").read_text(encoding="utf-8")
         self.assertIn("data/         repo-local deterministic datasets", text)
