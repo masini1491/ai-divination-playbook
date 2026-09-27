@@ -346,7 +346,7 @@
             "yearly": "production-admitted-bounded-methodology",
             "monthly": "production-admitted-bounded-methodology",
             "daily": "production-admitted-bounded-methodology",
-            "hourly": "not-admitted"
+            "hourly": "production-admitted-bounded-methodology"
           }
         },
         "yearly_v1": {
@@ -368,7 +368,7 @@
           "lower_layer_interpretation_status": {
             "monthly": "production-admitted-bounded-methodology",
             "daily": "production-admitted-bounded-methodology",
-            "hourly": "not-admitted"
+            "hourly": "production-admitted-bounded-methodology"
           }
         },
         "monthly_v1": {
@@ -390,7 +390,7 @@
           "concrete_event_prediction": false,
           "lower_layer_interpretation_status": {
             "daily": "production-admitted-bounded-methodology",
-            "hourly": "not-admitted"
+            "hourly": "production-admitted-bounded-methodology"
           }
         },
         "daily_v1": {
@@ -414,8 +414,32 @@
           "generic_daily_fortune": false,
           "concrete_event_prediction": false,
           "lower_layer_interpretation_status": {
-            "hourly": "not-admitted"
+            "hourly": "production-admitted-bounded-methodology"
           }
+        },
+        "hourly_v1": {
+          "activation": "explicit-hourly-request-only",
+          "runtime": "tools/ziwei_runtime.py",
+          "runtime_id": "ziwei-production-runtime-v11",
+          "admission_manifest": "ZIWEI_HOURLY_INTERPRETATION_ADMISSION_V1.json",
+          "registry": "references/ziwei/ziwei_interpretation_claim_registry_hourly_v1.json",
+          "interpretation_profile": "ziwei.interpretation.tw_v1",
+          "claim_count": 3,
+          "parent_calculation_scope": "hourly",
+          "parent_interpretation_context": "daily",
+          "interpretation_status": "production-admitted-bounded-methodology",
+          "natal_claim_promotion": false,
+          "decadal_claim_promotion": false,
+          "yearly_claim_promotion": false,
+          "monthly_claim_promotion": false,
+          "daily_claim_promotion": false,
+          "physical_hour_pillar_interpretation": false,
+          "hour_stem_interpretation": false,
+          "hourly_sihua_interpretation": false,
+          "flow_star_interpretation": false,
+          "generic_hourly_fortune": false,
+          "concrete_event_prediction": false,
+          "method_non_uniqueness": true
         }
       }
     },
