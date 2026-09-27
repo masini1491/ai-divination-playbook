@@ -29,7 +29,7 @@ Last reviewed against:
 
 ```text
 ai-divination-playbook main
-eb52537c358d532eff2aeae2eb7712b36a18b2a7
+652775c4655cc4dd0cc5ffbec529c11a68f0bee8
 ```
 
 This SHA is review evidence only, not a pin. Every maintenance task must resolve current `main` again before mutation.
@@ -723,7 +723,7 @@ Ordering rationale:
 ### ZW-P2-060 — Sparse same-palace major-star combination claims
 
 - type: FEATURE / INTERPRETATION / SPARSE OVERRIDES
-- status: IN_PROGRESS
+- status: DONE
 - priority: P2
 - owner: Zi Wei interpretation evidence
 - blocked_by:
@@ -737,7 +737,7 @@ Ordering rationale:
   - `references/ziwei/INTERPRETATION_RUNTIME_CONTRACTS_V0.md`
   - `references/ziwei/SAME_PALACE_MAJOR_STAR_PAIR_RESEARCH_V1.md`
   - `references/ziwei/ziwei_interpretation_claim_registry_same_palace_pairs_v1.json`
-- implementation_candidate:
+- implementation:
   - schema `0.3.0-research` adds explicit `same_palace_pair` identity with `pair_members[]` / `subjects[]`;
   - exact applicability reuses `fact_available:palace_occupancy` + two canonical `star_in_palace:<star>:<same palace>` facts;
   - `tools/ziwei_claim_retrieval.py` gives pair claims higher specificity than generic star/palace claims and keeps generic claims as bounded context;
@@ -752,6 +752,19 @@ Ordering rationale:
   - regression coverage prevents Cartesian expansion or model-memory pair doctrine;
   - registry/schema/runtime/admission/index/materialization/bundle/current docs remain synchronized;
   - canonical generator outputs, formal PR CI, merge, exact-main CI/artifact and canonical read-back complete before `DONE`.
+- closure:
+  - implementation merged by PR #312 at `652775c4655cc4dd0cc5ffbec529c11a68f0bee8`;
+  - schema `0.3.0-research` preserves explicit `same_palace_pair` / `pair_members[]` / `subjects[]` identity without rewriting historical v0.1/v0.2 registries;
+  - production admission contains exactly 2 practitioner-bounded `武曲×天相` claims: `兄弟宮` and `官祿宮`; `廉貞×天府`、`天同×巨門`、`太陽×天梁` remain non-admitted because the bounded source pass did not establish isolated pair semantics;
+  - exact applicability reuses canonical `fact_available:palace_occupancy` + two `star_in_palace:<star>:<same palace>` facts; no new geometry provider was added;
+  - pair specificity is higher than generic star/palace claims only on an exact admitted match; generic claims remain bounded context and no-match behavior stays unchanged;
+  - base natal claim count is 54 = 52 first-layer + 2 sparse pair claims; optional M0 + Sihua maximum is 61;
+  - generator bridge run `36315270893` PASSed focused pair/provider/runtime regressions, canonical Zi Wei bundle regeneration/check, ChatGPT load-pack regeneration/check, load-budget and bundle regression; generator-owned cache commit `2cf963df59b50e8000aebc26cfd0bdd1b004b0e7` removed the temporary workflow;
+  - first PR #312 run `36315314512` correctly FAILED one stale existing test expectation (`59` vs new `61`) while all P2-060 tests passed; bounded test-only repair commit `043fb6002bdd7e8a7d57d449577b67a342682f7c` updated the current contract assertion;
+  - second formal PR #312 run `36315461096` PASSed `validate` + `casting-runtime`, including full unit suite and structural checker;
+  - exact-main canonical read-back at `652775c4655cc4dd0cc5ffbec529c11a68f0bee8` confirms pair admission, two claim IDs, 54/61 claim counts and explicit non-admission of the other reviewed pairs;
+  - exact-main run `36315575849` PASSed `validate` + `casting-runtime`, full unit suite, structural checker and exact-main Zi Wei handoff preparation/upload;
+  - exact-main artifact `10930736486` / `ziwei-deterministic-handoff-652775c4655cc4dd0cc5ffbec529c11a68f0bee8` published at 90,932 bytes with digest `sha256:0866dc48255096d9c359520070029bb244240dc1ac5587115eec7ed8d61b3e3c`.
 - production_boundary:
   - no exhaustive 14×14 Cartesian dictionary;
   - this item is distinct from `ZW-P2-020` star×palace contextual claims;
