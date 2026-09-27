@@ -33,7 +33,8 @@ research-only scaffold
 - yearly / 流年 interpretation：V8 只 admission 3 條 bounded methodology claims，要求同層三方／對照、compatible 大限 parent 合參與 no-generic-yearly-filler；target-year 四化仍是 calculation context，不自動 admission 流年四化斷語；
 - monthly / 流月 interpretation：V9 只 admission 3 條 bounded methodology claims，要求斗君／effective-month 月層 identity、compatible 流年 parent 合參與 no-generic-monthly-filler；monthly Si Hua / flow stars仍未 admission；
 - daily / 流日 interpretation：V10 只 admission 3 條 bounded methodology claims，來源為 practitioner/tradition references；要求 explicit lunar-day identity、compatible 流月 parent 合參與 no-generic-daily-filler；day pillar / daily Si Hua / flow stars仍未 admission；
-- hourly interpretation，以及 broader contextual star×palace / 未另 admission 的 auxiliary / Four-Transformation interpretation：仍未 production-admitted
+- hourly / 流時 interpretation：V11 只 admission 3 條 profile-bounded methodology claims，要求 explicit hour-branch identity、compatible 流日 parent 合參與 no-generic-hourly-filler；來源亦顯示派法不唯一，故不宣稱唯一傳統；physical hour pillar / 五鼠遁時干 / hourly Si Hua / flow stars仍未 admission；
+- broader contextual star×palace / 未另 admission 的 auxiliary / Four-Transformation interpretation：仍未 production-admitted
 - 科學／客觀預測有效性：未聲稱
 
 ## Production boundary
