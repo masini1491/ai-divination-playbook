@@ -58,16 +58,13 @@ The closed work above must not be repeatedly rediscovered as open work unless a 
 
 ## Recommended execution order
 
-Current near-term product/UX work:
-
-1. **AST-P1-200 — Default house-system interaction profile**
-   - IN_PROGRESS; make Placidus the omitted-input project UX default, preserve explicit Whole Sign/Placidus override, and disclose the alternative without making an objective-accuracy claim.
+There is currently no active one-shot Astrology P0/P1 feature work after AST-P1-200 closure.
 
 Deferred work remains:
 
-2. **AST-P2-020 — Named consumer compatibility profile**
+1. **AST-P2-020 — Named consumer compatibility profile**
    - DEFERRED; start only when a concrete named consumer/profile requires compatibility.
-3. **AST-P2-030 — Optional Swiss compatibility/provider lane**
+2. **AST-P2-030 — Optional Swiss compatibility/provider lane**
    - DEFERRED; start only when explicit Swiss compatibility/provider demand appears.
 
 `AST-P0-002` remains a standing reconciliation guard, not a one-shot feature. Already-DONE items must not be rediscovered as open work.
@@ -671,7 +668,7 @@ This item is a standing reconciliation guard. It is not a request to change curr
 ### AST-P1-200 — Default house-system interaction profile
 
 - type: FEATURE / PRODUCT UX / INPUT NORMALIZATION
-- status: IN_PROGRESS
+- status: DONE
 - priority: P1
 - owner: Astrology natal interaction profile
 - blocked_by: none
@@ -680,11 +677,21 @@ This item is a standing reconciliation guard. It is not a request to change curr
   - explicit `Whole Sign` or `Placidus` always overrides the default;
   - user-facing output must disclose when Placidus was applied by default and mention Whole Sign as the supported alternative;
   - this is a product-default decision only, not an objective-accuracy or historical-superiority claim.
-- candidate_evidence:
-  - implementation candidate began at `49b704ea7cccd2aaf67ac897b9fec057b0e3b02e`;
+- closure:
+  - known-time exact/approximate requests with omitted or null `house_system` now normalize to `Placidus` with `house_system_selection = project_default`;
+  - explicit `Whole Sign` / `Placidus` remains authoritative and records `house_system_selection = explicit_user_choice`;
+  - unknown birth time remains house-system-free;
+  - `ASTROLOGY_NATAL.md` defines this only as a project UX default, not an objective-accuracy or historical-superiority claim;
+  - interpretation handoff adds a required disclosure only for the project-default path: Placidus is being used by default and Whole Sign remains available; explicit user choice does not receive that default disclosure;
+  - provider house-system authority, Placidus latitude boundary and fail-closed behavior remain unchanged; there is no silent fallback to Whole Sign;
   - temporary regeneration run `36302699667` passed canonical bundle regeneration/check plus focused orchestrator, interpretation-handoff, orchestration-contract and core-bundle tests;
-  - generated commit `88da7e4d8002929af0fe79900e074b7191844403` updated only the derived Astrology core bundle and removed the temporary regeneration workflow;
-  - initial PR validation `36302699645` failed only at the expected stale pre-regeneration core-bundle check; fresh post-regeneration full validation is required before promotion.
+  - generated commit `88da7e4d8002929af0fe79900e074b7191844403` updated the derived Astrology core bundle and removed the temporary regeneration workflow;
+  - initial PR validation `36302699645` failed only at the expected stale pre-regeneration bundle check;
+  - final post-regeneration PR validation `36302743057` passed casting-runtime, core-bundle verification, full unit tests and structural checker;
+  - PR #301 merged at main `090610f7ca0775ef134f9176bd0ca2c4ca882b89`;
+  - exact-main run `36302853696` passed casting-runtime, core-bundle verification, full unit tests, structural checker and both exact-main handoff artifact publishers;
+  - current-main Astrology handoff artifact `10925677790` / `astrology-core-handoff-090610f7ca0775ef134f9176bd0ca2c4ca882b89` was published successfully;
+  - canonical read-back verifies the request schema default, orchestrator selection provenance, production admission profile and user-facing disclosure binding.
 - completion_gate:
   - request schema no longer requires explicit `house_system` for exact/approximate birth time and documents the default;
   - orchestrator deterministically records `house_system_selection = project_default | explicit_user_choice`;
