@@ -97,10 +97,10 @@ no admitted dynamic claim
 temporal-context interpretation responsibility = CLOSED — RESEARCH
 scope taxonomy                           = CLOSED — RESEARCH
 dynamic fact provenance contract         = CLOSED — RESEARCH
-dynamic calculation runtime/provider     = NOT ADMITTED
-dynamic claim corpus                     = NOT ADMITTED
-executable retrieval/composition         = ADMITTED — RESEARCH-ONLY V0
-production authority                     = false
+dynamic calculation runtime/provider     = ADMITTED — DECADAL/YEARLY/MONTHLY/DAILY/HOURLY CALCULATION-ONLY
+dynamic claim corpus                     = DECADAL METHODOLOGY V1 ONLY; YEARLY/MONTHLY/DAILY/HOURLY NOT ADMITTED
+executable retrieval/composition         = ADMITTED — NATAL + EXPLICIT DECADAL SCOPE
+production authority                     = BOUNDED DECADAL METHODOLOGY ONLY
 ```
 
-This closes the ChatGPT-side temporal research continuation without creating a Zi Wei production runtime or dynamic interpretation corpus. A bounded natal first-layer executable selector/composer was subsequently admitted by `EXECUTABLE_RETRIEVAL_COMPOSITION_V0.md`; it does not admit dynamic claims.
+This historical research closure has since been superseded in two bounded ways: `ZW-P1-030` admitted calculation-only runtime layers through hourly, and `ZW-P1-040` decadal v1 admits exactly two source-backed methodology claims through V7. The decadal slice treats the computed decade period and life-palace position as ten-year context and requires finer-scope corroboration before finer event claims. It does **not** admit natal-claim promotion, generic decadal auspicious/inauspicious doctrine, concrete-event prediction, or yearly/monthly/daily/hourly interpretation.

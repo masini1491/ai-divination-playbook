@@ -45,7 +45,8 @@ OUT / fail closed:
 - non-M0 auxiliary / minor-star interpretation;
 - Four-Transformation interpretation beyond the 3 separately admitted source-explicit transformed-star claims in `sihua_v1`;
 - broader contextual star×palace claim corpus;
-- decadal / yearly / monthly / daily / hourly / other dynamic prediction.
+- decadal concrete-event / generic吉凶 prediction beyond the separately admitted bounded methodology claims;
+- yearly / monthly / daily / hourly / other dynamic interpretation.
 
 Unsupported layers不得用模型記憶、手算、research-only claims 或其他方法偷偷補齊。
 
@@ -79,13 +80,15 @@ legacy run_scope_a_* entrypoints
 → tools/ziwei_runtime.py
 ```
 
-`schemas/ziwei/ZIWEI_READING_REQUEST_V1.schema.json` 與 `schemas/ziwei/ZIWEI_READING_RESULT_V1.schema.json` 定義 closed-world v1 interface。V1 natal transport 的 unsupported temporal scope、optional module 或 profile 必須 fail closed；不得靜默把 V1 schema 擴成 dynamic。Explicit decadal calculation 保留 V2 typed dynamic contract；V3 typed dynamic contract admission `decadal|yearly`；V4 admission `decadal|yearly|monthly`；V5 admission `decadal|yearly|monthly|daily`；V6 additive contract另 admission `decadal|yearly|monthly|daily|hourly`。Monthly 必須提供 explicit normalized lunar year/month/day、`is_leap_month` 與 calendar provenance，沿用 project `split_after_day_15` profile且需相容的 yearly parent；Daily 使用獨立 `normalized_lunar_day` target identity，需相容的 monthly parent，僅以流月命宮加農曆日序推導流日宮位；Hourly 使用獨立 `normalized_lunar_hour` target identity，需相容的 daily parent、explicit `hour_branch` 與 project-admitted `rat_hour_policy=next_day_at_23`，僅以流日命宮加時支序推導流時宮位。閏十二月16日後跨年、physical day/hour pillar、alternate late-Rat policy、daily/hourly Si Hua、flow stars與 dynamic interpretation仍 fail closed。不得再為每個 module/input 組合新增 `with_x_and_y` canonical runtime。
+`schemas/ziwei/ZIWEI_READING_REQUEST_V1.schema.json` 與 `schemas/ziwei/ZIWEI_READING_RESULT_V1.schema.json` 定義 closed-world v1 interface。V1 natal transport 的 unsupported temporal scope、optional module 或 profile 必須 fail closed；不得靜默把 V1 schema 擴成 dynamic。Explicit decadal calculation 保留 V2 typed dynamic contract；V3 typed dynamic contract admission `decadal|yearly`；V4 admission `decadal|yearly|monthly`；V5 admission `decadal|yearly|monthly|daily`；V6 admission `decadal|yearly|monthly|daily|hourly` calculation-only；V7 additive contract 在不改寫 V1–V6 closed-world semantics 的前提下，另 admission decadal / 大限的 bounded methodology interpretation。Monthly 必須提供 explicit normalized lunar year/month/day、`is_leap_month` 與 calendar provenance，沿用 project `split_after_day_15` profile且需相容的 yearly parent；Daily 使用獨立 `normalized_lunar_day` target identity，需相容的 monthly parent，僅以流月命宮加農曆日序推導流日宮位；Hourly 使用獨立 `normalized_lunar_hour` target identity，需相容的 daily parent、explicit `hour_branch` 與 project-admitted `rat_hour_policy=next_day_at_23`，僅以流日命宮加時支序推導流時宮位。V7 decadal interpretation 只使用獨立 decadal registry 的 source-backed methodology claims；不得把 natal 52 claims 改標為大限 claim，也不得由十年層單獨推導具體年份／月份／日期／時辰事件。閏十二月16日後跨年、physical day/hour pillar、alternate late-Rat policy、daily/hourly Si Hua、flow stars，以及 yearly/monthly/daily/hourly interpretation仍 fail closed。不得再為每個 module/input 組合新增 `with_x_and_y` canonical runtime。
 
 若 local runtime、calendar manifest 或 required year shard 缺失，先依 `ZIWEI_MATERIALIZATION.md` 走 verified runtime reuse / host-aware materialization fast path；verified cache可安全重用時不得為形式重新搬 bundle，真正 cache miss 才依 host capability依序選 direct byte/file handoff、successful exact-main Zi Wei handoff artifact，再到既有 same-commit bounded opaque bundle fallback；calendar data仍保持 same-commit query-bounded acquisition，year shards不進 handoff artifact，ordinary production 也不依賴 `lunar_python` runtime。只有 admitted materialization/direct-source paths 都失敗才停在 Fact Gate；不得改用 Tarot / Meihua / Liuyao 冒充 Zi Wei reading。
 
 ## 4. Interpretation / Evidence Boundary
 
 Production v1 只可使用 pipeline allowlist 選出的 admitted claims。Research registry 的歷史 `production_routable=false` 不被改寫；production authority 來自獨立 admission manifest與 production wrapper。
+
+Dynamic V7 另只 admission `decadal` 的兩條 bounded methodology claims（`ZW-D10-METHOD-CONTEXT-001`、`ZW-D10-METHOD-CORROBORATION-002`）。它們把已計算的大限區間／大限命宮位置當作十年 context，並要求較細事件敘述等待 lower-layer admitted facts／claims；不 admission 星曜／宮位吉凶結果、不 admission具體事件預測、不重用 natal registry。
 
 - no admitted claim → omit / insufficient;
 - missing fact → do not guess;

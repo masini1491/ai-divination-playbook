@@ -1,0 +1,125 @@
+{
+  "schema_name": "ziwei_interpretation_claim_registry",
+  "schema_version": "0.1.1-research",
+  "record_status": "REFERENCE-ONLY",
+  "record_kind": "ziwei_interpretation_claim_family_registry",
+  "record_id": "ziwei-decadal-methodology-v1",
+  "production_routable": false,
+  "interpretation_profile": "ziwei.interpretation.tw_v1",
+  "sources": [
+    {
+      "source_id": "SRC-NANYANG-QUANSHU-DECADAL-METHOD",
+      "source_role": "PRIMARY_TEXT",
+      "admission_status": [
+        "CLAIM_ELIGIBLE"
+      ],
+      "storage_mode": [
+        "metadata_locator_normalized_paraphrase"
+      ],
+      "independence_status": "primary_witness",
+      "title": "新鋟希夷陳先生紫微斗數全書",
+      "witness_identity": "Nanyang-Hall / digital-text witness used for bounded decadal interpretation-method research",
+      "locator": "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzoopnqo0t6",
+      "language": "zh-Hant",
+      "verification_status": [
+        "digital_text_witness_research"
+      ],
+      "admission_scope": [
+        "bounded decadal methodology claims only"
+      ],
+      "excluded_scope": [
+        "deterministic event prediction",
+        "death/illness/legal/financial guarantees",
+        "unverified glyph-level variants",
+        "generic natal-to-decadal claim promotion"
+      ],
+      "notes": [
+        "Normalized paraphrases only. Historical strong-outcome wording is intentionally not admitted."
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "ZW-D10-METHOD-CONTEXT-001",
+      "layer": "L4",
+      "claim_type": "methodology",
+      "subject": "大限方法",
+      "assertion_class": "historical_core",
+      "normalized_statement": "大限可作為約十年層級的背景框架；判讀時以已計算的大限區間與大限命宮位置作為該期間的主要動態 context，而不是把本命 claim 直接改標成十年事件。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-DECADAL-METHOD"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzoopnqo0t6"
+      ],
+      "applicability": {
+        "requires": [
+          "decadal_period_present",
+          "decadal_life_palace_identified"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "decadal_profile",
+          "parent_natal_baseline"
+        ],
+        "palace_scope": [
+          "any"
+        ],
+        "topology_scope": [
+          "self"
+        ],
+        "temporal_scope": "decadal"
+      },
+      "confidence_status": "qualified",
+      "support_status": "single_source_supported",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-D10-METHOD-CORROBORATION-002",
+      "layer": "L4",
+      "claim_type": "methodology",
+      "subject": "大限方法",
+      "assertion_class": "project_adoption",
+      "normalized_statement": "大限層只能提供十年尺度的背景與主題框架；若要聲稱較具體的年份、月份、日期、時辰事件，必須等待相應較細時間層的已 admission facts／claims 支持，不得由大限單層直接推演。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-DECADAL-METHOD"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzoopnqo0t6"
+      ],
+      "applicability": {
+        "requires": [
+          "decadal_period_present"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "requires_lower_layer_for_finer_claims"
+        ],
+        "palace_scope": [
+          "any"
+        ],
+        "topology_scope": [
+          "self"
+        ],
+        "temporal_scope": "decadal"
+      },
+      "confidence_status": "qualified",
+      "support_status": "qualified",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    }
+  ],
+  "conflict_groups": [],
+  "privacy": {
+    "contains_real_birth_data": false
+  },
+  "research_result": {
+    "batch": "decadal-methodology-v1",
+    "claim_count": 2,
+    "subjects_covered": 1,
+    "architecture_validation_target": "source-normalized bounded dynamic methodology claims",
+    "production_authority_granted": false,
+    "scientific_predictive_validity_claimed": false
+  }
+}

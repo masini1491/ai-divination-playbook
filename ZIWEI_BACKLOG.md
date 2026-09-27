@@ -567,7 +567,7 @@ Ordering rationale:
 - blocked_by:
   - corresponding admitted calculation stage in ZW-P1-030
 - stage_progress:
-  - decadal interpretation: READY — decadal calculation admission merged and canonically read back; interpretation still requires its own source-backed claim admission;
+  - decadal interpretation: IMPLEMENTED_CANDIDATE — V7 admits exactly 2 source-backed methodology claims gated by admitted decadal facts; natal-claim promotion, generic十年吉凶、具體事件與 high-stakes determinism remain fail-closed; focused regressions PASS; registry validation PASS; Zi Wei bundle regenerated/verified; ChatGPT load pack regenerated/verified; load budget PASS; awaiting formal PR validation / merge / canonical read-back;
   - yearly interpretation: READY — yearly calculation admission merged and canonically read back; interpretation still requires its own source-backed claim admission;
   - monthly interpretation: READY — monthly calculation admission merged and canonically read back; interpretation still requires its own source-backed claim admission;
   - daily interpretation: READY — daily calculation admission merged and canonically read back; interpretation still requires its own source-backed claim admission;
@@ -577,6 +577,18 @@ Ordering rationale:
   - yearly interpretation may start after yearly calculation admission;
   - monthly / daily / hourly follow the same layer-local gate;
   - the umbrella item remains open until the intended dynamic interpretation scope is closed, but later calculation layers do not block already-eligible earlier interpretation work.
+- decadal_interpretation_stage_candidate_evidence:
+  - source pass identified a bounded historical basis for treating 大限 as a ten-year interpretive context while preserving finer-layer corroboration; stronger historical outcome language is intentionally excluded by current production guardrails;
+  - candidate registry `ziwei_interpretation_claim_registry_decadal_v1.json` contains exactly 2 `methodology` claims with `temporal_scope=decadal`;
+  - `ZW-D10-METHOD-CONTEXT-001` requires `decadal_period_present` + `decadal_life_palace_identified`;
+  - `ZW-D10-METHOD-CORROBORATION-002` requires a computed decadal period and forbids inferring finer events without lower-layer admitted facts/claims;
+  - V7 is additive: V6 remains all-five-layer calculation-only; only V7 decadal requests may receive bounded methodology interpretation;
+  - production runtime explicitly loads the decadal registry only for V7 decadal interpretation; default natal registry routing remains natal-only;
+  - generated Zi Wei bundle/load-pack regeneration is delegated to the registered temporary decadal-interpretation bridge and is not hand-edited;
+  - first bridge attempt `36281361092` exposed a test-only contract mismatch: the retriever projection exposes `temporal_scope` directly rather than the registry's nested `applicability` object; runtime semantics were unchanged and the test was corrected at `94f8669aa51751a3b20dac6f79d21db4842faf8b`;
+  - decadal-interpretation bridge run `36281425735` completed successfully: 31 focused regressions PASS, claim-registry validation PASS, Zi Wei bundle regeneration/check PASS, ChatGPT load-pack regeneration/check PASS, load-budget PASS;
+  - generated-cache bot commit `efed994abaf8341afcedf8e61fdca901baddab8e` updated only `runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json` and removed the temporary decadal-interpretation bridge;
+  - latest bot-head Validate Playbook is `action_required`, so this human-authored evidence commit exists to re-trigger formal PR validation before merge.
 - rule:
   - natal 52 claims must not be silently reused as flow prediction claims.
 - completion_gate:

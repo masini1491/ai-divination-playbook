@@ -1,0 +1,45 @@
+{
+  "schema_name": "ziwei_decadal_interpretation_production_admission",
+  "schema_version": "1.0.0",
+  "method": "ZiWei",
+  "module": "decadal_interpretation_v1",
+  "status": "PRODUCTION_ADMITTED_BOUNDED_INTERPRETATION",
+  "activation": "explicit_ziwei_decadal_request_only",
+  "parent_calculation_admission": "ZIWEI_DECADAL_ADMISSION_V1.json",
+  "temporal_scope": "decadal",
+  "interpretation_profile": "ziwei.interpretation.tw_v1",
+  "admitted_claim_registry": "references/ziwei/ziwei_interpretation_claim_registry_decadal_v1.json",
+  "admitted_claim_ids": [
+    "ZW-D10-METHOD-CONTEXT-001",
+    "ZW-D10-METHOD-CORROBORATION-002"
+  ],
+  "claim_scope": "bounded_decadal_methodology_only",
+  "fact_requirements": [
+    "decadal_period_present",
+    "decadal_life_palace_identified"
+  ],
+  "runtime": {
+    "owner": "tools/ziwei_runtime.py",
+    "runtime_id": "ziwei-production-runtime-v7",
+    "runtime_version": "7.0.0",
+    "request_schema": "schemas/ziwei/ZIWEI_DYNAMIC_REQUEST_V7.schema.json",
+    "result_schema": "schemas/ziwei/ZIWEI_DYNAMIC_RESULT_V7.schema.json"
+  },
+  "production_boundary": {
+    "natal_claim_promotion": false,
+    "star_or_palace_outcome_doctrine": false,
+    "concrete_event_prediction": false,
+    "lower_layer_inference": false,
+    "high_stakes_determinism": false,
+    "ordinary_auto_routing": false
+  },
+  "fail_closed": [
+    "no decadal interpretation without compatible admitted decadal calculation",
+    "no natal claim reuse as decadal claim",
+    "missing decadal facts omit dependent claim",
+    "yearly/monthly/daily/hourly interpretation remain unadmitted",
+    "no model-memory dynamic filler",
+    "no deterministic health/death/legal/financial/pregnancy/violence outcome claim"
+  ],
+  "scientific_predictive_validity_claimed": false
+}
