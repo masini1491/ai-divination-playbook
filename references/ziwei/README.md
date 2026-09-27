@@ -30,6 +30,7 @@ research-only scaffold
 - sparse same-palace pair interpretation：`武曲×天相` 目前只 admission `兄弟宮` / `官祿宮` 2 條 practitioner-bounded claims；exact canonical occupancy match 才啟動，無 14×14 Cartesian expansion
 - Body-Palace overlay interpretation：production admission 1 條 `身宮=後天發展 overlay` methodology + `夫妻宮` / `財帛宮` / `官祿宮` / `遷移宮` 4 條 exact overlay claims；deterministic fact 只把 `body_palace.branch` 映射回既有十二宮，不建立第十三宮
 - sparse star×palace contextual interpretation：production admission `天相×命宮`、`天梁×官祿宮` 2 條 practitioner-bounded overrides；只吃 canonical occupancy，無 14×12 Cartesian expansion，未 admission 組合維持 L5 composition
+- optional M1 auxiliary profile：`ziwei.auxiliary.m1.common_v1` admission 天魁／天鉞／祿存／天馬／擎羊／陀羅／火星／鈴星／地空／地劫十星 natal placement + 10 條 bounded modifier-role policy；runtime 必須與 M0 同時啟用，M0+M1 才提供 broader auxiliary completeness；M2/M3與高風險事件斷語仍未 admission
 - deterministic ChatGPT materialization：`ZIWEI_MATERIALIZATION.md` + bundle 已建立
 - ordinary unspecified auto-routing：仍刻意為 false
 - dynamic calculation：`decadal → yearly → monthly → daily → hourly` 五層 calculation-only 已依 V2–V6 分層 production-admitted；
