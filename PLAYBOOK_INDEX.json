@@ -763,5 +763,30 @@
   "structural_validation": {
     "runner": "tools/playbook_check.py",
     "tests": "tests/test_playbook_check.py"
+  },
+  "coordination": {
+    "continuity": {
+      "authority": "routing-only",
+      "owner": "REPOSITORY_ARCHITECTURE.md",
+      "adapter": "SESSION_HANDOFF.md",
+      "repository": "masini1491/ai-divination-playbook",
+      "threads": {
+        "astrology": {
+          "semantic_id": "continuity.astrology",
+          "issue_number": 321,
+          "title": "[continuity] Astrology"
+        },
+        "ziwei": {
+          "semantic_id": "continuity.ziwei",
+          "issue_number": 322,
+          "title": "[continuity] Zi Wei"
+        },
+        "palmistry": {
+          "semantic_id": "continuity.palmistry",
+          "issue_number": 323,
+          "title": "[continuity] Palmistry"
+        }
+      }
+    }
   }
 }
