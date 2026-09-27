@@ -42,8 +42,8 @@ class CandidateGregorianBirth:
     timezone:str=TIMEZONE
 
     def validate(self)->None:
-        if self.timezone!=TIMEZONE:
-            raise ValueError(f"timezone must be {TIMEZONE}")
+        if not isinstance(self.timezone,str) or not self.timezone:
+            raise ValueError("timezone provenance is required")
         if not all(isinstance(v,int) for v in (self.year,self.month,self.day,self.hour,self.minute,self.second)):
             raise ValueError("Gregorian birth date/time fields must be integers")
         if not 0<=self.hour<=23 or not 0<=self.minute<=59 or not 0<=self.second<=59:
