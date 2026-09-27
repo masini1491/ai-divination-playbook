@@ -69,6 +69,7 @@ Brightness interpretation policy      CLOSED — RESEARCH / profile-bound modifi
 Four-Transformation interpretation    CLOSED — RESEARCH / profile-preserving claim gate; transformed-star overrides source-gated
 Minor-star admission taxonomy          CLOSED — RESEARCH / M0 assistants first eligible; M1 source closure required; long-tail/flow deferred
 Temporal-context interpretation         CLOSED — RESEARCH / scope + provenance contract; dynamic runtime and claim corpus not admitted
+Same-palace major-star pairs             BOUNDED PRODUCTION ADMISSION / 武曲×天相 only / 兄弟宮 + 官祿宮 / 2 practitioner-bounded claims; other reviewed pairs remain non-admitted
 ```
 
 任何 upstream rule 只有在本 research owner 明確採用後，才成為本研究線的 candidate contract；仍不因此取得 production authority。
