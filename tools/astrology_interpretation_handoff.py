@@ -437,12 +437,22 @@ def build_handoff(run: Any, request: Any, *, repo_root: Path | None = None) -> d
 
     normalized_birth = admitted_run.get("normalized_request", {}).get("birth", {})
     if isinstance(normalized_birth, dict):
+        house_profile = manifest.get("orchestration", {}).get("house_system_interaction_profile", {})
+        default_house_system = house_profile.get("default_house_system")
+        alternative_house_system = house_profile.get("alternative_house_system")
+        default_selection_value = house_profile.get("default_selection_value")
         house_system = normalized_birth.get("house_system")
         selection = normalized_birth.get("house_system_selection")
-        if house_system == "Placidus" and selection == "project_default":
+        if (
+            isinstance(default_house_system, str)
+            and isinstance(alternative_house_system, str)
+            and house_system == default_house_system
+            and selection == default_selection_value
+        ):
             notice = (
-                "House system: Placidus (project default). Whole Sign is also supported; "
-                "switching house systems may change house placements and related interpretation."
+                f"House system: {default_house_system} (project default). "
+                f"{alternative_house_system} is also supported; switching house systems may change "
+                "house placements and related interpretation."
             )
             if notice not in disclosures:
                 disclosures.append(notice)

@@ -6,6 +6,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from tools.astrology_interpretation_handoff import (
     InterpretationHandoffError,
@@ -161,6 +162,30 @@ class AstrologyInterpretationHandoffTests(unittest.TestCase):
         disclosure = "\n".join(result["required_disclosures"])
         self.assertIn("Placidus (project default)", disclosure)
         self.assertIn("Whole Sign is also supported", disclosure)
+
+    def test_project_default_disclosure_uses_manifest_house_profile(self):
+        run = admitted_run()
+        run["normalized_request"]["birth"] = {
+            "birth_time_certainty": "exact",
+            "house_system": "Placidus",
+            "house_system_selection": "project_default",
+        }
+        manifest = json.loads((ROOT / "ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        manifest["orchestration"]["house_system_interaction_profile"]["alternative_house_system"] = "Whole Sign Test"
+        original_load_json = __import__(
+            "tools.astrology_interpretation_handoff",
+            fromlist=["_load_json"],
+        )._load_json
+
+        def load_with_profile(path):
+            if Path(path).name == "ASTROLOGY_PRODUCTION_ADMISSION_V1.json":
+                return manifest
+            return original_load_json(path)
+
+        with patch("tools.astrology_interpretation_handoff._load_json", side_effect=load_with_profile):
+            result = build_handoff(run, valid_request(), repo_root=ROOT)
+        disclosure = "\n".join(result["required_disclosures"])
+        self.assertIn("Whole Sign Test is also supported", disclosure)
 
     def test_explicit_house_system_does_not_get_default_disclosure(self):
         run = admitted_run()

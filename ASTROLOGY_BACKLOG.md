@@ -29,11 +29,19 @@ Last reviewed against:
 
 ```text
 ai-divination-playbook main
-d1e07424465d9f8e6445c2e2e895e43df92008e2
-Close AST-P1-190 shared civil-time normalizer (#299)
+7e2cc51f4b86d43bd1cf7dd0ee05b81917f455eb
+Close Zi Wei P2-030 civil-time normalization (#306)
 ```
 
 This SHA is review evidence only, not a pin. Every maintenance or implementation task must resolve current `main` again before mutation.
+
+Recent maintenance reconciliation candidate:
+
+- audit scope: AST-P1-190 / AST-P1-200 post-closure stale-state and regression hygiene;
+- candidate began at `c0d30179fc4358e0bc83b5cdf93cd3dd060b7f34`;
+- temporary regeneration run `36306323482` passed canonical Astrology core-bundle regeneration/check plus focused interpretation-handoff, full reading-pipeline and core-bundle tests;
+- generated commit `6326a07f86eb83fa7f90e5c23ef4876fa842ccd5` updated the derived Astrology core bundle and removed the temporary workflow;
+- initial PR validation `36306323386` failed only at the expected stale pre-regeneration core-bundle check; a fresh full validation is required on the post-regeneration candidate.
 
 Recent Astrology closure sequence reviewed:
 
@@ -920,8 +928,8 @@ This item is a standing reconciliation guard. It is not a request to change curr
   - exact-main validation run `36295281032` passed `casting-runtime`, unit tests, structural checker, and exact-main Astrology handoff artifact preparation/upload;
   - no provider/runtime/admission semantics were changed by contract closure.
 - followup:
-  - implementation/admission is separate at `AST-P1-190`;
-  - `ZW-P2-030` remains blocked until the shared implementation/admission is ready for consumption.
+  - shared implementation/admission is complete at `AST-P1-190`;
+  - Zi Wei consumer expansion is complete at `ZIWEI_BACKLOG.md#ZW-P2-030`; future timezone/profile expansion requires a new explicit scope/admission decision rather than treating this shared contract as still blocked.
 
 
 ## Intentionally not backlog blockers
