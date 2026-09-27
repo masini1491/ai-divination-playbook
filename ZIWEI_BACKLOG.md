@@ -569,7 +569,7 @@ Ordering rationale:
 - stage_progress:
   - decadal interpretation: DONE — V7 bounded methodology interpretation merged and canonically read back; exactly 2 source-backed claims are admitted, while natal-claim promotion、generic十年吉凶、具體事件與 high-stakes determinism remain fail-closed;
   - yearly interpretation: DONE — V8 bounded methodology interpretation merged and canonically read back; exactly 3 source-backed / project-bounded claims are admitted, while generic流年吉凶、yearly Si Hua斷語、具體事件與 high-stakes determinism remain fail-closed;
-  - monthly interpretation: READY — monthly calculation admission merged and canonically read back; interpretation still requires its own source-backed claim admission;
+  - monthly interpretation: IMPLEMENTED_CANDIDATE — V9 admits exactly 3 bounded methodology claims gated by monthly identity + compatible yearly parent; generic本月吉凶、monthly Si Hua／flow stars、具體日／時事件與 high-stakes determinism remain fail-closed; focused regressions PASS; registry validation PASS; Zi Wei bundle/load-pack regeneration and load budget PASS; awaiting formal PR validation / merge / canonical read-back;
   - daily interpretation: READY — daily calculation admission merged and canonically read back; interpretation still requires its own source-backed claim admission;
   - hourly interpretation: READY — hourly calculation admission merged and canonically read back; interpretation still requires its own source-backed claim admission;
 - staging_rule:
@@ -602,6 +602,19 @@ Ordering rationale:
   - exact-main canonical read-back confirms V8 runtime, yearly interpretation admission, 3-claim registry, root production admission and PLAYBOOK_INDEX routing at `b938bacce0088f775b6fe43c8ab2a2aa924a2d65`;
   - exact-main run `36287885656`: `validate` PASS and `casting-runtime` PASS; full unit suite, structural checker, exact-main Zi Wei handoff preparation and upload all passed;
   - exact-main artifact `10921401398` / `ziwei-deterministic-handoff-b938bacce0088f775b6fe43c8ab2a2aa924a2d65` was published at 75,416 bytes with digest `sha256:0016740286414c3b0c967668b4a87057895167c5b53821dba9c70a1a4e7b00bb`.
+- monthly_interpretation_stage_candidate_evidence:
+  - source pass uses `新鋟希夷陳先生紫微斗數全書 卷之三` / `安斗君訣` and the later 斗君／月限 passage: the month layer has its own Doujun identity and may refine a year even when the higher-level year/limits look favorable; strong disaster/illness/legal outcome language is intentionally excluded;
+  - candidate registry `ziwei_interpretation_claim_registry_monthly_v1.json` contains exactly 3 `methodology` claims with `temporal_scope=monthly`;
+  - `ZW-M1-METHOD-IDENTITY-001` requires monthly period + monthly life-palace + effective-month identity;
+  - `ZW-M1-METHOD-PARENT-002` requires a compatible admitted yearly parent and forbids parent-claim promotion;
+  - `ZW-M1-METHOD-BOUNDARY-003` prohibits generic monthly-fortune filler and daily/hourly event inference without lower-layer admitted facts/claims;
+  - V9 is additive: V8 keeps monthly interpretation NOT_ADMITTED; V9 preserves V7/V8 decadal/yearly bounded interpretation and adds monthly only;
+  - monthly Si Hua and flow stars remain not computed/admitted; this stage does not reconstruct either layer;
+  - generated Zi Wei bundle/load-pack regeneration is delegated to the registered temporary monthly-interpretation bridge and is not hand-edited;
+  - first monthly bridge run `36291105587`: 47 focused regressions PASS but registry validator correctly rejected `layer=L5`; registry-only contract fix `408c550b823e59cf0284b895598261c3dfae653b` changed all 3 claims to canonical `L4` without changing interpretation semantics;
+  - successful monthly bridge run `36291152590`: 47 focused regressions PASS, 3-claim registry validator PASS, Zi Wei bundle PASS, ChatGPT load-pack PASS, `explicit_research_astrology` load ratio `0.8000`, overall load budget PASS;
+  - generated-cache bot commit `24ba0e456bb8a3ad38053b1ef88caf25d446d469` changed only the canonical Zi Wei bundle, generated load pack, and removal of the temporary monthly bridge;
+  - the pre-bot formal validate run was expected to see stale generated artifacts, so this human-authored evidence commit re-triggers formal PR validation against the generated-cache head.
 - rule:
   - natal 52 claims must not be silently reused as flow prediction claims.
 - completion_gate:

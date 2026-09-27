@@ -13,7 +13,7 @@ DEFAULT_REGISTRIES = (
     REGISTRY_ROOT / "ziwei_interpretation_claim_registry_batch2.json",
     REGISTRY_ROOT / "ziwei_interpretation_claim_registry_palaces_v0.json",
 )
-SUPPORTED_TEMPORAL_SCOPES = frozenset({"natal_baseline","decadal","yearly"})
+SUPPORTED_TEMPORAL_SCOPES = frozenset({"natal_baseline","decadal","yearly","monthly"})
 ELIGIBLE_ADOPTION = "RESEARCH_CLAIM_ELIGIBLE"
 CONDITIONAL_CLAIM_TYPES = {"star_conditional", "palace_conditional"}
 ACTIVE_CONDITIONAL_STATES = {"not_required", "satisfied"}

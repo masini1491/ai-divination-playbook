@@ -1,0 +1,55 @@
+{
+  "schema_name": "ziwei_monthly_interpretation_production_admission",
+  "schema_version": "1.0.0",
+  "method": "ZiWei",
+  "module": "monthly_interpretation_v1",
+  "status": "PRODUCTION_ADMITTED_BOUNDED_INTERPRETATION",
+  "activation": "explicit_ziwei_monthly_request_only",
+  "parent_calculation_admission": "ZIWEI_MONTHLY_ADMISSION_V1.json",
+  "parent_interpretation_context": "ZIWEI_YEARLY_INTERPRETATION_ADMISSION_V1.json",
+  "temporal_scope": "monthly",
+  "interpretation_profile": "ziwei.interpretation.tw_v1",
+  "admitted_claim_registry": "references/ziwei/ziwei_interpretation_claim_registry_monthly_v1.json",
+  "admitted_claim_ids": [
+    "ZW-M1-METHOD-IDENTITY-001",
+    "ZW-M1-METHOD-PARENT-002",
+    "ZW-M1-METHOD-BOUNDARY-003"
+  ],
+  "claim_scope": "bounded_monthly_methodology_only",
+  "fact_requirements": [
+    "monthly_period_present",
+    "monthly_life_palace_identified",
+    "monthly_effective_month_identified",
+    "compatible_yearly_parent_present"
+  ],
+  "runtime": {
+    "owner": "tools/ziwei_runtime.py",
+    "runtime_id": "ziwei-production-runtime-v9",
+    "runtime_version": "9.0.0",
+    "request_schema": "schemas/ziwei/ZIWEI_DYNAMIC_REQUEST_V9.schema.json",
+    "result_schema": "schemas/ziwei/ZIWEI_DYNAMIC_RESULT_V9.schema.json"
+  },
+  "production_boundary": {
+    "natal_claim_promotion": false,
+    "decadal_claim_promotion": false,
+    "yearly_claim_promotion": false,
+    "star_or_palace_outcome_doctrine": false,
+    "monthly_sihua_interpretation": false,
+    "generic_monthly_fortune": false,
+    "concrete_event_prediction": false,
+    "lower_layer_inference": false,
+    "high_stakes_determinism": false,
+    "ordinary_auto_routing": false
+  },
+  "fail_closed": [
+    "no monthly interpretation without compatible admitted monthly calculation",
+    "no monthly interpretation without compatible yearly parent context",
+    "no natal/decadal/yearly claim reuse as monthly claim",
+    "missing monthly facts omit dependent claim",
+    "no monthly Si Hua or flow-star reconstruction",
+    "daily/hourly interpretation remain unadmitted",
+    "no model-memory monthly fortune filler",
+    "no deterministic health/death/legal/financial/pregnancy/violence outcome claim"
+  ],
+  "scientific_predictive_validity_claimed": false
+}

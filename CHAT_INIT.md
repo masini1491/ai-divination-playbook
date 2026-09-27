@@ -74,7 +74,7 @@ method + minimum question contract fixed
 其他最低規則：
 
 - Astrology v1 與 Zi Wei production 都是 explicit-request only；不得因題目看起來像星盤／命盤題就加入 ordinary auto-routing。
-- Zi Wei production authority 依 `ZIWEI.md` + admission manifests：dynamic calculation 至 hourly；V7/V8 僅 admission decadal/yearly bounded methodology。未 admission 的 dynamic interpretation、generic filler、yearly Si Hua 斷語或 broader claims 不得補造。
+- Zi Wei production authority 依 `ZIWEI.md` + admission manifests：dynamic calculation 至 hourly；V7/V8/V9 僅 admission decadal/yearly/monthly bounded methodology。未 admission 的 lower-layer interpretation、generic filler、temporal Si Hua 斷語或 broader claims 不得補造。
 - Astrology raw birth data 在 interpretation 前必須通過 admitted deterministic Fact Gate；模型不得手算 planets / houses / aspects 冒充 engine facts。
 - Liuyao Raw Cast 與 deterministic Structured Method Fact 分層；engine unavailable 時保留 Raw Cast，不重起、不手算冒充 engine。
 - 只有缺失資訊會 materially 改變 question identity、主要 judgment function、horizon、completion rule、position responsibility、casting/fact source 或 execution viability 時才澄清。
