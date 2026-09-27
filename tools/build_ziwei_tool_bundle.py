@@ -36,6 +36,8 @@ PROJECT_PATHS=(
  "schemas/ziwei/ZIWEI_READING_REQUEST_V1.schema.json",
  "schemas/ziwei/ZIWEI_READING_RESULT_V1.schema.json",
  "tools/ziwei_calendar_provider.py",
+ "tools/civil_time_normalizer.py",
+ "CIVIL_TIME_NORMALIZER_ADMISSION_V1.json",
  "tools/ziwei_calendar_data_provider.py",
  "data/calendar/ziwei_tw_interval/v1/MANIFEST.json",
  "tools/ziwei_gregorian_pipeline.py",
