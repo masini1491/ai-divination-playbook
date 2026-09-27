@@ -141,6 +141,69 @@ class PlaybookCheckTests(unittest.TestCase):
         (root / "PLAYBOOK_INDEX.json").write_text(json.dumps(data), encoding="utf-8")
         self.assertEqual(playbook_check.validate(root), [])
 
+    def test_valid_continuity_coordination_passes(self):
+        root = self.make_repo()
+        data = json.loads((root / "PLAYBOOK_INDEX.json").read_text(encoding="utf-8"))
+        data["coordination"] = {
+            "continuity": {
+                "authority": "routing-only",
+                "owner": "OWNER.md",
+                "adapter": "SESSION_HANDOFF.md",
+                "repository": "owner/repo",
+                "threads": {
+                    "astrology": {
+                        "semantic_id": "continuity.astrology",
+                        "issue_number": 11,
+                        "title": "[continuity] Astrology",
+                    },
+                    "ziwei": {
+                        "semantic_id": "continuity.ziwei",
+                        "issue_number": 12,
+                        "title": "[continuity] Zi Wei",
+                    },
+                    "palmistry": {
+                        "semantic_id": "continuity.palmistry",
+                        "issue_number": 13,
+                        "title": "[continuity] Palmistry",
+                    },
+                },
+            }
+        }
+        (root / "PLAYBOOK_INDEX.json").write_text(json.dumps(data), encoding="utf-8")
+        self.assertEqual(playbook_check.validate(root), [])
+
+    def test_continuity_coordination_invalid_issue_number_fails(self):
+        root = self.make_repo()
+        data = json.loads((root / "PLAYBOOK_INDEX.json").read_text(encoding="utf-8"))
+        data["coordination"] = {
+            "continuity": {
+                "authority": "routing-only",
+                "owner": "OWNER.md",
+                "adapter": "SESSION_HANDOFF.md",
+                "repository": "owner/repo",
+                "threads": {
+                    "astrology": {
+                        "semantic_id": "continuity.astrology",
+                        "issue_number": 0,
+                        "title": "[continuity] Astrology",
+                    },
+                    "ziwei": {
+                        "semantic_id": "continuity.ziwei",
+                        "issue_number": 12,
+                        "title": "[continuity] Zi Wei",
+                    },
+                    "palmistry": {
+                        "semantic_id": "continuity.palmistry",
+                        "issue_number": 13,
+                        "title": "[continuity] Palmistry",
+                    },
+                },
+            }
+        }
+        (root / "PLAYBOOK_INDEX.json").write_text(json.dumps(data), encoding="utf-8")
+        errors = playbook_check.validate(root)
+        self.assertTrue(any("issue_number must be a positive integer" in error for error in errors))
+
     def test_behavioral_matrix_drift_fails(self):
         root = self.make_repo()
         data = json.loads((root / "evals/regression_matrix.json").read_text(encoding="utf-8"))

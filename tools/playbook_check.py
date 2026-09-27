@@ -248,6 +248,60 @@ def check_index(root: Path) -> list[str]:
             target = behavioral.get(key)
             if not isinstance(target, str) or not (root / target).is_file():
                 errors.append(f"{INDEX_NAME}: behavioral_regression.{key} must point to an existing file")
+
+    coordination = data.get("coordination")
+    if coordination is not None:
+        if not isinstance(coordination, dict):
+            errors.append(f"{INDEX_NAME}: coordination must be an object")
+        else:
+            continuity = coordination.get("continuity")
+            if continuity is not None:
+                if not isinstance(continuity, dict):
+                    errors.append(f"{INDEX_NAME}: coordination.continuity must be an object")
+                else:
+                    if continuity.get("authority") != "routing-only":
+                        errors.append(f"{INDEX_NAME}: coordination.continuity.authority must be routing-only")
+                    for key in ("owner", "adapter"):
+                        target = continuity.get(key)
+                        if not isinstance(target, str) or not (root / target).is_file():
+                            errors.append(
+                                f"{INDEX_NAME}: coordination.continuity.{key} must point to an existing file"
+                            )
+                    repository = continuity.get("repository")
+                    if not isinstance(repository, str) or not repository.strip():
+                        errors.append(f"{INDEX_NAME}: coordination.continuity.repository must be non-empty")
+                    threads = continuity.get("threads")
+                    expected_threads = {
+                        "astrology": "continuity.astrology",
+                        "ziwei": "continuity.ziwei",
+                        "palmistry": "continuity.palmistry",
+                    }
+                    if not isinstance(threads, dict) or set(threads) != set(expected_threads):
+                        errors.append(
+                            f"{INDEX_NAME}: coordination.continuity.threads must contain astrology, ziwei, palmistry exactly"
+                        )
+                    else:
+                        issue_numbers: list[int] = []
+                        for name, semantic_id in expected_threads.items():
+                            item = threads.get(name)
+                            prefix = f"{INDEX_NAME}: coordination.continuity.threads.{name}"
+                            if not isinstance(item, dict):
+                                errors.append(f"{prefix} must be an object")
+                                continue
+                            if item.get("semantic_id") != semantic_id:
+                                errors.append(f"{prefix}.semantic_id must be {semantic_id}")
+                            issue_number = item.get("issue_number")
+                            if not isinstance(issue_number, int) or isinstance(issue_number, bool) or issue_number <= 0:
+                                errors.append(f"{prefix}.issue_number must be a positive integer")
+                            else:
+                                issue_numbers.append(issue_number)
+                            title = item.get("title")
+                            if not isinstance(title, str) or not title.strip():
+                                errors.append(f"{prefix}.title must be non-empty")
+                        if len(issue_numbers) != len(set(issue_numbers)):
+                            errors.append(
+                                f"{INDEX_NAME}: coordination.continuity thread issue numbers must be unique"
+                            )
     return errors
 
 
