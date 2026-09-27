@@ -752,19 +752,19 @@ Ordering rationale:
 ### ZW-P2-030 — Non-Asia/Taipei civil-time input normalization
 
 - type: FEATURE / INPUT
-- status: IMPLEMENTED_CANDIDATE
+- status: DONE
 - priority: P2
 - owner: Zi Wei calendar/input
 - blocked_by: none
 - shared_prerequisite:
   - `ASTROLOGY_BACKLOG.md#AST-P1-190` is DONE;
   - shared adapter `civil-time-zoneinfo-v1@1.0.0` is production-admitted for Astrology consumption;
-  - feature branch admits Zi Wei as a consumer of `civil-time-zoneinfo-v1@1.0.0`; merge/canonical read-back remain pending.
+  - Zi Wei is production-admitted as a consumer of `civil-time-zoneinfo-v1@1.0.0`.
 - shared_contract:
   - `CIVIL_TIME_NORMALIZATION.md`
   - contract coordination closed by `ASTROLOGY_BACKLOG.md#AST-SHARED-003`; Zi Wei does not duplicate its mutable status.
 - current_state:
-  - candidate calendar profile `ziwei.calendar.civil_v2` accepts explicit IANA civil time through the shared normalizer;
+  - canonical calendar profile `ziwei.calendar.civil_v2` accepts explicit IANA civil time through the shared normalizer;
   - existing Gregorian interval dataset remains date-keyed and is reused from validated local Gregorian fields; no per-timezone lunar dataset is introduced.
 - Zi_Wei_responsibility:
   - consume the shared validated local civil datetime + timezone provenance;
@@ -772,21 +772,20 @@ Ordering rationale:
   - keep resolved UTC instant as provenance/identity evidence rather than rebasing the lunar conversion to UTC calendar fields;
   - validate overseas calendar-data/runtime coverage and Zi Wei-specific parity separately;
   - preserve `next_day_at_23`, `split_after_day_15` and other Zi Wei policies as method-owned layers after civil-time validation.
-- implementation_candidate_evidence:
-  - `tools/ziwei_calendar_provider.py` consumes `tools/civil_time_normalizer.py` before Gregorian→lunar lookup;
-  - validated local Gregorian fields feed the existing interval dataset; resolved UTC is preserved as provenance only and never rebases lunar conversion;
-  - request schema accepts an explicit timezone string while runtime/shared adapter validates IANA identity and DST uniqueness;
-  - Tokyo local-date-vs-UTC-boundary regression proves `2000-01-01 00:30 Asia/Tokyo` remains local-date keyed even though resolved UTC is `1999-12-31`;
-  - Sydney explicit-IANA coverage and New York DST gap/fold fail-closed regressions are included;
-  - current `Asia/Taipei` fixtures and `next_day_at_23` / `split_after_day_15` policies remain regression-covered;
-  - `CIVIL_TIME_NORMALIZER_ADMISSION_V1.json` records Zi Wei as a method-owned production consumer;
-  - birthplace→timezone resolution remains separate/not admitted for Zi Wei; `ZW-P2-040` true-solar-time policy remains untouched;
-  - generated Zi Wei bundle/load-pack regeneration is delegated to the registered P2-030 bridge and is not hand-edited;
-  - first bridge run `36304683461` exposed a bridge-only dependency mismatch (`test_civil_time_normalizer` imports Astrology provider / astronomy); shared adapter authority/tests were already closed under AST-P1-190, so the P2-030 bridge was narrowed to Zi Wei consumer regressions;
-  - second bridge run `36304745792` passed Zi Wei functional regressions but correctly failed because `test_ziwei_tool_bundle` was placed before cache regeneration; bridge ordering was corrected without changing runtime semantics;
+- closure:
+  - implementation merged by PR #305 at `e859a3539bd8988d892d2456e89d4d70304d4e98`;
+  - `tools/ziwei_calendar_provider.py` consumes shared `civil-time-zoneinfo-v1@1.0.0` before Gregorian→lunar lookup;
+  - `ziwei.calendar.civil_v2` accepts explicit IANA timezone identity and preserves validated local Gregorian calendar fields; resolved UTC is provenance-only and never rebases lunar conversion;
+  - existing `data/calendar/ziwei_tw_interval/v1/**` dataset is reused without per-timezone duplication; `next_day_at_23` and `split_after_day_15` remain Zi Wei-owned policies;
+  - regression coverage includes Tokyo local-date-vs-UTC-boundary preservation, Sydney explicit-IANA input, New York DST gap/fold fail-closed, invalid/fixed-offset timezone rejection, transport round-trip, Minguo timezone preservation, and existing Asia/Taipei parity;
   - successful bridge run `36304792495`: 28 focused Zi Wei regressions PASS, regenerated Zi Wei bundle PASS, post-regeneration bundle tests 5 PASS, ChatGPT load-pack PASS, `explicit_research_astrology` ratio `0.7994`, overall load budget PASS;
-  - generated-cache bot commit `a3e7c581e8f9c960e9b5c0ad38901b9d6494df34` changed only the canonical Zi Wei bundle and removal of the temporary bridge;
-  - this human-authored evidence commit re-triggers formal PR validation against the generated-cache head.
+  - generated-cache bot commit `a3e7c581e8f9c960e9b5c0ad38901b9d6494df34` changed only the canonical Zi Wei bundle and temporary bridge removal;
+  - formal PR run `36305049795`: `validate` PASS, `casting-runtime` PASS, full unit suite PASS, structural checker PASS;
+  - exact-main canonical read-back confirms shared Zi Wei consumer admission, `ZIWEI_CALENDAR_ADMISSION_V1` v2.1, provider v2.1/profile `ziwei.calendar.civil_v2`, machine routing, Minguo compatibility and backlog candidate state at `e859a3539bd8988d892d2456e89d4d70304d4e98`;
+  - exact-main run `36305181663`: `validate` PASS, `casting-runtime` PASS, full unit suite PASS, structural checker PASS, Astrology and Zi Wei exact-main handoff preparation/upload PASS;
+  - Zi Wei exact-main artifact `10926499513` / `ziwei-deterministic-handoff-e859a3539bd8988d892d2456e89d4d70304d4e98` published at 84,700 bytes with digest `sha256:9c24b88760458f000bcf84215bfe48e378ba24dacd45a9490776f20b291260ad`;
+  - Astrology exact-main artifact `10926932471` / `astrology-core-handoff-e859a3539bd8988d892d2456e89d4d70304d4e98` published at 177,049 bytes with digest `sha256:d40a39007601e3106917cda1397d8863e6d7b2aa9873c0dee19dcc7b58479813`;
+  - automatic birthplace→timezone resolution remains outside Zi Wei admission; true-solar-time remains owned by `ZW-P2-040`.
 - completion_gate:
   - shared normalizer consumption is explicit and regression-covered;
   - non-`Asia/Taipei` IANA timezone provenance is preserved;
@@ -805,8 +804,7 @@ Ordering rationale:
 - status: DEFERRED
 - priority: P2
 - owner: Zi Wei calendar/profile research
-- blocked_by:
-  - ZW-P2-030
+- blocked_by: none
 - rule:
   - separate from ordinary civil-time timezone expansion;
   - requires explicit profile/policy identity and evidence;
@@ -837,7 +835,7 @@ Ordering rationale:
 The following are current policy choices or already-closed capabilities and must not be repeatedly rediscovered as blockers:
 
 - Scope-A natal provider — production admitted;
-- Gregorian→lunar via current canonical calendar admission — production admitted; P2-030 explicit-IANA expansion remains candidate until merge/closure;
+- Gregorian→lunar via `ziwei.calendar.civil_v2` + explicit IANA civil time — production admitted;
 - optional brightness profile `ziwei.brightness.iztro_v1` — production admitted when explicitly requested;
 - ChatGPT deterministic materialization transport — production available;
 - explicit Zi Wei routing — admitted;
