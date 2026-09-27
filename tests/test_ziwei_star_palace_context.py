@@ -18,6 +18,7 @@ ADMISSION=ROOT/"ZIWEI_STAR_PALACE_CONTEXT_ADMISSION_V1.json"
 ADMITTED={
     ("天相","命宮"):"ZW-SP-TIANXIANG-MING-001",
     ("天梁","官祿宮"):"ZW-SP-TIANLIANG-CAREER-001",
+    ("貪狼","夫妻宮"):"ZW-SP-TANLANG-SPOUSE-001",
 }
 
 class ZiWeiStarPalaceContextTests(unittest.TestCase):
@@ -29,9 +30,9 @@ class ZiWeiStarPalaceContextTests(unittest.TestCase):
         p=subprocess.run([sys.executable,str(VALIDATOR),str(REGISTRY)],cwd=ROOT,text=True,capture_output=True)
         self.assertEqual(0,p.returncode,msg=p.stdout+"\n"+p.stderr)
         self.assertFalse(self.registry["production_routable"])
-        self.assertEqual(2,len(self.registry["claims"]))
+        self.assertEqual(3,len(self.registry["claims"]))
         self.assertEqual(
-            {"天相×命宮","天梁×官祿宮"},
+            {"天相×命宮","天梁×官祿宮","貪狼×夫妻宮"},
             set(self.registry["research_result"]["admitted_pairs"]),
         )
         self.assertFalse(self.registry["research_result"]["exhaustive_cartesian_dictionary"])
@@ -81,6 +82,14 @@ class ZiWeiStarPalaceContextTests(unittest.TestCase):
         )
         self.assertIn("PRESENT_CONFLICT_SEPARATELY",r["delivery"]["actions"])
 
+    def test_tanlang_spouse_is_historical_bounded_without_spouse_age(self):
+        claim=next(x for x in self.registry["claims"] if x["claim_id"]=="ZW-SP-TANLANG-SPOUSE-001")
+        self.assertEqual("historical_conditional",claim["assertion_class"])
+        self.assertEqual("historical_only",claim["support_status"])
+        self.assertIn("star_in_palace:貪狼:夫妻宮",claim["applicability"]["requires"])
+        self.assertNotIn("年長",claim["normalized_statement"])
+        self.assertNotIn("older",claim["normalized_statement"].lower())
+
     def test_reviewed_non_material_sun_career_pair_has_no_context_override(self):
         birth=self._find_star_in_palace_birth("太陽","官祿宮")
         r=run_ziwei(ZiWeiReadingRequest(
@@ -96,8 +105,8 @@ class ZiWeiStarPalaceContextTests(unittest.TestCase):
     def test_admission_is_bounded_not_cartesian(self):
         m=json.loads(ADMISSION.read_text(encoding="utf-8"))
         self.assertEqual("PRODUCTION_ADMITTED_BOUNDED_INTERPRETATION",m["status"])
-        self.assertEqual(2,m["scope"]["admitted_claims_added"])
-        self.assertEqual(["天相×命宮","天梁×官祿宮"],m["scope"]["admitted_pairs"])
+        self.assertEqual(3,m["scope"]["admitted_claims_added"])
+        self.assertEqual(["天相×命宮","天梁×官祿宮","貪狼×夫妻宮"],m["scope"]["admitted_pairs"])
         self.assertFalse(m["scope"]["exhaustive_cartesian_dictionary"])
         self.assertFalse(m["deterministic_applicability"]["new_geometry_provider_required"])
         self.assertFalse(m["scientific_predictive_validity_claimed"])

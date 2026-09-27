@@ -29,8 +29,8 @@ research-only scaffold
 - optional brightness profile：`ziwei.brightness.iztro_v1` 已 admitted，僅 explicit add-on
 - sparse same-palace pair interpretation：`武曲×天相` 目前只 admission `兄弟宮` / `官祿宮` 2 條 practitioner-bounded claims；exact canonical occupancy match 才啟動，無 14×14 Cartesian expansion
 - Body-Palace overlay interpretation：production admission 1 條 `身宮=後天發展 overlay` methodology + `夫妻宮` / `財帛宮` / `官祿宮` / `遷移宮` 4 條 exact overlay claims；deterministic fact 只把 `body_palace.branch` 映射回既有十二宮，不建立第十三宮
-- sparse star×palace contextual interpretation：production admission `天相×命宮`、`天梁×官祿宮` 2 條 practitioner-bounded overrides；只吃 canonical occupancy，無 14×12 Cartesian expansion，未 admission 組合維持 L5 composition
-- star×palace research follow-up：`STAR_PALACE_CONTEXTUAL_RESEARCH_V2.md` 研究性記錄 `貪狼×夫妻宮` historical bounded candidate、Nihai 配偶年齡 heuristic 的 practitioner-only defer、`紫微×官祿宮` non-material rejection 與 `破軍×遷移宮` borderline/defer；不改變目前 2 條 production star×palace admission
+- sparse star×palace contextual interpretation：production admission `天相×命宮`、`天梁×官祿宮` 2 條 practitioner-bounded overrides + `貪狼×夫妻宮` 1 條 historical-bounded override；只吃 canonical occupancy，無 14×12 Cartesian expansion，未 admission 組合維持 L5 composition
+- star×palace research follow-up：`STAR_PALACE_CONTEXTUAL_RESEARCH_V2.md` 的 `貪狼×夫妻宮` historical bounded candidate 已 separately production-admitted；Nihai 配偶年齡 heuristic 仍為 practitioner-only defer，`紫微×官祿宮` 維持 non-material rejection，`破軍×遷移宮` 維持 borderline/defer
 - optional M1 auxiliary profile：`ziwei.auxiliary.m1.common_v1` admission 天魁／天鉞／祿存／天馬／擎羊／陀羅／火星／鈴星／地空／地劫十星 natal placement + 10 條 bounded modifier-role policy；runtime 必須與 M0 同時啟用，M0+M1 才提供 broader auxiliary completeness；M2/M3與高風險事件斷語仍未 admission
 - deterministic ChatGPT materialization：`ZIWEI_MATERIALIZATION.md` + bundle 已建立
 - ordinary unspecified auto-routing：仍刻意為 false
@@ -40,7 +40,7 @@ research-only scaffold
 - monthly / 流月 interpretation：V9 只 admission 3 條 bounded methodology claims，要求斗君／effective-month 月層 identity、compatible 流年 parent 合參與 no-generic-monthly-filler；monthly Si Hua / flow stars仍未 admission；
 - daily / 流日 interpretation：V10 只 admission 3 條 bounded methodology claims，來源為 practitioner/tradition references；要求 explicit lunar-day identity、compatible 流月 parent 合參與 no-generic-daily-filler；day pillar / daily Si Hua / flow stars仍未 admission；
 - hourly / 流時 interpretation：V11 只 admission 3 條 profile-bounded methodology claims，要求 explicit hour-branch identity、compatible 流日 parent 合參與 no-generic-hourly-filler；來源亦顯示派法不唯一，故不宣稱唯一傳統；physical hour pillar / 五鼠遁時干 / hourly Si Hua / flow stars仍未 admission；
-- broader contextual star×palace / 未另 admission 的 auxiliary / Four-Transformation interpretation：仍未 production-admitted；star×palace 僅上述 2 條、same-palace pairs 僅上述 2 條、Body-Palace overlays 僅上述 5 條 source-explicit claims admitted
+- broader contextual star×palace / 未另 admission 的 auxiliary / Four-Transformation interpretation：仍未 production-admitted；star×palace 僅上述 3 條、same-palace pairs 僅上述 2 條、Body-Palace overlays 僅上述 5 條 source-explicit claims admitted
 - 科學／客觀預測有效性：未聲稱
 
 ## Production boundary

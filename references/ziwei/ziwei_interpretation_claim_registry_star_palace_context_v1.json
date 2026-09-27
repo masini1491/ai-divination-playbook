@@ -32,6 +32,34 @@
         "guaranteed office, wealth, marriage, illness or death outcomes",
         "scientific predictive validity"
       ]
+    },
+    {
+      "source_id": "SRC-NANYANG-QUANSHU-STARS",
+      "source_role": "PRIMARY_TEXT",
+      "admission_status": [
+        "CLAIM_ELIGIBLE"
+      ],
+      "storage_mode": [
+        "metadata_locator_normalized_paraphrase"
+      ],
+      "independence_status": "primary_witness",
+      "title": "新鋟希夷陳先生紫微斗數全書",
+      "witness_identity": "Nanyang-Hall / National Archives of Japan identified witness family",
+      "locator": "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzoopnqo0t6",
+      "language": "zh-Hant",
+      "verification_status": [
+        "digital_text_witness_research"
+      ],
+      "admission_scope": [
+        "貪狼×夫妻宮 bounded historical contextual semantics"
+      ],
+      "excluded_scope": [
+        "unverified glyph-level variants",
+        "production doctrine authority beyond admitted bounded claim"
+      ],
+      "notes": [
+        "Normalized paraphrases only; locator retained for source verification."
+      ]
     }
   ],
   "claims": [
@@ -124,6 +152,52 @@
       "support_status": "tradition_bounded",
       "conflict_group_ids": [],
       "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-SP-TANLANG-SPOUSE-001",
+      "layer": "L4",
+      "claim_type": "star_palace_context",
+      "subject": "貪狼×夫妻宮",
+      "subjects": [
+        "貪狼",
+        "夫妻宮"
+      ],
+      "star": "貪狼",
+      "palace": "夫妻宮",
+      "assertion_class": "historical_conditional",
+      "normalized_statement": "在 historical profile 中，貪狼落夫妻宮可作為婚姻／伴侶互動較需留意穩定性與失衡壓力的 contextual modifier；仍須合看廟旺、吉煞、同會與其他已 admitted 條件，不得翻成必然婚姻失敗、多婚、外遇或固定配偶特徵。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-STARS"
+      ],
+      "source_locators": [
+        "新鋟希夷陳先生紫微斗數全書 → 諸星問答論 → 問：貪狼所主若何？",
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzoopnqo0t6"
+      ],
+      "applicability": {
+        "requires": [
+          "fact_available:palace_occupancy",
+          "star_in_palace:貪狼:夫妻宮"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "dignity_brightness",
+          "supporting_stars",
+          "malefic_stars",
+          "sanfang_sizheng",
+          "tradition_profile"
+        ],
+        "palace_scope": [
+          "夫妻宮"
+        ],
+        "topology_scope": [
+          "self"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "qualified",
+      "support_status": "historical_only",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
     }
   ],
   "conflict_groups": [
@@ -150,16 +224,20 @@
   "research_result": {
     "production_authority_granted": false,
     "scientific_predictive_validity_claimed": false,
-    "claim_count": 2,
+    "claim_count": 3,
     "admitted_pairs": [
       "天相×命宮",
-      "天梁×官祿宮"
+      "天梁×官祿宮",
+      "貪狼×夫妻宮"
     ],
     "exhaustive_cartesian_dictionary": false,
     "rejected_as_non_material_overrides": [
       "太陽×財帛宮",
       "太陽×官祿宮"
     ],
-    "missing_is_not_model_memory_permission": true
+    "missing_is_not_model_memory_permission": true,
+    "deferred_practitioner_heuristics": [
+      "貪狼×夫妻宮 → spouse-age characteristic"
+    ]
   }
 }
