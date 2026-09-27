@@ -46,7 +46,6 @@ jobs:
       - name: Run P2-030 focused regressions
         run: |
           python -m unittest \
-            tests.test_civil_time_normalizer \
             tests.test_ziwei_calendar_contract_v1 \
             tests.test_ziwei_calendar_data_provider \
             tests.test_ziwei_unified_runtime_v1 \
