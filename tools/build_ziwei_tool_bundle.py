@@ -38,6 +38,8 @@ PROJECT_PATHS=(
  "tools/ziwei_calendar_provider.py",
  "tools/civil_time_normalizer.py",
  "CIVIL_TIME_NORMALIZER_ADMISSION_V1.json",
+ "tools/ziwei_true_solar_time.py",
+ "ZIWEI_TRUE_SOLAR_TIME_ADMISSION_V1.json",
  "tools/ziwei_calendar_data_provider.py",
  "data/calendar/ziwei_tw_interval/v1/MANIFEST.json",
  "tools/ziwei_gregorian_pipeline.py",
