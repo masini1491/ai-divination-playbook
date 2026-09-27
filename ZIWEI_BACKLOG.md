@@ -657,11 +657,11 @@ Ordering rationale:
 ### ZW-P2-010 — M1 high-impact auxiliary stars
 
 - type: FEATURE / ADMISSION
-- status: DEFERRED
+- status: IN_PROGRESS
 - priority: P2
 - owner: Zi Wei auxiliary-star research/admission
 - blocked_by:
-  - ZW-P1-010
+  - ZW-P1-010 — CLOSED
 - subjects:
   - 天魁
   - 天鉞
@@ -673,11 +673,32 @@ Ordering rationale:
   - 鈴星
   - 地空
   - 地劫
+- evidence_decision:
+  - pinned `SylarLong/iztro@2c7ef9be669df7b19d1799f4dce335fed3794f78` and `airicyu/fortel-ziweidoushu@2620cc895395f9f6994abd4927e739d31015c67d` independently expose equivalent natal placement rules for all 10 M1 stars;
+  - reconciled calculation families are year-stem 魁鉞、year-stem 祿存/羊陀、year-branch trine 天馬、year-branch+hour 火鈴、hour-based 空劫;
+  - pinned practitioner corpus `Renhuai123/nihai-tianji-corpus@c90006168195c0650328b7199669eb6a2d0cac93` supports their high-impact modifier roles, but its deterministic health/death/legal/promotion/wealth outcomes are explicitly excluded;
+  - production semantics are therefore 10 bounded modifier-role policy claims, not independent historical semantic cores.
+- canonical_research:
+  - `references/ziwei/MINOR_STAR_ADMISSION_TAXONOMY_V0.md`
+  - `references/ziwei/CALCULATION_ENGINE_RESEARCH.md`
+  - `references/ziwei/M1_AUXILIARY_RESEARCH_V1.md`
+  - `references/ziwei/ziwei_interpretation_claim_registry_m1_auxiliary_v1.json`
+- implementation_candidate:
+  - optional module `m1_auxiliary_v1`, profile `ziwei.auxiliary.m1.common_v1`, provider `tools/ziwei_m1_auxiliary_provider.py`;
+  - M1 is natal-only and requires `m0_auxiliary_v1`; M1-alone requests fail closed;
+  - M1 provider emits `fact_available:m1_auxiliary_stars`, 10 `star_present` facts and exact self/sanfang modifier relations;
+  - only M0+M1 union adds generic `fact_available:auxiliary_stars` + `fact_available:star_relations`, preserving M0-alone behavior;
+  - 六煞 relations additionally expose bounded generic `modifier_present:<major>:malefic_stars` applicability without event doctrine;
+  - base natal claims remain 61; optional maximum candidate becomes 78 = 61 + M0 4 + M1 10 + Sihua 3;
+  - Scope-A pipeline candidate advances to `1.5.0`; natal provider remains `0.3.0`.
 - completion_gate:
-  - source identity;
-  - calculation/profile closure;
-  - bounded interpretation claims;
-  - explicit natal vs temporal identity.
+  - source identity and pinned cross-implementation placement closure;
+  - exact natal/profile identity for all 10 subjects;
+  - M1→M0 dependency and generic completeness boundary fail closed;
+  - bounded interpretation claims only; no high-stakes deterministic event doctrine;
+  - explicit natal vs temporal identity; no M3/flow promotion;
+  - runtime/schema/admission/index/materialization/bundle/current docs synchronized;
+  - focused regressions + full CI + merge + exact-main artifact + canonical read-back before `DONE`.
 
 ### ZW-P2-020 — Sparse star×palace contextual claims
 
