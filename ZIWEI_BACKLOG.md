@@ -569,7 +569,7 @@ Ordering rationale:
 - stage_progress:
   - decadal interpretation: DONE — V7 bounded methodology interpretation merged and canonically read back; exactly 2 source-backed claims are admitted, while natal-claim promotion、generic十年吉凶、具體事件與 high-stakes determinism remain fail-closed;
   - yearly interpretation: DONE — V8 bounded methodology interpretation merged and canonically read back; exactly 3 source-backed / project-bounded claims are admitted, while generic流年吉凶、yearly Si Hua斷語、具體事件與 high-stakes determinism remain fail-closed;
-  - monthly interpretation: IMPLEMENTED_CANDIDATE — V9 admits exactly 3 bounded methodology claims gated by monthly identity + compatible yearly parent; generic本月吉凶、monthly Si Hua／flow stars、具體日／時事件與 high-stakes determinism remain fail-closed; awaiting bridge-generated caches / formal PR validation / merge / canonical read-back;
+  - monthly interpretation: IMPLEMENTED_CANDIDATE — V9 admits exactly 3 bounded methodology claims gated by monthly identity + compatible yearly parent; generic本月吉凶、monthly Si Hua／flow stars、具體日／時事件與 high-stakes determinism remain fail-closed; focused regressions PASS; registry validation PASS; Zi Wei bundle/load-pack regeneration and load budget PASS; awaiting formal PR validation / merge / canonical read-back;
   - daily interpretation: READY — daily calculation admission merged and canonically read back; interpretation still requires its own source-backed claim admission;
   - hourly interpretation: READY — hourly calculation admission merged and canonically read back; interpretation still requires its own source-backed claim admission;
 - staging_rule:
@@ -610,7 +610,11 @@ Ordering rationale:
   - `ZW-M1-METHOD-BOUNDARY-003` prohibits generic monthly-fortune filler and daily/hourly event inference without lower-layer admitted facts/claims;
   - V9 is additive: V8 keeps monthly interpretation NOT_ADMITTED; V9 preserves V7/V8 decadal/yearly bounded interpretation and adds monthly only;
   - monthly Si Hua and flow stars remain not computed/admitted; this stage does not reconstruct either layer;
-  - generated Zi Wei bundle/load-pack regeneration is delegated to the registered temporary monthly-interpretation bridge and is not hand-edited.
+  - generated Zi Wei bundle/load-pack regeneration is delegated to the registered temporary monthly-interpretation bridge and is not hand-edited;
+  - first monthly bridge run `36291105587`: 47 focused regressions PASS but registry validator correctly rejected `layer=L5`; registry-only contract fix `408c550b823e59cf0284b895598261c3dfae653b` changed all 3 claims to canonical `L4` without changing interpretation semantics;
+  - successful monthly bridge run `36291152590`: 47 focused regressions PASS, 3-claim registry validator PASS, Zi Wei bundle PASS, ChatGPT load-pack PASS, `explicit_research_astrology` load ratio `0.8000`, overall load budget PASS;
+  - generated-cache bot commit `24ba0e456bb8a3ad38053b1ef88caf25d446d469` changed only the canonical Zi Wei bundle, generated load pack, and removal of the temporary monthly bridge;
+  - the pre-bot formal validate run was expected to see stale generated artifacts, so this human-authored evidence commit re-triggers formal PR validation against the generated-cache head.
 - rule:
   - natal 52 claims must not be silently reused as flow prediction claims.
 - completion_gate:
