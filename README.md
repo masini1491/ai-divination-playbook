@@ -86,7 +86,7 @@ Zi Wei 例如：
 
 ```text
 用紫微看我的本命盤。
-2000/01/01 00:00，Asia/Taipei，用紫微看命盤。
+2000/01/01 00:00，Asia/Tokyo，用紫微看命盤。
 用紫微看命盤，並加入廟旺／亮度。
 ```
 
@@ -127,7 +127,7 @@ explicit Astrology request
 
 ```text
 explicit Zi Wei request
-→ Gregorian Asia/Taipei birth datetime
+→ Gregorian birth datetime + explicit IANA timezone
    OR admitted normalized lunar input
 → deterministic calendar / natal provider
 → Scope-A Fact Gate
@@ -292,7 +292,7 @@ Zi Wei 目前是 bounded natal production method，適合使用者明確要求�
 - 12 宮 first-layer claims；
 - 52 admitted claims；
 - 命宮、身宮、五行局、14 主星 placement 等 deterministic natal facts；
-- `Asia/Taipei` civil-time Gregorian birth datetime（admitted range 1900-01-01..2100-12-31）→ normalized lunar input；
+- explicit-IANA civil-time Gregorian birth datetime（admitted local-date range 1900-01-01..2100-12-31）→ shared DST-safe validation → normalized lunar input；
 - `23:00` 晚子時採 `next_day_at_23`；
 - 閏月採 `split_after_day_15`；
 - optional `brightness_v1`：14 主星廟／旺／得／利／平／不／陷 facts，只在明確要求廟旺／亮度時啟用；
