@@ -29,8 +29,8 @@ Last reviewed against:
 
 ```text
 ai-divination-playbook main
-d3214b101ec3c86692c5c5aa0f4cc5130fcc8f30
-Close Zi Wei hourly interpretation and ZW-P1-040 (#293)
+94721f1925d90e4a7850d84e6a51fbca08c5871a
+Define shared civil-time normalization contract (#294)
 ```
 
 This SHA is review evidence only, not a pin. Every maintenance or implementation task must resolve current `main` again before mutation.
@@ -60,16 +60,14 @@ The closed work above must not be repeatedly rediscovered as open work unless a 
 
 Current near-term shared/input work:
 
-1. **AST-SHARED-003 — Shared civil-time normalization contract**
-   - IN_PROGRESS; freeze one cross-method IANA/DST/local-vs-UTC contract for Astrology and Zi Wei without changing runtime authority.
-2. **AST-P1-190 — Shared civil-time normalizer extraction/admission**
-   - OPEN; starts only after AST-SHARED-003 contract closure, with Astrology as the first implementation consumer.
+1. **AST-P1-190 — Shared civil-time normalizer extraction/admission**
+   - OPEN; AST-SHARED-003 is now closed, so Astrology can proceed as the first implementation consumer.
 
 Deferred work remains:
 
-3. **AST-P2-020 — Named consumer compatibility profile**
+2. **AST-P2-020 — Named consumer compatibility profile**
    - DEFERRED; start only when a concrete named consumer/profile requires compatibility.
-4. **AST-P2-030 — Optional Swiss compatibility/provider lane**
+3. **AST-P2-030 — Optional Swiss compatibility/provider lane**
    - DEFERRED; start only when explicit Swiss compatibility/provider demand appears.
 
 `AST-P0-002` remains a standing reconciliation guard, not a one-shot feature. Already-DONE items must not be rediscovered as open work.
@@ -836,7 +834,7 @@ This item is a standing reconciliation guard. It is not a request to change curr
 ### AST-SHARED-003 — Shared civil-time normalization contract
 
 - type: SHARED / DETERMINISTIC INPUT CONTRACT
-- status: IN_PROGRESS
+- status: DONE
 - priority: SHARED
 - owner: cross-method civil-time normalization
 - blocked_by: none
@@ -861,6 +859,14 @@ This item is a standing reconciliation guard. It is not a request to change curr
   - Astrology and Zi Wei coordination surfaces point to one shared contract without duplicating technical authority;
   - structural regression protects the single-owner / pointer topology;
   - canonical read-back + required CI PASS.
+- closure:
+  - PR #294 merged the canonical contract and coordination/routing bindings at main `94721f1925d90e4a7850d84e6a51fbca08c5871a`;
+  - `CIVIL_TIME_NORMALIZATION.md` freezes IANA timezone identity, DST gap/fold fail-closed semantics, separate local-civil vs UTC identities, Zi Wei local-Gregorian consumption, and true-solar-time separation;
+  - `PLAYBOOK_INDEX.json` routes `input.civil-time-normalization` to the shared contract and records AST-SHARED-003 / AST-P1-190 / ZW-P2-030 linkage;
+  - repository architecture regression protects the single shared coordination owner and Zi Wei pointer/dependency topology;
+  - PR validation run `36295175847` passed `casting-runtime`, unit tests and structural checker;
+  - exact-main validation run `36295281032` passed `casting-runtime`, unit tests, structural checker, and exact-main Astrology handoff artifact preparation/upload;
+  - no provider/runtime/admission semantics were changed by contract closure.
 - followup:
   - implementation/admission is separate at `AST-P1-190`;
   - `ZW-P2-030` remains blocked until the shared implementation/admission is ready for consumption.

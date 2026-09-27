@@ -29,7 +29,7 @@ Last reviewed against:
 
 ```text
 ai-divination-playbook main
-d3214b101ec3c86692c5c5aa0f4cc5130fcc8f30
+94721f1925d90e4a7850d84e6a51fbca08c5871a
 ```
 
 This SHA is review evidence only, not a pin. Every maintenance task must resolve current `main` again before mutation.
@@ -756,10 +756,10 @@ Ordering rationale:
 - priority: P2
 - owner: Zi Wei calendar/input
 - blocked_by:
-  - `ASTROLOGY_BACKLOG.md#AST-SHARED-003` contract closure
   - `ASTROLOGY_BACKLOG.md#AST-P1-190` shared normalizer implementation/admission
 - shared_contract:
   - `CIVIL_TIME_NORMALIZATION.md`
+  - contract coordination closed by `ASTROLOGY_BACKLOG.md#AST-SHARED-003`; Zi Wei does not duplicate its mutable status.
 - current_state:
   - production calendar adapter supports `Asia/Taipei` civil time only;
   - generic IANA/DST/local-vs-UTC semantics are now coordinated as one cross-method contract rather than being redefined inside Zi Wei.
