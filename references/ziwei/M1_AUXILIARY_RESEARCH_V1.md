@@ -64,7 +64,11 @@ fact_available:star_relations
 M0 alone intentionally does not emit those tokens. The M1 candidate therefore
 requires `m0_auxiliary_v1` at runtime. Only the admitted **M0 + M1** union may
 mark the current bounded auxiliary domain complete enough for those generic
-availability facts.
+availability facts. When that union is active, the M1 provider also materializes
+major-star↔major-star self/sanfang relation predicates from the already-admitted
+14-major-star placement facts, so `fact_available:star_relations` does not
+claim a relation domain wider than the deterministic predicates actually
+present.
 
 This is not blanket minor-star admission:
 
