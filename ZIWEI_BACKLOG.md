@@ -570,7 +570,7 @@ Ordering rationale:
   - decadal interpretation: DONE — V7 bounded methodology interpretation merged and canonically read back; exactly 2 source-backed claims are admitted, while natal-claim promotion、generic十年吉凶、具體事件與 high-stakes determinism remain fail-closed;
   - yearly interpretation: DONE — V8 bounded methodology interpretation merged and canonically read back; exactly 3 source-backed / project-bounded claims are admitted, while generic流年吉凶、yearly Si Hua斷語、具體事件與 high-stakes determinism remain fail-closed;
   - monthly interpretation: DONE — V9 bounded methodology interpretation merged and canonically read back; exactly 3 bounded claims are admitted, while generic本月吉凶、monthly Si Hua／flow stars、具體日／時事件與 high-stakes determinism remain fail-closed;
-  - daily interpretation: IMPLEMENTED_CANDIDATE — V10 admits exactly 3 practitioner/tradition-bounded methodology claims gated by explicit lunar-day identity + compatible monthly parent; generic今日吉凶、day pillar、daily Si Hua／flow stars、具體流時事件與 high-stakes determinism remain fail-closed; awaiting bridge-generated caches / formal PR validation / merge / canonical read-back;
+  - daily interpretation: IMPLEMENTED_CANDIDATE — V10 admits exactly 3 practitioner/tradition-bounded methodology claims gated by explicit lunar-day identity + compatible monthly parent; generic今日吉凶、day pillar、daily Si Hua／flow stars、具體流時事件與 high-stakes determinism remain fail-closed; focused regressions PASS; registry validation PASS; Zi Wei bundle/load-pack regeneration and load budget PASS; awaiting formal PR validation / merge / canonical read-back;
   - hourly interpretation: READY — hourly calculation admission merged and canonically read back; interpretation still requires its own source-backed claim admission;
 - staging_rule:
   - decadal interpretation may start after decadal calculation admission;
@@ -623,7 +623,13 @@ Ordering rationale:
   - `ZW-D1-METHOD-BOUNDARY-003` prohibits generic daily-fortune filler and hourly-event inference without a separately admitted hourly layer;
   - V10 is additive: V9 keeps daily interpretation NOT_ADMITTED; V10 preserves V7–V9 decadal/yearly/monthly bounded interpretation and adds daily only;
   - day pillar, daily Si Hua and flow stars remain not computed/admitted; this stage does not reconstruct any of them;
-  - generated Zi Wei bundle/load-pack regeneration is delegated to the registered temporary daily-interpretation bridge and is not hand-edited.
+  - generated Zi Wei bundle/load-pack regeneration is delegated to the registered temporary daily-interpretation bridge and is not hand-edited;
+  - first daily bridge run `36292164990` found a test-only V6 hourly fixture omission: the backward-compat target lacked canonical `rat_hour_policy=next_day_at_23`; test fixed at `83a9c7b5c288bd39ccf9addd7b98b8cbe962d185` without changing V10 runtime semantics;
+  - second daily bridge run `36292215488`: 49 focused regressions PASS and 3-claim registry validator PASS; generated bundle/load-pack also regenerated successfully, but `explicit_research_astrology` load ratio was `0.8002`, narrowly over budget;
+  - bootstrap summary was compacted without changing authority at `b20f6c52c40243e806641fbad75558c793411c6e`;
+  - successful daily bridge run `36292265611`: 49 focused regressions PASS, 3-claim registry validator PASS, Zi Wei bundle PASS, ChatGPT load-pack PASS, `explicit_research_astrology` load ratio `0.7997`, overall load budget PASS;
+  - generated-cache bot commit `c5f8d42acbfd3afad8641054b8014b03d158581b` changed only the canonical Zi Wei bundle, generated load pack, and removal of the temporary daily bridge;
+  - the pre-bot formal validate run saw stale generated artifacts, so this human-authored evidence commit re-triggers formal PR validation against the generated-cache head.
 - rule:
   - natal 52 claims must not be silently reused as flow prediction claims.
 - completion_gate:
