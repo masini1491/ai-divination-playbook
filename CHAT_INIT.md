@@ -210,7 +210,7 @@ cheap HEAD/ref probe
 - cross-validation → `CROSS_VALIDATION.md`。
 - behavioral regression → `BEHAVIORAL_EVAL.md` + selected scenarios。
 - machine owner discovery → `PLAYBOOK_INDEX.json`。
-- material session-health risk → `SESSION_HANDOFF.md`。
+- session continuity / maintenance cross-chat → `SESSION_HANDOFF.md`。
 
 若 high-leverage prerequisite 已否決後續工作，在正確 boundary 停止，不為形式繼續載入。
 

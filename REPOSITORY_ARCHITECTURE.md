@@ -188,6 +188,46 @@ PALMISTRY_BACKLOG.md
 - cross-method shared item只指定一個 canonical coordination owner，其餘 backlog只保存 pointer，避免 divergent work state。
 - 此 allowlist 只授權 coordination-only persistence；不因而擴張對 `tools/**`、`data/**`、`runtime/**`、`references/**`、`schemas/**`、method owners、admission manifests 或其他 governance surfaces 的寫入權。
 
+#### Durable continuity checkpoint topology
+
+本 Repo opt-in shared development baseline 的 repository-native append-only **continuity checkpoint event** semantic role，用於長期 ChatGPT maintenance session / 聊天室跨界 recovery。這個 surface 只保存最低充分 continuation pointer；不是 production／research／routing authority，也不是 work admission、completion evidence或第二份 backlog。
+
+採用三個 method-scoped peer threads：
+
+```text
+continuity.astrology  → GitHub Issue title: [continuity] Astrology
+continuity.ziwei      → GitHub Issue title: [continuity] Zi Wei
+continuity.palmistry  → GitHub Issue title: [continuity] Palmistry
+```
+
+建立完成後，exact Issue number / repository identity 由 `PLAYBOOK_INDEX.json` routing-only metadata保存；title只作 bootstrap semantic identity，不取代 exact pointer。
+
+本節同時擴充 ChatGPT Coordination Write Allowlist：
+
+- ChatGPT 可在上述三個**已正式建立且由 index 指向的 exact Issues**追加 top-level continuity comments；
+- 在首次 adoption bootstrap 階段，使用者已明確授權此 continuity feature implementation時，ChatGPT 可建立這三個且僅這三個固定-title Issues，建立後立即以 exact Issue identity收斂 machine routing；
+- Issue body只描述 coordination-only用途／privacy boundary／event schema pointer，不保存 mutable current state；
+- comments採 append-only event semantics；不得把既有 comment編修成 current truth。只有 privacy/security correction需要時才可做最低必要修復；
+- 不得建立額外 per-task／per-PR／per-session continuity Issues，除非 future governance另行 admission；
+- public repository continuity event只能寫 sanitized technical coordination state，不得包含真實人物、出生資料、感情／健康／性／工作等私人 reading內容。
+
+Material event trigger：
+
+```text
+logical repository action closure
++ canonical read-back completed
++ fresh-session continuation state materially changed
+→ append at most one checkpoint event
+```
+
+典型 trigger：PR merge、backlog/Stage material status change、exact-main validation/artifact closure、material blocker established/cleared、active work identity或 next authorized action改變。
+
+下列不單獨產生 event：HEAD probe、read/search、普通 diff review、branch creation、同一 logical action內的中間 commit、CI polling、無 material state change的 validation step、每次 tool call。
+
+最低 event payload與 fresh-session rehydration程序由 `SESSION_HANDOFF.md` project-native adapter定義；generic continuity semantics仍由 shared `AI_CONTEXT.md` / `CHATGPT_WORKFLOW.md` 擁有。
+
+核心原則：**每個會改變 fresh session 下一步的 material logical action closure最多留一筆 checkpoint；pointer over copy，current canonical truth永遠高於 continuity history。**
+
 #### Other optional surfaces
 
 `indexes/`、`evidence/`、`fixtures/`、`validation/` 等 path 只有在本 Repo 未來真的採用時才建立；是否值得建立與其 generic semantics依 shared baseline canonical owners判斷。本檔不因目錄名稱存在而自行建立第二份 shared policy。

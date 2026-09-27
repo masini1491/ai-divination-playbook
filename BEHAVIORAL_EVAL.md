@@ -540,6 +540,52 @@ https://github.com/masini1491/ai-divination-playbook
 
 - session-health reasoning、checkpoint fields、fresh-session rehydration、是否有未授權 mutation／redraw。
 
+### TAROT-BEH-027 — Durable maintenance checkpoint rehydrates without becoming authority
+
+**Premise / authority**
+
+- Repository已明確採用 method-scoped durable continuity Issue。
+- 最新 relevant checkpoint由上一個 ChatGPT maintenance session在 material logical action closure後追加。
+- checkpoint帶有 producer-observed repository revision、work identity、current result/evidence pointer、validation boundary與 next authorized action。
+- current `main` 可能已與 event revision相同，也可能已被其他 session推進。
+
+**User stimulus**
+
+```text
+接續上一個 Zi Wei 維護聊天室，先看最近 checkpoint 後繼續。
+```
+
+**Expected behavior**
+
+- 先用 GitHub Connect建立 current repository/ref/HEAD。
+- 由 `PLAYBOOK_INDEX.json` 解析 exact Zi Wei continuity Issue，而不是靠搜尋猜 thread。
+- ordinary rehydration只 bounded-read最新 relevant checkpoint comment，不全文載入整串 Issue history。
+- 比較 event的 `producer_observed_revision` / `work_identity` 與 current authority：
+  - revision一致或 delta與本工作無 material關聯 → reuse仍適用 pointers；
+  - revision不同且 material → bounded-read changed owner/backlog/evidence並 reconcile；
+  - current authority否決舊 next action → STOP或依 current authority改走合法 next action。
+- checkpoint只作 recovery index；completion、backlog status、validation與 technical truth仍由 current canonical source/evidence確認。
+- 若本次 material logical action完成並改變 fresh-session continuation state，最多追加一筆 sanitized checkpoint event。
+
+**Forbidden behavior**
+
+- latest checkpoint comment直接當 current truth或 completion acceptance。
+- 因 event寫有 next action就跳過 current main/backlog/permission/validation gate。
+- 為 rehydration全文載入 Issue comment history。
+- 每次 HEAD probe、read/search、CI polling或中間 commit都追加 event。
+- public continuity comment包含真實人物、出生資料、感情／健康／性／工作等私人 reading內容。
+- continuity Issue/comment capability被誤解為 tools/**、references/**、schemas/** 等 source-write authority。
+
+**Observable evidence**
+
+- current HEAD probe；
+- exact continuity Issue pointer resolution；
+- bounded latest-event retrieval；
+- event-vs-current revision reconciliation；
+- canonical owner/backlog/evidence read-back；
+- event append count / payload privacy；
+- final execute / reconcile / STOP classification。
+
 ### TAROT-BEH-016 — Explicit Astrology production routes through root and mode owner
 
 **Premise / authority**

@@ -27,7 +27,8 @@
     "TAROT-BEH-023",
     "TAROT-BEH-024",
     "TAROT-BEH-025",
-    "TAROT-BEH-026"
+    "TAROT-BEH-026",
+    "TAROT-BEH-027"
   ],
   "change_classes": {
     "bootstrap-access": [
@@ -87,7 +88,8 @@
     "session-continuity": [
       "TAROT-BEH-013",
       "TAROT-BEH-015",
-      "TAROT-BEH-001"
+      "TAROT-BEH-001",
+      "TAROT-BEH-027"
     ],
     "machine-routing": [
       "TAROT-BEH-001",
@@ -96,7 +98,8 @@
       "TAROT-BEH-016",
       "TAROT-BEH-018",
       "TAROT-BEH-022",
-      "TAROT-BEH-023"
+      "TAROT-BEH-023",
+      "TAROT-BEH-027"
     ],
     "cold-start-architecture": [
       "TAROT-BEH-001",
@@ -167,7 +170,8 @@
       "TAROT-BEH-013",
       "TAROT-BEH-022",
       "TAROT-BEH-023",
-      "TAROT-BEH-024"
+      "TAROT-BEH-024",
+      "TAROT-BEH-027"
     ],
     "privacy-inference-egress": [
       "TAROT-BEH-022",
