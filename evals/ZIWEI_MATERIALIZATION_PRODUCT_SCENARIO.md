@@ -4,7 +4,7 @@ Supporting product scenario only; this does **not** alter the existing strict-P4
 
 ## Preconditions
 
-- User explicitly requests Zi Wei production with a Gregorian Asia/Taipei birth datetime inside the admitted 1900-01-01..2100-12-31 range.
+- User explicitly requests Zi Wei production with a Gregorian local birth datetime + explicit IANA timezone inside the admitted 1900-01-01..2100-12-31 local-date range.
 - Local Python exists.
 - Either a previously materialized Zi Wei runtime may exist under `/mnt/data/divination-ziwei-runtime/`, or this is a real cache miss.
 - GitHub Connect can resolve current Zi Wei canonical identity and, when materialization is necessary, read the exact-commit deterministic transport / query-bounded calendar data.
