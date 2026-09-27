@@ -60,7 +60,8 @@ class ZiWeiDailyInterpretationTests(unittest.TestCase):
     def test_v10_hourly_remains_not_admitted(self):
         h=run_ziwei_dynamic_v10_transport(p10("hourly",{
             "input_type":"normalized_lunar_hour","lunar_year":2026,"lunar_month":8,"lunar_day":10,
-            "is_leap_month":False,"hour_branch":"午","calendar_provenance":"synthetic"
+            "is_leap_month":False,"hour_branch":"午","rat_hour_policy":"next_day_at_23",
+            "calendar_provenance":"synthetic"
         }))
         self.assertEqual("NOT_ADMITTED",h["interpretation"]["status"])
         self.assertFalse(h["authority"]["interpretation_authority_granted"])
