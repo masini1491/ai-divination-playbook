@@ -345,7 +345,7 @@
           "lower_layer_interpretation_status": {
             "yearly": "production-admitted-bounded-methodology",
             "monthly": "production-admitted-bounded-methodology",
-            "daily": "not-admitted",
+            "daily": "production-admitted-bounded-methodology",
             "hourly": "not-admitted"
           }
         },
@@ -367,7 +367,7 @@
           "concrete_event_prediction": false,
           "lower_layer_interpretation_status": {
             "monthly": "production-admitted-bounded-methodology",
-            "daily": "not-admitted",
+            "daily": "production-admitted-bounded-methodology",
             "hourly": "not-admitted"
           }
         },
@@ -389,7 +389,31 @@
           "generic_monthly_fortune": false,
           "concrete_event_prediction": false,
           "lower_layer_interpretation_status": {
-            "daily": "not-admitted",
+            "daily": "production-admitted-bounded-methodology",
+            "hourly": "not-admitted"
+          }
+        },
+        "daily_v1": {
+          "activation": "explicit-daily-request-only",
+          "runtime": "tools/ziwei_runtime.py",
+          "runtime_id": "ziwei-production-runtime-v10",
+          "admission_manifest": "ZIWEI_DAILY_INTERPRETATION_ADMISSION_V1.json",
+          "registry": "references/ziwei/ziwei_interpretation_claim_registry_daily_v1.json",
+          "interpretation_profile": "ziwei.interpretation.tw_v1",
+          "claim_count": 3,
+          "parent_calculation_scope": "daily",
+          "parent_interpretation_context": "monthly",
+          "interpretation_status": "production-admitted-bounded-methodology",
+          "natal_claim_promotion": false,
+          "decadal_claim_promotion": false,
+          "yearly_claim_promotion": false,
+          "monthly_claim_promotion": false,
+          "day_pillar_interpretation": false,
+          "daily_sihua_interpretation": false,
+          "flow_star_interpretation": false,
+          "generic_daily_fortune": false,
+          "concrete_event_prediction": false,
+          "lower_layer_interpretation_status": {
             "hourly": "not-admitted"
           }
         }

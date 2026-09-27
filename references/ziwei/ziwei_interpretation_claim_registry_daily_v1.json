@@ -1,0 +1,200 @@
+{
+  "schema_name": "ziwei_interpretation_claim_registry",
+  "schema_version": "0.1.1-research",
+  "record_status": "REFERENCE-ONLY",
+  "record_kind": "ziwei_interpretation_claim_family_registry",
+  "record_id": "ziwei-daily-methodology-v1",
+  "production_routable": false,
+  "interpretation_profile": "ziwei.interpretation.tw_v1",
+  "sources": [
+    {
+      "source_id": "SRC-HUIXIN-DAILY-PRACTICE",
+      "source_role": "PRACTITIONER_REFERENCE",
+      "admission_status": [
+        "CLAIM_ELIGIBLE"
+      ],
+      "storage_mode": [
+        "metadata_locator_normalized_paraphrase"
+      ],
+      "independence_status": "secondary_practitioner_witness",
+      "title": "命盤上的流日流時排法（轉引慧心齋主著書）",
+      "witness_identity": "DestinyNet discussion quoting Hui Xin Zhai Zhu method",
+      "locator": "https://destiny.to/ubbthreads/topic/102283",
+      "language": "zh-Hant",
+      "verification_status": [
+        "public_practitioner_reference"
+      ],
+      "admission_scope": [
+        "bounded daily identity methodology only"
+      ],
+      "excluded_scope": [
+        "deterministic event prediction",
+        "daily stem interpretation",
+        "daily Si Hua",
+        "flow stars",
+        "hourly interpretation",
+        "medical/legal/financial guarantees"
+      ],
+      "notes": [
+        "Supports the month-to-day palace progression only; accuracy testimony and event claims are not admitted."
+      ]
+    },
+    {
+      "source_id": "SRC-SHIDAYAODAILY-METHOD",
+      "source_role": "PRACTITIONER_REFERENCE",
+      "admission_status": [
+        "CLAIM_ELIGIBLE"
+      ],
+      "storage_mode": [
+        "metadata_locator_normalized_paraphrase"
+      ],
+      "independence_status": "independent_practitioner_reference",
+      "title": "斗數春秋｜流日與流時",
+      "witness_identity": "Shi Da-yao practitioner article",
+      "locator": "https://519843.blogspot.com/2017/03/blog-post_29.html",
+      "language": "zh-Hant",
+      "verification_status": [
+        "public_practitioner_reference"
+      ],
+      "admission_scope": [
+        "bounded daily identity and uncertainty methodology"
+      ],
+      "excluded_scope": [
+        "deterministic event prediction",
+        "electional guarantees",
+        "daily stem interpretation",
+        "daily Si Hua",
+        "flow stars",
+        "hourly interpretation"
+      ],
+      "notes": [
+        "Confirms the traditional month-palace-to-day progression and explicitly notes limitations/ambiguity in the old daily method."
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "ZW-D1-METHOD-IDENTITY-001",
+      "layer": "L4",
+      "claim_type": "methodology",
+      "subject": "流日方法",
+      "assertion_class": "named_tradition",
+      "normalized_statement": "傳統流日定位以流月命宮作為當月初一，再按日序逐宮前進；因此日層必須保留 explicit lunar-day identity 與由 compatible 流月 parent 導出的流日命宮，不能只用日期文字或流月結果代替。",
+      "source_refs": [
+        "SRC-HUIXIN-DAILY-PRACTICE",
+        "SRC-SHIDAYAODAILY-METHOD"
+      ],
+      "source_locators": [
+        "https://destiny.to/ubbthreads/topic/102283",
+        "https://519843.blogspot.com/2017/03/blog-post_29.html"
+      ],
+      "applicability": {
+        "requires": [
+          "daily_period_present",
+          "daily_life_palace_identified",
+          "daily_lunar_day_identified"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "daily_profile",
+          "monthly_parent_day_progression"
+        ],
+        "palace_scope": [
+          "any"
+        ],
+        "topology_scope": [
+          "self"
+        ],
+        "temporal_scope": "daily"
+      },
+      "confidence_status": "qualified",
+      "support_status": "multi_source_supported",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-D1-METHOD-PARENT-002",
+      "layer": "L4",
+      "claim_type": "methodology",
+      "subject": "流日方法",
+      "assertion_class": "project_adoption",
+      "normalized_statement": "流日是流月之下的細分 context，必須與 compatible 流月 parent 分層合參；不得用流日單層覆寫流月，也不得把流月或更高層 claim 改標成流日 claim。",
+      "source_refs": [
+        "SRC-HUIXIN-DAILY-PRACTICE",
+        "SRC-SHIDAYAODAILY-METHOD"
+      ],
+      "source_locators": [
+        "https://destiny.to/ubbthreads/topic/102283",
+        "https://519843.blogspot.com/2017/03/blog-post_29.html"
+      ],
+      "applicability": {
+        "requires": [
+          "daily_period_present",
+          "compatible_monthly_parent_present"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "parent_monthly_context"
+        ],
+        "palace_scope": [
+          "any"
+        ],
+        "topology_scope": [
+          "self"
+        ],
+        "temporal_scope": "daily"
+      },
+      "confidence_status": "qualified",
+      "support_status": "multi_source_supported",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-D1-METHOD-BOUNDARY-003",
+      "layer": "L4",
+      "claim_type": "methodology",
+      "subject": "流日方法",
+      "assertion_class": "project_adoption",
+      "normalized_statement": "流日 calculation facts只建立日層 context，不自帶固定吉凶方向；在沒有另行 admitted 的日層星曜／宮位／日干四化 contextual claim 時，不得用模型記憶補成『今日吉凶』，也不得直接推出流時事件。",
+      "source_refs": [
+        "SRC-SHIDAYAODAILY-METHOD"
+      ],
+      "source_locators": [
+        "https://519843.blogspot.com/2017/03/blog-post_29.html"
+      ],
+      "applicability": {
+        "requires": [
+          "daily_period_present"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "no_generic_daily_filler",
+          "hourly_layer_required_for_finer_timing"
+        ],
+        "palace_scope": [
+          "any"
+        ],
+        "topology_scope": [
+          "self"
+        ],
+        "temporal_scope": "daily"
+      },
+      "confidence_status": "qualified",
+      "support_status": "qualified",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    }
+  ],
+  "conflict_groups": [],
+  "privacy": {
+    "contains_real_birth_data": false
+  },
+  "research_result": {
+    "batch": "daily-methodology-v1",
+    "claim_count": 3,
+    "subjects_covered": 1,
+    "architecture_validation_target": "practitioner-normalized bounded daily methodology claims",
+    "production_authority_granted": false,
+    "scientific_predictive_validity_claimed": false
+  }
+}

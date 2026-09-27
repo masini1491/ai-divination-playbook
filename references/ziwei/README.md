@@ -32,7 +32,8 @@ research-only scaffold
 - decadal / 大限 interpretation：V7 只 admission 2 條 bounded methodology claims，用已計算的大限區間／命宮位置建立十年 context，並要求較細事件等待 lower-layer evidence；不 admission natal-claim promotion、generic吉凶或具體事件預測；
 - yearly / 流年 interpretation：V8 只 admission 3 條 bounded methodology claims，要求同層三方／對照、compatible 大限 parent 合參與 no-generic-yearly-filler；target-year 四化仍是 calculation context，不自動 admission 流年四化斷語；
 - monthly / 流月 interpretation：V9 只 admission 3 條 bounded methodology claims，要求斗君／effective-month 月層 identity、compatible 流年 parent 合參與 no-generic-monthly-filler；monthly Si Hua / flow stars仍未 admission；
-- daily／hourly interpretation，以及 broader contextual star×palace / 未另 admission 的 auxiliary / Four-Transformation interpretation：仍未 production-admitted
+- daily / 流日 interpretation：V10 只 admission 3 條 bounded methodology claims，來源為 practitioner/tradition references；要求 explicit lunar-day identity、compatible 流月 parent 合參與 no-generic-daily-filler；day pillar / daily Si Hua / flow stars仍未 admission；
+- hourly interpretation，以及 broader contextual star×palace / 未另 admission 的 auxiliary / Four-Transformation interpretation：仍未 production-admitted
 - 科學／客觀預測有效性：未聲稱
 
 ## Production boundary
