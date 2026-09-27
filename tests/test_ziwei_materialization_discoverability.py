@@ -21,7 +21,7 @@ class ZiWeiMaterializationDiscoverabilityTests(unittest.TestCase):
         self.assertEqual("ziwei-deterministic-handoff-${{ github.sha }}",c["exact_main_handoff_artifact"])
         self.assertEqual(90,c["exact_main_handoff_retention_days"])
         self.assertFalse(c["exact_main_handoff_includes_calendar_shards"])
-        self.assertEqual(68,c["maximum_claim_count_with_optional_modules"])
+        self.assertEqual(78,c["maximum_claim_count_with_optional_modules"])
         self.assertEqual(61,c["claim_count"])
         pair=c["same_palace_pair_interpretation"]
         self.assertEqual("production-admitted-bounded",pair["status"])
@@ -40,6 +40,12 @@ class ZiWeiMaterializationDiscoverabilityTests(unittest.TestCase):
         self.assertEqual("ZIWEI_STAR_PALACE_CONTEXT_ADMISSION_V1.json",star_palace["admission_manifest"])
         self.assertFalse(star_palace["cartesian_expansion"])
         self.assertIn("sihua_v1",c["optional_modules"])
+        self.assertIn("m1_auxiliary_v1",c["optional_modules"])
+        m1=c["optional_modules"]["m1_auxiliary_v1"]
+        self.assertEqual(["m0_auxiliary_v1"],m1["requires_modules"])
+        self.assertEqual(10,m1["admitted_subjects"])
+        self.assertEqual(10,m1["admitted_claims_added"])
+        self.assertEqual("m0_plus_m1_only",m1["generic_auxiliary_availability"])
 
     def test_supporting_scenario_registered_only(self):
         self.assertEqual("evals/ZIWEI_MATERIALIZATION_PRODUCT_SCENARIO.md",
