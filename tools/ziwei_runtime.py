@@ -52,6 +52,10 @@ DYNAMIC_V6_RUNTIME_ID="ziwei-production-runtime-v6"
 DYNAMIC_V6_RUNTIME_VERSION="6.0.0"
 DYNAMIC_V6_REQUEST_SCHEMA="schemas/ziwei/ZIWEI_DYNAMIC_REQUEST_V6.schema.json"
 DYNAMIC_V6_RESULT_SCHEMA="schemas/ziwei/ZIWEI_DYNAMIC_RESULT_V6.schema.json"
+DYNAMIC_V7_RUNTIME_ID="ziwei-production-runtime-v7"
+DYNAMIC_V7_RUNTIME_VERSION="7.0.0"
+DYNAMIC_V7_REQUEST_SCHEMA="schemas/ziwei/ZIWEI_DYNAMIC_REQUEST_V7.schema.json"
+DYNAMIC_V7_RESULT_SCHEMA="schemas/ziwei/ZIWEI_DYNAMIC_RESULT_V7.schema.json"
 INTERPRETATION_PROFILE="ziwei.interpretation.tw_v1"
 TEMPORAL_SCOPE="natal_baseline"
 BRIGHTNESS_MODULE="brightness_v1"
@@ -64,6 +68,7 @@ ADMITTED_REGISTRIES=(
 )
 M0_REGISTRY="ziwei_interpretation_claim_registry_m0_auxiliary_v1.json"
 SIHUA_REGISTRY="ziwei_interpretation_claim_registry_sihua_v0.json"
+DECADAL_INTERPRETATION_REGISTRY="ziwei_interpretation_claim_registry_decadal_v1.json"
 
 @dataclass(frozen=True)
 class ZiWeiReadingRequest:
@@ -1047,3 +1052,85 @@ def run_ziwei_dynamic_v6_transport(payload:dict[str,Any])->dict[str,Any]:
         temporal_scope=payload["temporal_scope"],target=dict(payload["target"]),
         requested_subjects=tuple(payload["requested_subjects"]),enabled_source_ids=tuple(payload["enabled_source_ids"]),
     ))
+
+
+def _production_decadal_interpretation_registries():
+    regs=_retrieval.load_registries((REF/DECADAL_INTERPRETATION_REGISTRY,))
+    reg=regs[0]
+    if reg.get("production_routable") is not False:
+        raise ValueError(f"REGISTRY_HISTORY_MUTATED:{DECADAL_INTERPRETATION_REGISTRY}")
+    if reg.get("interpretation_profile") != INTERPRETATION_PROFILE:
+        raise ValueError(f"REGISTRY_PROFILE_MISMATCH:{DECADAL_INTERPRETATION_REGISTRY}")
+    return regs
+
+
+def _decadal_interpretation(calculation:dict[str,Any],request_payload:dict[str,Any])->dict[str,Any]:
+    dec=calculation["decadal"]
+    facts={
+        "decadal_period_present",
+        "decadal_life_palace_identified",
+        f"decadal_life_palace_branch:{dec['life_palace_branch']}",
+        f"decadal_natal_palace:{dec['natal_palace_at_life_branch']}",
+    }
+    packet=_retrieval.FactPacket(
+        packet_id=f"{request_payload['request_id']}:decadal-interpretation",
+        interpretation_profile=INTERPRETATION_PROFILE,
+        temporal_scope="decadal",
+        facts=frozenset(facts),
+        requested_subjects=frozenset(request_payload["requested_subjects"]),
+        enabled_source_ids=frozenset(request_payload["enabled_source_ids"]),
+    )
+    retrieval=_retrieval.retrieve_claims(packet,_production_decadal_interpretation_registries())
+    frame=_retrieval.compose_frame(packet,retrieval)
+    evidence_states={"source_backed","project_adopted"}
+    if frame["conflicts"]:
+        evidence_states.add("conflicted")
+    return {
+        "status":"PRODUCTION_ADMITTED_BOUNDED",
+        "reason":"ZW-P1-040 decadal methodology interpretation admitted; concrete event prediction remains unadmitted",
+        "profile":INTERPRETATION_PROFILE,
+        "temporal_scope":"decadal",
+        "selected_claims":retrieval["selected_claims"],
+        "selected_claim_ids":frame["selected_claim_ids"],
+        "conflicts":frame["conflicts"],
+        "omissions":retrieval["omissions"],
+        "delivery_actions":_delivery.delivery_actions(evidence_states=evidence_states),
+    }
+
+
+def run_ziwei_dynamic_v7_transport(payload:dict[str,Any])->dict[str,Any]:
+    if not isinstance(payload,dict):
+        raise ValueError("dynamic v7 request transport must be an object")
+    if payload.get("schema_name")!="ziwei_dynamic_request" or payload.get("schema_version")!="7.0.0":
+        raise ValueError("unsupported Zi Wei dynamic v7 request schema")
+    v6=dict(payload)
+    v6["schema_version"]="6.0.0"
+    result=run_ziwei_dynamic_v6_transport(v6)
+    result["schema_version"]="7.0.0"
+    result["runtime"]={
+        "runtime_id":DYNAMIC_V7_RUNTIME_ID,
+        "runtime_version":DYNAMIC_V7_RUNTIME_VERSION,
+        "request_schema":DYNAMIC_V7_REQUEST_SCHEMA,
+        "result_schema":DYNAMIC_V7_RESULT_SCHEMA,
+        "temporal_scope":payload["temporal_scope"],
+    }
+    if payload["temporal_scope"]=="decadal":
+        result["status"]="PRODUCTION_ADMITTED"
+        result["scope"]="bounded_decadal_calculation_v1+interpretation_v1"
+        result["interpretation"]=_decadal_interpretation(result["calculation"],payload)
+        result["authority"]["interpretation_authority_granted"]=True
+    else:
+        prior_reason=result["interpretation"]["reason"]
+        result["interpretation"]={
+            "status":"NOT_ADMITTED",
+            "reason":prior_reason,
+            "profile":INTERPRETATION_PROFILE,
+            "temporal_scope":payload["temporal_scope"],
+            "selected_claims":[],
+            "selected_claim_ids":[],
+            "conflicts":[],
+            "omissions":[],
+            "delivery_actions":_delivery.delivery_actions(evidence_states=set(),unsupported_scope=True),
+        }
+        result["authority"]["interpretation_authority_granted"]=False
+    return result
