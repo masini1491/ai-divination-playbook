@@ -8,7 +8,7 @@ Authority：`REFERENCE-ONLY / RESEARCH TAXONOMY / NOT PRODUCTION-ROUTABLE`
 minor/auxiliary stars as one admission batch     REJECTED
 priority-by-evidence taxonomy                    RESEARCH-ADOPTED
 selected assistants 左輔/右弼/文昌/文曲          SOURCE/CALCULATION FOUNDATION STRONG
-high-impact modifier candidates                  RESEARCH CANDIDATE / SOURCE CLOSURE REQUIRED
+high-impact modifier candidates                  BOUNDED PRODUCTION ADMISSION / M1 V1
 long-tail minor stars                            DEFER
 cycle/flow stars                                 DEFER TO TEMPORAL/DYNAMIC OWNER
 production authority                             false
@@ -46,13 +46,18 @@ Current research already records multi-engine placement convergence and rule-spe
 地劫
 ```
 
-These identities commonly participate in existing major-star conditional language or modern calculation engines and can materially alter composition. Their placement/interpretation source closure is not uniformly established in the current project.
+These identities commonly participate in existing major-star conditional language and materially alter composition. ZW-P2-010 closes a bounded natal profile from two pinned implementations and source-bounded practitioner evidence.
 
 ```text
 priority = high
-admission = NOT YET
-requirement = source identity + calculation/profile closure + bounded interpretation claims
+admission = PRODUCTION-ADMITTED OPTIONAL M1 V1
+profile = ziwei.auxiliary.m1.common_v1
+runtime dependency = requires m0_auxiliary_v1
+semantic scope = modifier-role policy only
+temporal scope = natal_baseline only
 ```
+
+The admission does not claim unique historical placement lineage, independent historical semantic cores, M2/M3 coverage or high-stakes event doctrine. Generic auxiliary completeness is exposed only by the admitted M0+M1 union.
 
 ## Tier M2 — long-tail auxiliary candidates
 
@@ -94,7 +99,7 @@ A future auxiliary-star claim batch should require, per subject:
 ```text
 minor-star admission taxonomy       = CLOSED — RESEARCH
 M0 selected assistants              = FIRST ELIGIBLE AUXILIARY GROUP
-M1 high-impact modifiers            = CANDIDATE / SOURCE CLOSURE REQUIRED
+M1 high-impact modifiers            = BOUNDED PRODUCTION ADMISSION / NATAL M1 V1
 M2 long-tail auxiliaries            = DEFER
 M3 cycle/flow stars                 = TEMPORAL OWNER / DEFER
 full minor-star claim corpus        = NOT REQUIRED FOR TAXONOMY CLOSURE
