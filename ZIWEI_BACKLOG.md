@@ -29,7 +29,7 @@ Last reviewed against:
 
 ```text
 ai-divination-playbook main
-b172a8deb1bbcdbf99319c57ecc788b015a9008e
+33c10c7f012633b278cc56d16da694379a032591
 ```
 
 This SHA is review evidence only, not a pin. Every maintenance task must resolve current `main` again before mutation.
@@ -682,7 +682,7 @@ Ordering rationale:
 ### ZW-P2-020 — Sparse star×palace contextual claims
 
 - type: FEATURE / INTERPRETATION
-- status: IN_PROGRESS
+- status: DONE
 - priority: P2
 - owner: Zi Wei interpretation evidence
 - blocked_by:
@@ -696,7 +696,7 @@ Ordering rationale:
   - `references/ziwei/STAR_PALACE_COMBINATION_RESEARCH_V0.md`
   - `references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V1.md`
   - `references/ziwei/ziwei_interpretation_claim_registry_star_palace_context_v1.json`
-- implementation_candidate:
+- implementation:
   - schema `0.5.0-research` adds explicit `star_palace_context` with `star` / `palace` / `subjects[]` identity;
   - exact applicability reuses canonical `fact_available:palace_occupancy` + `star_in_palace:<star>:<palace>` facts from `ZW-P1-025`; no new geometry provider is introduced;
   - contextual specificity is higher than generic star conditional/core and palace-domain claims only on an exact admitted match; base evidence remains context;
@@ -712,6 +712,25 @@ Ordering rationale:
   - regression coverage prevents Cartesian expansion or model-memory star×palace doctrine;
   - registry/schema/runtime/admission/index/materialization/bundle/current docs remain synchronized;
   - canonical generator outputs, formal PR CI, merge, exact-main CI/artifact and canonical read-back complete before `DONE`.
+- closure:
+  - implementation merged by PR #316 at `33c10c7f012633b278cc56d16da694379a032591`;
+  - schema `0.5.0-research` preserves explicit `star_palace_context` / `star` / `palace` / `subjects[]` identity without rewriting historical registries;
+  - production admission contains exactly 2 practitioner-bounded contextual claims: `天相×命宮` and `天梁×官祿宮`;
+  - `天相×命宮` preserves a named conflict with existing historical favorable-support authority evidence rather than universalizing the practitioner `位高無權` heuristic;
+  - `天梁×官祿宮` adds only a bounded career/public-role social / coordination-load modifier and does not guarantee public office;
+  - reviewed `太陽×財帛宮` / `太陽×官祿宮` remain unadmitted as non-material restatements; `武曲×財帛宮`、`巨門×夫妻宮`、`天相×官祿宮` remain unadmitted because the bounded pass did not establish a clean isolated materially distinct rule;
+  - exact applicability reuses canonical `fact_available:palace_occupancy` + `star_in_palace:<star>:<palace>` facts; no new geometry provider or 14×12 Cartesian dictionary was added;
+  - contextual specificity is higher than generic star conditional/core and palace-domain claims only on exact admitted match; generic evidence remains bounded context and no-match behavior stays existing L5 composition;
+  - base natal claim count is 61 = 52 first-layer + 2 sparse same-palace pair + 5 Body-Palace + 2 sparse star×palace claims; optional M0 + Sihua maximum is 68;
+  - Scope-A pipeline advanced to `1.4.0`; natal provider remains `0.3.0`;
+  - first generator bridge run `36325407203` proved all 5 new P2-020 tests PASS, then failed only on a test-file formatting SyntaxError caused by a literal `\n`; production source was unchanged;
+  - bounded test-only formatting repair commit `e69ed220ba3b3125b3d8181d08ae902be7fb2d13`;
+  - second generator bridge run `36325462973` PASSed focused P2-020 / production / Sihua / same-palace / Body-Palace / retrieval / unified-runtime / materialization regressions, Zi Wei bundle regeneration/check, ChatGPT load-pack regeneration/check, load-budget and bundle regression;
+  - generator-owned cache commit `533d89ad8369117a43946c1c559337d666e979b3` removed the temporary bridge after canonical derived-cache regeneration;
+  - formal PR #316 run `36325507624` PASSed `validate` + `casting-runtime`, including full unit suite and structural checker;
+  - exact-main canonical read-back at `33c10c7f012633b278cc56d16da694379a032591` confirms 2-claim admission, exact pair identities, pipeline `1.4.0`, 61/68 claim counts and `cartesian_expansion=false`;
+  - exact-main run `36325630892` PASSed `validate` + `casting-runtime`, full unit suite, structural checker and exact-main Zi Wei handoff preparation/upload;
+  - exact-main artifact `10933523207` / `ziwei-deterministic-handoff-33c10c7f012633b278cc56d16da694379a032591` published at 94,180 bytes with digest `sha256:7553980c7903d7807ec6bb18296470008c5d8b456dbff281b57556b116c2e6b2`.
 - production_boundary:
   - no exhaustive 14×12 Cartesian dictionary;
   - no star×palace doctrine inferred solely from independent star-core + palace-domain meanings;
