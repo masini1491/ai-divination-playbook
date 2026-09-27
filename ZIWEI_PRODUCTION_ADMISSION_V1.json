@@ -180,6 +180,26 @@
         "hourly"
       ],
       "interpretation_authority": false
+    },
+    "separate_dynamic_runtime_v7": {
+      "runtime_id": "ziwei-production-runtime-v7",
+      "runtime_version": "7.0.0",
+      "request_schema": "schemas/ziwei/ZIWEI_DYNAMIC_REQUEST_V7.schema.json",
+      "result_schema": "schemas/ziwei/ZIWEI_DYNAMIC_RESULT_V7.schema.json",
+      "admitted_temporal_scopes": [
+        "decadal",
+        "yearly",
+        "monthly",
+        "daily",
+        "hourly"
+      ],
+      "interpretation_authority": {
+        "decadal": "bounded_methodology_only",
+        "yearly": false,
+        "monthly": false,
+        "daily": false,
+        "hourly": false
+      }
     }
   },
   "optional_module_admissions": [
@@ -267,6 +287,21 @@
       "status": "PRODUCTION_ADMITTED_CALCULATION_ONLY",
       "interpretation_admitted": false,
       "parent_scope": "daily"
+    }
+  ],
+  "separate_temporal_interpretation_admissions": [
+    {
+      "temporal_scope": "decadal",
+      "module_id": "decadal_interpretation_v1",
+      "admission_manifest": "ZIWEI_DECADAL_INTERPRETATION_ADMISSION_V1.json",
+      "registry": "references/ziwei/ziwei_interpretation_claim_registry_decadal_v1.json",
+      "runtime_owner": "tools/ziwei_runtime.py",
+      "runtime_id": "ziwei-production-runtime-v7",
+      "interpretation_profile": "ziwei.interpretation.tw_v1",
+      "claim_count": 2,
+      "status": "PRODUCTION_ADMITTED_BOUNDED_INTERPRETATION",
+      "parent_calculation_scope": "decadal",
+      "concrete_event_prediction_admitted": false
     }
   ]
 }
