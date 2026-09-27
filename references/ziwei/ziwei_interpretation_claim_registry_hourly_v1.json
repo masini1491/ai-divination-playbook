@@ -1,0 +1,197 @@
+{
+  "schema_name": "ziwei_interpretation_claim_registry",
+  "schema_version": "0.1.1-research",
+  "record_status": "REFERENCE-ONLY",
+  "record_kind": "ziwei_interpretation_claim_family_registry",
+  "record_id": "ziwei-hourly-methodology-v1",
+  "production_routable": false,
+  "interpretation_profile": "ziwei.interpretation.tw_v1",
+  "sources": [
+    {
+      "source_id": "SRC-IZTRO-HOURLY-SETUP",
+      "source_role": "REFERENCE_IMPLEMENTATION",
+      "admission_status": [
+        "CLAIM_ELIGIBLE"
+      ],
+      "storage_mode": [
+        "metadata_locator_normalized_paraphrase"
+      ],
+      "independence_status": "public_reference_implementation",
+      "title": "紫微研习社｜紫微斗數安星訣",
+      "witness_identity": "iztro public setup reference for 流日／流時 positioning",
+      "locator": "https://iztro.com/zh_TW/learn/setup",
+      "language": "zh-Hant",
+      "verification_status": [
+        "public_reference_implementation"
+      ],
+      "admission_scope": [
+        "bounded hourly identity methodology only"
+      ],
+      "excluded_scope": [
+        "unique-lineage claim",
+        "hour-stem doctrine",
+        "physical hour pillar",
+        "hourly Si Hua",
+        "flow stars",
+        "deterministic event prediction"
+      ],
+      "notes": [
+        "Supports the profile in which the daily palace is used as 子時 and subsequent hour branches proceed one palace each. It also documents sect variation elsewhere, so this is not treated as a unique traditional authority."
+      ]
+    },
+    {
+      "source_id": "SRC-DESTINY-HOURLY-TRADITION",
+      "source_role": "PRACTITIONER_REFERENCE",
+      "admission_status": [
+        "CLAIM_ELIGIBLE"
+      ],
+      "storage_mode": [
+        "metadata_locator_normalized_paraphrase"
+      ],
+      "independence_status": "community_practitioner_witness",
+      "title": "DestinyNet｜請教命盤上的流日 流時要如何排宮位?",
+      "witness_identity": "community discussion preserving multiple practitioner/tradition statements about hourly positioning",
+      "locator": "https://destiny.to/ubbthreads/topic/102283",
+      "language": "zh-Hant",
+      "verification_status": [
+        "public_practitioner_reference"
+      ],
+      "admission_scope": [
+        "bounded hourly method comparison only"
+      ],
+      "excluded_scope": [
+        "accuracy testimony",
+        "unique-canonical-method claim",
+        "hour-stem doctrine",
+        "deterministic event prediction"
+      ],
+      "notes": [
+        "The thread shows method variation: one quoted 慧心齋主 approach maps hours to fixed branches, while other traditional descriptions derive hourly placement from the daily layer. Production admission therefore remains profile-bounded."
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "ZW-H1-METHOD-IDENTITY-001",
+      "layer": "L4",
+      "claim_type": "methodology",
+      "subject": "流時方法",
+      "assertion_class": "named_tradition",
+      "normalized_statement": "本 project 採用的流時 profile 先固定 explicit hour-branch identity，再以相容流日命宮作為子時起點，按十二時支順行一宮一時；此規則只代表 admitted profile，不宣稱為所有流派唯一作法。",
+      "source_refs": [
+        "SRC-IZTRO-HOURLY-SETUP",
+        "SRC-DESTINY-HOURLY-TRADITION"
+      ],
+      "source_locators": [
+        "https://iztro.com/zh_TW/learn/setup",
+        "https://destiny.to/ubbthreads/topic/102283"
+      ],
+      "applicability": {
+        "requires": [
+          "hourly_period_present",
+          "hourly_life_palace_identified",
+          "hour_branch_identified"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "hourly_profile",
+          "daily_parent_hour_progression",
+          "method_non_uniqueness"
+        ],
+        "palace_scope": [
+          "any"
+        ],
+        "topology_scope": [
+          "self"
+        ],
+        "temporal_scope": "hourly"
+      },
+      "confidence_status": "qualified",
+      "support_status": "multi_source_supported",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-H1-METHOD-PARENT-002",
+      "layer": "L4",
+      "claim_type": "methodology",
+      "subject": "流時方法",
+      "assertion_class": "project_adoption",
+      "normalized_statement": "流時是流日之下的細分 context，必須與 compatible 流日 parent 分層合參；不得用流時單層覆寫流日，也不得把流日或更高層 claim 改標成流時 claim。",
+      "source_refs": [
+        "SRC-IZTRO-HOURLY-SETUP"
+      ],
+      "source_locators": [
+        "https://iztro.com/zh_TW/learn/setup"
+      ],
+      "applicability": {
+        "requires": [
+          "hourly_period_present",
+          "compatible_daily_parent_present"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "parent_daily_context"
+        ],
+        "palace_scope": [
+          "any"
+        ],
+        "topology_scope": [
+          "self"
+        ],
+        "temporal_scope": "hourly"
+      },
+      "confidence_status": "qualified",
+      "support_status": "single_source_supported",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-H1-METHOD-BOUNDARY-003",
+      "layer": "L4",
+      "claim_type": "methodology",
+      "subject": "流時方法",
+      "assertion_class": "project_adoption",
+      "normalized_statement": "流時 calculation facts只建立時層 context，不自帶固定吉凶方向；沒有另行 admitted 的時層星曜／宮位／時干四化 contextual claim 時，不得用模型記憶補成『某時辰吉凶』或具體事件。",
+      "source_refs": [
+        "SRC-DESTINY-HOURLY-TRADITION"
+      ],
+      "source_locators": [
+        "https://destiny.to/ubbthreads/topic/102283"
+      ],
+      "applicability": {
+        "requires": [
+          "hourly_period_present"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "no_generic_hourly_filler",
+          "no_finer_event_inference"
+        ],
+        "palace_scope": [
+          "any"
+        ],
+        "topology_scope": [
+          "self"
+        ],
+        "temporal_scope": "hourly"
+      },
+      "confidence_status": "qualified",
+      "support_status": "qualified",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    }
+  ],
+  "conflict_groups": [],
+  "privacy": {
+    "contains_real_birth_data": false
+  },
+  "research_result": {
+    "batch": "hourly-methodology-v1",
+    "claim_count": 3,
+    "subjects_covered": 1,
+    "architecture_validation_target": "profile-bounded hourly methodology claims",
+    "production_authority_granted": false,
+    "scientific_predictive_validity_claimed": false
+  }
+}

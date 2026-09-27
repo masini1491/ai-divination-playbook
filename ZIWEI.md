@@ -1,12 +1,12 @@
 # Zi Wei Dou Shu｜紫微斗數方法契約
 
-Status: **PRODUCTION NATAL SCOPE-A V1 + TEMPORAL CALCULATION V2–V6 + BOUNDED DECADAL V7 / YEARLY V8 / MONTHLY V9 / DAILY V10 METHODOLOGY INTERPRETATION + EXPLICIT-REQUEST ONLY**
+Status: **PRODUCTION NATAL SCOPE-A V1 + TEMPORAL CALCULATION V2–V6 + BOUNDED DECADAL V7 / YEARLY V8 / MONTHLY V9 / DAILY V10 / HOURLY V11 METHODOLOGY INTERPRETATION + EXPLICIT-REQUEST ONLY**
 
-本檔是 Zi Wei Dou Shu 的 root production method owner。Production authority 以 **bounded natal Scope-A 為核心**，另包含 admission manifests 明確列出的 temporal calculation layers 與 bounded decadal/yearly/monthly/daily methodology interpretation；typed production composition 由 `tools/ziwei_runtime.py` 擁有；deterministic fact providers 與 machine admission truth 分別由 `tools/ziwei_*_provider.py` 與 admission manifests 擁有。Research history 仍由 `references/ziwei/**` 擁有，不因 production admission 回寫其歷史 authority。
+本檔是 Zi Wei Dou Shu 的 root production method owner。Production authority 以 **bounded natal Scope-A 為核心**，另包含 admission manifests 明確列出的 temporal calculation layers 與 bounded decadal/yearly/monthly/daily/hourly methodology interpretation；typed production composition 由 `tools/ziwei_runtime.py` 擁有；deterministic fact providers 與 machine admission truth 分別由 `tools/ziwei_*_provider.py` 與 admission manifests 擁有。Research history 仍由 `references/ziwei/**` 擁有，不因 production admission 回寫其歷史 authority。
 
 ## 1. Activation / Routing
 
-Zi Wei production 不參與 ordinary auto-routing。只有使用者明確要求「紫微／紫微斗數／看紫微命盤／大限／流年／流月／流日」等 Zi Wei production intent 才啟動對應 admitted path。
+Zi Wei production 不參與 ordinary auto-routing。只有使用者明確要求「紫微／紫微斗數／看紫微命盤／大限／流年／流月／流日／流時」等 Zi Wei production intent 才啟動對應 admitted path。
 
 ```text
 explicit Zi Wei production
@@ -41,6 +41,7 @@ SEPARATELY ADMITTED TEMPORAL LAYERS:
 - V8: bounded yearly methodology interpretation only;
 - V9: bounded monthly methodology interpretation only;
 - V10: bounded daily methodology interpretation only;
+- V11: bounded hourly methodology interpretation only;
 - temporal layers do not widen parent claims or authorize generic fortune/event filler.
 
 OPTIONAL / explicit add-on:
@@ -58,7 +59,8 @@ OUT / fail closed:
 - yearly generic吉凶 / concrete-event prediction beyond the separately admitted bounded methodology claims;
 - monthly generic吉凶 / concrete-event prediction beyond the separately admitted bounded methodology claims;
 - daily generic吉凶 / concrete-event prediction beyond the separately admitted bounded methodology claims;
-- hourly / other dynamic interpretation.
+- hourly generic吉凶 / concrete-event prediction beyond the separately admitted bounded methodology claims;
+- other dynamic interpretation.
 
 Unsupported layers不得用模型記憶、手算、research-only claims 或其他方法偷偷補齊。
 
@@ -92,7 +94,7 @@ legacy run_scope_a_* entrypoints
 → tools/ziwei_runtime.py
 ```
 
-`schemas/ziwei/ZIWEI_READING_REQUEST_V1.schema.json` 與 `schemas/ziwei/ZIWEI_READING_RESULT_V1.schema.json` 定義 closed-world v1 interface。V1 natal transport 的 unsupported temporal scope、optional module 或 profile 必須 fail closed；不得靜默把 V1 schema 擴成 dynamic。Explicit decadal calculation 保留 V2 typed dynamic contract；V3 typed dynamic contract admission `decadal|yearly`；V4 admission `decadal|yearly|monthly`；V5 admission `decadal|yearly|monthly|daily`；V6 admission `decadal|yearly|monthly|daily|hourly` calculation-only；V7 additive contract 在不改寫 V1–V6 closed-world semantics 的前提下，另 admission decadal / 大限的 bounded methodology interpretation；V8 additive contract再 admission yearly / 流年的 bounded methodology interpretation；V9 additive contract再 admission monthly / 流月的 bounded methodology interpretation；V10 additive contract再 admission daily / 流日的 bounded methodology interpretation。Monthly 必須提供 explicit normalized lunar year/month/day、`is_leap_month` 與 calendar provenance，沿用 project `split_after_day_15` profile且需相容的 yearly parent；Daily 使用獨立 `normalized_lunar_day` target identity，需相容的 monthly parent，僅以流月命宮加農曆日序推導流日宮位；Hourly 使用獨立 `normalized_lunar_hour` target identity，需相容的 daily parent、explicit `hour_branch` 與 project-admitted `rat_hour_policy=next_day_at_23`，僅以流日命宮加時支序推導流時宮位。V7 decadal interpretation 只使用獨立 decadal registry 的 source-backed methodology claims；不得把 natal 52 claims 改標為大限 claim，也不得由十年層單獨推導具體年份／月份／日期／時辰事件。V8 yearly interpretation 只使用獨立 yearly registry 的 3 條 bounded methodology claims：保留流年三方／對照拓撲、compatible decadal parent 合參與 no-generic-yearly-filler boundary；不得把 natal／decadal claims 改標為流年 claim，target-year `yearly_sihua` 仍是 calculation context，不自動取得流年四化 interpretation authority。V9 monthly interpretation 只使用獨立 monthly registry 的 3 條 bounded methodology claims：固定斗君／effective-month 月層 identity、與 compatible yearly parent 分層合參、no-generic-monthly-filler；不得把 natal／decadal／yearly claims 改標為流月 claim，也不建立 monthly Si Hua。V10 daily interpretation 只使用獨立 daily registry 的 3 條 bounded methodology claims：explicit lunar-day identity、與 compatible monthly parent 分層合參、no-generic-daily-filler；來源層級為 practitioner/tradition references，不宣稱 primary historical authority；不得建立 day pillar、daily Si Hua 或 flow stars。閏十二月16日後跨年、physical day/hour pillar、alternate late-Rat policy，以及 hourly interpretation仍 fail closed。不得再為每個 module/input 組合新增 `with_x_and_y` canonical runtime。
+`schemas/ziwei/ZIWEI_READING_REQUEST_V1.schema.json` 與 `schemas/ziwei/ZIWEI_READING_RESULT_V1.schema.json` 定義 closed-world v1 interface。V1 natal transport 的 unsupported temporal scope、optional module 或 profile 必須 fail closed；不得靜默把 V1 schema 擴成 dynamic。Explicit decadal calculation 保留 V2 typed dynamic contract；V3 typed dynamic contract admission `decadal|yearly`；V4 admission `decadal|yearly|monthly`；V5 admission `decadal|yearly|monthly|daily`；V6 admission `decadal|yearly|monthly|daily|hourly` calculation-only；V7 additive contract 在不改寫 V1–V6 closed-world semantics 的前提下，另 admission decadal / 大限的 bounded methodology interpretation；V8 additive contract再 admission yearly / 流年的 bounded methodology interpretation；V9 additive contract再 admission monthly / 流月的 bounded methodology interpretation；V10 additive contract再 admission daily / 流日的 bounded methodology interpretation；V11 additive contract再 admission hourly / 流時的 bounded methodology interpretation。Monthly 必須提供 explicit normalized lunar year/month/day、`is_leap_month` 與 calendar provenance，沿用 project `split_after_day_15` profile且需相容的 yearly parent；Daily 使用獨立 `normalized_lunar_day` target identity，需相容的 monthly parent，僅以流月命宮加農曆日序推導流日宮位；Hourly 使用獨立 `normalized_lunar_hour` target identity，需相容的 daily parent、explicit `hour_branch` 與 project-admitted `rat_hour_policy=next_day_at_23`，僅以流日命宮加時支序推導流時宮位。V7 decadal interpretation 只使用獨立 decadal registry 的 source-backed methodology claims；不得把 natal 52 claims 改標為大限 claim，也不得由十年層單獨推導具體年份／月份／日期／時辰事件。V8 yearly interpretation 只使用獨立 yearly registry 的 3 條 bounded methodology claims：保留流年三方／對照拓撲、compatible decadal parent 合參與 no-generic-yearly-filler boundary；不得把 natal／decadal claims 改標為流年 claim，target-year `yearly_sihua` 仍是 calculation context，不自動取得流年四化 interpretation authority。V9 monthly interpretation 只使用獨立 monthly registry 的 3 條 bounded methodology claims：固定斗君／effective-month 月層 identity、與 compatible yearly parent 分層合參、no-generic-monthly-filler；不得把 natal／decadal／yearly claims 改標為流月 claim，也不建立 monthly Si Hua。V10 daily interpretation 只使用獨立 daily registry 的 3 條 bounded methodology claims：explicit lunar-day identity、與 compatible monthly parent 分層合參、no-generic-daily-filler；來源層級為 practitioner/tradition references，不宣稱 primary historical authority；不得建立 day pillar、daily Si Hua 或 flow stars。V11 hourly interpretation 只使用獨立 hourly registry 的 3 條 bounded methodology claims：explicit hour-branch identity、與 compatible daily parent 分層合參、no-generic-hourly-filler；只 admission project-named profile，不宣稱流時算法唯一。Physical hour pillar、五鼠遁時干、hourly Si Hua、flow stars與具體時段事件仍 fail closed。不得再為每個 module/input 組合新增 `with_x_and_y` canonical runtime。
 
 若 local runtime、calendar manifest 或 required year shard 缺失，先依 `ZIWEI_MATERIALIZATION.md` 走 verified runtime reuse / host-aware materialization fast path；verified cache可安全重用時不得為形式重新搬 bundle，真正 cache miss 才依 host capability依序選 direct byte/file handoff、successful exact-main Zi Wei handoff artifact，再到既有 same-commit bounded opaque bundle fallback；calendar data仍保持 same-commit query-bounded acquisition，year shards不進 handoff artifact，ordinary production 也不依賴 `lunar_python` runtime。只有 admitted materialization/direct-source paths 都失敗才停在 Fact Gate；不得改用 Tarot / Meihua / Liuyao 冒充 Zi Wei reading。
 
@@ -107,6 +109,8 @@ Dynamic V8 再 admission `yearly` 的三條 bounded methodology claims（`ZW-Y1-
 Dynamic V9 再 admission `monthly` 的三條 bounded methodology claims（`ZW-M1-METHOD-IDENTITY-001`、`ZW-M1-METHOD-PARENT-002`、`ZW-M1-METHOD-BOUNDARY-003`）。它們要求先固定斗君／effective-month 的月層 identity，再與 compatible 流年 parent 分層合參；沒有另行 admitted 的月層 contextual claim 時不得補 generic「本月吉凶」，也不得直接推出流日／流時事件。Monthly Si Hua 與 flow stars仍未 admission。
 
 Dynamic V10 再 admission `daily` 的三條 bounded methodology claims（`ZW-D1-METHOD-IDENTITY-001`、`ZW-D1-METHOD-PARENT-002`、`ZW-D1-METHOD-BOUNDARY-003`）。它們只承認 practitioner/tradition references 一致支持的「流月命宮起初一、按日序逐宮」日層 identity，並要求與 compatible 流月 parent 分層合參；沒有另行 admitted 的日層 contextual claim 時不得補 generic「今日吉凶」或直接推出流時事件。Day pillar、daily Si Hua 與 flow stars仍未 admission。
+
+Dynamic V11 再 admission `hourly` 的三條 bounded methodology claims（`ZW-H1-METHOD-IDENTITY-001`、`ZW-H1-METHOD-PARENT-002`、`ZW-H1-METHOD-BOUNDARY-003`）。本 profile 以 compatible 流日命宮起子時、按時支逐宮；來源顯示流時另有其他派法，因此只 admission named/profile-bounded methodology，不宣稱唯一傳統法。沒有另行 admitted 的時層 contextual claim 時不得補 generic「某時辰吉凶」或具體事件。Physical hour pillar、hour stem、hourly Si Hua 與 flow stars仍未 admission。
 
 - no admitted claim → omit / insufficient;
 - missing fact → do not guess;
