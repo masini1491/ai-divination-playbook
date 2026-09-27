@@ -98,9 +98,9 @@ temporal-context interpretation responsibility = CLOSED — RESEARCH
 scope taxonomy                           = CLOSED — RESEARCH
 dynamic fact provenance contract         = CLOSED — RESEARCH
 dynamic calculation runtime/provider     = ADMITTED — DECADAL/YEARLY/MONTHLY/DAILY/HOURLY CALCULATION-ONLY
-dynamic claim corpus                     = DECADAL METHODOLOGY V1 + YEARLY METHODOLOGY V1; MONTHLY/DAILY/HOURLY NOT ADMITTED
-executable retrieval/composition         = ADMITTED — NATAL + EXPLICIT DECADAL + EXPLICIT YEARLY SCOPE
-production authority                     = BOUNDED DECADAL/YEARLY METHODOLOGY ONLY
+dynamic claim corpus                     = DECADAL + YEARLY + MONTHLY METHODOLOGY V1; DAILY/HOURLY NOT ADMITTED
+executable retrieval/composition         = ADMITTED — NATAL + EXPLICIT DECADAL/YEARLY/MONTHLY SCOPE
+production authority                     = BOUNDED DECADAL/YEARLY/MONTHLY METHODOLOGY ONLY
 ```
 
-This historical research closure has since been superseded in two bounded ways: `ZW-P1-030` admitted calculation-only runtime layers through hourly, and `ZW-P1-040` decadal v1 admits exactly two source-backed methodology claims through V7, and yearly v1 adds exactly three bounded methodology claims through V8. The decadal slice treats the computed decade period and life-palace position as ten-year context. The yearly slice requires same-layer sanfang/opposition context, compatible decadal-parent composition, and no generic yearly-fortune filler. Neither slice admits natal/parent-claim promotion or concrete-event prediction; target-year Si Hua remains calculation context only, and monthly/daily/hourly interpretation remains unadmitted.
+This historical research closure has since been superseded in two bounded ways: `ZW-P1-030` admitted calculation-only runtime layers through hourly, and `ZW-P1-040` decadal v1 admits exactly two source-backed methodology claims through V7, and yearly v1 adds exactly three bounded methodology claims through V8. The decadal slice treats the computed decade period and life-palace position as ten-year context. The yearly slice requires same-layer sanfang/opposition context, compatible decadal-parent composition, and no generic yearly-fortune filler. Neither slice admits natal/parent-claim promotion or concrete-event prediction; target-year Si Hua remains calculation context only. Monthly v1 adds a bounded Doujun/effective-month identity + yearly-parent composition + no-generic-monthly-filler layer; monthly Si Hua/flow stars and daily/hourly interpretation remain unadmitted.
