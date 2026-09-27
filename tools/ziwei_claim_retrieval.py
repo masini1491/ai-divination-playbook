@@ -19,6 +19,7 @@ CONDITIONAL_CLAIM_TYPES = {"star_conditional", "palace_conditional"}
 ACTIVE_CONDITIONAL_STATES = {"not_required", "satisfied"}
 
 SPECIFICITY = {
+    "star_palace_context": 47,
     "body_palace_overlay": 45,
     "same_palace_pair": 50,
     "star_conditional": 40,
@@ -171,6 +172,8 @@ def retrieve_claims(
                 "subjects": list(claim.get("subjects", [claim["subject"]])),
                 "pair_members": list(claim.get("pair_members", [])),
                 "overlay_palace": claim.get("overlay_palace"),
+                "star": claim.get("star"),
+                "palace": claim.get("palace"),
                 "claim_type": claim["claim_type"],
                 "assertion_class": claim["assertion_class"],
                 "normalized_statement": claim["normalized_statement"],

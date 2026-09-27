@@ -13,6 +13,7 @@ Supported versions：
 0.2.1-research  hardens conditional activation metadata for palace-capable registries
 0.3.0-research  adds explicit same-palace major-star pair claims without widening historical registries
 0.4.0-research  adds explicit Body-Palace overlay claims without treating 身宮 as a thirteenth palace
+0.5.0-research  adds sparse source-explicit star×palace contextual overrides without Cartesian expansion
 ```
 
 `0.2.x-research` remains backward-compatible at the validator level with v0.1 claim types. Historical `0.1.0` / `0.2.0` files remain validator-readable; the production-admitted 52-claim corpus now uses `0.1.1` / `0.2.1` so conditional activation is explicit.
@@ -90,6 +91,21 @@ same_palace_pair
 body_palace_overlay
 methodology
 ```
+
+### v0.5.0
+
+```text
+star_core
+star_conditional
+palace_domain
+palace_conditional
+same_palace_pair
+body_palace_overlay
+star_palace_context
+methodology
+```
+
+`star_palace_context` is reserved for source-explicit semantics that materially add to independent star-core + palace-domain composition. It must preserve one `star`, one `palace`, and a `subjects[]` surface containing both. Applicability must reuse canonical `star_in_palace:<star>:<palace>` facts; no parallel geometry or 14×12 filler is allowed.
 
 `body_palace_overlay` is reserved for source-explicit semantics tied to the deterministic projection of `body_palace.branch` onto one existing twelve-palace identity. It must preserve `overlay_palace` and a `subjects[]` surface containing both `身宮` and that palace. It never creates a thirteenth palace.
 
@@ -239,3 +255,10 @@ Structural validation does not prove doctrine truth, scientific validity, predic
 ## Body-Palace overlay semantics
 
 A `body_palace_overlay` claim is selected only when `fact_available:body_palace_overlay` and the exact `body_palace_overlay:<existing palace>` fact are present. The overlay adds a source-bounded postnatal-development emphasis to existing palace/star evidence; it does not replace underlying palace doctrine, same-palace pair claims, topology, transformations or brightness. Missing source-explicit overlay semantics remain omitted rather than reconstructed from model memory.
+
+
+## Sparse star × palace contextual semantics
+
+A `star_palace_context` claim is an L4 override only when a claim-eligible source states a materially distinct star-in-palace meaning. Merely restating a star core inside an already-known palace domain is insufficient.
+
+Selection requires `fact_available:palace_occupancy` plus the exact `star_in_palace:<star>:<palace>` token. Matching contextual claims may outrank generic star conditional/core and palace-domain evidence while preserving those base evidence nodes as context. Missing contextual coverage falls back to bounded L5 composition and never authorizes model-memory doctrine.

@@ -83,6 +83,8 @@ PROJECT_PATHS=(
  "ZIWEI_SAME_PALACE_PAIR_ADMISSION_V1.json",
  "references/ziwei/ziwei_interpretation_claim_registry_body_palace_overlay_v1.json",
  "ZIWEI_BODY_PALACE_OVERLAY_ADMISSION_V1.json",
+ "references/ziwei/ziwei_interpretation_claim_registry_star_palace_context_v1.json",
+ "ZIWEI_STAR_PALACE_CONTEXT_ADMISSION_V1.json",
  "references/ziwei/ziwei_interpretation_claim_registry_m0_auxiliary_v1.json",
  "references/ziwei/ziwei_interpretation_claim_registry_sihua_v0.json",
  "references/ziwei/ziwei_interpretation_claim_registry_decadal_v1.json",

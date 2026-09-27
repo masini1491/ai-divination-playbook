@@ -1,0 +1,165 @@
+{
+  "schema_name": "ziwei_interpretation_claim_registry",
+  "schema_version": "0.5.0-research",
+  "record_status": "REFERENCE-ONLY",
+  "record_kind": "ziwei_interpretation_claim_family_registry",
+  "record_id": "ziwei-star-palace-context-v1",
+  "production_routable": false,
+  "interpretation_profile": "ziwei.interpretation.tw_v1",
+  "claim_family": "sparse_star_palace_context_v1",
+  "sources": [
+    {
+      "source_id": "SRC-NIHAI-STAR-PALACE-CONTEXT",
+      "source_role": "PRACTITIONER_REFERENCE",
+      "admission_status": [
+        "CLAIM_ELIGIBLE"
+      ],
+      "storage_mode": [
+        "metadata_locator_normalized_paraphrase"
+      ],
+      "independence_status": "single_practitioner_corpus",
+      "title": "倪海廈天紀課程整理 — 主星",
+      "repository": "Renhuai123/nihai-tianji-corpus",
+      "immutable_revision": "c90006168195c0650328b7199669eb6a2d0cac93",
+      "locator": "docs/01-主星.md",
+      "admission_scope": [
+        "天相×命宮 bounded practitioner contextual semantics",
+        "天梁×官祿宮 bounded practitioner contextual semantics"
+      ],
+      "excluded_scope": [
+        "Cartesian star×palace dictionary",
+        "model-memory filler",
+        "guaranteed office, wealth, marriage, illness or death outcomes",
+        "scientific predictive validity"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "ZW-SP-TIANXIANG-MING-001",
+      "layer": "L4",
+      "claim_type": "star_palace_context",
+      "subject": "天相×命宮",
+      "subjects": [
+        "天相",
+        "命宮"
+      ],
+      "star": "天相",
+      "palace": "命宮",
+      "assertion_class": "practitioner_heuristic",
+      "normalized_statement": "在此 practitioner corpus 中，天相落命宮時較強調輔佐、協調與支持角色，而非主動追逐權位；這是門派限定的自我表現傾向，不能普遍化為『天相必然無權』。",
+      "source_refs": [
+        "SRC-NIHAI-STAR-PALACE-CONTEXT"
+      ],
+      "source_locators": [
+        "Renhuai123/nihai-tianji-corpus@c90006168195c0650328b7199669eb6a2d0cac93:docs/01-主星.md p11 §2 @00:05:40",
+        "Renhuai123/nihai-tianji-corpus@c90006168195c0650328b7199669eb6a2d0cac93:docs/01-主星.md p11 §2 @00:06:09"
+      ],
+      "applicability": {
+        "requires": [
+          "fact_available:palace_occupancy",
+          "star_in_palace:天相:命宮"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "supporting_stars",
+          "sanfang_sizheng",
+          "tradition_profile"
+        ],
+        "palace_scope": [
+          "命宮"
+        ],
+        "topology_scope": [
+          "self"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "conflicted",
+      "support_status": "conflicted",
+      "conflict_group_ids": [
+        "CG-SP-TIANXIANG-MING-AUTHORITY-001"
+      ],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-SP-TIANLIANG-CAREER-001",
+      "layer": "L4",
+      "claim_type": "star_palace_context",
+      "subject": "天梁×官祿宮",
+      "subjects": [
+        "天梁",
+        "官祿宮"
+      ],
+      "star": "天梁",
+      "palace": "官祿宮",
+      "assertion_class": "practitioner_heuristic",
+      "normalized_statement": "在此 practitioner corpus 中，天梁落官祿宮時，職涯／公共角色較容易帶有較高的人際應酬、交際或協調負荷；不等於必然任公職或取得特定官位。",
+      "source_refs": [
+        "SRC-NIHAI-STAR-PALACE-CONTEXT"
+      ],
+      "source_locators": [
+        "Renhuai123/nihai-tianji-corpus@c90006168195c0650328b7199669eb6a2d0cac93:docs/01-主星.md p05 §12 @00:54:50"
+      ],
+      "applicability": {
+        "requires": [
+          "fact_available:palace_occupancy",
+          "star_in_palace:天梁:官祿宮"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "supporting_stars",
+          "malefic_stars",
+          "sanfang_sizheng",
+          "tradition_profile"
+        ],
+        "palace_scope": [
+          "官祿宮"
+        ],
+        "topology_scope": [
+          "self"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    }
+  ],
+  "conflict_groups": [
+    {
+      "conflict_group_id": "CG-SP-TIANXIANG-MING-AUTHORITY-001",
+      "conflict_class": "cross_tradition_manifestation_conflict",
+      "resolution_status": "PRESERVE_CONFLICT",
+      "claim_refs": [
+        "ZW-SP-TIANXIANG-MING-001"
+      ],
+      "external_claim_refs": [
+        "ZW-B2-TIANXIANG-COND-002",
+        "CG-TIANXIANG-AUTHORITY-001"
+      ],
+      "notes": [
+        "Practitioner 命宮-specific assistant-role heuristic must not override the historical profile's favorable-support authority evidence.",
+        "Present both as tradition/profile-bounded when both evidence families are active."
+      ]
+    }
+  ],
+  "privacy": {
+    "contains_real_birth_data": false
+  },
+  "research_result": {
+    "production_authority_granted": false,
+    "scientific_predictive_validity_claimed": false,
+    "claim_count": 2,
+    "admitted_pairs": [
+      "天相×命宮",
+      "天梁×官祿宮"
+    ],
+    "exhaustive_cartesian_dictionary": false,
+    "rejected_as_non_material_overrides": [
+      "太陽×財帛宮",
+      "太陽×官祿宮"
+    ],
+    "missing_is_not_model_memory_permission": true
+  }
+}

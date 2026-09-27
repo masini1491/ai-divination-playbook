@@ -682,15 +682,40 @@ Ordering rationale:
 ### ZW-P2-020 — Sparse star×palace contextual claims
 
 - type: FEATURE / INTERPRETATION
-- status: DEFERRED
+- status: IN_PROGRESS
 - priority: P2
 - owner: Zi Wei interpretation evidence
 - blocked_by:
-  - ZW-P1-025
-- rule:
+  - ZW-P1-025 — CLOSED
+- evidence_decision:
+  - pinned practitioner corpus `Renhuai123/nihai-tianji-corpus@c90006168195c0650328b7199669eb6a2d0cac93` supports exactly two materially distinct source-explicit contextual overrides in this bounded pass: `天相×命宮` and `天梁×官祿宮`;
+  - `天相×命宮` remains practitioner/profile-bounded and preserves conflict with the existing historical evidence that 天相 can manifest authority under favorable supporting-star conditions;
+  - `天梁×官祿宮` adds a bounded career/public-role social / coordination-load modifier without guaranteeing public office;
+  - reviewed `太陽×財帛宮` / `太陽×官祿宮` were rejected as non-material restatements of existing star-core + palace-domain composition; `武曲×財帛宮`、`巨門×夫妻宮`、`天相×官祿宮` lacked a clean isolated materially distinct rule in the pass.
+- canonical_research:
+  - `references/ziwei/STAR_PALACE_COMBINATION_RESEARCH_V0.md`
+  - `references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V1.md`
+  - `references/ziwei/ziwei_interpretation_claim_registry_star_palace_context_v1.json`
+- implementation_candidate:
+  - schema `0.5.0-research` adds explicit `star_palace_context` with `star` / `palace` / `subjects[]` identity;
+  - exact applicability reuses canonical `fact_available:palace_occupancy` + `star_in_palace:<star>:<palace>` facts from `ZW-P1-025`; no new geometry provider is introduced;
+  - contextual specificity is higher than generic star conditional/core and palace-domain claims only on an exact admitted match; base evidence remains context;
+  - production registry adds exactly 2 claims and rejects 14×12 Cartesian expansion;
+  - base natal claim count candidate becomes 61 = 52 first-layer + 2 sparse same-palace pair + 5 Body-Palace + 2 sparse star×palace claims; optional M0 + Sihua maximum becomes 68;
+  - Scope-A pipeline advances to `1.4.0`; natal calculation provider remains `0.3.0`.
+- completion_gate:
+  - only source-explicit materially distinct contextual overrides are eligible;
+  - exact star×palace applicability facts / provenance are machine-matchable and derive from canonical occupancy;
+  - tradition/profile conflicts remain explicit;
+  - contextual claims outrank generic composition only inside admitted scope;
+  - absence of a contextual claim continues to use existing bounded L5 composition;
+  - regression coverage prevents Cartesian expansion or model-memory star×palace doctrine;
+  - registry/schema/runtime/admission/index/materialization/bundle/current docs remain synchronized;
+  - canonical generator outputs, formal PR CI, merge, exact-main CI/artifact and canonical read-back complete before `DONE`.
+- production_boundary:
   - no exhaustive 14×12 Cartesian dictionary;
-  - only sparse source-explicit overrides where evidence justifies them;
-  - exact star×palace applicability must reuse the canonical occupancy facts from `ZW-P1-025`, not a parallel geometry derivation.
+  - no star×palace doctrine inferred solely from independent star-core + palace-domain meanings;
+  - no guaranteed office, wealth, marriage, illness or death outcome.
 
 ### ZW-P2-050 — Body-Palace overlay interpretation admission
 

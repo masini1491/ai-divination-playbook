@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Any
 
 SCHEMA_NAME = 'ziwei_interpretation_claim_registry'
-SUPPORTED_SCHEMA_VERSIONS = {'0.1.0-research','0.1.1-research','0.2.0-research','0.2.1-research','0.3.0-research','0.4.0-research'}
+SUPPORTED_SCHEMA_VERSIONS = {'0.1.0-research','0.1.1-research','0.2.0-research','0.2.1-research','0.3.0-research','0.4.0-research','0.5.0-research'}
 HARDENED_CONDITIONAL_VERSIONS = {'0.1.1-research','0.2.1-research'}
 SOURCE_ROLES = {'PRIMARY_TEXT','SCHOLARLY_SECONDARY','PRACTITIONER_REFERENCE','REFERENCE_IMPLEMENTATION','PROJECT_SYNTHESIS'}
 ADMISSION = {'REFERENCE_ONLY','CLAIM_ELIGIBLE','EVALUATION_ONLY','REJECTED'}
@@ -19,6 +19,7 @@ CLAIM_TYPES_BY_VERSION = {
     '0.2.1-research': {'star_core','star_conditional','palace_domain','palace_conditional','methodology'},
     '0.3.0-research': {'star_core','star_conditional','palace_domain','palace_conditional','same_palace_pair','methodology'},
     '0.4.0-research': {'star_core','star_conditional','palace_domain','palace_conditional','same_palace_pair','body_palace_overlay','methodology'},
+    '0.5.0-research': {'star_core','star_conditional','palace_domain','palace_conditional','same_palace_pair','body_palace_overlay','star_palace_context','methodology'},
 }
 ASSERTION_CLASSES = {'historical_core','historical_conditional','named_tradition','practitioner_heuristic','case_inference','project_adoption'}
 CONFIDENCE = {'supported','qualified','provisional','conflicted','unsupported'}
@@ -109,6 +110,18 @@ def validate(data:Any)->list[dict[str,str]]:
                 err(errors,'BODY_OVERLAY_SUBJECTS_REQUIRED',p+'.subjects','body_palace_overlay requires non-empty subjects')
             elif '身宮' not in subjects or (isinstance(overlay_palace,str) and overlay_palace not in subjects):
                 err(errors,'BODY_OVERLAY_SUBJECTS_INVALID',p+'.subjects','subjects must include 身宮 and overlay_palace')
+        if c.get('claim_type')=='star_palace_context':
+            star=c.get('star')
+            palace=c.get('palace')
+            subjects=c.get('subjects')
+            if not nonempty_str(star):
+                err(errors,'STAR_PALACE_STAR_REQUIRED',p+'.star','star_palace_context requires one star identity')
+            if not nonempty_str(palace):
+                err(errors,'STAR_PALACE_PALACE_REQUIRED',p+'.palace','star_palace_context requires one palace identity')
+            if not str_array(subjects) or not subjects:
+                err(errors,'STAR_PALACE_SUBJECTS_REQUIRED',p+'.subjects','star_palace_context requires non-empty subjects')
+            elif (isinstance(star,str) and star not in subjects) or (isinstance(palace,str) and palace not in subjects):
+                err(errors,'STAR_PALACE_SUBJECTS_INVALID',p+'.subjects','subjects must include both star and palace')
         refs=c.get('source_refs')
         if not str_array(refs): err(errors,'SOURCE_REFS_REQUIRED',p+'.source_refs','non-empty string array required'); refs=[]
         if refs==[]: err(errors,'SOURCE_REFS_NONEMPTY',p+'.source_refs','must not be empty')

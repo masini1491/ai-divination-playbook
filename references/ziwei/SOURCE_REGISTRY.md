@@ -71,6 +71,7 @@ Minor-star admission taxonomy          CLOSED — RESEARCH / M0 assistants first
 Temporal-context interpretation         CLOSED — RESEARCH / scope + provenance contract; dynamic runtime and claim corpus not admitted
 Same-palace major-star pairs             BOUNDED PRODUCTION ADMISSION / 武曲×天相 only / 兄弟宮 + 官祿宮 / 2 practitioner-bounded claims; other reviewed pairs remain non-admitted
 Body-Palace overlay interpretation        BOUNDED PRODUCTION ADMISSION / 身宮 methodology + 夫妻宮、財帛宮、官祿宮、遷移宮 overlays / 5 practitioner-bounded claims / never thirteenth palace
+Sparse star×palace contextual claims      BOUNDED PRODUCTION ADMISSION / 天相×命宮 + 天梁×官祿宮 / 2 practitioner-bounded overrides / exact canonical occupancy / no Cartesian expansion
 ```
 
 任何 upstream rule 只有在本 research owner 明確採用後，才成為本研究線的 candidate contract；仍不因此取得 production authority。

@@ -121,8 +121,8 @@ class ZiWeiSihuaAdmissionTests(unittest.TestCase):
 
     def test_root_admission_counts_only_exact_bounded_claims(self):
         m=json.loads((ROOT/"ZIWEI_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
-        self.assertEqual(59,m["scope"]["admitted_claims"])
-        self.assertEqual(66,m["scope"]["maximum_admitted_claims_with_optional_modules"])
+        self.assertEqual(61,m["scope"]["admitted_claims"])
+        self.assertEqual(68,m["scope"]["maximum_admitted_claims_with_optional_modules"])
         self.assertEqual(3,m["scope"]["optional_sihua_claims"])
         self.assertIn(SIHUA_MODULE,m["runtime"]["optional_modules"])
         entry=next(x for x in m["optional_module_admissions"] if x["module_id"]==SIHUA_MODULE)
