@@ -28,8 +28,9 @@ research-only scaffold
 - optional brightness profile：`ziwei.brightness.iztro_v1` 已 admitted，僅 explicit add-on
 - deterministic ChatGPT materialization：`ZIWEI_MATERIALIZATION.md` + bundle 已建立
 - ordinary unspecified auto-routing：仍刻意為 false
-- decadal / 大限 calculation：`decadal.quanji_common_v1` calculation-only production admission candidate；dynamic interpretation仍未 admission；yearly／monthly／daily／hourly仍未 admission
-- broader contextual / auxiliary / Four-Transformation / dynamic interpretation：仍未 production-admitted
+- dynamic calculation：`decadal → yearly → monthly → daily → hourly` 五層 calculation-only 已依 V2–V6 分層 production-admitted；
+- decadal / 大限 interpretation：V7 只 admission 2 條 bounded methodology claims，用已計算的大限區間／命宮位置建立十年 context，並要求較細事件等待 lower-layer evidence；不 admission natal-claim promotion、generic吉凶或具體事件預測；
+- yearly／monthly／daily／hourly interpretation，以及 broader contextual star×palace / 未另 admission 的 auxiliary / Four-Transformation interpretation：仍未 production-admitted
 - 科學／客觀預測有效性：未聲稱
 
 ## Production boundary
