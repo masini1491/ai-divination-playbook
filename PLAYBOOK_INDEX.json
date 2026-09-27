@@ -344,7 +344,7 @@
           "concrete_event_prediction": false,
           "lower_layer_interpretation_status": {
             "yearly": "production-admitted-bounded-methodology",
-            "monthly": "not-admitted",
+            "monthly": "production-admitted-bounded-methodology",
             "daily": "not-admitted",
             "hourly": "not-admitted"
           }
@@ -366,7 +366,29 @@
           "generic_yearly_fortune": false,
           "concrete_event_prediction": false,
           "lower_layer_interpretation_status": {
-            "monthly": "not-admitted",
+            "monthly": "production-admitted-bounded-methodology",
+            "daily": "not-admitted",
+            "hourly": "not-admitted"
+          }
+        },
+        "monthly_v1": {
+          "activation": "explicit-monthly-request-only",
+          "runtime": "tools/ziwei_runtime.py",
+          "runtime_id": "ziwei-production-runtime-v9",
+          "admission_manifest": "ZIWEI_MONTHLY_INTERPRETATION_ADMISSION_V1.json",
+          "registry": "references/ziwei/ziwei_interpretation_claim_registry_monthly_v1.json",
+          "interpretation_profile": "ziwei.interpretation.tw_v1",
+          "claim_count": 3,
+          "parent_calculation_scope": "monthly",
+          "parent_interpretation_context": "yearly",
+          "interpretation_status": "production-admitted-bounded-methodology",
+          "natal_claim_promotion": false,
+          "decadal_claim_promotion": false,
+          "yearly_claim_promotion": false,
+          "monthly_sihua_interpretation": false,
+          "generic_monthly_fortune": false,
+          "concrete_event_prediction": false,
+          "lower_layer_interpretation_status": {
             "daily": "not-admitted",
             "hourly": "not-admitted"
           }
