@@ -56,6 +56,15 @@
       "scope": "repo-level"
     },
     {
+      "id": "input.civil-time-normalization",
+      "owner": "CIVIL_TIME_NORMALIZATION.md",
+      "kind": "contract",
+      "scope": "cross-method-deterministic-input",
+      "coordination_owner": "ASTROLOGY_BACKLOG.md#AST-SHARED-003",
+      "implementation_followup": "ASTROLOGY_BACKLOG.md#AST-P1-190",
+      "ziwei_consumer": "ZIWEI_BACKLOG.md#ZW-P2-030"
+    },
+    {
       "id": "method.routing",
       "owner": "METHOD_ROUTING.md",
       "section": "Fast Path｜高信心命中就停止 routing",

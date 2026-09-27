@@ -29,7 +29,7 @@ Last reviewed against:
 
 ```text
 ai-divination-playbook main
-5c129871120b6a9e4d361d49c605c6c93b35aaea
+d3214b101ec3c86692c5c5aa0f4cc5130fcc8f30
 ```
 
 This SHA is review evidence only, not a pin. Every maintenance task must resolve current `main` again before mutation.
@@ -755,13 +755,31 @@ Ordering rationale:
 - status: DEFERRED
 - priority: P2
 - owner: Zi Wei calendar/input
-- blocked_by: none
+- blocked_by:
+  - `ASTROLOGY_BACKLOG.md#AST-SHARED-003` contract closure
+  - `ASTROLOGY_BACKLOG.md#AST-P1-190` shared normalizer implementation/admission
+- shared_contract:
+  - `CIVIL_TIME_NORMALIZATION.md`
 - current_state:
-  - production calendar adapter supports `Asia/Taipei` civil time only.
+  - production calendar adapter supports `Asia/Taipei` civil time only;
+  - generic IANA/DST/local-vs-UTC semantics are now coordinated as one cross-method contract rather than being redefined inside Zi Wei.
+- Zi_Wei_responsibility:
+  - consume the shared validated local civil datetime + timezone provenance;
+  - feed validated **local Gregorian** year/month/day/hour/minute/second into the admitted Gregorian→lunar layer;
+  - keep resolved UTC instant as provenance/identity evidence rather than rebasing the lunar conversion to UTC calendar fields;
+  - validate overseas calendar-data/runtime coverage and Zi Wei-specific parity separately;
+  - preserve `next_day_at_23`, `split_after_day_15` and other Zi Wei policies as method-owned layers after civil-time validation.
 - completion_gate:
-  - explicit IANA timezone provenance;
-  - DST-safe Gregorian→lunar normalization policy;
-  - no silent birthplace→timezone guessing.
+  - shared normalizer consumption is explicit and regression-covered;
+  - non-`Asia/Taipei` IANA timezone provenance is preserved;
+  - DST-safe local civil-time validation is inherited from the shared contract;
+  - overseas Gregorian→lunar production parity / dataset-runtime coverage is independently validated;
+  - no silent birthplace→timezone guessing;
+  - current `Asia/Taipei` behavior remains regression-equivalent.
+- non_goals:
+  - do not duplicate generic timezone/DST normalization;
+  - do not silently replace civil time with true solar time;
+  - `ZW-P2-040` remains the separate true-solar-time policy item.
 
 ### ZW-P2-040 — True-solar-time policy
 
