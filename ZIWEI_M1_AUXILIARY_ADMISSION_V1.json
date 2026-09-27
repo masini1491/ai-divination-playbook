@@ -43,7 +43,8 @@
         "revision": "2620cc895395f9f6994abd4927e739d31015c67d",
         "path": "src/model/minorStar.ts"
       }
-    ]
+    ],
+    "relation_fact_completion": "canonical major-star placements + M0 relations + M1 relations"
   },
   "evidence": {
     "research_taxonomy": "references/ziwei/MINOR_STAR_ADMISSION_TAXONOMY_V0.md",
@@ -63,7 +64,12 @@
       "m0_auxiliary_v1",
       "m1_auxiliary_v1"
     ],
-    "final_prose_authority": false
+    "final_prose_authority": false,
+    "generic_star_relations_availability_requires": [
+      "canonical_major_star_placements",
+      "m0_auxiliary_v1",
+      "m1_auxiliary_v1"
+    ]
   },
   "fail_closed": [
     "m1_requires_m0_module",
