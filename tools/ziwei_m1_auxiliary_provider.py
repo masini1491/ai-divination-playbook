@@ -68,9 +68,14 @@ def calculate_m1_auxiliary(
     }
     facts=["fact_available:m1_auxiliary_stars",*(f"star_present:{s}" for s in STARS)]
     relations=[]
+    major_star_relations=[]
     for subject,branch in major_star_placements.items():
         i=BRANCHES.index(branch)
         sanfang={BRANCHES[i],BRANCHES[(i+4)%12],BRANCHES[(i+8)%12]}
+        for other,other_branch in major_star_placements.items():
+            if other != subject and other_branch in sanfang:
+                facts.append(f"modifier_present:{subject}:{other}")
+                major_star_relations.append({"subject":subject,"major_star":other,"relation":"self_or_sanfang"})
         related_malefic=False
         for auxiliary,aux_branch in placements.items():
             if aux_branch in sanfang:
@@ -102,6 +107,7 @@ def calculate_m1_auxiliary(
         },
         "placements":placements,
         "relations":relations,
+        "major_star_relations":major_star_relations,
         "retrieval_facts":facts,
         "production_authority_granted":True,
     }
