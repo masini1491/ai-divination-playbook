@@ -727,9 +727,11 @@ Ordering rationale:
   - `天相×命宮` remains practitioner/profile-bounded and preserves conflict with the existing historical evidence that 天相 can manifest authority under favorable supporting-star conditions;
   - `天梁×官祿宮` adds a bounded career/public-role social / coordination-load modifier without guaranteeing public office;
   - reviewed `太陽×財帛宮` / `太陽×官祿宮` were rejected as non-material restatements of existing star-core + palace-domain composition; `武曲×財帛宮`、`巨門×夫妻宮`、`天相×官祿宮` lacked a clean isolated materially distinct rule in the pass.
+  - post-closure research follow-up `STAR_PALACE_CONTEXTUAL_RESEARCH_V2.md` records `貪狼×夫妻宮` as a historical bounded admission candidate; the Nihai spouse-age heuristic remains practitioner-only / deferred, `紫微×官祿宮` remains rejected as redundant, and `破軍×遷移宮` remains borderline / deferred; this follow-up does not change production admission.
 - canonical_research:
   - `references/ziwei/STAR_PALACE_COMBINATION_RESEARCH_V0.md`
   - `references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V1.md`
+  - `references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V2.md`
   - `references/ziwei/ziwei_interpretation_claim_registry_star_palace_context_v1.json`
 - implementation:
   - schema `0.5.0-research` adds explicit `star_palace_context` with `star` / `palace` / `subjects[]` identity;
