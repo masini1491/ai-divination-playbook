@@ -60,6 +60,10 @@ DYNAMIC_V8_RUNTIME_ID="ziwei-production-runtime-v8"
 DYNAMIC_V8_RUNTIME_VERSION="8.0.0"
 DYNAMIC_V8_REQUEST_SCHEMA="schemas/ziwei/ZIWEI_DYNAMIC_REQUEST_V8.schema.json"
 DYNAMIC_V8_RESULT_SCHEMA="schemas/ziwei/ZIWEI_DYNAMIC_RESULT_V8.schema.json"
+DYNAMIC_V9_RUNTIME_ID="ziwei-production-runtime-v9"
+DYNAMIC_V9_RUNTIME_VERSION="9.0.0"
+DYNAMIC_V9_REQUEST_SCHEMA="schemas/ziwei/ZIWEI_DYNAMIC_REQUEST_V9.schema.json"
+DYNAMIC_V9_RESULT_SCHEMA="schemas/ziwei/ZIWEI_DYNAMIC_RESULT_V9.schema.json"
 INTERPRETATION_PROFILE="ziwei.interpretation.tw_v1"
 TEMPORAL_SCOPE="natal_baseline"
 BRIGHTNESS_MODULE="brightness_v1"
@@ -74,6 +78,7 @@ M0_REGISTRY="ziwei_interpretation_claim_registry_m0_auxiliary_v1.json"
 SIHUA_REGISTRY="ziwei_interpretation_claim_registry_sihua_v0.json"
 DECADAL_INTERPRETATION_REGISTRY="ziwei_interpretation_claim_registry_decadal_v1.json"
 YEARLY_INTERPRETATION_REGISTRY="ziwei_interpretation_claim_registry_yearly_v1.json"
+MONTHLY_INTERPRETATION_REGISTRY="ziwei_interpretation_claim_registry_monthly_v1.json"
 
 @dataclass(frozen=True)
 class ZiWeiReadingRequest:
@@ -1214,6 +1219,88 @@ def run_ziwei_dynamic_v8_transport(payload:dict[str,Any])->dict[str,Any]:
         result["authority"]["interpretation_authority_granted"]=True
     elif payload["temporal_scope"]=="decadal":
         # Preserve the V7 bounded decadal interpretation semantics exactly.
+        result["authority"]["interpretation_authority_granted"]=True
+    else:
+        result["authority"]["interpretation_authority_granted"]=False
+    return result
+
+
+def _production_monthly_interpretation_registries():
+    regs=_retrieval.load_registries((REF/MONTHLY_INTERPRETATION_REGISTRY,))
+    reg=regs[0]
+    if reg.get("production_routable") is not False:
+        raise ValueError(f"REGISTRY_HISTORY_MUTATED:{MONTHLY_INTERPRETATION_REGISTRY}")
+    if reg.get("interpretation_profile") != INTERPRETATION_PROFILE:
+        raise ValueError(f"REGISTRY_PROFILE_MISMATCH:{MONTHLY_INTERPRETATION_REGISTRY}")
+    return regs
+
+
+def _monthly_interpretation(calculation:dict[str,Any],request_payload:dict[str,Any])->dict[str,Any]:
+    month=calculation["monthly"]
+    target=calculation["target"]
+    parent=calculation["parent_scope"]
+    facts={
+        "monthly_period_present",
+        "monthly_life_palace_identified",
+        "monthly_effective_month_identified",
+        "monthly_palace_roles_present",
+        "compatible_yearly_parent_present",
+        f"monthly_effective_month:{target['effective_month']}",
+        f"monthly_life_palace_branch:{month['life_palace_branch']}",
+        f"monthly_natal_palace:{month['natal_palace_at_life_branch']}",
+        f"monthly_doujun_branch:{month['doujun_branch']}",
+        f"yearly_parent_lunar_year:{parent['target_lunar_year']}",
+        f"yearly_parent_life_palace_branch:{parent['yearly_life_palace_branch']}",
+    }
+    packet=_retrieval.FactPacket(
+        packet_id=f"{request_payload['request_id']}:monthly-interpretation",
+        interpretation_profile=INTERPRETATION_PROFILE,
+        temporal_scope="monthly",
+        facts=frozenset(facts),
+        requested_subjects=frozenset(request_payload["requested_subjects"]),
+        enabled_source_ids=frozenset(request_payload["enabled_source_ids"]),
+    )
+    retrieval=_retrieval.retrieve_claims(packet,_production_monthly_interpretation_registries())
+    frame=_retrieval.compose_frame(packet,retrieval)
+    evidence_states={"source_backed","project_adopted"}
+    if frame["conflicts"]:
+        evidence_states.add("conflicted")
+    return {
+        "status":"PRODUCTION_ADMITTED_BOUNDED",
+        "reason":"ZW-P1-040 monthly methodology interpretation admitted; generic monthly fortune and concrete daily/hourly event prediction remain unadmitted",
+        "profile":INTERPRETATION_PROFILE,
+        "temporal_scope":"monthly",
+        "selected_claims":retrieval["selected_claims"],
+        "selected_claim_ids":frame["selected_claim_ids"],
+        "conflicts":frame["conflicts"],
+        "omissions":retrieval["omissions"],
+        "delivery_actions":_delivery.delivery_actions(evidence_states=evidence_states),
+    }
+
+
+def run_ziwei_dynamic_v9_transport(payload:dict[str,Any])->dict[str,Any]:
+    if not isinstance(payload,dict):
+        raise ValueError("dynamic v9 request transport must be an object")
+    if payload.get("schema_name")!="ziwei_dynamic_request" or payload.get("schema_version")!="9.0.0":
+        raise ValueError("unsupported Zi Wei dynamic v9 request schema")
+    v8=dict(payload)
+    v8["schema_version"]="8.0.0"
+    result=run_ziwei_dynamic_v8_transport(v8)
+    result["schema_version"]="9.0.0"
+    result["runtime"]={
+        "runtime_id":DYNAMIC_V9_RUNTIME_ID,
+        "runtime_version":DYNAMIC_V9_RUNTIME_VERSION,
+        "request_schema":DYNAMIC_V9_REQUEST_SCHEMA,
+        "result_schema":DYNAMIC_V9_RESULT_SCHEMA,
+        "temporal_scope":payload["temporal_scope"],
+    }
+    if payload["temporal_scope"]=="monthly":
+        result["status"]="PRODUCTION_ADMITTED"
+        result["scope"]="bounded_monthly_calculation_v1+interpretation_v1"
+        result["interpretation"]=_monthly_interpretation(result["calculation"],payload)
+        result["authority"]["interpretation_authority_granted"]=True
+    elif payload["temporal_scope"] in ("decadal","yearly"):
+        # Preserve V8 bounded interpretation semantics exactly.
         result["authority"]["interpretation_authority_granted"]=True
     else:
         result["authority"]["interpretation_authority_granted"]=False
