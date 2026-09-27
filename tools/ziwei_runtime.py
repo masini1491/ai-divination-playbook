@@ -90,6 +90,41 @@ MONTHLY_INTERPRETATION_REGISTRY="ziwei_interpretation_claim_registry_monthly_v1.
 DAILY_INTERPRETATION_REGISTRY="ziwei_interpretation_claim_registry_daily_v1.json"
 HOURLY_INTERPRETATION_REGISTRY="ziwei_interpretation_claim_registry_hourly_v1.json"
 
+_GREGORIAN_TRANSPORT_BASE_FIELDS=frozenset({
+    "input_type","year","month","day","hour","minute","second","timezone",
+})
+_GREGORIAN_TRANSPORT_SOLAR_FIELDS=frozenset({
+    *_GREGORIAN_TRANSPORT_BASE_FIELDS,
+    "true_solar_time_profile","longitude_deg",
+})
+
+def _gregorian_birth_to_transport(birth:GregorianBirthInput)->dict[str,Any]:
+    payload={
+        "input_type":"gregorian",
+        "year":birth.year,"month":birth.month,"day":birth.day,
+        "hour":birth.hour,"minute":birth.minute,"second":birth.second,
+        "timezone":birth.timezone,
+    }
+    if birth.true_solar_time_profile is not None or birth.longitude_deg is not None:
+        payload["true_solar_time_profile"]=birth.true_solar_time_profile
+        payload["longitude_deg"]=birth.longitude_deg
+    return payload
+
+def _gregorian_birth_from_transport(
+    birth:dict[str,Any],
+    *,
+    mismatch_message:str,
+)->GregorianBirthInput:
+    fields=frozenset(birth)
+    if fields not in (_GREGORIAN_TRANSPORT_BASE_FIELDS,_GREGORIAN_TRANSPORT_SOLAR_FIELDS):
+        raise ValueError(mismatch_message)
+    return GregorianBirthInput(
+        year=birth["year"],month=birth["month"],day=birth["day"],hour=birth["hour"],
+        minute=birth["minute"],second=birth["second"],timezone=birth["timezone"],
+        true_solar_time_profile=birth.get("true_solar_time_profile"),
+        longitude_deg=birth.get("longitude_deg"),
+    )
+
 @dataclass(frozen=True)
 class ZiWeiReadingRequest:
     request_id: str
@@ -132,12 +167,7 @@ def request_to_transport(request:ZiWeiReadingRequest)->dict[str,Any]:
     """Serialize the typed request into the versioned JSON transport contract."""
     request.validate()
     if isinstance(request.birth,GregorianBirthInput):
-        birth={
-            "input_type":"gregorian",
-            "year":request.birth.year,"month":request.birth.month,"day":request.birth.day,
-            "hour":request.birth.hour,"minute":request.birth.minute,"second":request.birth.second,
-            "timezone":request.birth.timezone,
-        }
+        birth=_gregorian_birth_to_transport(request.birth)
     else:
         birth={
             "input_type":"normalized_lunar",
@@ -181,12 +211,8 @@ def request_from_transport(payload:dict[str,Any])->ZiWeiReadingRequest:
         raise ValueError("birth must be an object")
     input_type=birth.get("input_type")
     if input_type=="gregorian":
-        fields={"input_type","year","month","day","hour","minute","second","timezone"}
-        if set(birth)!=fields:
-            raise ValueError("gregorian birth fields do not match v1 schema")
-        typed_birth=GregorianBirthInput(
-            year=birth["year"],month=birth["month"],day=birth["day"],hour=birth["hour"],
-            minute=birth["minute"],second=birth["second"],timezone=birth["timezone"],
+        typed_birth=_gregorian_birth_from_transport(
+            birth,mismatch_message="gregorian birth fields do not match v1 schema",
         )
     elif input_type=="normalized_lunar":
         fields={"input_type","lunar_year","lunar_month","lunar_day","hour_branch","calendar_provenance","leap_month_identity"}
@@ -462,12 +488,8 @@ def run_ziwei_dynamic_transport(payload:dict[str,Any])->dict[str,Any]:
         raise ValueError("birth must be an object")
     input_type=birth.get("input_type")
     if input_type=="gregorian":
-        expected={"input_type","year","month","day","hour","minute","second","timezone"}
-        if set(birth)!=expected:
-            raise ValueError("gregorian birth fields mismatch")
-        typed_birth=GregorianBirthInput(
-            year=birth["year"],month=birth["month"],day=birth["day"],hour=birth["hour"],
-            minute=birth["minute"],second=birth["second"],timezone=birth["timezone"],
+        typed_birth=_gregorian_birth_from_transport(
+            birth,mismatch_message="gregorian birth fields mismatch",
         )
     elif input_type=="normalized_lunar":
         expected={"input_type","lunar_year","lunar_month","lunar_day","hour_branch","calendar_provenance","leap_month_identity"}
@@ -571,9 +593,9 @@ def run_ziwei_dynamic_v3_transport(payload:dict[str,Any])->dict[str,Any]:
     if not isinstance(birth,dict): raise ValueError("birth must be an object")
     input_type=birth.get("input_type")
     if input_type=="gregorian":
-        expected={"input_type","year","month","day","hour","minute","second","timezone"}
-        if set(birth)!=expected: raise ValueError("gregorian birth fields mismatch")
-        typed_birth=GregorianBirthInput(year=birth["year"],month=birth["month"],day=birth["day"],hour=birth["hour"],minute=birth["minute"],second=birth["second"],timezone=birth["timezone"])
+        typed_birth=_gregorian_birth_from_transport(
+            birth,mismatch_message="gregorian birth fields mismatch",
+        )
     elif input_type=="normalized_lunar":
         expected={"input_type","lunar_year","lunar_month","lunar_day","hour_branch","calendar_provenance","leap_month_identity"}
         if set(birth)!=expected: raise ValueError("normalized_lunar birth fields mismatch")
@@ -699,9 +721,9 @@ def run_ziwei_dynamic_v4_transport(payload:dict[str,Any])->dict[str,Any]:
         raise ValueError("birth must be an object")
     input_type=birth.get("input_type")
     if input_type=="gregorian":
-        expected={"input_type","year","month","day","hour","minute","second","timezone"}
-        if set(birth)!=expected: raise ValueError("gregorian birth fields mismatch")
-        typed_birth=GregorianBirthInput(year=birth["year"],month=birth["month"],day=birth["day"],hour=birth["hour"],minute=birth["minute"],second=birth["second"],timezone=birth["timezone"])
+        typed_birth=_gregorian_birth_from_transport(
+            birth,mismatch_message="gregorian birth fields mismatch",
+        )
     elif input_type=="normalized_lunar":
         expected={"input_type","lunar_year","lunar_month","lunar_day","hour_branch","calendar_provenance","leap_month_identity"}
         if set(birth)!=expected: raise ValueError("normalized_lunar birth fields mismatch")
@@ -858,9 +880,9 @@ def run_ziwei_dynamic_v5_transport(payload:dict[str,Any])->dict[str,Any]:
         raise ValueError("birth must be an object")
     input_type=birth.get("input_type")
     if input_type=="gregorian":
-        expected={"input_type","year","month","day","hour","minute","second","timezone"}
-        if set(birth)!=expected: raise ValueError("gregorian birth fields mismatch")
-        typed_birth=GregorianBirthInput(year=birth["year"],month=birth["month"],day=birth["day"],hour=birth["hour"],minute=birth["minute"],second=birth["second"],timezone=birth["timezone"])
+        typed_birth=_gregorian_birth_from_transport(
+            birth,mismatch_message="gregorian birth fields mismatch",
+        )
     elif input_type=="normalized_lunar":
         expected={"input_type","lunar_year","lunar_month","lunar_day","hour_branch","calendar_provenance","leap_month_identity"}
         if set(birth)!=expected: raise ValueError("normalized_lunar birth fields mismatch")
@@ -1051,9 +1073,9 @@ def run_ziwei_dynamic_v6_transport(payload:dict[str,Any])->dict[str,Any]:
         raise ValueError("birth must be an object")
     input_type=birth.get("input_type")
     if input_type=="gregorian":
-        expected={"input_type","year","month","day","hour","minute","second","timezone"}
-        if set(birth)!=expected: raise ValueError("gregorian birth fields mismatch")
-        typed_birth=GregorianBirthInput(year=birth["year"],month=birth["month"],day=birth["day"],hour=birth["hour"],minute=birth["minute"],second=birth["second"],timezone=birth["timezone"])
+        typed_birth=_gregorian_birth_from_transport(
+            birth,mismatch_message="gregorian birth fields mismatch",
+        )
     elif input_type=="normalized_lunar":
         expected={"input_type","lunar_year","lunar_month","lunar_day","hour_branch","calendar_provenance","leap_month_identity"}
         if set(birth)!=expected: raise ValueError("normalized_lunar birth fields mismatch")

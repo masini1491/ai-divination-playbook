@@ -12,6 +12,8 @@ Repo-local authority：
 tools/ziwei_runtime.py
 tools/civil_time_normalizer.py
 CIVIL_TIME_NORMALIZER_ADMISSION_V1.json
+tools/ziwei_true_solar_time.py
+ZIWEI_TRUE_SOLAR_TIME_ADMISSION_V1.json
 tools/ziwei_calendar_provider.py
 tools/ziwei_calendar_data_provider.py
 data/calendar/ziwei_tw_interval/v1/MANIFEST.json
@@ -67,6 +69,9 @@ This section only binds those shared rules to Zi Wei's concrete cache, bundle an
 ```text
 explicit Zi Wei Gregorian request + explicit IANA timezone
 → shared civil-time normalization (validated local identity + UTC provenance)
+→ optional explicit true-solar profile + explicit longitude
+   → Zi Wei-owned apparent-solar local Gregorian fields
+   → no profile: preserve validated civil local Gregorian fields
 → resolve ai-divination-playbook current main to exact commit
 → probe /mnt/data/divination-ziwei-runtime/
 → cheap identity / integrity / executability verification
@@ -89,7 +94,9 @@ explicit Zi Wei Gregorian request + explicit IANA timezone
                   → bounded verified opaque transport
                   → verify chunk/archive/per-file identities
                   → deterministic reassembly + materialization
-→ derive required shard path(s) from validated LOCAL Gregorian input
+→ derive required shard path(s) from calendar-lookup LOCAL Gregorian fields
+   civil default → validated civil local fields
+   explicit true-solar profile → apparent-solar corrected local fields
    ordinary Gregorian request → 1 year shard
    31 December 23:00 cross-year edge → at most 2 year shards
 → reuse matching verified shard if present; otherwise fetch only required same-commit years/YYYY.json
@@ -111,7 +118,7 @@ The main-push handoff artifact is a **temporary transport convenience**, not sou
 
 **Do not fetch or dump the full bundle/chunk payload into model-visible context before cache reuse and host-handoff necessity have been established.** Model-visible base64/chunk content proves acquisition visibility only; it is not automatic filesystem materialization.
 
-The shared civil-time adapter is bundled with Zi Wei runtime source; birthplace→timezone guessing remains outside this path. Calendar shards remain **query-bounded** data acquisitions，不得為方便把完整202-shard dataset塞進 bundle或 active Context。successful materialization **does not require pip/network installation afterward**；GitHub Connect exact-commit shard retrieval本身仍是 acquisition step。
+The shared civil-time adapter and Zi Wei-owned true-solar profile runtime are bundled with Zi Wei runtime source; birthplace→timezone and birthplace→longitude guessing remain outside this path. Calendar shards remain **query-bounded** data acquisitions，不得為方便把完整202-shard dataset塞進 bundle或 active Context。successful materialization **does not require pip/network installation afterward**；GitHub Connect exact-commit shard retrieval本身仍是 acquisition step。
 
 ### Layered Host Status
 
@@ -160,6 +167,8 @@ main-push handoff artifact → temporary exact-commit connector-backed transport
 bundle → runtime + calendar-manifest derived transport cache
 query-bounded year shard(s) → same-commit deterministic data
 ZIWEI_CALENDAR_ADMISSION_V1.json → production calendar admission truth
+ZIWEI_TRUE_SOLAR_TIME_ADMISSION_V1.json → optional explicit apparent-solar clock-policy admission truth
+tools/ziwei_true_solar_time.py → longitude + equation-of-time correction after civil validation
 pinned lunar-python → build/parity source only
 tools/ziwei_runtime.py → canonical typed production composition
 tools/ziwei_sihua_provider.py → optional profile-bound Four-Transformation facts
@@ -168,4 +177,4 @@ Zi Wei providers + retrieval/delivery → deterministic facts + admitted claims
 ZIWEI.md → interpretation / output governance
 ```
 
-核心原則：**transport runtime與calendar data分離；bundle不搬完整dataset，ordinary request只取最低充分1個 shard，跨年晚子時最多2個，全部綁同 exact commit與manifest hash後才執行。**
+核心原則：**transport runtime與calendar data分離；civil time仍是default，true solar只在explicit profile+longitude時啟用；bundle不搬完整dataset，ordinary request只取最低充分shard，跨年邊界依修正後calendar lookup fields與既有晚子時policy決定，全部綁同 exact commit與manifest hash後才執行。**

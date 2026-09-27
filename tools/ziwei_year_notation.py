@@ -30,6 +30,8 @@ class MinguoBirthInput:
     minute: int = 0
     second: int = 0
     timezone: str = DEFAULT_TIMEZONE
+    true_solar_time_profile: str | None = None
+    longitude_deg: float | None = None
 
     def to_gregorian(self) -> GregorianBirthInput:
         return GregorianBirthInput(
@@ -40,6 +42,8 @@ class MinguoBirthInput:
             minute=self.minute,
             second=self.second,
             timezone=self.timezone,
+            true_solar_time_profile=self.true_solar_time_profile,
+            longitude_deg=self.longitude_deg,
         )
 
 def convert_minguo_birth(data: MinguoBirthInput) -> dict[str, object]:
@@ -58,6 +62,8 @@ def convert_minguo_birth(data: MinguoBirthInput) -> dict[str, object]:
             "minute": data.minute,
             "second": data.second,
             "timezone": data.timezone,
+            "true_solar_time_profile": data.true_solar_time_profile,
+            "longitude_deg": data.longitude_deg,
         },
         "converted": {
             "calendar": "gregorian",
@@ -69,6 +75,8 @@ def convert_minguo_birth(data: MinguoBirthInput) -> dict[str, object]:
             "minute": gregorian.minute,
             "second": gregorian.second,
             "timezone": gregorian.timezone,
+            "true_solar_time_profile": gregorian.true_solar_time_profile,
+            "longitude_deg": gregorian.longitude_deg,
         },
         "gregorian_birth": gregorian,
     }

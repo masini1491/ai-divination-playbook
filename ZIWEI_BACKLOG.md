@@ -801,14 +801,40 @@ Ordering rationale:
 ### ZW-P2-040 — True-solar-time policy
 
 - type: FEATURE / INPUT POLICY
-- status: DEFERRED
+- status: IN_PROGRESS
 - priority: P2
 - owner: Zi Wei calendar/profile research
 - blocked_by: none
+- candidate:
+  - profile: `ziwei.true_solar.noaa_fractional_year_v1`;
+  - clock identity: local apparent solar time;
+  - civil time remains the default;
+  - activation requires explicit profile + explicit longitude;
+  - shared `civil-time-zoneinfo-v1` validation runs first;
+  - correction uses east-positive longitude + resolved civil UTC offset + NOAA fractional-year equation of time;
+  - corrected local Gregorian fields feed the existing Gregorian→lunar dataset before `next_day_at_23` / `split_after_day_15`;
+  - birthplace→longitude and birthplace→timezone remain unadmitted.
+- canonical_research:
+  - `references/ziwei/TRUE_SOLAR_TIME_POLICY_V1.md`;
+  - `references/ziwei/SOURCE_REGISTRY.md`.
+- implementation_candidate:
+  - `tools/ziwei_true_solar_time.py`;
+  - `ZIWEI_TRUE_SOLAR_TIME_ADMISSION_V1.json`;
+  - `ZIWEI_CALENDAR_ADMISSION_V1.json` v2.2;
+  - Gregorian / Minguo / natal + dynamic JSON transport preservation.
 - rule:
   - separate from ordinary civil-time timezone expansion;
   - requires explicit profile/policy identity and evidence;
   - must not silently replace civil time.
+- completion_gate:
+  - explicit profile + longitude contract is fail-closed and regression-covered;
+  - civil-time default remains regression-equivalent;
+  - solar correction may cross Gregorian date/hour and that corrected local identity is what feeds Gregorian→lunar lookup;
+  - resolved UTC remains civil provenance only;
+  - no birthplace/coordinate guessing;
+  - runtime/schema/admission/index/materialization/bundle surfaces stay synchronized;
+  - generated Zi Wei bundle and load pack are regenerated only by canonical generators;
+  - implementation merge + exact-main CI/artifact + canonical read-back complete before status becomes DONE.
 
 ## SHARED / parallel
 
