@@ -63,6 +63,8 @@ PROJECT_PATHS=(
  "schemas/ziwei/ZIWEI_DYNAMIC_RESULT_V9.schema.json",
  "schemas/ziwei/ZIWEI_DYNAMIC_REQUEST_V10.schema.json",
  "schemas/ziwei/ZIWEI_DYNAMIC_RESULT_V10.schema.json",
+ "schemas/ziwei/ZIWEI_DYNAMIC_REQUEST_V11.schema.json",
+ "schemas/ziwei/ZIWEI_DYNAMIC_RESULT_V11.schema.json",
  "tools/ziwei_scope_a_pipeline.py",
  "tools/ziwei_brightness_provider.py",
  "tools/ziwei_m0_auxiliary_provider.py",
@@ -83,6 +85,8 @@ PROJECT_PATHS=(
  "ZIWEI_MONTHLY_INTERPRETATION_ADMISSION_V1.json",
  "references/ziwei/ziwei_interpretation_claim_registry_daily_v1.json",
  "ZIWEI_DAILY_INTERPRETATION_ADMISSION_V1.json",
+ "references/ziwei/ziwei_interpretation_claim_registry_hourly_v1.json",
+ "ZIWEI_HOURLY_INTERPRETATION_ADMISSION_V1.json",
 )
 DEPENDENCY_BLOBS={
 "lunar_python/__init__.py":"373688d6a5c8b65322df473345adc195a811709b",
