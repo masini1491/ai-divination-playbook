@@ -68,10 +68,74 @@ Fresh session 必須：
 - Handoff 不構成重新抽牌理由；是否為 new judgment node／合法 follow-up 仍由 `READING_LIFECYCLE.md` 決定。
 - 若 current Playbook HEAD 已前進，依 `CHAT_INIT.md` 的 Playbook Freshness Probe 做 bounded material-delta reconciliation，不因任何 commit 就全文重載。
 
+## Repository-maintenance durable checkpoint adapter
+
+當 intent 是 repository maintenance／research maintenance／GitHub workflow，而不是私人 reading continuation，且 `REPOSITORY_ARCHITECTURE.md` 已為該 method opt-in exact continuity thread時，可在一個 **material logical action closure** 後追加一筆 sanitized durable checkpoint event。
+
+Durable event只保存 control state：
+
+```json
+{
+  "continuity_version": 1,
+  "repository": "masini1491/ai-divination-playbook",
+  "ref": "main",
+  "producer_observed_revision": "<40-char SHA>",
+  "work_identity": "<backlog item / PR / stage / bounded task>",
+  "current_result_pointer": "<canonical file / PR / workflow run / artifact pointer>",
+  "validation_boundary": "<PASS / unresolved blocker / exact condition>",
+  "next_authorized_action": "<bounded action or STOP>"
+}
+```
+
+不適用欄位可省略；不得為完整感補猜。Event不是 self-contained transcript。
+
+### Durable event trigger
+
+只有以下條件同時成立才 append：
+
+1. current project governance已採用對應 exact continuity thread，且 current actor具有 comment write authority；
+2. logical repository action已完成必要 canonical read-back；
+3. fresh session continuation state materially改變。
+
+通常一個 logical action closure最多一筆。不要為 HEAD probe、read/search、branch creation、中間 commit、CI polling或同一 action內的每個 validation step逐筆記錄。
+
+### Public-safety boundary
+
+Durable continuity thread位於公開 repository，因此 event只能含 sanitized technical coordination state。不得寫入：
+
+- 真實人物或可識別 private subject；
+- 出生日期／時間／地點組合；
+- 感情、健康、性、工作或其他私人 reading內容；
+- private conversation摘要；
+- secrets、tokens、未公開公司／客戶／專案資訊；
+- 長 diff、完整 log、整份 backlog或可由 canonical source重取的大段資料。
+
+私人 reading continuity仍使用上方 transient checkpoint／合法私人儲存；不得因 repository continuity feature存在就改變其 egress boundary。
+
+### Durable rehydration
+
+Fresh maintenance session：
+
+```text
+resolve current repository/ref/HEAD
+→ resolve exact method continuity Issue from PLAYBOOK_INDEX.json
+→ bounded-read latest relevant checkpoint comment(s)
+→ compare producer_observed_revision/work_identity with current authority
+→ bounded reconcile material delta
+→ read only referenced current backlog / owner / validation evidence
+→ continue currently authorized action or STOP
+```
+
+- checkpoint revision是 provenance，不是 pin；
+- HEAD一致時可 reuse仍適用的 verified context，不為形式全文重讀；
+- HEAD不同時只做 bounded material-delta reconciliation；
+- stale／out-of-order event不得覆蓋 current canonical state；
+- event不建立 work admission、completion acceptance、repository source-write authority或新 method capability。
+
 ## Persistence boundary
 
-本模板預設是 conversation-level／transient。將其中任何內容持久化到私人 Vault、資料庫或其他 repository，仍需要該目的地本身的 storage authorization。
+Transient reading handoff預設是 conversation-level／private-storage scoped。Repository-maintenance durable checkpoint只有在 `REPOSITORY_ARCHITECTURE.md` 明確採用的 exact continuity thread內才允許持久化。
 
-本檔只維護 handoff 結構，不保存任何使用者實際 handoff payload。
+本檔只維護 handoff / checkpoint adapter結構，不保存任何使用者實際 handoff payload或 durable event history。
 
-核心原則：**Handoff carries pointers and minimum current state; rehydration re-establishes truth, reading identity and authority from canonical sources。**
+核心原則：**Transient handoff preserves private reading continuity；durable repository checkpoints preserve only sanitized current-working pointers；兩者都不取代 current canonical authority。**
