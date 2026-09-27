@@ -1,0 +1,51 @@
+name: TEMP Cleanup Civil-Time Contract Branches
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/temp-cleanup-civil-time-contract-branches.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: maintenance/civil-time-contract-branch-cleanup-20260927
+          fetch-depth: 0
+
+      - name: Fail-closed preflight
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git ls-remote --heads origin refs/heads/main | awk '{print $1}')" = "494dd659516d444e0a7e87f5cbcfe822a4eb88d0"
+          test "$(git ls-remote --heads origin refs/heads/feature/shared-civil-time-normalization-contract | awk '{print $1}')" = "4ca4769afd3f9b1ee95be34fb0f14dc37192ef3d"
+          test "$(git ls-remote --heads origin refs/heads/chore/close-shared-civil-time-contract | awk '{print $1}')" = "f7635327acbd3a13782adfaa62915a69dabf66bd"
+          test "$(git ls-remote --heads origin refs/heads/chore/unblock-ast-p1-190 | awk '{print $1}')" = "806847e3d118467cd6ce1a73a0d899e626e9aac8"
+          test "$(git ls-remote --heads origin refs/heads/data/astrology-extended-ephemeris-v1 | awk '{print $1}')" = "0052ba1c0a3b65238b4f9ec3a94a1aff47e341ea"
+          test "$(git ls-remote --heads origin refs/heads/data/astrology-place-v1 | awk '{print $1}')" = "d18be87abe762433e43e844f33f4b43f7fad9f3b"
+
+      - name: Delete merged branches
+        shell: bash
+        run: |
+          set -euo pipefail
+          git push origin --delete feature/shared-civil-time-normalization-contract
+          git push origin --delete chore/close-shared-civil-time-contract
+          git push origin --delete chore/unblock-ast-p1-190
+
+      - name: Verify cleanup and retained authorities
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -z "$(git ls-remote --heads origin refs/heads/feature/shared-civil-time-normalization-contract)"
+          test -z "$(git ls-remote --heads origin refs/heads/chore/close-shared-civil-time-contract)"
+          test -z "$(git ls-remote --heads origin refs/heads/chore/unblock-ast-p1-190)"
+          test "$(git ls-remote --heads origin refs/heads/data/astrology-extended-ephemeris-v1 | awk '{print $1}')" = "0052ba1c0a3b65238b4f9ec3a94a1aff47e341ea"
+          test "$(git ls-remote --heads origin refs/heads/data/astrology-place-v1 | awk '{print $1}')" = "d18be87abe762433e43e844f33f4b43f7fad9f3b"
+
+      - name: Delete temporary cleanup branch
+        run: git push origin --delete maintenance/civil-time-contract-branch-cleanup-20260927
