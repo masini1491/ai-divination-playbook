@@ -29,19 +29,24 @@ Last reviewed against:
 
 ```text
 ai-divination-playbook main
-7e2cc51f4b86d43bd1cf7dd0ee05b81917f455eb
-Close Zi Wei P2-030 civil-time normalization (#306)
+bc3fb15380a6f5225abbd5b8c5bd32e39c30ce0f
+Reconcile recent Astrology maintenance state (#307)
 ```
 
 This SHA is review evidence only, not a pin. Every maintenance or implementation task must resolve current `main` again before mutation.
 
-Recent maintenance reconciliation candidate:
+Recent maintenance reconciliation closure:
 
 - audit scope: AST-P1-190 / AST-P1-200 post-closure stale-state and regression hygiene;
 - candidate began at `c0d30179fc4358e0bc83b5cdf93cd3dd060b7f34`;
 - temporary regeneration run `36306323482` passed canonical Astrology core-bundle regeneration/check plus focused interpretation-handoff, full reading-pipeline and core-bundle tests;
 - generated commit `6326a07f86eb83fa7f90e5c23ef4876fa842ccd5` updated the derived Astrology core bundle and removed the temporary workflow;
-- initial PR validation `36306323386` failed only at the expected stale pre-regeneration core-bundle check; a fresh full validation is required on the post-regeneration candidate.
+- initial PR validation `36306323386` failed only at the expected stale pre-regeneration core-bundle check;
+- post-regeneration PR validation `36306376787` passed casting-runtime, core-bundle verification, full unit tests and structural checker;
+- PR #307 merged at main `bc3fb15380a6f5225abbd5b8c5bd32e39c30ce0f`;
+- exact-main run `36306507646` passed casting-runtime, core-bundle verification, full unit tests, structural checker and exact-main Astrology / Zi Wei handoff artifact publication;
+- current-main Astrology artifact `10928065166` / `astrology-core-handoff-bc3fb15380a6f5225abbd5b8c5bd32e39c30ce0f` was published with digest `sha256:94e202eade6ace6883e6f1b424aabf67559f7ee77510c7482fd613c6c5362cc1`;
+- canonical read-back confirms stale civil-time wording, shared follow-up status, admission-driven house-system disclosure and omitted-house-system final-output regression are aligned on current main.
 
 Recent Astrology closure sequence reviewed:
 
