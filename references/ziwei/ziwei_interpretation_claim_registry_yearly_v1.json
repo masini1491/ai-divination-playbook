@@ -1,0 +1,165 @@
+{
+  "schema_name": "ziwei_interpretation_claim_registry",
+  "schema_version": "0.1.1-research",
+  "record_status": "REFERENCE-ONLY",
+  "record_kind": "ziwei_interpretation_claim_family_registry",
+  "record_id": "ziwei-yearly-methodology-v1",
+  "production_routable": false,
+  "interpretation_profile": "ziwei.interpretation.tw_v1",
+  "sources": [
+    {
+      "source_id": "SRC-NANYANG-QUANSHU-YEARLY-METHOD",
+      "source_role": "PRIMARY_TEXT",
+      "admission_status": [
+        "CLAIM_ELIGIBLE"
+      ],
+      "storage_mode": [
+        "metadata_locator_normalized_paraphrase"
+      ],
+      "independence_status": "primary_witness",
+      "title": "新鋟希夷陳先生紫微斗數全書 卷之五",
+      "witness_identity": "Nanyang-Hall / digital-text witness for yearly-method research",
+      "locator": "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzop58rvdbm",
+      "language": "zh-Hant",
+      "verification_status": [
+        "digital_text_witness_research"
+      ],
+      "admission_scope": [
+        "bounded yearly methodology claims only"
+      ],
+      "excluded_scope": [
+        "deterministic event prediction",
+        "death/illness/legal/financial guarantees",
+        "generic auspicious/inauspicious yearly outcome doctrine",
+        "unverified glyph-level variants",
+        "natal/decadal claim promotion"
+      ],
+      "notes": [
+        "Normalized paraphrases only. Strong historical outcome language is intentionally excluded from production admission."
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "ZW-Y1-METHOD-TOPOLOGY-001",
+      "layer": "L4",
+      "claim_type": "methodology",
+      "subject": "流年方法",
+      "assertion_class": "historical_core",
+      "normalized_statement": "流年太歲不可只看單一所臨宮位；判讀至少要保留該流年宮位的三方與對照拓撲作為同層 context，不能把單宮 presence 直接翻成年度事件。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-YEARLY-METHOD"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzop58rvdbm"
+      ],
+      "applicability": {
+        "requires": [
+          "yearly_period_present",
+          "yearly_life_palace_identified",
+          "yearly_palace_roles_present"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "yearly_profile",
+          "same_layer_topology"
+        ],
+        "palace_scope": [
+          "any"
+        ],
+        "topology_scope": [
+          "self",
+          "opposite",
+          "sanfang"
+        ],
+        "temporal_scope": "yearly"
+      },
+      "confidence_status": "supported",
+      "support_status": "single_source_supported",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-Y1-METHOD-PARENT-002",
+      "layer": "L4",
+      "claim_type": "methodology",
+      "subject": "流年方法",
+      "assertion_class": "historical_core",
+      "normalized_statement": "流年層應與相容的大限 parent 分開辨識後再合參；不得把大限或流年的單層結果直接覆蓋另一層，也不得把大限 claim 改標成流年 claim。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-YEARLY-METHOD"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzop58rvdbm"
+      ],
+      "applicability": {
+        "requires": [
+          "yearly_period_present",
+          "compatible_decadal_parent_present"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "parent_decadal_context"
+        ],
+        "palace_scope": [
+          "any"
+        ],
+        "topology_scope": [
+          "self"
+        ],
+        "temporal_scope": "yearly"
+      },
+      "confidence_status": "supported",
+      "support_status": "single_source_supported",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-Y1-METHOD-BOUNDARY-003",
+      "layer": "L4",
+      "claim_type": "methodology",
+      "subject": "流年方法",
+      "assertion_class": "project_adoption",
+      "normalized_statement": "流年 calculation facts只建立年度 context，不自帶固定吉凶方向；若沒有另行 admitted 的年度星曜／宮位／四化 contextual claim，就不得用模型記憶補成『流年吉凶』，更細的月日時間點也必須等待相應 lower-layer admitted facts／claims。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-YEARLY-METHOD"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzop58rvdbm"
+      ],
+      "applicability": {
+        "requires": [
+          "yearly_period_present"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "no_generic_yearly_filler",
+          "lower_layer_required_for_finer_timing"
+        ],
+        "palace_scope": [
+          "any"
+        ],
+        "topology_scope": [
+          "self"
+        ],
+        "temporal_scope": "yearly"
+      },
+      "confidence_status": "qualified",
+      "support_status": "qualified",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    }
+  ],
+  "conflict_groups": [],
+  "privacy": {
+    "contains_real_birth_data": false
+  },
+  "research_result": {
+    "batch": "yearly-methodology-v1",
+    "claim_count": 3,
+    "subjects_covered": 1,
+    "architecture_validation_target": "source-normalized bounded yearly methodology claims",
+    "production_authority_granted": false,
+    "scientific_predictive_validity_claimed": false
+  }
+}
