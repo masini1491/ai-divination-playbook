@@ -240,6 +240,26 @@
         "daily": false,
         "hourly": false
       }
+    },
+    "separate_dynamic_runtime_v10": {
+      "runtime_id": "ziwei-production-runtime-v10",
+      "runtime_version": "10.0.0",
+      "request_schema": "schemas/ziwei/ZIWEI_DYNAMIC_REQUEST_V10.schema.json",
+      "result_schema": "schemas/ziwei/ZIWEI_DYNAMIC_RESULT_V10.schema.json",
+      "admitted_temporal_scopes": [
+        "decadal",
+        "yearly",
+        "monthly",
+        "daily",
+        "hourly"
+      ],
+      "interpretation_authority": {
+        "decadal": "bounded_methodology_only",
+        "yearly": "bounded_methodology_only",
+        "monthly": "bounded_methodology_only",
+        "daily": "bounded_methodology_only",
+        "hourly": false
+      }
     }
   },
   "optional_module_admissions": [
@@ -373,6 +393,24 @@
       "parent_interpretation_context": "yearly",
       "monthly_sihua_interpretation_admitted": false,
       "generic_monthly_fortune_admitted": false,
+      "concrete_event_prediction_admitted": false
+    },
+    {
+      "temporal_scope": "daily",
+      "module_id": "daily_interpretation_v1",
+      "admission_manifest": "ZIWEI_DAILY_INTERPRETATION_ADMISSION_V1.json",
+      "registry": "references/ziwei/ziwei_interpretation_claim_registry_daily_v1.json",
+      "runtime_owner": "tools/ziwei_runtime.py",
+      "runtime_id": "ziwei-production-runtime-v10",
+      "interpretation_profile": "ziwei.interpretation.tw_v1",
+      "claim_count": 3,
+      "status": "PRODUCTION_ADMITTED_BOUNDED_INTERPRETATION",
+      "parent_calculation_scope": "daily",
+      "parent_interpretation_context": "monthly",
+      "day_pillar_interpretation_admitted": false,
+      "daily_sihua_interpretation_admitted": false,
+      "flow_star_interpretation_admitted": false,
+      "generic_daily_fortune_admitted": false,
       "concrete_event_prediction_admitted": false
     }
   ]
