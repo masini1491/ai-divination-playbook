@@ -207,7 +207,7 @@
       "natal_provider": "tools/ziwei_natal_provider.py",
       "admission_manifest": "ZIWEI_PRODUCTION_ADMISSION_V1.json",
       "interpretation_profile": "ziwei.interpretation.tw_v1",
-      "claim_count": 52,
+      "claim_count": 54,
       "research_owner": "references/ziwei/README.md",
       "optional_modules": {
         "brightness_v1": {
@@ -275,7 +275,7 @@
         "tools/ziwei_brightness_pipeline.py",
         "tools/ziwei_gregorian_pipeline.py"
       ],
-      "maximum_claim_count_with_optional_modules": 59,
+      "maximum_claim_count_with_optional_modules": 61,
       "exact_main_handoff_artifact": "ziwei-deterministic-handoff-${{ github.sha }}",
       "exact_main_handoff_retention_days": 90,
       "exact_main_handoff_includes_calendar_shards": false,
@@ -471,6 +471,24 @@
           "concrete_event_prediction": false,
           "method_non_uniqueness": true
         }
+      },
+      "first_layer_claim_count": 52,
+      "same_palace_pair_interpretation": {
+        "status": "production-admitted-bounded",
+        "activation": "automatic-on-exact-admitted-natal-occupancy-match",
+        "admission_manifest": "ZIWEI_SAME_PALACE_PAIR_ADMISSION_V1.json",
+        "registry": "references/ziwei/ziwei_interpretation_claim_registry_same_palace_pairs_v1.json",
+        "claim_count": 2,
+        "pair_count": 1,
+        "pair_members": [
+          "武曲",
+          "天相"
+        ],
+        "palace_contexts": [
+          "兄弟宮",
+          "官祿宮"
+        ],
+        "cartesian_expansion": false
       }
     },
     {
