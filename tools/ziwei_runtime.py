@@ -17,6 +17,7 @@ from tools.ziwei_brightness_provider import PROFILE_ID as BRIGHTNESS_PROFILE_ID,
 from tools.ziwei_calendar_provider import GregorianBirthInput, normalize_gregorian_birth
 from tools.ziwei_natal_provider import BRANCHES, NormalizedNatalInput, calculate_scope_a_natal
 from tools.ziwei_m0_auxiliary_provider import PROFILE_ID as M0_PROFILE_ID, calculate_m0_auxiliary
+from tools.ziwei_m1_auxiliary_provider import PROFILE_ID as M1_PROFILE_ID, calculate_m1_auxiliary
 from tools.ziwei_sihua_provider import PROFILE_ID as SIHUA_PROFILE_ID, calculate_sihua
 from tools.ziwei_decadal_provider import DecadalTarget, calculate_decadal
 from tools.ziwei_yearly_provider import YearlyTarget, calculate_yearly
@@ -76,6 +77,7 @@ INTERPRETATION_PROFILE="ziwei.interpretation.tw_v1"
 TEMPORAL_SCOPE="natal_baseline"
 BRIGHTNESS_MODULE="brightness_v1"
 M0_MODULE="m0_auxiliary_v1"
+M1_MODULE="m1_auxiliary_v1"
 SIHUA_MODULE="sihua_v1"
 ADMITTED_REGISTRIES=(
     "ziwei_interpretation_claim_registry_batch1.json",
@@ -86,6 +88,7 @@ ADMITTED_REGISTRIES=(
     "ziwei_interpretation_claim_registry_star_palace_context_v1.json",
 )
 M0_REGISTRY="ziwei_interpretation_claim_registry_m0_auxiliary_v1.json"
+M1_REGISTRY="ziwei_interpretation_claim_registry_m1_auxiliary_v1.json"
 SIHUA_REGISTRY="ziwei_interpretation_claim_registry_sihua_v0.json"
 DECADAL_INTERPRETATION_REGISTRY="ziwei_interpretation_claim_registry_decadal_v1.json"
 YEARLY_INTERPRETATION_REGISTRY="ziwei_interpretation_claim_registry_yearly_v1.json"
@@ -138,6 +141,7 @@ class ZiWeiReadingRequest:
     optional_modules: tuple[str,...] = ()
     brightness_profile: str | None = None
     m0_auxiliary_profile: str | None = None
+    m1_auxiliary_profile: str | None = None
     sihua_profile: str | None = None
 
     def validate(self) -> None:
@@ -147,7 +151,7 @@ class ZiWeiReadingRequest:
             raise ValueError(f"unsupported temporal_scope: {self.temporal_scope}")
         if not isinstance(self.birth,(GregorianBirthInput,NormalizedNatalInput)):
             raise ValueError("birth must be GregorianBirthInput or NormalizedNatalInput")
-        unknown=sorted(set(self.optional_modules)-{BRIGHTNESS_MODULE,M0_MODULE,SIHUA_MODULE})
+        unknown=sorted(set(self.optional_modules)-{BRIGHTNESS_MODULE,M0_MODULE,M1_MODULE,SIHUA_MODULE})
         if unknown:
             raise ValueError(f"unsupported optional_modules: {','.join(unknown)}")
         if len(set(self.optional_modules)) != len(self.optional_modules):
@@ -161,6 +165,13 @@ class ZiWeiReadingRequest:
             raise ValueError("m0_auxiliary_profile requires m0_auxiliary_v1")
         if M0_MODULE in self.optional_modules and self.m0_auxiliary_profile not in (None,M0_PROFILE_ID):
             raise ValueError(f"unsupported m0_auxiliary_profile: {self.m0_auxiliary_profile}")
+        if self.m1_auxiliary_profile is not None and M1_MODULE not in self.optional_modules:
+            raise ValueError("m1_auxiliary_profile requires m1_auxiliary_v1")
+        if M1_MODULE in self.optional_modules:
+            if M0_MODULE not in self.optional_modules:
+                raise ValueError("m1_auxiliary_v1 requires m0_auxiliary_v1")
+            if self.m1_auxiliary_profile not in (None,M1_PROFILE_ID):
+                raise ValueError(f"unsupported m1_auxiliary_profile: {self.m1_auxiliary_profile}")
         if self.sihua_profile is not None and SIHUA_MODULE not in self.optional_modules:
             raise ValueError("sihua_profile requires sihua_v1")
         if SIHUA_MODULE in self.optional_modules and self.sihua_profile not in (None,SIHUA_PROFILE_ID):
@@ -190,6 +201,8 @@ def request_to_transport(request:ZiWeiReadingRequest)->dict[str,Any]:
         payload["brightness_profile"]=request.brightness_profile
     if request.m0_auxiliary_profile is not None:
         payload["m0_auxiliary_profile"]=request.m0_auxiliary_profile
+    if request.m1_auxiliary_profile is not None:
+        payload["m1_auxiliary_profile"]=request.m1_auxiliary_profile
     if request.sihua_profile is not None:
         payload["sihua_profile"]=request.sihua_profile
     return payload
@@ -199,8 +212,8 @@ def request_from_transport(payload:dict[str,Any])->ZiWeiReadingRequest:
     if not isinstance(payload,dict):
         raise ValueError("request transport must be an object")
     allowed={"schema_name","schema_version","request_id","temporal_scope","birth","optional_modules",
-             "requested_subjects","enabled_source_ids","brightness_profile","m0_auxiliary_profile","sihua_profile"}
-    required=allowed-{"brightness_profile","m0_auxiliary_profile","sihua_profile"}
+             "requested_subjects","enabled_source_ids","brightness_profile","m0_auxiliary_profile","m1_auxiliary_profile","sihua_profile"}
+    required=allowed-{"brightness_profile","m0_auxiliary_profile","m1_auxiliary_profile","sihua_profile"}
     unknown=set(payload)-allowed
     missing=required-set(payload)
     if unknown:
@@ -237,7 +250,8 @@ def request_from_transport(payload:dict[str,Any])->ZiWeiReadingRequest:
         request_id=payload["request_id"],birth=typed_birth,temporal_scope=payload["temporal_scope"],
         requested_subjects=tuple(payload["requested_subjects"]),enabled_source_ids=tuple(payload["enabled_source_ids"]),
         optional_modules=tuple(payload["optional_modules"]),brightness_profile=payload.get("brightness_profile"),
-        m0_auxiliary_profile=payload.get("m0_auxiliary_profile"),sihua_profile=payload.get("sihua_profile"),
+        m0_auxiliary_profile=payload.get("m0_auxiliary_profile"),m1_auxiliary_profile=payload.get("m1_auxiliary_profile"),
+        sihua_profile=payload.get("sihua_profile"),
     )
     request.validate()
     return request
@@ -250,6 +264,8 @@ def _production_registries(optional_modules:tuple[str,...]=()):
     names=list(ADMITTED_REGISTRIES)
     if M0_MODULE in optional_modules:
         names.append(M0_REGISTRY)
+    if M1_MODULE in optional_modules:
+        names.append(M1_REGISTRY)
     if SIHUA_MODULE in optional_modules:
         names.append(SIHUA_REGISTRY)
     regs=_retrieval.load_registries(REF/x for x in names)
@@ -301,9 +317,9 @@ def _compose(chart:dict[str,Any], request:ZiWeiReadingRequest, calendar:dict[str
             "optional_modules":modules,
         },
         "pipeline_id":"ziwei-scope-a-production-pipeline-v1",
-        "pipeline_version":"1.4.0",
+        "pipeline_version":"1.5.0",
         "status":"PRODUCTION_ADMITTED",
-        "scope":"bounded_natal_first_layer"+("+optional_brightness_v1" if BRIGHTNESS_MODULE in modules else "")+("+optional_m0_auxiliary_v1" if M0_MODULE in modules else "")+("+optional_sihua_v1" if SIHUA_MODULE in modules else ""),
+        "scope":"bounded_natal_first_layer"+("+optional_brightness_v1" if BRIGHTNESS_MODULE in modules else "")+("+optional_m0_auxiliary_v1" if M0_MODULE in modules else "")+("+optional_m1_auxiliary_v1" if M1_MODULE in modules else "")+("+optional_sihua_v1" if SIHUA_MODULE in modules else ""),
         "request_id":request.request_id,
         "calculation":{
             "provider":chart["provider"], "calculation_profile":chart["calculation_profile"],
@@ -351,6 +367,20 @@ def run_ziwei(request:ZiWeiReadingRequest)->dict[str,Any]:
         unsupported["m0_auxiliary_stars"]="computed_by_optional_m0_profile"
         chart["unsupported"]=unsupported
         chart["m0_auxiliary"]=m0
+    if M1_MODULE in request.optional_modules:
+        m1=calculate_m1_auxiliary(
+            chart["year_pillar"]["stem"],chart["year_pillar"]["branch"],natal.hour_branch,
+            chart["major_star_placements"],
+        )
+        chart=dict(chart)
+        chart["retrieval_facts"]=list(chart["retrieval_facts"])+list(m1["retrieval_facts"])+[
+            "fact_available:auxiliary_stars","fact_available:star_relations",
+        ]
+        unsupported=dict(chart["unsupported"])
+        unsupported["m1_auxiliary_stars"]="computed_by_optional_m1_profile"
+        unsupported["auxiliary_stars"]="computed_by_admitted_m0_plus_m1_profiles"
+        chart["unsupported"]=unsupported
+        chart["m1_auxiliary"]=m1
     if BRIGHTNESS_MODULE in request.optional_modules:
         brightness=calculate_brightness(chart["major_star_placements"])
         chart=dict(chart)
@@ -372,6 +402,10 @@ def run_ziwei(request:ZiWeiReadingRequest)->dict[str,Any]:
         result["calculation"]["m0_auxiliary"]=chart["m0_auxiliary"]
         result["authority"]["m0_auxiliary_profile_admitted"]=True
         result["authority"]["blanket_minor_star_admission"]=False
+    if M1_MODULE in request.optional_modules:
+        result["calculation"]["m1_auxiliary"]=chart["m1_auxiliary"]
+        result["authority"]["m1_auxiliary_profile_admitted"]=True
+        result["authority"]["bounded_auxiliary_domain_complete"]=True
     if BRIGHTNESS_MODULE in request.optional_modules:
         result["calculation"]["brightness"]=chart["brightness"]
         result["authority"]["brightness_profile_admitted"]=True
