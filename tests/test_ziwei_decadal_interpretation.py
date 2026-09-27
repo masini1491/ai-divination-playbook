@@ -38,7 +38,7 @@ class ZiWeiDecadalInterpretationTests(unittest.TestCase):
         )
         self.assertTrue(r["authority"]["interpretation_authority_granted"])
         for c in r["interpretation"]["selected_claims"]:
-            self.assertEqual("decadal",c["applicability"]["temporal_scope"])
+            self.assertEqual("decadal",c["temporal_scope"])
 
     def test_v7_subject_gate_can_omit_decadal_claims_without_fallback(self):
         r=run_ziwei_dynamic_v7_transport(p7("decadal",{"input_type":"lunar_year","lunar_year":2026},["不存在主題"]))
