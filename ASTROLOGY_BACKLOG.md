@@ -635,7 +635,7 @@ This item is a standing reconciliation guard. It is not a request to change curr
 ### AST-P1-190 — Shared civil-time normalizer extraction/admission
 
 - type: FEATURE / INPUT NORMALIZATION / CROSS-METHOD DETERMINISTIC ADAPTER
-- status: OPEN
+- status: IN_PROGRESS
 - priority: P1
 - owner: shared civil-time implementation with Astrology as first consumer
 - blocked_by: none

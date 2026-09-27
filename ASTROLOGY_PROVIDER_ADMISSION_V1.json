@@ -30,6 +30,13 @@
   "input_contract": {
     "local_datetime": "naive ISO-8601 local wall time",
     "timezone_name": "IANA timezone required",
+    "civil_time_normalization": {
+      "contract": "CIVIL_TIME_NORMALIZATION.md",
+      "implementation": "tools/civil_time_normalizer.py",
+      "admission_manifest": "CIVIL_TIME_NORMALIZER_ADMISSION_V1.json",
+      "adapter_id": "civil-time-zoneinfo-v1",
+      "adapter_version": "1.0.0"
+    },
     "latitude": "decimal degrees [-90,90]",
     "longitude": "decimal degrees [-180,180]",
     "house_systems": [
@@ -215,6 +222,8 @@
     "upstream_tolerance_deg": 0.0167,
     "runtime_gate_required": true,
     "production_tests": "tests/test_astrology_provider.py",
+    "civil_time_shared_tests": "tests/test_civil_time_normalizer.py",
+    "civil_time_fixture": "tests/fixtures/civil_time_normalization_v1.json",
     "e4_sect_parity_fixture": "references/astrology/extended_chart_e4_sect_parity_fixture.json"
   },
   "not_admitted": [

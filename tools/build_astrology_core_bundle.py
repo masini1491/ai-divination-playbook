@@ -22,6 +22,7 @@ DEPENDENCY_LICENSE_SHA256="b4d9dd0fd80fce3879c4cd9e3754364f74fc5ec046f33276475ba
 
 PROJECT_PATHS=(
  "tools/astrology_runtime.py",
+ "tools/civil_time_normalizer.py",
  "tools/astrology_provider.py",
  "tools/astrology_transit_provider.py",
  "tools/astrology_orchestrator.py",
