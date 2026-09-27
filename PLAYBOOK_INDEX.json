@@ -251,7 +251,17 @@
         "timezone_mode": "explicit_IANA",
         "shared_civil_time_adapter": "civil-time-zoneinfo-v1@1.0.0",
         "birthplace_timezone_resolution": false,
-        "true_solar_time": false
+        "true_solar_time": {
+          "status": "production-admitted-optional",
+          "activation": "explicit-profile-and-longitude-only",
+          "profile_id": "ziwei.true_solar.noaa_fractional_year_v1",
+          "provider": "tools/ziwei_true_solar_time.py",
+          "admission_manifest": "ZIWEI_TRUE_SOLAR_TIME_ADMISSION_V1.json",
+          "longitude_required": true,
+          "latitude_required": false,
+          "birthplace_longitude_resolution": false,
+          "default": false
+        }
       },
       "materialization_contract": "ZIWEI_MATERIALIZATION.md",
       "deterministic_transport_bundle": "runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json",
