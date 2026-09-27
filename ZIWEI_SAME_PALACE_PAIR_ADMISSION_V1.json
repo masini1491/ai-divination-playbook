@@ -1,0 +1,55 @@
+{
+  "schema_name": "ziwei_same_palace_pair_production_admission",
+  "schema_version": "1.0.0",
+  "method": "ZiWei",
+  "status": "PRODUCTION_ADMITTED_BOUNDED_INTERPRETATION",
+  "activation": "automatic_on_exact_admitted_natal_occupancy_match",
+  "temporal_scope": "natal_baseline",
+  "parent_admission": "ZIWEI_PRODUCTION_ADMISSION_V1.json",
+  "claim_registry": "references/ziwei/ziwei_interpretation_claim_registry_same_palace_pairs_v1.json",
+  "interpretation_profile": "ziwei.interpretation.tw_v1",
+  "scope": {
+    "admitted_claims_added": 2,
+    "admitted_pair_count": 1,
+    "admitted_pair_members": [
+      "武曲",
+      "天相"
+    ],
+    "admitted_palace_contexts": [
+      "兄弟宮",
+      "官祿宮"
+    ],
+    "claim_type": "same_palace_pair",
+    "exhaustive_pair_dictionary": false,
+    "cartesian_expansion": false
+  },
+  "deterministic_applicability": {
+    "owner": "tools/ziwei_natal_provider.py",
+    "required_availability_fact": "fact_available:palace_occupancy",
+    "required_pair_facts": "star_in_palace:<pair_member>:<same_palace>",
+    "new_geometry_provider_required": false,
+    "model_inference_allowed": false
+  },
+  "retrieval": {
+    "owner": "tools/ziwei_claim_retrieval.py",
+    "specificity_policy": "same_palace_pair outranks generic star/palace claims when exact admitted applicability matches",
+    "generic_claims_suppressed": false,
+    "no_pair_match_behavior": "existing bounded first-layer composition"
+  },
+  "evidence": {
+    "research_record": "references/ziwei/SAME_PALACE_MAJOR_STAR_PAIR_RESEARCH_V1.md",
+    "source_repository": "Renhuai123/nihai-tianji-corpus",
+    "source_revision": "c90006168195c0650328b7199669eb6a2d0cac93",
+    "source_role": "PRACTITIONER_REFERENCE"
+  },
+  "fail_closed": [
+    "both pair members must be present in the same explicitly named palace",
+    "palace occupancy fact availability required",
+    "no pair claim from co-occurrence without source-explicit semantics",
+    "no pair meaning synthesized from independent star-core claims",
+    "no cartesian pair expansion",
+    "no model-memory pair doctrine",
+    "unadmitted pair or palace context falls back to existing bounded composition"
+  ],
+  "scientific_predictive_validity_claimed": false
+}
