@@ -328,6 +328,27 @@
           "physical_hour_pillar_status": "not-admitted",
           "gender_required": true
         }
+      },
+      "temporal_interpretation": {
+        "decadal_v1": {
+          "activation": "explicit-decadal-request-only",
+          "runtime": "tools/ziwei_runtime.py",
+          "runtime_id": "ziwei-production-runtime-v7",
+          "admission_manifest": "ZIWEI_DECADAL_INTERPRETATION_ADMISSION_V1.json",
+          "registry": "references/ziwei/ziwei_interpretation_claim_registry_decadal_v1.json",
+          "interpretation_profile": "ziwei.interpretation.tw_v1",
+          "claim_count": 2,
+          "parent_calculation_scope": "decadal",
+          "interpretation_status": "production-admitted-bounded-methodology",
+          "natal_claim_promotion": false,
+          "concrete_event_prediction": false,
+          "lower_layer_interpretation_status": {
+            "yearly": "not-admitted",
+            "monthly": "not-admitted",
+            "daily": "not-admitted",
+            "hourly": "not-admitted"
+          }
+        }
       }
     },
     {
