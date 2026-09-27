@@ -5,6 +5,7 @@ from pathlib import Path
 
 from tools.ziwei_brightness_provider import PROFILE_ID as BRIGHTNESS_PROFILE_ID
 from tools.ziwei_calendar_provider import GregorianBirthInput
+from tools.ziwei_true_solar_time import PROFILE_ID as TRUE_SOLAR_PROFILE_ID
 from tools.ziwei_natal_provider import NormalizedNatalInput
 from tools.ziwei_runtime import (
     BRIGHTNESS_MODULE, ZiWeiReadingRequest, request_from_transport,
@@ -61,6 +62,26 @@ class ZiWeiUnifiedRuntimeV1Tests(unittest.TestCase):
             "civil-time-zoneinfo-v1",
             result["input_adapter"]["calendar"]["civil_time_normalization"]["normalizer_id"],
         )
+
+    def test_json_transport_round_trips_explicit_true_solar_profile(self):
+        request=ZiWeiReadingRequest(
+            request_id="transport-solar",
+            birth=GregorianBirthInput(
+                2000,8,16,5,30,
+                timezone="Asia/Taipei",
+                true_solar_time_profile=TRUE_SOLAR_PROFILE_ID,
+                longitude_deg=121.5654,
+            ),
+        )
+        payload=request_to_transport(request)
+        self.assertEqual(TRUE_SOLAR_PROFILE_ID,payload["birth"]["true_solar_time_profile"])
+        self.assertEqual(121.5654,payload["birth"]["longitude_deg"])
+        parsed=request_from_transport(payload)
+        self.assertEqual(request,parsed)
+        result=run_ziwei_transport(payload)
+        calendar=result["input_adapter"]["calendar"]
+        self.assertTrue(calendar["boundaries"]["true_solar_time_applied"])
+        self.assertEqual("2000-08-16T05:31:36",calendar["true_solar_time_normalization"]["apparent_solar_local_iso"])
 
     def test_json_transport_round_trips_normalized_lunar(self):
         request=ZiWeiReadingRequest(request_id="transport-l",birth=self.natal)
