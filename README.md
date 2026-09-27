@@ -319,7 +319,7 @@ Legacy `run_scope_a_*` pipelines are compatibility adapters only; they are not t
 重要邊界：
 
 - Zi Wei **不參與 ordinary auto-routing**；
-- current production 除 bounded natal Scope-A 與 optional facts 外，已分層 admission 大限／流年／流月／流日／流時計算；V7/V8 另只 admission 大限與流年的 bounded methodology interpretation。未另行 admission 的 yearly Si Hua 斷語、monthly/daily/hourly interpretation、非 M0 輔／雜星 interpretation與 broader star×palace corpus仍 fail closed；
+- current production 除 bounded natal Scope-A 與 optional facts 外，已分層 admission 大限／流年／流月／流日／流時計算；V7/V8/V9 另只 admission 大限、流年與流月的 bounded methodology interpretation。未另行 admission 的 temporal Si Hua 斷語、daily/hourly interpretation、非 M0 輔／雜星 interpretation與 broader star×palace corpus仍 fail closed；
 - raw birth data 不授權 language model 自行手算農曆、命身宮、主星 placement 或 brightness；
 - Research Zi Wei 與 Production Zi Wei 分離：research 走 [`RESEARCH_ROUTING.md`](RESEARCH_ROUTING.md) → `references/ziwei/**`；
 - ChatGPT local runtime 缺少 Zi Wei source、calendar manifest 或本次所需 year shard 時，先依 [`ZIWEI_MATERIALIZATION.md`](ZIWEI_MATERIALIZATION.md) 走 verified same-commit bundle + query-bounded calendar-data materialization；ordinary production 不需要 `lunar_python` runtime。
@@ -427,7 +427,7 @@ tools/astrology_output_guard.py
 | Meihua | 事件演化、主客／體用、轉折、節奏與象徵應期 | Canonical stochastic core (`runtime/casting/core.py`) via full Runtime adapter (`runtime/casting/randomizer.py`) | [`MEIHUA.md`](MEIHUA.md) |
 | Liuyao | 單一具體事件是否成立、阻礙來源、較具體 outcome / timing | local Randomizer three-coin Raw Cast + local deterministic engine/calendar/runtime | [`LIUYAO.md`](LIUYAO.md) |
 | Astrology | 本命盤、行運與 admitted natal/transit factors；explicit-request only | local deterministic place resolver + natal/transit providers + Fact Gate | [`ASTROLOGY.md`](ASTROLOGY.md) |
-| Zi Wei | bounded natal first layer + explicit dynamic calculation through hourly；V7/V8 bounded decadal/yearly methodology interpretation；explicit-request only | Gregorian/calendar adapters + local Zi Wei providers/runtime + verified ChatGPT transport bundle | [`ZIWEI.md`](ZIWEI.md) |
+| Zi Wei | bounded natal first layer + explicit dynamic calculation through hourly；V7/V8/V9 bounded decadal/yearly/monthly methodology interpretation；explicit-request only | Gregorian/calendar adapters + local Zi Wei providers/runtime + verified ChatGPT transport bundle | [`ZIWEI.md`](ZIWEI.md) |
 
 ## Authority boundary
 
