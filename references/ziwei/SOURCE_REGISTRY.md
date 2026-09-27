@@ -38,6 +38,12 @@ Authority：`REFERENCE-ONLY / RESEARCH EVIDENCE`
 | Wenguang-Hall early Quanshu collation | 明末清初文光堂木刻本（敦化堂／繼述堂系，依現代影印校勘說明） | 庚干四化異文 witness family | 目前只有 publisher/editorial collation claim；原頁 facsimile 尚未取得，保持 `IMAGE GAP OPEN` |
 | `kanripo/KR5h0055` | revision `86d036859da6d0352b0fc1d6edf46eb5745759d2` | historical text candidate：`紫微鬥數` / DZ1485 | 與現代十四主星／四化體系的 lineage 尚未解決，不得因同名就直接當 modern-rule proof |
 
+## Tier T — technical clock / astronomy references
+
+| Source | Identity | Research role | Boundary |
+| --- | --- | --- | --- |
+| NOAA Global Monitoring Laboratory | `General Solar Position Calculations` fractional-year equation-of-time method; reviewed 2026-09-27 | reproducible local-apparent-solar clock correction for `ziwei.true_solar.noaa_fractional_year_v1` | technical formula evidence only; does not establish Zi Wei historical uniqueness or predictive validity |
+
 ## Current adoption map
 
 ```text
