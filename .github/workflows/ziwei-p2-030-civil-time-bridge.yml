@@ -1,0 +1,88 @@
+name: Zi Wei P2-030 Civil Time Bridge
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/ziwei-p2-030-civil-time-bridge.yml"
+      - "tools/civil_time_normalizer.py"
+      - "tools/ziwei_calendar_provider.py"
+      - "tools/ziwei_calendar_data_provider.py"
+      - "tools/build_ziwei_tool_bundle.py"
+      - "schemas/ziwei/ZIWEI_READING_REQUEST_V1.schema.json"
+      - "ZIWEI_CALENDAR_ADMISSION_V1.json"
+      - "CIVIL_TIME_NORMALIZER_ADMISSION_V1.json"
+      - "CIVIL_TIME_NORMALIZATION.md"
+      - "ZIWEI_PRODUCTION_ADMISSION_V1.json"
+      - "PLAYBOOK_INDEX.json"
+      - "ZIWEI.md"
+      - "ZIWEI_MATERIALIZATION.md"
+      - "README.md"
+      - "references/ziwei/README.md"
+      - "evals/ZIWEI_MATERIALIZATION_PRODUCT_SCENARIO.md"
+      - "ZIWEI_BACKLOG.md"
+      - "tests/test_ziwei_calendar_contract_v1.py"
+      - "tests/test_ziwei_calendar_data_provider.py"
+      - "tests/test_ziwei_unified_runtime_v1.py"
+      - "tests/test_ziwei_tool_bundle.py"
+      - "tests/test_civil_time_normalizer.py"
+
+permissions:
+  contents: write
+
+jobs:
+  regenerate-and-verify:
+    if: github.head_ref == 'zw-p2-030-civil-time-normalization'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - run: python -m pip install --disable-pip-version-check -r requirements-ziwei-calendar.txt
+      - name: Run P2-030 focused regressions
+        run: |
+          python -m unittest \
+            tests.test_civil_time_normalizer \
+            tests.test_ziwei_calendar_contract_v1 \
+            tests.test_ziwei_calendar_data_provider \
+            tests.test_ziwei_unified_runtime_v1 \
+            tests.test_ziwei_tool_bundle
+      - name: Regenerate and verify generated caches
+        run: |
+          python tools/build_ziwei_tool_bundle.py
+          python tools/build_ziwei_tool_bundle.py --check
+          python -m unittest tests.test_ziwei_tool_bundle
+          python tools/build_chatgpt_load_pack.py
+          python tools/build_chatgpt_load_pack.py --check
+          python tools/chatgpt_load_benchmark.py --check
+      - name: Remove bridge and enforce generated-only diff
+        run: |
+          rm .github/workflows/ziwei-p2-030-civil-time-bridge.yml
+          find . -type d -name __pycache__ -prune -exec rm -rf {} +
+          python - <<'PY'
+          import subprocess
+          paths=[x[3:] for x in subprocess.check_output(
+              ["git","status","--porcelain=v1","--untracked-files=all"],text=True
+          ).splitlines()]
+          allowed={
+              ".github/workflows/ziwei-p2-030-civil-time-bridge.yml",
+              "runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json",
+              "CHATGPT_LOAD_PACK.json",
+          }
+          unexpected=[p for p in paths if p not in allowed]
+          assert not unexpected, unexpected
+          assert ".github/workflows/ziwei-p2-030-civil-time-bridge.yml" in paths
+          assert "runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json" in paths
+          PY
+      - name: Commit generated caches and remove bridge
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json .github/workflows/ziwei-p2-030-civil-time-bridge.yml
+          git add CHATGPT_LOAD_PACK.json || true
+          git commit -m "Regenerate Zi Wei caches for P2-030 civil time"
+          git push origin HEAD:${{ github.head_ref }}
