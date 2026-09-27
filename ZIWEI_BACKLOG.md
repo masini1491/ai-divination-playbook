@@ -775,12 +775,23 @@ Ordering rationale:
 
 #### 2026-09-28 bounded extension — 貪狼×夫妻宮
 
-- status: IN_PROGRESS
+- status: DONE
 - shared_development_playbook_reviewed: `masini1491/ai-development-playbook@5713f23f1a306bed7b6346edaaa0226a248949dd`
-- research_evidence: `STAR_PALACE_CONTEXTUAL_RESEARCH_V2.md` marks `貪狼×夫妻宮` historical bounded semantics as materially distinct / admission-candidate; Nihai spouse-age heuristic remains practitioner-only / deferred.
-- intended_production_delta: add exactly one historical-bounded `貪狼×夫妻宮` claim to existing `sparse_star_palace_context_v1`; exact applicability remains `fact_available:palace_occupancy` + `star_in_palace:貪狼:夫妻宮`; base natal 61 → 62; maximum optional 78 → 79; star×palace 2 → 3; pipeline remains `1.5.0`.
-- production_boundary: no deterministic marriage failure, multiple-marriage, affair or fixed-spouse-characteristic prediction; no Cartesian expansion.
-- completion_gate: registry / admission / root manifest / index / docs / tests synchronized; shared reviewed-revision evidence updated without pinning declared baseline `main`; canonical generators refresh derived caches; formal PR CI + merge + exact-main CI/artifact + canonical read-back before DONE.
+- research_evidence: `STAR_PALACE_CONTEXTUAL_RESEARCH_V2.md` established `貪狼×夫妻宮` as a materially distinct historical bounded admission candidate; Nihai spouse-age heuristic remains practitioner-only / deferred.
+- production_result:
+  - added exactly one historical-bounded `貪狼×夫妻宮` claim to existing `sparse_star_palace_context_v1`;
+  - exact applicability remains `fact_available:palace_occupancy` + `star_in_palace:貪狼:夫妻宮`;
+  - base natal claims = 62; maximum optional claims = 79; star×palace claims = 3;
+  - Scope-A pipeline remains `1.5.0`; no new runtime, geometry provider or claim type.
+- production_boundary: no deterministic marriage failure, multiple-marriage, affair or fixed-spouse-characteristic prediction; Nihai spouse-age heuristic remains non-production; no Cartesian expansion.
+- completion_evidence:
+  - generator bridge run `36358158923` PASSed registry validation, focused admission regressions, canonical Zi Wei bundle regeneration/check, ChatGPT load-pack regeneration/check, load-budget check and bundle regression;
+  - generator-owned cache commit `767cbbf33dccd4a1b4ab122f30735db616aff0ea` removed the temporary bridge after canonical cache regeneration;
+  - formal PR #326 run `36358201777` PASSed `validate` + `casting-runtime`, including full unit suite and structural checker;
+  - PR #326 merged to exact main `dfefcc8c49102f2cb2ca96fb221ea5f2aa8cce2f`;
+  - exact-main canonical read-back confirms pairs `天相×命宮` / `天梁×官祿宮` / `貪狼×夫妻宮`, counts 62 / 79, pipeline `1.5.0`, declared shared baseline `main` and reviewed shared revision `5713f23f1a306bed7b6346edaaa0226a248949dd`;
+  - exact-main run `36358309882` PASSed `validate` + `casting-runtime`, full unit suite, structural checker and exact-main Zi Wei handoff preparation/upload;
+  - exact-main artifact `10945090252` / `ziwei-deterministic-handoff-dfefcc8c49102f2cb2ca96fb221ea5f2aa8cce2f` published at 98,677 bytes with digest `sha256:6dad5b327e92622790be8f971ce5da306f4b0bb2f6f70acd8d42c1bff922a2ae`.
 
 ### ZW-P2-050 — Body-Palace overlay interpretation admission
 
