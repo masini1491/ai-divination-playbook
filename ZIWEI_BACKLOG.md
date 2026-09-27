@@ -568,7 +568,7 @@ Ordering rationale:
   - corresponding admitted calculation stage in ZW-P1-030
 - stage_progress:
   - decadal interpretation: DONE — V7 bounded methodology interpretation merged and canonically read back; exactly 2 source-backed claims are admitted, while natal-claim promotion、generic十年吉凶、具體事件與 high-stakes determinism remain fail-closed;
-  - yearly interpretation: READY — yearly calculation admission merged and canonically read back; interpretation still requires its own source-backed claim admission;
+  - yearly interpretation: IMPLEMENTED_CANDIDATE — V8 admits exactly 3 source-backed / project-bounded methodology claims gated by yearly facts + compatible decadal parent; generic流年吉凶、yearly Si Hua斷語、具體事件與 high-stakes determinism remain fail-closed; awaiting bridge-generated caches / formal PR validation / merge / canonical read-back;
   - monthly interpretation: READY — monthly calculation admission merged and canonically read back; interpretation still requires its own source-backed claim admission;
   - daily interpretation: READY — daily calculation admission merged and canonically read back; interpretation still requires its own source-backed claim admission;
   - hourly interpretation: READY — hourly calculation admission merged and canonically read back; interpretation still requires its own source-backed claim admission;
@@ -589,6 +589,15 @@ Ordering rationale:
   - exact-main canonical read-back confirms V7 runtime, decadal interpretation admission, 2-claim registry, root production admission and PLAYBOOK_INDEX routing at `f63974a9667e81831b610c1d34e206b878f0b3a3`;
   - exact-main run `36281589408`: `validate` PASS and `casting-runtime` PASS; full unit suite, structural checker, exact-main Zi Wei handoff preparation and upload all passed;
   - exact-main artifact `10919032233` / `ziwei-deterministic-handoff-f63974a9667e81831b610c1d34e206b878f0b3a3` was published at 73,286 bytes with digest `sha256:c205d77412bf1baac301ce932fc969a0542f67176ba29987ec2e8d9fb487cdec`.
+- yearly_interpretation_stage_candidate_evidence:
+  - source pass uses `新鋟希夷陳先生紫微斗數全書 卷之五` / `論二限太歲吉凶` + `論流年太歲逢吉凶星殺`: yearly/太歲 requires same-layer 三方對照 and separate comparison with 大限 before synthesis; strong death/disease/legal/outcome language is intentionally excluded;
+  - candidate registry `ziwei_interpretation_claim_registry_yearly_v1.json` contains exactly 3 `methodology` claims with `temporal_scope=yearly`;
+  - `ZW-Y1-METHOD-TOPOLOGY-001` requires computed yearly period + yearly life-palace + yearly palace-role topology;
+  - `ZW-Y1-METHOD-PARENT-002` requires a compatible admitted decadal parent and forbids parent-claim promotion;
+  - `ZW-Y1-METHOD-BOUNDARY-003` prohibits generic yearly-fortune filler and finer month/day/hour timing without lower-layer admitted facts/claims;
+  - V8 is additive: V7 keeps yearly interpretation NOT_ADMITTED; V8 preserves V7 decadal bounded interpretation and adds yearly only;
+  - target-year `yearly_sihua` facts remain calculation context only; this stage does not admit generic yearly Four-Transformation interpretation;
+  - generated Zi Wei bundle/load-pack regeneration is delegated to the registered temporary yearly-interpretation bridge and is not hand-edited.
 - rule:
   - natal 52 claims must not be silently reused as flow prediction claims.
 - completion_gate:
