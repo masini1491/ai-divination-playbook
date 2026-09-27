@@ -638,8 +638,7 @@ This item is a standing reconciliation guard. It is not a request to change curr
 - status: OPEN
 - priority: P1
 - owner: shared civil-time implementation with Astrology as first consumer
-- blocked_by:
-  - AST-SHARED-003
+- blocked_by: none
 - current_state:
   - Astrology already production-validates IANA timezone input, Sydney civil time, DST nonexistent/ambiguous fail-closed behavior, and rejection of fixed-offset-only timezone identity inside `tools/astrology_provider.py`;
   - Zi Wei production Gregorian input remains `Asia/Taipei`-only and must not duplicate a second generic timezone/DST resolver.
