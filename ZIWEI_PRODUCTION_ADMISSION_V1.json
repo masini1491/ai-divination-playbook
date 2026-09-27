@@ -12,13 +12,15 @@
     "major_star_subjects": 14,
     "palace_subjects": 12,
     "admitted_claims": 61,
-    "optional_auxiliary_subjects": 4,
-    "maximum_admitted_claims_with_optional_modules": 68,
+    "optional_auxiliary_subjects": 14,
+    "maximum_admitted_claims_with_optional_modules": 78,
     "optional_sihua_claims": 3,
     "first_layer_claims": 52,
     "same_palace_pair_claims": 2,
     "body_palace_overlay_claims": 5,
-    "star_palace_context_claims": 2
+    "star_palace_context_claims": 2,
+    "optional_m0_auxiliary_subjects": 4,
+    "optional_m1_auxiliary_subjects": 10
   },
   "calculation": {
     "provider_id": "ziwei-scope-a-natal-python",
@@ -51,7 +53,7 @@
   },
   "pipeline": {
     "pipeline_id": "ziwei-scope-a-production-pipeline-v1",
-    "pipeline_version": "1.4.0",
+    "pipeline_version": "1.5.0",
     "runtime_owner": "tools/ziwei_runtime.py",
     "interpretation_profile": "ziwei.interpretation.tw_v1",
     "delivery_contract": "references/ziwei/UNCERTAINTY_SAFETY_DELIVERY_CONTRACT_V0.md",
@@ -78,14 +80,15 @@
   ],
   "research_registry_history_policy": "remain production_routable=false; production authority is granted only by this manifest + pipeline binding",
   "unsupported_scopes": [
-    "non_m0_auxiliary_minor_star_interpretation",
     "brightness_conditioned_interpretation",
     "four_transformation_interpretation_beyond_admitted_source_explicit_claims",
     "dynamic_prediction",
     "star_palace_cartesian_claims",
     "same_palace_pair_claims_beyond_ZIWEI_SAME_PALACE_PAIR_ADMISSION_V1",
     "body_palace_overlay_semantics_beyond_ZIWEI_BODY_PALACE_OVERLAY_ADMISSION_V1",
-    "star_palace_context_claims_beyond_ZIWEI_STAR_PALACE_CONTEXT_ADMISSION_V1"
+    "star_palace_context_claims_beyond_ZIWEI_STAR_PALACE_CONTEXT_ADMISSION_V1",
+    "non_m0_m1_auxiliary_minor_star_interpretation",
+    "m1_temporal_or_flow_star_promotion"
   ],
   "fail_closed": [
     "normalized_lunar_input_required",
@@ -105,7 +108,11 @@
     "body_palace_never_becomes_thirteenth_palace",
     "star_palace_context_claim_requires_exact_canonical_occupancy_fact",
     "unadmitted_star_palace_pair_uses_existing_bounded_composition_only",
-    "no_cartesian_star_palace_context_generation"
+    "no_cartesian_star_palace_context_generation",
+    "m1_auxiliary_requires_m0_auxiliary",
+    "generic_auxiliary_availability_requires_m0_plus_m1",
+    "m2_m3_minor_star_inference_forbidden",
+    "m1_high_stakes_event_doctrine_forbidden"
   ],
   "high_stakes_guardrails": [
     "no_deterministic_health_or_death_prediction",
@@ -154,6 +161,7 @@
     "optional_modules": [
       "brightness_v1",
       "m0_auxiliary_v1",
+      "m1_auxiliary_v1",
       "sihua_v1"
     ],
     "compatibility_adapters": [
@@ -346,6 +354,26 @@
       ],
       "claim_scope": "three_source_explicit_fact_gated_transformed_star_conditionals",
       "transformed_star_interpretation_admitted": true
+    },
+    {
+      "module_id": "m1_auxiliary_v1",
+      "requires_modules": [
+        "m0_auxiliary_v1"
+      ],
+      "admission_manifest": "ZIWEI_M1_AUXILIARY_ADMISSION_V1.json",
+      "runtime_owner": "tools/ziwei_runtime.py",
+      "provider": "tools/ziwei_m1_auxiliary_provider.py",
+      "profile_id": "ziwei.auxiliary.m1.common_v1",
+      "admitted_subjects": 10,
+      "admitted_claims_added": 10,
+      "admitted_research_registries": [
+        "ziwei_interpretation_claim_registry_m1_auxiliary_v1.json"
+      ],
+      "generic_auxiliary_availability": "only_when_m0_plus_m1_active",
+      "blanket_minor_star_admission": false,
+      "claim_scope": "bounded_m1_modifier_role_policy_only",
+      "historical_semantic_core_admitted": false,
+      "temporal_scope": "natal_baseline"
     }
   ],
   "separate_temporal_calculation_admissions": [

@@ -1,0 +1,403 @@
+{
+  "schema_name": "ziwei_interpretation_claim_registry",
+  "schema_version": "0.1.1-research",
+  "record_status": "REFERENCE-ONLY",
+  "record_kind": "ziwei_interpretation_claim_family_registry",
+  "record_id": "ziwei-m1-auxiliary-v1",
+  "production_routable": false,
+  "interpretation_profile": "ziwei.interpretation.tw_v1",
+  "sources": [
+    {
+      "source_id": "SRC-NIHAI-M1-AUXILIARY",
+      "source_role": "PRACTITIONER_REFERENCE",
+      "admission_status": [
+        "CLAIM_ELIGIBLE"
+      ],
+      "storage_mode": [
+        "metadata_locator_normalized_paraphrase"
+      ],
+      "independence_status": "single_practitioner_corpus",
+      "title": "倪海廈天紀課程整理 — high-impact auxiliary / 六殺 material",
+      "repository": "Renhuai123/nihai-tianji-corpus",
+      "immutable_revision": "c90006168195c0650328b7199669eb6a2d0cac93",
+      "locator": "docs/01-主星.md; docs/03-格局.md",
+      "admission_scope": [
+        "bounded modifier-role evidence for 天魁/天鉞",
+        "bounded resource/mobility modifier evidence for 祿存/天馬",
+        "bounded adverse/disruptive modifier evidence for 羊陀火鈴空劫"
+      ],
+      "excluded_scope": [
+        "deterministic health or death outcomes",
+        "legal outcome guarantees",
+        "guaranteed promotion/exam success",
+        "guaranteed wealth or ruin",
+        "independent historical semantic-core authority"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "ZW-M1-TIANKUI-CORE-001",
+      "layer": "L4",
+      "claim_type": "star_core",
+      "subject": "天魁",
+      "assertion_class": "project_adoption",
+      "normalized_statement": "天魁在本 M1 邊界只作為貴人／資格／支持條件星使用；可修飾既有 admitted claim，但不得直接推出考試、升遷或地位結果。",
+      "source_refs": [
+        "SRC-NIHAI-M1-AUXILIARY"
+      ],
+      "source_locators": [
+        "Renhuai123/nihai-tianji-corpus@c90006168195c0650328b7199669eb6a2d0cac93:docs/01-主星.md p07 §7 @00:22:37"
+      ],
+      "applicability": {
+        "requires": [
+          "star_present:天魁"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "auxiliary_modifier_role_only"
+        ],
+        "palace_scope": [
+          "any"
+        ],
+        "topology_scope": [
+          "self",
+          "sanfang"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-M1-TIANYUE-CORE-001",
+      "layer": "L4",
+      "claim_type": "star_core",
+      "subject": "天鉞",
+      "assertion_class": "project_adoption",
+      "normalized_statement": "天鉞在本 M1 邊界只作為貴人／資格／支持條件星使用；可修飾既有 admitted claim，但不得直接推出考試、升遷或地位結果。",
+      "source_refs": [
+        "SRC-NIHAI-M1-AUXILIARY"
+      ],
+      "source_locators": [
+        "Renhuai123/nihai-tianji-corpus@c90006168195c0650328b7199669eb6a2d0cac93:docs/01-主星.md p07 §7 @00:22:37"
+      ],
+      "applicability": {
+        "requires": [
+          "star_present:天鉞"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "auxiliary_modifier_role_only"
+        ],
+        "palace_scope": [
+          "any"
+        ],
+        "topology_scope": [
+          "self",
+          "sanfang"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-M1-LUCUN-CORE-001",
+      "layer": "L4",
+      "claim_type": "star_core",
+      "subject": "祿存",
+      "assertion_class": "project_adoption",
+      "normalized_statement": "祿存在本 M1 邊界只作為資源／祿益條件星使用；可修飾既有 admitted claim，但不得直接推出財富或收益保證。",
+      "source_refs": [
+        "SRC-NIHAI-M1-AUXILIARY"
+      ],
+      "source_locators": [
+        "Renhuai123/nihai-tianji-corpus@c90006168195c0650328b7199669eb6a2d0cac93:docs/03-格局.md p07 §13 @00:50:17"
+      ],
+      "applicability": {
+        "requires": [
+          "star_present:祿存"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "auxiliary_modifier_role_only"
+        ],
+        "palace_scope": [
+          "any"
+        ],
+        "topology_scope": [
+          "self",
+          "sanfang"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-M1-TIANMA-CORE-001",
+      "layer": "L4",
+      "claim_type": "star_core",
+      "subject": "天馬",
+      "assertion_class": "project_adoption",
+      "normalized_statement": "天馬在本 M1 邊界只作為移動／變動／奔波條件星使用；可修飾既有 admitted claim，但不得直接推出遷移、旅行或職涯結果。",
+      "source_refs": [
+        "SRC-NIHAI-M1-AUXILIARY"
+      ],
+      "source_locators": [
+        "Renhuai123/nihai-tianji-corpus@c90006168195c0650328b7199669eb6a2d0cac93:docs/03-格局.md p07 §13 @00:50:17"
+      ],
+      "applicability": {
+        "requires": [
+          "star_present:天馬"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "auxiliary_modifier_role_only"
+        ],
+        "palace_scope": [
+          "any"
+        ],
+        "topology_scope": [
+          "self",
+          "sanfang"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-M1-QINGYANG-CORE-001",
+      "layer": "L4",
+      "claim_type": "star_core",
+      "subject": "擎羊",
+      "assertion_class": "project_adoption",
+      "normalized_statement": "擎羊在本 M1 邊界只作為高摩擦／衝突／煞曜條件星使用；可降低或改變既有 claim 的表現，不得直接推出受傷、疾病、死亡或法律結果。",
+      "source_refs": [
+        "SRC-NIHAI-M1-AUXILIARY"
+      ],
+      "source_locators": [
+        "Renhuai123/nihai-tianji-corpus@c90006168195c0650328b7199669eb6a2d0cac93:docs/01-主星.md p07 §1–4 @00:04:49-00:12:31"
+      ],
+      "applicability": {
+        "requires": [
+          "star_present:擎羊"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "auxiliary_modifier_role_only"
+        ],
+        "palace_scope": [
+          "any"
+        ],
+        "topology_scope": [
+          "self",
+          "sanfang"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-M1-TUOLUO-CORE-001",
+      "layer": "L4",
+      "claim_type": "star_core",
+      "subject": "陀羅",
+      "assertion_class": "project_adoption",
+      "normalized_statement": "陀羅在本 M1 邊界只作為阻滯／牽制／煞曜條件星使用；可降低或改變既有 claim 的表現，不得直接推出受傷、疾病、死亡或法律結果。",
+      "source_refs": [
+        "SRC-NIHAI-M1-AUXILIARY"
+      ],
+      "source_locators": [
+        "Renhuai123/nihai-tianji-corpus@c90006168195c0650328b7199669eb6a2d0cac93:docs/01-主星.md p07 §1–4 @00:04:49-00:12:31"
+      ],
+      "applicability": {
+        "requires": [
+          "star_present:陀羅"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "auxiliary_modifier_role_only"
+        ],
+        "palace_scope": [
+          "any"
+        ],
+        "topology_scope": [
+          "self",
+          "sanfang"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-M1-HUOXING-CORE-001",
+      "layer": "L4",
+      "claim_type": "star_core",
+      "subject": "火星",
+      "assertion_class": "project_adoption",
+      "normalized_statement": "火星在本 M1 邊界只作為急烈／衝突／高波動煞曜條件星使用；可修飾既有 claim，不得直接推出災害、受傷、疾病或法律結果。",
+      "source_refs": [
+        "SRC-NIHAI-M1-AUXILIARY"
+      ],
+      "source_locators": [
+        "Renhuai123/nihai-tianji-corpus@c90006168195c0650328b7199669eb6a2d0cac93:docs/01-主星.md p07 §1–4 @00:04:49-00:12:31"
+      ],
+      "applicability": {
+        "requires": [
+          "star_present:火星"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "auxiliary_modifier_role_only"
+        ],
+        "palace_scope": [
+          "any"
+        ],
+        "topology_scope": [
+          "self",
+          "sanfang"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-M1-LINGXING-CORE-001",
+      "layer": "L4",
+      "claim_type": "star_core",
+      "subject": "鈴星",
+      "assertion_class": "project_adoption",
+      "normalized_statement": "鈴星在本 M1 邊界只作為緊張／衝突／高波動煞曜條件星使用；可修飾既有 claim，不得直接推出災害、受傷、疾病或法律結果。",
+      "source_refs": [
+        "SRC-NIHAI-M1-AUXILIARY"
+      ],
+      "source_locators": [
+        "Renhuai123/nihai-tianji-corpus@c90006168195c0650328b7199669eb6a2d0cac93:docs/01-主星.md p07 §1–4 @00:04:49-00:12:31"
+      ],
+      "applicability": {
+        "requires": [
+          "star_present:鈴星"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "auxiliary_modifier_role_only"
+        ],
+        "palace_scope": [
+          "any"
+        ],
+        "topology_scope": [
+          "self",
+          "sanfang"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-M1-DIKONG-CORE-001",
+      "layer": "L4",
+      "claim_type": "star_core",
+      "subject": "地空",
+      "assertion_class": "project_adoption",
+      "normalized_statement": "地空在本 M1 邊界只作為落空／耗散／不穩定煞曜條件星使用；可修飾既有 claim，不得直接推出財務、健康或死亡結果。",
+      "source_refs": [
+        "SRC-NIHAI-M1-AUXILIARY"
+      ],
+      "source_locators": [
+        "Renhuai123/nihai-tianji-corpus@c90006168195c0650328b7199669eb6a2d0cac93:docs/01-主星.md p07 §1–4 @00:04:49-00:12:31"
+      ],
+      "applicability": {
+        "requires": [
+          "star_present:地空"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "auxiliary_modifier_role_only"
+        ],
+        "palace_scope": [
+          "any"
+        ],
+        "topology_scope": [
+          "self",
+          "sanfang"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-M1-DIJIE-CORE-001",
+      "layer": "L4",
+      "claim_type": "star_core",
+      "subject": "地劫",
+      "assertion_class": "project_adoption",
+      "normalized_statement": "地劫在本 M1 邊界只作為耗損／中斷／不穩定煞曜條件星使用；可修飾既有 claim，不得直接推出財務、健康或死亡結果。",
+      "source_refs": [
+        "SRC-NIHAI-M1-AUXILIARY"
+      ],
+      "source_locators": [
+        "Renhuai123/nihai-tianji-corpus@c90006168195c0650328b7199669eb6a2d0cac93:docs/01-主星.md p07 §1–4 @00:04:49-00:12:31"
+      ],
+      "applicability": {
+        "requires": [
+          "star_present:地劫"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "auxiliary_modifier_role_only"
+        ],
+        "palace_scope": [
+          "any"
+        ],
+        "topology_scope": [
+          "self",
+          "sanfang"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    }
+  ],
+  "conflict_groups": [],
+  "privacy": {
+    "contains_real_birth_data": false
+  },
+  "research_result": {
+    "production_authority_granted": false,
+    "scientific_predictive_validity_claimed": false,
+    "claim_scope": "bounded_m1_modifier_role_policy_only",
+    "historical_semantic_core_admitted": false,
+    "claim_count": 10,
+    "natal_only": true,
+    "blanket_minor_star_admission": false
+  }
+}

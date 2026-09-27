@@ -67,11 +67,12 @@ Star + palace first-layer coverage  CLOSED / 26 subjects / 52 claims
 Star×palace composition policy       CLOSED — RESEARCH / exhaustive matrix rejected; sparse source-explicit overrides only
 Brightness interpretation policy      CLOSED — RESEARCH / profile-bound modifier; default table not selected
 Four-Transformation interpretation    CLOSED — RESEARCH / profile-preserving claim gate; transformed-star overrides source-gated
-Minor-star admission taxonomy          CLOSED — RESEARCH / M0 assistants first eligible; M1 source closure required; long-tail/flow deferred
+Minor-star admission taxonomy          CLOSED — RESEARCH / M0 + M1 bounded natal optional modules admitted; long-tail/flow deferred
 Temporal-context interpretation         CLOSED — RESEARCH / scope + provenance contract; dynamic runtime and claim corpus not admitted
 Same-palace major-star pairs             BOUNDED PRODUCTION ADMISSION / 武曲×天相 only / 兄弟宮 + 官祿宮 / 2 practitioner-bounded claims; other reviewed pairs remain non-admitted
 Body-Palace overlay interpretation        BOUNDED PRODUCTION ADMISSION / 身宮 methodology + 夫妻宮、財帛宮、官祿宮、遷移宮 overlays / 5 practitioner-bounded claims / never thirteenth palace
 Sparse star×palace contextual claims      BOUNDED PRODUCTION ADMISSION / 天相×命宮 + 天梁×官祿宮 / 2 practitioner-bounded overrides / exact canonical occupancy / no Cartesian expansion
+M1 high-impact auxiliary stars           BOUNDED PRODUCTION ADMISSION / 10 natal placement facts + 10 modifier-role policy claims / requires M0 / no M2-M3 or high-stakes event doctrine
 ```
 
 任何 upstream rule 只有在本 research owner 明確採用後，才成為本研究線的 candidate contract；仍不因此取得 production authority。

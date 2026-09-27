@@ -51,6 +51,7 @@ OPTIONAL / explicit add-on:
 
 - `brightness_v1`: 14 主星 profile-bound brightness facts（廟／旺／得／利／平／不／陷），只用來滿足既有 admitted claim 的 dignity applicability；不得生成 brightness-only doctrine。
 - `m0_auxiliary_v1`: 左輔／右弼／文昌／文曲四星的 profile-bound natal placement + self/sanfang modifier facts；只 admission 4 個 bounded auxiliary-role **policy** claims 與既有 major-star conditional activation，不代表 blanket minor-star admission，也不代表四星各自 historical semantic core 已 production admission。
+- `m1_auxiliary_v1`: 天魁／天鉞／祿存／天馬／擎羊／陀羅／火星／鈴星／地空／地劫十星的 natal placement + self/sanfang modifier facts；必須與 `m0_auxiliary_v1` 同時啟用。只有 M0+M1 union 才提供 broader `auxiliary_stars` / `star_relations` availability，並 admission 10 個 bounded modifier-role policy claims；不 admission M2/M3、flow identity、高風險事件斷語或十星各自的獨立 historical semantic core。
 - `sihua_v1`: `sihua.default_v1` profile-bound 生年四化 deterministic facts + 3 條 source-explicit、fact-gated transformed-star conditionals（貪狼化祿四墓、太陽化忌五支例外、太陰化忌四支例外）。不得由四化 label 自動推導通用吉凶，也不得跨 profile 平均；未符合 exact profile / sihua / star-location facts 時不得啟動。
 - input clock profile `ziwei.true_solar.noaa_fractional_year_v1`: only when the user explicitly supplies both the profile and longitude; civil time remains default. This is local apparent solar time (longitude correction + equation of time), not birthplace inference or a universal tradition claim.
 
@@ -89,6 +90,9 @@ typed Zi Wei request
    → tools/ziwei_brightness_provider.py
 → optional_modules includes m0_auxiliary_v1
    → tools/ziwei_m0_auxiliary_provider.py
+→ optional_modules includes m1_auxiliary_v1 (requires m0_auxiliary_v1)
+   → tools/ziwei_m1_auxiliary_provider.py
+   → only M0+M1 union marks bounded auxiliary_stars / star_relations availability complete
 → optional_modules includes sihua_v1
    → tools/ziwei_sihua_provider.py
    → 3 source-explicit transformed-star claims（exact fact-gated）

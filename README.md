@@ -299,6 +299,7 @@ Zi Wei 目前是 bounded natal production method，適合使用者明確要求�
 - `23:00` 晚子時採 `next_day_at_23`；
 - 閏月採 `split_after_day_15`；
 - optional `brightness_v1`：14 主星廟／旺／得／利／平／不／陷 facts，只在明確要求廟旺／亮度時啟用；
+- optional `m1_auxiliary_v1`（需同時啟用 `m0_auxiliary_v1`）：天魁／天鉞／祿存／天馬／擎羊／陀羅／火星／鈴星／地空／地劫十星 natal placement + bounded modifier-role policy；M0+M1 才建立目前 admitted auxiliary domain 的 generic availability，不擴張 M2/M3 或高風險事件斷語；
 - optional `sihua_v1`：`sihua.default_v1` 生年四化 profile-bound deterministic facts + 3 條 source-explicit、fact-gated transformed-star claims；
 - provenance、omission、conflict、uncertainty 與 safety delivery。
 
