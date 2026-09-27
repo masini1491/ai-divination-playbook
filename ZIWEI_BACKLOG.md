@@ -695,30 +695,42 @@ Ordering rationale:
 ### ZW-P2-050 — Body-Palace overlay interpretation admission
 
 - type: FEATURE / INTERPRETATION / NATAL OVERLAY
-- status: DEFERRED
+- status: IN_PROGRESS
 - priority: P2
 - owner: Zi Wei interpretation evidence
 - blocked_by: none
-- problem:
-  - natal provider already computes `body_palace.branch` with canonical policy `overlay_not_thirteenth_palace`;
-  - research architecture explicitly reserves a `body-palace overlay` composition dimension;
-  - current admitted 52-claim natal corpus contains no Body-Palace semantic claim family, so production can report the Body Palace location but cannot use it for chart-specific interpretation.
+- evidence_decision:
+  - pinned practitioner corpus `Renhuai123/nihai-tianji-corpus@c90006168195c0650328b7199669eb6a2d0cac93` explicitly defines 身宮 as a postnatal / 後天 development overlay and provides bounded semantics for 身宮 overlaying `夫妻宮`、`財帛宮`、`官祿宮`、`遷移宮`;
+  - this pass admits one methodology claim plus those four exact overlay claims only;
+  - other Body-Palace contexts remain without new semantic doctrine rather than being filled from model memory.
 - canonical_research:
   - `references/ziwei/INTERPRETATION_ARCHITECTURE_V0.md`
   - `references/ziwei/INTERPRETATION_RUNTIME_CONTRACTS_V0.md`
   - `references/ziwei/SOURCE_RECONCILIATION_V1.md`
   - `references/ziwei/CALCULATION_ENGINE_RESEARCH.md`
-  - `references/ziwei/ziwei_interpretation_claim_registry_palaces_v0.json`
+  - `references/ziwei/BODY_PALACE_OVERLAY_RESEARCH_V1.md`
+  - `references/ziwei/ziwei_interpretation_claim_registry_body_palace_overlay_v1.json`
+- implementation_candidate:
+  - natal provider advances to `ziwei-scope-a-natal-python@0.3.0` and deterministically projects `body_palace.branch` onto the existing twelve-palace layout as `body_palace.overlay_palace`;
+  - retrieval facts add `fact_available:body_palace_overlay` + one `body_palace_overlay:<existing palace>` token; no second geometry path or thirteenth palace is introduced;
+  - claim schema `0.4.0-research` adds explicit `body_palace_overlay` / `overlay_palace` / `subjects[]` identity;
+  - production registry adds exactly 5 claims: 1 methodology + 4 exact overlays;
+  - `body_palace_overlay` specificity outranks generic star/palace claims only when the exact admitted overlay fact matches; base claims remain bounded context;
+  - base natal claim count candidate becomes 59 = 52 first-layer + 2 sparse same-palace pair + 5 Body-Palace claims; optional M0 + Sihua maximum becomes 66;
+  - Scope-A pipeline advances to `1.3.0`; downstream decadal parent identity tracks natal provider `0.3.0`.
 - completion_gate:
   - source-explicit Body-Palace domain / methodology evidence;
   - exact overlay-to-existing-palace applicability;
   - any required machine fact / profile identity is explicit and regression-covered;
   - bounded synthesis with palace/star evidence preserves provenance and conflict identity;
-  - interpretation admission is separate from already-admitted Body-Palace calculation.
+  - interpretation admission is separate from already-admitted Body-Palace calculation;
+  - registry/schema/provider/runtime/admission/index/materialization/bundle/current docs remain synchronized;
+  - generator outputs, formal PR CI, merge, exact-main CI/artifact and canonical read-back complete before `DONE`.
 - production_boundary:
   - Body Palace remains an overlay, never a thirteenth ordinary palace;
   - calculation identity alone does not create user-facing doctrine;
-  - no model-memory fallback when source-explicit semantic evidence is unavailable.
+  - no model-memory fallback when source-explicit semantic evidence is unavailable;
+  - no deterministic marriage, employment, relocation or wealth outcome.
 
 ### ZW-P2-060 — Sparse same-palace major-star combination claims
 
