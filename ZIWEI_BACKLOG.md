@@ -571,7 +571,7 @@ Ordering rationale:
   - yearly interpretation: DONE — V8 bounded methodology interpretation merged and canonically read back; exactly 3 source-backed / project-bounded claims are admitted, while generic流年吉凶、yearly Si Hua斷語、具體事件與 high-stakes determinism remain fail-closed;
   - monthly interpretation: DONE — V9 bounded methodology interpretation merged and canonically read back; exactly 3 bounded claims are admitted, while generic本月吉凶、monthly Si Hua／flow stars、具體日／時事件與 high-stakes determinism remain fail-closed;
   - daily interpretation: DONE — V10 bounded methodology interpretation merged and canonically read back; exactly 3 practitioner/tradition-bounded claims are admitted, while generic今日吉凶、day pillar、daily Si Hua／flow stars、具體流時事件與 high-stakes determinism remain fail-closed;
-  - hourly interpretation: IMPLEMENTED_CANDIDATE — V11 admits exactly 3 profile-bounded methodology claims gated by explicit hour-branch identity + compatible daily parent; physical hour pillar、五鼠遁時干、hourly Si Hua／flow stars、generic時辰吉凶、具體事件與 high-stakes determinism remain fail-closed; awaiting bridge-generated caches / formal PR validation / merge / canonical read-back;
+  - hourly interpretation: IMPLEMENTED_CANDIDATE — V11 admits exactly 3 profile-bounded methodology claims gated by explicit hour-branch identity + compatible daily parent; physical hour pillar、五鼠遁時干、hourly Si Hua／flow stars、generic時辰吉凶、具體事件與 high-stakes determinism remain fail-closed; focused regressions PASS; registry validation PASS; Zi Wei bundle/load-pack regeneration and load budget PASS; awaiting formal PR validation / merge / canonical read-back;
 - staging_rule:
   - decadal interpretation may start after decadal calculation admission;
   - yearly interpretation may start after yearly calculation admission;
@@ -638,7 +638,10 @@ Ordering rationale:
   - `ZW-H1-METHOD-BOUNDARY-003` prohibits generic hourly-fortune filler and concrete-event claims without separately admitted contextual evidence;
   - V11 is additive: V10 keeps hourly interpretation NOT_ADMITTED; V11 preserves V7–V10 bounded interpretation and adds hourly only;
   - physical hour pillar, 五鼠遁 hour stem, hourly Si Hua and flow stars remain not computed/admitted;
-  - generated Zi Wei bundle/load-pack regeneration is delegated to the registered temporary hourly-interpretation bridge and is not hand-edited.
+  - generated Zi Wei bundle/load-pack regeneration is delegated to the registered temporary hourly-interpretation bridge and is not hand-edited;
+  - successful hourly bridge run `36293420833`: 50 focused regressions PASS, 3-claim registry validator PASS, Zi Wei bundle PASS, ChatGPT load-pack PASS, `explicit_research_astrology` load ratio `0.7994`, overall load budget PASS;
+  - generated-cache bot commit `dafb35c816d96164170a331c591146b6601403a8` changed only the canonical Zi Wei bundle, generated load pack, and removal of the temporary hourly bridge;
+  - the pre-bot formal validate run saw stale generated artifacts, so this human-authored evidence commit re-triggers formal PR validation against the generated-cache head.
 - rule:
   - natal 52 claims must not be silently reused as flow prediction claims.
 - completion_gate:
