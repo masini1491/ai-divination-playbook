@@ -1,0 +1,163 @@
+{
+  "schema_name": "ziwei_interpretation_claim_registry",
+  "schema_version": "0.1.1-research",
+  "record_status": "REFERENCE-ONLY",
+  "record_kind": "ziwei_interpretation_claim_family_registry",
+  "record_id": "ziwei-monthly-methodology-v1",
+  "production_routable": false,
+  "interpretation_profile": "ziwei.interpretation.tw_v1",
+  "sources": [
+    {
+      "source_id": "SRC-QUANSHU-DOUJUN-MONTHLY-METHOD",
+      "source_role": "PRIMARY_TEXT",
+      "admission_status": [
+        "CLAIM_ELIGIBLE"
+      ],
+      "storage_mode": [
+        "metadata_locator_normalized_paraphrase"
+      ],
+      "independence_status": "primary_witness",
+      "title": "新鋟希夷陳先生紫微斗數全書 卷之三",
+      "witness_identity": "Shidian Guji digital-text witness for 斗君／月限 methodology",
+      "locator": "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzooy7dkbhh",
+      "language": "zh-Hant",
+      "verification_status": [
+        "digital_text_witness_research"
+      ],
+      "admission_scope": [
+        "bounded monthly methodology claims only"
+      ],
+      "excluded_scope": [
+        "deterministic event prediction",
+        "death/illness/legal/financial guarantees",
+        "generic auspicious/inauspicious monthly outcome doctrine",
+        "unverified glyph-level variants",
+        "parent claim promotion"
+      ],
+      "notes": [
+        "Uses the text's 斗君／月限 layering as methodology evidence only. Strong historical outcome language is excluded from production admission."
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "ZW-M1-METHOD-IDENTITY-001",
+      "layer": "L5",
+      "claim_type": "methodology",
+      "subject": "流月方法",
+      "assertion_class": "historical_core",
+      "normalized_statement": "流月判讀需要先固定月層自身的斗君／月限 identity；不可只拿流年或其他 parent scope 直接代替當月 context。Project monthly provider 因此以 effective lunar month + monthly life palace 保留月層 identity。",
+      "source_refs": [
+        "SRC-QUANSHU-DOUJUN-MONTHLY-METHOD"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzooy7dkbhh"
+      ],
+      "applicability": {
+        "requires": [
+          "monthly_period_present",
+          "monthly_life_palace_identified",
+          "monthly_effective_month_identified"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "monthly_profile",
+          "doujun_month_identity"
+        ],
+        "palace_scope": [
+          "any"
+        ],
+        "topology_scope": [
+          "self"
+        ],
+        "temporal_scope": "monthly"
+      },
+      "confidence_status": "supported",
+      "support_status": "single_source_supported",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-M1-METHOD-PARENT-002",
+      "layer": "L5",
+      "claim_type": "methodology",
+      "subject": "流月方法",
+      "assertion_class": "historical_core",
+      "normalized_statement": "月限用於細化當年 context，即使較高層整體條件良好，仍需另看月限；因此流月應與 compatible 流年 parent 分層合參，不得用單一月層覆寫流年，也不得把流年 claim 改標成流月 claim。",
+      "source_refs": [
+        "SRC-QUANSHU-DOUJUN-MONTHLY-METHOD"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzooy7dkbhh"
+      ],
+      "applicability": {
+        "requires": [
+          "monthly_period_present",
+          "compatible_yearly_parent_present"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "parent_yearly_context"
+        ],
+        "palace_scope": [
+          "any"
+        ],
+        "topology_scope": [
+          "self"
+        ],
+        "temporal_scope": "monthly"
+      },
+      "confidence_status": "supported",
+      "support_status": "single_source_supported",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-M1-METHOD-BOUNDARY-003",
+      "layer": "L5",
+      "claim_type": "methodology",
+      "subject": "流月方法",
+      "assertion_class": "project_adoption",
+      "normalized_statement": "流月 calculation facts只建立當月 context，不自帶固定吉凶方向；若沒有另行 admitted 的月層星曜／宮位 contextual claim，就不得用模型記憶補成『本月吉凶』，也不得由月層直接推出流日／流時事件。",
+      "source_refs": [
+        "SRC-QUANSHU-DOUJUN-MONTHLY-METHOD"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzooy7dkbhh"
+      ],
+      "applicability": {
+        "requires": [
+          "monthly_period_present"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "no_generic_monthly_filler",
+          "lower_layer_required_for_finer_timing"
+        ],
+        "palace_scope": [
+          "any"
+        ],
+        "topology_scope": [
+          "self"
+        ],
+        "temporal_scope": "monthly"
+      },
+      "confidence_status": "qualified",
+      "support_status": "qualified",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    }
+  ],
+  "conflict_groups": [],
+  "privacy": {
+    "contains_real_birth_data": false
+  },
+  "research_result": {
+    "batch": "monthly-methodology-v1",
+    "claim_count": 3,
+    "subjects_covered": 1,
+    "architecture_validation_target": "source-normalized bounded monthly methodology claims",
+    "production_authority_granted": false,
+    "scientific_predictive_validity_claimed": false
+  }
+}
