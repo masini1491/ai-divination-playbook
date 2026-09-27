@@ -27,6 +27,7 @@ research-only scaffold
 - Gregorian input adapter：`ziwei.calendar.civil_v2` 已 admitted（explicit IANA civil time；shared `civil-time-zoneinfo-v1` validation）
 - optional true-solar input profile：`ziwei.true_solar.noaa_fractional_year_v1` 已 admitted，僅 explicit profile + longitude；civil time仍是default，birthplace→longitude/timezone不猜
 - optional brightness profile：`ziwei.brightness.iztro_v1` 已 admitted，僅 explicit add-on
+- sparse same-palace pair interpretation：`武曲×天相` 目前只 admission `兄弟宮` / `官祿宮` 2 條 practitioner-bounded claims；exact canonical occupancy match 才啟動，無 14×14 Cartesian expansion
 - deterministic ChatGPT materialization：`ZIWEI_MATERIALIZATION.md` + bundle 已建立
 - ordinary unspecified auto-routing：仍刻意為 false
 - dynamic calculation：`decadal → yearly → monthly → daily → hourly` 五層 calculation-only 已依 V2–V6 分層 production-admitted；
@@ -35,7 +36,7 @@ research-only scaffold
 - monthly / 流月 interpretation：V9 只 admission 3 條 bounded methodology claims，要求斗君／effective-month 月層 identity、compatible 流年 parent 合參與 no-generic-monthly-filler；monthly Si Hua / flow stars仍未 admission；
 - daily / 流日 interpretation：V10 只 admission 3 條 bounded methodology claims，來源為 practitioner/tradition references；要求 explicit lunar-day identity、compatible 流月 parent 合參與 no-generic-daily-filler；day pillar / daily Si Hua / flow stars仍未 admission；
 - hourly / 流時 interpretation：V11 只 admission 3 條 profile-bounded methodology claims，要求 explicit hour-branch identity、compatible 流日 parent 合參與 no-generic-hourly-filler；來源亦顯示派法不唯一，故不宣稱唯一傳統；physical hour pillar / 五鼠遁時干 / hourly Si Hua / flow stars仍未 admission；
-- broader contextual star×palace / 未另 admission 的 auxiliary / Four-Transformation interpretation：仍未 production-admitted
+- broader contextual star×palace / 未另 admission 的 auxiliary / Four-Transformation interpretation：仍未 production-admitted；same-palace pairs 僅上述 2 條 source-explicit claims admitted
 - 科學／客觀預測有效性：未聲稱
 
 ## Production boundary

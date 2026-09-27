@@ -11,10 +11,12 @@
     "temporal_scope": "natal_baseline",
     "major_star_subjects": 14,
     "palace_subjects": 12,
-    "admitted_claims": 52,
+    "admitted_claims": 54,
     "optional_auxiliary_subjects": 4,
-    "maximum_admitted_claims_with_optional_modules": 59,
-    "optional_sihua_claims": 3
+    "maximum_admitted_claims_with_optional_modules": 61,
+    "optional_sihua_claims": 3,
+    "first_layer_claims": 52,
+    "same_palace_pair_claims": 2
   },
   "calculation": {
     "provider_id": "ziwei-scope-a-natal-python",
@@ -57,15 +59,17 @@
   "admitted_research_registries": [
     "ziwei_interpretation_claim_registry_batch1.json",
     "ziwei_interpretation_claim_registry_batch2.json",
-    "ziwei_interpretation_claim_registry_palaces_v0.json"
+    "ziwei_interpretation_claim_registry_palaces_v0.json",
+    "ziwei_interpretation_claim_registry_same_palace_pairs_v1.json"
   ],
   "research_registry_history_policy": "remain production_routable=false; production authority is granted only by this manifest + pipeline binding",
   "unsupported_scopes": [
     "non_m0_auxiliary_minor_star_interpretation",
     "brightness_conditioned_interpretation",
     "four_transformation_interpretation_beyond_admitted_source_explicit_claims",
+    "dynamic_prediction",
     "star_palace_cartesian_claims",
-    "dynamic_prediction"
+    "same_palace_pair_claims_beyond_ZIWEI_SAME_PALACE_PAIR_ADMISSION_V1"
   ],
   "fail_closed": [
     "normalized_lunar_input_required",
@@ -76,7 +80,10 @@
     "missing_required_fact_omits_claim",
     "undemonstrated_conditional_claim_omitted",
     "empty_palace_claim_requires_verified_palace_occupancy",
-    "decadal_requires_explicit_gender_and_target_lunar_year"
+    "decadal_requires_explicit_gender_and_target_lunar_year",
+    "same_palace_pair_claim_requires_exact_canonical_occupancy_facts",
+    "unadmitted_same_palace_pair_uses_existing_bounded_composition_only",
+    "no_cartesian_same_palace_pair_generation"
   ],
   "high_stakes_guardrails": [
     "no_deterministic_health_or_death_prediction",
@@ -462,6 +469,21 @@
       "flow_star_interpretation_admitted": false,
       "generic_hourly_fortune_admitted": false,
       "concrete_event_prediction_admitted": false
+    }
+  ],
+  "separate_natal_interpretation_admissions": [
+    {
+      "module_id": "same_palace_major_star_pairs_v1",
+      "admission_manifest": "ZIWEI_SAME_PALACE_PAIR_ADMISSION_V1.json",
+      "registry": "references/ziwei/ziwei_interpretation_claim_registry_same_palace_pairs_v1.json",
+      "runtime_owner": "tools/ziwei_runtime.py",
+      "interpretation_profile": "ziwei.interpretation.tw_v1",
+      "claim_count": 2,
+      "pair_count": 1,
+      "status": "PRODUCTION_ADMITTED_BOUNDED_INTERPRETATION",
+      "automatic_on_exact_occupancy_match": true,
+      "cartesian_expansion": false,
+      "model_memory_pair_doctrine": false
     }
   ]
 }

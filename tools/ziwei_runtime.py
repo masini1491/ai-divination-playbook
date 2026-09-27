@@ -81,6 +81,7 @@ ADMITTED_REGISTRIES=(
     "ziwei_interpretation_claim_registry_batch1.json",
     "ziwei_interpretation_claim_registry_batch2.json",
     "ziwei_interpretation_claim_registry_palaces_v0.json",
+    "ziwei_interpretation_claim_registry_same_palace_pairs_v1.json",
 )
 M0_REGISTRY="ziwei_interpretation_claim_registry_m0_auxiliary_v1.json"
 SIHUA_REGISTRY="ziwei_interpretation_claim_registry_sihua_v0.json"

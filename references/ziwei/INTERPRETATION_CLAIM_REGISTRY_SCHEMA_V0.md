@@ -11,6 +11,7 @@ Supported versions：
 0.1.1-research  hardens conditional activation metadata for major-star claims
 0.2.0-research  historical palace-domain extension
 0.2.1-research  hardens conditional activation metadata for palace-capable registries
+0.3.0-research  adds explicit same-palace major-star pair claims without widening historical registries
 ```
 
 `0.2.x-research` remains backward-compatible at the validator level with v0.1 claim types. Historical `0.1.0` / `0.2.0` files remain validator-readable; the production-admitted 52-claim corpus now uses `0.1.1` / `0.2.1` so conditional activation is explicit.
@@ -65,6 +66,19 @@ palace_domain
 palace_conditional
 methodology
 ```
+
+### v0.3.0
+
+```text
+star_core
+star_conditional
+palace_domain
+palace_conditional
+same_palace_pair
+methodology
+```
+
+`same_palace_pair` is reserved for source-explicit pair semantics. It must preserve exactly two unique `pair_members[]` and a non-empty `subjects[]` search surface containing both members. Pair applicability must be expressed through deterministic facts such as two `star_in_palace:<star>:<same palace>` requirements; co-occurrence alone does not authorize a semantic claim.
 
 A v0.1.x registry must not use palace claim types. Hardened palace registries declare `0.2.1-research`.
 
@@ -166,6 +180,10 @@ For hardened `0.1.1-research` / `0.2.1-research`, every `star_conditional` / `pa
 Historical labels and modern aliases must remain distinguishable. In particular, historical `奴僕宮` must not silently become universal `交友宮` semantics.
 
 Body Palace is an overlay and is not admitted as a thirteenth ordinary palace claim family by this schema revision.
+
+## Same-palace pair semantics
+
+A `same_palace_pair` claim is more specific than independent star-core or palace-domain claims, but it does not erase them. It may be selected only when the exact source-admitted pair and palace applicability facts are present. Missing pair-specific evidence falls back to existing bounded composition; the schema does not permit Cartesian pair generation or model-memory doctrine.
 
 ## Conflict groups
 

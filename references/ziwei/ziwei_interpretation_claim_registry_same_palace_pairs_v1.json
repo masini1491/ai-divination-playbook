@@ -1,0 +1,182 @@
+{
+  "schema_name": "ziwei_interpretation_claim_registry",
+  "schema_version": "0.3.0-research",
+  "record_status": "REFERENCE-ONLY",
+  "record_kind": "ziwei_interpretation_claim_family_registry",
+  "record_id": "ziwei-same-palace-major-star-pairs-v1",
+  "production_routable": false,
+  "interpretation_profile": "ziwei.interpretation.tw_v1",
+  "claim_family": "same_palace_major_star_pairs_v1",
+  "retrieval_preconditions": {
+    "requires_l2_facts": true,
+    "requires_l3_policy": true,
+    "requires_palace_occupancy_facts": true,
+    "pair_specific_source_required": true
+  },
+  "sources": [
+    {
+      "source_id": "SRC-NIHAI-SAME-PALACE-WUQU-TIANXIANG",
+      "source_role": "PRACTITIONER_REFERENCE",
+      "admission_status": [
+        "CLAIM_ELIGIBLE"
+      ],
+      "storage_mode": [
+        "metadata_locator_normalized_paraphrase"
+      ],
+      "independence_status": "single_practitioner_corpus",
+      "title": "倪海廈天紀課程整理 — 十二宮",
+      "repository": "Renhuai123/nihai-tianji-corpus",
+      "immutable_revision": "c90006168195c0650328b7199669eb6a2d0cac93",
+      "locator": "docs/02-十二宫.md",
+      "license_note": "docs/ and data/ declared CC BY-NC-SA 4.0 in reviewed source registry; original course rights separately retained",
+      "admission_scope": [
+        "武曲×天相 same-palace practitioner-bounded claims in explicitly evidenced palace contexts"
+      ],
+      "excluded_scope": [
+        "universal 武曲天相 doctrine",
+        "all-palace generalization",
+        "career or family outcome guarantees",
+        "scientific predictive validity",
+        "case details not independently generalized"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "ZW-PAIR-WUQU-TIANXIANG-SIBLINGS-001",
+      "layer": "L4",
+      "claim_type": "same_palace_pair",
+      "subject": "武曲×天相",
+      "subjects": [
+        "武曲",
+        "天相",
+        "兄弟宮"
+      ],
+      "pair_members": [
+        "武曲",
+        "天相"
+      ],
+      "assertion_class": "practitioner_heuristic",
+      "normalized_statement": "在此 practitioner corpus 的兄弟宮語境中，武曲與天相同宮被視為偏正向、兄弟較能得力的訊號；本 claim 只保留這個來源明確的 bounded 傾向，不推導固定財富、職位或所有兄弟關係結果。",
+      "source_refs": [
+        "SRC-NIHAI-SAME-PALACE-WUQU-TIANXIANG"
+      ],
+      "source_locators": [
+        "Renhuai123/nihai-tianji-corpus@c90006168195c0650328b7199669eb6a2d0cac93:docs/02-十二宫.md p15 §12 @00:44:42-00:45:22"
+      ],
+      "applicability": {
+        "requires": [
+          "fact_available:palace_occupancy",
+          "star_in_palace:武曲:兄弟宮",
+          "star_in_palace:天相:兄弟宮"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "other_same_palace_stars",
+          "sanfang_sizheng",
+          "transformations",
+          "brightness"
+        ],
+        "palace_scope": [
+          "兄弟宮"
+        ],
+        "topology_scope": [
+          "self"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-PAIR-WUQU-TIANXIANG-CAREER-001",
+      "layer": "L4",
+      "claim_type": "same_palace_pair",
+      "subject": "武曲×天相",
+      "subjects": [
+        "武曲",
+        "天相",
+        "官祿宮"
+      ],
+      "pair_members": [
+        "武曲",
+        "天相"
+      ],
+      "assertion_class": "practitioner_heuristic",
+      "normalized_statement": "在此 practitioner corpus 的官祿宮語境中，武曲與天相同宮被用來描述職涯較偏私人企業而非公職；本 claim 是來源限定的職涯方向 heuristic，不代表職業必然性、適任性或結果保證。",
+      "source_refs": [
+        "SRC-NIHAI-SAME-PALACE-WUQU-TIANXIANG"
+      ],
+      "source_locators": [
+        "Renhuai123/nihai-tianji-corpus@c90006168195c0650328b7199669eb6a2d0cac93:docs/02-十二宫.md p25 §9 @00:38:08"
+      ],
+      "applicability": {
+        "requires": [
+          "fact_available:palace_occupancy",
+          "star_in_palace:武曲:官祿宮",
+          "star_in_palace:天相:官祿宮"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "other_same_palace_stars",
+          "sanfang_sizheng",
+          "transformations",
+          "brightness"
+        ],
+        "palace_scope": [
+          "官祿宮"
+        ],
+        "topology_scope": [
+          "self"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    }
+  ],
+  "conflict_groups": [],
+  "non_admitted_candidates": [
+    {
+      "pair_members": [
+        "廉貞",
+        "天府"
+      ],
+      "reason": "reviewed pinned corpus identifies co-occupancy in 夫妻宮 but does not provide a sufficiently isolated pair-specific semantic rule"
+    },
+    {
+      "pair_members": [
+        "天同",
+        "巨門"
+      ],
+      "reason": "reviewed pinned corpus identifies co-occupancy in a multi-star 夫妻宮 case; pair-specific semantics are confounded by other stars"
+    },
+    {
+      "pair_members": [
+        "太陽",
+        "天梁"
+      ],
+      "reason": "reviewed pinned practitioner corpus did not yield a source-explicit pair-specific semantic rule in the bounded pass"
+    }
+  ],
+  "privacy": {
+    "contains_real_birth_data": false
+  },
+  "research_result": {
+    "production_authority_granted": false,
+    "scientific_predictive_validity_claimed": false,
+    "claim_count": 2,
+    "pair_count": 1,
+    "admitted_pair": [
+      "武曲",
+      "天相"
+    ],
+    "scope": "two_palace_specific_practitioner_bounded_same_palace_pair_claims",
+    "exhaustive_pair_dictionary": false,
+    "cartesian_expansion": false
+  }
+}
