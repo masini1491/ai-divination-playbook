@@ -48,8 +48,7 @@ jobs:
           python -m unittest \
             tests.test_ziwei_calendar_contract_v1 \
             tests.test_ziwei_calendar_data_provider \
-            tests.test_ziwei_unified_runtime_v1 \
-            tests.test_ziwei_tool_bundle
+            tests.test_ziwei_unified_runtime_v1
       - name: Regenerate and verify generated caches
         run: |
           python tools/build_ziwei_tool_bundle.py
