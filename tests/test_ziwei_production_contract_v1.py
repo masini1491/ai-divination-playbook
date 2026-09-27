@@ -14,10 +14,11 @@ class ZiWeiProductionContractV1Tests(unittest.TestCase):
         self.assertEqual("PRODUCTION_ADMITTED",m["status"])
         self.assertEqual("explicit_user_request_only",m["activation"])
         self.assertFalse(m["ordinary_auto_routing"])
-        self.assertEqual(54,m["scope"]["admitted_claims"])
-        self.assertEqual(61,m["scope"]["maximum_admitted_claims_with_optional_modules"])
+        self.assertEqual(59,m["scope"]["admitted_claims"])
+        self.assertEqual(66,m["scope"]["maximum_admitted_claims_with_optional_modules"])
         self.assertEqual(52,m["scope"]["first_layer_claims"])
         self.assertEqual(2,m["scope"]["same_palace_pair_claims"])
+        self.assertEqual(5,m["scope"]["body_palace_overlay_claims"])
         self.assertEqual(4,m["scope"]["optional_auxiliary_subjects"])
         self.assertEqual(3,m["scope"]["optional_sihua_claims"])
         sihua=next(x for x in m["optional_module_admissions"] if x["module_id"]=="sihua_v1")
@@ -26,8 +27,8 @@ class ZiWeiProductionContractV1Tests(unittest.TestCase):
             ["ziwei_interpretation_claim_registry_sihua_v0.json"],
             sihua["admitted_research_registries"],
         )
-        self.assertEqual("0.2.0",m["calculation"]["provider_version"])
-        self.assertEqual("1.2.0",m["pipeline"]["pipeline_version"])
+        self.assertEqual("0.3.0",m["calculation"]["provider_version"])
+        self.assertEqual("1.3.0",m["pipeline"]["pipeline_version"])
         self.assertEqual("conditional_activation_v1",m["pipeline"]["conditional_activation_contract"])
         self.assertEqual(
             "fact_available:palace_occupancy",
@@ -40,6 +41,12 @@ class ZiWeiProductionContractV1Tests(unittest.TestCase):
         self.assertEqual("same_palace_major_star_pairs_v1",pair["module_id"])
         self.assertEqual(2,pair["claim_count"])
         self.assertFalse(pair["cartesian_expansion"])
+        self.assertIn("ziwei_interpretation_claim_registry_body_palace_overlay_v1.json",m["admitted_research_registries"])
+        body=next(x for x in m["separate_natal_interpretation_admissions"] if x["module_id"]=="body_palace_overlay_v1")
+        self.assertEqual(5,body["claim_count"])
+        self.assertEqual(4,body["overlay_claims"])
+        self.assertFalse(body["thirteenth_palace"])
+        self.assertFalse(body["exhaustive_overlay_dictionary"])
 
     def test_pipeline_binds_provider_retrieval_and_delivery(self):
         r=run_scope_a_natal(NormalizedNatalInput(1987,5,20,"酉","synthetic:production-test"),request_id="r1")
@@ -48,9 +55,10 @@ class ZiWeiProductionContractV1Tests(unittest.TestCase):
         self.assertFalse(r["authority"]["ordinary_auto_routing"])
         self.assertFalse(r["authority"]["final_prose_authority"])
         self.assertEqual("ziwei.scope_a.natal_v0",r["calculation"]["calculation_profile"]["profile_id"])
-        self.assertEqual("0.2.0",r["calculation"]["provider"]["version"])
-        self.assertEqual("1.2.0",r["pipeline_version"])
+        self.assertEqual("0.3.0",r["calculation"]["provider"]["version"])
+        self.assertEqual("1.3.0",r["pipeline_version"])
         self.assertIn("palace_occupancy",r["calculation"])
+        self.assertIn("overlay_palace",r["calculation"]["body_palace"])
         self.assertGreater(len(r["interpretation"]["selected_claim_ids"]),0)
         self.assertTrue(r["interpretation"]["conditional_evaluations"])
         self.assertIn("PRESENT_CONFLICT_SEPARATELY",r["delivery"]["actions"])
