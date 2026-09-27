@@ -19,6 +19,7 @@ CONDITIONAL_CLAIM_TYPES = {"star_conditional", "palace_conditional"}
 ACTIVE_CONDITIONAL_STATES = {"not_required", "satisfied"}
 
 SPECIFICITY = {
+    "same_palace_pair": 50,
     "star_conditional": 40,
     "palace_conditional": 35,
     "star_core": 20,
@@ -108,7 +109,12 @@ def _claim_matches(packet: FactPacket, claim: dict[str, Any]) -> tuple[bool, str
         return False, "temporal_scope_mismatch", None
     if packet.temporal_scope not in SUPPORTED_TEMPORAL_SCOPES:
         return False, "dynamic_scope_not_admitted", None
-    if packet.requested_subjects and claim.get("subject") not in packet.requested_subjects:
+    claim_subjects=set(str(x) for x in claim.get("subjects",[]) if isinstance(x,str) and x)
+    if not claim_subjects:
+        subject=claim.get("subject")
+        if isinstance(subject,str) and subject:
+            claim_subjects.add(subject)
+    if packet.requested_subjects and not claim_subjects.intersection(packet.requested_subjects):
         return False, "subject_not_requested", None
     requires = set(app.get("requires", []))
     if not requires.issubset(packet.facts):
@@ -161,6 +167,8 @@ def retrieve_claims(
             selected.append({
                 "claim_id": cid,
                 "subject": claim["subject"],
+                "subjects": list(claim.get("subjects", [claim["subject"]])),
+                "pair_members": list(claim.get("pair_members", [])),
                 "claim_type": claim["claim_type"],
                 "assertion_class": claim["assertion_class"],
                 "normalized_statement": claim["normalized_statement"],
