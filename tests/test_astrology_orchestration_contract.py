@@ -19,6 +19,12 @@ class AstrologyOrchestrationContractTests(unittest.TestCase):
             data["properties"]["birth"]["properties"]["house_system"]["enum"],
         )
         self.assertEqual(
+            "Placidus",
+            data["properties"]["birth"]["properties"]["house_system"]["default"],
+        )
+        known_time_rule = data["properties"]["birth"]["allOf"][1]["then"]
+        self.assertNotIn("house_system", known_time_rule["required"])
+        self.assertEqual(
             ["exact", "approximate", "unknown"],
             data["properties"]["birth"]["properties"]["birth_time_certainty"]["enum"],
         )
@@ -66,6 +72,14 @@ class AstrologyOrchestrationContractTests(unittest.TestCase):
         self.assertTrue(orchestration["runtime_gate_required_for_every_generated_bundle"])
         self.assertEqual("READING_RECORD.md", orchestration["reading_record_bridge"])
         self.assertEqual("external_only", orchestration["reading_record_storage"])
+        house_profile = orchestration["house_system_interaction_profile"]
+        self.assertEqual("house-system-default-placidus-v1", house_profile["profile_id"])
+        self.assertEqual("Placidus", house_profile["default_house_system"])
+        self.assertEqual("Whole Sign", house_profile["alternative_house_system"])
+        self.assertTrue(house_profile["explicit_user_choice_overrides_default"])
+        self.assertTrue(house_profile["default_output_disclosure_required"])
+        self.assertTrue(house_profile["no_objective_accuracy_claim"])
+        self.assertTrue(house_profile["no_silent_fallback_on_provider_rejection"])
         self.assertFalse(data["ordinary_auto_routing"])
         self.assertIn("synastry", data["unsupported_scopes"])
         self.assertIn("solar_return", data["unsupported_scopes"])

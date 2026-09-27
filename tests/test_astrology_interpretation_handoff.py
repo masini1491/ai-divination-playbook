@@ -150,6 +150,29 @@ class AstrologyInterpretationHandoffTests(unittest.TestCase):
         with self.assertRaisesRegex(InterpretationHandoffError, "not admitted"):
             build_handoff(run, valid_request(), repo_root=ROOT)
 
+    def test_project_default_placidus_adds_alternative_disclosure(self):
+        run = admitted_run()
+        run["normalized_request"]["birth"] = {
+            "birth_time_certainty": "exact",
+            "house_system": "Placidus",
+            "house_system_selection": "project_default",
+        }
+        result = build_handoff(run, valid_request(), repo_root=ROOT)
+        disclosure = "\n".join(result["required_disclosures"])
+        self.assertIn("Placidus (project default)", disclosure)
+        self.assertIn("Whole Sign is also supported", disclosure)
+
+    def test_explicit_house_system_does_not_get_default_disclosure(self):
+        run = admitted_run()
+        run["normalized_request"]["birth"] = {
+            "birth_time_certainty": "exact",
+            "house_system": "Whole Sign",
+            "house_system_selection": "explicit_user_choice",
+        }
+        result = build_handoff(run, valid_request(), repo_root=ROOT)
+        disclosure = "\n".join(result["required_disclosures"])
+        self.assertNotIn("Placidus (project default)", disclosure)
+
     def test_approximate_birth_time_adds_disclosure(self):
         result = build_handoff(admitted_run(approximate=True), valid_request(), repo_root=ROOT)
         self.assertTrue(any("approximate" in item for item in result["required_disclosures"]))

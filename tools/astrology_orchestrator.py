@@ -36,6 +36,10 @@ RUN_SCHEMA_VERSION = "1.0.0"
 ORCHESTRATOR_ID = "astrology-production-orchestrator-v1"
 ORCHESTRATOR_VERSION = "1.0.0"
 REQUEST_SCHEMA_PATH = "ASTROLOGY_READING_REQUEST_V1.schema.json"
+DEFAULT_HOUSE_SYSTEM = "Placidus"
+HOUSE_SYSTEM_ALTERNATIVE = "Whole Sign"
+HOUSE_SYSTEM_SELECTION_DEFAULT = "project_default"
+HOUSE_SYSTEM_SELECTION_EXPLICIT = "explicit_user_choice"
 
 
 class OrchestrationInputError(ValueError):
@@ -301,11 +305,17 @@ def normalize_request(data: Any) -> dict[str, Any]:
             raise OrchestrationInputError("$.birth.local_datetime is required for exact/approximate birth time")
         if "local_date" in birth:
             raise OrchestrationInputError("$.birth.local_date is only allowed when birth_time_certainty=unknown")
-        house_system = _non_empty_string(birth.get("house_system"), "$.birth.house_system")
-        if house_system not in SUPPORTED_HOUSE_SYSTEMS:
-            raise OrchestrationInputError(
-                f"$.birth.house_system must be one of {sorted(SUPPORTED_HOUSE_SYSTEMS)}"
-            )
+        raw_house_system = birth.get("house_system")
+        if raw_house_system is None:
+            house_system = DEFAULT_HOUSE_SYSTEM
+            house_system_selection = HOUSE_SYSTEM_SELECTION_DEFAULT
+        else:
+            house_system = _non_empty_string(raw_house_system, "$.birth.house_system")
+            if house_system not in SUPPORTED_HOUSE_SYSTEMS:
+                raise OrchestrationInputError(
+                    f"$.birth.house_system must be one of {sorted(SUPPORTED_HOUSE_SYSTEMS)}"
+                )
+            house_system_selection = HOUSE_SYSTEM_SELECTION_EXPLICIT
         if "country" in normalized_birth["location"]:
             raise OrchestrationInputError(
                 "$.birth.location.country is admitted only for unknown-time invariant-only natal readings"
@@ -314,6 +324,7 @@ def normalize_request(data: Any) -> dict[str, Any]:
             birth["local_datetime"], "$.birth.local_datetime"
         )
         normalized_birth["house_system"] = house_system
+        normalized_birth["house_system_selection"] = house_system_selection
 
     normalized: dict[str, Any] = {
         "schema_name": REQUEST_SCHEMA_NAME,

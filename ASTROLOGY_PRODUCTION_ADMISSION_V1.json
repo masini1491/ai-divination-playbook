@@ -242,6 +242,21 @@
         "semantic_interpretation_authority": false,
         "exact_consumer_compatibility_claimed": false
       }
+    },
+    "house_system_interaction_profile": {
+      "profile_id": "house-system-default-placidus-v1",
+      "owner": "ASTROLOGY_NATAL.md",
+      "applies_when": "birth_time_certainty in {exact, approximate}",
+      "default_house_system": "Placidus",
+      "alternative_house_system": "Whole Sign",
+      "explicit_user_choice_overrides_default": true,
+      "normalized_selection_field": "birth.house_system_selection",
+      "default_selection_value": "project_default",
+      "explicit_selection_value": "explicit_user_choice",
+      "default_output_disclosure_required": true,
+      "no_objective_accuracy_claim": true,
+      "no_silent_fallback_on_provider_rejection": true,
+      "unknown_birth_time_house_system": null
     }
   },
   "natal_provider": {

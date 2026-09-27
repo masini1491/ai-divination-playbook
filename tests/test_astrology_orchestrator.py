@@ -115,6 +115,78 @@ class AstrologyOrchestratorTests(unittest.TestCase):
             resolution["query"]["normalization"]["normalization_policy_id"],
         )
 
+    def test_known_time_omitted_house_system_defaults_to_placidus(self):
+        request = {
+            "schema_name": "astrology_reading_request",
+            "schema_version": "1.0.0",
+            "reading_mode": "natal",
+            "subject_ref": "fixture-default-house-system",
+            "birth": {
+                "local_datetime": "1990-06-15T10:00:00",
+                "birth_time_certainty": "exact",
+                "location": {
+                    "coordinates": {
+                        "latitude": 35.6895,
+                        "longitude": 139.6917,
+                        "timezone_name": "Asia/Tokyo",
+                    }
+                },
+            },
+        }
+        result = run_request(request)
+        birth = result["normalized_request"]["birth"]
+        self.assertEqual("Placidus", birth["house_system"])
+        self.assertEqual("project_default", birth["house_system_selection"])
+        self.assertEqual("Placidus", result["fact_bundles"]["natal"]["configuration"]["house_system"])
+
+    def test_known_time_null_house_system_defaults_to_placidus(self):
+        request = {
+            "schema_name": "astrology_reading_request",
+            "schema_version": "1.0.0",
+            "reading_mode": "natal",
+            "subject_ref": "fixture-null-default-house-system",
+            "birth": {
+                "local_datetime": "1990-06-15T10:00:00",
+                "birth_time_certainty": "approximate",
+                "house_system": None,
+                "location": {
+                    "coordinates": {
+                        "latitude": 35.6895,
+                        "longitude": 139.6917,
+                        "timezone_name": "Asia/Tokyo",
+                    }
+                },
+            },
+        }
+        normalized = normalize_request(request)
+        self.assertEqual("Placidus", normalized["birth"]["house_system"])
+        self.assertEqual("project_default", normalized["birth"]["house_system_selection"])
+
+    def test_explicit_whole_sign_overrides_project_default(self):
+        request = {
+            "schema_name": "astrology_reading_request",
+            "schema_version": "1.0.0",
+            "reading_mode": "natal",
+            "subject_ref": "fixture-explicit-whole-sign",
+            "birth": {
+                "local_datetime": "1990-06-15T10:00:00",
+                "birth_time_certainty": "exact",
+                "house_system": "Whole Sign",
+                "location": {
+                    "coordinates": {
+                        "latitude": 35.6895,
+                        "longitude": 139.6917,
+                        "timezone_name": "Asia/Tokyo",
+                    }
+                },
+            },
+        }
+        result = run_request(request)
+        birth = result["normalized_request"]["birth"]
+        self.assertEqual("Whole Sign", birth["house_system"])
+        self.assertEqual("explicit_user_choice", birth["house_system_selection"])
+        self.assertEqual("Whole Sign", result["fact_bundles"]["natal"]["configuration"]["house_system"])
+
     def test_unknown_time_country_only_natal_emits_invariant_signs(self):
         request = {
             "schema_name": "astrology_reading_request",
