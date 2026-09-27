@@ -37,13 +37,27 @@ Production v1 在 admitted facts / claims存在時可解讀：
 
 ## 3. House Policy
 
+Known-time production採用下列 interaction profile：
+
 ```text
-explicit admitted house system
-→ preserve configuration provenance
-→ no cross-system averaging
+使用者明確指定 Whole Sign / Placidus
+→ 尊重 explicit choice
+→ house_system_selection = explicit_user_choice
+
+使用者未指定、或 house_system = null
+→ project UX default = Placidus
+→ house_system_selection = project_default
+→ user-facing output 必須揭露目前採 Placidus（預設）
+→ 同時提醒 Whole Sign 亦可選，切換後部分宮位落點與相關解讀可能改變
 ```
 
-若比較兩套 house system，建立兩個 configuration views；不得混成一張盤。Angles / cusps不做 method-neutral equivalence假設。Parent-signification、turned houses、planetary joys不作 project-wide default。
+這是 **project UX default**，不是「Placidus 客觀更準／歷史上更正統／Whole Sign 次等」的 claim。兩套仍同為 admitted calculation configurations；研究證據不因本 interaction profile 而被改寫。
+
+若 default Placidus 因 current production latitude boundary或其他 provider gate 不可用，必須 fail closed並告知可明確改選 Whole Sign；不得 silent fallback成另一宮位制。
+
+Unknown birth time 不套用 house-system default，仍維持 `house_system = null` 且不輸出 houses / angles。
+
+若比較兩套 house system，建立兩個 configuration views；不得混成一張盤或平均結果。Angles / cusps不做 method-neutral equivalence假設。Parent-signification、turned houses、planetary joys不作 project-wide default。
 
 ## 4. Essential Dignity Policy
 

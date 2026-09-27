@@ -58,7 +58,9 @@
             "Whole Sign",
             "Placidus",
             null
-          ]
+          ],
+          "default": "Placidus",
+          "description": "Optional for exact/approximate birth time. Omitted or null is normalized by the orchestrator to the project UX default Placidus; explicit Whole Sign or Placidus always wins. Unknown birth time remains null/omitted."
         },
         "location": {
           "type": "object",
@@ -243,8 +245,7 @@
           },
           "then": {
             "required": [
-              "local_datetime",
-              "house_system"
+              "local_datetime"
             ],
             "not": {
               "required": [

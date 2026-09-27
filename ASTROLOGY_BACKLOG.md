@@ -29,8 +29,8 @@ Last reviewed against:
 
 ```text
 ai-divination-playbook main
-94721f1925d90e4a7850d84e6a51fbca08c5871a
-Define shared civil-time normalization contract (#294)
+d1e07424465d9f8e6445c2e2e895e43df92008e2
+Close AST-P1-190 shared civil-time normalizer (#299)
 ```
 
 This SHA is review evidence only, not a pin. Every maintenance or implementation task must resolve current `main` again before mutation.
@@ -58,10 +58,10 @@ The closed work above must not be repeatedly rediscovered as open work unless a 
 
 ## Recommended execution order
 
-Current near-term shared/input work:
+Current near-term product/UX work:
 
-1. **AST-P1-190 — Shared civil-time normalizer extraction/admission**
-   - OPEN; AST-SHARED-003 is now closed, so Astrology can proceed as the first implementation consumer.
+1. **AST-P1-200 — Default house-system interaction profile**
+   - IN_PROGRESS; make Placidus the omitted-input project UX default, preserve explicit Whole Sign/Placidus override, and disclose the alternative without making an objective-accuracy claim.
 
 Deferred work remains:
 
@@ -665,6 +665,41 @@ This item is a standing reconciliation guard. It is not a request to change curr
   - no true-solar-time correction;
   - no change to Astrology calculation/interpretation authority;
   - no Zi Wei Gregorian→lunar production admission beyond `Asia/Taipei`.
+
+
+
+### AST-P1-200 — Default house-system interaction profile
+
+- type: FEATURE / PRODUCT UX / INPUT NORMALIZATION
+- status: IN_PROGRESS
+- priority: P1
+- owner: Astrology natal interaction profile
+- blocked_by: none
+- decision:
+  - project UX default for exact/approximate known-time requests with omitted/null `house_system`: `Placidus`;
+  - explicit `Whole Sign` or `Placidus` always overrides the default;
+  - user-facing output must disclose when Placidus was applied by default and mention Whole Sign as the supported alternative;
+  - this is a product-default decision only, not an objective-accuracy or historical-superiority claim.
+- candidate_evidence:
+  - implementation candidate began at `49b704ea7cccd2aaf67ac897b9fec057b0e3b02e`;
+  - temporary regeneration run `36302699667` passed canonical bundle regeneration/check plus focused orchestrator, interpretation-handoff, orchestration-contract and core-bundle tests;
+  - generated commit `88da7e4d8002929af0fe79900e074b7191844403` updated only the derived Astrology core bundle and removed the temporary regeneration workflow;
+  - initial PR validation `36302699645` failed only at the expected stale pre-regeneration core-bundle check; fresh post-regeneration full validation is required before promotion.
+- completion_gate:
+  - request schema no longer requires explicit `house_system` for exact/approximate birth time and documents the default;
+  - orchestrator deterministically records `house_system_selection = project_default | explicit_user_choice`;
+  - defaulted Placidus reaches the existing provider/runtime gate without changing provider house-system authority;
+  - interpretation handoff emits the required alternative-system disclosure only for the project-default path;
+  - explicit Whole Sign remains unchanged and is not silently replaced;
+  - unknown birth time remains house-system-free;
+  - derived Astrology core bundle regenerated from canonical generator;
+  - focused regression + full repository validation PASS;
+  - merge + canonical read-back before DONE.
+- non_goals:
+  - no claim that Placidus is objectively more accurate;
+  - no removal or demotion of Whole Sign;
+  - no automatic dual-system comparison;
+  - no silent fallback from rejected Placidus to Whole Sign.
 
 
 ## P2 — deferred compatibility / provider expansion

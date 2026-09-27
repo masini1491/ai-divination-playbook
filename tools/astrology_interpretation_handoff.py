@@ -435,6 +435,18 @@ def build_handoff(run: Any, request: Any, *, repo_root: Path | None = None) -> d
             if notice not in disclosures:
                 disclosures.append(notice)
 
+    normalized_birth = admitted_run.get("normalized_request", {}).get("birth", {})
+    if isinstance(normalized_birth, dict):
+        house_system = normalized_birth.get("house_system")
+        selection = normalized_birth.get("house_system_selection")
+        if house_system == "Placidus" and selection == "project_default":
+            notice = (
+                "House system: Placidus (project default). Whole Sign is also supported; "
+                "switching house systems may change house placements and related interpretation."
+            )
+            if notice not in disclosures:
+                disclosures.append(notice)
+
     if used_conflicts:
         disclosures.append("Registered interpretation conflicts are preserved below and must not be silently averaged or erased.")
 
