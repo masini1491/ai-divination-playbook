@@ -210,7 +210,7 @@ cheap HEAD/ref probe
 - cross-validation → `CROSS_VALIDATION.md`。
 - behavioral regression → `BEHAVIORAL_EVAL.md` + selected scenarios。
 - machine owner discovery → `PLAYBOOK_INDEX.json`。
-- material session-health risk → `SESSION_HANDOFF.md`。
+- material session-health risk，或已採用 durable thread 的 repository-maintenance cross-chat rehydration → `SESSION_HANDOFF.md`。
 
 若 high-leverage prerequisite 已否決後續工作，在正確 boundary 停止，不為形式繼續載入。
 
@@ -220,10 +220,6 @@ cheap HEAD/ref probe
 - **Historical Context**：未被本題引用的舊占、舊排序、其他人物／事件、已失效窗口、old memory。
 
 Persistence ≠ default loading。只有使用者明確承接／比較／回看，或舊 reading 是本題必要前提時，才升為 Active。
-
-## Maintenance Continuity Fast Path｜跨聊天室 repository work
-
-Repository maintenance若已採用 method-scoped durable continuity thread：先由 `PLAYBOOK_INDEX.json` 解析 exact thread，再依 `SESSION_HANDOFF.md` 的 durable rehydration adapter bounded-read最新 relevant event並對 current HEAD reconciliation。Event只作 recovery pointer，不取得 authority；未 opt-in時不得自行建立 surface。
 
 ## Session Continuity / Handoff Gate
 
