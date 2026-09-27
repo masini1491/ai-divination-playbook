@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from tools.ziwei_calendar_provider import GregorianBirthInput, TIMEZONE
+from tools.ziwei_calendar_provider import DEFAULT_TIMEZONE, GregorianBirthInput
 
 MINGUO_EPOCH_OFFSET = 1911
 NOTATION_ID = "minguo_year_notation_v1"
@@ -29,7 +29,7 @@ class MinguoBirthInput:
     hour: int
     minute: int = 0
     second: int = 0
-    timezone: str = TIMEZONE
+    timezone: str = DEFAULT_TIMEZONE
 
     def to_gregorian(self) -> GregorianBirthInput:
         return GregorianBirthInput(
