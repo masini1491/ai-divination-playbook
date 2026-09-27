@@ -22,6 +22,8 @@ schemas/ziwei/ZIWEI_READING_RESULT_V1.schema.json
 tools/ziwei_natal_provider.py
 tools/ziwei_sihua_provider.py
 references/ziwei/ziwei_interpretation_claim_registry_sihua_v0.json
+references/ziwei/ziwei_interpretation_claim_registry_same_palace_pairs_v1.json
+ZIWEI_SAME_PALACE_PAIR_ADMISSION_V1.json
 tools/ziwei_claim_retrieval.py
 tools/ziwei_delivery.py
 ZIWEI_CALENDAR_ADMISSION_V1.json
@@ -174,6 +176,7 @@ tools/ziwei_runtime.py → canonical typed production composition
 tools/ziwei_sihua_provider.py → optional profile-bound Four-Transformation facts
 source-explicit sihua registry → exactly 3 fact-gated transformed-star claims
 Zi Wei providers + retrieval/delivery → deterministic facts + admitted claims
+ZIWEI_SAME_PALACE_PAIR_ADMISSION_V1.json → exact sparse pair-claim production allowlist
 ZIWEI.md → interpretation / output governance
 ```
 
