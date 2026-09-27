@@ -1,0 +1,48 @@
+name: TEMP Cleanup AST-P1-190 Branches
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/temp-cleanup-ast-p1-190.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: maintenance/ast-p1-190-branch-cleanup-20260927
+          fetch-depth: 0
+
+      - name: Fail-closed preflight
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git ls-remote --heads origin refs/heads/main | awk '{print $1}')" = "d1e07424465d9f8e6445c2e2e895e43df92008e2"
+          test "$(git ls-remote --heads origin refs/heads/feature/ast-p1-190-shared-civil-time-normalizer | awk '{print $1}')" = "374dc1ddcd0b61a8de9c0942da18a6211810ff13"
+          test "$(git ls-remote --heads origin refs/heads/chore/close-ast-p1-190 | awk '{print $1}')" = "b5846caa19e0a39474b3541fd04322ef9ba48f88"
+          test "$(git ls-remote --heads origin refs/heads/data/astrology-extended-ephemeris-v1 | awk '{print $1}')" = "0052ba1c0a3b65238b4f9ec3a94a1aff47e341ea"
+          test "$(git ls-remote --heads origin refs/heads/data/astrology-place-v1 | awk '{print $1}')" = "d18be87abe762433e43e844f33f4b43f7fad9f3b"
+
+      - name: Delete merged AST-P1-190 branches
+        shell: bash
+        run: |
+          set -euo pipefail
+          git push origin --delete feature/ast-p1-190-shared-civil-time-normalizer
+          git push origin --delete chore/close-ast-p1-190
+
+      - name: Verify cleanup and retained authorities
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -z "$(git ls-remote --heads origin refs/heads/feature/ast-p1-190-shared-civil-time-normalizer)"
+          test -z "$(git ls-remote --heads origin refs/heads/chore/close-ast-p1-190)"
+          test "$(git ls-remote --heads origin refs/heads/data/astrology-extended-ephemeris-v1 | awk '{print $1}')" = "0052ba1c0a3b65238b4f9ec3a94a1aff47e341ea"
+          test "$(git ls-remote --heads origin refs/heads/data/astrology-place-v1 | awk '{print $1}')" = "d18be87abe762433e43e844f33f4b43f7fad9f3b"
+
+      - name: Delete temporary cleanup branch
+        run: git push origin --delete maintenance/ast-p1-190-branch-cleanup-20260927
