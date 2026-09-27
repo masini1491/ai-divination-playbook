@@ -635,13 +635,18 @@ This item is a standing reconciliation guard. It is not a request to change curr
 ### AST-P1-190 — Shared civil-time normalizer extraction/admission
 
 - type: FEATURE / INPUT NORMALIZATION / CROSS-METHOD DETERMINISTIC ADAPTER
-- status: OPEN
+- status: IN_PROGRESS
 - priority: P1
 - owner: shared civil-time implementation with Astrology as first consumer
 - blocked_by: none
 - current_state:
   - Astrology already production-validates IANA timezone input, Sydney civil time, DST nonexistent/ambiguous fail-closed behavior, and rejection of fixed-offset-only timezone identity inside `tools/astrology_provider.py`;
   - Zi Wei production Gregorian input remains `Asia/Taipei`-only and must not duplicate a second generic timezone/DST resolver.
+- candidate_evidence:
+  - implementation candidate began at `587f055863496bd8f6562a97f8a1febac6f828b2`;
+  - temporary regeneration run `36296516159` passed bundle regeneration/check plus focused shared-normalizer, Astrology provider and core-bundle tests;
+  - generated commit `a85398f82c7630fac1d0ab78fff44238a02b8246` regenerated only the derived Astrology core bundle and removed the temporary workflow;
+  - initial PR validation `36296516152` failed only at the stale pre-regeneration core-bundle check, as expected before the generated artifact existed; a fresh full validation is required on the post-regeneration candidate.
 - completion_gate:
   - extract or otherwise establish one project-owned shared deterministic civil-time normalizer that implements `CIVIL_TIME_NORMALIZATION.md`;
   - preserve current Astrology production semantics and parity while making Astrology a consumer of the shared adapter;

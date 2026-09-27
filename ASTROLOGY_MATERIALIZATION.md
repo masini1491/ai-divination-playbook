@@ -10,9 +10,11 @@ Repo-local calculation authority仍是：
 
 ```text
 tools/astrology_runtime.py
+tools/civil_time_normalizer.py
 tools/astrology_provider.py
 tools/astrology_transit_provider.py
 tools/astrology_orchestrator.py
+CIVIL_TIME_NORMALIZER_ADMISSION_V1.json
 ASTROLOGY_PROVIDER_ADMISSION_V1.json
 ASTROLOGY_TRANSIT_PROVIDER_ADMISSION_V1.json
 ```
@@ -34,6 +36,7 @@ A-MAT-1只解決 **core deterministic calculation**：
 ```text
 explicit coordinates
 + explicit IANA timezone
+→ shared civil-time normalizer
 → natal / transit provider
 → Astrology runtime Fact Gate
 ```

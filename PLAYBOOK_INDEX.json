@@ -62,7 +62,15 @@
       "scope": "cross-method-deterministic-input",
       "coordination_owner": "ASTROLOGY_BACKLOG.md#AST-SHARED-003",
       "implementation_followup": "ASTROLOGY_BACKLOG.md#AST-P1-190",
-      "ziwei_consumer": "ZIWEI_BACKLOG.md#ZW-P2-030"
+      "ziwei_consumer": "ZIWEI_BACKLOG.md#ZW-P2-030",
+      "implementation": "tools/civil_time_normalizer.py",
+      "admission_manifest": "CIVIL_TIME_NORMALIZER_ADMISSION_V1.json",
+      "adapter_id": "civil-time-zoneinfo-v1",
+      "adapter_version": "1.0.0",
+      "current_consumers": {
+        "Astrology": "production-admitted",
+        "ZiWei": "not-admitted"
+      }
     },
     {
       "id": "method.routing",

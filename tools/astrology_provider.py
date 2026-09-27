@@ -19,11 +19,10 @@ import json
 import math
 from itertools import combinations
 from typing import Any
-from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
-
 import astronomy
 
 from tools.astrology_runtime import MAJOR_ASPECT_ORBS, gate_bundle
+from tools.civil_time_normalizer import CivilTimeNormalizationError, normalize_civil_time
 
 PROVIDER_ID = "astronomy-engine-natal-v1"
 PROVIDER_VERSION = "1.3.0"
@@ -78,43 +77,17 @@ def _signed_delta_degrees(a: float, b: float) -> float:
     return ((b - a + 180.0) % 360.0) - 180.0
 
 
-def _parse_local_datetime(value: str) -> dt.datetime:
-    try:
-        parsed = dt.datetime.fromisoformat(value)
-    except ValueError as exc:
-        raise ProviderInputError("local_datetime must be ISO-8601 local wall time") from exc
-    if parsed.tzinfo is not None:
-        raise ProviderInputError("local_datetime must be naive; timezone_name owns timezone resolution")
-    return parsed
-
-
 def _resolve_local_time(local_value: str, timezone_name: str) -> tuple[dt.datetime, dt.datetime, int]:
-    local = _parse_local_datetime(local_value)
+    """Backward-compatible Astrology wrapper around the shared civil-time adapter."""
     try:
-        zone = ZoneInfo(timezone_name)
-    except ZoneInfoNotFoundError as exc:
-        raise ProviderInputError(f"unknown IANA timezone: {timezone_name}") from exc
-
-    candidates: list[tuple[int, dt.datetime]] = []
-    for fold in (0, 1):
-        aware = local.replace(tzinfo=zone, fold=fold)
-        utc = aware.astimezone(dt.timezone.utc)
-        roundtrip = utc.astimezone(zone).replace(tzinfo=None)
-        if roundtrip == local:
-            candidates.append((fold, utc))
-
-    distinct = {(fold, utc) for fold, utc in candidates}
-    if not distinct:
-        raise ProviderInputError("local_datetime is nonexistent in timezone due to DST transition")
-
-    utc_values = {utc for _, utc in candidates}
-    if len(utc_values) > 1:
-        raise ProviderInputError("local_datetime is ambiguous in timezone due to DST transition")
-
-    fold = candidates[0][0]
-    utc = candidates[0][1]
-    aware_local = utc.astimezone(zone)
-    return aware_local, utc, fold
+        resolved = normalize_civil_time(local_value, timezone_name)
+    except CivilTimeNormalizationError as exc:
+        raise ProviderInputError(str(exc)) from exc
+    return (
+        resolved.validated_local_datetime,
+        resolved.resolved_utc_instant,
+        resolved.fold,
+    )
 
 
 def _astronomy_time(when_utc: dt.datetime) -> astronomy.Time:

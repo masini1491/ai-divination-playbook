@@ -1,0 +1,62 @@
+{
+  "schema_name": "civil_time_normalizer_production_admission",
+  "schema_version": "1.0.0",
+  "adapter_id": "civil-time-zoneinfo-v1",
+  "adapter_version": "1.0.0",
+  "status": "PRODUCTION_ADMITTED_SHARED_INPUT_ADAPTER",
+  "canonical_contract": "CIVIL_TIME_NORMALIZATION.md",
+  "implementation": "tools/civil_time_normalizer.py",
+  "activation": "method-owned explicit consumer only",
+  "scope": {
+    "input": "naive ISO-8601 local civil datetime + explicit IANA timezone",
+    "resolution_status": [
+      "UNIQUE"
+    ],
+    "outputs": [
+      "source_local_datetime",
+      "validated_local_datetime",
+      "timezone_name",
+      "resolved_utc_offset_seconds",
+      "resolved_utc_instant",
+      "fold",
+      "resolution_status",
+      "normalizer identity/version"
+    ],
+    "timezone_rule_source": "python-zoneinfo",
+    "birthplace_timezone_resolution": false,
+    "true_solar_time": false
+  },
+  "fail_closed": [
+    "invalid or timezone-aware local_datetime",
+    "missing/unknown IANA timezone",
+    "DST-nonexistent local wall time",
+    "DST-ambiguous local wall time without separately admitted disambiguation",
+    "fixed UTC offset used as timezone identity"
+  ],
+  "consumers": {
+    "Astrology": {
+      "status": "PRODUCTION_ADMITTED",
+      "provider": "tools/astrology_provider.py",
+      "provider_admission": "ASTROLOGY_PROVIDER_ADMISSION_V1.json",
+      "behavior": "shared adapter replaces method-local wall-time resolver while preserving provider output semantics"
+    },
+    "ZiWei": {
+      "status": "NOT_ADMITTED",
+      "coordination": "ZIWEI_BACKLOG.md#ZW-P2-030",
+      "boundary": "shared adapter availability does not widen Zi Wei beyond Asia/Taipei"
+    }
+  },
+  "validation": {
+    "fixture": "tests/fixtures/civil_time_normalization_v1.json",
+    "tests": "tests/test_civil_time_normalizer.py",
+    "astrology_parity_tests": "tests/test_astrology_provider.py",
+    "core_bundle_tests": "tests/test_astrology_core_tool_bundle.py"
+  },
+  "non_goals": [
+    "birthplace-to-timezone guessing",
+    "DST fold auto-selection",
+    "true-solar-time correction",
+    "method-specific Gregorian-to-lunar conversion",
+    "Astrology interpretation authority"
+  ]
+}

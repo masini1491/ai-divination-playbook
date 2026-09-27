@@ -37,6 +37,8 @@ class AstrologyCoreToolBundleTests(unittest.TestCase):
         self.assertFalse(self.b["execution_contract"]["dependency_install_required_after_materialization"])
         self.assertFalse(self.b["scope"]["place_resolver_included"])
         self.assertFalse(self.b["scope"]["geonamescache_included"])
+        source_paths = {row["path"] for row in self.b["source_files"]}
+        self.assertIn("tools/civil_time_normalizer.py", source_paths)
 
     def test_chunk_contract_is_bounded_per_chunk(self):
         a=self.b["archive"]

@@ -1,0 +1,68 @@
+{
+  "schema_name": "civil_time_normalization_fixture",
+  "schema_version": "1.0.0",
+  "unique_cases": [
+    {
+      "id": "sydney_standard_time",
+      "local_datetime": "1990-06-15T10:00:00",
+      "timezone_name": "Australia/Sydney",
+      "expected": {
+        "validated_local_iso": "1990-06-15T10:00:00+10:00",
+        "resolved_utc_iso": "1990-06-15T00:00:00+00:00",
+        "resolved_utc_offset_seconds": 36000,
+        "fold": 0,
+        "resolution_status": "UNIQUE"
+      }
+    },
+    {
+      "id": "tokyo_local_date_preserved_across_utc_boundary",
+      "local_datetime": "2000-01-01T00:30:00",
+      "timezone_name": "Asia/Tokyo",
+      "expected": {
+        "validated_local_iso": "2000-01-01T00:30:00+09:00",
+        "resolved_utc_iso": "1999-12-31T15:30:00+00:00",
+        "resolved_utc_offset_seconds": 32400,
+        "fold": 0,
+        "resolution_status": "UNIQUE"
+      }
+    },
+    {
+      "id": "taipei_no_dst",
+      "local_datetime": "2000-06-01T12:00:00",
+      "timezone_name": "Asia/Taipei",
+      "expected": {
+        "validated_local_iso": "2000-06-01T12:00:00+08:00",
+        "resolved_utc_iso": "2000-06-01T04:00:00+00:00",
+        "resolved_utc_offset_seconds": 28800,
+        "fold": 0,
+        "resolution_status": "UNIQUE"
+      }
+    }
+  ],
+  "error_cases": [
+    {
+      "id": "new_york_dst_gap",
+      "local_datetime": "2024-03-10T02:30:00",
+      "timezone_name": "America/New_York",
+      "error_contains": "nonexistent"
+    },
+    {
+      "id": "new_york_dst_fold",
+      "local_datetime": "2024-11-03T01:30:00",
+      "timezone_name": "America/New_York",
+      "error_contains": "ambiguous"
+    },
+    {
+      "id": "fixed_offset_not_timezone_identity",
+      "local_datetime": "1990-06-15T10:00:00",
+      "timezone_name": "+10:00",
+      "error_contains": "unknown IANA timezone"
+    },
+    {
+      "id": "aware_local_datetime_rejected",
+      "local_datetime": "2000-01-01T12:00:00+08:00",
+      "timezone_name": "Asia/Taipei",
+      "error_contains": "must be naive"
+    }
+  ]
+}

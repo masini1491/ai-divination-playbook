@@ -134,21 +134,30 @@ This contract:
 
 Zi Wei true-solar-time work remains separately owned by `ZW-P2-040` and requires explicit profile/policy/evidence.
 
-## 7. Authority and migration boundary
+## 7. Production implementation / consumer admission boundary
 
-This file freezes shared semantics only.
+Canonical shared implementation:
 
-It does **not**:
+```text
+tools/civil_time_normalizer.py
+CIVIL_TIME_NORMALIZER_ADMISSION_V1.json
+adapter: civil-time-zoneinfo-v1@1.0.0
+```
 
-- move current Astrology production authority out of `tools/astrology_provider.py`;
-- admit a shared runtime implementation;
+Current consumer admission is intentionally asymmetric:
+
+- Astrology: **PRODUCTION_ADMITTED consumer** through `tools/astrology_provider.py`; the provider keeps its existing output contract while delegating local wall-time resolution to the shared adapter.
+- Zi Wei: **NOT_ADMITTED consumer** until `ZW-P2-030` separately validates overseas Gregorian→lunar coverage/parity and updates its method-owned admission.
+
+Shared adapter admission does **not**:
+
+- move Astrology astronomical calculation or interpretation authority into this file;
 - widen Zi Wei beyond `Asia/Taipei`;
-- change any current Astrology or Zi Wei admission manifest;
 - admit DST-fold disambiguation;
 - admit birthplace timezone guessing;
 - change true-solar-time policy.
 
-Implementation extraction/admission is tracked separately as `AST-P1-190`. Zi Wei `ZW-P2-030` consumes the shared normalizer only after that implementation/admission gate is closed.
+The shared adapter preserves validated local civil identity and resolved UTC identity; each method remains responsible for its downstream use.
 
 ## 8. Coordination ownership
 
