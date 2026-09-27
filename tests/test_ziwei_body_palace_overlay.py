@@ -81,7 +81,7 @@ class ZiWeiBodyPalaceOverlayTests(unittest.TestCase):
         ids=set(r["interpretation"]["selected_claim_ids"])
         self.assertIn("ZW-BODY-METHOD-001",ids)
         self.assertIn("ZW-BODY-MOBILITY-001",ids)
-        self.assertTrue(set(OVERLAY_IDS.values())-{OVERLAY_IDS["遷移宮"]} > set())
+        self.assertTrue((set(OVERLAY_IDS.values())-{OVERLAY_IDS["遷移宮"]}).isdisjoint(ids))
 
     def test_unadmitted_overlay_context_has_methodology_but_no_overlay_filler(self):
         admitted=set(OVERLAY_IDS)
