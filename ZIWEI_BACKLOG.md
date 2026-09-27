@@ -29,7 +29,7 @@ Last reviewed against:
 
 ```text
 ai-divination-playbook main
-94721f1925d90e4a7850d84e6a51fbca08c5871a
+eb52537c358d532eff2aeae2eb7712b36a18b2a7
 ```
 
 This SHA is review evidence only, not a pin. Every maintenance task must resolve current `main` again before mutation.
@@ -801,11 +801,11 @@ Ordering rationale:
 ### ZW-P2-040 — True-solar-time policy
 
 - type: FEATURE / INPUT POLICY
-- status: IN_PROGRESS
+- status: DONE
 - priority: P2
 - owner: Zi Wei calendar/profile research
 - blocked_by: none
-- candidate:
+- admitted_profile:
   - profile: `ziwei.true_solar.noaa_fractional_year_v1`;
   - clock identity: local apparent solar time;
   - civil time remains the default;
@@ -817,11 +817,11 @@ Ordering rationale:
 - canonical_research:
   - `references/ziwei/TRUE_SOLAR_TIME_POLICY_V1.md`;
   - `references/ziwei/SOURCE_REGISTRY.md`.
-- implementation_candidate:
+- implementation:
   - `tools/ziwei_true_solar_time.py`;
   - `ZIWEI_TRUE_SOLAR_TIME_ADMISSION_V1.json`;
-  - `ZIWEI_CALENDAR_ADMISSION_V1.json` v2.2;
-  - Gregorian / Minguo / natal + dynamic JSON transport preservation.
+  - `ZIWEI_CALENDAR_ADMISSION_V1.json` v2.2 / provider v2.2.0;
+  - Gregorian / Minguo / natal + dynamic V2–V11 JSON transport preservation.
 - rule:
   - separate from ordinary civil-time timezone expansion;
   - requires explicit profile/policy identity and evidence;
@@ -835,6 +835,18 @@ Ordering rationale:
   - runtime/schema/admission/index/materialization/bundle surfaces stay synchronized;
   - generated Zi Wei bundle and load pack are regenerated only by canonical generators;
   - implementation merge + exact-main CI/artifact + canonical read-back complete before status becomes DONE.
+- closure:
+  - implementation merged by PR #310 at `eb52537c358d532eff2aeae2eb7712b36a18b2a7`;
+  - civil time remains the default; true solar activates only with exact profile `ziwei.true_solar.noaa_fractional_year_v1` plus explicit longitude;
+  - the profile computes local apparent solar time from east-positive longitude + the civil normalizer's resolved UTC offset + NOAA fractional-year equation of time, then feeds corrected local Gregorian fields into the existing Gregorian→lunar dataset before Zi Wei `next_day_at_23` / `split_after_day_15`;
+  - automatic birthplace→longitude and birthplace→timezone resolution remain unadmitted; latitude is not required by this clock correction;
+  - natal + V2–V11 Gregorian JSON transports accept only the paired profile/longitude extension; legacy civil requests retain their prior field contract and behavior;
+  - explicit Minguo year notation preserves timezone, true-solar profile and longitude through CE conversion;
+  - generator bridge run `36311904574`: Zi Wei bundle regeneration/check PASS, ChatGPT load-pack regeneration/check PASS, load-budget PASS and focused true-solar/calendar/runtime/Minguo/bundle regressions PASS; generated-cache bot commit `8f80ffb3a15b903b2debac33a416a3f8efc1eead` removed the temporary bridge after generator-owned cache updates;
+  - PR #310 formal run `36311949652`: `validate` PASS and `casting-runtime` PASS; full unit suite and structural checker PASS;
+  - exact-main canonical read-back at `eb52537c358d532eff2aeae2eb7712b36a18b2a7` confirms calendar admission v2.2/provider v2.2.0, optional true-solar admission, root owner and machine index synchronization;
+  - exact-main run `36312043721`: `validate` PASS and `casting-runtime` PASS; full unit suite, structural checker and exact-main Zi Wei handoff preparation/upload PASS;
+  - exact-main artifact `10928709886` / `ziwei-deterministic-handoff-eb52537c358d532eff2aeae2eb7712b36a18b2a7` published at 88,476 bytes with digest `sha256:b55ca0c986347feecadc07444b2bbe324ca67052fde3d0b87a5e2953f1d452c7`.
 
 ## SHARED / parallel
 
