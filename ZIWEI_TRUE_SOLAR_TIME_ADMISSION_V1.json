@@ -1,0 +1,62 @@
+{
+  "schema_name": "ziwei_true_solar_time_production_admission",
+  "schema_version": "1.0.0",
+  "method": "ZiWei",
+  "module": "true_solar_time_v1",
+  "status": "PRODUCTION_ADMITTED_OPTIONAL_INPUT_POLICY",
+  "activation": "explicit_profile_and_longitude_only",
+  "parent_admission": "ZIWEI_CALENDAR_ADMISSION_V1.json",
+  "profile": {
+    "profile_id": "ziwei.true_solar.noaa_fractional_year_v1",
+    "profile_version": "1.0.0",
+    "clock_identity": "local_apparent_solar_time",
+    "default": false,
+    "longitude_convention": "east_positive_degrees",
+    "longitude_range": {
+      "minimum": -180.0,
+      "maximum": 180.0
+    },
+    "latitude_required": false,
+    "birthplace_resolution": false,
+    "timezone_resolution": "inherit_validated_civil_time",
+    "dst_handling": "use_resolved_civil_utc_offset_for_input_instant"
+  },
+  "calculation": {
+    "runtime_owner": "tools/ziwei_true_solar_time.py",
+    "algorithm_id": "noaa-fractional-year-equation-of-time",
+    "formula_source": {
+      "publisher": "NOAA Global Monitoring Laboratory",
+      "document": "General Solar Position Calculations",
+      "role": "technical_formula_reference"
+    },
+    "order": [
+      "validate explicit IANA civil wall time with civil-time-zoneinfo-v1",
+      "compute equation of time from validated local civil date/time",
+      "compute longitude correction against resolved UTC offset meridian",
+      "derive local apparent solar Gregorian date/time",
+      "perform Gregorian-to-lunar lookup from corrected local Gregorian fields",
+      "apply Zi Wei-owned next_day_at_23 and split_after_day_15 policies"
+    ],
+    "time_offset_minutes": "equation_of_time_minutes + 4*longitude_deg - 60*resolved_utc_offset_hours",
+    "rounding": "nearest_second_half_away_from_zero"
+  },
+  "production_boundary": {
+    "civil_time_remains_default": true,
+    "silent_true_solar_replacement": false,
+    "automatic_birthplace_to_longitude": false,
+    "automatic_birthplace_to_timezone": false,
+    "local_mean_solar_time_profile": false,
+    "latitude_or_elevation_effects": false,
+    "scientific_predictive_validity_claimed": false
+  },
+  "fail_closed": [
+    "explicit profile id required when longitude is supplied",
+    "explicit longitude required when profile is supplied",
+    "longitude must be finite and inside -180..180",
+    "unsupported true-solar profile rejected",
+    "civil-time validation must succeed before solar correction",
+    "solar-corrected Gregorian date must remain inside admitted calendar-data range",
+    "no birthplace or coordinate guessing",
+    "no model-memory solar-time calculation"
+  ]
+}
