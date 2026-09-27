@@ -69,7 +69,7 @@
       "adapter_version": "1.0.0",
       "current_consumers": {
         "Astrology": "production-admitted",
-        "ZiWei": "not-admitted"
+        "ZiWei": "production-admitted"
       }
     },
     {
@@ -246,9 +246,12 @@
         "provider": "tools/ziwei_calendar_provider.py",
         "pipeline": "tools/ziwei_runtime.py",
         "admission_manifest": "ZIWEI_CALENDAR_ADMISSION_V1.json",
-        "profile_id": "ziwei.calendar.tw_v1",
-        "timezone": "Asia/Taipei",
-        "compatibility_adapter": "tools/ziwei_gregorian_pipeline.py"
+        "profile_id": "ziwei.calendar.civil_v2",
+        "compatibility_adapter": "tools/ziwei_gregorian_pipeline.py",
+        "timezone_mode": "explicit_IANA",
+        "shared_civil_time_adapter": "civil-time-zoneinfo-v1@1.0.0",
+        "birthplace_timezone_resolution": false,
+        "true_solar_time": false
       },
       "materialization_contract": "ZIWEI_MATERIALIZATION.md",
       "deterministic_transport_bundle": "runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json",
