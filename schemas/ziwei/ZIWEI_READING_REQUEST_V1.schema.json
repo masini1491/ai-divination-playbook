@@ -162,6 +162,7 @@
         "enum": [
           "brightness_v1",
           "m0_auxiliary_v1",
+          "m1_auxiliary_v1",
           "sihua_v1"
         ]
       }
@@ -211,6 +212,17 @@
       ],
       "enum": [
         "sihua.default_v1",
+        null
+      ],
+      "default": null
+    },
+    "m1_auxiliary_profile": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "ziwei.auxiliary.m1.common_v1",
         null
       ],
       "default": null
@@ -275,6 +287,47 @@
           "optional_modules": {
             "contains": {
               "const": "sihua_v1"
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "m1_auxiliary_profile": {
+            "const": "ziwei.auxiliary.m1.common_v1"
+          }
+        },
+        "required": [
+          "m1_auxiliary_profile"
+        ]
+      },
+      "then": {
+        "properties": {
+          "optional_modules": {
+            "contains": {
+              "const": "m1_auxiliary_v1"
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "optional_modules": {
+            "contains": {
+              "const": "m1_auxiliary_v1"
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "optional_modules": {
+            "contains": {
+              "const": "m0_auxiliary_v1"
             }
           }
         }
