@@ -47,6 +47,11 @@ class ZiWeiProductionContractV1Tests(unittest.TestCase):
         self.assertEqual(4,body["overlay_claims"])
         self.assertFalse(body["thirteenth_palace"])
         self.assertFalse(body["exhaustive_overlay_dictionary"])
+        self.assertIn("ziwei_interpretation_claim_registry_star_palace_context_v1.json",m["admitted_research_registries"])
+        star_palace=next(x for x in m["separate_natal_interpretation_admissions"] if x["module_id"]=="sparse_star_palace_context_v1")
+        self.assertEqual(2,star_palace["claim_count"])
+        self.assertEqual(["天相×命宮","天梁×官祿宮"],star_palace["admitted_pairs"])
+        self.assertFalse(star_palace["cartesian_expansion"])
 
     def test_pipeline_binds_provider_retrieval_and_delivery(self):
         r=run_scope_a_natal(NormalizedNatalInput(1987,5,20,"酉","synthetic:production-test"),request_id="r1")
