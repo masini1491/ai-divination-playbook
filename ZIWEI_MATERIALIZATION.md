@@ -24,6 +24,8 @@ tools/ziwei_sihua_provider.py
 references/ziwei/ziwei_interpretation_claim_registry_sihua_v0.json
 references/ziwei/ziwei_interpretation_claim_registry_same_palace_pairs_v1.json
 ZIWEI_SAME_PALACE_PAIR_ADMISSION_V1.json
+references/ziwei/ziwei_interpretation_claim_registry_body_palace_overlay_v1.json
+ZIWEI_BODY_PALACE_OVERLAY_ADMISSION_V1.json
 tools/ziwei_claim_retrieval.py
 tools/ziwei_delivery.py
 ZIWEI_CALENDAR_ADMISSION_V1.json
