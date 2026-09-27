@@ -35,6 +35,14 @@ Close Zi Wei P2-030 civil-time normalization (#306)
 
 This SHA is review evidence only, not a pin. Every maintenance or implementation task must resolve current `main` again before mutation.
 
+Recent maintenance reconciliation candidate:
+
+- audit scope: AST-P1-190 / AST-P1-200 post-closure stale-state and regression hygiene;
+- candidate began at `c0d30179fc4358e0bc83b5cdf93cd3dd060b7f34`;
+- temporary regeneration run `36306323482` passed canonical Astrology core-bundle regeneration/check plus focused interpretation-handoff, full reading-pipeline and core-bundle tests;
+- generated commit `6326a07f86eb83fa7f90e5c23ef4876fa842ccd5` updated the derived Astrology core bundle and removed the temporary workflow;
+- initial PR validation `36306323386` failed only at the expected stale pre-regeneration core-bundle check; a fresh full validation is required on the post-regeneration candidate.
+
 Recent Astrology closure sequence reviewed:
 
 ```text
