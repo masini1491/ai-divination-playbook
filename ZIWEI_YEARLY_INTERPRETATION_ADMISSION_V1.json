@@ -1,0 +1,54 @@
+{
+  "schema_name": "ziwei_yearly_interpretation_production_admission",
+  "schema_version": "1.0.0",
+  "method": "ZiWei",
+  "module": "yearly_interpretation_v1",
+  "status": "PRODUCTION_ADMITTED_BOUNDED_INTERPRETATION",
+  "activation": "explicit_ziwei_yearly_request_only",
+  "parent_calculation_admission": "ZIWEI_YEARLY_ADMISSION_V1.json",
+  "parent_interpretation_context": "ZIWEI_DECADAL_INTERPRETATION_ADMISSION_V1.json",
+  "temporal_scope": "yearly",
+  "interpretation_profile": "ziwei.interpretation.tw_v1",
+  "admitted_claim_registry": "references/ziwei/ziwei_interpretation_claim_registry_yearly_v1.json",
+  "admitted_claim_ids": [
+    "ZW-Y1-METHOD-TOPOLOGY-001",
+    "ZW-Y1-METHOD-PARENT-002",
+    "ZW-Y1-METHOD-BOUNDARY-003"
+  ],
+  "claim_scope": "bounded_yearly_methodology_only",
+  "fact_requirements": [
+    "yearly_period_present",
+    "yearly_life_palace_identified",
+    "yearly_palace_roles_present",
+    "compatible_decadal_parent_present"
+  ],
+  "runtime": {
+    "owner": "tools/ziwei_runtime.py",
+    "runtime_id": "ziwei-production-runtime-v8",
+    "runtime_version": "8.0.0",
+    "request_schema": "schemas/ziwei/ZIWEI_DYNAMIC_REQUEST_V8.schema.json",
+    "result_schema": "schemas/ziwei/ZIWEI_DYNAMIC_RESULT_V8.schema.json"
+  },
+  "production_boundary": {
+    "natal_claim_promotion": false,
+    "decadal_claim_promotion": false,
+    "star_or_palace_outcome_doctrine": false,
+    "yearly_sihua_interpretation": false,
+    "generic_yearly_fortune": false,
+    "concrete_event_prediction": false,
+    "lower_layer_inference": false,
+    "high_stakes_determinism": false,
+    "ordinary_auto_routing": false
+  },
+  "fail_closed": [
+    "no yearly interpretation without compatible admitted yearly calculation",
+    "no yearly interpretation without compatible decadal parent context",
+    "no natal or decadal claim reuse as yearly claim",
+    "missing yearly facts omit dependent claim",
+    "yearly Si Hua remains calculation context only unless separately admitted for yearly interpretation",
+    "monthly/daily/hourly interpretation remain unadmitted",
+    "no model-memory yearly fortune filler",
+    "no deterministic health/death/legal/financial/pregnancy/violence outcome claim"
+  ],
+  "scientific_predictive_validity_claimed": false
+}
