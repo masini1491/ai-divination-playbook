@@ -568,7 +568,7 @@ Ordering rationale:
   - corresponding admitted calculation stage in ZW-P1-030
 - stage_progress:
   - decadal interpretation: DONE — V7 bounded methodology interpretation merged and canonically read back; exactly 2 source-backed claims are admitted, while natal-claim promotion、generic十年吉凶、具體事件與 high-stakes determinism remain fail-closed;
-  - yearly interpretation: IMPLEMENTED_CANDIDATE — V8 admits exactly 3 source-backed / project-bounded methodology claims gated by yearly facts + compatible decadal parent; generic流年吉凶、yearly Si Hua斷語、具體事件與 high-stakes determinism remain fail-closed; focused regressions PASS; registry validation PASS; Zi Wei bundle/load-pack regeneration and load budget PASS; awaiting formal PR validation / merge / canonical read-back;
+  - yearly interpretation: DONE — V8 bounded methodology interpretation merged and canonically read back; exactly 3 source-backed / project-bounded claims are admitted, while generic流年吉凶、yearly Si Hua斷語、具體事件與 high-stakes determinism remain fail-closed;
   - monthly interpretation: READY — monthly calculation admission merged and canonically read back; interpretation still requires its own source-backed claim admission;
   - daily interpretation: READY — daily calculation admission merged and canonically read back; interpretation still requires its own source-backed claim admission;
   - hourly interpretation: READY — hourly calculation admission merged and canonically read back; interpretation still requires its own source-backed claim admission;
@@ -589,20 +589,19 @@ Ordering rationale:
   - exact-main canonical read-back confirms V7 runtime, decadal interpretation admission, 2-claim registry, root production admission and PLAYBOOK_INDEX routing at `f63974a9667e81831b610c1d34e206b878f0b3a3`;
   - exact-main run `36281589408`: `validate` PASS and `casting-runtime` PASS; full unit suite, structural checker, exact-main Zi Wei handoff preparation and upload all passed;
   - exact-main artifact `10919032233` / `ziwei-deterministic-handoff-f63974a9667e81831b610c1d34e206b878f0b3a3` was published at 73,286 bytes with digest `sha256:c205d77412bf1baac301ce932fc969a0542f67176ba29987ec2e8d9fb487cdec`.
-- yearly_interpretation_stage_candidate_evidence:
-  - source pass uses `新鋟希夷陳先生紫微斗數全書 卷之五` / `論二限太歲吉凶` + `論流年太歲逢吉凶星殺`: yearly/太歲 requires same-layer 三方對照 and separate comparison with 大限 before synthesis; strong death/disease/legal/outcome language is intentionally excluded;
-  - candidate registry `ziwei_interpretation_claim_registry_yearly_v1.json` contains exactly 3 `methodology` claims with `temporal_scope=yearly`;
-  - `ZW-Y1-METHOD-TOPOLOGY-001` requires computed yearly period + yearly life-palace + yearly palace-role topology;
-  - `ZW-Y1-METHOD-PARENT-002` requires a compatible admitted decadal parent and forbids parent-claim promotion;
-  - `ZW-Y1-METHOD-BOUNDARY-003` prohibits generic yearly-fortune filler and finer month/day/hour timing without lower-layer admitted facts/claims;
-  - V8 is additive: V7 keeps yearly interpretation NOT_ADMITTED; V8 preserves V7 decadal bounded interpretation and adds yearly only;
-  - target-year `yearly_sihua` facts remain calculation context only; this stage does not admit generic yearly Four-Transformation interpretation;
-  - generated Zi Wei bundle/load-pack regeneration is delegated to the registered temporary yearly-interpretation bridge and is not hand-edited;
-  - first yearly bridge run `36287574927` proved the 35 focused regressions and 3-claim registry validator PASS, but load-budget failed only `explicit_research_astrology` at ratio `0.8048`; no V8 semantic failure occurred;
-  - bootstrap/research-routing summaries were compacted without changing authority at `7b3b69ca233594b2b3a07a067e4242474f477eb6` and `3cea4cd6d552ef570d53c1f3a8c557083b31067b`;
-  - successful yearly bridge run `36287724153`: 35 focused regressions PASS, 3-claim registry validator PASS, Zi Wei bundle PASS, ChatGPT load-pack PASS, and `explicit_research_astrology` load ratio `0.7996` / overall load budget PASS;
-  - generated-cache bot commit `c0b3ff7d874bb3e72460ffd3b60061805e2c41ee` changed only the canonical Zi Wei bundle, generated load pack, and removal of the temporary yearly bridge;
-  - latest bot-head Validate Playbook is `action_required`, so this human-authored evidence commit re-triggers formal PR validation before merge.
+- yearly_interpretation_stage_evidence:
+  - implementation merged by PR #283 at `b938bacce0088f775b6fe43c8ab2a2aa924a2d65`;
+  - V8 yearly interpretation admits exactly `ZW-Y1-METHOD-TOPOLOGY-001`, `ZW-Y1-METHOD-PARENT-002` and `ZW-Y1-METHOD-BOUNDARY-003` from `ziwei_interpretation_claim_registry_yearly_v1.json`;
+  - production authority is bounded methodology only: same-layer sanfang/opposition context + compatible decadal-parent composition + no-generic-yearly-filler boundary; natal/decadal claim promotion, generic yearly fortune, yearly Si Hua interpretation, concrete-event prediction and high-stakes determinism are not admitted;
+  - V8 is additive: V7 yearly interpretation remains NOT_ADMITTED, while V8 preserves the V7 decadal bounded interpretation and adds yearly only;
+  - first bridge run `36287574927` proved 35 focused regressions PASS and the 3-claim registry validator PASS; its only failure was the independent `explicit_research_astrology` load-budget ratio at `0.8048`;
+  - routing summaries were compacted without changing authority at `7b3b69ca233594b2b3a07a067e4242474f477eb6` and `3cea4cd6d552ef570d53c1f3a8c557083b31067b`;
+  - successful yearly bridge run `36287724153`: 35 focused regressions PASS, registry validator PASS, Zi Wei bundle PASS, ChatGPT load-pack PASS, `explicit_research_astrology` ratio `0.7996`, overall load budget PASS;
+  - generated-cache bot commit `c0b3ff7d874bb3e72460ffd3b60061805e2c41ee` changed only the canonical Zi Wei bundle, generated load pack and removal of the temporary bridge; human evidence commit `768b0100a4f45cbbc9c8b37ef590a1cc4dba4c8e` re-triggered formal validation;
+  - PR #283 formal run `36287781413`: `validate` PASS and `casting-runtime` PASS; full unit suite and structural checker passed; PR-context exact-commit artifact steps were skipped;
+  - exact-main canonical read-back confirms V8 runtime, yearly interpretation admission, 3-claim registry, root production admission and PLAYBOOK_INDEX routing at `b938bacce0088f775b6fe43c8ab2a2aa924a2d65`;
+  - exact-main run `36287885656`: `validate` PASS and `casting-runtime` PASS; full unit suite, structural checker, exact-main Zi Wei handoff preparation and upload all passed;
+  - exact-main artifact `10921401398` / `ziwei-deterministic-handoff-b938bacce0088f775b6fe43c8ab2a2aa924a2d65` was published at 75,416 bytes with digest `sha256:0016740286414c3b0c967668b4a87057895167c5b53821dba9c70a1a4e7b00bb`.
 - rule:
   - natal 52 claims must not be silently reused as flow prediction claims.
 - completion_gate:
