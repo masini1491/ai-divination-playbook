@@ -755,8 +755,11 @@ Ordering rationale:
 - status: DEFERRED
 - priority: P2
 - owner: Zi Wei calendar/input
-- blocked_by:
-  - `ASTROLOGY_BACKLOG.md#AST-P1-190` shared normalizer implementation/admission
+- blocked_by: none
+- shared_prerequisite:
+  - `ASTROLOGY_BACKLOG.md#AST-P1-190` is DONE;
+  - shared adapter `civil-time-zoneinfo-v1@1.0.0` is production-admitted for Astrology consumption;
+  - Zi Wei consumer status remains NOT_ADMITTED until this item independently closes overseas Gregorian→lunar coverage/parity and updates Zi Wei admission.
 - shared_contract:
   - `CIVIL_TIME_NORMALIZATION.md`
   - contract coordination closed by `ASTROLOGY_BACKLOG.md#AST-SHARED-003`; Zi Wei does not duplicate its mutable status.
