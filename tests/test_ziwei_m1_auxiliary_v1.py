@@ -103,6 +103,9 @@ class ZiWeiM1AuxiliaryV1Tests(unittest.TestCase):
         ids=set(result["interpretation"]["selected_claim_ids"])
         self.assertTrue(all(f"ZW-M1-" in cid for cid in ids if cid.startswith("ZW-M1-")))
         self.assertEqual(10,len([cid for cid in ids if cid.startswith("ZW-M1-")]))
+        major_relations=result["calculation"]["m1_auxiliary"]["major_star_relations"]
+        self.assertTrue(major_relations)
+        self.assertTrue(any(x["subject"]=="紫微" and x["major_star"]!="紫微" for x in major_relations))
 
     def test_generic_conditionals_gain_availability_only_with_m0_plus_m1(self):
         m0=run_ziwei(ZiWeiReadingRequest(
