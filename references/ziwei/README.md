@@ -25,6 +25,7 @@ research-only scaffold
 - root production owner：`ZIWEI.md` 已建立
 - explicit Zi Wei routing：已 admitted；使用者明確要求紫微時可進 production Scope-A
 - Gregorian input adapter：`ziwei.calendar.civil_v2` 已 admitted（explicit IANA civil time；shared `civil-time-zoneinfo-v1` validation）
+- optional true-solar input profile：`ziwei.true_solar.noaa_fractional_year_v1` 已 admitted，僅 explicit profile + longitude；civil time仍是default，birthplace→longitude/timezone不猜
 - optional brightness profile：`ziwei.brightness.iztro_v1` 已 admitted，僅 explicit add-on
 - deterministic ChatGPT materialization：`ZIWEI_MATERIALIZATION.md` + bundle 已建立
 - ordinary unspecified auto-routing：仍刻意為 false
@@ -85,7 +86,8 @@ sihua_profile = sihua.default_v1
 leap_month_policy = split_after_day_15
 rat_hour_policy = next_day_at_23
 clock_mode = civil_time
-true_solar_time = disabled
+true_solar_time = disabled_by_default
+optional_true_solar_profile = ziwei.true_solar.noaa_fractional_year_v1 (explicit longitude only)
 
 interpretation_profile = ziwei.interpretation.tw_v1
   architecture = contextual_composition
