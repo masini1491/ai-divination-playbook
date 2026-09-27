@@ -14,8 +14,10 @@ class ZiWeiProductionContractV1Tests(unittest.TestCase):
         self.assertEqual("PRODUCTION_ADMITTED",m["status"])
         self.assertEqual("explicit_user_request_only",m["activation"])
         self.assertFalse(m["ordinary_auto_routing"])
-        self.assertEqual(52,m["scope"]["admitted_claims"])
-        self.assertEqual(59,m["scope"]["maximum_admitted_claims_with_optional_modules"])
+        self.assertEqual(54,m["scope"]["admitted_claims"])
+        self.assertEqual(61,m["scope"]["maximum_admitted_claims_with_optional_modules"])
+        self.assertEqual(52,m["scope"]["first_layer_claims"])
+        self.assertEqual(2,m["scope"]["same_palace_pair_claims"])
         self.assertEqual(4,m["scope"]["optional_auxiliary_subjects"])
         self.assertEqual(3,m["scope"]["optional_sihua_claims"])
         sihua=next(x for x in m["optional_module_admissions"] if x["module_id"]=="sihua_v1")
@@ -33,6 +35,11 @@ class ZiWeiProductionContractV1Tests(unittest.TestCase):
         )
         self.assertFalse(m["admission_decision"]["g8_ordinary_routing_admitted"])
         self.assertFalse(m["admission_decision"]["scientific_predictive_validity_claimed"])
+        self.assertIn("ziwei_interpretation_claim_registry_same_palace_pairs_v1.json",m["admitted_research_registries"])
+        pair=m["separate_natal_interpretation_admissions"][0]
+        self.assertEqual("same_palace_major_star_pairs_v1",pair["module_id"])
+        self.assertEqual(2,pair["claim_count"])
+        self.assertFalse(pair["cartesian_expansion"])
 
     def test_pipeline_binds_provider_retrieval_and_delivery(self):
         r=run_scope_a_natal(NormalizedNatalInput(1987,5,20,"酉","synthetic:production-test"),request_id="r1")
