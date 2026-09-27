@@ -13,7 +13,7 @@ DEFAULT_REGISTRIES = (
     REGISTRY_ROOT / "ziwei_interpretation_claim_registry_batch2.json",
     REGISTRY_ROOT / "ziwei_interpretation_claim_registry_palaces_v0.json",
 )
-SUPPORTED_TEMPORAL_SCOPE = "natal_baseline"
+SUPPORTED_TEMPORAL_SCOPES = frozenset({"natal_baseline","decadal"})
 ELIGIBLE_ADOPTION = "RESEARCH_CLAIM_ELIGIBLE"
 CONDITIONAL_CLAIM_TYPES = {"star_conditional", "palace_conditional"}
 ACTIVE_CONDITIONAL_STATES = {"not_required", "satisfied"}
@@ -106,7 +106,7 @@ def _claim_matches(packet: FactPacket, claim: dict[str, Any]) -> tuple[bool, str
     app = claim.get("applicability", {})
     if app.get("temporal_scope") != packet.temporal_scope:
         return False, "temporal_scope_mismatch", None
-    if packet.temporal_scope != SUPPORTED_TEMPORAL_SCOPE:
+    if packet.temporal_scope not in SUPPORTED_TEMPORAL_SCOPES:
         return False, "dynamic_scope_not_admitted", None
     if packet.requested_subjects and claim.get("subject") not in packet.requested_subjects:
         return False, "subject_not_requested", None
