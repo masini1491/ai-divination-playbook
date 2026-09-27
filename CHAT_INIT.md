@@ -221,6 +221,30 @@ cheap HEAD/ref probe
 
 Persistence ≠ default loading。只有使用者明確承接／比較／回看，或舊 reading 是本題必要前提時，才升為 Active。
 
+## Maintenance Continuity Fast Path｜跨聊天室 repository work
+
+當 intent 是 Astrology／Zi Wei／Palmistry repository maintenance，且 current project已採用 durable continuity thread時，fresh session在建立 current repository authority後可使用：
+
+```text
+resolve current repo/ref/HEAD
+→ resolve exact method continuity Issue via PLAYBOOK_INDEX.json
+→ bounded-read latest relevant checkpoint event
+→ compare event producer_observed_revision/work_identity with current authority
+→ unchanged / immaterial delta: reuse pointers
+→ material delta: bounded-read changed owner/backlog/evidence only
+→ continue authorized action or STOP
+```
+
+Continuity event只是一個 recovery index。不得：
+
+- 把 latest comment當 current truth；
+- 為形式讀完整 Issue history；
+- 因 event寫著「next」就跳過 current permission／backlog／validation gate；
+- 把 public continuity thread用來保存私人 reading資料；
+- 在沒有 project opt-in exact thread時自行建立其他 Issue／Discussion／path。
+
+Material repository action closure後是否 append checkpoint、payload與privacy boundary → `SESSION_HANDOFF.md`；physical allowlist → `REPOSITORY_ARCHITECTURE.md` §2.7。
+
 ## Session Continuity / Handoff Gate
 
 聊天室長度本身不是 trigger。只有 observable stale-premise / retrieval risk 會 materially 影響 correctness 時才考慮 handoff，例如：
