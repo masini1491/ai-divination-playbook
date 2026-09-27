@@ -56,6 +56,10 @@ DYNAMIC_V7_RUNTIME_ID="ziwei-production-runtime-v7"
 DYNAMIC_V7_RUNTIME_VERSION="7.0.0"
 DYNAMIC_V7_REQUEST_SCHEMA="schemas/ziwei/ZIWEI_DYNAMIC_REQUEST_V7.schema.json"
 DYNAMIC_V7_RESULT_SCHEMA="schemas/ziwei/ZIWEI_DYNAMIC_RESULT_V7.schema.json"
+DYNAMIC_V8_RUNTIME_ID="ziwei-production-runtime-v8"
+DYNAMIC_V8_RUNTIME_VERSION="8.0.0"
+DYNAMIC_V8_REQUEST_SCHEMA="schemas/ziwei/ZIWEI_DYNAMIC_REQUEST_V8.schema.json"
+DYNAMIC_V8_RESULT_SCHEMA="schemas/ziwei/ZIWEI_DYNAMIC_RESULT_V8.schema.json"
 INTERPRETATION_PROFILE="ziwei.interpretation.tw_v1"
 TEMPORAL_SCOPE="natal_baseline"
 BRIGHTNESS_MODULE="brightness_v1"
@@ -69,6 +73,7 @@ ADMITTED_REGISTRIES=(
 M0_REGISTRY="ziwei_interpretation_claim_registry_m0_auxiliary_v1.json"
 SIHUA_REGISTRY="ziwei_interpretation_claim_registry_sihua_v0.json"
 DECADAL_INTERPRETATION_REGISTRY="ziwei_interpretation_claim_registry_decadal_v1.json"
+YEARLY_INTERPRETATION_REGISTRY="ziwei_interpretation_claim_registry_yearly_v1.json"
 
 @dataclass(frozen=True)
 class ZiWeiReadingRequest:
@@ -1132,5 +1137,84 @@ def run_ziwei_dynamic_v7_transport(payload:dict[str,Any])->dict[str,Any]:
             "omissions":[],
             "delivery_actions":_delivery.delivery_actions(evidence_states=set(),unsupported_scope=True),
         }
+        result["authority"]["interpretation_authority_granted"]=False
+    return result
+
+
+def _production_yearly_interpretation_registries():
+    regs=_retrieval.load_registries((REF/YEARLY_INTERPRETATION_REGISTRY,))
+    reg=regs[0]
+    if reg.get("production_routable") is not False:
+        raise ValueError(f"REGISTRY_HISTORY_MUTATED:{YEARLY_INTERPRETATION_REGISTRY}")
+    if reg.get("interpretation_profile") != INTERPRETATION_PROFILE:
+        raise ValueError(f"REGISTRY_PROFILE_MISMATCH:{YEARLY_INTERPRETATION_REGISTRY}")
+    return regs
+
+
+def _yearly_interpretation(calculation:dict[str,Any],request_payload:dict[str,Any])->dict[str,Any]:
+    year=calculation["yearly"]
+    parent=calculation["parent_scope"]
+    facts={
+        "yearly_period_present",
+        "yearly_life_palace_identified",
+        "yearly_palace_roles_present",
+        "compatible_decadal_parent_present",
+        f"yearly_life_palace_branch:{year['life_palace_branch']}",
+        f"yearly_natal_palace:{year['natal_palace_at_life_branch']}",
+        f"decadal_parent_index:{parent['decadal_index']}",
+        "yearly_sihua_present",
+        f"yearly_sihua_profile:{calculation['yearly_sihua']['profile_id']}",
+    }
+    packet=_retrieval.FactPacket(
+        packet_id=f"{request_payload['request_id']}:yearly-interpretation",
+        interpretation_profile=INTERPRETATION_PROFILE,
+        temporal_scope="yearly",
+        facts=frozenset(facts),
+        requested_subjects=frozenset(request_payload["requested_subjects"]),
+        enabled_source_ids=frozenset(request_payload["enabled_source_ids"]),
+    )
+    retrieval=_retrieval.retrieve_claims(packet,_production_yearly_interpretation_registries())
+    frame=_retrieval.compose_frame(packet,retrieval)
+    evidence_states={"source_backed","project_adopted"}
+    if frame["conflicts"]:
+        evidence_states.add("conflicted")
+    return {
+        "status":"PRODUCTION_ADMITTED_BOUNDED",
+        "reason":"ZW-P1-040 yearly methodology interpretation admitted; generic yearly fortune, yearly Si Hua interpretation and concrete event prediction remain unadmitted",
+        "profile":INTERPRETATION_PROFILE,
+        "temporal_scope":"yearly",
+        "selected_claims":retrieval["selected_claims"],
+        "selected_claim_ids":frame["selected_claim_ids"],
+        "conflicts":frame["conflicts"],
+        "omissions":retrieval["omissions"],
+        "delivery_actions":_delivery.delivery_actions(evidence_states=evidence_states),
+    }
+
+
+def run_ziwei_dynamic_v8_transport(payload:dict[str,Any])->dict[str,Any]:
+    if not isinstance(payload,dict):
+        raise ValueError("dynamic v8 request transport must be an object")
+    if payload.get("schema_name")!="ziwei_dynamic_request" or payload.get("schema_version")!="8.0.0":
+        raise ValueError("unsupported Zi Wei dynamic v8 request schema")
+    v7=dict(payload)
+    v7["schema_version"]="7.0.0"
+    result=run_ziwei_dynamic_v7_transport(v7)
+    result["schema_version"]="8.0.0"
+    result["runtime"]={
+        "runtime_id":DYNAMIC_V8_RUNTIME_ID,
+        "runtime_version":DYNAMIC_V8_RUNTIME_VERSION,
+        "request_schema":DYNAMIC_V8_REQUEST_SCHEMA,
+        "result_schema":DYNAMIC_V8_RESULT_SCHEMA,
+        "temporal_scope":payload["temporal_scope"],
+    }
+    if payload["temporal_scope"]=="yearly":
+        result["status"]="PRODUCTION_ADMITTED"
+        result["scope"]="bounded_yearly_calculation_v1+interpretation_v1"
+        result["interpretation"]=_yearly_interpretation(result["calculation"],payload)
+        result["authority"]["interpretation_authority_granted"]=True
+    elif payload["temporal_scope"]=="decadal":
+        # Preserve the V7 bounded decadal interpretation semantics exactly.
+        result["authority"]["interpretation_authority_granted"]=True
+    else:
         result["authority"]["interpretation_authority_granted"]=False
     return result
