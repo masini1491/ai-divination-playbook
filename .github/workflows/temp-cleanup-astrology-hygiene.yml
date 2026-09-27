@@ -1,0 +1,48 @@
+name: TEMP Cleanup Astrology Hygiene Branches
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/temp-cleanup-astrology-hygiene.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: maintenance/astrology-hygiene-branch-cleanup-20260927
+          fetch-depth: 0
+
+      - name: Fail-closed preflight
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git ls-remote --heads origin refs/heads/main | awk '{print $1}')" = "6bc5e8cc5b6887097b9429c4ea255a47ed5127c0"
+          test "$(git ls-remote --heads origin refs/heads/maintenance/astrology-recent-change-hygiene-20260927 | awk '{print $1}')" = "1ea66ae247eab96d3744686dd100b754da9bfc78"
+          test "$(git ls-remote --heads origin refs/heads/chore/close-astrology-recent-change-hygiene | awk '{print $1}')" = "aee65b7796e7c8aa604f001b5617687e99f2ad76"
+          test "$(git ls-remote --heads origin refs/heads/data/astrology-extended-ephemeris-v1 | awk '{print $1}')" = "0052ba1c0a3b65238b4f9ec3a94a1aff47e341ea"
+          test "$(git ls-remote --heads origin refs/heads/data/astrology-place-v1 | awk '{print $1}')" = "d18be87abe762433e43e844f33f4b43f7fad9f3b"
+
+      - name: Delete merged maintenance branches
+        shell: bash
+        run: |
+          set -euo pipefail
+          git push origin --delete maintenance/astrology-recent-change-hygiene-20260927
+          git push origin --delete chore/close-astrology-recent-change-hygiene
+
+      - name: Verify cleanup and retained authorities
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -z "$(git ls-remote --heads origin refs/heads/maintenance/astrology-recent-change-hygiene-20260927)"
+          test -z "$(git ls-remote --heads origin refs/heads/chore/close-astrology-recent-change-hygiene)"
+          test "$(git ls-remote --heads origin refs/heads/data/astrology-extended-ephemeris-v1 | awk '{print $1}')" = "0052ba1c0a3b65238b4f9ec3a94a1aff47e341ea"
+          test "$(git ls-remote --heads origin refs/heads/data/astrology-place-v1 | awk '{print $1}')" = "d18be87abe762433e43e844f33f4b43f7fad9f3b"
+
+      - name: Delete temporary cleanup branch
+        run: git push origin --delete maintenance/astrology-hygiene-branch-cleanup-20260927
