@@ -71,7 +71,7 @@ class CivilTimeNormalizerTests(unittest.TestCase):
         manifest = json.loads(ADMISSION.read_text(encoding="utf-8"))
         self.assertEqual("PRODUCTION_ADMITTED_SHARED_INPUT_ADAPTER", manifest["status"])
         self.assertEqual("PRODUCTION_ADMITTED", manifest["consumers"]["Astrology"]["status"])
-        self.assertEqual("NOT_ADMITTED", manifest["consumers"]["ZiWei"]["status"])
+        self.assertEqual("PRODUCTION_ADMITTED", manifest["consumers"]["ZiWei"]["status"])
         self.assertFalse(manifest["scope"]["true_solar_time"])
         self.assertFalse(manifest["scope"]["birthplace_timezone_resolution"])
 
