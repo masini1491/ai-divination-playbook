@@ -4,6 +4,7 @@ import unittest
 from pathlib import Path
 
 from tools.ziwei_calendar_provider import GregorianBirthInput, normalize_gregorian_birth
+from tools.ziwei_true_solar_time import PROFILE_ID as TRUE_SOLAR_PROFILE_ID
 from tools.ziwei_gregorian_pipeline import (
     run_scope_a_gregorian,
     run_scope_a_gregorian_with_brightness,
@@ -16,7 +17,7 @@ class ZiWeiCalendarContractV1Tests(unittest.TestCase):
         m=json.loads((ROOT/"ZIWEI_CALENDAR_ADMISSION_V1.json").read_text(encoding="utf-8"))
         self.assertEqual("PRODUCTION_ADMITTED_INPUT_ADAPTER",m["status"])
         self.assertEqual("ziwei-calendar-interval-data",m["calculation"]["provider_id"])
-        self.assertEqual("2.1.0",m["calculation"]["provider_version"])
+        self.assertEqual("2.2.0",m["calculation"]["provider_version"])
         self.assertEqual("repo_local_interval_data",m["calculation"]["runtime_dependency"])
         self.assertEqual(
             "ziwei_tw_interval_1900_2100_candidate_v1",
@@ -32,6 +33,8 @@ class ZiWeiCalendarContractV1Tests(unittest.TestCase):
         self.assertEqual("explicit_IANA",m["scope"]["timezone"])
         self.assertEqual("civil-time-zoneinfo-v1",m["scope"]["civil_time_normalization"]["adapter_id"])
         self.assertEqual("ziwei.calendar.civil_v2",m["calculation"]["profile_id"])
+        self.assertEqual("explicit_profile_only",m["scope"]["true_solar_time"])
+        self.assertEqual(TRUE_SOLAR_PROFILE_ID,m["scope"]["optional_clock_profiles"]["true_solar_time"]["profile_id"])
         self.assertEqual("next_day_at_23",m["policy"]["rat_hour_policy"])
         self.assertEqual("split_after_day_15",m["policy"]["leap_month_policy"])
 
@@ -132,6 +135,55 @@ class ZiWeiCalendarContractV1Tests(unittest.TestCase):
         self.assertTrue(r["authority"]["gregorian_input_adapter_admitted"])
         self.assertTrue(r["authority"]["brightness_profile_admitted"])
         self.assertEqual("computed_by_optional_profile",r["calculation"]["unsupported"]["brightness"])
+
+    def test_explicit_true_solar_profile_changes_lookup_fields_and_preserves_civil_provenance(self):
+        civil=normalize_gregorian_birth(
+            GregorianBirthInput(2000,1,1,0,30,timezone="Asia/Shanghai")
+        )
+        solar=normalize_gregorian_birth(
+            GregorianBirthInput(
+                2000,1,1,0,30,timezone="Asia/Shanghai",
+                true_solar_time_profile=TRUE_SOLAR_PROFILE_ID,
+                longitude_deg=87.6168,
+            )
+        )
+        self.assertEqual(["years/2000.json"],civil["dataset"]["required_shards"])
+        self.assertEqual(["years/1999.json"],solar["dataset"]["required_shards"])
+        self.assertEqual(
+            "1999-12-31T22:17:47",
+            solar["true_solar_time_normalization"]["apparent_solar_local_iso"],
+        )
+        self.assertEqual(
+            "2000-01-01",
+            solar["civil_time_normalization"]["validated_local_iso"][:10],
+        )
+        self.assertEqual("true_solar_time",solar["calendar_profile"]["clock_mode"])
+        self.assertEqual(TRUE_SOLAR_PROFILE_ID,solar["calendar_profile"]["true_solar_time"])
+        self.assertTrue(solar["boundaries"]["true_solar_time_applied"])
+        self.assertTrue(solar["boundaries"]["apparent_solar_fields_used_for_lunar_conversion"])
+        self.assertFalse(solar["boundaries"]["local_calendar_identity_preserved"])
+        self.assertNotEqual(civil["raw_lunar_conversion"],solar["raw_lunar_conversion"])
+
+    def test_true_solar_profile_requires_explicit_matching_longitude(self):
+        with self.assertRaisesRegex(ValueError,"supplied together"):
+            normalize_gregorian_birth(
+                GregorianBirthInput(
+                    2000,1,1,12,0,
+                    true_solar_time_profile=TRUE_SOLAR_PROFILE_ID,
+                )
+            )
+        with self.assertRaisesRegex(ValueError,"supplied together"):
+            normalize_gregorian_birth(
+                GregorianBirthInput(2000,1,1,12,0,longitude_deg=121.5)
+            )
+        with self.assertRaisesRegex(ValueError,"unsupported"):
+            normalize_gregorian_birth(
+                GregorianBirthInput(
+                    2000,1,1,12,0,
+                    true_solar_time_profile="unknown",
+                    longitude_deg=121.5,
+                )
+            )
 
 if __name__=="__main__":
     unittest.main()
