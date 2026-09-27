@@ -82,6 +82,7 @@ ADMITTED_REGISTRIES=(
     "ziwei_interpretation_claim_registry_batch2.json",
     "ziwei_interpretation_claim_registry_palaces_v0.json",
     "ziwei_interpretation_claim_registry_same_palace_pairs_v1.json",
+    "ziwei_interpretation_claim_registry_body_palace_overlay_v1.json",
 )
 M0_REGISTRY="ziwei_interpretation_claim_registry_m0_auxiliary_v1.json"
 SIHUA_REGISTRY="ziwei_interpretation_claim_registry_sihua_v0.json"
@@ -299,7 +300,7 @@ def _compose(chart:dict[str,Any], request:ZiWeiReadingRequest, calendar:dict[str
             "optional_modules":modules,
         },
         "pipeline_id":"ziwei-scope-a-production-pipeline-v1",
-        "pipeline_version":"1.2.0",
+        "pipeline_version":"1.3.0",
         "status":"PRODUCTION_ADMITTED",
         "scope":"bounded_natal_first_layer"+("+optional_brightness_v1" if BRIGHTNESS_MODULE in modules else "")+("+optional_m0_auxiliary_v1" if M0_MODULE in modules else "")+("+optional_sihua_v1" if SIHUA_MODULE in modules else ""),
         "request_id":request.request_id,
