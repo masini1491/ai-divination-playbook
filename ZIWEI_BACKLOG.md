@@ -29,7 +29,7 @@ Last reviewed against:
 
 ```text
 ai-divination-playbook main
-652775c4655cc4dd0cc5ffbec529c11a68f0bee8
+b172a8deb1bbcdbf99319c57ecc788b015a9008e
 ```
 
 This SHA is review evidence only, not a pin. Every maintenance task must resolve current `main` again before mutation.
@@ -695,7 +695,7 @@ Ordering rationale:
 ### ZW-P2-050 — Body-Palace overlay interpretation admission
 
 - type: FEATURE / INTERPRETATION / NATAL OVERLAY
-- status: IN_PROGRESS
+- status: DONE
 - priority: P2
 - owner: Zi Wei interpretation evidence
 - blocked_by: none
@@ -710,7 +710,7 @@ Ordering rationale:
   - `references/ziwei/CALCULATION_ENGINE_RESEARCH.md`
   - `references/ziwei/BODY_PALACE_OVERLAY_RESEARCH_V1.md`
   - `references/ziwei/ziwei_interpretation_claim_registry_body_palace_overlay_v1.json`
-- implementation_candidate:
+- implementation:
   - natal provider advances to `ziwei-scope-a-natal-python@0.3.0` and deterministically projects `body_palace.branch` onto the existing twelve-palace layout as `body_palace.overlay_palace`;
   - retrieval facts add `fact_available:body_palace_overlay` + one `body_palace_overlay:<existing palace>` token; no second geometry path or thirteenth palace is introduced;
   - claim schema `0.4.0-research` adds explicit `body_palace_overlay` / `overlay_palace` / `subjects[]` identity;
@@ -726,6 +726,19 @@ Ordering rationale:
   - interpretation admission is separate from already-admitted Body-Palace calculation;
   - registry/schema/provider/runtime/admission/index/materialization/bundle/current docs remain synchronized;
   - generator outputs, formal PR CI, merge, exact-main CI/artifact and canonical read-back complete before `DONE`.
+- closure:
+  - implementation merged by PR #314 at `b172a8deb1bbcdbf99319c57ecc788b015a9008e`;
+  - natal provider advanced to `ziwei-scope-a-natal-python@0.3.0` and emits `body_palace.overlay_palace`, `fact_available:body_palace_overlay` and one exact `body_palace_overlay:<existing palace>` token while preserving `overlay_not_thirteenth_palace`;
+  - claim schema `0.4.0-research` adds explicit `body_palace_overlay` / `overlay_palace` / `subjects[]` identity without rewriting historical registry versions;
+  - production admission contains exactly 5 practitioner-bounded claims: 1 身宮 postnatal-development methodology claim + exact overlays for `夫妻宮`、`財帛宮`、`官祿宮`、`遷移宮`; all other Body-Palace contexts remain without new doctrine;
+  - base natal claim count is 59 = 52 first-layer + 2 sparse same-palace pair + 5 Body-Palace claims; optional M0 + Sihua maximum is 66;
+  - Scope-A pipeline advanced to `1.3.0`; downstream decadal parent contract tracks natal provider `0.3.0`;
+  - generator bridge run `36321582292` PASSed focused Body-Palace/provider/production/Sihua/unified-runtime/decadal/materialization regressions, Zi Wei bundle regeneration/check, ChatGPT load-pack regeneration/check, load-budget and bundle regression;
+  - generator-owned cache commit `49e4352326efc718ea465a21b9f24ba37bbc6994` removed the temporary bridge after canonical derived-cache regeneration;
+  - formal PR #314 run `36321624618` PASSed `validate` + `casting-runtime`, including full unit suite and structural checker;
+  - exact-main canonical read-back at `b172a8deb1bbcdbf99319c57ecc788b015a9008e` confirms provider `0.3.0`, pipeline `1.3.0`, 5-claim Body-Palace admission, four admitted overlay contexts, 59/66 claim counts and `thirteenth_palace=false`;
+  - exact-main run `36321729365` PASSed `validate` + `casting-runtime`, full unit suite, structural checker and exact-main Zi Wei handoff preparation/upload;
+  - exact-main artifact `10932523663` / `ziwei-deterministic-handoff-b172a8deb1bbcdbf99319c57ecc788b015a9008e` published at 92,752 bytes with digest `sha256:ea5ee1a3333acc9261a4c5315b8c0a4f56e50029043b1d5930be359e6aec737b`.
 - production_boundary:
   - Body Palace remains an overlay, never a thirteenth ordinary palace;
   - calculation identity alone does not create user-facing doctrine;
