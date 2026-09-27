@@ -343,7 +343,29 @@
           "natal_claim_promotion": false,
           "concrete_event_prediction": false,
           "lower_layer_interpretation_status": {
-            "yearly": "not-admitted",
+            "yearly": "production-admitted-bounded-methodology",
+            "monthly": "not-admitted",
+            "daily": "not-admitted",
+            "hourly": "not-admitted"
+          }
+        },
+        "yearly_v1": {
+          "activation": "explicit-yearly-request-only",
+          "runtime": "tools/ziwei_runtime.py",
+          "runtime_id": "ziwei-production-runtime-v8",
+          "admission_manifest": "ZIWEI_YEARLY_INTERPRETATION_ADMISSION_V1.json",
+          "registry": "references/ziwei/ziwei_interpretation_claim_registry_yearly_v1.json",
+          "interpretation_profile": "ziwei.interpretation.tw_v1",
+          "claim_count": 3,
+          "parent_calculation_scope": "yearly",
+          "parent_interpretation_context": "decadal",
+          "interpretation_status": "production-admitted-bounded-methodology",
+          "natal_claim_promotion": false,
+          "decadal_claim_promotion": false,
+          "yearly_sihua_interpretation": false,
+          "generic_yearly_fortune": false,
+          "concrete_event_prediction": false,
+          "lower_layer_interpretation_status": {
             "monthly": "not-admitted",
             "daily": "not-admitted",
             "hourly": "not-admitted"
