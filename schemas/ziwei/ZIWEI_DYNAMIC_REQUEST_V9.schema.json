@@ -83,7 +83,23 @@
             },
             "timezone": {
               "const": "Asia/Taipei"
+            },
+            "true_solar_time_profile": {
+              "const": "ziwei.true_solar.noaa_fractional_year_v1"
+            },
+            "longitude_deg": {
+              "type": "number",
+              "minimum": -180,
+              "maximum": 180
             }
+          },
+          "dependentRequired": {
+            "true_solar_time_profile": [
+              "longitude_deg"
+            ],
+            "longitude_deg": [
+              "true_solar_time_profile"
+            ]
           }
         },
         {
