@@ -207,7 +207,7 @@
       "natal_provider": "tools/ziwei_natal_provider.py",
       "admission_manifest": "ZIWEI_PRODUCTION_ADMISSION_V1.json",
       "interpretation_profile": "ziwei.interpretation.tw_v1",
-      "claim_count": 59,
+      "claim_count": 61,
       "research_owner": "references/ziwei/README.md",
       "optional_modules": {
         "brightness_v1": {
@@ -275,7 +275,7 @@
         "tools/ziwei_brightness_pipeline.py",
         "tools/ziwei_gregorian_pipeline.py"
       ],
-      "maximum_claim_count_with_optional_modules": 66,
+      "maximum_claim_count_with_optional_modules": 68,
       "exact_main_handoff_artifact": "ziwei-deterministic-handoff-${{ github.sha }}",
       "exact_main_handoff_retention_days": 90,
       "exact_main_handoff_includes_calendar_shards": false,
@@ -491,7 +491,7 @@
         "cartesian_expansion": false
       },
       "natal_provider_version": "0.3.0",
-      "pipeline_version": "1.3.0",
+      "pipeline_version": "1.4.0",
       "body_palace_overlay_interpretation": {
         "status": "production-admitted-bounded",
         "activation": "automatic-on-exact-admitted-body-palace-overlay-fact",
@@ -509,6 +509,18 @@
         "body_palace_policy": "overlay_not_thirteenth_palace",
         "thirteenth_palace": false,
         "exhaustive_overlay_dictionary": false
+      },
+      "star_palace_context_interpretation": {
+        "status": "production-admitted-bounded",
+        "activation": "automatic-on-exact-admitted-star-in-palace-fact",
+        "admission_manifest": "ZIWEI_STAR_PALACE_CONTEXT_ADMISSION_V1.json",
+        "registry": "references/ziwei/ziwei_interpretation_claim_registry_star_palace_context_v1.json",
+        "claim_count": 2,
+        "admitted_pairs": [
+          "天相×命宮",
+          "天梁×官祿宮"
+        ],
+        "cartesian_expansion": false
       }
     },
     {
