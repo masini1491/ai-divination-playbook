@@ -120,7 +120,7 @@ shared civil-time validation
 → Zi Wei-specific rat-hour / leap-month / other admitted policies
 ```
 
-The existing `Asia/Taipei` calendar profile remains unchanged until a separate Zi Wei production admission expands timezone support.
+Zi Wei may consume this contract only through its own production admission. Current Zi Wei Gregorian admission binds validated local Gregorian fields to the method-owned Gregorian→lunar layer; the resolved UTC instant remains provenance and is not used to rebase calendar fields.
 
 ## 6. True-solar-time separation
 
@@ -152,7 +152,7 @@ Current consumer admission is intentionally asymmetric:
 Shared adapter admission does **not**:
 
 - move Astrology astronomical calculation or interpretation authority into this file;
-- widen Zi Wei beyond `Asia/Taipei`;
+- grant Zi Wei calculation/interpretation authority by itself;
 - admit DST-fold disambiguation;
 - admit birthplace timezone guessing;
 - change true-solar-time policy.
