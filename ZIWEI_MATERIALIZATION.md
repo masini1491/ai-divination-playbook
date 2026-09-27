@@ -21,6 +21,9 @@ schemas/ziwei/ZIWEI_READING_REQUEST_V1.schema.json
 schemas/ziwei/ZIWEI_READING_RESULT_V1.schema.json
 tools/ziwei_natal_provider.py
 tools/ziwei_sihua_provider.py
+tools/ziwei_m1_auxiliary_provider.py
+references/ziwei/ziwei_interpretation_claim_registry_m1_auxiliary_v1.json
+ZIWEI_M1_AUXILIARY_ADMISSION_V1.json
 references/ziwei/ziwei_interpretation_claim_registry_sihua_v0.json
 references/ziwei/ziwei_interpretation_claim_registry_same_palace_pairs_v1.json
 ZIWEI_SAME_PALACE_PAIR_ADMISSION_V1.json
