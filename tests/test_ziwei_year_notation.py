@@ -2,6 +2,7 @@ from __future__ import annotations
 import unittest
 
 from tools.ziwei_calendar_provider import normalize_gregorian_birth
+from tools.ziwei_true_solar_time import PROFILE_ID as TRUE_SOLAR_PROFILE_ID
 from tools.ziwei_year_notation import (
     MinguoBirthInput,
     convert_minguo_birth,
@@ -32,6 +33,22 @@ class ZiWeiYearNotationTests(unittest.TestCase):
         result=normalize_gregorian_birth(converted["gregorian_birth"])
         self.assertEqual("Asia/Tokyo",result["calendar_profile"]["timezone"])
         self.assertEqual("civil-time-zoneinfo-v1",result["civil_time_normalization"]["normalizer_id"])
+
+    def test_minguo_birth_preserves_true_solar_profile_and_longitude(self):
+        converted=convert_minguo_birth(
+            MinguoBirthInput(
+                89,8,16,5,30,
+                timezone="Asia/Taipei",
+                true_solar_time_profile=TRUE_SOLAR_PROFILE_ID,
+                longitude_deg=121.5654,
+            )
+        )
+        birth=converted["gregorian_birth"]
+        self.assertEqual(TRUE_SOLAR_PROFILE_ID,birth.true_solar_time_profile)
+        self.assertEqual(121.5654,birth.longitude_deg)
+        self.assertEqual(TRUE_SOLAR_PROFILE_ID,converted["source"]["true_solar_time_profile"])
+        result=normalize_gregorian_birth(birth)
+        self.assertTrue(result["boundaries"]["true_solar_time_applied"])
 
     def test_invalid_minguo_year_fails_closed(self):
         for value in (0,-1):
