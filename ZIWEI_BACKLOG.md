@@ -781,7 +781,12 @@ Ordering rationale:
   - current `Asia/Taipei` fixtures and `next_day_at_23` / `split_after_day_15` policies remain regression-covered;
   - `CIVIL_TIME_NORMALIZER_ADMISSION_V1.json` records Zi Wei as a method-owned production consumer;
   - birthplace→timezone resolution remains separate/not admitted for Zi Wei; `ZW-P2-040` true-solar-time policy remains untouched;
-  - generated Zi Wei bundle/load-pack regeneration is delegated to the registered P2-030 bridge and is not hand-edited.
+  - generated Zi Wei bundle/load-pack regeneration is delegated to the registered P2-030 bridge and is not hand-edited;
+  - first bridge run `36304683461` exposed a bridge-only dependency mismatch (`test_civil_time_normalizer` imports Astrology provider / astronomy); shared adapter authority/tests were already closed under AST-P1-190, so the P2-030 bridge was narrowed to Zi Wei consumer regressions;
+  - second bridge run `36304745792` passed Zi Wei functional regressions but correctly failed because `test_ziwei_tool_bundle` was placed before cache regeneration; bridge ordering was corrected without changing runtime semantics;
+  - successful bridge run `36304792495`: 28 focused Zi Wei regressions PASS, regenerated Zi Wei bundle PASS, post-regeneration bundle tests 5 PASS, ChatGPT load-pack PASS, `explicit_research_astrology` ratio `0.7994`, overall load budget PASS;
+  - generated-cache bot commit `a3e7c581e8f9c960e9b5c0ad38901b9d6494df34` changed only the canonical Zi Wei bundle and removal of the temporary bridge;
+  - this human-authored evidence commit re-triggers formal PR validation against the generated-cache head.
 - completion_gate:
   - shared normalizer consumption is explicit and regression-covered;
   - non-`Asia/Taipei` IANA timezone provenance is preserved;
