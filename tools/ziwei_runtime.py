@@ -64,6 +64,10 @@ DYNAMIC_V9_RUNTIME_ID="ziwei-production-runtime-v9"
 DYNAMIC_V9_RUNTIME_VERSION="9.0.0"
 DYNAMIC_V9_REQUEST_SCHEMA="schemas/ziwei/ZIWEI_DYNAMIC_REQUEST_V9.schema.json"
 DYNAMIC_V9_RESULT_SCHEMA="schemas/ziwei/ZIWEI_DYNAMIC_RESULT_V9.schema.json"
+DYNAMIC_V10_RUNTIME_ID="ziwei-production-runtime-v10"
+DYNAMIC_V10_RUNTIME_VERSION="10.0.0"
+DYNAMIC_V10_REQUEST_SCHEMA="schemas/ziwei/ZIWEI_DYNAMIC_REQUEST_V10.schema.json"
+DYNAMIC_V10_RESULT_SCHEMA="schemas/ziwei/ZIWEI_DYNAMIC_RESULT_V10.schema.json"
 INTERPRETATION_PROFILE="ziwei.interpretation.tw_v1"
 TEMPORAL_SCOPE="natal_baseline"
 BRIGHTNESS_MODULE="brightness_v1"
@@ -79,6 +83,7 @@ SIHUA_REGISTRY="ziwei_interpretation_claim_registry_sihua_v0.json"
 DECADAL_INTERPRETATION_REGISTRY="ziwei_interpretation_claim_registry_decadal_v1.json"
 YEARLY_INTERPRETATION_REGISTRY="ziwei_interpretation_claim_registry_yearly_v1.json"
 MONTHLY_INTERPRETATION_REGISTRY="ziwei_interpretation_claim_registry_monthly_v1.json"
+DAILY_INTERPRETATION_REGISTRY="ziwei_interpretation_claim_registry_daily_v1.json"
 
 @dataclass(frozen=True)
 class ZiWeiReadingRequest:
@@ -1301,6 +1306,87 @@ def run_ziwei_dynamic_v9_transport(payload:dict[str,Any])->dict[str,Any]:
         result["authority"]["interpretation_authority_granted"]=True
     elif payload["temporal_scope"] in ("decadal","yearly"):
         # Preserve V8 bounded interpretation semantics exactly.
+        result["authority"]["interpretation_authority_granted"]=True
+    else:
+        result["authority"]["interpretation_authority_granted"]=False
+    return result
+
+
+def _production_daily_interpretation_registries():
+    regs=_retrieval.load_registries((REF/DAILY_INTERPRETATION_REGISTRY,))
+    reg=regs[0]
+    if reg.get("production_routable") is not False:
+        raise ValueError(f"REGISTRY_HISTORY_MUTATED:{DAILY_INTERPRETATION_REGISTRY}")
+    if reg.get("interpretation_profile") != INTERPRETATION_PROFILE:
+        raise ValueError(f"REGISTRY_PROFILE_MISMATCH:{DAILY_INTERPRETATION_REGISTRY}")
+    return regs
+
+
+def _daily_interpretation(calculation:dict[str,Any],request_payload:dict[str,Any])->dict[str,Any]:
+    day=calculation["daily"]
+    target=calculation["target"]
+    parent=calculation["parent_scope"]
+    facts={
+        "daily_period_present",
+        "daily_life_palace_identified",
+        "daily_lunar_day_identified",
+        "daily_palace_roles_present",
+        "compatible_monthly_parent_present",
+        f"daily_lunar_day:{target['lunar_day']}",
+        f"daily_life_palace_branch:{day['life_palace_branch']}",
+        f"daily_natal_palace:{day['natal_palace_at_life_branch']}",
+        f"monthly_parent_effective_month:{parent['effective_month']}",
+        f"monthly_parent_life_palace_branch:{parent['monthly_life_palace_branch']}",
+    }
+    packet=_retrieval.FactPacket(
+        packet_id=f"{request_payload['request_id']}:daily-interpretation",
+        interpretation_profile=INTERPRETATION_PROFILE,
+        temporal_scope="daily",
+        facts=frozenset(facts),
+        requested_subjects=frozenset(request_payload["requested_subjects"]),
+        enabled_source_ids=frozenset(request_payload["enabled_source_ids"]),
+    )
+    retrieval=_retrieval.retrieve_claims(packet,_production_daily_interpretation_registries())
+    frame=_retrieval.compose_frame(packet,retrieval)
+    evidence_states={"source_backed","project_adopted"}
+    if frame["conflicts"]:
+        evidence_states.add("conflicted")
+    return {
+        "status":"PRODUCTION_ADMITTED_BOUNDED",
+        "reason":"ZW-P1-040 daily methodology interpretation admitted; day-pillar, daily Si Hua, flow stars, generic daily fortune and hourly event prediction remain unadmitted",
+        "profile":INTERPRETATION_PROFILE,
+        "temporal_scope":"daily",
+        "selected_claims":retrieval["selected_claims"],
+        "selected_claim_ids":frame["selected_claim_ids"],
+        "conflicts":frame["conflicts"],
+        "omissions":retrieval["omissions"],
+        "delivery_actions":_delivery.delivery_actions(evidence_states=evidence_states),
+    }
+
+
+def run_ziwei_dynamic_v10_transport(payload:dict[str,Any])->dict[str,Any]:
+    if not isinstance(payload,dict):
+        raise ValueError("dynamic v10 request transport must be an object")
+    if payload.get("schema_name")!="ziwei_dynamic_request" or payload.get("schema_version")!="10.0.0":
+        raise ValueError("unsupported Zi Wei dynamic v10 request schema")
+    v9=dict(payload)
+    v9["schema_version"]="9.0.0"
+    result=run_ziwei_dynamic_v9_transport(v9)
+    result["schema_version"]="10.0.0"
+    result["runtime"]={
+        "runtime_id":DYNAMIC_V10_RUNTIME_ID,
+        "runtime_version":DYNAMIC_V10_RUNTIME_VERSION,
+        "request_schema":DYNAMIC_V10_REQUEST_SCHEMA,
+        "result_schema":DYNAMIC_V10_RESULT_SCHEMA,
+        "temporal_scope":payload["temporal_scope"],
+    }
+    if payload["temporal_scope"]=="daily":
+        result["status"]="PRODUCTION_ADMITTED"
+        result["scope"]="bounded_daily_calculation_v1+interpretation_v1"
+        result["interpretation"]=_daily_interpretation(result["calculation"],payload)
+        result["authority"]["interpretation_authority_granted"]=True
+    elif payload["temporal_scope"] in ("decadal","yearly","monthly"):
+        # Preserve V9 bounded interpretation semantics exactly.
         result["authority"]["interpretation_authority_granted"]=True
     else:
         result["authority"]["interpretation_authority_granted"]=False
