@@ -11,16 +11,17 @@
     "temporal_scope": "natal_baseline",
     "major_star_subjects": 14,
     "palace_subjects": 12,
-    "admitted_claims": 54,
+    "admitted_claims": 59,
     "optional_auxiliary_subjects": 4,
-    "maximum_admitted_claims_with_optional_modules": 61,
+    "maximum_admitted_claims_with_optional_modules": 66,
     "optional_sihua_claims": 3,
     "first_layer_claims": 52,
-    "same_palace_pair_claims": 2
+    "same_palace_pair_claims": 2,
+    "body_palace_overlay_claims": 5
   },
   "calculation": {
     "provider_id": "ziwei-scope-a-natal-python",
-    "provider_version": "0.2.0",
+    "provider_version": "0.3.0",
     "runtime_owner": "tools/ziwei_natal_provider.py",
     "profile_id": "ziwei.scope_a.natal_v0",
     "input_boundary": "normalized_traditional_lunar_only",
@@ -35,11 +36,21 @@
         "star_in_palace:<star>:<palace>"
       ],
       "interpretation_boundary": "raw occupancy/applicability facts only; no borrowing doctrine"
+    },
+    "body_palace_overlay_facts": {
+      "status": "production_admitted_natal_baseline",
+      "fact_available": "fact_available:body_palace_overlay",
+      "per_chart": [
+        "body_palace_overlay:<existing palace>"
+      ],
+      "source": "body_palace.branch + existing branch-to-palace layout",
+      "policy": "overlay_not_thirteenth_palace",
+      "interpretation_boundary": "deterministic overlay applicability only; no semantic doctrine without admitted claim"
     }
   },
   "pipeline": {
     "pipeline_id": "ziwei-scope-a-production-pipeline-v1",
-    "pipeline_version": "1.2.0",
+    "pipeline_version": "1.3.0",
     "runtime_owner": "tools/ziwei_runtime.py",
     "interpretation_profile": "ziwei.interpretation.tw_v1",
     "delivery_contract": "references/ziwei/UNCERTAINTY_SAFETY_DELIVERY_CONTRACT_V0.md",
@@ -60,7 +71,8 @@
     "ziwei_interpretation_claim_registry_batch1.json",
     "ziwei_interpretation_claim_registry_batch2.json",
     "ziwei_interpretation_claim_registry_palaces_v0.json",
-    "ziwei_interpretation_claim_registry_same_palace_pairs_v1.json"
+    "ziwei_interpretation_claim_registry_same_palace_pairs_v1.json",
+    "ziwei_interpretation_claim_registry_body_palace_overlay_v1.json"
   ],
   "research_registry_history_policy": "remain production_routable=false; production authority is granted only by this manifest + pipeline binding",
   "unsupported_scopes": [
@@ -69,7 +81,8 @@
     "four_transformation_interpretation_beyond_admitted_source_explicit_claims",
     "dynamic_prediction",
     "star_palace_cartesian_claims",
-    "same_palace_pair_claims_beyond_ZIWEI_SAME_PALACE_PAIR_ADMISSION_V1"
+    "same_palace_pair_claims_beyond_ZIWEI_SAME_PALACE_PAIR_ADMISSION_V1",
+    "body_palace_overlay_semantics_beyond_ZIWEI_BODY_PALACE_OVERLAY_ADMISSION_V1"
   ],
   "fail_closed": [
     "normalized_lunar_input_required",
@@ -83,7 +96,10 @@
     "decadal_requires_explicit_gender_and_target_lunar_year",
     "same_palace_pair_claim_requires_exact_canonical_occupancy_facts",
     "unadmitted_same_palace_pair_uses_existing_bounded_composition_only",
-    "no_cartesian_same_palace_pair_generation"
+    "no_cartesian_same_palace_pair_generation",
+    "body_palace_overlay_claim_requires_exact_canonical_overlay_fact",
+    "unadmitted_body_palace_context_uses_existing_bounded_composition_only",
+    "body_palace_never_becomes_thirteenth_palace"
   ],
   "high_stakes_guardrails": [
     "no_deterministic_health_or_death_prediction",
@@ -484,6 +500,20 @@
       "automatic_on_exact_occupancy_match": true,
       "cartesian_expansion": false,
       "model_memory_pair_doctrine": false
+    },
+    {
+      "module_id": "body_palace_overlay_v1",
+      "admission_manifest": "ZIWEI_BODY_PALACE_OVERLAY_ADMISSION_V1.json",
+      "registry": "references/ziwei/ziwei_interpretation_claim_registry_body_palace_overlay_v1.json",
+      "runtime_owner": "tools/ziwei_runtime.py",
+      "interpretation_profile": "ziwei.interpretation.tw_v1",
+      "claim_count": 5,
+      "methodology_claims": 1,
+      "overlay_claims": 4,
+      "status": "PRODUCTION_ADMITTED_BOUNDED_INTERPRETATION",
+      "automatic_on_exact_overlay_fact": true,
+      "thirteenth_palace": false,
+      "exhaustive_overlay_dictionary": false
     }
   ]
 }
