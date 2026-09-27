@@ -570,7 +570,7 @@ Ordering rationale:
   - decadal interpretation: DONE — V7 bounded methodology interpretation merged and canonically read back; exactly 2 source-backed claims are admitted, while natal-claim promotion、generic十年吉凶、具體事件與 high-stakes determinism remain fail-closed;
   - yearly interpretation: DONE — V8 bounded methodology interpretation merged and canonically read back; exactly 3 source-backed / project-bounded claims are admitted, while generic流年吉凶、yearly Si Hua斷語、具體事件與 high-stakes determinism remain fail-closed;
   - monthly interpretation: DONE — V9 bounded methodology interpretation merged and canonically read back; exactly 3 bounded claims are admitted, while generic本月吉凶、monthly Si Hua／flow stars、具體日／時事件與 high-stakes determinism remain fail-closed;
-  - daily interpretation: READY — daily calculation admission merged and canonically read back; interpretation still requires its own source-backed claim admission;
+  - daily interpretation: IMPLEMENTED_CANDIDATE — V10 admits exactly 3 practitioner/tradition-bounded methodology claims gated by explicit lunar-day identity + compatible monthly parent; generic今日吉凶、day pillar、daily Si Hua／flow stars、具體流時事件與 high-stakes determinism remain fail-closed; awaiting bridge-generated caches / formal PR validation / merge / canonical read-back;
   - hourly interpretation: READY — hourly calculation admission merged and canonically read back; interpretation still requires its own source-backed claim admission;
 - staging_rule:
   - decadal interpretation may start after decadal calculation admission;
@@ -614,6 +614,16 @@ Ordering rationale:
   - exact-main canonical read-back confirms V9 runtime, monthly interpretation admission, 3-claim registry, root production admission and PLAYBOOK_INDEX routing at `e54b1730d61dba875959a271e9410e4b9a7b2efc`;
   - exact-main run `36291341656`: `validate` PASS and `casting-runtime` PASS; full unit suite, structural checker, exact-main Zi Wei handoff preparation and upload all passed;
   - exact-main artifact `10921784224` / `ziwei-deterministic-handoff-e54b1730d61dba875959a271e9410e4b9a7b2efc` was published at 77,259 bytes with digest `sha256:8465f024d9b0405eadaf561e75bbd8dcdda20a99818c1c3f8101d58ac3d60ecf`.
+- daily_interpretation_stage_candidate_evidence:
+  - source pass did not find a sufficiently explicit primary-text daily interpretation chapter; V10 therefore uses practitioner/tradition references and records that evidence class explicitly rather than upgrading it to historical-core authority;
+  - DestinyNet discussion quoting 慧心齋主 and 斗數春秋 independently describe the traditional daily identity as the monthly Life Palace at lunar day 1, then one palace per day; the latter also documents ambiguity/limitations in this old daily method;
+  - candidate registry `ziwei_interpretation_claim_registry_daily_v1.json` contains exactly 3 `methodology` claims with `temporal_scope=daily`;
+  - `ZW-D1-METHOD-IDENTITY-001` requires daily period + daily life-palace + explicit lunar-day identity and is classified `named_tradition`, not `historical_core`;
+  - `ZW-D1-METHOD-PARENT-002` requires a compatible admitted monthly parent and forbids parent-claim promotion;
+  - `ZW-D1-METHOD-BOUNDARY-003` prohibits generic daily-fortune filler and hourly-event inference without a separately admitted hourly layer;
+  - V10 is additive: V9 keeps daily interpretation NOT_ADMITTED; V10 preserves V7–V9 decadal/yearly/monthly bounded interpretation and adds daily only;
+  - day pillar, daily Si Hua and flow stars remain not computed/admitted; this stage does not reconstruct any of them;
+  - generated Zi Wei bundle/load-pack regeneration is delegated to the registered temporary daily-interpretation bridge and is not hand-edited.
 - rule:
   - natal 52 claims must not be silently reused as flow prediction claims.
 - completion_gate:
