@@ -93,6 +93,8 @@ Dynamic V7 另只 admission `decadal` 的兩條 bounded methodology claims（`ZW
 
 Dynamic V8 再 admission `yearly` 的三條 bounded methodology claims（`ZW-Y1-METHOD-TOPOLOGY-001`、`ZW-Y1-METHOD-PARENT-002`、`ZW-Y1-METHOD-BOUNDARY-003`）。它們要求流年保留三方／對照拓撲、與 compatible 大限 parent 分層合參，並禁止在沒有另行 admitted contextual claim 時補成 generic「流年吉凶」；target-year 四化 facts不因此取得 yearly interpretation authority，月／日／時的具體應期也仍需等待 lower-layer admission。
 
+Dynamic V8 再 admission `yearly` 的三條 bounded methodology claims（`ZW-Y1-METHOD-TOPOLOGY-001`、`ZW-Y1-METHOD-PARENT-002`、`ZW-Y1-METHOD-BOUNDARY-003`）。它們要求流年保留三方／對照拓撲、與 compatible 大限 parent 分層合參，並禁止在沒有另行 admitted contextual claim 時補成 generic「流年吉凶」；target-year 四化 facts不因此取得 yearly interpretation authority，月／日／時的具體應期也仍需等待 lower-layer admission。
+
 - no admitted claim → omit / insufficient;
 - missing fact → do not guess;
 - conditional rule relevance ≠ demonstrated chart condition;
