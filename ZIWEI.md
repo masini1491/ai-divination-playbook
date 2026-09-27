@@ -1,12 +1,12 @@
 # Zi Wei Dou Shu｜紫微斗數方法契約
 
-Status: **PRODUCTION SCOPE-A V1 + GREGORIAN INPUT V1 + OPTIONAL BRIGHTNESS / M0 AUXILIARY / SIHUA FACTS V1 / EXPLICIT-REQUEST ONLY**
+Status: **PRODUCTION NATAL SCOPE-A V1 + TEMPORAL CALCULATION V2–V6 + BOUNDED DECADAL V7 / YEARLY V8 METHODOLOGY INTERPRETATION + EXPLICIT-REQUEST ONLY**
 
-本檔是 Zi Wei Dou Shu 的 root production method owner。Production authority 僅涵蓋已 admission 的 **bounded natal first layer**；typed production composition 由 `tools/ziwei_runtime.py` 擁有；deterministic fact providers 與 machine admission truth 分別由 `tools/ziwei_*_provider.py` 與 admission manifests 擁有。Research history 仍由 `references/ziwei/**` 擁有，不因 production admission 回寫其歷史 authority。
+本檔是 Zi Wei Dou Shu 的 root production method owner。Production authority 以 **bounded natal Scope-A 為核心**，另包含 admission manifests 明確列出的 temporal calculation layers 與 bounded decadal/yearly methodology interpretation；typed production composition 由 `tools/ziwei_runtime.py` 擁有；deterministic fact providers 與 machine admission truth 分別由 `tools/ziwei_*_provider.py` 與 admission manifests 擁有。Research history 仍由 `references/ziwei/**` 擁有，不因 production admission 回寫其歷史 authority。
 
 ## 1. Activation / Routing
 
-Zi Wei Scope-A v1 不參與 ordinary auto-routing。只有使用者明確要求「紫微／紫微斗數／看紫微命盤」等 production intent 才啟動。
+Zi Wei production 不參與 ordinary auto-routing。只有使用者明確要求「紫微／紫微斗數／看紫微命盤／大限／流年」等 Zi Wei production intent 才啟動對應 admitted path。
 
 ```text
 explicit Zi Wei production
@@ -24,15 +24,22 @@ explicit Zi Wei production
 
 ## 2. Production Scope
 
-IN:
+IN — natal core:
 
-- `natal_baseline` only;
+- `natal_baseline` Scope-A;
 - 14 major-star first-layer claims;
 - 12 palace first-layer claims;
 - 52 admitted claims total;
 - admitted deterministic natal provider facts, including natal-baseline per-palace major-star occupancy / count / empty-palace applicability facts;
 - Gregorian birth datetime input via `ziwei.calendar.tw_v1` for `Asia/Taipei` civil time within the admitted 1900-01-01..2100-12-31 range; explicit 民國年份 notation is deterministically converted by `tools/ziwei_year_notation.py` (`民國 N 年 → CE N+1911`) before the same Gregorian calendar adapter;
 - explicit provenance, omission, conflict and safety delivery.
+
+SEPARATELY ADMITTED TEMPORAL LAYERS:
+
+- V2–V6: explicit `decadal → yearly → monthly → daily → hourly` calculation-only contracts;
+- V7: bounded decadal methodology interpretation only;
+- V8: bounded yearly methodology interpretation only;
+- temporal layers do not widen natal claims or authorize generic fortune/event filler.
 
 OPTIONAL / explicit add-on:
 
