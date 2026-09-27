@@ -41,7 +41,7 @@ jobs:
         run: |
           python -m unittest \
             tests.test_ziwei_decadal_interpretation \
-            tests.test_ziwei_claim_retrieval \
+            tests.test_ziwei_interpretation_retrieval_v0 \
             tests.test_ziwei_decadal_production \
             tests.test_ziwei_hourly_production \
             tests.test_ziwei_production_contract_v1
