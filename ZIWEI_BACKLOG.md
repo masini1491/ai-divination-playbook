@@ -29,7 +29,7 @@ Last reviewed against:
 
 ```text
 ai-divination-playbook main
-33c10c7f012633b278cc56d16da694379a032591
+d3daa1aaf65891ba72f8e2b81589abe77ed692b5
 ```
 
 This SHA is review evidence only, not a pin. Every maintenance task must resolve current `main` again before mutation.
@@ -657,7 +657,7 @@ Ordering rationale:
 ### ZW-P2-010 — M1 high-impact auxiliary stars
 
 - type: FEATURE / ADMISSION
-- status: IN_PROGRESS
+- status: DONE
 - priority: P2
 - owner: Zi Wei auxiliary-star research/admission
 - blocked_by:
@@ -683,14 +683,14 @@ Ordering rationale:
   - `references/ziwei/CALCULATION_ENGINE_RESEARCH.md`
   - `references/ziwei/M1_AUXILIARY_RESEARCH_V1.md`
   - `references/ziwei/ziwei_interpretation_claim_registry_m1_auxiliary_v1.json`
-- implementation_candidate:
+- implementation:
   - optional module `m1_auxiliary_v1`, profile `ziwei.auxiliary.m1.common_v1`, provider `tools/ziwei_m1_auxiliary_provider.py`;
   - M1 is natal-only and requires `m0_auxiliary_v1`; M1-alone requests fail closed;
   - M1 provider emits `fact_available:m1_auxiliary_stars`, 10 `star_present` facts and exact self/sanfang modifier relations;
   - only M0+M1 union adds generic `fact_available:auxiliary_stars` + `fact_available:star_relations`, preserving M0-alone behavior;
   - 六煞 relations additionally expose bounded generic `modifier_present:<major>:malefic_stars` applicability without event doctrine;
-  - base natal claims remain 61; optional maximum candidate becomes 78 = 61 + M0 4 + M1 10 + Sihua 3;
-  - Scope-A pipeline candidate advances to `1.5.0`; natal provider remains `0.3.0`.
+  - base natal claims remain 61; optional maximum is 78 = 61 + M0 4 + M1 10 + Sihua 3;
+  - Scope-A pipeline advances to `1.5.0`; natal provider remains `0.3.0`.
 - completion_gate:
   - source identity and pinned cross-implementation placement closure;
   - exact natal/profile identity for all 10 subjects;
@@ -699,6 +699,20 @@ Ordering rationale:
   - explicit natal vs temporal identity; no M3/flow promotion;
   - runtime/schema/admission/index/materialization/bundle/current docs synchronized;
   - focused regressions + full CI + merge + exact-main artifact + canonical read-back before `DONE`.
+- closure:
+  - implementation merged by PR #318 at `d3daa1aaf65891ba72f8e2b81589abe77ed692b5`;
+  - optional module `m1_auxiliary_v1` / profile `ziwei.auxiliary.m1.common_v1` production-admits exactly 天魁、天鉞、祿存、天馬、擎羊、陀羅、火星、鈴星、地空、地劫 for natal baseline;
+  - M1 requires `m0_auxiliary_v1`; M1-alone requests fail closed, while M0-alone behavior remains unchanged;
+  - only M0+M1 union emits generic `fact_available:auxiliary_stars` and `fact_available:star_relations`; canonical 14-major-star placements are materialized into self/sanfang major-star relation predicates before generic relation availability is asserted;
+  - M1 adds exactly 10 bounded modifier-role policy claims; independent historical semantic cores, M2/M3, temporal/flow identities and deterministic health/death/legal/promotion/wealth doctrine remain unadmitted;
+  - base natal claim count remains 61; maximum optional count is 78 = 61 + M0 4 + M1 10 + Sihua 3;
+  - Scope-A pipeline is `1.5.0`; natal provider remains `0.3.0`;
+  - generator bridge run `36329251553` PASSed M1 registry validation, focused M1/M0/production/Sihua/unified-runtime/materialization regressions, canonical Zi Wei bundle regeneration/check, ChatGPT load-pack regeneration/check, load-budget and bundle regression;
+  - generator-owned cache commit `720f684e53a684a8196dfb339caa2a512afb563a` removed the temporary bridge after canonical cache regeneration;
+  - formal PR #318 run `36329306523` PASSed `validate` + `casting-runtime`, including full unit suite and structural checker;
+  - exact-main canonical read-back at `d3daa1aaf65891ba72f8e2b81589abe77ed692b5` confirms 10-star M1 admission, M0 dependency, 10-claim registry, historical-core=false, pipeline `1.5.0`, base 61 / max 78 and bounded generic completeness;
+  - exact-main run `36329426662` PASSed `validate` + `casting-runtime`, full unit suite, structural checker and exact-main Zi Wei handoff preparation/upload;
+  - exact-main artifact `10935411434` / `ziwei-deterministic-handoff-d3daa1aaf65891ba72f8e2b81589abe77ed692b5` published at 98,167 bytes with digest `sha256:9555861b2f5cfa55077d24d09aa18fd3e51119d7b4280f871a20862e24854a1a`.
 
 ### ZW-P2-020 — Sparse star×palace contextual claims
 
