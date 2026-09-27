@@ -25,7 +25,7 @@ BUREAU_LABELS = {2:"水二局",3:"木三局",4:"金四局",5:"土五局",6:"火�
 PROFILE_ID = "ziwei.scope_a.natal_v0"
 RESEARCH_PROFILE = "ziwei.baseline.tw_v1"
 PROVIDER_ID = "ziwei-scope-a-natal-python"
-PROVIDER_VERSION = "0.2.0"
+PROVIDER_VERSION = "0.3.0"
 
 @dataclass(frozen=True)
 class NormalizedNatalInput:
@@ -137,11 +137,14 @@ def calculate_scope_a_natal(data: NormalizedNatalInput) -> dict[str,Any]:
         for i,b in enumerate(yin_order)
     ]
     occupancy=_palace_occupancy(layout,stars)
+    body_overlay_palace=layout[shen]
     facts=[f"palace_present:{p}" for p in PALACES]
     facts.extend(f"star_present:{s}" for s in MAJOR_STARS)
     facts.append("fact_available:star_locations")
     facts.extend(f"star_branch:{star}:{branch}" for star,branch in stars.items())
     facts.append("fact_available:palace_occupancy")
+    facts.append("fact_available:body_palace_overlay")
+    facts.append(f"body_palace_overlay:{body_overlay_palace}")
     for palace in PALACES:
         record=occupancy[palace]
         facts.append(f"major_star_count:{palace}:{record['major_star_count']}")
@@ -149,7 +152,7 @@ def calculate_scope_a_natal(data: NormalizedNatalInput) -> dict[str,Any]:
         if record["empty_major_star_palace"]:
             facts.append(f"empty_palace:{palace}")
     return {
-        "schema_version":"0.2.0",
+        "schema_version":"0.3.0",
         "provider":{"id":PROVIDER_ID,"version":PROVIDER_VERSION,"authority":"G1 ADMITTED — SCOPE-A NATAL / NOT G7 PRODUCTION ADMISSION"},
         "calculation_profile":{
             "profile_id":PROFILE_ID,
@@ -172,7 +175,7 @@ def calculate_scope_a_natal(data: NormalizedNatalInput) -> dict[str,Any]:
         },
         "year_pillar":{"stem":year_stem,"branch":year_branch},
         "life_palace":{"branch":ming},
-        "body_palace":{"branch":shen,"policy":"overlay_not_thirteenth_palace"},
+        "body_palace":{"branch":shen,"overlay_palace":body_overlay_palace,"policy":"overlay_not_thirteenth_palace"},
         "five_element_bureau":{"number":bureau,"label":BUREAU_LABELS[bureau]},
         "ziwei_branch":ziwei,
         "major_star_placements":stars,

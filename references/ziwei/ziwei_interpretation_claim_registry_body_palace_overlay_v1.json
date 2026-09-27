@@ -1,0 +1,273 @@
+{
+  "schema_name": "ziwei_interpretation_claim_registry",
+  "schema_version": "0.4.0-research",
+  "record_status": "REFERENCE-ONLY",
+  "record_kind": "ziwei_interpretation_claim_family_registry",
+  "record_id": "ziwei-body-palace-overlay-v1",
+  "production_routable": false,
+  "interpretation_profile": "ziwei.interpretation.tw_v1",
+  "claim_family": "body_palace_overlay_v1",
+  "retrieval_preconditions": {
+    "requires_l2_facts": true,
+    "requires_l3_policy": true,
+    "requires_body_palace_overlay_fact": true,
+    "body_palace_policy": "overlay_not_thirteenth_palace",
+    "source_explicit_overlay_semantics_required": true
+  },
+  "sources": [
+    {
+      "source_id": "SRC-NIHAI-BODY-PALACE-OVERLAY",
+      "source_role": "PRACTITIONER_REFERENCE",
+      "admission_status": [
+        "CLAIM_ELIGIBLE"
+      ],
+      "storage_mode": [
+        "metadata_locator_normalized_paraphrase"
+      ],
+      "independence_status": "single_practitioner_corpus",
+      "title": "倪海廈天紀課程整理 — 十二宮 / 身宮",
+      "repository": "Renhuai123/nihai-tianji-corpus",
+      "immutable_revision": "c90006168195c0650328b7199669eb6a2d0cac93",
+      "locator": "docs/02-十二宫.md",
+      "license_note": "docs/ and data/ declared CC BY-NC-SA 4.0 in reviewed source registry; original course rights separately retained",
+      "admission_scope": [
+        "身宮 as postnatal-development overlay methodology",
+        "source-explicit 身宮 overlay semantics for 夫妻宮、財帛宮、官祿宮、遷移宮"
+      ],
+      "excluded_scope": [
+        "身宮 as a thirteenth ordinary palace",
+        "overlay semantics for palace contexts not source-admitted in this pass",
+        "guaranteed marriage, employment, relocation or financial outcomes",
+        "scientific predictive validity"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "ZW-BODY-METHOD-001",
+      "layer": "L4",
+      "claim_type": "methodology",
+      "subject": "身宮",
+      "assertion_class": "practitioner_heuristic",
+      "normalized_statement": "在此 practitioner corpus 中，身宮被作為後天發展與後續人生著力點的 overlay 來使用；它疊加於既有十二宮之一，而不是獨立的第十三宮。",
+      "source_refs": [
+        "SRC-NIHAI-BODY-PALACE-OVERLAY"
+      ],
+      "source_locators": [
+        "Renhuai123/nihai-tianji-corpus@c90006168195c0650328b7199669eb6a2d0cac93:docs/02-十二宫.md p09 §5 @00:12:22-00:12:56"
+      ],
+      "applicability": {
+        "requires": [
+          "fact_available:body_palace_overlay"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "overlay_palace",
+          "same_palace_stars",
+          "sanfang_sizheng",
+          "transformations",
+          "brightness"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-BODY-SPOUSE-001",
+      "layer": "L4",
+      "claim_type": "body_palace_overlay",
+      "subject": "身宮×夫妻宮",
+      "subjects": [
+        "身宮",
+        "夫妻宮"
+      ],
+      "overlay_palace": "夫妻宮",
+      "assertion_class": "practitioner_heuristic",
+      "normalized_statement": "在此 practitioner corpus 中，身宮疊於夫妻宮時，後天發展較容易受到婚姻或伴侶關係脈絡的影響；這是影響重心，不是婚姻結果保證。",
+      "source_refs": [
+        "SRC-NIHAI-BODY-PALACE-OVERLAY"
+      ],
+      "source_locators": [
+        "Renhuai123/nihai-tianji-corpus@c90006168195c0650328b7199669eb6a2d0cac93:docs/02-十二宫.md p09 §5 @00:13:10"
+      ],
+      "applicability": {
+        "requires": [
+          "fact_available:body_palace_overlay",
+          "body_palace_overlay:夫妻宮"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "same_palace_stars",
+          "sanfang_sizheng",
+          "transformations",
+          "brightness"
+        ],
+        "palace_scope": [
+          "夫妻宮"
+        ],
+        "topology_scope": [
+          "self"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-BODY-WEALTH-001",
+      "layer": "L4",
+      "claim_type": "body_palace_overlay",
+      "subject": "身宮×財帛宮",
+      "subjects": [
+        "身宮",
+        "財帛宮"
+      ],
+      "overlay_palace": "財帛宮",
+      "assertion_class": "practitioner_heuristic",
+      "normalized_statement": "在此 practitioner corpus 中，身宮疊於財帛宮時，後天發展的著力點較偏向工作、賺取資源與私人企業／自營脈絡；不代表固定職業型態或財富結果。",
+      "source_refs": [
+        "SRC-NIHAI-BODY-PALACE-OVERLAY"
+      ],
+      "source_locators": [
+        "Renhuai123/nihai-tianji-corpus@c90006168195c0650328b7199669eb6a2d0cac93:docs/02-十二宫.md p19 §7 @00:24:23",
+        "Renhuai123/nihai-tianji-corpus@c90006168195c0650328b7199669eb6a2d0cac93:docs/02-十二宫.md p21 §8 @00:30:26"
+      ],
+      "applicability": {
+        "requires": [
+          "fact_available:body_palace_overlay",
+          "body_palace_overlay:財帛宮"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "same_palace_stars",
+          "sanfang_sizheng",
+          "transformations",
+          "brightness"
+        ],
+        "palace_scope": [
+          "財帛宮"
+        ],
+        "topology_scope": [
+          "self"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-BODY-CAREER-001",
+      "layer": "L4",
+      "claim_type": "body_palace_overlay",
+      "subject": "身宮×官祿宮",
+      "subjects": [
+        "身宮",
+        "官祿宮"
+      ],
+      "overlay_palace": "官祿宮",
+      "assertion_class": "practitioner_heuristic",
+      "normalized_statement": "在此 practitioner corpus 中，身宮疊於官祿宮時，後天發展的著力點較偏向正式職涯、職責與公務／組織脈絡；不代表必然任公職或取得特定職位。",
+      "source_refs": [
+        "SRC-NIHAI-BODY-PALACE-OVERLAY"
+      ],
+      "source_locators": [
+        "Renhuai123/nihai-tianji-corpus@c90006168195c0650328b7199669eb6a2d0cac93:docs/02-十二宫.md p09 §5 @00:12:47",
+        "Renhuai123/nihai-tianji-corpus@c90006168195c0650328b7199669eb6a2d0cac93:docs/02-十二宫.md p21 §8 @00:30:38"
+      ],
+      "applicability": {
+        "requires": [
+          "fact_available:body_palace_overlay",
+          "body_palace_overlay:官祿宮"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "same_palace_stars",
+          "sanfang_sizheng",
+          "transformations",
+          "brightness"
+        ],
+        "palace_scope": [
+          "官祿宮"
+        ],
+        "topology_scope": [
+          "self"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-BODY-MOBILITY-001",
+      "layer": "L4",
+      "claim_type": "body_palace_overlay",
+      "subject": "身宮×遷移宮",
+      "subjects": [
+        "身宮",
+        "遷移宮"
+      ],
+      "overlay_palace": "遷移宮",
+      "assertion_class": "practitioner_heuristic",
+      "normalized_statement": "在此 practitioner corpus 中，身宮疊於遷移宮時，後天發展較容易與外地、離開原環境、跨地域活動或向外拓展連結；不代表必然移居、出國或外派。",
+      "source_refs": [
+        "SRC-NIHAI-BODY-PALACE-OVERLAY"
+      ],
+      "source_locators": [
+        "Renhuai123/nihai-tianji-corpus@c90006168195c0650328b7199669eb6a2d0cac93:docs/02-十二宫.md p15 §6 @00:20:09",
+        "Renhuai123/nihai-tianji-corpus@c90006168195c0650328b7199669eb6a2d0cac93:docs/02-十二宫.md p21 §8 @00:30:46-00:31:00"
+      ],
+      "applicability": {
+        "requires": [
+          "fact_available:body_palace_overlay",
+          "body_palace_overlay:遷移宮"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "same_palace_stars",
+          "sanfang_sizheng",
+          "transformations",
+          "brightness"
+        ],
+        "palace_scope": [
+          "遷移宮"
+        ],
+        "topology_scope": [
+          "self"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    }
+  ],
+  "conflict_groups": [],
+  "privacy": {
+    "contains_real_birth_data": false
+  },
+  "research_result": {
+    "production_authority_granted": false,
+    "scientific_predictive_validity_claimed": false,
+    "claim_count": 5,
+    "overlay_claim_count": 4,
+    "methodology_claim_count": 1,
+    "body_palace_policy": "overlay_not_thirteenth_palace",
+    "admitted_overlay_contexts": [
+      "夫妻宮",
+      "財帛宮",
+      "官祿宮",
+      "遷移宮"
+    ],
+    "exhaustive_overlay_dictionary": false
+  }
+}

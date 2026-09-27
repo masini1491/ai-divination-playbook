@@ -131,7 +131,7 @@ explicit Zi Wei request
    OR admitted normalized lunar input
 → deterministic calendar / natal provider
 → Scope-A Fact Gate
-→ allowlisted 52 first-layer claims + 2 sparse same-palace pair claims
+→ allowlisted 52 first-layer claims + 2 sparse same-palace pair claims + 5 bounded Body-Palace claims
 → optional brightness_v1（明確要求時）
 → bounded synthesis
 ```
@@ -290,9 +290,10 @@ Zi Wei 目前是 bounded natal production method，適合使用者明確要求�
 - `natal_baseline` only；
 - 14 主星 first-layer facts / claims；
 - 12 宮 first-layer claims；
-- 52 first-layer claims + 2 source-explicit `武曲×天相` same-palace claims（兄弟宮／官祿宮），共 54 base natal claims；
-- 命宮、身宮、五行局、14 主星 placement 等 deterministic natal facts；
+- 52 first-layer claims + 2 source-explicit `武曲×天相` same-palace claims（兄弟宮／官祿宮）+ 5 bounded Body-Palace claims，共 59 base natal claims；
+- 命宮、身宮、五行局、14 主星 placement 等 deterministic natal facts；身宮另 deterministic 投影到既有十二宮之一，不建立第十三宮；
 - same-palace pair claims只在 canonical occupancy facts 同時證明兩星落入 admitted 同一宮位時啟動；沒有 pair-specific source evidence 時維持原 bounded composition，不用模型記憶補齊；
+- Body-Palace overlay interpretation只 admission `身宮` methodology + `夫妻宮`／`財帛宮`／`官祿宮`／`遷移宮` 四個 exact overlay context；其他身宮落宮不補造語義；
 - explicit-IANA civil-time Gregorian birth datetime（admitted local-date range 1900-01-01..2100-12-31）→ shared DST-safe validation → normalized lunar input；
 - `23:00` 晚子時採 `next_day_at_23`；
 - 閏月採 `split_after_day_15`；

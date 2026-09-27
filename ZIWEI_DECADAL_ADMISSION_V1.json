@@ -51,7 +51,7 @@
   "parent_scope": {
     "required": "natal_baseline",
     "provider_id": "ziwei-scope-a-natal-python",
-    "provider_version": "0.2.0",
+    "provider_version": "0.3.0",
     "profile_id": "ziwei.scope_a.natal_v0"
   },
   "request_requirements": [

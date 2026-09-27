@@ -1,0 +1,54 @@
+{
+  "schema_name": "ziwei_body_palace_overlay_production_admission",
+  "schema_version": "1.0.0",
+  "method": "ZiWei",
+  "status": "PRODUCTION_ADMITTED_BOUNDED_INTERPRETATION",
+  "activation": "automatic_on_exact_admitted_body_palace_overlay_fact",
+  "temporal_scope": "natal_baseline",
+  "parent_admission": "ZIWEI_PRODUCTION_ADMISSION_V1.json",
+  "claim_registry": "references/ziwei/ziwei_interpretation_claim_registry_body_palace_overlay_v1.json",
+  "interpretation_profile": "ziwei.interpretation.tw_v1",
+  "scope": {
+    "admitted_claims_added": 5,
+    "methodology_claims": 1,
+    "overlay_claims": 4,
+    "admitted_overlay_contexts": [
+      "夫妻宮",
+      "財帛宮",
+      "官祿宮",
+      "遷移宮"
+    ],
+    "claim_type": "body_palace_overlay",
+    "body_palace_policy": "overlay_not_thirteenth_palace",
+    "exhaustive_overlay_dictionary": false
+  },
+  "deterministic_applicability": {
+    "owner": "tools/ziwei_natal_provider.py",
+    "required_availability_fact": "fact_available:body_palace_overlay",
+    "required_overlay_fact": "body_palace_overlay:<existing palace>",
+    "projection_input": "body_palace.branch + existing branch-to-palace layout",
+    "new_geometry_provider_required": false,
+    "thirteenth_palace_created": false,
+    "model_inference_allowed": false
+  },
+  "retrieval": {
+    "owner": "tools/ziwei_claim_retrieval.py",
+    "specificity_policy": "body_palace_overlay outranks generic star/palace claims when exact admitted overlay fact matches",
+    "generic_claims_suppressed": false,
+    "no_overlay_claim_match_behavior": "existing bounded natal composition"
+  },
+  "evidence": {
+    "research_record": "references/ziwei/BODY_PALACE_OVERLAY_RESEARCH_V1.md",
+    "source_repository": "Renhuai123/nihai-tianji-corpus",
+    "source_revision": "c90006168195c0650328b7199669eb6a2d0cac93",
+    "source_role": "PRACTITIONER_REFERENCE"
+  },
+  "fail_closed": [
+    "body palace remains an overlay onto one existing palace",
+    "exact body_palace_overlay fact required for overlay-specific claim",
+    "unadmitted overlay context receives no model-memory doctrine",
+    "no thirteenth palace",
+    "no deterministic marriage employment relocation or wealth outcome"
+  ],
+  "scientific_predictive_validity_claimed": false
+}

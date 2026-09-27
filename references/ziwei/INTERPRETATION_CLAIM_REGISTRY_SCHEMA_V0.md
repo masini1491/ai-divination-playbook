@@ -12,6 +12,7 @@ Supported versions：
 0.2.0-research  historical palace-domain extension
 0.2.1-research  hardens conditional activation metadata for palace-capable registries
 0.3.0-research  adds explicit same-palace major-star pair claims without widening historical registries
+0.4.0-research  adds explicit Body-Palace overlay claims without treating 身宮 as a thirteenth palace
 ```
 
 `0.2.x-research` remains backward-compatible at the validator level with v0.1 claim types. Historical `0.1.0` / `0.2.0` files remain validator-readable; the production-admitted 52-claim corpus now uses `0.1.1` / `0.2.1` so conditional activation is explicit.
@@ -77,6 +78,20 @@ palace_conditional
 same_palace_pair
 methodology
 ```
+
+### v0.4.0
+
+```text
+star_core
+star_conditional
+palace_domain
+palace_conditional
+same_palace_pair
+body_palace_overlay
+methodology
+```
+
+`body_palace_overlay` is reserved for source-explicit semantics tied to the deterministic projection of `body_palace.branch` onto one existing twelve-palace identity. It must preserve `overlay_palace` and a `subjects[]` surface containing both `身宮` and that palace. It never creates a thirteenth palace.
 
 `same_palace_pair` is reserved for source-explicit pair semantics. It must preserve exactly two unique `pair_members[]` and a non-empty `subjects[]` search surface containing both members. Pair applicability must be expressed through deterministic facts such as two `star_in_palace:<star>:<same palace>` requirements; co-occurrence alone does not authorize a semantic claim.
 
@@ -220,3 +235,7 @@ Registries store normalized project-authored paraphrases plus source locators. T
 ## Research / production boundary
 
 Structural validation does not prove doctrine truth, scientific validity, predictive validity, user-perceived accuracy, or production readiness.
+
+## Body-Palace overlay semantics
+
+A `body_palace_overlay` claim is selected only when `fact_available:body_palace_overlay` and the exact `body_palace_overlay:<existing palace>` fact are present. The overlay adds a source-bounded postnatal-development emphasis to existing palace/star evidence; it does not replace underlying palace doctrine, same-palace pair claims, topology, transformations or brightness. Missing source-explicit overlay semantics remain omitted rather than reconstructed from model memory.

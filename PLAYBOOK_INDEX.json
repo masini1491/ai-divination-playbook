@@ -207,7 +207,7 @@
       "natal_provider": "tools/ziwei_natal_provider.py",
       "admission_manifest": "ZIWEI_PRODUCTION_ADMISSION_V1.json",
       "interpretation_profile": "ziwei.interpretation.tw_v1",
-      "claim_count": 54,
+      "claim_count": 59,
       "research_owner": "references/ziwei/README.md",
       "optional_modules": {
         "brightness_v1": {
@@ -275,7 +275,7 @@
         "tools/ziwei_brightness_pipeline.py",
         "tools/ziwei_gregorian_pipeline.py"
       ],
-      "maximum_claim_count_with_optional_modules": 61,
+      "maximum_claim_count_with_optional_modules": 66,
       "exact_main_handoff_artifact": "ziwei-deterministic-handoff-${{ github.sha }}",
       "exact_main_handoff_retention_days": 90,
       "exact_main_handoff_includes_calendar_shards": false,
@@ -489,6 +489,26 @@
           "官祿宮"
         ],
         "cartesian_expansion": false
+      },
+      "natal_provider_version": "0.3.0",
+      "pipeline_version": "1.3.0",
+      "body_palace_overlay_interpretation": {
+        "status": "production-admitted-bounded",
+        "activation": "automatic-on-exact-admitted-body-palace-overlay-fact",
+        "admission_manifest": "ZIWEI_BODY_PALACE_OVERLAY_ADMISSION_V1.json",
+        "registry": "references/ziwei/ziwei_interpretation_claim_registry_body_palace_overlay_v1.json",
+        "claim_count": 5,
+        "methodology_claims": 1,
+        "overlay_claims": 4,
+        "admitted_overlay_contexts": [
+          "夫妻宮",
+          "財帛宮",
+          "官祿宮",
+          "遷移宮"
+        ],
+        "body_palace_policy": "overlay_not_thirteenth_palace",
+        "thirteenth_palace": false,
+        "exhaustive_overlay_dictionary": false
       }
     },
     {
