@@ -680,6 +680,11 @@ This item is a standing reconciliation guard. It is not a request to change curr
   - explicit `Whole Sign` or `Placidus` always overrides the default;
   - user-facing output must disclose when Placidus was applied by default and mention Whole Sign as the supported alternative;
   - this is a product-default decision only, not an objective-accuracy or historical-superiority claim.
+- candidate_evidence:
+  - implementation candidate began at `49b704ea7cccd2aaf67ac897b9fec057b0e3b02e`;
+  - temporary regeneration run `36302699667` passed canonical bundle regeneration/check plus focused orchestrator, interpretation-handoff, orchestration-contract and core-bundle tests;
+  - generated commit `88da7e4d8002929af0fe79900e074b7191844403` updated only the derived Astrology core bundle and removed the temporary regeneration workflow;
+  - initial PR validation `36302699645` failed only at the expected stale pre-regeneration core-bundle check; fresh post-regeneration full validation is required before promotion.
 - completion_gate:
   - request schema no longer requires explicit `house_system` for exact/approximate birth time and documents the default;
   - orchestrator deterministically records `house_system_selection = project_default | explicit_user_choice`;
