@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import json
 import unittest
+from pathlib import Path
 
 from tools.civil_time_normalizer import normalize_civil_time
 from tools.ziwei_true_solar_time import (
@@ -11,7 +13,42 @@ from tools.ziwei_true_solar_time import (
 )
 
 
+ROOT=Path(__file__).resolve().parents[1]
+
 class ZiWeiTrueSolarTimeTests(unittest.TestCase):
+    def test_all_gregorian_transport_schemas_admit_only_paired_true_solar_fields(self):
+        paths=[
+            ROOT/"schemas"/"ziwei"/"ZIWEI_READING_REQUEST_V1.schema.json",
+            *[
+                ROOT/"schemas"/"ziwei"/f"ZIWEI_DYNAMIC_REQUEST_V{version}.schema.json"
+                for version in range(2,12)
+            ],
+        ]
+        for path in paths:
+            with self.subTest(path=path.name):
+                schema=json.loads(path.read_text(encoding="utf-8"))
+                branches=schema["properties"]["birth"]["oneOf"]
+                gregorian=next(
+                    item for item in branches
+                    if item["properties"]["input_type"].get("const")=="gregorian"
+                )
+                self.assertEqual(
+                    PROFILE_ID,
+                    gregorian["properties"]["true_solar_time_profile"]["const"],
+                )
+                self.assertEqual(
+                    {"type":"number","minimum":-180,"maximum":180},
+                    gregorian["properties"]["longitude_deg"],
+                )
+                self.assertEqual(
+                    ["longitude_deg"],
+                    gregorian["dependentRequired"]["true_solar_time_profile"],
+                )
+                self.assertEqual(
+                    ["true_solar_time_profile"],
+                    gregorian["dependentRequired"]["longitude_deg"],
+                )
+
     def test_noaa_equation_of_time_reference_shape(self):
         civil=normalize_civil_time("2000-01-01T12:00:00","Etc/UTC")
         value=equation_of_time_minutes(civil.validated_local_datetime)
