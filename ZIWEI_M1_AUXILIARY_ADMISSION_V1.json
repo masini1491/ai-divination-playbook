@@ -1,0 +1,80 @@
+{
+  "schema_name": "ziwei_m1_auxiliary_admission",
+  "schema_version": "1.0.0",
+  "method": "ZiWei",
+  "status": "PRODUCTION_ADMITTED_OPTIONAL_MODULE",
+  "activation": "optional_module_m1_auxiliary_v1_requires_m0_auxiliary_v1",
+  "module_id": "m1_auxiliary_v1",
+  "profile_id": "ziwei.auxiliary.m1.common_v1",
+  "requires_modules": [
+    "m0_auxiliary_v1"
+  ],
+  "scope": {
+    "temporal_scope": "natal_baseline",
+    "stars": [
+      "天魁",
+      "天鉞",
+      "祿存",
+      "天馬",
+      "擎羊",
+      "陀羅",
+      "火星",
+      "鈴星",
+      "地空",
+      "地劫"
+    ],
+    "blanket_minor_star_admission": false,
+    "m0_plus_m1_bounded_auxiliary_subjects": 14
+  },
+  "calculation": {
+    "provider": "tools/ziwei_m1_auxiliary_provider.py",
+    "provider_id": "ziwei-m1-auxiliary-python",
+    "provider_version": "1.0.0",
+    "input_boundary": "admitted natal year_pillar + hour_branch + admitted major-star placements",
+    "profile_kind": "cross-implementation common natal placement rules",
+    "implementation_references": [
+      {
+        "repository": "SylarLong/iztro",
+        "revision": "2c7ef9be669df7b19d1799f4dce335fed3794f78",
+        "path": "src/star/location.ts"
+      },
+      {
+        "repository": "airicyu/fortel-ziweidoushu",
+        "revision": "2620cc895395f9f6994abd4927e739d31015c67d",
+        "path": "src/model/minorStar.ts"
+      }
+    ]
+  },
+  "evidence": {
+    "research_taxonomy": "references/ziwei/MINOR_STAR_ADMISSION_TAXONOMY_V0.md",
+    "research_record": "references/ziwei/M1_AUXILIARY_RESEARCH_V1.md",
+    "calculation_research": "references/ziwei/CALCULATION_ENGINE_RESEARCH.md",
+    "source_registry": "references/ziwei/SOURCE_REGISTRY.md",
+    "claim_registry": "references/ziwei/ziwei_interpretation_claim_registry_m1_auxiliary_v1.json"
+  },
+  "interpretation": {
+    "new_claims": 10,
+    "interpretation_profile": "ziwei.interpretation.tw_v1",
+    "relation_scope": "self_or_sanfang_only",
+    "claim_scope": "bounded_m1_modifier_role_policy_only",
+    "historical_semantic_core_admitted": false,
+    "source_normalized_independent_star_meanings_admitted": false,
+    "generic_auxiliary_completeness_requires": [
+      "m0_auxiliary_v1",
+      "m1_auxiliary_v1"
+    ],
+    "final_prose_authority": false
+  },
+  "fail_closed": [
+    "m1_requires_m0_module",
+    "module_not_requested_no_m1_facts",
+    "unknown_m1_profile_rejected",
+    "only_ten_admitted_m1_stars",
+    "generic_auxiliary_availability_only_when_m0_plus_m1_active",
+    "no_m2_m3_inference",
+    "no_temporal_identity_promotion",
+    "no_high_stakes_event_doctrine",
+    "no_model_memory_substitution"
+  ],
+  "scientific_predictive_validity_claimed": false
+}
