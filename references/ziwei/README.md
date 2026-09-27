@@ -24,7 +24,7 @@ research-only scaffold
 - Scope-A v1 production binding：G7 admitted (`ZIWEI_PRODUCTION_ADMISSION_V1.json`)
 - root production owner：`ZIWEI.md` 已建立
 - explicit Zi Wei routing：已 admitted；使用者明確要求紫微時可進 production Scope-A
-- Gregorian input adapter：`ziwei.calendar.tw_v1` 已 admitted（Asia/Taipei civil time）
+- Gregorian input adapter：`ziwei.calendar.civil_v2` 已 admitted（explicit IANA civil time；shared `civil-time-zoneinfo-v1` validation）
 - optional brightness profile：`ziwei.brightness.iztro_v1` 已 admitted，僅 explicit add-on
 - deterministic ChatGPT materialization：`ZIWEI_MATERIALIZATION.md` + bundle 已建立
 - ordinary unspecified auto-routing：仍刻意為 false

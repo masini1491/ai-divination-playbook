@@ -67,11 +67,11 @@ class CivilTimeNormalizerTests(unittest.TestCase):
         self.assertEqual(28800, provenance["resolved_utc_offset_seconds"])
         self.assertEqual("python-zoneinfo", provenance["timezone_rule_source"])
 
-    def test_admission_keeps_ziwei_consumer_closed(self) -> None:
+    def test_admission_records_astrology_and_ziwei_consumers(self) -> None:
         manifest = json.loads(ADMISSION.read_text(encoding="utf-8"))
         self.assertEqual("PRODUCTION_ADMITTED_SHARED_INPUT_ADAPTER", manifest["status"])
         self.assertEqual("PRODUCTION_ADMITTED", manifest["consumers"]["Astrology"]["status"])
-        self.assertEqual("NOT_ADMITTED", manifest["consumers"]["ZiWei"]["status"])
+        self.assertEqual("PRODUCTION_ADMITTED", manifest["consumers"]["ZiWei"]["status"])
         self.assertFalse(manifest["scope"]["true_solar_time"])
         self.assertFalse(manifest["scope"]["birthplace_timezone_resolution"])
 

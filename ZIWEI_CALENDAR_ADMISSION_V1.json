@@ -1,14 +1,14 @@
 {
   "schema_name": "ziwei_calendar_production_admission",
-  "schema_version": "2.0.0",
+  "schema_version": "2.1.0",
   "method": "ZiWei",
-  "module": "gregorian_calendar_input_v1",
+  "module": "gregorian_calendar_input_v2",
   "status": "PRODUCTION_ADMITTED_INPUT_ADAPTER",
   "activation": "explicit_ziwei_request_with_gregorian_birth_datetime",
   "parent_admission": "ZIWEI_PRODUCTION_ADMISSION_V1.json",
   "scope": {
     "accepted_calendar": "gregorian",
-    "timezone": "Asia/Taipei",
+    "timezone": "explicit_IANA",
     "clock_mode": "civil_time",
     "true_solar_time": "disabled",
     "supported_gregorian_range": {
@@ -20,14 +20,23 @@
       "ce",
       "minguo"
     ],
-    "minguo_conversion": "gregorian_year = minguo_year + 1911"
+    "minguo_conversion": "gregorian_year = minguo_year + 1911",
+    "civil_time_normalization": {
+      "contract": "CIVIL_TIME_NORMALIZATION.md",
+      "admission_manifest": "CIVIL_TIME_NORMALIZER_ADMISSION_V1.json",
+      "adapter_id": "civil-time-zoneinfo-v1",
+      "adapter_version": "1.0.0",
+      "implementation": "tools/civil_time_normalizer.py",
+      "local_calendar_identity": "validated local Gregorian fields",
+      "resolved_utc_usage": "provenance only; not rebased into Gregorian-to-lunar calendar fields"
+    }
   },
   "calculation": {
     "provider_id": "ziwei-calendar-interval-data",
-    "provider_version": "2.0.0",
+    "provider_version": "2.1.0",
     "runtime_owner": "tools/ziwei_calendar_provider.py",
     "data_resolver": "tools/ziwei_calendar_data_provider.py",
-    "profile_id": "ziwei.calendar.tw_v1",
+    "profile_id": "ziwei.calendar.civil_v2",
     "runtime_dependency": "repo_local_interval_data",
     "dataset": {
       "id": "ziwei_tw_interval_1900_2100_candidate_v1",
@@ -51,7 +60,9 @@
     "leap_month_policy": "split_after_day_15",
     "rat_hour_policy": "next_day_at_23",
     "raw_lunar_conversion_preserved": true,
-    "normalization_policy_exposed": true
+    "normalization_policy_exposed": true,
+    "local_civil_calendar_identity_preserved": true,
+    "resolved_utc_provenance_preserved": true
   },
   "pipeline": {
     "runtime_owner": "tools/ziwei_runtime.py",
@@ -59,23 +70,29 @@
     "supports_parent_scope_a": true,
     "supports_optional_brightness_v1": true,
     "compatibility_adapter": "tools/ziwei_gregorian_pipeline.py",
-    "year_notation_owner": "tools/ziwei_year_notation.py"
+    "year_notation_owner": "tools/ziwei_year_notation.py",
+    "shared_civil_time_adapter": "tools/civil_time_normalizer.py"
   },
   "fail_closed": [
-    "Asia/Taipei timezone required",
+    "explicit IANA timezone required",
+    "unknown IANA timezone rejected",
+    "DST-nonexistent local wall time rejected",
+    "DST-ambiguous local wall time rejected until a separately admitted disambiguation selector exists",
+    "fixed UTC offset cannot substitute for IANA timezone identity",
     "invalid Gregorian date/time rejected",
-    "Gregorian input outside 1900-01-01..2100-12-31 rejected",
+    "validated local Gregorian input outside 1900-01-01..2100-12-31 rejected",
     "calendar manifest or required shard missing/corrupt/mismatched rejected",
     "no model-memory lunar conversion",
+    "no UTC-calendar-field rebase before Gregorian-to-lunar conversion",
     "no silent true-solar-time correction",
     "raw conversion and Zi Wei normalization remain separately visible",
     "Minguo year must be explicit and >= 1; converted Gregorian date must remain inside the admitted range"
   ],
   "unsupported": [
     "automatic birthplace timezone resolution",
-    "non-Asia/Taipei timezone conversion",
+    "DST fold auto-selection or inferred disambiguation",
     "true solar time",
-    "Gregorian input outside the admitted 1900-01-01..2100-12-31 range",
+    "Gregorian input outside the admitted 1900-01-01..2100-12-31 local-date range",
     "dynamic Zi Wei scopes"
   ],
   "scientific_predictive_validity_claimed": false

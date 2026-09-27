@@ -16,7 +16,7 @@ class ZiWeiCalendarContractV1Tests(unittest.TestCase):
         m=json.loads((ROOT/"ZIWEI_CALENDAR_ADMISSION_V1.json").read_text(encoding="utf-8"))
         self.assertEqual("PRODUCTION_ADMITTED_INPUT_ADAPTER",m["status"])
         self.assertEqual("ziwei-calendar-interval-data",m["calculation"]["provider_id"])
-        self.assertEqual("2.0.0",m["calculation"]["provider_version"])
+        self.assertEqual("2.1.0",m["calculation"]["provider_version"])
         self.assertEqual("repo_local_interval_data",m["calculation"]["runtime_dependency"])
         self.assertEqual(
             "ziwei_tw_interval_1900_2100_candidate_v1",
@@ -29,7 +29,9 @@ class ZiWeiCalendarContractV1Tests(unittest.TestCase):
         self.assertEqual({"start":"1900-01-01","end":"2100-12-31"},m["scope"]["supported_gregorian_range"])
         self.assertEqual("lunar_python",m["calculation"]["build_source"]["package"])
         self.assertFalse(m["calculation"]["build_source"]["runtime_dependency"])
-        self.assertEqual("Asia/Taipei",m["scope"]["timezone"])
+        self.assertEqual("explicit_IANA",m["scope"]["timezone"])
+        self.assertEqual("civil-time-zoneinfo-v1",m["scope"]["civil_time_normalization"]["adapter_id"])
+        self.assertEqual("ziwei.calendar.civil_v2",m["calculation"]["profile_id"])
         self.assertEqual("next_day_at_23",m["policy"]["rat_hour_policy"])
         self.assertEqual("split_after_day_15",m["policy"]["leap_month_policy"])
 
@@ -65,15 +67,44 @@ class ZiWeiCalendarContractV1Tests(unittest.TestCase):
         self.assertIn("day_1_15_as_same_month",first["normalized_natal_input"]["leap_month_identity"])
         self.assertIn("day_16_plus_as_next_month",second["normalized_natal_input"]["leap_month_identity"])
 
-    def test_range_timezone_and_invalid_date_fail_closed(self):
-        with self.assertRaises(ValueError):
-            normalize_gregorian_birth(GregorianBirthInput(2000,8,16,5,30,timezone="UTC"))
+    def test_timezone_dst_range_and_invalid_date_fail_closed(self):
+        with self.assertRaisesRegex(ValueError,"unknown IANA timezone"):
+            normalize_gregorian_birth(GregorianBirthInput(2000,8,16,5,30,timezone="Mars/Olympus"))
+        with self.assertRaisesRegex(ValueError,"unknown IANA timezone"):
+            normalize_gregorian_birth(GregorianBirthInput(2000,8,16,5,30,timezone="+08:00"))
+        with self.assertRaisesRegex(ValueError,"nonexistent"):
+            normalize_gregorian_birth(GregorianBirthInput(2024,3,10,2,30,timezone="America/New_York"))
+        with self.assertRaisesRegex(ValueError,"ambiguous"):
+            normalize_gregorian_birth(GregorianBirthInput(2024,11,3,1,30,timezone="America/New_York"))
         with self.assertRaises(ValueError):
             normalize_gregorian_birth(GregorianBirthInput(2023,2,30,12,0))
         with self.assertRaisesRegex(ValueError,"outside selected candidate range"):
             normalize_gregorian_birth(GregorianBirthInput(1899,12,31,12,0))
         with self.assertRaisesRegex(ValueError,"outside selected candidate range"):
             normalize_gregorian_birth(GregorianBirthInput(2101,1,1,0,0))
+
+    def test_non_taipei_uses_validated_local_calendar_fields_not_utc_date(self):
+        tokyo=normalize_gregorian_birth(GregorianBirthInput(2000,1,1,0,30,timezone="Asia/Tokyo"))
+        taipei=normalize_gregorian_birth(GregorianBirthInput(2000,1,1,0,30,timezone="Asia/Taipei"))
+        self.assertEqual(
+            taipei["raw_lunar_conversion"],
+            tokyo["raw_lunar_conversion"],
+        )
+        self.assertEqual(
+            taipei["normalized_natal_input"]["lunar_day"],
+            tokyo["normalized_natal_input"]["lunar_day"],
+        )
+        self.assertEqual("2000-01-01",tokyo["civil_time_normalization"]["validated_local_iso"][:10])
+        self.assertEqual("1999-12-31",tokyo["civil_time_normalization"]["resolved_utc_iso"][:10])
+        self.assertEqual("Asia/Tokyo",tokyo["calendar_profile"]["timezone"])
+        self.assertTrue(tokyo["boundaries"]["local_calendar_identity_preserved"])
+        self.assertFalse(tokyo["boundaries"]["utc_rebase_for_lunar_conversion"])
+
+    def test_sydney_explicit_iana_timezone_is_admitted(self):
+        r=normalize_gregorian_birth(GregorianBirthInput(1990,6,15,10,0,timezone="Australia/Sydney"))
+        self.assertEqual("Australia/Sydney",r["civil_time_normalization"]["timezone_name"])
+        self.assertEqual(36000,r["civil_time_normalization"]["resolved_utc_offset_seconds"])
+        self.assertEqual("civil-time-zoneinfo-v1",r["civil_time_normalization"]["normalizer_id"])
 
     def test_admitted_end_edge_uses_policy_tail_only_when_needed(self):
         ordinary=normalize_gregorian_birth(GregorianBirthInput(2100,12,31,22,59))

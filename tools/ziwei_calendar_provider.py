@@ -10,6 +10,13 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
+from tools.civil_time_normalizer import (
+    CivilTimeNormalizationError,
+    NORMALIZER_ID as CIVIL_TIME_NORMALIZER_ID,
+    NORMALIZER_VERSION as CIVIL_TIME_NORMALIZER_VERSION,
+    normalize_civil_time,
+)
+
 from tools.ziwei_calendar_data_provider import (
     DATASET_ID,
     DATASET_ROOT,
@@ -20,9 +27,9 @@ from tools.ziwei_calendar_data_provider import (
 )
 
 PROVIDER_ID = "ziwei-calendar-interval-data"
-PROVIDER_VERSION = "2.0.0"
-PROFILE_ID = "ziwei.calendar.tw_v1"
-TIMEZONE = "Asia/Taipei"
+PROVIDER_VERSION = "2.1.0"
+PROFILE_ID = "ziwei.calendar.civil_v2"
+DEFAULT_TIMEZONE = "Asia/Taipei"
 CLOCK_MODE = "civil_time"
 TRUE_SOLAR_TIME = "disabled"
 LEAP_MONTH_POLICY = "split_after_day_15"
@@ -43,20 +50,39 @@ class GregorianBirthInput:
     hour: int
     minute: int = 0
     second: int = 0
-    timezone: str = TIMEZONE
+    timezone: str = DEFAULT_TIMEZONE
 
-    def as_data_birth(self) -> CandidateGregorianBirth:
+    def local_iso(self) -> str:
+        if not all(isinstance(v,int) for v in (self.year,self.month,self.day,self.hour,self.minute,self.second)):
+            raise ValueError("Gregorian birth date/time fields must be integers")
+        try:
+            return f"{self.year:04d}-{self.month:02d}-{self.day:02d}T{self.hour:02d}:{self.minute:02d}:{self.second:02d}"
+        except ValueError as exc:
+            raise ValueError(f"invalid Gregorian birth date/time: {exc}") from exc
+
+    def resolve_civil_time(self):
+        try:
+            return normalize_civil_time(self.local_iso(),self.timezone)
+        except CivilTimeNormalizationError as exc:
+            raise ValueError(str(exc)) from exc
+
+    def as_data_birth(self, resolved=None) -> CandidateGregorianBirth:
+        resolved = resolved or self.resolve_civil_time()
+        local = resolved.validated_local_datetime
         return CandidateGregorianBirth(
-            self.year,self.month,self.day,self.hour,
-            self.minute,self.second,self.timezone,
+            local.year,local.month,local.day,local.hour,
+            local.minute,local.second,self.timezone,
         )
 
     def validate(self) -> None:
-        self.as_data_birth().validate()
+        resolved=self.resolve_civil_time()
+        self.as_data_birth(resolved).validate()
 
 def normalize_gregorian_birth(data: GregorianBirthInput) -> dict[str,Any]:
-    data.validate()
-    resolved=normalize_candidate_birth(data.as_data_birth(),DATASET_ROOT)
+    civil=data.resolve_civil_time()
+    data_birth=data.as_data_birth(civil)
+    data_birth.validate()
+    resolved=normalize_candidate_birth(data_birth,DATASET_ROOT)
     raw_lunar=resolved["raw_lunar_conversion"]
     policy_lunar=resolved["policy_lunar_conversion"]
     data_contract=resolved["data_contract"]
@@ -65,7 +91,9 @@ def normalize_gregorian_birth(data: GregorianBirthInput) -> dict[str,Any]:
         f"{PROVIDER_ID}@{PROVIDER_VERSION};"
         f"dataset={data_contract['dataset_id']}@{data_contract['aggregate_hash']};"
         f"build_source={BUILD_SOURCE_REPOSITORY}@{BUILD_SOURCE_REVISION};"
-        f"profile={PROFILE_ID};timezone={TIMEZONE};clock={CLOCK_MODE};"
+        f"profile={PROFILE_ID};timezone={data.timezone};clock={CLOCK_MODE};"
+        f"civil_normalizer={CIVIL_TIME_NORMALIZER_ID}@{CIVIL_TIME_NORMALIZER_VERSION};"
+        f"resolved_utc={civil.resolved_utc_instant.isoformat()};"
         f"rat_hour_policy={RAT_HOUR_POLICY};leap_month_policy={LEAP_MONTH_POLICY}"
     )
     normalized={
@@ -81,7 +109,8 @@ def normalize_gregorian_birth(data: GregorianBirthInput) -> dict[str,Any]:
         },
         "calendar_profile":{
             "profile_id":PROFILE_ID,
-            "timezone":TIMEZONE,
+            "timezone_mode":"explicit_IANA",
+            "timezone":data.timezone,
             "clock_mode":CLOCK_MODE,
             "true_solar_time":TRUE_SOLAR_TIME,
             "rat_hour_policy":RAT_HOUR_POLICY,
@@ -91,6 +120,7 @@ def normalize_gregorian_birth(data: GregorianBirthInput) -> dict[str,Any]:
                 "end":END_DATE.isoformat(),
             },
         },
+        "civil_time_normalization":civil.provenance(),
         "dataset":{
             "id":DATASET_ID,
             "path":DATASET_PATH,
@@ -117,7 +147,10 @@ def normalize_gregorian_birth(data: GregorianBirthInput) -> dict[str,Any]:
         "normalized_natal_input":normalized,
         "provenance":provenance,
         "boundaries":{
-            "timezone_conversion_performed":False,
+            "civil_time_validation_performed":True,
+            "local_calendar_identity_preserved":True,
+            "utc_rebase_for_lunar_conversion":False,
+            "resolved_utc_provenance_preserved":True,
             "true_solar_time_applied":False,
             "raw_lunar_preserved":True,
             "ziwei_policy_separated_from_calendar_conversion":True,

@@ -46,6 +46,22 @@ class ZiWeiUnifiedRuntimeV1Tests(unittest.TestCase):
         self.assertEqual(request.request_id,result["request_id"])
         self.assertEqual([BRIGHTNESS_MODULE],result["runtime"]["optional_modules"])
 
+    def test_json_transport_accepts_explicit_non_taipei_iana_timezone(self):
+        request=ZiWeiReadingRequest(
+            request_id="transport-tokyo",
+            birth=GregorianBirthInput(2000,1,1,0,30,timezone="Asia/Tokyo"),
+        )
+        payload=request_to_transport(request)
+        self.assertEqual("Asia/Tokyo",payload["birth"]["timezone"])
+        parsed=request_from_transport(payload)
+        self.assertEqual(request,parsed)
+        result=run_ziwei_transport(payload)
+        self.assertEqual("Asia/Tokyo",result["input_adapter"]["calendar"]["calendar_profile"]["timezone"])
+        self.assertEqual(
+            "civil-time-zoneinfo-v1",
+            result["input_adapter"]["calendar"]["civil_time_normalization"]["normalizer_id"],
+        )
+
     def test_json_transport_round_trips_normalized_lunar(self):
         request=ZiWeiReadingRequest(request_id="transport-l",birth=self.natal)
         payload=request_to_transport(request)

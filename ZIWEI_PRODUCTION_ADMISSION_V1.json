@@ -96,12 +96,13 @@
   ],
   "input_adapters": [
     {
-      "id": "gregorian_calendar_v1",
+      "id": "gregorian_calendar_v2",
       "admission_manifest": "ZIWEI_CALENDAR_ADMISSION_V1.json",
       "runtime_owner": "tools/ziwei_calendar_provider.py",
       "pipeline": "tools/ziwei_runtime.py",
-      "profile_id": "ziwei.calendar.tw_v1",
-      "timezone": "Asia/Taipei"
+      "profile_id": "ziwei.calendar.civil_v2",
+      "timezone_mode": "explicit_IANA",
+      "shared_civil_time_adapter": "civil-time-zoneinfo-v1@1.0.0"
     }
   ],
   "runtime": {

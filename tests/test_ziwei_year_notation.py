@@ -24,6 +24,15 @@ class ZiWeiYearNotationTests(unittest.TestCase):
         self.assertEqual(5,result["input"]["month"])
         self.assertEqual(7,result["input"]["day"])
 
+    def test_minguo_birth_preserves_explicit_iana_timezone(self):
+        converted=convert_minguo_birth(
+            MinguoBirthInput(89,1,1,0,30,timezone="Asia/Tokyo")
+        )
+        self.assertEqual("Asia/Tokyo",converted["gregorian_birth"].timezone)
+        result=normalize_gregorian_birth(converted["gregorian_birth"])
+        self.assertEqual("Asia/Tokyo",result["calendar_profile"]["timezone"])
+        self.assertEqual("civil-time-zoneinfo-v1",result["civil_time_normalization"]["normalizer_id"])
+
     def test_invalid_minguo_year_fails_closed(self):
         for value in (0,-1):
             with self.subTest(value=value):
