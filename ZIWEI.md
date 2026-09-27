@@ -11,7 +11,7 @@ Zi Wei production 不參與 ordinary auto-routing。只有使用者明確要求�
 ```text
 explicit Zi Wei production
 → ZIWEI.md
-→ Gregorian birth datetime + explicit IANA timezone (CE or explicit 民國 year notation) → shared civil-time validation → admitted year-notation/calendar adapters
+→ Gregorian birth datetime + explicit IANA timezone (CE or explicit 民國 year notation) → shared civil-time validation → optional explicit true-solar profile + longitude → admitted year-notation/calendar adapters
    OR already-normalized lunar input + provenance
 → tools/ziwei_runtime.py (`run_ziwei`)
 → admitted natal_baseline facts
@@ -31,7 +31,7 @@ IN — natal core:
 - 12 palace first-layer claims;
 - 52 admitted claims total;
 - admitted deterministic natal provider facts, including natal-baseline per-palace major-star occupancy / count / empty-palace applicability facts;
-- Gregorian birth datetime input via `ziwei.calendar.civil_v2` with an explicit IANA timezone within the admitted local-date range 1900-01-01..2100-12-31; `civil-time-zoneinfo-v1` validates DST/local-wall-time identity, and Gregorian→lunar conversion uses validated local calendar fields rather than UTC-rebased fields; explicit 民國年份 notation is deterministically converted by `tools/ziwei_year_notation.py` (`民國 N 年 → CE N+1911`) before the same adapter;
+- Gregorian birth datetime input via `ziwei.calendar.civil_v2` with an explicit IANA timezone within the admitted local-date range 1900-01-01..2100-12-31; `civil-time-zoneinfo-v1` validates DST/local-wall-time identity. Civil time remains the default. When `ziwei.true_solar.noaa_fractional_year_v1` + explicit longitude is requested, `tools/ziwei_true_solar_time.py` derives local apparent-solar Gregorian fields before Gregorian→lunar lookup; otherwise lookup uses validated civil local fields. Resolved UTC remains provenance rather than a lunar-conversion calendar. Explicit 民國年份 notation is deterministically converted by `tools/ziwei_year_notation.py` (`民國 N 年 → CE N+1911`) while preserving timezone / true-solar profile / longitude;
 - explicit provenance, omission, conflict and safety delivery.
 
 SEPARATELY ADMITTED TEMPORAL LAYERS:
@@ -49,6 +49,7 @@ OPTIONAL / explicit add-on:
 - `brightness_v1`: 14 主星 profile-bound brightness facts（廟／旺／得／利／平／不／陷），只用來滿足既有 admitted claim 的 dignity applicability；不得生成 brightness-only doctrine。
 - `m0_auxiliary_v1`: 左輔／右弼／文昌／文曲四星的 profile-bound natal placement + self/sanfang modifier facts；只 admission 4 個 bounded auxiliary-role **policy** claims 與既有 major-star conditional activation，不代表 blanket minor-star admission，也不代表四星各自 historical semantic core 已 production admission。
 - `sihua_v1`: `sihua.default_v1` profile-bound 生年四化 deterministic facts + 3 條 source-explicit、fact-gated transformed-star conditionals（貪狼化祿四墓、太陽化忌五支例外、太陰化忌四支例外）。不得由四化 label 自動推導通用吉凶，也不得跨 profile 平均；未符合 exact profile / sihua / star-location facts 時不得啟動。
+- input clock profile `ziwei.true_solar.noaa_fractional_year_v1`: only when the user explicitly supplies both the profile and longitude; civil time remains default. This is local apparent solar time (longitude correction + equation of time), not birthplace inference or a universal tradition claim.
 
 OUT / fail closed:
 
@@ -66,7 +67,7 @@ Unsupported layers不得用模型記憶、手算、research-only claims 或其�
 
 ## 3. Deterministic Fact Boundary
 
-Language model 不得把 raw birth data 自由手算成 production chart facts。已 normalization 的農曆輸入仍可直接走 Scope-A；西元生日則必須先經 admitted `tools/ziwei_calendar_provider.py`。若使用者明確使用民國紀年，必須先以 `tools/ziwei_year_notation.py` 做 deterministic 年份 notation conversion（`民國 N 年 = 西元 N+1911 年`），保留 source/converted facts，再送入同一 Gregorian provider；不得由模型心算或把民國誤當另一種 lunar calendar。Calendar v2 admission 接受 explicit IANA civil time與 1900-01-01..2100-12-31 validated-local Gregorian input range；shared normalizer先驗證 DST/local identity，再以 validated local fields 使用 `data/calendar/ziwei_tw_interval/v1/**` 的 admitted exact dataset；resolved UTC只保留 provenance，並在 raw lunar conversion 後明確套用 `next_day_at_23` 與 `split_after_day_15` Zi Wei policy。31 December 23:00 可讀下一年的 policy-tail shard，但不擴張 user-input range。不得由模型自行換農曆、猜 timezone 或偷偷套真太陽時。
+Language model 不得把 raw birth data 自由手算成 production chart facts。已 normalization 的農曆輸入仍可直接走 Scope-A；西元生日則必須先經 admitted `tools/ziwei_calendar_provider.py`。若使用者明確使用民國紀年，必須先以 `tools/ziwei_year_notation.py` 做 deterministic 年份 notation conversion（`民國 N 年 = 西元 N+1911 年`），保留 source/converted facts，再送入同一 Gregorian provider；不得由模型心算或把民國誤當另一種 lunar calendar。Calendar v2 admission 接受 explicit IANA civil time與 1900-01-01..2100-12-31 source local Gregorian input range；shared normalizer先驗證 DST/local identity。Default civil profile 以 validated local fields 使用 `data/calendar/ziwei_tw_interval/v1/**`；explicit `ziwei.true_solar.noaa_fractional_year_v1` 則在 civil validation 後，以 explicit longitude + resolved UTC offset + equation-of-time 產生 apparent-solar local Gregorian fields，再以這組 corrected fields 做 Gregorian→lunar lookup。resolved UTC始終只保留 civil provenance；raw lunar conversion 後再明確套用 `next_day_at_23` 與 `split_after_day_15` Zi Wei policy。若 solar correction 讓 calendar lookup date 超出 admitted dataset range則 fail closed。不得由模型自行換農曆、猜 timezone／longitude 或偷偷套真太陽時。
 
 Production runtime:
 
@@ -171,6 +172,9 @@ tools/ziwei_runtime.py + schemas/ziwei/ZIWEI_READING_{REQUEST,RESULT}_V1.schema.
 tools/ziwei_year_notation.py + tools/ziwei_calendar_provider.py + tools/ziwei_gregorian_pipeline.py
 → 民國年份 deterministic notation adapter + Gregorian normalization provider + legacy compatibility adapter
 
+tools/ziwei_true_solar_time.py + ZIWEI_TRUE_SOLAR_TIME_ADMISSION_V1.json
+→ optional explicit local-apparent-solar clock policy；longitude + equation-of-time correction only after shared civil-time validation
+
 tools/ziwei_natal_provider.py
 → admitted Scope-A deterministic natal provider
 
@@ -202,4 +206,4 @@ CHATGPT_OUTPUT.md
 → final output / Pre-Send owner
 ```
 
-核心原則：**Explicit Zi Wei 可直接給西元生日 + explicit IANA timezone，由 shared civil-time adapter + admitted calendar adapter 正規化後進 Scope-A；birthplace→timezone 不猜、true solar time 不偷套；optional facts modules 必須明確啟用且保留 profile/provenance；sihua_v1 只提供四化 facts、不自動創造四化斷語；unspecified reading → ordinary router；unsupported Zi Wei layers → fail closed。**
+核心原則：**Explicit Zi Wei 可直接給西元生日 + explicit IANA timezone，由 shared civil-time adapter + admitted calendar adapter 正規化後進 Scope-A；civil time 是 default，true solar 只在 explicit admitted profile + longitude 時啟用；birthplace→timezone／longitude 都不猜；optional facts modules 必須明確啟用且保留 profile/provenance；sihua_v1 只提供四化 facts、不自動創造四化斷語；unspecified reading → ordinary router；unsupported Zi Wei layers → fail closed。**
