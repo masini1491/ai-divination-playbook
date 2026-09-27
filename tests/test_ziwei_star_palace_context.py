@@ -84,8 +84,8 @@ class ZiWeiStarPalaceContextTests(unittest.TestCase):
 
     def test_tanlang_spouse_is_historical_bounded_without_spouse_age(self):
         claim=next(x for x in self.registry["claims"] if x["claim_id"]=="ZW-SP-TANLANG-SPOUSE-001")
-        self.assertEqual("historical_contextual",claim["assertion_class"])
-        self.assertEqual("historical_bounded",claim["support_status"])
+        self.assertEqual("historical_conditional",claim["assertion_class"])
+        self.assertEqual("historical_only",claim["support_status"])
         self.assertIn("star_in_palace:貪狼:夫妻宮",claim["applicability"]["requires"])
         self.assertNotIn("年長",claim["normalized_statement"])
         self.assertNotIn("older",claim["normalized_statement"].lower())

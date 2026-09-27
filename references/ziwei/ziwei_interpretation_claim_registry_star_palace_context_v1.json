@@ -164,7 +164,7 @@
       ],
       "star": "貪狼",
       "palace": "夫妻宮",
-      "assertion_class": "historical_contextual",
+      "assertion_class": "historical_conditional",
       "normalized_statement": "在 historical profile 中，貪狼落夫妻宮可作為婚姻／伴侶互動較需留意穩定性與失衡壓力的 contextual modifier；仍須合看廟旺、吉煞、同會與其他已 admitted 條件，不得翻成必然婚姻失敗、多婚、外遇或固定配偶特徵。",
       "source_refs": [
         "SRC-NANYANG-QUANSHU-STARS"
@@ -195,7 +195,7 @@
         "temporal_scope": "natal_baseline"
       },
       "confidence_status": "qualified",
-      "support_status": "historical_bounded",
+      "support_status": "historical_only",
       "conflict_group_ids": [],
       "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
     }
