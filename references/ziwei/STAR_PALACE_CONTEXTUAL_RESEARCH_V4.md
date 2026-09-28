@@ -1453,3 +1453,85 @@ deferred     32
 
 The full 命宮 row is now 14/14 reviewed and 14/14 resolved.
 
+## V4 Batch 11 — 兄弟宮 row
+
+This batch reviews the remaining twelve previously-unreviewed 兄弟宮 cells.
+Previously resolved `天同×兄弟宮` and `巨門×兄弟宮` remain bounded-L5
+controls.
+
+The historical chapter is highly count-heavy and repeatedly includes exact
+sibling counts, "不同胞", "孤尅", "全無" and similar categorical family-
+structure outcomes. Those details are not promoted merely because they are
+source-explicit. Safe relational content is first compared against existing
+star core + the admitted 兄弟宮 domain of sibling relationship, harmony,
+support and conflict.
+
+### Resolved bounded-L5 cells
+
+The following eight newly reviewed cells route
+`BOUNDED_L5_COMPOSITION / resolved`:
+
+- `紫微×兄弟宮` — support/reliance and harmony are representable through
+  紫微 order/support context + sibling-domain support; exact elder-sibling/count
+  claims are not promoted.
+- `天機×兄弟宮` — condition-sensitive cohesion versus disagreement is
+  representable through 天機 adaptability + sibling-domain relationship
+  dynamics.
+- `太陽×兄弟宮` — dignity-sensitive support/cohesion is already covered by
+  太陽 dignity handling + sibling domain.
+- `武曲×兄弟宮` — rigidity/disagreement under adverse conditions is safely
+  representable through 武曲 core + sibling-domain interaction.
+- `廉貞×兄弟宮` — resentment/conflict wording is representable through
+  廉貞 constraint/desire semantics + sibling domain; exact counts are excluded.
+- `天府×兄弟宮` — favorable support/family-cohesion wording adds no stable
+  mechanism beyond 天府 support/order + sibling domain.
+- `太陰×兄弟宮` — dignity-sensitive closeness/separation is representable
+  through 太陰 condition sensitivity + sibling domain.
+- `天相×兄弟宮` — peace/cooperation wording directly overlaps 天相
+  support/order + sibling domain.
+
+### High-risk bounded cells
+
+The following four cells contain source-explicit distinctions dominated by
+categorical family-structure, "孤尅", half-sibling / separation or absence
+outcomes. They are reviewed and resolved, but those details remain
+non-production:
+
+- `貪狼×兄弟宮`
+- `天梁×兄弟宮`
+- `七殺×兄弟宮`
+- `破軍×兄弟宮`
+
+Routing: `HIGH_RISK_BOUNDED / resolved`.
+
+Safe synthesis may use only independently admitted star-core + sibling-domain
+semantics and general condition sensitivity. It must not predict exact sibling
+count, half-sibling status, death/loss, guaranteed estrangement or absence of
+siblings.
+
+## Batch 11 decision
+
+```text
+new reviewed cells = 12
+new resolved cells = 12
+new admission candidates = 0
+new bounded L5 cells = 8
+new high-risk bounded cells = 4
+production claims added = 0
+```
+
+Coverage after batch 11 research classification:
+
+```text
+total       168
+reviewed    129
+resolved     97
+unreviewed   39
+dedicated     9
+bounded L5   66
+high-risk    22
+deferred     32
+```
+
+The full 兄弟宮 row is now 14/14 reviewed and 14/14 resolved.
+
