@@ -1151,9 +1151,16 @@ Ordering rationale:
   - coverage delta = +11 reviewed / +11 resolved;
   - coverage state = reviewed 82 / resolved 61 / unreviewed 86 / dedicated L4 9 / bounded L5 35 / high-risk 17 / deferred 21;
   - no new admission candidate; production claim count/runtime/pipeline remain unchanged.
+- batch_8_result:
+  - full `遷移宮` row is now 14/14 reviewed and 8/14 resolved;
+  - new admission candidates / reviewed unresolved: `天機×遷移宮`、`太陽×遷移宮`、`武曲×遷移宮`、`廉貞×遷移宮`、`七殺×遷移宮`;
+  - new resolved bounded-L5 cells: `天同×遷移宮`、`天府×遷移宮`、`太陰×遷移宮`、`巨門×遷移宮`、`天相×遷移宮`、`天梁×遷移宮`;
+  - coverage delta = +11 reviewed / +6 resolved;
+  - coverage state = reviewed 93 / resolved 67 / unreviewed 75 / dedicated L4 9 / bounded L5 41 / high-risk 17 / deferred 26;
+  - production claim count/runtime/pipeline remain unchanged.
 - next_batch:
   - continue another complete ordinary palace row where feasible;
-  - keep Batch-5 candidates research-only until separate bounded production-admission authorization;
+  - keep all V4 admission candidates research-only until separate bounded production-admission authorization;
   - keep 疾厄宮 on its separate health-safe path.
 - completion_gate:
   - current historical primary-text locators and pinned practitioner evidence reconciled;

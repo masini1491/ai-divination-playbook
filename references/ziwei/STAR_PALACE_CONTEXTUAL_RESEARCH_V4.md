@@ -1034,3 +1034,169 @@ deferred     21
 
 The full 夫妻宮 row is now 14/14 reviewed and 14/14 resolved. Production claim
 count, runtime and pipeline remain unchanged.
+
+## V4 Batch 8 — 遷移宮 row
+
+This batch reviews the remaining eleven previously-unreviewed 遷移宮 cells. The
+historical owner is the Nanyang-Hall 遷移宮 chapter:
+
+`https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzop13hy615`
+
+Previously reviewed `紫微×遷移宮`, `貪狼×遷移宮` and
+production-admitted `破軍×遷移宮` are not reclassified here.
+
+The material-distinctness gate is intentionally stricter than source presence:
+generic "遇貴", "發財", "是非" or "勞心" language does not by itself justify a
+dedicated pair doctrine when existing star core + 遷移 domain + condition
+handling can represent it. The useful pair-specific signal in this row is
+primarily a movement-versus-stillness / outside-versus-home direction.
+
+### Admission candidates / reviewed unresolved
+
+#### 天機 × 遷移宮
+
+The historical text explicitly contrasts favorable external movement with
+friction in staying home. That outside-versus-home reversal is more specific
+than generic 天機 planning/adaptability plus the 遷移 external-environment
+domain.
+
+Normalized candidate:
+
+> 天機落遷移宮時，可作為「外出／移動環境較容易啟動助力，靜守或居家時反而較易
+> 出現摩擦」的 historical contextual modifier；不得翻成保證外出成功、必遇貴人
+> 或居家必有衝突。
+
+Classification: `ADMISSION-CANDIDATE / DEFERRED_EVIDENCE / unresolved`.
+
+#### 太陽 × 遷移宮
+
+The historical text explicitly prefers outward movement over quiet staying.
+That directional asymmetry is materially more specific than 太陽 public/visible
+core + 遷移 domain.
+
+Normalized candidate:
+
+> 太陽落遷移宮時，可作為「較偏外展、移動中發揮，不耐長期靜守」的 historical
+> contextual modifier；不得翻成保證外出發達、固定職業或固定地理遷移結果。
+
+Classification: `ADMISSION-CANDIDATE / DEFERRED_EVIDENCE / unresolved`.
+
+#### 武曲 × 遷移宮
+
+The historical text explicitly describes progress in busy/moving contexts and
+disfavors stillness. That movement-linked execution trajectory is more specific
+than 武曲 execution/resource core + 遷移 domain.
+
+Normalized candidate:
+
+> 武曲落遷移宮時，可作為「在忙動、外展或持續行動的環境中較能發揮執行與推進」
+> 的 historical contextual modifier；不得翻成保證升遷、發財或固定工作型態。
+
+Classification: `ADMISSION-CANDIDATE / DEFERRED_EVIDENCE / unresolved`.
+
+#### 廉貞 × 遷移宮
+
+The historical text gives a direct outside-versus-home asymmetry: outward life is
+emphasized, while strong adverse combinations contain dangerous travel language.
+The safe material distinction is the outward-activity orientation only; death
+or accident wording is excluded from ordinary production doctrine.
+
+Normalized candidate:
+
+> 廉貞落遷移宮時，可作為「生活／事務重心較偏外展、外出或移動場域」的 historical
+> contextual modifier；煞曜條件僅可提高不安與摩擦描述，不得轉成死亡、事故、
+> 災難或必然受傷預測。
+
+Classification: `ADMISSION-CANDIDATE / DEFERRED_EVIDENCE / unresolved`.
+
+#### 七殺 × 遷移宮
+
+The historical text gives a clear "outside more, home less" / movement-oriented
+pattern, with adverse conditions increasing restlessness. That orientation is
+more specific than generic 七殺 action/intensity core + 遷移 domain.
+
+Normalized candidate:
+
+> 七殺落遷移宮時，可作為「外出、移動與外部場域活動比重較高，靜守感較弱」的
+> historical contextual modifier；煞曜只可修正不安與奔波強度，不得推出流浪、
+> 事故、失所或固定遷居結果。
+
+Classification: `ADMISSION-CANDIDATE / DEFERRED_EVIDENCE / unresolved`.
+
+### Resolved bounded-L5 cells
+
+#### 天同 × 遷移宮 — REJECT-REDUNDANT
+
+Historical "出外遇貴" wording is adequately represented by 天同 harmony/support
+semantics plus the external-environment domain and existing benefic/malefic
+condition handling. It does not establish a stable pair-specific mechanism.
+
+Routing: `BOUNDED_L5_COMPOSITION / resolved`.
+
+#### 天府 × 遷移宮 — REJECT-REDUNDANT
+
+Historical favorable external-support wording largely restates 天府 support,
+order and conservative-resource semantics inside the 遷移 domain. No separate
+pair trajectory is required.
+
+Routing: `BOUNDED_L5_COMPOSITION / resolved`.
+
+#### 太陰 × 遷移宮 — REJECT-REDUNDANT
+
+The historical text is dignity-sensitive: stronger conditions favor external
+resource/support while weaker conditions increase disputes. 太陰 already owns
+material dignity sensitivity, so the safe distinction is representable through
+existing core + 遷移 domain.
+
+Routing: `BOUNDED_L5_COMPOSITION / resolved`.
+
+#### 巨門 × 遷移宮 — REJECT-REDUNDANT
+
+Historical labor/unease language is safely representable through 巨門
+speech/dispute/mental-pressure semantics plus the movement/external-environment
+domain. No additional pair mechanism is needed.
+
+Routing: `BOUNDED_L5_COMPOSITION / resolved`.
+
+#### 天相 × 遷移宮 — REJECT-REDUNDANT
+
+Historical benefactor/support wording is already representable through 天相
+support/order semantics plus the 遷移 domain and existing condition handling.
+
+Routing: `BOUNDED_L5_COMPOSITION / resolved`.
+
+#### 天梁 × 遷移宮 — REJECT-REDUNDANT
+
+Historical favorable external-support wording overlaps directly with 天梁
+protection/elder/support semantics and the 遷移 domain. No material pair-specific
+trajectory is established in this pass.
+
+Routing: `BOUNDED_L5_COMPOSITION / resolved`.
+
+## Batch 8 decision
+
+```text
+new reviewed cells = 11
+new resolved cells = 6
+new admission candidates = 5
+new bounded L5 cells = 6
+production claims added = 0
+```
+
+Coverage after batch 8 research classification:
+
+```text
+total       168
+reviewed     93
+resolved     67
+unreviewed   75
+dedicated     9
+bounded L5   41
+high-risk    17
+deferred     26
+```
+
+The full 遷移宮 row is now 14/14 reviewed and 8/14 resolved. The five new
+admission candidates plus the previously-deferred `貪狼×遷移宮` remain
+research-only. Production admission remains a separate bounded action.
+
