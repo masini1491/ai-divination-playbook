@@ -507,7 +507,7 @@
         "cartesian_expansion": false
       },
       "natal_provider_version": "0.3.0",
-      "pipeline_version": "1.5.0",
+      "pipeline_version": "1.6.0",
       "body_palace_overlay_interpretation": {
         "status": "production-admitted-bounded",
         "activation": "automatic-on-exact-admitted-body-palace-overlay-fact",
@@ -561,8 +561,24 @@
         "architecture_owner": "references/ziwei/STAR_PALACE_COVERAGE_ARCHITECTURE_V1.md",
         "decision_input": "references/ziwei/STAR_PALACE_COVERAGE_DECISIONS_V1.json",
         "dedicated_cartesian_expansion": false,
-        "completion_target": "resolved_cells=168",
-        "high_risk_bounded": 37
+        "high_risk_bounded": 37,
+        "long_term_research_horizon": "resolved_cells=168",
+        "near_term_release_kpi": false,
+        "continuation_mode": "reading-gap-driven",
+        "health_row_blocks_natal_synthesis": false
+      },
+      "natal_synthesis": {
+        "status": "production-admitted-selection-only",
+        "module_id": "natal_synthesis_v1",
+        "version": "1.0.0",
+        "scope": "default_68_base_natal_claims_only",
+        "focus_target": {
+          "min": 4,
+          "max": 6
+        },
+        "optional_module_defaults_changed": false,
+        "new_doctrine": false,
+        "final_prose_authority": false
       }
     },
     {
