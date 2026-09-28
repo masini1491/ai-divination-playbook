@@ -573,7 +573,7 @@ def _select_claims(
                         f"claim selector {selector['selector_id']} requires semantic_profile={required_profile} for registry {registry_id}"
                     )
                 continue
-        elif requested_profile is not None:
+        elif selector_profile is not None:
             continue
         for claim in registry.get("claims", []):
             if isinstance(claim, dict) and isinstance(claim.get("claim_id"), str) and _claim_matches(claim, selector, required_applicability):
