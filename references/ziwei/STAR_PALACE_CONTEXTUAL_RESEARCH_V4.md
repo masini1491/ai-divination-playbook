@@ -1376,3 +1376,80 @@ deferred     32
 The full 田宅宮 row is now 14/14 reviewed and 8/14 resolved. The five new
 admission candidates and the 七殺 evidence-gap cell remain research-only.
 
+## V4 Batch 10 — 命宮 row
+
+This batch reviews the remaining twelve previously-unreviewed 命宮 cells.
+Production-admitted `天相×命宮` and `武曲×命宮` remain exact-occupancy
+controls only.
+
+The 命宮 historical owner emphasizes core self/life expression plus mandatory
+context from dignity, supporting/adverse stars and 三方四正. For a dedicated
+star×命宮 L4 claim, merely repeating a star's already-admitted core personality,
+resource, authority, harmony, speech, protection or disruption semantics is not
+materially distinct.
+
+The practitioner corpus was also rechecked for 命宮-specific material. Common
+appearance, fixed occupation, fixed status and categorical personality
+statements are not sufficient production doctrine and are not promoted here.
+
+### Resolved bounded-L5 cells
+
+The following twelve cells are all classified `REJECT-REDUNDANT` and route by
+`BOUNDED_L5_COMPOSITION / resolved`:
+
+- `紫微×命宮` — authority/order/core-expression semantics are already in
+  紫微 core + 命宮 self-domain; no additional stable occupancy mechanism was
+  established.
+- `天機×命宮` — planning/adaptability/mental-mobility semantics are already
+  direct star-core content; appearance heuristics are not promoted.
+- `太陽×命宮` — visibility/status/responsibility and dignity sensitivity are
+  already admitted in 太陽 core + 命宮 domain; fixed occupation/body claims are
+  excluded.
+- `天同×命宮` — harmony/softness/blessing semantics are already star-core
+  content expressed through the self domain.
+- `廉貞×命宮` — authority/constraint/desire and condition sensitivity are
+  already star-core content; categorical moral/sexual labels are excluded.
+- `天府×命宮` — storehouse/order/support semantics are already star-core
+  content; no extra pair trajectory was established.
+- `太陰×命宮` — inner-feeling/property-related core plus material dignity
+  sensitivity already supplies the bounded self-expression route.
+- `貪狼×命宮` — desire/social/resource-pursuit semantics are already core;
+  appearance, sexuality or fixed-lifestyle heuristics are not promoted.
+- `巨門×命宮` — speech/dispute/obscurity semantics are already core; no
+  separate exact-occupancy mechanism is required.
+- `天梁×命宮` — protection/elder/regulation semantics are already core;
+  longevity/health claims are not promoted.
+- `七殺×命宮` — action/authority/intensity and condition sensitivity are
+  already core; violent-event or fixed-fate language is excluded.
+- `破軍×命宮` — disruption/restructuring/change semantics are already core;
+  no separate occupancy doctrine is required.
+
+No new admission candidate is created in this row. This is intentional: the
+existing two dedicated 命宮 claims remain exceptions because they passed a
+separate source-explicit material-distinctness gate.
+
+## Batch 10 decision
+
+```text
+new reviewed cells = 12
+new resolved cells = 12
+new admission candidates = 0
+new bounded L5 cells = 12
+production claims added = 0
+```
+
+Coverage after batch 10 research classification:
+
+```text
+total       168
+reviewed    117
+resolved     85
+unreviewed   51
+dedicated     9
+bounded L5   58
+high-risk    18
+deferred     32
+```
+
+The full 命宮 row is now 14/14 reviewed and 14/14 resolved.
+
