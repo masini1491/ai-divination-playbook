@@ -793,6 +793,38 @@ Ordering rationale:
   - exact-main run `36358309882` PASSed `validate` + `casting-runtime`, full unit suite, structural checker and exact-main Zi Wei handoff preparation/upload;
   - exact-main artifact `10945090252` / `ziwei-deterministic-handoff-dfefcc8c49102f2cb2ca96fb221ea5f2aa8cce2f` published at 98,677 bytes with digest `sha256:6dad5b327e92622790be8f971ce5da306f4b0bb2f6f70acd8d42c1bff922a2ae`.
 
+### ZW-P2-021 — Sparse star×palace contextual research v3
+
+- type: RESEARCH / INTERPRETATION
+- status: IN_PROGRESS
+- priority: P2
+- owner: Zi Wei interpretation evidence
+- blocked_by: none
+- trigger:
+  - explicit user request to continue the Zi Wei research line after v2 / production closure.
+- research_scope:
+  - targeted re-review `破軍×遷移宮`;
+  - source-first discovery of 3–5 additional star×palace candidates;
+  - material-distinctness comparison against current star-core + palace-domain evidence;
+  - research-only; no production admission in this action.
+- evidence_decision:
+  - `破軍×遷移宮` upgraded from v2 `DEFER-BORDERLINE` to `ADMISSION-CANDIDATE` after direct current-project Nanyang-Hall 遷移宮 evidence established baseline + dignity + malefic-condition semantics;
+  - `破軍×夫妻宮` = `ADMISSION-CANDIDATE`, historical + practitioner corroborated, but requires strict relationship-safety normalization;
+  - `武曲×田宅宮` = `ADMISSION-CANDIDATE`, historical + practitioner corroborated property acquisition / retention trajectory;
+  - `天機×田宅宮` = `ADMISSION-CANDIDATE`, historically explicit directional property pattern;
+  - `貪狼×遷移宮` = `DEFER-BORDERLINE`;
+  - `紫微×遷移宮` = `REJECT-REDUNDANT`.
+- canonical_research:
+  - `references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V3.md`
+- production_boundary:
+  - current production star×palace admission remains exactly 3 claims;
+  - no claim registry / runtime / admission manifest / pipeline / count change;
+  - no 14×12 Cartesian expansion;
+  - no deterministic marriage, wealth, property, travel-accident or other guaranteed event prediction.
+- completion_gate:
+  - research record + research owner + coordination backlog synchronized;
+  - formal PR CI, merge, exact-main CI and canonical read-back complete before DONE.
+
 ### ZW-P2-050 — Body-Palace overlay interpretation admission
 
 - type: FEATURE / INTERPRETATION / NATAL OVERLAY
