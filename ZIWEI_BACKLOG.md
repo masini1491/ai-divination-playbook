@@ -1183,13 +1183,14 @@ Ordering rationale:
   - coverage state = reviewed 129 / resolved 97 / unreviewed 39 / dedicated L4 9 / bounded L5 66 / high-risk 22 / deferred 32;
   - no new admission candidate; production claim count/runtime/pipeline remain unchanged.
 - batch_12_result:
-  - full `奴僕宮` row is now 14/14 reviewed and 13/14 resolved;
-  - all 12 newly reviewed cells route `BOUNDED_L5_COMPOSITION`;
+  - full `奴僕宮` row is now 14/14 reviewed and 10/14 resolved;
+  - new admission candidates / reviewed unresolved: `廉貞×奴僕宮`、`貪狼×奴僕宮`、`天相×奴僕宮`; existing `紫微×奴僕宮` candidate remains unchanged;
+  - new resolved bounded-L5 cells: `天機×奴僕宮`、`太陽×奴僕宮`、`武曲×奴僕宮`、`天同×奴僕宮`、`天府×奴僕宮`、`太陰×奴僕宮`、`天梁×奴僕宮`、`破軍×奴僕宮`;
+  - new high-risk bounded cell: `七殺×奴僕宮`; concrete theft/betrayal accusations remain non-production;
   - historical 奴僕 scope is not silently expanded into modern 交友 / peers / partnerships;
-  - `紫微×奴僕宮` remains the only unresolved cell in this row;
-  - coverage delta = +12 reviewed / +12 resolved;
-  - coverage state = reviewed 141 / resolved 109 / unreviewed 27 / dedicated L4 9 / bounded L5 78 / high-risk 22 / deferred 32;
-  - no new admission candidate; production claim count/runtime/pipeline remain unchanged.
+  - coverage delta = +12 reviewed / +9 resolved;
+  - coverage state = reviewed 141 / resolved 106 / unreviewed 27 / dedicated L4 9 / bounded L5 74 / high-risk 23 / deferred 35;
+  - production claim count/runtime/pipeline remain unchanged.
 - next_batch:
   - continue with the remaining ordinary `子女宮` row;
   - keep all V4 admission candidates research-only until separate bounded production-admission authorization;
