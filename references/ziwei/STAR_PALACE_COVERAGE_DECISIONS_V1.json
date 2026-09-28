@@ -66,6 +66,78 @@
       "resolved": false,
       "research_state": "DEFER-BORDERLINE",
       "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V3.md"
+    },
+    {
+      "star": "天機",
+      "palace": "福德宮",
+      "routing_mode": "DEFERRED_EVIDENCE",
+      "resolved": false,
+      "research_state": "ADMISSION-CANDIDATE",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
+    },
+    {
+      "star": "紫微",
+      "palace": "奴僕宮",
+      "routing_mode": "DEFERRED_EVIDENCE",
+      "resolved": false,
+      "research_state": "ADMISSION-CANDIDATE",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
+    },
+    {
+      "star": "天同",
+      "palace": "財帛宮",
+      "routing_mode": "DEFERRED_EVIDENCE",
+      "resolved": false,
+      "research_state": "ADMISSION-CANDIDATE",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
+    },
+    {
+      "star": "天機",
+      "palace": "財帛宮",
+      "routing_mode": "BOUNDED_L5_COMPOSITION",
+      "resolved": true,
+      "research_state": "REJECT-REDUNDANT",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
+    },
+    {
+      "star": "巨門",
+      "palace": "奴僕宮",
+      "routing_mode": "BOUNDED_L5_COMPOSITION",
+      "resolved": true,
+      "research_state": "REJECT-REDUNDANT",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
+    },
+    {
+      "star": "破軍",
+      "palace": "福德宮",
+      "routing_mode": "BOUNDED_L5_COMPOSITION",
+      "resolved": true,
+      "research_state": "REJECT-REDUNDANT",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
+    },
+    {
+      "star": "太陽",
+      "palace": "父母宮",
+      "routing_mode": "BOUNDED_L5_COMPOSITION",
+      "resolved": true,
+      "research_state": "REJECT-REDUNDANT",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
+    },
+    {
+      "star": "太陰",
+      "palace": "父母宮",
+      "routing_mode": "BOUNDED_L5_COMPOSITION",
+      "resolved": true,
+      "research_state": "REJECT-REDUNDANT",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
+    },
+    {
+      "star": "天梁",
+      "palace": "父母宮",
+      "routing_mode": "BOUNDED_L5_COMPOSITION",
+      "resolved": true,
+      "research_state": "REJECT-REDUNDANT",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
     }
   ]
 }
