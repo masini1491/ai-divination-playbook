@@ -80,7 +80,8 @@
       ],
       "admission_scope": [
         "破軍×遷移宮 bounded historical contextual semantics",
-        "武曲×田宅宮 bounded historical contextual semantics"
+        "武曲×田宅宮 bounded historical contextual semantics",
+        "天機×田宅宮 bounded historical contextual semantics"
       ],
       "excluded_scope": [
         "unverified glyph-level variants",
@@ -318,6 +319,51 @@
       "support_status": "historical_only",
       "conflict_group_ids": [],
       "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-SP-TIANJI-PROPERTY-001",
+      "layer": "L4",
+      "claim_type": "star_palace_context",
+      "subject": "天機×田宅宮",
+      "subjects": [
+        "天機",
+        "田宅宮"
+      ],
+      "star": "天機",
+      "palace": "田宅宮",
+      "assertion_class": "historical_conditional",
+      "normalized_statement": "在 historical profile 中，天機落田宅宮可作為舊有／祖業模式較難固定延續、較偏重新規劃或自行建立的 property-context modifier；不得翻成必然失去祖產或保證另置新產。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-PALACES"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzop13hz7yh"
+      ],
+      "applicability": {
+        "requires": [
+          "fact_available:palace_occupancy",
+          "star_in_palace:天機:田宅宮"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "dignity_brightness",
+          "supporting_stars",
+          "malefic_stars",
+          "sanfang_sizheng",
+          "tradition_profile"
+        ],
+        "palace_scope": [
+          "田宅宮"
+        ],
+        "topology_scope": [
+          "self"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "qualified",
+      "support_status": "historical_only",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
     }
   ],
   "conflict_groups": [
@@ -344,13 +390,14 @@
   "research_result": {
     "production_authority_granted": false,
     "scientific_predictive_validity_claimed": false,
-    "claim_count": 5,
+    "claim_count": 6,
     "admitted_pairs": [
       "天相×命宮",
       "天梁×官祿宮",
       "貪狼×夫妻宮",
       "破軍×遷移宮",
-      "武曲×田宅宮"
+      "武曲×田宅宮",
+      "天機×田宅宮"
     ],
     "exhaustive_cartesian_dictionary": false,
     "rejected_as_non_material_overrides": [

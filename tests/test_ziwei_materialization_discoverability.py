@@ -21,8 +21,8 @@ class ZiWeiMaterializationDiscoverabilityTests(unittest.TestCase):
         self.assertEqual("ziwei-deterministic-handoff-${{ github.sha }}",c["exact_main_handoff_artifact"])
         self.assertEqual(90,c["exact_main_handoff_retention_days"])
         self.assertFalse(c["exact_main_handoff_includes_calendar_shards"])
-        self.assertEqual(81,c["maximum_claim_count_with_optional_modules"])
-        self.assertEqual(64,c["claim_count"])
+        self.assertEqual(82,c["maximum_claim_count_with_optional_modules"])
+        self.assertEqual(65,c["claim_count"])
         pair=c["same_palace_pair_interpretation"]
         self.assertEqual("production-admitted-bounded",pair["status"])
         self.assertEqual(2,pair["claim_count"])
@@ -36,7 +36,7 @@ class ZiWeiMaterializationDiscoverabilityTests(unittest.TestCase):
         self.assertFalse(body["thirteenth_palace"])
         star_palace=c["star_palace_context_interpretation"]
         self.assertEqual("production-admitted-bounded",star_palace["status"])
-        self.assertEqual(5,star_palace["claim_count"])
+        self.assertEqual(6,star_palace["claim_count"])
         self.assertEqual("ZIWEI_STAR_PALACE_CONTEXT_ADMISSION_V1.json",star_palace["admission_manifest"])
         self.assertFalse(star_palace["cartesian_expansion"])
         self.assertIn("sihua_v1",c["optional_modules"])

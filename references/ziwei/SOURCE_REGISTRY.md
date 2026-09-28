@@ -71,7 +71,7 @@ Minor-star admission taxonomy          CLOSED — RESEARCH / M0 + M1 bounded nat
 Temporal-context interpretation         CLOSED — RESEARCH / scope + provenance contract; dynamic runtime and claim corpus not admitted
 Same-palace major-star pairs             BOUNDED PRODUCTION ADMISSION / 武曲×天相 only / 兄弟宮 + 官祿宮 / 2 practitioner-bounded claims; other reviewed pairs remain non-admitted
 Body-Palace overlay interpretation        BOUNDED PRODUCTION ADMISSION / 身宮 methodology + 夫妻宮、財帛宮、官祿宮、遷移宮 overlays / 5 practitioner-bounded claims / never thirteenth palace
-Sparse star×palace contextual claims      BOUNDED PRODUCTION ADMISSION / 天相×命宮 + 天梁×官祿宮 practitioner-bounded + 貪狼×夫妻宮 + 破軍×遷移宮 + 武曲×田宅宮 historical-bounded / 5 overrides / exact canonical occupancy / no Cartesian expansion / Nihai spouse-age heuristic deferred / no deterministic travel-event or guaranteed-property/wealth prediction
+Sparse star×palace contextual claims      BOUNDED PRODUCTION ADMISSION / 天相×命宮 + 天梁×官祿宮 practitioner-bounded + 貪狼×夫妻宮 + 破軍×遷移宮 + 武曲×田宅宮 + 天機×田宅宮 historical-bounded / 6 overrides / exact canonical occupancy / no Cartesian expansion / Nihai spouse-age heuristic deferred / no deterministic travel-event or guaranteed-property/wealth prediction
 M1 high-impact auxiliary stars           BOUNDED PRODUCTION ADMISSION / 10 natal placement facts + 10 modifier-role policy claims / requires M0 / no M2-M3 or high-stakes event doctrine
 ```
 

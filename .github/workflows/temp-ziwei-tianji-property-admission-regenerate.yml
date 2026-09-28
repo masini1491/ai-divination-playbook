@@ -1,0 +1,43 @@
+name: Temporary Zi Wei Tianji property admission regeneration
+
+on:
+  push:
+    branches:
+      - feature/ziwei-tianji-property-admission
+
+permissions:
+  contents: write
+
+jobs:
+  regenerate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/ziwei-tianji-property-admission
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --disable-pip-version-check -r requirements-ziwei-calendar.txt
+      - run: python references/ziwei/validate_interpretation_claim_registry.py references/ziwei/ziwei_interpretation_claim_registry_star_palace_context_v1.json
+      - run: |
+          python -m unittest tests.test_ziwei_star_palace_context -v
+          python -m unittest tests.test_ziwei_production_contract_v1 -v
+          python -m unittest tests.test_ziwei_sihua_admission -v
+          python -m unittest tests.test_ziwei_materialization_discoverability -v
+          python -m unittest tests.test_ziwei_unified_runtime_v1 -v
+      - run: |
+          python tools/build_ziwei_tool_bundle.py
+          python tools/build_ziwei_tool_bundle.py --check
+          python tools/build_chatgpt_load_pack.py
+          python tools/build_chatgpt_load_pack.py --check
+          python tools/chatgpt_load_benchmark.py --check
+      - run: python -m unittest tests.test_ziwei_tool_bundle -v
+      - run: |
+          rm .github/workflows/temp-ziwei-tianji-property-admission-regenerate.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json CHATGPT_LOAD_PACK.json .github/workflows/temp-ziwei-tianji-property-admission-regenerate.yml
+          git diff --cached --quiet && exit 0
+          git commit -m "Regenerate Zi Wei Tianji property admission caches"
+          git push origin HEAD:feature/ziwei-tianji-property-admission
