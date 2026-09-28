@@ -207,6 +207,161 @@ def retrieve_claims(
         "production_authority_granted": False,
     }
 
+NATAL_SYNTHESIS_VERSION = "1.0.0"
+NATAL_SYNTHESIS_FOCUS_MIN = 4
+NATAL_SYNTHESIS_FOCUS_MAX = 6
+NATAL_SYNTHESIS_EXACT_TYPES = frozenset({"same_palace_pair", "star_palace_context", "body_palace_overlay"})
+NATAL_SYNTHESIS_CONDITIONAL_TYPES = frozenset({"star_conditional", "palace_conditional"})
+
+
+def select_natal_synthesis_focus(
+    packet: FactPacket,
+    retrieval: dict[str, Any],
+    *,
+    eligible_claim_ids: frozenset[str] | set[str],
+    target_min: int = NATAL_SYNTHESIS_FOCUS_MIN,
+    target_max: int = NATAL_SYNTHESIS_FOCUS_MAX,
+) -> dict[str, Any]:
+    """Select a small evidence-bounded natal focus without generating doctrine."""
+    if not (1 <= target_min <= target_max):
+        raise ValueError("invalid natal synthesis focus target")
+
+    allow = set(eligible_claim_ids)
+    claims = [
+        claim for claim in retrieval.get("selected_claims", [])
+        if claim.get("claim_id") in allow
+    ]
+    by_subject_type: dict[tuple[str, str], dict[str, Any]] = {}
+    for claim in claims:
+        subject = claim.get("subject")
+        claim_type = claim.get("claim_type")
+        if isinstance(subject, str) and isinstance(claim_type, str):
+            by_subject_type[(subject, claim_type)] = claim
+
+    candidates: list[dict[str, Any]] = []
+    exact_star_palace: set[tuple[str, str]] = set()
+
+    def add_claim_signal(claim: dict[str, Any], tier: int) -> None:
+        subjects = tuple(str(x) for x in claim.get("subjects", []) if isinstance(x, str) and x)
+        if not subjects and isinstance(claim.get("subject"), str):
+            subjects = (claim["subject"],)
+        candidates.append({
+            "signal_id": f"claim:{claim['claim_id']}",
+            "signal_type": claim["claim_type"],
+            "claim_ids": [claim["claim_id"]],
+            "subjects": list(subjects),
+            "tier": tier,
+            "specificity": int(claim.get("specificity", 0)),
+        })
+
+    for claim in claims:
+        ctype = claim.get("claim_type")
+        if ctype in NATAL_SYNTHESIS_EXACT_TYPES:
+            add_claim_signal(claim, 3)
+            if (
+                ctype == "star_palace_context"
+                and isinstance(claim.get("star"), str)
+                and isinstance(claim.get("palace"), str)
+            ):
+                exact_star_palace.add((claim["star"], claim["palace"]))
+
+    for claim in claims:
+        if claim.get("claim_type") not in NATAL_SYNTHESIS_CONDITIONAL_TYPES:
+            continue
+        activation = claim.get("conditional_activation")
+        if isinstance(activation, dict) and activation.get("state") == "satisfied":
+            add_claim_signal(claim, 2)
+
+    occupancies: list[tuple[str, str]] = []
+    for fact in sorted(packet.facts):
+        if not fact.startswith("star_in_palace:"):
+            continue
+        parts = fact.split(":", 2)
+        if len(parts) == 3:
+            occupancies.append((parts[1], parts[2]))
+
+    for star, palace in occupancies:
+        if (star, palace) in exact_star_palace:
+            continue
+        star_claim = by_subject_type.get((star, "star_core"))
+        palace_claim = by_subject_type.get((palace, "palace_domain"))
+        if star_claim is None or palace_claim is None:
+            continue
+        candidates.append({
+            "signal_id": f"bounded_l5:{star}:{palace}",
+            "signal_type": "bounded_l5_composition",
+            "claim_ids": [star_claim["claim_id"], palace_claim["claim_id"]],
+            "subjects": [star, palace],
+            "star": star,
+            "palace": palace,
+            "tier": 1,
+            "specificity": int(star_claim.get("specificity", 0)) + int(palace_claim.get("specificity", 0)),
+            "life_palace_starting_point": palace == "命宮",
+        })
+
+    candidates.sort(key=lambda x: (
+        -int(x["tier"]),
+        -int(bool(x.get("life_palace_starting_point"))),
+        -int(x["specificity"]),
+        x["signal_id"],
+    ))
+
+    chosen: list[dict[str, Any]] = []
+    covered_subjects: set[str] = set()
+    chosen_ids: set[str] = set()
+    for candidate in candidates:
+        subjects = set(candidate["subjects"])
+        if subjects and subjects.issubset(covered_subjects):
+            continue
+        chosen.append(candidate)
+        chosen_ids.add(candidate["signal_id"])
+        covered_subjects.update(subjects)
+        if len(chosen) >= target_max:
+            break
+
+    if len(chosen) < target_min:
+        for candidate in candidates:
+            if candidate["signal_id"] in chosen_ids:
+                continue
+            chosen.append(candidate)
+            chosen_ids.add(candidate["signal_id"])
+            if len(chosen) >= target_min:
+                break
+
+    relations: list[dict[str, Any]] = []
+    for i, left in enumerate(chosen):
+        left_subjects = set(left["subjects"])
+        for right in chosen[i + 1:]:
+            shared = sorted(left_subjects.intersection(right["subjects"]))
+            if shared:
+                relations.append({
+                    "relation": "shared_subject",
+                    "signal_ids": [left["signal_id"], right["signal_id"]],
+                    "shared_subjects": shared,
+                })
+
+    focus_claim_ids = sorted({cid for signal in chosen for cid in signal["claim_ids"]})
+    return {
+        "module_id": "natal_synthesis_v1",
+        "version": NATAL_SYNTHESIS_VERSION,
+        "authority": "selection-only-admitted-claims-no-new-doctrine",
+        "eligible_scope": "default_68_base_natal_claims_only",
+        "focus_target": {"min": target_min, "max": target_max},
+        "eligible_claim_count": len(claims),
+        "candidate_signal_count": len(candidates),
+        "focus_count": len(chosen),
+        "focus_signal_ids": [x["signal_id"] for x in chosen],
+        "focus_claim_ids": focus_claim_ids,
+        "focus_signals": chosen,
+        "relations": relations,
+        "under_target": len(chosen) < target_min,
+        "under_target_reason": "eligible_signals_below_target" if len(chosen) < target_min else None,
+        "deduplication": "higher_specificity_then_subject_diversity",
+        "rendering_boundary": "use_only_referenced_admitted_claim_statements_no_new_doctrine",
+        "final_prose_authority": False,
+    }
+
+
 def compose_frame(packet: FactPacket, retrieval: dict[str, Any]) -> dict[str, Any]:
     claims = retrieval["selected_claims"]
     by_subject: dict[str, list[str]] = {}
