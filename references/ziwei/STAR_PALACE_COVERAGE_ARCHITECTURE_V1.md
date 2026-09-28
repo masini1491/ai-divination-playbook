@@ -1,6 +1,6 @@
 # Zi Wei 14×12 Star × Palace Coverage Architecture V1
 
-Status: **ARCHITECTURE CANDIDATE / ROUTING-COVERAGE ONLY**
+Status: **ADOPTED / ROUTING-COVERAGE ONLY**
 
 ## Goal
 
@@ -46,9 +46,13 @@ alias elsewhere; it does not create a thirteenth matrix identity.
 `reviewed_cells` counts completed classification passes, including deferred
 cells. `resolved_cells` counts cells with a stable production routing mode.
 
-**Project target = resolved_cells 168 / 168.**
+**Long-term research horizon = resolved_cells 168 / 168.**
 
-Dedicated L4 count is tracked separately and is not the completion denominator.
+This horizon is not a near-term product KPI, release blocker, or instruction to bulk-fill
+the matrix. Dedicated L4 count is tracked separately. New matrix research is
+reading-gap-driven: reopen only recurring cells that materially limit real readings.
+The unreviewed 疾厄宮 row remains a separate health-safe research path and does not
+block natal synthesis.
 
 ## Authority and generation
 
@@ -103,5 +107,7 @@ boundaries remain in force.
 
 ## V4
 
-`ZW-P2-026` resumes after this architecture is admitted and updates the matrix
-in bounded research batches until `resolved_cells = 168`.
+`ZW-P2-026` established the current bounded classifications through batch 13.
+Bulk matrix sweeping is now paused. Future continuation is reading-gap-driven and
+must preserve the separate health-safe path for 疾厄宮 rather than treating
+`resolved_cells = 168` as an immediate delivery target.
