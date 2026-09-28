@@ -19,6 +19,7 @@ ADMITTED={
     ("天相","命宮"):"ZW-SP-TIANXIANG-MING-001",
     ("天梁","官祿宮"):"ZW-SP-TIANLIANG-CAREER-001",
     ("貪狼","夫妻宮"):"ZW-SP-TANLANG-SPOUSE-001",
+    ("破軍","遷移宮"):"ZW-SP-POJUN-TRAVEL-001",
 }
 
 class ZiWeiStarPalaceContextTests(unittest.TestCase):
@@ -30,9 +31,9 @@ class ZiWeiStarPalaceContextTests(unittest.TestCase):
         p=subprocess.run([sys.executable,str(VALIDATOR),str(REGISTRY)],cwd=ROOT,text=True,capture_output=True)
         self.assertEqual(0,p.returncode,msg=p.stdout+"\n"+p.stderr)
         self.assertFalse(self.registry["production_routable"])
-        self.assertEqual(3,len(self.registry["claims"]))
+        self.assertEqual(4,len(self.registry["claims"]))
         self.assertEqual(
-            {"天相×命宮","天梁×官祿宮","貪狼×夫妻宮"},
+            {"天相×命宮","天梁×官祿宮","貪狼×夫妻宮","破軍×遷移宮"},
             set(self.registry["research_result"]["admitted_pairs"]),
         )
         self.assertFalse(self.registry["research_result"]["exhaustive_cartesian_dictionary"])
@@ -90,6 +91,15 @@ class ZiWeiStarPalaceContextTests(unittest.TestCase):
         self.assertNotIn("年長",claim["normalized_statement"])
         self.assertNotIn("older",claim["normalized_statement"].lower())
 
+    def test_pojun_travel_is_historical_bounded_and_event_safe(self):
+        claim=next(x for x in self.registry["claims"] if x["claim_id"]=="ZW-SP-POJUN-TRAVEL-001")
+        self.assertEqual("historical_conditional",claim["assertion_class"])
+        self.assertEqual("historical_only",claim["support_status"])
+        self.assertIn("SRC-NANYANG-QUANSHU-PALACES",claim["source_refs"])
+        self.assertIn("star_in_palace:破軍:遷移宮",claim["applicability"]["requires"])
+        self.assertIn("dignity_brightness",claim["applicability"]["modifiers"])
+        self.assertIn("不得",claim["normalized_statement"])
+
     def test_reviewed_non_material_sun_career_pair_has_no_context_override(self):
         birth=self._find_star_in_palace_birth("太陽","官祿宮")
         r=run_ziwei(ZiWeiReadingRequest(
@@ -105,8 +115,8 @@ class ZiWeiStarPalaceContextTests(unittest.TestCase):
     def test_admission_is_bounded_not_cartesian(self):
         m=json.loads(ADMISSION.read_text(encoding="utf-8"))
         self.assertEqual("PRODUCTION_ADMITTED_BOUNDED_INTERPRETATION",m["status"])
-        self.assertEqual(3,m["scope"]["admitted_claims_added"])
-        self.assertEqual(["天相×命宮","天梁×官祿宮","貪狼×夫妻宮"],m["scope"]["admitted_pairs"])
+        self.assertEqual(4,m["scope"]["admitted_claims_added"])
+        self.assertEqual(["天相×命宮","天梁×官祿宮","貪狼×夫妻宮","破軍×遷移宮"],m["scope"]["admitted_pairs"])
         self.assertFalse(m["scope"]["exhaustive_cartesian_dictionary"])
         self.assertFalse(m["deterministic_applicability"]["new_geometry_provider_required"])
         self.assertFalse(m["scientific_predictive_validity_claimed"])

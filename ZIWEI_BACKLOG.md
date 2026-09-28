@@ -835,6 +835,35 @@ Ordering rationale:
 - next_authorized_action:
   - STOP — any production admission of the v3 candidates is a separate bounded action.
 
+### ZW-P2-022 — Admit 破軍×遷移宮 sparse contextual claim
+
+- type: FEATURE / INTERPRETATION / PRODUCTION ADMISSION
+- status: IN_PROGRESS
+- priority: P2
+- owner: Zi Wei production maintenance
+- blocked_by:
+  - ZW-P2-021 — DONE
+- shared_development_playbook_reviewed: `masini1491/ai-development-playbook@9236b42550b7f748cc6c5744075d106e643c6042`
+- promotion_route:
+  - PR is required for this action because current canonical `.github/workflows/validation.yml` provides candidate validation on `pull_request` and exact-main validation on `push main`; this is current evidence need, not historical PR convention.
+- evidence_decision:
+  - `STAR_PALACE_CONTEXTUAL_RESEARCH_V3.md` upgrades `破軍×遷移宮` to `ADMISSION-CANDIDATE` using direct Nanyang-Hall 遷移宮 evidence with baseline + dignity + malefic-condition semantics.
+- intended_production_delta:
+  - add exactly one historical-bounded `破軍×遷移宮` claim to existing `sparse_star_palace_context_v1`;
+  - exact applicability = `fact_available:palace_occupancy` + `star_in_palace:破軍:遷移宮`;
+  - base natal claims 62 → 63; maximum optional claims 79 → 80; star×palace claims 3 → 4;
+  - Scope-A pipeline remains `1.5.0`; no new runtime, geometry provider or claim type;
+  - repair stale `ZIWEI.md` activation-flow count while synchronizing affected current-state owners.
+- production_boundary:
+  - no "出外必凶" doctrine;
+  - no deterministic travel failure, accident, injury or other guaranteed adverse-event prediction;
+  - dignity / brightness remains a modifier only and does not authorize brightness-only doctrine;
+  - no 14×12 Cartesian expansion.
+- completion_gate:
+  - registry / module admission / root admission / index / docs / tests / shared reviewed revision synchronized;
+  - canonical generators refresh derived Zi Wei bundle and ChatGPT load pack;
+  - formal PR candidate validation + merge + exact-main validation/artifact + canonical read-back complete before DONE.
+
 ### ZW-P2-050 — Body-Palace overlay interpretation admission
 
 - type: FEATURE / INTERPRETATION / NATAL OVERLAY
