@@ -297,8 +297,19 @@ def _compose(chart:dict[str,Any], request:ZiWeiReadingRequest, calendar:dict[str
         requested_subjects=frozenset(request.requested_subjects),
         enabled_source_ids=frozenset(request.enabled_source_ids),
     )
-    retrieval=_retrieval.retrieve_claims(packet,_production_registries(request.optional_modules))
+    registries=_production_registries(request.optional_modules)
+    retrieval=_retrieval.retrieve_claims(packet,registries)
     frame=_retrieval.compose_frame(packet,retrieval)
+    base_claim_ids=frozenset(
+        claim["claim_id"]
+        for registry in registries[:len(ADMITTED_REGISTRIES)]
+        for claim in registry.get("claims", [])
+    )
+    natal_synthesis=_retrieval.select_natal_synthesis_focus(
+        packet,
+        retrieval,
+        eligible_claim_ids=base_claim_ids,
+    )
     conflicts=frame["conflicts"]
     evidence_states={"source_backed","project_adopted"}
     if conflicts:
@@ -317,7 +328,7 @@ def _compose(chart:dict[str,Any], request:ZiWeiReadingRequest, calendar:dict[str
             "optional_modules":modules,
         },
         "pipeline_id":"ziwei-scope-a-production-pipeline-v1",
-        "pipeline_version":"1.5.0",
+        "pipeline_version":"1.6.0",
         "status":"PRODUCTION_ADMITTED",
         "scope":"bounded_natal_first_layer"+("+optional_brightness_v1" if BRIGHTNESS_MODULE in modules else "")+("+optional_m0_auxiliary_v1" if M0_MODULE in modules else "")+("+optional_m1_auxiliary_v1" if M1_MODULE in modules else "")+("+optional_sihua_v1" if SIHUA_MODULE in modules else ""),
         "request_id":request.request_id,
@@ -335,6 +346,7 @@ def _compose(chart:dict[str,Any], request:ZiWeiReadingRequest, calendar:dict[str
             "selected_claims":retrieval["selected_claims"], "selected_claim_ids":frame["selected_claim_ids"],
             "conditional_evaluations":retrieval["conditional_evaluations"], "subject_claims":frame["subject_claims"],
             "conflicts":conflicts, "omissions":retrieval["omissions"],
+            "natal_synthesis_v1":natal_synthesis,
         },
         "delivery":{
             "evidence_states":sorted(evidence_states), "actions":actions,
@@ -343,6 +355,7 @@ def _compose(chart:dict[str,Any], request:ZiWeiReadingRequest, calendar:dict[str
         },
         "authority":{
             "production_authority_granted":True, "ordinary_auto_routing":False,
+            "natal_synthesis_v1_admitted":True,
             "final_prose_authority":False, "scientific_predictive_validity_claimed":False,
         },
     }

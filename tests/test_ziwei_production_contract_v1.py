@@ -31,7 +31,13 @@ class ZiWeiProductionContractV1Tests(unittest.TestCase):
             sihua["admitted_research_registries"],
         )
         self.assertEqual("0.3.0",m["calculation"]["provider_version"])
-        self.assertEqual("1.5.0",m["pipeline"]["pipeline_version"])
+        self.assertEqual("1.6.0",m["pipeline"]["pipeline_version"])
+        synth=m["pipeline"]["natal_synthesis"]
+        self.assertEqual("natal_synthesis_v1",synth["module_id"])
+        self.assertEqual({"min":4,"max":6},synth["focus_target"])
+        self.assertEqual("default_68_base_natal_claims_only",synth["scope"])
+        self.assertFalse(synth["optional_module_claims_in_default_focus"])
+        self.assertFalse(synth["new_doctrine"])
         self.assertEqual("conditional_activation_v1",m["pipeline"]["conditional_activation_contract"])
         self.assertEqual(
             "fact_available:palace_occupancy",
@@ -69,13 +75,32 @@ class ZiWeiProductionContractV1Tests(unittest.TestCase):
         self.assertFalse(r["authority"]["final_prose_authority"])
         self.assertEqual("ziwei.scope_a.natal_v0",r["calculation"]["calculation_profile"]["profile_id"])
         self.assertEqual("0.3.0",r["calculation"]["provider"]["version"])
-        self.assertEqual("1.5.0",r["pipeline_version"])
+        self.assertEqual("1.6.0",r["pipeline_version"])
         self.assertIn("palace_occupancy",r["calculation"])
+        synth=r["interpretation"]["natal_synthesis_v1"]
+        self.assertEqual("natal_synthesis_v1",synth["module_id"])
+        self.assertGreaterEqual(synth["focus_count"],4)
+        self.assertLessEqual(synth["focus_count"],6)
+        self.assertTrue(set(synth["focus_claim_ids"]).issubset(set(r["interpretation"]["selected_claim_ids"])))
+        self.assertEqual("selection-only-admitted-claims-no-new-doctrine",synth["authority"])
+        self.assertTrue(r["authority"]["natal_synthesis_v1_admitted"])
         self.assertIn("overlay_palace",r["calculation"]["body_palace"])
         self.assertGreater(len(r["interpretation"]["selected_claim_ids"]),0)
         self.assertTrue(r["interpretation"]["conditional_evaluations"])
         self.assertIn("PRESENT_CONFLICT_SEPARATELY",r["delivery"]["actions"])
 
+
+    def test_natal_synthesis_respects_narrow_subject_gate_without_filler(self):
+        r=run_scope_a_natal(
+            NormalizedNatalInput(1981,11,7,"丑","synthetic:production-test"),
+            request_id="synthesis-narrow",
+            requested_subjects=("紫微",),
+        )
+        synth=r["interpretation"]["natal_synthesis_v1"]
+        self.assertLess(synth["focus_count"],4)
+        self.assertTrue(synth["under_target"])
+        self.assertEqual("eligible_signals_below_target",synth["under_target_reason"])
+        self.assertTrue(set(synth["focus_claim_ids"]).issubset(set(r["interpretation"]["selected_claim_ids"])))
 
     def test_empty_palace_conditionals_are_exactly_fact_gated(self):
         r=run_scope_a_natal(
