@@ -29,7 +29,7 @@ Last reviewed against:
 
 ```text
 ai-divination-playbook main
-d3daa1aaf65891ba72f8e2b81589abe77ed692b5
+33b5a767d55a9279b169a4e9d3f095fa8a5b021d
 ```
 
 This SHA is review evidence only, not a pin. Every maintenance task must resolve current `main` again before mutation.
@@ -50,10 +50,11 @@ Execution order:
 4. **ZW-P1-040 — Dynamic interpretation claim corpus**
 5. **ZW-P2-060 — Sparse same-palace major-star combination claims**
 6. **ZW-P2-050 — Body-Palace overlay interpretation admission**
-7. **ZW-P2-020 — Sparse star×palace contextual claims**
-8. **ZW-P2-010 — M1 high-impact auxiliary stars**
-9. **ZW-P2-030 — Non-Asia/Taipei civil-time input normalization**
-10. **ZW-P2-040 — True-solar-time policy**
+7. **ZW-P1-060 — Evidence-bounded natal synthesis v1**
+8. **ZW-P2-020 — Sparse star×palace contextual claims (reading-gap-driven only)**
+9. **ZW-P2-010 — M1 high-impact auxiliary stars**
+10. **ZW-P2-030 — Non-Asia/Taipei civil-time input normalization**
+11. **ZW-P2-040 — True-solar-time policy**
 
 Ordering rationale:
 
@@ -62,7 +63,8 @@ Ordering rationale:
 - dynamic calculation and interpretation are admitted **layer by layer** (decadal → yearly → monthly → daily → hourly) rather than as one monolithic waterfall;
 - same-palace and star×palace contextual claims should reuse the canonical occupancy/applicability facts from `ZW-P1-025`, not derive a parallel geometry path;
 - same-palace pair semantics and Body-Palace overlay deepen ordinary natal reading without replacing existing L5 composition;
-- sparse source-explicit contextual expansion outranks broad auxiliary/input policy expansion for current natal reading quality;
+- after the existing 68 base natal claims are admitted, evidence-bounded synthesis/ranking now outranks further bulk matrix expansion for current natal reading quality;
+- future star×palace research is reading-gap-driven rather than a 168-cell near-term KPI;
 - non-Asia/Taipei and true-solar support remain later profile/input expansion for the current product audience.
 
 ## P0 — correctness and reconciliation
@@ -665,12 +667,13 @@ Ordering rationale:
   - make all `14 × 12 = 168` major-star × palace identities machine-visible without forcing 168 dedicated L4 doctrines;
   - separate coverage completeness from dedicated production-claim admission;
   - optimize ChatGPT routing so ordinary lookup resolves one compact cell first, then loads only the minimum necessary L4/L5/conditional/high-risk detail.
-- target_completion_metrics:
+- coverage_metrics:
   - `total_cells = 168`;
   - `reviewed_cells` = cells with an explicit research/classification result, including deferred cells;
   - `resolved_cells` = cells with a stable production routing mode;
-  - project completion target = `resolved_cells = 168`;
-  - `DEDICATED_L4` count remains an independent quality/evidence metric and is not the 168-cell completion target.
+  - long-term research horizon = `resolved_cells = 168`;
+  - this horizon is not a near-term product KPI or release blocker and does not authorize bulk matrix filling;
+  - `DEDICATED_L4` count remains an independent quality/evidence metric.
 - routing_modes:
   - `DEDICATED_L4` — exact source/admission-backed contextual override;
   - `BOUNDED_L5_COMPOSITION` — reviewed and resolved via existing star core + palace domain;
@@ -715,7 +718,7 @@ Ordering rationale:
   - exact-main run `36384710178` PASSed coverage generator check, full unit suite, structural checker, casting-runtime and exact-main Zi Wei handoff preparation/upload;
   - exact-main Zi Wei artifact `10953549703` / `ziwei-deterministic-handoff-f0ef9b5fa303236ede34c77b1256144698b32765` published with digest `sha256:90f91e4cd1b7fbda1b098c633120ee06480d401489d51cc7e10543535b6605d5`.
 - next_authorized_action:
-  - resume `ZW-P2-026` V4 research under the admitted 168-cell coverage architecture; update reviewed/resolved metrics in bounded batches.
+  - prioritize `ZW-P1-060` natal synthesis v1; matrix continuation is reading-gap-driven only.
 - completion_gate:
   - schema/index/generator/architecture docs and tests are synchronized;
   - index contains exactly 168 unique canonical star×palace cells;
@@ -725,6 +728,44 @@ Ordering rationale:
   - Hot index load footprint is measured and kept bounded;
   - existing 7 production interpretations and claim counts do not change during this architecture stage;
   - formal candidate validation + merge + exact-main read-back complete before architecture stage is marked DONE.
+
+
+### ZW-P1-060 — Evidence-bounded natal synthesis v1
+
+- type: FEATURE / INTERPRETATION DELIVERY / SELECTION
+- status: IN_PROGRESS
+- priority: P1
+- owner: Zi Wei production maintenance
+- blocked_by:
+  - ZW-P1-050 — DONE
+  - current 68 base natal claims — admitted
+- shared_development_playbook_reviewed: `masini1491/ai-development-playbook@9236b42550b7f748cc6c5744075d106e643c6042`
+- roadmap_decision:
+  - preserve the 168-cell matrix as a routing/control plane, but stop bulk matrix expansion as the near-term product plan;
+  - use the current 68 production-admitted base natal claims before adding doctrine;
+  - default synthesis targets 4–6 high-distinctiveness, non-redundant signals when enough eligible signals exist;
+  - priority = exact star×palace / same-palace pair / Body-Palace overlay > demonstrated fact-gated conditional > generic star-core + palace-domain bounded L5 composition;
+  - preserve the full selected-claim evidence trace and expose only structural cross-signal relations; no generated doctrine.
+- production_boundary:
+  - no calculation-engine change;
+  - no new interpretation claim or source doctrine;
+  - optional `brightness_v1` / `m0_auxiliary_v1` / `m1_auxiliary_v1` / `sihua_v1` remain explicit and default-off;
+  - optional-module claims are excluded from the default synthesis focus even when an optional module is explicitly enabled;
+  - narrow subject requests may return fewer than four signals rather than fill with unrelated claims;
+  - final prose remains non-authoritative and must use only referenced admitted statements.
+- matrix_policy:
+  - future matrix research is reading-gap-driven / on-demand;
+  - recurring real-reading gaps may reopen specific cells;
+  - the 14 unreviewed 疾厄宮 cells remain a separate health-safe research path and do not block this task.
+- decision_gate_after_small_e2e:
+  - if readings are sufficiently distinctive, keep matrix low priority and refine output/synthesis only;
+  - if genericness comes from retrieval/order, adjust synthesis/ranking rather than opening matrix research;
+  - if the same star×palace gap recurs across readings, research only those recurring cells.
+- completion_gate:
+  - current-facing 9-vs-2 and 119-vs-120 stale authority wording reconciled;
+  - deterministic selector is base-claim allowlisted, bounded to 4–6 when enough eligible signals exist, and retains evidence IDs;
+  - runtime / admission / index / compatibility version / tests / deterministic bundle are synchronized;
+  - candidate PR validation passes, merge completes, and canonical main read-back establishes the production state.
 
 ## P2 — later expansion
 
@@ -1062,7 +1103,7 @@ Ordering rationale:
 ### ZW-P2-026 — Sparse star×palace contextual research v4
 
 - type: RESEARCH / INTERPRETATION
-- status: IN_PROGRESS
+- status: DEFERRED
 - priority: P2
 - owner: Zi Wei interpretation evidence
 - blocked_by:
@@ -1198,10 +1239,11 @@ Ordering rationale:
   - coverage delta = +13 reviewed / +13 resolved;
   - coverage state = reviewed 154 / resolved 120 / unreviewed 14 / dedicated L4 9 / bounded L5 74 / high-risk 37 / deferred 34;
   - no new admission candidate; production claim count/runtime/pipeline remain unchanged.
-- next_batch:
-  - all ordinary non-health palace rows are reviewed;
-  - remaining unreviewed cells are exactly the 14 `疾厄宮` cells;
-  - enter the separate health-safe research path with explicit medical/injury/mortality safety gates; do not process 疾厄宮 as an ordinary V4 row;
+- continuation_policy:
+  - all ordinary non-health palace rows are reviewed; remaining unreviewed cells are exactly the 14 `疾厄宮` cells;
+  - stop bulk matrix sweeping after batch 13; 168/168 remains a long-term research horizon, not a near-term release KPI;
+  - resume only for a recurring real-reading semantic gap or an explicitly authorized bounded research question;
+  - `疾厄宮` remains a separate health-safe path with explicit medical/injury/mortality safety gates and does not block natal synthesis v1;
   - keep all V4 admission candidates research-only until separate bounded production-admission authorization.
 - completion_gate:
   - current historical primary-text locators and pinned practitioner evidence reconciled;
