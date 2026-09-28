@@ -878,7 +878,7 @@ unreviewed  108
 dedicated     9
 bounded L5   29
 high-risk     1
-deferred     21
+deferred     20
 ```
 
 The full 財帛宮 row is now 14/14 reviewed and 8/14 resolved. The four new
@@ -967,8 +967,9 @@ the Nanyang-Hall spouse-palace chapter:
 
 `https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzop13hwrgp`
 
-Production-admitted `貪狼×夫妻宮` and `破軍×夫妻宮`, plus previously
-reviewed `巨門×夫妻宮`, are not reclassified.
+Production-admitted `貪狼×夫妻宮` and `破軍×夫妻宮` are not reclassified. The
+previously deferred `巨門×夫妻宮` is reopened because this full-row pass makes
+its relationship-outcome safety boundary explicit.
 
 ### Resolved bounded-L5 cells
 
@@ -999,6 +1000,7 @@ counts, separation, spouse-harm/loss or spouse-property outcomes:
 - `武曲×夫妻宮`
 - `廉貞×夫妻宮`
 - `七殺×夫妻宮`
+- `巨門×夫妻宮` — reopened from prior `DEFERRED_EVIDENCE`
 
 Routing: `HIGH_RISK_BOUNDED / resolved`.
 
@@ -1012,9 +1014,11 @@ or loss, and deterministic relationship success/failure.
 
 ```text
 new reviewed cells = 11
-new resolved cells = 11
+new reviewed cells = 11
+new resolved cells = 12
 new bounded L5 cells = 6
-new high-risk bounded cells = 5
+new high-risk bounded cells = 6
+reclassified prior deferred cells = 1
 new admission candidates = 0
 production claims added = 0
 ```
@@ -1024,11 +1028,11 @@ Coverage after batch 7:
 ```text
 total       168
 reviewed     82
-resolved     61
+resolved     62
 unreviewed   86
 dedicated     9
 bounded L5   35
-high-risk    17
+high-risk    18
 deferred     21
 ```
 
