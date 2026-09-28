@@ -1,7 +1,8 @@
 name: One-shot branch hygiene cleanup
 
 on:
-  workflow_dispatch:
+  push:
+    branches: [main]
 
 permissions:
   contents: write
@@ -17,7 +18,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if [ "${GITHUB_REF_NAME}" != "maintenance/branch-hygiene-cleanup-20260928" ]; then
+          if [ "${GITHUB_REF_NAME}" != "main" ]; then
             echo "Unexpected workflow ref: ${GITHUB_REF_NAME}" >&2
             exit 1
           fi
@@ -74,7 +75,7 @@ EOF
             echo "DELETED_BY_THIS_RUN $branch $expected"
           done < /tmp/targets.tsv
 
-      - name: Delete one-shot bridge ref
+      - name: Remove one-shot workflow and bridge ref
         if: success()
         env:
           GH_TOKEN: ${{ github.token }}
@@ -82,5 +83,8 @@ EOF
         shell: bash
         run: |
           set -euo pipefail
+          path=".github/workflows/one-shot-branch-hygiene-cleanup.yml"
+          sha="$(gh api "repos/$REPO/contents/$path?ref=main" --jq '.sha')"
+          gh api --method DELETE "repos/$REPO/contents/$path" -f message="Remove one-shot branch hygiene cleanup" -f sha="$sha" -f branch="main"
           gh api --method DELETE "repos/$REPO/git/refs/heads/maintenance%2Fbranch-hygiene-cleanup-20260928"
-          echo "BRIDGE_REF_DELETED"
+          echo "WORKFLOW_AND_BRIDGE_REF_DELETED"
