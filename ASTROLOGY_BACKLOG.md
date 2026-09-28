@@ -248,6 +248,7 @@ The items below are **DONE**. They are retained only as compact identity pointer
 
 - **AST-P0-001 — Reconcile E8 extended-object readiness after ChatGPT-only feasibility research** — DONE.
 - **AST-P1-005 — Query-bounded place-resolver shard transport admission** — DONE.
+  - anti-rediscovery contract: generated same-repo shards remain under `data/astrology/place/v1/**`; retrieval uses same-commit GitHub Connect bounded shard retrieval.
 - **AST-P1-010 — EXP-1 five-body compact ephemeris feasibility** — DONE.
 - **AST-P1-020 — EXP-2 Mean Black Moon Lilith local analytical parity** — DONE.
 - **AST-P1-030 — EXP-3 Osculating / True Lilith local state-vector parity** — DONE.
