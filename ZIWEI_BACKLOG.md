@@ -1131,9 +1131,17 @@ Ordering rationale:
   - coverage state = reviewed 52 / resolved 33 / unreviewed 116 / dedicated L4 7 / bounded L5 25 / high-risk 1 / deferred 19;
   - recommended separate production-admission order: `廉貞×財帛宮` then `武曲×命宮`;
   - production claim count/runtime/pipeline remain unchanged in this research batch.
+- batch_5_result:
+  - full `財帛宮` row is now 14/14 reviewed and 8/14 resolved;
+  - new admission candidates / reviewed unresolved: `貪狼×財帛宮`、`巨門×財帛宮`、`天梁×財帛宮`、`破軍×財帛宮`;
+  - new resolved bounded-L5 cells: `紫微×財帛宮`、`太陰×財帛宮`、`天相×財帛宮`、`七殺×財帛宮`;
+  - coverage delta = +8 reviewed / +4 resolved;
+  - coverage state = reviewed 60 / resolved 39 / unreviewed 108 / dedicated L4 9 / bounded L5 29 / high-risk 1 / deferred 21;
+  - production claim count/runtime/pipeline remain unchanged.
 - next_batch:
-  - prioritize separate admission review for `廉貞×財帛宮`, then `武曲×命宮`; keep research/admission as separate actions;
-  - after natal-priority admission work, continue complete palace rows where feasible; keep 疾厄宮 on its separate health-safe path.
+  - continue another complete ordinary palace row where feasible;
+  - keep all Batch-5 candidates research-only until a separate bounded production-admission action is explicitly authorized;
+  - keep 疾厄宮 on its separate health-safe path.
 - completion_gate:
   - current historical primary-text locators and pinned practitioner evidence reconciled;
   - admitted / rejected / deferred V1-V3 pairs excluded from duplicate rediscovery;
