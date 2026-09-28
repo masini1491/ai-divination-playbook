@@ -412,7 +412,8 @@ def build_handoff(run: Any, request: Any, *, repo_root: Path | None = None) -> d
         if registry_id not in admitted_registry_ids:
             raise InterpretationHandoffError(f"registry is not production-admitted: {registry_id}")
         registry_entry = registries[registry_id]
-        selection_policy = registry_entry.get("selection_policy", {})
+        registry_data = registry_entry.get("data", {})
+        selection_policy = registry_data.get("selection_policy", {}) if isinstance(registry_data, dict) else {}
         if not isinstance(selection_policy, dict):
             selection_policy = {}
         required_profile = selection_policy.get("required_semantic_profile")
