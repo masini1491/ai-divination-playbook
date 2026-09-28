@@ -153,6 +153,23 @@ Yod、Stellium、Grand Quintile 另走 `tools/astrology_special_pattern_projecti
 
 不要為了「完整」傾倒整張盤所有 factor；輸出仍受 `CHATGPT_OUTPUT.md` minimum-sufficient與Pre-Send gate約束。
 
+### 7.1 Evidence-bounded concrete natal synthesis
+
+Broad natal synthesis 可使用 named output profile `evidence-bounded-concrete-natal-v1`；窄題、單因子題與 transit 不因此被迫改用主題式格式。
+
+此 profile 的責任只是**組織已 admitted evidence**，沒有獨立 semantic authority：
+
+- 預設整理為 **3–5 個 major themes**，而不是逐項傾倒整張盤；
+- 每個 theme 必須保留可追溯的 admitted fact + semantic claim refs；只有 deterministic fact、沒有 admitted semantic claim時，不得藉 synthesis prose補出人格／心理含義；
+- 每個 theme 應提供一個 bounded concrete manifestation，說明該組已 admitted evidence「可能如何表現」，不得寫成固定人格診斷或現實必然；
+- 若另一組 admitted evidence materially 拉向不同方向，使用 limiting condition / tension 說清楚「何種條件下哪一側較突出」，不得用「有時 X、有時 Y」把衝突抹平成 Barnum statement；
+- tension / limiting condition 也必須有自己的 evidence refs，不能由模型常識補寫；
+- unsupported factor 保持 unsupported，不得為了讓主題完整而偷偷補入；
+- exact admitted claim與 bounded composition都是 evidence input；synthesis profile不改變 §5.1 precedence，也不建立新的 claim；
+- 使用者要求更短／更長可調整 prose密度，但 evidence lineage、unsupported boundary與 material tension不得因格式要求消失。
+
+此 profile 的評估重點是 specificity、traceability、tension handling與scope fidelity；不得建立「準確度分數」，也不得以使用者主觀覺得準作 semantic admission evidence。
+
 ## 8. Natal Unsupported / Uncertainty
 
 - 無 house fact → 不從 Sun sign猜 house；
