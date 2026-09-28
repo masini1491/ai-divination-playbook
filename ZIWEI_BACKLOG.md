@@ -912,7 +912,7 @@ Ordering rationale:
 ### ZW-P2-024 — Admit 天機×田宅宮 sparse contextual claim
 
 - type: FEATURE / INTERPRETATION / PRODUCTION ADMISSION
-- status: IN_PROGRESS
+- status: DONE
 - priority: P2
 - owner: Zi Wei production maintenance
 - blocked_by:
@@ -920,24 +920,32 @@ Ordering rationale:
   - ZW-P2-023 — DONE
 - shared_development_playbook_reviewed: `masini1491/ai-development-playbook@9236b42550b7f748cc6c5744075d106e643c6042`
 - promotion_route:
-  - PR is required for the production candidate because current canonical `.github/workflows/validation.yml` provides candidate validation on `pull_request`; coordination-only closure may use direct non-force promotion when no PR-specific evidence is required.
+  - production candidate used PR because current canonical `.github/workflows/validation.yml` provides candidate validation on `pull_request`; this was current evidence need, not historical PR convention;
+  - this coordination-only closure uses direct non-force promotion because no independent review / PR-specific check is required, and main-push validation + canonical read-back provide the required closure evidence.
 - evidence_decision:
   - `STAR_PALACE_CONTEXTUAL_RESEARCH_V3.md` marks `天機×田宅宮` as `ADMISSION-CANDIDATE` with direct Nanyang-Hall 田宅宮 evidence;
   - independent practitioner support was not required or established in v3; production semantics remain historical-primary-text bounded.
-- intended_production_delta:
-  - add exactly one historical-bounded `天機×田宅宮` claim to existing `sparse_star_palace_context_v1`;
+- production_result:
+  - added exactly one historical-bounded `天機×田宅宮` claim to existing `sparse_star_palace_context_v1`;
   - exact applicability = `fact_available:palace_occupancy` + `star_in_palace:天機:田宅宮`;
-  - base natal claims 64 → 65; maximum optional claims 81 → 82; star×palace claims 5 → 6;
+  - base natal claims = 65; maximum optional claims = 82; star×palace claims = 6;
   - Scope-A pipeline remains `1.5.0`; no new runtime, geometry provider or claim type.
 - production_boundary:
   - no guaranteed ancestral-property loss;
   - no guaranteed new-property acquisition or fixed property outcome;
   - dignity / brightness remains a modifier only and does not authorize brightness-only doctrine;
   - no 14×12 Cartesian expansion.
-- completion_gate:
-  - registry / module admission / root admission / index / docs / tests synchronized;
-  - canonical generators refresh derived Zi Wei bundle and ChatGPT load pack;
-  - formal PR candidate validation + merge + exact-main validation/artifact + canonical read-back complete before DONE.
+- completion_evidence:
+  - generator bridge run `36366453109` PASSed registry validation, focused admission regressions, canonical Zi Wei bundle regeneration/check, ChatGPT load-pack regeneration/check, load-budget check and bundle regression;
+  - generator-owned cache commit `6b57ddcd7532c29e1e3387b3b21baa042180277e` removed the temporary bridge after regeneration;
+  - formal PR #332 run `36366513636` PASSed `validate` + `casting-runtime`, including full unit suite and structural checker;
+  - PR #332 merged to exact main `42f64d19d2320c3e82a5da3b0e4997fb4a9d02bd`;
+  - exact-main canonical read-back confirms 6 pairs `天相×命宮` / `天梁×官祿宮` / `貪狼×夫妻宮` / `破軍×遷移宮` / `武曲×田宅宮` / `天機×田宅宮`, counts 65 / 82, pipeline `1.5.0`;
+  - exact-main run `36366655289` PASSed `validate` + `casting-runtime`, full unit suite, structural checker and exact-main Zi Wei handoff preparation/upload;
+  - exact-main artifact `10946983921` / `ziwei-deterministic-handoff-42f64d19d2320c3e82a5da3b0e4997fb4a9d02bd` published at 99,779 bytes with digest `sha256:73282e396774d6e6924624115522e4602219e631202d91adc7c0c97cc8139245`.
+- next_authorized_action:
+  - STOP — next research-approved production candidate is `破軍×夫妻宮`; it requires a separate bounded production-admission action.
+
 
 ### ZW-P2-050 — Body-Palace overlay interpretation admission
 
