@@ -1,0 +1,37 @@
+name: Enable auto-delete merged head branches
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  enable-setting:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REPO: ${{ github.repository }}
+    steps:
+      - name: Enable and verify repository setting
+        shell: bash
+        run: |
+          set -euo pipefail
+          before="$(gh api "repos/$REPO" --jq '.delete_branch_on_merge')"
+          test "$before" = "false"
+          gh api --method PATCH "repos/$REPO" -f delete_branch_on_merge=true >/tmp/patch.json
+          after="$(gh api "repos/$REPO" --jq '.delete_branch_on_merge')"
+          test "$after" = "true"
+          echo "SETTING_ENABLED delete_branch_on_merge=true"
+
+      - name: Remove one-shot workflow and bridge branch
+        if: success()
+        shell: bash
+        run: |
+          set -euo pipefail
+          path=".github/workflows/one-shot-enable-auto-delete-head-branches.yml"
+          sha="$(gh api "repos/$REPO/contents/$path?ref=main" --jq '.sha')"
+          gh api --method DELETE "repos/$REPO/contents/$path" -f message="Remove one-shot repository setting bridge" -f sha="$sha" -f branch="main"
+          gh api --method DELETE "repos/$REPO/git/refs/heads/maintenance%2Fenable-auto-delete-head-branches"
+          echo "BRIDGE_CLEANED"
