@@ -549,9 +549,9 @@
         "status": "architecture-v1",
         "authority": "routing-control-plane-only",
         "total_cells": 168,
-        "reviewed_cells": 141,
-        "resolved_cells": 109,
-        "unreviewed_cells": 27,
+        "reviewed_cells": 154,
+        "resolved_cells": 122,
+        "unreviewed_cells": 14,
         "dedicated_l4": 9,
         "bounded_l5_composition": 78,
         "deferred_evidence": 32,
@@ -562,7 +562,7 @@
         "decision_input": "references/ziwei/STAR_PALACE_COVERAGE_DECISIONS_V1.json",
         "dedicated_cartesian_expansion": false,
         "completion_target": "resolved_cells=168",
-        "high_risk_bounded": 22
+        "high_risk_bounded": 35
       }
     },
     {
