@@ -753,3 +753,135 @@ production-admission order is:
 
 Production admission remains a separate bounded action for each candidate.
 
+
+
+## V4 Batch 5 — 財帛宮 row
+
+This batch reviews the remaining eight previously-unreviewed 財帛宮 cells. The
+historical owner is the Nanyang-Hall 財帛宮 chapter:
+
+`https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzop13hxgqx`
+
+Previously reviewed `太陽×財帛宮`, `天機×財帛宮`,
+`武曲×財帛宮`, `天同×財帛宮`, `天府×財帛宮` and
+production-admitted `廉貞×財帛宮` are not reclassified here. Source-explicit
+wealth wording is treated as historical interpretation evidence, not as a
+guaranteed financial forecast.
+
+### Admission candidates / reviewed unresolved
+
+#### 貪狼 × 財帛宮
+
+The historical wealth-palace text gives a later-forming resource direction. The
+time orientation adds information beyond generic 貪狼 desire/social/resource
+pursuit plus the 財帛 acquisition/retention domain.
+
+Normalized candidate:
+
+> 貪狼落財帛宮時，可作為「資源形成較偏後段逐步成形」的 historical
+> contextual modifier；不得翻成固定年齡、保證晚發致富或 guaranteed return。
+
+Classification: `ADMISSION-CANDIDATE / DEFERRED_EVIDENCE / unresolved`.
+
+#### 巨門 × 財帛宮
+
+The historical text gives a self-starting / activity-heavy acquisition pattern
+rather than merely generic dispute or speech semantics. The acquisition mode is
+materially more specific than 巨門 core + 財帛 domain.
+
+Normalized candidate:
+
+> 巨門落財帛宮時，可作為「資源取得較偏自力經營、在高互動或忙動環境中形成」
+> 的 historical contextual modifier；不得翻成保證白手致富、固定職業或固定收入。
+
+Classification: `ADMISSION-CANDIDATE / DEFERRED_EVIDENCE / unresolved`.
+
+#### 天梁 × 財帛宮
+
+The historical text gives a dignity-sensitive reversal in acquisition ease:
+stronger conditions support easier resource access while weaker conditions
+increase friction. The reversal pattern is more specific than generic 天梁
+protection/regulation semantics plus the wealth domain.
+
+Normalized candidate:
+
+> 天梁落財帛宮時，可作為「資源取得順逆對廟陷與吉煞條件較敏感」的 historical
+> contextual modifier；條件較弱時只可描述取得阻力提高，不得翻成必富或必貧。
+
+Classification: `ADMISSION-CANDIDATE / DEFERRED_EVIDENCE / unresolved`.
+
+#### 破軍 × 財帛宮
+
+The historical text distinguishes poor retention / dissipation from a
+condition-sensitive lose-then-regenerate trajectory. That retention trajectory
+is more specific than generic 破軍 disruption/restructuring + 財帛 domain.
+
+Normalized candidate:
+
+> 破軍落財帛宮時，可作為「資源聚散與留存波動較大，特定條件下可能呈現先去後生」
+> 的 historical contextual modifier；不得翻成必破產、必損財或保證翻本。
+
+Classification: `ADMISSION-CANDIDATE / DEFERRED_EVIDENCE / unresolved`.
+
+### Resolved bounded-L5 cells
+
+#### 紫微 × 財帛宮 — REJECT-REDUNDANT
+
+Historical favorable-resource wording is adequately represented by 紫微's
+authority/order/resource-coordination core, its existing condition handling and
+the 財帛 acquisition/accumulation domain. No separate pair mechanism is needed.
+
+Routing: `BOUNDED_L5_COMPOSITION / resolved`.
+
+#### 太陰 × 財帛宮 — REJECT-REDUNDANT
+
+The historical 財帛 wording is strongly dignity-sensitive, but 太陰 already has
+admitted resource/accumulation and dignity-sensitive semantics. Safe content is
+therefore representable through bounded composition.
+
+Routing: `BOUNDED_L5_COMPOSITION / resolved`.
+
+#### 天相 × 財帛宮 — REJECT-REDUNDANT
+
+Historical favorable accumulation wording under supportive conditions does not
+add a stable pair-specific mechanism beyond 天相 support/order semantics plus
+the 財帛 domain and existing modifiers.
+
+Routing: `BOUNDED_L5_COMPOSITION / resolved`.
+
+#### 七殺 × 財帛宮 — REJECT-REDUNDANT
+
+The historical text contains strong gain/loss language, but the safely reusable
+content is condition-sensitive resource volatility already representable by
+七殺 intensity/risk semantics plus 財帛 acquisition/retention. Deterministic
+windfall or loss claims are not admitted.
+
+Routing: `BOUNDED_L5_COMPOSITION / resolved`.
+
+## Batch 5 decision
+
+```text
+new reviewed cells = 8
+new resolved cells = 4
+new admission candidates = 4
+new bounded L5 cells = 4
+production claims added = 0
+```
+
+Coverage after batch 5 research classification, before any separate admission:
+
+```text
+total       168
+reviewed     60
+resolved     39
+unreviewed  108
+dedicated     9
+bounded L5   29
+high-risk     1
+deferred     21
+```
+
+The full 財帛宮 row is now 14/14 reviewed and 8/14 resolved. The four new
+admission candidates remain research-only. Any production promotion requires a
+separate bounded admission action with fresh main/read-back and claim-count
+synchronization.
