@@ -1,0 +1,34 @@
+name: Temporary rebuild Astrology core bundle
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+permissions:
+  contents: write
+
+jobs:
+  rebuild:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install astronomy-engine==2.1.19
+      - name: Rebuild deterministic bundle
+        run: python tools/build_astrology_core_bundle.py
+      - name: Commit derived bundle if changed
+        run: |
+          if git diff --quiet -- runtime/astrology/CHATGPT_DETERMINISTIC_CORE_BUNDLE.json; then
+            echo "Bundle already current"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add runtime/astrology/CHATGPT_DETERMINISTIC_CORE_BUNDLE.json
+          git commit -m "Rebuild Astrology deterministic core bundle"
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
