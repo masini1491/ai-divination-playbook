@@ -1114,6 +1114,13 @@ Ordering rationale:
   - coverage delta = +12 reviewed / +5 resolved;
   - coverage state = reviewed 36 / resolved 22 / unreviewed 132 / dedicated L4 7 / bounded L5 15 / deferred 14;
   - production claim count/runtime/pipeline remain unchanged.
+- batch_3_result:
+  - full `官祿宮` row is now 14/14 reviewed and 10/14 resolved;
+  - new admission candidates / reviewed unresolved: `天機×官祿宮`、`廉貞×官祿宮`、`巨門×官祿宮`;
+  - new resolved bounded-L5 cells: `武曲×官祿宮`、`天同×官祿宮`、`天府×官祿宮`、`太陰×官祿宮`、`貪狼×官祿宮`、`七殺×官祿宮`、`破軍×官祿宮`;
+  - coverage delta = +10 reviewed / +7 resolved;
+  - coverage state = reviewed 46 / resolved 29 / unreviewed 122 / dedicated L4 7 / bounded L5 22 / deferred 17;
+  - production claim count/runtime/pipeline remain unchanged.
 - next_batch:
   - continue by complete palace rows where feasible; keep 疾厄宮 on its separate health-safe path;
   - production admission for any V4 candidate remains a separate action.
