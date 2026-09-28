@@ -127,9 +127,7 @@ Liuyao 若原題只需要 outcome / obstacle，就不因 engine 提供大量欄�
 
 ### 6.1 Astrology broad natal synthesis
 
-若 `ASTROLOGY_NATAL.md` 啟用 `evidence-bounded-concrete-natal-v1`，final draft 應以少量 major themes 統整已 admitted evidence，而不是把 factor dictionary逐項改寫成長文。每個 theme 至少包含：theme statement、concrete manifestation、supporting fact/claim refs；存在 material counter-pull時，再加入有自己 refs 的 limiting condition / tension。
-
-此結構仍服從本檔「最低充分」原則：3–5 themes 是 broad natal synthesis 的 bounded contract，不是所有 Astrology 題型的固定模板。Theme prose不能超越所引用 claim；fact-only geometry不得被包裝成 semantic personality statement；unsupported factor不得因整合需要而補寫。使用者回饋可指出內容太泛、重複或難懂，但「覺得準」本身不成為 source / semantic authority。
+Broad natal synthesis 若啟用 `evidence-bounded-concrete-natal-v1`，其 theme／evidence／tension與 anti-inflation 契約由 `ASTROLOGY_NATAL.md` §7.1 擁有；final draft仍須通過本檔 minimum-sufficient / Pre-Send gate。窄 natal與 transit不強制套用此 profile。
 
 ## 7. 信心語言要與證據相稱
 
