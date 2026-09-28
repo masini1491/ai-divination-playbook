@@ -33,8 +33,8 @@ research-only scaffold
 - star×palace research follow-up：`STAR_PALACE_CONTEXTUAL_RESEARCH_V2.md` 的 `貪狼×夫妻宮` historical bounded candidate 已 separately production-admitted；Nihai 配偶年齡 heuristic 仍為 practitioner-only defer，`紫微×官祿宮` 維持 non-material rejection，`破軍×遷移宮` 維持 borderline/defer
 - star×palace research v3：`STAR_PALACE_CONTEXTUAL_RESEARCH_V3.md` research-only admission candidates `破軍×遷移宮`、`武曲×田宅宮`、`天機×田宅宮`、`破軍×夫妻宮` 均已 separately production-admitted；`貪狼×遷移宮` 維持 borderline/defer，`紫微×遷移宮` 維持 redundant rejection
 
-- star×palace coverage architecture V1：168 identities 已 admission；目前 reviewed 24 / resolved 17 / unreviewed 144，completion target = resolved 168/168；dedicated L4 仍獨立計數。
-- star×palace research v4 batch 1：`STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md` 已完成第一批 classification；`天機×福德宮`、`紫微×奴僕宮`、`天同×財帛宮` 為 admission candidates；另 6 格 resolved 為 bounded L5 composition；production claims 不變。
+- star×palace coverage architecture V1：168 identities 已 admission；目前 reviewed 36 / resolved 22 / unreviewed 132，completion target = resolved 168/168；dedicated L4 仍獨立計數。
+- star×palace research v4：`STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md` 已完成 batch 1 + 福德宮 batch 2；福德宮 14/14 reviewed，但 admission candidates 仍 unresolved；目前 production dedicated L4 仍為 7。
 - optional M1 auxiliary profile：`ziwei.auxiliary.m1.common_v1` admission 天魁／天鉞／祿存／天馬／擎羊／陀羅／火星／鈴星／地空／地劫十星 natal placement + 10 條 bounded modifier-role policy；runtime 必須與 M0 同時啟用，M0+M1 才提供 broader auxiliary completeness；M2/M3與高風險事件斷語仍未 admission
 - deterministic ChatGPT materialization：`ZIWEI_MATERIALIZATION.md` + bundle 已建立
 - ordinary unspecified auto-routing：仍刻意為 false

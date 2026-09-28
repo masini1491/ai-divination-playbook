@@ -265,3 +265,174 @@ health-safe research path.
 
 This research record contains no private birth, relationship, health, sexual or
 workplace data.
+
+
+## V4 Batch 2 — 福德宮 row
+
+This batch reviews the remaining 12 previously-unreviewed 福德宮 cells. The
+historical owner is the Nanyang-Hall 福德宮 chapter:
+
+`https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzop13hzkll`
+
+The already-reviewed `天機×福德宮` and `破軍×福德宮` cells are not
+reclassified here.
+
+### Admission candidates / reviewed unresolved
+
+#### 紫微 × 福德宮
+
+Historical text gives a direct favorable inner-wellbeing / enjoyment direction
+that is not supplied by the generic 紫微 authority/centrality core.
+
+Normalized candidate:
+
+> 紫微落福德宮時，可作為內在福德／安樂感較有承接力的 historical
+> contextual modifier；不得翻成保證一生享福或固定幸福結果。
+
+Classification: `ADMISSION-CANDIDATE / DEFERRED_EVIDENCE / unresolved`.
+
+#### 太陽 × 福德宮
+
+Historical text gives a "busy activity while gaining benefit" pattern. That
+activity/benefit coupling is more specific than generic 太陽 public/responsible
+core + generic 福德 domain.
+
+Normalized candidate:
+
+> 太陽落福德宮時，可作為「較可能在忙碌、投入或外顯活動中形成福德感」
+> 的 historical contextual modifier；不得翻成忙碌必然帶來幸福或成功。
+
+Classification: `ADMISSION-CANDIDATE / DEFERRED_EVIDENCE / unresolved`.
+
+#### 武曲 × 福德宮
+
+Historical text distinguishes baseline mental effort from a dignity-sensitive
+more settled expression. The dignity reversal is materially richer than generic
+武曲 finance/execution core + 福德 domain.
+
+Normalized candidate:
+
+> 武曲落福德宮時，可作為較偏勞心、重實務承擔的 inner-wellbeing modifier；
+> 入廟等 favorable condition 可使表現較安定，不得固定翻成勞苦或無福。
+
+Classification: `ADMISSION-CANDIDATE / DEFERRED_EVIDENCE / unresolved`.
+
+#### 廉貞 × 福德宮
+
+Historical text gives an explicit "benefit within activity/busyness" pattern,
+with strong combination sensitivity. This is not directly supplied by the
+generic 廉貞 authority/constraint/desire core.
+
+Normalized candidate:
+
+> 廉貞落福德宮時，可作為「福德感較可能伴隨投入、忙碌或自我約束而形成」
+> 的 historical contextual modifier；仍須保留廟陷與同會條件。
+
+Classification: `ADMISSION-CANDIDATE / DEFERRED_EVIDENCE / unresolved`.
+
+#### 天府 × 福德宮
+
+Historical text gives a stable ease/enjoyment direction. The generic 天府
+storehouse/conservation core does not by itself establish that inner-wellbeing
+direction.
+
+Normalized candidate:
+
+> 天府落福德宮時，可作為內在安定、較能承接安樂感的 historical contextual
+> modifier；不得翻成終身無憂或 guaranteed life outcome。
+
+Classification: `ADMISSION-CANDIDATE / DEFERRED_EVIDENCE / unresolved`.
+
+#### 貪狼 × 福德宮
+
+Historical text adds a later-forming enjoyment direction. The temporal
+late-development pattern is materially more specific than generic 貪狼
+desire/social/resource-pursuit + 福德 domain.
+
+Normalized candidate:
+
+> 貪狼落福德宮時，可作為福德／享受感較偏後段形成的 historical contextual
+> modifier；不得轉成固定年齡、必然晚年享福或其他 guaranteed timeline。
+
+Classification: `ADMISSION-CANDIDATE / DEFERRED_EVIDENCE / unresolved`.
+
+#### 天相 × 福德宮
+
+Historical text gives a later-life settled/wellbeing direction. The time
+orientation adds information beyond generic 天相 assistance/order +
+福德 domain, but health/longevity wording is not admitted literally.
+
+Normalized candidate:
+
+> 天相落福德宮時，可作為後段較偏安定、福德感較能收斂的 historical
+> contextual modifier；不得翻成保證健康、長壽或固定晚年結果。
+
+Classification: `ADMISSION-CANDIDATE / DEFERRED_EVIDENCE / unresolved`.
+
+### Resolved bounded-L5 cells
+
+#### 天同 × 福德宮 — REJECT-REDUNDANT
+
+天同 core already directly owns 福、和緩與福德性質, while 福德宮 owns
+enjoyment/ease versus unrest. Historical favorable wording does not add enough
+pair-specific information to justify a dedicated override.
+
+Routing: `BOUNDED_L5_COMPOSITION / resolved`.
+
+#### 太陰 × 福德宮 — REJECT-REDUNDANT
+
+太陰 core already includes inner feeling / emotional stability with
+dignity-sensitive direction. The historical happiness/ease wording falls within
+that core plus 福德 domain.
+
+Routing: `BOUNDED_L5_COMPOSITION / resolved`.
+
+#### 巨門 × 福德宮 — REJECT-REDUNDANT
+
+巨門 core already owns obscurity, speech/dispute and divisive mental pressure;
+福德宮 explicitly owns mental ease versus unrest. Historical worry/unease
+wording is therefore safely representable as L5 composition.
+
+Routing: `BOUNDED_L5_COMPOSITION / resolved`.
+
+#### 天梁 × 福德宮 — REJECT-REDUNDANT
+
+天梁 core already owns protection/blessing/elder-regulation semantics; the
+historical ease/quiet wording in 福德 does not establish a sufficiently distinct
+pair-specific mechanism.
+
+Routing: `BOUNDED_L5_COMPOSITION / resolved`.
+
+#### 七殺 × 福德宮 — REJECT-REDUNDANT
+
+七殺 core already owns strong action / solitary / high-intensity character and
+condition sensitivity. Historical unease wording in the inner-wellbeing domain
+does not materially exceed bounded composition.
+
+Routing: `BOUNDED_L5_COMPOSITION / resolved`.
+
+## Batch 2 decision
+
+```text
+new reviewed cells = 12
+new resolved cells = 5
+new admission candidates = 7
+new bounded L5 cells = 5
+production claims added = 0
+```
+
+Coverage after batch 2:
+
+```text
+total       168
+reviewed     36
+resolved     22
+unreviewed  132
+dedicated     7
+bounded L5   15
+deferred     14
+```
+
+The full 福德宮 row is now reviewed: 2 previously-reviewed cells + 12 batch-2
+cells = 14/14 reviewed. It is not yet 14/14 resolved because admission
+candidates remain unresolved pending separate admission or later reclassification.
