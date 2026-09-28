@@ -1174,6 +1174,14 @@ Ordering rationale:
   - coverage delta = +12 reviewed / +12 resolved;
   - coverage state = reviewed 117 / resolved 85 / unreviewed 51 / dedicated L4 9 / bounded L5 58 / high-risk 18 / deferred 32;
   - production claim count/runtime/pipeline remain unchanged.
+- batch_11_result:
+  - full `兄弟宮` row is now 14/14 reviewed and 14/14 resolved;
+  - new resolved bounded-L5 cells: `紫微×兄弟宮`、`天機×兄弟宮`、`太陽×兄弟宮`、`武曲×兄弟宮`、`廉貞×兄弟宮`、`天府×兄弟宮`、`太陰×兄弟宮`、`天相×兄弟宮`;
+  - new high-risk bounded cells: `貪狼×兄弟宮`、`天梁×兄弟宮`、`七殺×兄弟宮`、`破軍×兄弟宮`;
+  - exact sibling count / half-sibling / loss / guaranteed estrangement doctrine remains non-production;
+  - coverage delta = +12 reviewed / +12 resolved;
+  - coverage state = reviewed 129 / resolved 97 / unreviewed 39 / dedicated L4 9 / bounded L5 66 / high-risk 22 / deferred 32;
+  - no new admission candidate; production claim count/runtime/pipeline remain unchanged.
 - next_batch:
   - continue another complete ordinary palace row where feasible;
   - keep all V4 admission candidates research-only until separate bounded production-admission authorization;

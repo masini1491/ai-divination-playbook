@@ -549,11 +549,11 @@
         "status": "architecture-v1",
         "authority": "routing-control-plane-only",
         "total_cells": 168,
-        "reviewed_cells": 117,
-        "resolved_cells": 85,
-        "unreviewed_cells": 51,
+        "reviewed_cells": 129,
+        "resolved_cells": 97,
+        "unreviewed_cells": 39,
         "dedicated_l4": 9,
-        "bounded_l5_composition": 58,
+        "bounded_l5_composition": 66,
         "deferred_evidence": 32,
         "index": "indexes/ziwei/star_palace_coverage_v1.json",
         "schema": "schemas/ziwei/ZIWEI_STAR_PALACE_COVERAGE_V1.schema.json",
@@ -562,7 +562,7 @@
         "decision_input": "references/ziwei/STAR_PALACE_COVERAGE_DECISIONS_V1.json",
         "dedicated_cartesian_expansion": false,
         "completion_target": "resolved_cells=168",
-        "high_risk_bounded": 18
+        "high_risk_bounded": 22
       }
     },
     {
