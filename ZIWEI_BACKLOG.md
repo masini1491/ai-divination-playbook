@@ -1141,15 +1141,15 @@ Ordering rationale:
 - batch_6_result:
   - full `父母宮` row is now 14/14 reviewed and 14/14 resolved;
   - all 11 newly reviewed cells route `HIGH_RISK_BOUNDED` because their pair-specific historical distinctions are dominated by parental survival/loss, injury, estrangement, adoption/re-parenting or lineage outcomes;
-  - coverage delta = +11 reviewed / +11 resolved;
+  - coverage delta = +11 reviewed / +12 resolved (including prior `巨門×夫妻宮` deferred → high-risk bounded);
   - coverage state = reviewed 71 / resolved 50 / unreviewed 97 / dedicated L4 9 / bounded L5 29 / high-risk 12 / deferred 21;
   - no new admission candidate; production claim count/runtime/pipeline remain unchanged.
 - batch_7_result:
   - full `夫妻宮` row is now 14/14 reviewed and 14/14 resolved;
   - new resolved bounded-L5 cells: `紫微×夫妻宮`、`天同×夫妻宮`、`天府×夫妻宮`、`太陰×夫妻宮`、`天相×夫妻宮`、`天梁×夫妻宮`;
-  - new high-risk bounded cells: `天機×夫妻宮`、`太陽×夫妻宮`、`武曲×夫妻宮`、`廉貞×夫妻宮`、`七殺×夫妻宮`;
+  - new high-risk bounded cells: `天機×夫妻宮`、`太陽×夫妻宮`、`武曲×夫妻宮`、`廉貞×夫妻宮`、`七殺×夫妻宮`; prior `巨門×夫妻宮` deferred evidence is reclassified `HIGH_RISK_BOUNDED` after full-row safety review;
   - coverage delta = +11 reviewed / +11 resolved;
-  - coverage state = reviewed 82 / resolved 61 / unreviewed 86 / dedicated L4 9 / bounded L5 35 / high-risk 17 / deferred 21;
+  - coverage state = reviewed 82 / resolved 62 / unreviewed 86 / dedicated L4 9 / bounded L5 35 / high-risk 18 / deferred 20;
   - no new admission candidate; production claim count/runtime/pipeline remain unchanged.
 - next_batch:
   - continue another complete ordinary palace row where feasible;
