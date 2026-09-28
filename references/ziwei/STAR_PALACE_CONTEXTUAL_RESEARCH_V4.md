@@ -1200,3 +1200,179 @@ The full 遷移宮 row is now 14/14 reviewed and 8/14 resolved. The five new
 admission candidates plus the previously-deferred `貪狼×遷移宮` remain
 research-only. Production admission remains a separate bounded action.
 
+## V4 Batch 9 — 田宅宮 row
+
+This batch reviews the remaining twelve previously-unreviewed 田宅宮 cells. The
+historical owner is the Nanyang-Hall 田宅宮 chapter:
+
+`https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzop13hz7yh`
+
+Production-admitted `武曲×田宅宮` and `天機×田宅宮` are treated only as
+exact-occupancy controls. Their doctrine is not transplanted into any other
+star×palace cell.
+
+### Admission candidates / reviewed unresolved
+
+#### 紫微 × 田宅宮
+
+Historical text adds a self-acquisition / independently-established property
+direction, modified by adverse combinations. This is more specific than generic
+紫微 authority/order semantics plus the property domain.
+
+Normalized candidate:
+
+> 紫微落田宅宮時，可作為「家業／資產較偏自行建立、擴充或整合」的 historical
+> contextual modifier；不得翻成保證置產、保證持有不動產或固定財富結果。
+
+Classification: `ADMISSION-CANDIDATE / DEFERRED_EVIDENCE / unresolved`.
+
+#### 太陽 × 田宅宮
+
+Historical text gives an inheritance/continuity pattern with an early-strong,
+later-flatter trajectory under favorable dignity. That phase pattern is more
+specific than 太陽 core + 田宅 domain.
+
+Normalized candidate:
+
+> 太陽落田宅宮時，可作為「家業／資產承接與維持具有階段性，較強條件下前段較旺、
+> 後段趨平」的 historical contextual modifier；不得翻成保證繼承、固定資產規模
+> 或必然由盛轉衰。
+
+Classification: `ADMISSION-CANDIDATE / DEFERRED_EVIDENCE / unresolved`.
+
+#### 天同 × 田宅宮
+
+Historical text gives a "less first, more later" and self-established property
+trajectory. The accumulation direction is more specific than 天同 harmony /
+blessing semantics plus the property domain.
+
+Normalized candidate:
+
+> 天同落田宅宮時，可作為「家業／資產較偏逐步累積、後段增加，並帶自行建立色彩」
+> 的 historical contextual modifier；不得翻成保證買房、固定資產數量或必然增值。
+
+Classification: `ADMISSION-CANDIDATE / DEFERRED_EVIDENCE / unresolved`.
+
+#### 貪狼 × 田宅宮
+
+Historical text gives a condition-sensitive ancestral-property discontinuity
+followed by later self-establishment. The late rebuilding trajectory is
+materially distinct from generic 貪狼 desire/resource-pursuit + 田宅 domain.
+
+Normalized candidate:
+
+> 貪狼落田宅宮時，可作為「原有家業／資產延續性較受條件影響，後段較可能轉向
+> 自行建立」的 historical contextual modifier；不得翻成必失祖產、保證晚年置產
+> 或固定房產結果。
+
+Classification: `ADMISSION-CANDIDATE / DEFERRED_EVIDENCE / unresolved`.
+
+#### 破軍 × 田宅宮
+
+Historical text gives branch/condition-sensitive retention versus retreat and
+a possible break-then-rebuild pattern. The property continuity trajectory is
+more specific than generic 破軍 restructuring/disruption + 田宅 domain.
+
+Normalized candidate:
+
+> 破軍落田宅宮時，可作為「家業／資產延續與重整幅度較大，部分條件下呈現先變動
+> 再重建」的 historical contextual modifier；不得翻成必破產、必失產、保證翻本
+> 或固定繼承結果。
+
+Classification: `ADMISSION-CANDIDATE / DEFERRED_EVIDENCE / unresolved`.
+
+### Resolved bounded-L5 cells
+
+#### 天府 × 田宅宮 — REJECT-REDUNDANT
+
+天府 core already directly owns storehouse, property and conservative-resource
+semantics. Historical favorable family-property wording does not add enough
+pair-specific information beyond the 田宅 domain.
+
+Routing: `BOUNDED_L5_COMPOSITION / resolved`.
+
+#### 太陰 × 田宅宮 — REJECT-REDUNDANT
+
+太陰 core already owns property and material dignity sensitivity. Historical
+"more property when strong / less when weak" wording is therefore adequately
+represented by existing core + dignity handling + 田宅 domain.
+
+Routing: `BOUNDED_L5_COMPOSITION / resolved`.
+
+#### 巨門 × 田宅宮 — REJECT-REDUNDANT
+
+Historical acquisition/dispute wording is largely representable through 巨門
+speech/dispute/obscurity semantics plus the property domain and dignity
+conditions. A separate pair doctrine is not required.
+
+Routing: `BOUNDED_L5_COMPOSITION / resolved`.
+
+#### 天相 × 田宅宮 — REJECT-REDUNDANT
+
+Historical share/support/property wording is representable through 天相
+support/order semantics plus 田宅 domain and existing supportive/adverse
+modifiers.
+
+Routing: `BOUNDED_L5_COMPOSITION / resolved`.
+
+#### 天梁 × 田宅宮 — REJECT-REDUNDANT
+
+Historical ancestral-property wording overlaps substantially with 天梁
+elder/protection/continuity semantics plus the property domain. No separate
+stable pair mechanism is established here.
+
+Routing: `BOUNDED_L5_COMPOSITION / resolved`.
+
+### High-risk bounded cell
+
+#### 廉貞 × 田宅宮 — HIGH_RISK_BOUNDED
+
+The source-explicit distinction is dominated by direct ancestral-property loss
+language. That is a concrete financial/property outcome and should not become
+ordinary deterministic production doctrine.
+
+Safe routing keeps only 廉貞 core + 田宅 domain + admitted conditions; direct
+"loss of ancestral property" claims remain research evidence only.
+
+Routing: `HIGH_RISK_BOUNDED / resolved`.
+
+### Evidence-gap cell
+
+#### 七殺 × 田宅宮 — DEFERRED_EVIDENCE
+
+The current canonical 田宅 chapter contains 七殺 only inside other stars'
+same-palace/combinational lines and does not provide a clean standalone 七殺
+paragraph comparable to the other principal-star entries. This pass therefore
+does not manufacture a pair doctrine from model memory or from another
+occupancy.
+
+Classification: `EVIDENCE-GAP / DEFERRED_EVIDENCE / unresolved`.
+
+## Batch 9 decision
+
+```text
+new reviewed cells = 12
+new resolved cells = 6
+new admission candidates = 5
+new bounded L5 cells = 5
+new high-risk bounded cells = 1
+new evidence-gap deferred cells = 1
+production claims added = 0
+```
+
+Coverage after batch 9 research classification:
+
+```text
+total       168
+reviewed    105
+resolved     73
+unreviewed   63
+dedicated     9
+bounded L5   46
+high-risk    18
+deferred     32
+```
+
+The full 田宅宮 row is now 14/14 reviewed and 8/14 resolved. The five new
+admission candidates and the 七殺 evidence-gap cell remain research-only.
+
