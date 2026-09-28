@@ -958,3 +958,79 @@ deferred     21
 
 The full 父母宮 row is now 14/14 reviewed and 14/14 resolved. Production claim
 count, runtime and pipeline remain unchanged.
+
+
+## V4 Batch 7 — 夫妻宮 relationship-outcome-safe row
+
+This batch reviews the remaining eleven previously-unreviewed 夫妻宮 cells using
+the Nanyang-Hall spouse-palace chapter:
+
+`https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzop13hwrgp`
+
+Production-admitted `貪狼×夫妻宮` and `破軍×夫妻宮`, plus previously
+reviewed `巨門×夫妻宮`, are not reclassified.
+
+### Resolved bounded-L5 cells
+
+The safe reusable content for the following six cells does not materially exceed
+existing star-core relationship style / condition sensitivity plus the 夫妻宮
+marriage-interaction domain:
+
+- `紫微×夫妻宮`
+- `天同×夫妻宮`
+- `天府×夫妻宮`
+- `太陰×夫妻宮`
+- `天相×夫妻宮`
+- `天梁×夫妻宮`
+
+Routing: `BOUNDED_L5_COMPOSITION / resolved`.
+
+Historical wording about spouse appearance, fixed age difference, status or
+guaranteed lifelong harmony is not promoted.
+
+### High-risk bounded cells
+
+The distinct historical content for the following five cells is dominated by
+fixed spouse-age prescriptions, early/late marriage outcomes, repeated marriage
+counts, separation, spouse-harm/loss or spouse-property outcomes:
+
+- `天機×夫妻宮`
+- `太陽×夫妻宮`
+- `武曲×夫妻宮`
+- `廉貞×夫妻宮`
+- `七殺×夫妻宮`
+
+Routing: `HIGH_RISK_BOUNDED / resolved`.
+
+Safe production routing remains the independently admitted star core + 夫妻宮
+domain + existing condition handling. Forbidden promotion examples include
+guaranteed divorce/separation, spouse death/injury, fixed marriage count,
+fixed spouse age/appearance, guaranteed marriage timing, spouse-derived wealth
+or loss, and deterministic relationship success/failure.
+
+## Batch 7 decision
+
+```text
+new reviewed cells = 11
+new resolved cells = 11
+new bounded L5 cells = 6
+new high-risk bounded cells = 5
+new admission candidates = 0
+production claims added = 0
+```
+
+Coverage after batch 7:
+
+```text
+total       168
+reviewed     82
+resolved     61
+unreviewed   86
+dedicated     9
+bounded L5   35
+high-risk    17
+deferred     21
+```
+
+The full 夫妻宮 row is now 14/14 reviewed and 14/14 resolved. Production claim
+count, runtime and pipeline remain unchanged.

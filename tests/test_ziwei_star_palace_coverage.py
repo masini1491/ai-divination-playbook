@@ -12,7 +12,7 @@ class Tests(unittest.TestCase):
   self.assertEqual(168,self.index["total_cells"]); self.assertEqual(168,len(self.index["cells"])); self.assertEqual(168,len(self.cells))
   self.assertEqual(14,len({x["star"] for x in self.index["cells"]})); self.assertEqual(12,len({x["palace"] for x in self.index["cells"]}))
  def test_metrics(self):
-  m=self.index["metrics"]; self.assertEqual((71,50,97,9,29,21),(m["reviewed_cells"],m["resolved_cells"],m["unreviewed_cells"],m["dedicated_l4"],m["bounded_l5_composition"],m["deferred_evidence"])); self.assertEqual(12,m["high_risk_bounded"])
+  m=self.index["metrics"]; self.assertEqual((82,61,86,9,35,21),(m["reviewed_cells"],m["resolved_cells"],m["unreviewed_cells"],m["dedicated_l4"],m["bounded_l5_composition"],m["deferred_evidence"])); self.assertEqual(17,m["high_risk_bounded"])
   self.assertEqual(168,m["reviewed_cells"]+m["unreviewed_cells"]); self.assertLessEqual(m["resolved_cells"],m["reviewed_cells"])
  def test_dedicated_map(self):
   exp={f'{c["star"]}×{c["palace"]}':c["claim_id"] for c in self.registry["claims"]}
