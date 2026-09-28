@@ -733,7 +733,7 @@ Ordering rationale:
 ### ZW-P1-060 — Evidence-bounded natal synthesis v1
 
 - type: FEATURE / INTERPRETATION DELIVERY / SELECTION
-- status: IN_PROGRESS
+- status: DONE
 - priority: P1
 - owner: Zi Wei production maintenance
 - blocked_by:
@@ -766,6 +766,14 @@ Ordering rationale:
   - deterministic selector is base-claim allowlisted, bounded to 4–6 when enough eligible signals exist, and retains evidence IDs;
   - runtime / admission / index / compatibility version / tests / deterministic bundle are synchronized;
   - candidate PR validation passes, merge completes, and canonical main read-back establishes the production state.
+- completion_evidence:
+  - generator bridge run `36459641085` PASSed focused production/unified/star-palace regressions, Zi Wei deterministic bundle regeneration/check, ChatGPT load-pack regeneration/check, load-budget check and bundle regression;
+  - inherited current-main Astrology backlog slimming regression was repaired separately at `c50844c62e51b48aea790adc29f7eae58fad794c`; exact-main run `36460093255` PASSed, so it is not attributed to the Zi Wei change;
+  - PR #356 formal run `36460130671`: `validate` PASS and `casting-runtime` PASS;
+  - PR #356 merged to exact main `1df0d79e883af28c24c1ad6eb6192aea1f08cd43`;
+  - exact-main canonical read-back confirms pipeline `1.6.0`, `natal_synthesis_v1`, 9 sparse star×palace claims, matrix metrics 154 / 120 / 14, reading-gap-driven continuation and explicit optional-module defaults;
+  - exact-main run `36460424134`: `validate` PASS and `casting-runtime` PASS;
+  - exact-main Zi Wei artifact `10987286235` / `ziwei-deterministic-handoff-1df0d79e883af28c24c1ad6eb6192aea1f08cd43` published at 102,528 bytes with digest `sha256:6ca22cdd967a2f5860c2e30fa5a7cd2aae7ffa0164d68049bb75f51f7b817b96`.
 
 ## P2 — later expansion
 
