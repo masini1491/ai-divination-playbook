@@ -1107,8 +1107,15 @@ Ordering rationale:
   - coverage delta = +9 reviewed / +6 resolved;
   - coverage state = reviewed 24 / resolved 17 / unreviewed 144 / dedicated L4 7 / bounded L5 10 / deferred 7;
   - production claim count/runtime/pipeline remain unchanged.
+- batch_2_result:
+  - full `福德宮` row is now 14/14 reviewed;
+  - new admission candidates / reviewed unresolved: `紫微×福德宮`、`太陽×福德宮`、`武曲×福德宮`、`廉貞×福德宮`、`天府×福德宮`、`貪狼×福德宮`、`天相×福德宮`;
+  - new resolved bounded-L5 cells: `天同×福德宮`、`太陰×福德宮`、`巨門×福德宮`、`天梁×福德宮`、`七殺×福德宮`;
+  - coverage delta = +12 reviewed / +5 resolved;
+  - coverage state = reviewed 36 / resolved 22 / unreviewed 132 / dedicated L4 7 / bounded L5 15 / deferred 14;
+  - production claim count/runtime/pipeline remain unchanged.
 - next_batch:
-  - continue source-first review of unresolved/unreviewed non-health cells under the 168-cell matrix;
+  - continue by complete palace rows where feasible; keep 疾厄宮 on its separate health-safe path;
   - production admission for any V4 candidate remains a separate action.
 - completion_gate:
   - current historical primary-text locators and pinned practitioner evidence reconciled;
