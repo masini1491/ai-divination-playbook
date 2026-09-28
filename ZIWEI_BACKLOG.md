@@ -1167,6 +1167,13 @@ Ordering rationale:
   - coverage delta = +12 reviewed / +6 resolved;
   - coverage state = reviewed 105 / resolved 73 / unreviewed 63 / dedicated L4 9 / bounded L5 46 / high-risk 18 / deferred 32;
   - production claim count/runtime/pipeline remain unchanged.
+- batch_10_result:
+  - full `命宮` row is now 14/14 reviewed and 14/14 resolved;
+  - all 12 newly reviewed cells route `BOUNDED_L5_COMPOSITION`; no new admission candidate;
+  - `天相×命宮` and `武曲×命宮` remain the only dedicated 命宮 overrides and were not generalized;
+  - coverage delta = +12 reviewed / +12 resolved;
+  - coverage state = reviewed 117 / resolved 85 / unreviewed 51 / dedicated L4 9 / bounded L5 58 / high-risk 18 / deferred 32;
+  - production claim count/runtime/pipeline remain unchanged.
 - next_batch:
   - continue another complete ordinary palace row where feasible;
   - keep all V4 admission candidates research-only until separate bounded production-admission authorization;
