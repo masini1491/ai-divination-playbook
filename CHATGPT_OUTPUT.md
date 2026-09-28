@@ -125,6 +125,12 @@ Liuyao 若原題只需要 outcome / obstacle，就不因 engine 提供大量欄�
 
 核心原則：**輸出的是與契約有連結的證據，不是展示所有可能象徵或所有可取得欄位。**
 
+### 6.1 Astrology broad natal synthesis
+
+若 `ASTROLOGY_NATAL.md` 啟用 `evidence-bounded-concrete-natal-v1`，final draft 應以少量 major themes 統整已 admitted evidence，而不是把 factor dictionary逐項改寫成長文。每個 theme 至少包含：theme statement、concrete manifestation、supporting fact/claim refs；存在 material counter-pull時，再加入有自己 refs 的 limiting condition / tension。
+
+此結構仍服從本檔「最低充分」原則：3–5 themes 是 broad natal synthesis 的 bounded contract，不是所有 Astrology 題型的固定模板。Theme prose不能超越所引用 claim；fact-only geometry不得被包裝成 semantic personality statement；unsupported factor不得因整合需要而補寫。使用者回饋可指出內容太泛、重複或難懂，但「覺得準」本身不成為 source / semantic authority。
+
 ## 7. 信心語言要與證據相稱
 
 若沒有獨立、經驗證的統計模型，不把 Tarot／Meihua／Liuyao 象徵直接轉成：
