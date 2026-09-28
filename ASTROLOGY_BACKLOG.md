@@ -29,8 +29,8 @@ Last reviewed against:
 
 ```text
 ai-divination-playbook main
-7a56f0bea77b7c3d5b67960e4a1487091db6e91a
-Add disclosed natal semantic profile default (#358)
+d8aca589e4d32fb13358129530be38dc006ac6d4
+Add evidence-bounded concrete natal synthesis (#359)
 ```
 
 This SHA is review evidence only, not a pin. Every maintenance or implementation task must resolve current `main` again before mutation.
@@ -39,8 +39,7 @@ This SHA is review evidence only, not a pin. Every maintenance or implementation
 
 Active near-term Astrology work:
 
-1. **AST-P1-230 — Evidence-bounded concrete natal synthesis contract**
-2. **AST-P1-240 — Sparse emergent exact-claim admission policy**
+1. **AST-P1-240 — Sparse emergent exact-claim admission policy**
 
 Standing guard:
 
@@ -88,35 +87,6 @@ This file is an active / deferred coordination surface, not a completed-work arc
 This item is a standing reconciliation guard. It is not a request to change current behavior immediately.
 
 ## P1 — active natal interpretation work
-
-### AST-P1-230 — Evidence-bounded concrete natal synthesis contract
-
-- type: FEATURE / OUTPUT / INTERPRETATION SYNTHESIS
-- status: OPEN
-- priority: P1
-- owner: Astrology natal synthesis / user-facing interpretation
-- blocked_by: none
-- prerequisite:
-  - AST-P1-210 — DONE.
-  - AST-P1-220 — DONE; omitted/null natal semantic profile now resolves through the disclosed project-default interaction contract.
-- problem:
-  - factor-by-factor output can remain technically correct while sounding repetitive, generic or internally contradictory;
-  - improving user-perceived specificity must not create new semantic claims, hide unsupported factors or turn subjective resonance into evidence.
-- target:
-  - synthesize admitted factor evidence into a small set of dominant natal themes instead of an exhaustive encyclopedia-style factor dump;
-  - each theme should retain traceable supporting factors, describe bounded concrete manifestations, and state material tensions/limiting conditions when other admitted factors pull in a different direction;
-  - contradictions are reconciled as context-dependent tension where evidence permits, not flattened into universal Barnum-style statements;
-  - exact claims and compositional claims remain evidence inputs; the synthesis layer itself has no independent semantic authority.
-- completion_gate:
-  - define a minimum-sufficient output contract in the natal/output canonical owner without duplicating source doctrine;
-  - regression fixtures demonstrate factor traceability, tension handling, unsupported-factor suppression and no claim inflation;
-  - output remains concise by default but can expand when the user explicitly requests detail;
-  - evaluation focuses on specificity, traceability, contradiction handling and scope fidelity, not a synthetic “accuracy score”.
-- non_goals:
-  - no fixed personality diagnosis;
-  - no requirement that every factor appear in final prose;
-  - no optimization loop that rewards statements merely because users report that they “feel accurate”;
-  - no user-feedback signal may become semantic/source authority.
 
 ### AST-P1-240 — Sparse emergent exact-claim admission policy
 
@@ -208,6 +178,7 @@ The items below are **DONE**. They are retained only as compact identity pointer
 - **AST-P1-200 — Default house-system interaction profile** — DONE.
 - **AST-P1-210 — Natal semantic composition fallback contract** — DONE; canonical precedence is exact admitted claim → admitted bounded composition → `unsupported_factor`; typed `aspect_pair` supports admitted exact natal-aspect claims, while general natal-aspect semantic composition remains closed until its primitives are separately admitted.
 - **AST-P1-220 — Disclosed default semantic profile for ordinary natal interpretation** — DONE; omitted/null natal `semantic_profile` normalizes to `composable-symbolic-modern-v1` with `project_default` provenance and disclosure; explicit admitted choice remains `explicit_user_choice`; registry/selector silent defaults remain forbidden and unadmitted profiles fail closed.
+- **AST-P1-230 — Evidence-bounded concrete natal synthesis contract** — DONE; broad natal may explicitly use `evidence-bounded-concrete-natal-v1`: 3–5 traceable themes, admitted natal fact + semantic claim refs, independently cited material tensions, unsupported suppression, no semantic/claim-admission authority; detailed rules are conditionally loaded from `ASTROLOGY_NATAL_SYNTHESIS.md`.
 - **AST-P2-010 — Interpolated Black Moon Lilith** — DONE.
 - **AST-P2-041 — Piecewise Chebyshev five-body ephemeris feasibility** — DONE.
 - **AST-P2-042 — Continuity-constrained / overlap Chebyshev five-body feasibility** — DONE.
@@ -247,7 +218,6 @@ Unless the user explicitly asks for a different bounded task, a fresh Astrology 
 3. reconcile any changed item status against canonical owners
 4. enforce AST-P0-002 alongside any affected interpretation change
 5. continue the active P1 natal-interpretation sequence:
-   AST-P1-230 evidence-bounded concrete natal synthesis
    AST-P1-240 sparse emergent exact-claim admission policy
 6. keep AST-P2-020 / AST-P2-030 deferred unless their explicit trigger appears
 ```
