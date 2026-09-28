@@ -1617,3 +1617,76 @@ deferred     35
 The full 奴僕宮 row is now 14/14 reviewed and 10/14 resolved. Existing
 `紫微×奴僕宮` plus the three new admission candidates remain research-only.
 
+## V4 Batch 13 — 子女宮 row
+
+This batch reviews the remaining thirteen previously-unreviewed 子女宮 cells.
+The historical source is the Nanyang-Hall 子女 chapter:
+
+`https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzop13hx43t`
+
+The source is overwhelmingly dominated by exact child count, sex/order,
+fertility/lineage continuation, disability/health, survival/loss,
+"成器／不成器" and other concrete child outcomes. Those distinctions are
+source-explicit but are not appropriate for ordinary deterministic production
+doctrine.
+
+Previously reviewed `太陰×子女宮` already routes
+`HIGH_RISK_BOUNDED / resolved`.
+
+### High-risk bounded cells
+
+All thirteen newly reviewed cells route
+`HIGH_RISK_BOUNDED / resolved`:
+
+- `紫微×子女宮`
+- `天機×子女宮`
+- `太陽×子女宮`
+- `武曲×子女宮`
+- `天同×子女宮`
+- `廉貞×子女宮`
+- `天府×子女宮`
+- `貪狼×子女宮`
+- `巨門×子女宮`
+- `天相×子女宮`
+- `天梁×子女宮`
+- `七殺×子女宮`
+- `破軍×子女宮`
+
+Safe routing may use only independently admitted star-core + 子女 domain +
+general condition sensitivity. It must not predict or infer:
+
+- exact child count or sex/order;
+- fertility, infertility, conception success or lineage continuation;
+- miscarriage, disability, disease, injury, survival or death;
+- guaranteed child achievement / failure / "成器";
+- adoption/concubinage/parentage outcomes as fixed facts.
+
+No new admission candidate is created from this row.
+
+## Batch 13 decision
+
+```text
+new reviewed cells = 13
+new resolved cells = 13
+new admission candidates = 0
+new high-risk bounded cells = 13
+production claims added = 0
+```
+
+Coverage after batch 13 research classification:
+
+```text
+total       168
+reviewed    154
+resolved    119
+unreviewed   14
+dedicated     9
+bounded L5   74
+high-risk    36
+deferred     35
+```
+
+The full 子女宮 row is now 14/14 reviewed and 14/14 resolved. All ordinary
+non-health palace rows are now reviewed. The only remaining unreviewed row is
+疾厄宮, which stays on its separate health-safe path.
+
