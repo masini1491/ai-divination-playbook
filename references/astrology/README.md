@@ -191,6 +191,8 @@ Research v1 包含 source admission、v0.2 typed claim registry、tradition taxo
 - [`INTERPRETATION_CLAIM_REGISTRY_SCHEMA_DRAFT.md`](INTERPRETATION_CLAIM_REGISTRY_SCHEMA_DRAFT.md)
 - [`validate_interpretation_claim_registry.py`](validate_interpretation_claim_registry.py)
 - [`retrieve_interpretation_claims.py`](retrieve_interpretation_claims.py)
+- [`EXACT_CLAIM_ADMISSION_POLICY_V1.md`](EXACT_CLAIM_ADMISSION_POLICY_V1.md) — sparse exact Planet×Sign / Planet-Pair×Aspect research-candidate gate; no production authority.
+- [`validate_exact_claim_admission_policy.py`](validate_exact_claim_admission_policy.py)
 - [`TRADITION_TAXONOMY_DRAFT.md`](TRADITION_TAXONOMY_DRAFT.md)
 
 Research validator 繼續禁止 registry 自行宣告 `PRODUCTION_ADMITTED`；Production v1 透過獨立 manifest bounded-admit。
