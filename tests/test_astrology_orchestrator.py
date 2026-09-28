@@ -187,6 +187,86 @@ class AstrologyOrchestratorTests(unittest.TestCase):
         self.assertEqual("explicit_user_choice", birth["house_system_selection"])
         self.assertEqual("Whole Sign", result["fact_bundles"]["natal"]["configuration"]["house_system"])
 
+    def test_natal_omitted_semantic_profile_uses_disclosed_project_default(self):
+        request = {
+            "schema_name": "astrology_reading_request",
+            "schema_version": "1.0.0",
+            "reading_mode": "natal",
+            "subject_ref": "fixture-default-semantic-profile",
+            "birth": {
+                "local_datetime": "1990-06-15T10:00:00",
+                "birth_time_certainty": "exact",
+                "location": {"coordinates": {
+                    "latitude": 35.6895, "longitude": 139.6917, "timezone_name": "Asia/Tokyo"
+                }},
+            },
+        }
+        normalized = normalize_request(request)
+        self.assertEqual("composable-symbolic-modern-v1", normalized["semantic_profile"])
+        self.assertEqual("project_default", normalized["semantic_profile_selection"])
+
+    def test_natal_null_semantic_profile_uses_project_default(self):
+        request = {
+            "schema_name": "astrology_reading_request",
+            "schema_version": "1.0.0",
+            "reading_mode": "natal",
+            "subject_ref": "fixture-null-semantic-profile",
+            "semantic_profile": None,
+            "birth": {
+                "local_datetime": "1990-06-15T10:00:00",
+                "birth_time_certainty": "exact",
+                "location": {"coordinates": {
+                    "latitude": 35.6895, "longitude": 139.6917, "timezone_name": "Asia/Tokyo"
+                }},
+            },
+        }
+        normalized = normalize_request(request)
+        self.assertEqual("composable-symbolic-modern-v1", normalized["semantic_profile"])
+        self.assertEqual("project_default", normalized["semantic_profile_selection"])
+
+    def test_explicit_admitted_semantic_profile_preserves_user_choice(self):
+        request = {
+            "schema_name": "astrology_reading_request",
+            "schema_version": "1.0.0",
+            "reading_mode": "natal",
+            "subject_ref": "fixture-explicit-semantic-profile",
+            "semantic_profile": "composable-symbolic-modern-v1",
+            "birth": {
+                "local_datetime": "1990-06-15T10:00:00",
+                "birth_time_certainty": "exact",
+                "location": {"coordinates": {
+                    "latitude": 35.6895, "longitude": 139.6917, "timezone_name": "Asia/Tokyo"
+                }},
+            },
+        }
+        normalized = normalize_request(request)
+        self.assertEqual("composable-symbolic-modern-v1", normalized["semantic_profile"])
+        self.assertEqual("explicit_user_choice", normalized["semantic_profile_selection"])
+
+    def test_unadmitted_semantic_profile_fails_closed(self):
+        request = {
+            "schema_name": "astrology_reading_request",
+            "schema_version": "1.0.0",
+            "reading_mode": "natal",
+            "subject_ref": "fixture-unadmitted-semantic-profile",
+            "semantic_profile": "traditional-only-v999",
+            "birth": {
+                "local_datetime": "1990-06-15T10:00:00",
+                "birth_time_certainty": "exact",
+                "location": {"coordinates": {
+                    "latitude": 35.6895, "longitude": 139.6917, "timezone_name": "Asia/Tokyo"
+                }},
+            },
+        }
+        with self.assertRaisesRegex(OrchestrationInputError, "not production-admitted"):
+            normalize_request(request)
+
+    def test_transit_does_not_activate_natal_semantic_profile_default(self):
+        request = json.loads(FIXTURE.read_text(encoding="utf-8"))
+        normalized = normalize_request(request)
+        self.assertNotIn("semantic_profile", normalized)
+        self.assertNotIn("semantic_profile_selection", normalized)
+
     def test_unknown_time_country_only_natal_emits_invariant_signs(self):
         request = {
             "schema_name": "astrology_reading_request",

@@ -35,6 +35,14 @@ Production v1 在 admitted facts / claims存在時可解讀：
 
 不得因 chart含更多可計算欄位就自動擴充到未 admitted systems。
 
+### 2.1 Semantic Profile Interaction Policy
+
+Ordinary natal interpretation：explicit admitted `semantic_profile` → `explicit_user_choice`；omitted/null → `composable-symbolic-modern-v1` + `project_default`。Project default 必須在 user-facing output 揭露。
+
+此 profile 是 bounded project UX default，不代表唯一／canonical／客觀正確的占星傳統，也不是科學人格模型。它只選擇既有 admitted semantic claims，不新增 admission、補 unsupported factors或改變 explicit-request-only routing。
+
+Profile / selection provenance 由 reading request + orchestrator 正規化；registry / selector不得自行 silent-default。Explicit 未 admission profile → fail closed。
+
 ## 3. House Policy
 
 Known-time production採用下列 interaction profile：

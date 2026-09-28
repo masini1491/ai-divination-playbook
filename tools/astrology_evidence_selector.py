@@ -522,7 +522,13 @@ def _claim_matches(claim: dict[str, Any], selector: dict[str, Any], required_app
     return True
 
 
-def _select_claims(registry_index: dict[str, dict[str, Any]], selector: dict[str, Any], required_applicability: set[str]) -> list[dict[str, str]]:
+def _select_claims(
+    registry_index: dict[str, dict[str, Any]],
+    selector: dict[str, Any],
+    required_applicability: set[str],
+    *,
+    inherited_semantic_profile: str | None = None,
+) -> list[dict[str, str]]:
     requested_registry = selector.get("registry_record_id")
     if requested_registry is not None:
         if requested_registry not in registry_index:
@@ -531,7 +537,12 @@ def _select_claims(registry_index: dict[str, dict[str, Any]], selector: dict[str
     else:
         candidates = sorted(registry_index.items())
 
-    requested_profile = selector.get("semantic_profile")
+    selector_profile = selector.get("semantic_profile")
+    if selector_profile is not None and inherited_semantic_profile is not None and selector_profile != inherited_semantic_profile:
+        raise AstrologyEvidenceSelectionError(
+            f"claim selector {selector['selector_id']} semantic_profile conflicts with normalized reading profile={inherited_semantic_profile}"
+        )
+    requested_profile = selector_profile if selector_profile is not None else inherited_semantic_profile
     matches: list[dict[str, str]] = []
     for registry_id, registry in candidates:
         policy = registry.get("selection_policy", {})
@@ -562,7 +573,7 @@ def _select_claims(registry_index: dict[str, dict[str, Any]], selector: dict[str
                         f"claim selector {selector['selector_id']} requires semantic_profile={required_profile} for registry {registry_id}"
                     )
                 continue
-        elif requested_profile is not None:
+        elif selector_profile is not None:
             continue
         for claim in registry.get("claims", []):
             if isinstance(claim, dict) and isinstance(claim.get("claim_id"), str) and _claim_matches(claim, selector, required_applicability):
@@ -624,6 +635,12 @@ def select_evidence(reading_run: Any, typed_request: Any, *, repo_root: Path | N
     claim_requests: list[dict[str, Any]] = []
     claim_provenance: list[dict[str, Any]] = []
     seen_claims: set[tuple[str, str]] = set()
+    normalized_request = run.get("normalized_request", {})
+    inherited_semantic_profile = (
+        normalized_request.get("semantic_profile")
+        if isinstance(normalized_request, dict) and isinstance(normalized_request.get("semantic_profile"), str)
+        else None
+    )
     for selector in request["claim_selectors"]:
         linked_ids = selector["fact_selector_ids"]
         linked_refs = _dedupe_fact_refs([ref for selector_id in linked_ids for ref in refs_by_selector[selector_id]])
@@ -647,7 +664,12 @@ def select_evidence(reading_run: Any, typed_request: Any, *, repo_root: Path | N
                     manifest,
                 )
             )
-        matches = _select_claims(registries, selector, required_applicability)
+        matches = _select_claims(
+            registries,
+            selector,
+            required_applicability,
+            inherited_semantic_profile=inherited_semantic_profile,
+        )
         _guard_fact_only_claim_binding(
             run,
             selectors_by_id,

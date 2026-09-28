@@ -568,7 +568,7 @@
     "source_binding": "typed_fact_applicability_required",
     "semantic_profile_required_for_planet_sign_registry": "composable-symbolic-modern-v1",
     "semantic_profile_required_for_north_node_sign_registry": "composable-symbolic-modern-v1",
-    "silent_default_semantic_profile": "forbidden",
+    "silent_default_semantic_profile": "forbidden_inside_registry_or_selector",
     "semantic_profiles": {
       "composable-symbolic-modern-v1": {
         "scope": "bounded composable symbolic interpretation for admitted planet functions and separately admitted mean-North-Node function + sign style",
@@ -676,6 +676,27 @@
         "source_admission"
       ],
       "model_memory_backfill": "forbidden"
+    },
+    "semantic_profile_interaction_profile": {
+      "policy_id": "semantic-profile-default-composable-symbolic-modern-v1",
+      "scope": "ordinary_natal_interpretation_only",
+      "default_semantic_profile": "composable-symbolic-modern-v1",
+      "default_on": [
+        "omitted",
+        "null"
+      ],
+      "explicit_user_choice_overrides_default": true,
+      "normalized_profile_field": "semantic_profile",
+      "normalized_selection_field": "semantic_profile_selection",
+      "default_selection_value": "project_default",
+      "explicit_selection_value": "explicit_user_choice",
+      "registry_or_selector_silent_default": "forbidden",
+      "disclosure_required_for_project_default": true,
+      "disclosure_boundary": "project UX default; not unique, canonical, objectively correct, scientific, or psychometric truth",
+      "unsupported_profile_behavior": "fail_closed",
+      "transit_default_activation": false,
+      "semantic_admission_expansion": false,
+      "method_routing_expansion": false
     }
   },
   "extended_ephemeris_provider": {

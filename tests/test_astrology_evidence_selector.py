@@ -363,35 +363,64 @@ class AstrologyEvidenceSelectorTests(unittest.TestCase):
         for claim in handoff["selected_claims"]:
             self.assertEqual(["context:modern_contemporary"], claim["historical_context_refs"])
 
-    def test_planet_sign_registry_requires_explicit_semantic_profile(self):
+    def test_planet_sign_registry_inherits_normalized_project_default_profile(self):
+        run = run_request(load(NATAL_READING))
+        self.assertEqual(
+            "composable-symbolic-modern-v1",
+            run["normalized_request"]["semantic_profile"],
+        )
+        self.assertEqual("project_default", run["normalized_request"]["semantic_profile_selection"])
+        typed = {
+            "schema_name": "astrology_typed_evidence_selection_request",
+            "schema_version": "1.0.0",
+            "question_id": "typed-inherited-semantic-profile",
+            "question": "Use the normalized reading profile without selector-local defaulting.",
+            "fact_selectors": [{
+                "selector_id": "sun",
+                "selector_kind": "object",
+                "bundle": "natal",
+                "cardinality": "exactly_one",
+                "object_id": "Sun",
+                "object_type": "planet",
+            }],
+            "claim_selectors": [{
+                "selector_id": "sun-core",
+                "registry_record_id": "planet-sign-composable-semantics-research-v1",
+                "claim_type": "planet_function",
+                "applicability_scope": "object_core",
+                "applies_to_all": ["natal"],
+                "fact_selector_ids": ["sun"],
+            }],
+        }
+        selection = select_evidence(run, typed, repo_root=ROOT)
+        self.assertEqual("claim:planet-function:sun", selection["claim_requests"][0]["claim_id"])
+
+    def test_selector_profile_cannot_conflict_with_normalized_reading_profile(self):
         run = run_request(load(NATAL_READING))
         typed = {
             "schema_name": "astrology_typed_evidence_selection_request",
             "schema_version": "1.0.0",
-            "question_id": "typed-missing-semantic-profile",
-            "question": "Do not silently choose a planet-sign interpretation framework.",
-            "fact_selectors": [
-                {
-                    "selector_id": "sun",
-                    "selector_kind": "object",
-                    "bundle": "natal",
-                    "cardinality": "exactly_one",
-                    "object_id": "Sun",
-                    "object_type": "planet",
-                }
-            ],
-            "claim_selectors": [
-                {
-                    "selector_id": "sun-core",
-                    "registry_record_id": "planet-sign-composable-semantics-research-v1",
-                    "claim_type": "planet_function",
-                    "applicability_scope": "object_core",
-                    "applies_to_all": ["natal"],
-                    "fact_selector_ids": ["sun"],
-                }
-            ],
+            "question_id": "typed-conflicting-semantic-profile",
+            "question": "Reject selector-local profile drift.",
+            "fact_selectors": [{
+                "selector_id": "sun",
+                "selector_kind": "object",
+                "bundle": "natal",
+                "cardinality": "exactly_one",
+                "object_id": "Sun",
+                "object_type": "planet",
+            }],
+            "claim_selectors": [{
+                "selector_id": "sun-core",
+                "registry_record_id": "planet-sign-composable-semantics-research-v1",
+                "semantic_profile": "different-profile",
+                "claim_type": "planet_function",
+                "applicability_scope": "object_core",
+                "applies_to_all": ["natal"],
+                "fact_selector_ids": ["sun"],
+            }],
         }
-        with self.assertRaisesRegex(AstrologyEvidenceSelectionError, "requires semantic_profile=composable-symbolic-modern-v1"):
+        with self.assertRaisesRegex(AstrologyEvidenceSelectionError, "conflicts with normalized reading profile"):
             select_evidence(run, typed, repo_root=ROOT)
 
     def test_ambiguous_claim_selector_fails_closed(self):

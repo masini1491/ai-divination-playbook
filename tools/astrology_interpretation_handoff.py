@@ -412,6 +412,22 @@ def build_handoff(run: Any, request: Any, *, repo_root: Path | None = None) -> d
         if registry_id not in admitted_registry_ids:
             raise InterpretationHandoffError(f"registry is not production-admitted: {registry_id}")
         registry_entry = registries[registry_id]
+        registry_data = registry_entry.get("data", {})
+        selection_policy = registry_data.get("selection_policy", {}) if isinstance(registry_data, dict) else {}
+        if not isinstance(selection_policy, dict):
+            selection_policy = {}
+        required_profile = selection_policy.get("required_semantic_profile")
+        if isinstance(required_profile, str) and required_profile:
+            normalized_run_request = admitted_run.get("normalized_request", {})
+            run_profile = (
+                normalized_run_request.get("semantic_profile")
+                if isinstance(normalized_run_request, dict)
+                else None
+            )
+            if run_profile != required_profile:
+                raise InterpretationHandoffError(
+                    f"registry {registry_id} requires normalized semantic_profile={required_profile}"
+                )
         admitted_claim = _admit_claim(registry_entry, claim_request["claim_id"], source_policy)
         admitted_claim["fact_refs"] = claim_request["fact_refs"]
         selected_claims.append(admitted_claim)
@@ -457,6 +473,27 @@ def build_handoff(run: Any, request: Any, *, repo_root: Path | None = None) -> d
             if notice not in disclosures:
                 disclosures.append(notice)
 
+    normalized_run_request = admitted_run.get("normalized_request", {})
+    if isinstance(normalized_run_request, dict) and normalized_run_request.get("reading_mode") == "natal":
+        semantic_profile_policy = manifest.get("natal_semantic_policy", {}).get(
+            "semantic_profile_interaction_profile", {}
+        )
+        if isinstance(semantic_profile_policy, dict):
+            default_profile = semantic_profile_policy.get("default_semantic_profile")
+            default_selection = semantic_profile_policy.get("default_selection_value")
+            if (
+                isinstance(default_profile, str)
+                and normalized_run_request.get("semantic_profile") == default_profile
+                and normalized_run_request.get("semantic_profile_selection") == default_selection
+            ):
+                notice = (
+                    f"Semantic profile: {default_profile} (project default). "
+                    "This is a bounded project UX default for admitted symbolic interpretation; "
+                    "it is not the unique, canonical, objectively correct, scientific, or psychometric astrology framework."
+                )
+                if notice not in disclosures:
+                    disclosures.append(notice)
+
     if used_conflicts:
         disclosures.append("Registered interpretation conflicts are preserved below and must not be silently averaged or erased.")
 
@@ -490,6 +527,16 @@ def build_handoff(run: Any, request: Any, *, repo_root: Path | None = None) -> d
             "reading_mode": admitted_run.get("normalized_request", {}).get("reading_mode"),
             "subject_ref": admitted_run.get("normalized_request", {}).get("subject_ref"),
             "orchestrator": admitted_run.get("orchestrator"),
+            **(
+                {
+                    "semantic_profile": admitted_run["normalized_request"]["semantic_profile"],
+                    "semantic_profile_selection": admitted_run["normalized_request"]["semantic_profile_selection"],
+                }
+                if isinstance(admitted_run.get("normalized_request"), dict)
+                and isinstance(admitted_run["normalized_request"].get("semantic_profile"), str)
+                and isinstance(admitted_run["normalized_request"].get("semantic_profile_selection"), str)
+                else {}
+            ),
         },
         "selected_facts": selected_facts,
         "selected_claims": selected_claims,
