@@ -985,6 +985,53 @@ Ordering rationale:
   - STOP — all four v3 admission candidates are now production-admitted; further star×palace expansion requires a new research stage or separate explicitly authorized research action.
 
 
+### ZW-P2-026 — Sparse star×palace contextual research v4
+
+- type: RESEARCH / INTERPRETATION
+- status: OPEN
+- priority: P2
+- owner: Zi Wei interpretation evidence
+- blocked_by:
+  - ZW-P2-025 — DONE
+- shared_development_playbook_reviewed: `masini1491/ai-development-playbook@9236b42550b7f748cc6c5744075d106e643c6042`
+- trigger:
+  - all four v3 admission candidates are production-admitted;
+  - further sparse star×palace expansion requires a new source-first research stage rather than continuing the old candidate list.
+- research_goal:
+  - perform V4 source-first candidate discovery against current 7 admitted star×palace overrides;
+  - require material semantic distinctness beyond existing star-core + palace-domain L5 composition;
+  - preserve historical / practitioner source roles and reject source-explicit but redundant pairs;
+  - remain research-only until a later separate production-admission action is explicitly authorized.
+- first_batch_priority:
+  1. `天機×福德宮` — strongest preliminary candidate; test whether the historical "先勞後逸" directional pattern remains materially distinct after full source reconciliation and safe normalization;
+  2. `紫微×奴僕宮` — candidate; test support-network effectiveness + favorable/adverse condition reversal while preserving historical 奴僕 scope versus modern 交友 expansion;
+  3. `天同×財帛宮` — candidate with wealth-safety hardening; test whether historical self-made / later-forming resource trajectory adds material information without becoming guaranteed wealth prediction.
+- control_and_defer_set:
+  - `天機×財帛宮` — preliminary `BORDERLINE`; current evidence may remain representable as 天機 thought/planning + 財帛 resource-acquisition L5 composition;
+  - `巨門×奴僕宮` — preliminary `BORDERLINE / LIKELY-REDUNDANT`; dispute / communication semantics may already be covered by 巨門 core + 奴僕 support-relationship domain;
+  - `破軍×福德宮` — `DEFER`; current historical + practitioner material risks collapsing into generic 破軍 disruption + 福德 unrest, and practitioner marriage projection must not become production doctrine;
+  - `太陽×父母宮` / `太陰×父母宮` / `天梁×父母宮` — `REJECT-REDUNDANT controls` unless new condition-specific evidence materially exceeds existing parent-symbol / parent-domain claims.
+- health_domain_boundary:
+  - source-explicit 疾厄宮 star×palace material exists but is excluded from this ordinary V4 batch;
+  - any 疾厄宮 expansion requires a separate health-safe bounded research stage with explicit high-stakes health / injury / death safety gates;
+  - no concrete disease, injury, mortality or diagnostic prediction may be admitted from this V4 item.
+- production_boundary:
+  - current production remains exactly 7 sparse star×palace claims;
+  - no registry / admission manifest / runtime / pipeline / claim-count change in this research item;
+  - no 14×12 Cartesian expansion;
+  - no guaranteed relationship, wealth, property, health, injury, death or other concrete event prediction.
+- expected_outputs:
+  - `references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md`;
+  - bounded candidate / borderline / reject classifications with explicit source-role and material-distinctness rationale;
+  - recommended later production-review order only for candidates that pass the V4 gate.
+- completion_gate:
+  - current historical primary-text locators and pinned practitioner evidence reconciled;
+  - admitted / rejected / deferred V1-V3 pairs excluded from duplicate rediscovery;
+  - each proposed candidate compared against existing star-core + palace-domain claims;
+  - high-risk domains separated before user-facing doctrine;
+  - research owner + research README + backlog synchronized;
+  - production admission remains a separate bounded action after research closure.
+
 ### ZW-P2-050 — Body-Palace overlay interpretation admission
 
 - type: FEATURE / INTERPRETATION / NATAL OVERLAY
