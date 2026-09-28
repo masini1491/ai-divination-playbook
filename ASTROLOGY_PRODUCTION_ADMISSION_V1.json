@@ -71,7 +71,23 @@
       "semantic_interpretation_authority": false,
       "final_text_authority": false,
       "final_method_owner": "ASTROLOGY.md",
-      "final_output_owner": "CHATGPT_OUTPUT.md"
+      "final_output_owner": "CHATGPT_OUTPUT.md",
+      "natal_synthesis_profile": {
+        "profile_id": "evidence-bounded-concrete-natal-v1",
+        "activation": "explicit_output_draft_only",
+        "reading_mode": "natal",
+        "theme_count": {
+          "min": 3,
+          "max": 5
+        },
+        "theme_requires_admitted_fact_refs": true,
+        "theme_requires_admitted_semantic_claim_refs": true,
+        "limiting_condition_requires_own_evidence_refs": true,
+        "unsupported_factor_suppression_required": true,
+        "semantic_interpretation_authority": false,
+        "claim_admission_authority": false,
+        "user_feedback_semantic_authority": false
+      }
     },
     "end_to_end_pipeline": {
       "pipeline_id": "astrology-production-reading-pipeline-v1",
