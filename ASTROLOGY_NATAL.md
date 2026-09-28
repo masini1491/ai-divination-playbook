@@ -148,7 +148,7 @@ Yod、Stellium、Grand Quintile 另走 `tools/astrology_special_pattern_projecti
 5. state provenance / uncertainty
 6. select only relevant houses / dignity / aspects
 7. preserve source/tradition conflicts
-8. minimum-sufficient synthesis
+8. minimum-sufficient synthesis（broad → `ASTROLOGY_NATAL_SYNTHESIS.md`）
 ```
 
 不要為了「完整」傾倒整張盤所有 factor；輸出仍受 `CHATGPT_OUTPUT.md` minimum-sufficient與Pre-Send gate約束。
