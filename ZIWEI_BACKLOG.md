@@ -1121,9 +1121,19 @@ Ordering rationale:
   - coverage delta = +10 reviewed / +7 resolved;
   - coverage state = reviewed 46 / resolved 29 / unreviewed 122 / dedicated L4 7 / bounded L5 22 / deferred 17;
   - production claim count/runtime/pipeline remain unchanged.
+- batch_4_natal_priority_result:
+  - requested priority set: `武曲×命宮`、`紫微×官祿宮`、`太陽×父母宮`、`天梁×父母宮`、`廉貞×財帛宮`、`天府×財帛宮`、`天同×兄弟宮`、`巨門×兄弟宮`、`太陰×子女宮`、`七殺×福德宮`;
+  - previously reviewed controls remain resolved bounded-L5: `紫微×官祿宮`、`太陽×父母宮`、`天梁×父母宮`、`七殺×福德宮`;
+  - new admission candidates / reviewed unresolved: `廉貞×財帛宮`、`武曲×命宮`;
+  - new resolved bounded-L5 cells: `天府×財帛宮`、`天同×兄弟宮`、`巨門×兄弟宮`;
+  - new high-risk bounded cell: `太陰×子女宮` — source-explicit child sex/count/health/outcome doctrine remains non-production;
+  - coverage delta = +6 reviewed / +4 resolved;
+  - coverage state = reviewed 52 / resolved 33 / unreviewed 116 / dedicated L4 7 / bounded L5 25 / high-risk 1 / deferred 19;
+  - recommended separate production-admission order: `廉貞×財帛宮` then `武曲×命宮`;
+  - production claim count/runtime/pipeline remain unchanged in this research batch.
 - next_batch:
-  - continue by complete palace rows where feasible; keep 疾厄宮 on its separate health-safe path;
-  - production admission for any V4 candidate remains a separate action.
+  - prioritize separate admission review for `廉貞×財帛宮`, then `武曲×命宮`; keep research/admission as separate actions;
+  - after natal-priority admission work, continue complete palace rows where feasible; keep 疾厄宮 on its separate health-safe path.
 - completion_gate:
   - current historical primary-text locators and pinned practitioner evidence reconciled;
   - admitted / rejected / deferred V1-V3 pairs excluded from duplicate rediscovery;
