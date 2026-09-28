@@ -652,6 +652,63 @@ Ordering rationale:
   - admission separate from dynamic calculation availability;
   - no generic flow prediction filler when a layer has calculation facts but no admitted interpretation claim.
 
+### ZW-P1-050 — Full 14×12 star×palace coverage routing architecture
+
+- type: ARCHITECTURE / ROUTING / COVERAGE INDEX
+- status: IN_PROGRESS
+- priority: P1
+- owner: Zi Wei interpretation architecture
+- blocked_by:
+  - ZW-P2-025 — DONE
+- shared_development_playbook_reviewed: `masini1491/ai-development-playbook@9236b42550b7f748cc6c5744075d106e643c6042`
+- goal:
+  - make all `14 × 12 = 168` major-star × palace identities machine-visible without forcing 168 dedicated L4 doctrines;
+  - separate coverage completeness from dedicated production-claim admission;
+  - optimize ChatGPT routing so ordinary lookup resolves one compact cell first, then loads only the minimum necessary L4/L5/conditional/high-risk detail.
+- target_completion_metrics:
+  - `total_cells = 168`;
+  - `reviewed_cells` = cells with an explicit research/classification result, including deferred cells;
+  - `resolved_cells` = cells with a stable production routing mode;
+  - project completion target = `resolved_cells = 168`;
+  - `DEDICATED_L4` count remains an independent quality/evidence metric and is not the 168-cell completion target.
+- routing_modes:
+  - `DEDICATED_L4` — exact source/admission-backed contextual override;
+  - `BOUNDED_L5_COMPOSITION` — reviewed and resolved via existing star core + palace domain;
+  - `CONDITIONAL_ONLY` — meaning is valid only under explicit admitted conditions/modifiers;
+  - `HIGH_RISK_BOUNDED` — reviewed high-stakes domain with stricter safe-rendering policy;
+  - `DEFERRED_EVIDENCE` — reviewed but not yet resolved; does not count toward `resolved_cells`;
+  - `UNREVIEWED` — identity exists but no completed classification yet.
+- architecture_boundary:
+  - current 7 dedicated star×palace production claims remain unchanged during the architecture refactor;
+  - full 168-cell coverage enumeration does not grant 168 dedicated L4 claims;
+  - coverage/index metadata is routing/control-plane data, not semantic source authority;
+  - research/provenance remains in canonical research/source owners;
+  - generated Hot index must stay compact and must not inline long-form evidence, historical quotations or full doctrine text;
+  - no model-memory filler for unresolved cells.
+- first_stage_outputs:
+  - `references/ziwei/STAR_PALACE_COVERAGE_ARCHITECTURE_V1.md`;
+  - `schemas/ziwei/ZIWEI_STAR_PALACE_COVERAGE_V1.schema.json`;
+  - project-owned coverage decision input for already researched V1–V3 cells;
+  - deterministic generator for exactly 168 unique cell identities;
+  - compact generated `indexes/ziwei/star_palace_coverage_v1.json`;
+  - routing metadata in `PLAYBOOK_INDEX.json`;
+  - structural/regression tests for 168 uniqueness, mode/count invariants, known dedicated L4 mapping and Hot-index size;
+  - repository architecture adoption of `indexes/ziwei/**` as routing-only supporting surface.
+- backfill_policy:
+  - all current 7 production-admitted pairs become `DEDICATED_L4 / resolved`;
+  - V1–V3 explicitly rejected redundant cells may become `BOUNDED_L5_COMPOSITION / resolved` when the research record establishes that generic composition is sufficient;
+  - V1–V3 deferred/borderline cells remain `DEFERRED_EVIDENCE / reviewed-not-resolved`;
+  - V4 preliminary discovery does not become resolved merely because it is listed in backlog.
+- completion_gate:
+  - schema/index/generator/architecture docs and tests are synchronized;
+  - index contains exactly 168 unique canonical star×palace cells;
+  - current dedicated L4 claim registry is referenced, not duplicated as source authority;
+  - `reviewed_cells + unreviewed_cells = 168`;
+  - `resolved_cells <= reviewed_cells <= 168`;
+  - Hot index load footprint is measured and kept bounded;
+  - existing 7 production interpretations and claim counts do not change during this architecture stage;
+  - formal candidate validation + merge + exact-main read-back complete before architecture stage is marked DONE.
+
 ## P2 — later expansion
 
 ### ZW-P2-010 — M1 high-impact auxiliary stars
@@ -993,12 +1050,13 @@ Ordering rationale:
 - owner: Zi Wei interpretation evidence
 - blocked_by:
   - ZW-P2-025 — DONE
+  - ZW-P1-050 — IN_PROGRESS
 - shared_development_playbook_reviewed: `masini1491/ai-development-playbook@9236b42550b7f748cc6c5744075d106e643c6042`
 - trigger:
   - all four v3 admission candidates are production-admitted;
   - further sparse star×palace expansion requires a new source-first research stage rather than continuing the old candidate list.
 - research_goal:
-  - perform V4 source-first candidate discovery against current 7 admitted star×palace overrides;
+  - continue V4 source-first candidate discovery after the 168-cell coverage/routing architecture is admitted;
   - require material semantic distinctness beyond existing star-core + palace-domain L5 composition;
   - preserve historical / practitioner source roles and reject source-explicit but redundant pairs;
   - remain research-only until a later separate production-admission action is explicitly authorized.
@@ -1018,10 +1076,11 @@ Ordering rationale:
 - production_boundary:
   - current production remains exactly 7 sparse star×palace claims;
   - no registry / admission manifest / runtime / pipeline / claim-count change in this research item;
-  - no 14×12 Cartesian expansion;
+  - no 14×12 dedicated-L4 Cartesian expansion; the architecture may enumerate all 168 identities as routing/coverage cells;
   - no guaranteed relationship, wealth, property, health, injury, death or other concrete event prediction.
 - expected_outputs:
   - `references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md`;
+  - update the canonical 168-cell coverage classification/routing state produced by ZW-P1-050;
   - bounded candidate / borderline / reject classifications with explicit source-role and material-distinctness rationale;
   - recommended later production-review order only for candidates that pass the V4 gate.
 - completion_gate:
