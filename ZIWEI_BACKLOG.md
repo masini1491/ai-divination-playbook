@@ -1191,10 +1191,18 @@ Ordering rationale:
   - coverage delta = +12 reviewed / +9 resolved;
   - coverage state = reviewed 141 / resolved 106 / unreviewed 27 / dedicated L4 9 / bounded L5 74 / high-risk 23 / deferred 35;
   - production claim count/runtime/pipeline remain unchanged.
+- batch_13_result:
+  - full `子女宮` row is now 14/14 reviewed and 14/14 resolved;
+  - all 13 newly reviewed cells route `HIGH_RISK_BOUNDED`;
+  - exact child count/sex/order, fertility/infertility, conception, disability/health, survival/loss, lineage continuation and guaranteed achievement/failure doctrine remain non-production;
+  - coverage delta = +13 reviewed / +13 resolved;
+  - coverage state = reviewed 154 / resolved 119 / unreviewed 14 / dedicated L4 9 / bounded L5 74 / high-risk 36 / deferred 35;
+  - no new admission candidate; production claim count/runtime/pipeline remain unchanged.
 - next_batch:
-  - continue with the remaining ordinary `子女宮` row;
-  - keep all V4 admission candidates research-only until separate bounded production-admission authorization;
-  - keep 疾厄宮 on its separate health-safe path.
+  - all ordinary non-health palace rows are reviewed;
+  - remaining unreviewed cells are exactly the 14 `疾厄宮` cells;
+  - enter the separate health-safe research path with explicit medical/injury/mortality safety gates; do not process 疾厄宮 as an ordinary V4 row;
+  - keep all V4 admission candidates research-only until separate bounded production-admission authorization.
 - completion_gate:
   - current historical primary-text locators and pinned practitioner evidence reconciled;
   - admitted / rejected / deferred V1-V3 pairs excluded from duplicate rediscovery;
