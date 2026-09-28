@@ -1062,7 +1062,7 @@ Ordering rationale:
 ### ZW-P2-026 — Sparse star×palace contextual research v4
 
 - type: RESEARCH / INTERPRETATION
-- status: OPEN
+- status: IN_PROGRESS
 - priority: P2
 - owner: Zi Wei interpretation evidence
 - blocked_by:
@@ -1100,6 +1100,16 @@ Ordering rationale:
   - update the canonical 168-cell coverage classification/routing state produced by ZW-P1-050;
   - bounded candidate / borderline / reject classifications with explicit source-role and material-distinctness rationale;
   - recommended later production-review order only for candidates that pass the V4 gate.
+- batch_1_result:
+  - research owner: `references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md`;
+  - admission candidates / reviewed unresolved: `天機×福德宮`、`紫微×奴僕宮`、`天同×財帛宮`;
+  - resolved bounded-L5 controls: `天機×財帛宮`、`巨門×奴僕宮`、`破軍×福德宮`、`太陽×父母宮`、`太陰×父母宮`、`天梁×父母宮`;
+  - coverage delta = +9 reviewed / +6 resolved;
+  - coverage state = reviewed 24 / resolved 17 / unreviewed 144 / dedicated L4 7 / bounded L5 10 / deferred 7;
+  - production claim count/runtime/pipeline remain unchanged.
+- next_batch:
+  - continue source-first review of unresolved/unreviewed non-health cells under the 168-cell matrix;
+  - production admission for any V4 candidate remains a separate action.
 - completion_gate:
   - current historical primary-text locators and pinned practitioner evidence reconciled;
   - admitted / rejected / deferred V1-V3 pairs excluded from duplicate rediscovery;
