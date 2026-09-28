@@ -125,8 +125,6 @@ Liuyao 若原題只需要 outcome / obstacle，就不因 engine 提供大量欄�
 
 核心原則：**輸出的是與契約有連結的證據，不是展示所有可能象徵或所有可取得欄位。**
 
-Astrology broad natal若啟用 `evidence-bounded-concrete-natal-v1`，final draft須再讀並滿足 `ASTROLOGY_NATAL_SYNTHESIS.md`。
-
 ## 7. 信心語言要與證據相稱
 
 若沒有獨立、經驗證的統計模型，不把 Tarot／Meihua／Liuyao 象徵直接轉成：
