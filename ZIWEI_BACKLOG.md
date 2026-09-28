@@ -1165,6 +1165,8 @@ Ordering rationale:
   - dignity / brightness remains modifier-only;
   - no 14×12 Cartesian expansion;
   - no borrowing doctrine from any different star×palace occupancy.
+- candidate_bridge:
+  - canonical Zi Wei bundle regeneration completed through the temporary PR bridge; the bridge is absent from the final candidate tree before formal validation.
 - completion_gate:
   - registry / module admission / root admission / coverage decision+index / docs / tests synchronized;
   - canonical generator refreshes derived Zi Wei bundle;
