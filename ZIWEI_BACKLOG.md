@@ -1214,7 +1214,7 @@ Ordering rationale:
 ### ZW-P2-027 — Admit 廉貞×財帛宮 sparse contextual claim
 
 - type: FEATURE / INTERPRETATION / PRODUCTION ADMISSION
-- status: IN_PROGRESS
+- status: DONE
 - priority: P2
 - owner: Zi Wei production maintenance
 - blocked_by:
@@ -1240,11 +1240,16 @@ Ordering rationale:
   - registry / module admission / root admission / coverage decision+index / docs / tests synchronized;
   - canonical generator refreshes derived Zi Wei bundle;
   - formal PR validation + merge + canonical read-back complete; exact-main validation/artifact recorded only when established.
+- closure:
+  - implementation merged by PR #339 at `67fcfa8f5016bc33178d4689f34a45763f5c7bd0`; PR head `b4fcbaf5c9270438fe5a6984603adb3b9768648f`;
+  - PR #339 `Validate Playbook` run `36391887831` completed successfully;
+  - merge-commit canonical read-back confirms base natal claims `67`, maximum optional claims `84`, star×palace claims `8`, and admitted pair `廉貞×財帛宮`;
+  - current main retains `ZW-SP-LIANZHEN-WEALTH-001` in the production registry/admission stack after the subsequent `武曲×命宮` admission.
 
 ### ZW-P2-028 — Admit 武曲×命宮 sparse contextual claim
 
 - type: FEATURE / INTERPRETATION / PRODUCTION ADMISSION
-- status: IN_PROGRESS
+- status: DONE
 - priority: P2
 - owner: Zi Wei production maintenance
 - blocked_by:
@@ -1270,6 +1275,11 @@ Ordering rationale:
   - registry / module admission / root admission / coverage / docs / tests synchronized;
   - canonical generator refreshes the derived Zi Wei bundle;
   - formal PR validation + merge + canonical read-back complete; exact-main validation/artifact recorded only when established.
+- closure:
+  - implementation merged by PR #340 at `05c4235d47e06fef903ad12fe0471e01ec8efdb0`; PR head `9d1e021ff5cbd976bd55e822a8af5ef2cbab82d5`;
+  - PR #340 `Validate Playbook` run `36393435646` completed successfully;
+  - merge-commit canonical read-back confirms base natal claims `68`, maximum optional claims `85`, star×palace claims `9`, and admitted pair `武曲×命宮`;
+  - current main retains `ZW-SP-WUQU-MING-001` in the production registry/admission stack.
 
 ### ZW-P2-050 — Body-Palace overlay interpretation admission
 
