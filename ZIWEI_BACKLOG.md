@@ -1147,16 +1147,16 @@ Ordering rationale:
 - batch_7_result:
   - full `夫妻宮` row is now 14/14 reviewed and 14/14 resolved;
   - new resolved bounded-L5 cells: `紫微×夫妻宮`、`天同×夫妻宮`、`天府×夫妻宮`、`太陰×夫妻宮`、`天相×夫妻宮`、`天梁×夫妻宮`;
-  - new high-risk bounded cells: `天機×夫妻宮`、`太陽×夫妻宮`、`武曲×夫妻宮`、`廉貞×夫妻宮`、`七殺×夫妻宮`;
-  - coverage delta = +11 reviewed / +11 resolved;
-  - coverage state = reviewed 82 / resolved 61 / unreviewed 86 / dedicated L4 9 / bounded L5 35 / high-risk 17 / deferred 21;
+  - new high-risk bounded cells: `天機×夫妻宮`、`太陽×夫妻宮`、`武曲×夫妻宮`、`廉貞×夫妻宮`、`七殺×夫妻宮`; prior `巨門×夫妻宮` deferred evidence is reclassified `HIGH_RISK_BOUNDED` after full-row safety review;
+  - coverage delta = +11 reviewed / +12 resolved (including prior `巨門×夫妻宮` deferred → high-risk bounded);
+  - coverage state = reviewed 82 / resolved 62 / unreviewed 86 / dedicated L4 9 / bounded L5 35 / high-risk 18 / deferred 20;
   - no new admission candidate; production claim count/runtime/pipeline remain unchanged.
 - batch_8_result:
   - full `遷移宮` row is now 14/14 reviewed and 8/14 resolved;
   - new admission candidates / reviewed unresolved: `天機×遷移宮`、`太陽×遷移宮`、`武曲×遷移宮`、`廉貞×遷移宮`、`七殺×遷移宮`;
   - new resolved bounded-L5 cells: `天同×遷移宮`、`天府×遷移宮`、`太陰×遷移宮`、`巨門×遷移宮`、`天相×遷移宮`、`天梁×遷移宮`;
   - coverage delta = +11 reviewed / +6 resolved;
-  - coverage state = reviewed 93 / resolved 67 / unreviewed 75 / dedicated L4 9 / bounded L5 41 / high-risk 17 / deferred 26;
+  - coverage state = reviewed 93 / resolved 68 / unreviewed 75 / dedicated L4 9 / bounded L5 41 / high-risk 18 / deferred 25;
   - production claim count/runtime/pipeline remain unchanged.
 - batch_9_result:
   - full `田宅宮` row is now 14/14 reviewed and 8/14 resolved;
@@ -1165,14 +1165,14 @@ Ordering rationale:
   - new high-risk bounded cell: `廉貞×田宅宮`;
   - new evidence-gap deferred cell: `七殺×田宅宮` — no clean standalone primary-text paragraph established;
   - coverage delta = +12 reviewed / +6 resolved;
-  - coverage state = reviewed 105 / resolved 73 / unreviewed 63 / dedicated L4 9 / bounded L5 46 / high-risk 18 / deferred 32;
+  - coverage state = reviewed 105 / resolved 74 / unreviewed 63 / dedicated L4 9 / bounded L5 46 / high-risk 19 / deferred 31;
   - production claim count/runtime/pipeline remain unchanged.
 - batch_10_result:
   - full `命宮` row is now 14/14 reviewed and 14/14 resolved;
   - all 12 newly reviewed cells route `BOUNDED_L5_COMPOSITION`; no new admission candidate;
   - `天相×命宮` and `武曲×命宮` remain the only dedicated 命宮 overrides and were not generalized;
   - coverage delta = +12 reviewed / +12 resolved;
-  - coverage state = reviewed 117 / resolved 85 / unreviewed 51 / dedicated L4 9 / bounded L5 58 / high-risk 18 / deferred 32;
+  - coverage state = reviewed 117 / resolved 86 / unreviewed 51 / dedicated L4 9 / bounded L5 58 / high-risk 19 / deferred 31;
   - production claim count/runtime/pipeline remain unchanged.
 - batch_11_result:
   - full `兄弟宮` row is now 14/14 reviewed and 14/14 resolved;
@@ -1180,7 +1180,7 @@ Ordering rationale:
   - new high-risk bounded cells: `貪狼×兄弟宮`、`天梁×兄弟宮`、`七殺×兄弟宮`、`破軍×兄弟宮`;
   - exact sibling count / half-sibling / loss / guaranteed estrangement doctrine remains non-production;
   - coverage delta = +12 reviewed / +12 resolved;
-  - coverage state = reviewed 129 / resolved 97 / unreviewed 39 / dedicated L4 9 / bounded L5 66 / high-risk 22 / deferred 32;
+  - coverage state = reviewed 129 / resolved 98 / unreviewed 39 / dedicated L4 9 / bounded L5 66 / high-risk 23 / deferred 31;
   - no new admission candidate; production claim count/runtime/pipeline remain unchanged.
 - batch_12_result:
   - full `奴僕宮` row is now 14/14 reviewed and 10/14 resolved;
@@ -1189,14 +1189,14 @@ Ordering rationale:
   - new high-risk bounded cell: `七殺×奴僕宮`; concrete theft/betrayal accusations remain non-production;
   - historical 奴僕 scope is not silently expanded into modern 交友 / peers / partnerships;
   - coverage delta = +12 reviewed / +9 resolved;
-  - coverage state = reviewed 141 / resolved 106 / unreviewed 27 / dedicated L4 9 / bounded L5 74 / high-risk 23 / deferred 35;
+  - coverage state = reviewed 141 / resolved 107 / unreviewed 27 / dedicated L4 9 / bounded L5 74 / high-risk 24 / deferred 34;
   - production claim count/runtime/pipeline remain unchanged.
 - batch_13_result:
   - full `子女宮` row is now 14/14 reviewed and 14/14 resolved;
   - all 13 newly reviewed cells route `HIGH_RISK_BOUNDED`;
   - exact child count/sex/order, fertility/infertility, conception, disability/health, survival/loss, lineage continuation and guaranteed achievement/failure doctrine remain non-production;
   - coverage delta = +13 reviewed / +13 resolved;
-  - coverage state = reviewed 154 / resolved 119 / unreviewed 14 / dedicated L4 9 / bounded L5 74 / high-risk 36 / deferred 35;
+  - coverage state = reviewed 154 / resolved 120 / unreviewed 14 / dedicated L4 9 / bounded L5 74 / high-risk 37 / deferred 34;
   - no new admission candidate; production claim count/runtime/pipeline remain unchanged.
 - next_batch:
   - all ordinary non-health palace rows are reviewed;

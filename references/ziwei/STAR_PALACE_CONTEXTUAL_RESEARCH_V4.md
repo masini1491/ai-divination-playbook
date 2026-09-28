@@ -967,8 +967,9 @@ the Nanyang-Hall spouse-palace chapter:
 
 `https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzop13hwrgp`
 
-Production-admitted `貪狼×夫妻宮` and `破軍×夫妻宮`, plus previously
-reviewed `巨門×夫妻宮`, are not reclassified.
+Production-admitted `貪狼×夫妻宮` and `破軍×夫妻宮` are not reclassified. The
+previously deferred `巨門×夫妻宮` is reopened because this full-row pass makes
+its relationship-outcome safety boundary explicit.
 
 ### Resolved bounded-L5 cells
 
@@ -999,6 +1000,7 @@ counts, separation, spouse-harm/loss or spouse-property outcomes:
 - `武曲×夫妻宮`
 - `廉貞×夫妻宮`
 - `七殺×夫妻宮`
+- `巨門×夫妻宮` — reopened from prior `DEFERRED_EVIDENCE`
 
 Routing: `HIGH_RISK_BOUNDED / resolved`.
 
@@ -1012,9 +1014,10 @@ or loss, and deterministic relationship success/failure.
 
 ```text
 new reviewed cells = 11
-new resolved cells = 11
+new resolved cells = 12
 new bounded L5 cells = 6
-new high-risk bounded cells = 5
+new high-risk bounded cells = 6
+reclassified prior deferred cells = 1
 new admission candidates = 0
 production claims added = 0
 ```
@@ -1024,12 +1027,12 @@ Coverage after batch 7:
 ```text
 total       168
 reviewed     82
-resolved     61
+resolved     62
 unreviewed   86
 dedicated     9
 bounded L5   35
-high-risk    17
-deferred     21
+high-risk    18
+deferred     20
 ```
 
 The full 夫妻宮 row is now 14/14 reviewed and 14/14 resolved. Production claim
@@ -1188,12 +1191,12 @@ Coverage after batch 8 research classification:
 ```text
 total       168
 reviewed     93
-resolved     67
+resolved     68
 unreviewed   75
 dedicated     9
 bounded L5   41
-high-risk    17
-deferred     26
+high-risk    18
+deferred     25
 ```
 
 The full 遷移宮 row is now 14/14 reviewed and 8/14 resolved. The five new
@@ -1365,12 +1368,12 @@ Coverage after batch 9 research classification:
 ```text
 total       168
 reviewed    105
-resolved     73
+resolved     74
 unreviewed   63
 dedicated     9
 bounded L5   46
-high-risk    18
-deferred     32
+high-risk    19
+deferred     31
 ```
 
 The full 田宅宮 row is now 14/14 reviewed and 8/14 resolved. The five new
@@ -1443,12 +1446,12 @@ Coverage after batch 10 research classification:
 ```text
 total       168
 reviewed    117
-resolved     85
+resolved     86
 unreviewed   51
 dedicated     9
 bounded L5   58
-high-risk    18
-deferred     32
+high-risk    19
+deferred     31
 ```
 
 The full 命宮 row is now 14/14 reviewed and 14/14 resolved.
@@ -1525,12 +1528,12 @@ Coverage after batch 11 research classification:
 ```text
 total       168
 reviewed    129
-resolved     97
+resolved     98
 unreviewed   39
 dedicated     9
 bounded L5   66
-high-risk    22
-deferred     32
+high-risk    23
+deferred     31
 ```
 
 The full 兄弟宮 row is now 14/14 reviewed and 14/14 resolved.
@@ -1606,12 +1609,12 @@ Coverage after batch 12 research classification:
 ```text
 total       168
 reviewed    141
-resolved    106
+resolved    107
 unreviewed   27
 dedicated     9
 bounded L5   74
-high-risk    23
-deferred     35
+high-risk    24
+deferred     34
 ```
 
 The full 奴僕宮 row is now 14/14 reviewed and 10/14 resolved. Existing
@@ -1678,12 +1681,12 @@ Coverage after batch 13 research classification:
 ```text
 total       168
 reviewed    154
-resolved    119
+resolved    120
 unreviewed   14
 dedicated     9
 bounded L5   74
-high-risk    36
-deferred     35
+high-risk    37
+deferred     34
 ```
 
 The full 子女宮 row is now 14/14 reviewed and 14/14 resolved. All ordinary
