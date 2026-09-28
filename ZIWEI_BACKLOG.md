@@ -1138,9 +1138,15 @@ Ordering rationale:
   - coverage delta = +8 reviewed / +4 resolved;
   - coverage state = reviewed 60 / resolved 39 / unreviewed 108 / dedicated L4 9 / bounded L5 29 / high-risk 1 / deferred 21;
   - production claim count/runtime/pipeline remain unchanged.
+- batch_6_result:
+  - full `父母宮` row is now 14/14 reviewed and 14/14 resolved;
+  - all 11 newly reviewed cells route `HIGH_RISK_BOUNDED` because their pair-specific historical distinctions are dominated by parental survival/loss, injury, estrangement, adoption/re-parenting or lineage outcomes;
+  - coverage delta = +11 reviewed / +11 resolved;
+  - coverage state = reviewed 71 / resolved 50 / unreviewed 97 / dedicated L4 9 / bounded L5 29 / high-risk 12 / deferred 21;
+  - no new admission candidate; production claim count/runtime/pipeline remain unchanged.
 - next_batch:
   - continue another complete ordinary palace row where feasible;
-  - keep all Batch-5 candidates research-only until a separate bounded production-admission action is explicitly authorized;
+  - keep Batch-5 candidates research-only until separate bounded production-admission authorization;
   - keep 疾厄宮 on its separate health-safe path.
 - completion_gate:
   - current historical primary-text locators and pinned practitioner evidence reconciled;
