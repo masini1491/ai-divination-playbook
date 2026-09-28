@@ -29,8 +29,8 @@ Last reviewed against:
 
 ```text
 ai-divination-playbook main
-c874c5891d90dc78de2dee99547a8ff92cfa34ac
-Define natal semantic composition fallback (#357)
+7a56f0bea77b7c3d5b67960e4a1487091db6e91a
+Add disclosed natal semantic profile default (#358)
 ```
 
 This SHA is review evidence only, not a pin. Every maintenance or implementation task must resolve current `main` again before mutation.
@@ -39,9 +39,8 @@ This SHA is review evidence only, not a pin. Every maintenance or implementation
 
 Active near-term Astrology work:
 
-1. **AST-P1-220 — Disclosed default semantic profile for ordinary natal interpretation**
-2. **AST-P1-230 — Evidence-bounded concrete natal synthesis contract**
-3. **AST-P1-240 — Sparse emergent exact-claim admission policy**
+1. **AST-P1-230 — Evidence-bounded concrete natal synthesis contract**
+2. **AST-P1-240 — Sparse emergent exact-claim admission policy**
 
 Standing guard:
 
@@ -90,45 +89,16 @@ This item is a standing reconciliation guard. It is not a request to change curr
 
 ## P1 — active natal interpretation work
 
-### AST-P1-220 — Disclosed default semantic profile for ordinary natal interpretation
-
-- type: FEATURE / PRODUCT UX / INTERPRETATION PROFILE
-- status: OPEN
-- priority: P1
-- owner: Astrology natal interaction profile
-- blocked_by: none
-- prerequisite:
-  - AST-P1-210 — DONE; `natal-semantic-composition-fallback-v1` is canonical.
-- current_state:
-  - `composable-symbolic-modern-v1` is production-admitted but currently requires explicit typed selection;
-  - omission therefore permits deterministic chart calculation while ordinary semantic interpretation can remain unavailable even when the admitted compositional profile would otherwise apply.
-- target:
-  - for ordinary natal interpretation with omitted/null `semantic_profile`, use `composable-symbolic-modern-v1` as a **project UX default** only after AST-P1-210 closes the composition boundary;
-  - explicit admitted user choice always overrides the project default;
-  - user-facing output must disclose that the profile was applied as a project default and that it is not the unique or objectively correct astrology tradition;
-  - normalization/provenance must distinguish `project_default` from `explicit_user_choice`.
-- completion_gate:
-  - request/orchestration/handoff surfaces deterministically record profile selection provenance;
-  - default activation reaches only registries/claims already admitted for that profile;
-  - explicit profile choice remains unchanged;
-  - unsupported/unadmitted profiles still fail closed;
-  - focused regression covers omitted/null, explicit matching, explicit alternative/unadmitted selection and required disclosure.
-- non_goals:
-  - no silent claim that the project default is historically canonical or objectively more accurate;
-  - no automatic blending of traditional/modern profiles;
-  - no default semantic admission for Astrology factors that remain unsupported;
-  - no change to Astrology ordinary method routing, which remains explicit-request only.
-
 ### AST-P1-230 — Evidence-bounded concrete natal synthesis contract
 
 - type: FEATURE / OUTPUT / INTERPRETATION SYNTHESIS
 - status: OPEN
 - priority: P1
 - owner: Astrology natal synthesis / user-facing interpretation
-- blocked_by:
-  - AST-P1-220
+- blocked_by: none
 - prerequisite:
   - AST-P1-210 — DONE.
+  - AST-P1-220 — DONE; omitted/null natal semantic profile now resolves through the disclosed project-default interaction contract.
 - problem:
   - factor-by-factor output can remain technically correct while sounding repetitive, generic or internally contradictory;
   - improving user-perceived specificity must not create new semantic claims, hide unsupported factors or turn subjective resonance into evidence.
@@ -237,6 +207,7 @@ The items below are **DONE**. They are retained only as compact identity pointer
 - **AST-P1-190 — Shared civil-time normalizer extraction/admission** — DONE.
 - **AST-P1-200 — Default house-system interaction profile** — DONE.
 - **AST-P1-210 — Natal semantic composition fallback contract** — DONE; canonical precedence is exact admitted claim → admitted bounded composition → `unsupported_factor`; typed `aspect_pair` supports admitted exact natal-aspect claims, while general natal-aspect semantic composition remains closed until its primitives are separately admitted.
+- **AST-P1-220 — Disclosed default semantic profile for ordinary natal interpretation** — DONE; omitted/null natal `semantic_profile` normalizes to `composable-symbolic-modern-v1` with `project_default` provenance and disclosure; explicit admitted choice remains `explicit_user_choice`; registry/selector silent defaults remain forbidden and unadmitted profiles fail closed.
 - **AST-P2-010 — Interpolated Black Moon Lilith** — DONE.
 - **AST-P2-041 — Piecewise Chebyshev five-body ephemeris feasibility** — DONE.
 - **AST-P2-042 — Continuity-constrained / overlap Chebyshev five-body feasibility** — DONE.
@@ -276,7 +247,6 @@ Unless the user explicitly asks for a different bounded task, a fresh Astrology 
 3. reconcile any changed item status against canonical owners
 4. enforce AST-P0-002 alongside any affected interpretation change
 5. continue the active P1 natal-interpretation sequence:
-   AST-P1-220 disclosed default semantic profile
    AST-P1-230 evidence-bounded concrete natal synthesis
    AST-P1-240 sparse emergent exact-claim admission policy
 6. keep AST-P2-020 / AST-P2-030 deferred unless their explicit trigger appears
