@@ -314,6 +314,54 @@
       "resolved": true,
       "research_state": "REJECT-REDUNDANT",
       "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
+    },
+    {
+      "star": "武曲",
+      "palace": "命宮",
+      "routing_mode": "DEFERRED_EVIDENCE",
+      "resolved": false,
+      "research_state": "ADMISSION-CANDIDATE",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
+    },
+    {
+      "star": "廉貞",
+      "palace": "財帛宮",
+      "routing_mode": "DEFERRED_EVIDENCE",
+      "resolved": false,
+      "research_state": "ADMISSION-CANDIDATE",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
+    },
+    {
+      "star": "天府",
+      "palace": "財帛宮",
+      "routing_mode": "BOUNDED_L5_COMPOSITION",
+      "resolved": true,
+      "research_state": "REJECT-REDUNDANT",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
+    },
+    {
+      "star": "天同",
+      "palace": "兄弟宮",
+      "routing_mode": "BOUNDED_L5_COMPOSITION",
+      "resolved": true,
+      "research_state": "REJECT-REDUNDANT",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
+    },
+    {
+      "star": "巨門",
+      "palace": "兄弟宮",
+      "routing_mode": "BOUNDED_L5_COMPOSITION",
+      "resolved": true,
+      "research_state": "REJECT-REDUNDANT",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
+    },
+    {
+      "star": "太陰",
+      "palace": "子女宮",
+      "routing_mode": "HIGH_RISK_BOUNDED",
+      "resolved": true,
+      "research_state": "HIGH-RISK-SOURCE-BOUNDED",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
     }
   ]
 }
