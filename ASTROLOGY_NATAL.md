@@ -155,13 +155,13 @@ Yod、Stellium、Grand Quintile 另走 `tools/astrology_special_pattern_projecti
 
 ### 7.1 Evidence-bounded concrete natal synthesis
 
-Broad natal synthesis可啟用 `evidence-bounded-concrete-natal-v1`；窄 natal / transit不強制套用。此 profile只組織已 admitted evidence，無獨立 semantic authority：
+Broad natal可啟用 `evidence-bounded-concrete-natal-v1`；窄 natal / transit不強制。此 profile無 semantic authority：
 
-- 3–5 major themes；每題須有 admitted natal fact + semantic claim refs；
-- 每題可寫 bounded concrete manifestation，不得由 fact-only geometry補人格／心理語意；
-- material counter-pull用有**自己 refs**的 limiting condition / tension呈現，不用「有時 X、有時 Y」抹平；
-- unsupported保持 unsupported；exact claim / bounded composition只作 evidence input，不改 §5.1 precedence；
-- 評估 specificity / traceability / tension / scope fidelity；主觀「覺得準」不是 semantic admission evidence。
+- 3–5 themes；每題綁 admitted natal fact + semantic claim refs；
+- manifestation只可具體化已引用語義，不得從 fact-only geometry補人格含義；
+- material tension須有 own refs；不得以泛化「兩面都有」消解衝突；
+- unsupported不補洞；不改 §5.1 precedence；
+- 只評 specificity / traceability / tension / scope；主觀「覺得準」不是 admission evidence。
 
 ## 8. Natal Unsupported / Uncertainty
 
