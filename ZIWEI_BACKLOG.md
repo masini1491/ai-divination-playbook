@@ -699,6 +699,12 @@ Ordering rationale:
   - V1–V3 explicitly rejected redundant cells may become `BOUNDED_L5_COMPOSITION / resolved` when the research record establishes that generic composition is sufficient;
   - V1–V3 deferred/borderline cells remain `DEFERRED_EVIDENCE / reviewed-not-resolved`;
   - V4 preliminary discovery does not become resolved merely because it is listed in backlog.
+- first_stage_candidate:
+  - exact 168-cell identity grid uses canonical `奴僕宮` and does not create a second `交友宮` identity;
+  - production registry is the sole source of `DEDICATED_L4` mappings;
+  - V1–V3 backfill: 4 explicit redundant cells → `BOUNDED_L5_COMPOSITION`; 4 inconclusive/borderline cells → `DEFERRED_EVIDENCE`;
+  - initial metrics = reviewed 15 / resolved 11 / unreviewed 153 / dedicated 7 / bounded-L5 4 / deferred 4;
+  - V4 preliminary candidates remain unreviewed until V4 actually executes.
 - completion_gate:
   - schema/index/generator/architecture docs and tests are synchronized;
   - index contains exactly 168 unique canonical star×palace cells;

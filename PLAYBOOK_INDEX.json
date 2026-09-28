@@ -542,6 +542,24 @@
           "破軍×夫妻宮"
         ],
         "cartesian_expansion": false
+      },
+      "star_palace_coverage": {
+        "status": "architecture-v1",
+        "authority": "routing-control-plane-only",
+        "total_cells": 168,
+        "reviewed_cells": 15,
+        "resolved_cells": 11,
+        "unreviewed_cells": 153,
+        "dedicated_l4": 7,
+        "bounded_l5_composition": 4,
+        "deferred_evidence": 4,
+        "index": "indexes/ziwei/star_palace_coverage_v1.json",
+        "schema": "schemas/ziwei/ZIWEI_STAR_PALACE_COVERAGE_V1.schema.json",
+        "generator": "tools/build_ziwei_star_palace_coverage.py",
+        "architecture_owner": "references/ziwei/STAR_PALACE_COVERAGE_ARCHITECTURE_V1.md",
+        "decision_input": "references/ziwei/STAR_PALACE_COVERAGE_DECISIONS_V1.json",
+        "dedicated_cartesian_expansion": false,
+        "completion_target": "resolved_cells=168"
       }
     },
     {
