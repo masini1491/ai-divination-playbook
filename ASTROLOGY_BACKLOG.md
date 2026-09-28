@@ -29,8 +29,8 @@ Last reviewed against:
 
 ```text
 ai-divination-playbook main
-314b2479297f909423908f76d51958631b5862e8
-Plan evidence-bounded natal synthesis work
+c874c5891d90dc78de2dee99547a8ff92cfa34ac
+Define natal semantic composition fallback (#357)
 ```
 
 This SHA is review evidence only, not a pin. Every maintenance or implementation task must resolve current `main` again before mutation.
