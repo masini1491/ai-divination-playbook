@@ -316,14 +316,6 @@
       "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
     },
     {
-      "star": "武曲",
-      "palace": "命宮",
-      "routing_mode": "DEFERRED_EVIDENCE",
-      "resolved": false,
-      "research_state": "ADMISSION-CANDIDATE",
-      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
-    },
-    {
       "star": "天府",
       "palace": "財帛宮",
       "routing_mode": "BOUNDED_L5_COMPOSITION",

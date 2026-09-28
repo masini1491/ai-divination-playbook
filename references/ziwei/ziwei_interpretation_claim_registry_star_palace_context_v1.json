@@ -51,7 +51,8 @@
         "digital_text_witness_research"
       ],
       "admission_scope": [
-        "貪狼×夫妻宮 bounded historical contextual semantics"
+        "貪狼×夫妻宮 bounded historical contextual semantics",
+        "武曲×命宮 bounded historical contextual semantics"
       ],
       "excluded_scope": [
         "unverified glyph-level variants",
@@ -456,6 +457,52 @@
       "support_status": "historical_only",
       "conflict_group_ids": [],
       "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-SP-WUQU-MING-001",
+      "layer": "L4",
+      "claim_type": "star_palace_context",
+      "subject": "武曲×命宮",
+      "subjects": [
+        "武曲",
+        "命宮"
+      ],
+      "star": "武曲",
+      "palace": "命宮",
+      "assertion_class": "historical_conditional",
+      "normalized_statement": "在 historical profile 中，武曲守命可作為剛決、執行與權責取向較直接成為核心自我表現的 contextual modifier；吉助與耗煞條件會實質改變其表現強度、榮顯與資源保有方向，不得翻成固定職業、固定財富、固定體態、性別角色、官位或社會地位。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-STARS"
+      ],
+      "source_locators": [
+        "新鋟希夷陳先生紫微斗數全書 → 諸星問答論 → 問：武曲星所主為何？",
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzoopnqo0t6"
+      ],
+      "applicability": {
+        "requires": [
+          "fact_available:palace_occupancy",
+          "star_in_palace:武曲:命宮"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "dignity_brightness",
+          "supporting_stars",
+          "malefic_stars",
+          "sanfang_sizheng",
+          "tradition_profile"
+        ],
+        "palace_scope": [
+          "命宮"
+        ],
+        "topology_scope": [
+          "self"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "qualified",
+      "support_status": "historical_only",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
     }
   ],
   "conflict_groups": [
@@ -482,7 +529,7 @@
   "research_result": {
     "production_authority_granted": false,
     "scientific_predictive_validity_claimed": false,
-    "claim_count": 8,
+    "claim_count": 9,
     "admitted_pairs": [
       "天相×命宮",
       "天梁×官祿宮",
@@ -491,7 +538,8 @@
       "武曲×田宅宮",
       "天機×田宅宮",
       "破軍×夫妻宮",
-      "廉貞×財帛宮"
+      "廉貞×財帛宮",
+      "武曲×命宮"
     ],
     "exhaustive_cartesian_dictionary": false,
     "rejected_as_non_material_overrides": [

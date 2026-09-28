@@ -1172,6 +1172,36 @@ Ordering rationale:
   - canonical generator refreshes derived Zi Wei bundle;
   - formal PR validation + merge + canonical read-back complete; exact-main validation/artifact recorded only when established.
 
+### ZW-P2-028 — Admit 武曲×命宮 sparse contextual claim
+
+- type: FEATURE / INTERPRETATION / PRODUCTION ADMISSION
+- status: IN_PROGRESS
+- priority: P2
+- owner: Zi Wei production maintenance
+- blocked_by:
+  - ZW-P2-026 natal-priority research classification
+  - ZW-P2-027 canonical production state
+- shared_development_playbook_reviewed: `masini1491/ai-development-playbook@9236b42550b7f748cc6c5744075d106e643c6042`
+- evidence_decision:
+  - V4 marks `武曲×命宮` as an admission candidate;
+  - production-level recheck found direct historical `武曲守命` evidence tying core-self manifestation to condition-sensitive supporting/malefic context;
+  - production authority is historical-bounded and does not depend on body-shape or fixed-occupation practitioner heuristics.
+- intended_production_delta:
+  - add exactly one `武曲×命宮` historical-bounded contextual claim;
+  - exact applicability = `fact_available:palace_occupancy` + `star_in_palace:武曲:命宮`;
+  - base natal claims 67 → 68; maximum optional claims 84 → 85; star×palace claims 8 → 9;
+  - coverage resolved 34 → 35; dedicated L4 8 → 9; deferred 18 → 17;
+  - Scope-A pipeline remains `1.5.0`; no runtime or geometry widening.
+- production_boundary:
+  - no fixed occupation, wealth, body type, gender role, office rank or social status;
+  - dignity/supporting-star language is modifier-only;
+  - no doctrine borrowed from `武曲×田宅宮` or any other occupancy;
+  - no 14×12 Cartesian expansion.
+- completion_gate:
+  - registry / module admission / root admission / coverage / docs / tests synchronized;
+  - canonical generator refreshes the derived Zi Wei bundle;
+  - formal PR validation + merge + canonical read-back complete; exact-main validation/artifact recorded only when established.
+
 ### ZW-P2-050 — Body-Palace overlay interpretation admission
 
 - type: FEATURE / INTERPRETATION / NATAL OVERLAY
