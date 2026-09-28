@@ -82,7 +82,8 @@
         "破軍×遷移宮 bounded historical contextual semantics",
         "武曲×田宅宮 bounded historical contextual semantics",
         "天機×田宅宮 bounded historical contextual semantics",
-        "破軍×夫妻宮 bounded historical contextual semantics"
+        "破軍×夫妻宮 bounded historical contextual semantics",
+        "廉貞×財帛宮 bounded historical contextual semantics"
       ],
       "excluded_scope": [
         "unverified glyph-level variants",
@@ -410,6 +411,51 @@
       "support_status": "historical_only",
       "conflict_group_ids": [],
       "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-SP-LIANZHEN-WEALTH-001",
+      "layer": "L4",
+      "claim_type": "star_palace_context",
+      "subject": "廉貞×財帛宮",
+      "subjects": [
+        "廉貞",
+        "財帛宮"
+      ],
+      "star": "廉貞",
+      "palace": "財帛宮",
+      "assertion_class": "historical_conditional",
+      "normalized_statement": "在 historical profile 中，廉貞落財帛宮可作為資源取得較偏主動經營、忙中求財且聚散節奏受廟陷與吉煞明顯修正的 contextual modifier；較弱條件可保守表達為前段阻力較高、後續才逐步改善，不得翻成保證致富、固定收入、必然經商或必然破財。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-PALACES"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzop13hxgqx"
+      ],
+      "applicability": {
+        "requires": [
+          "fact_available:palace_occupancy",
+          "star_in_palace:廉貞:財帛宮"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "dignity_brightness",
+          "supporting_stars",
+          "malefic_stars",
+          "sanfang_sizheng",
+          "tradition_profile"
+        ],
+        "palace_scope": [
+          "財帛宮"
+        ],
+        "topology_scope": [
+          "self"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "qualified",
+      "support_status": "historical_only",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
     }
   ],
   "conflict_groups": [
@@ -436,7 +482,7 @@
   "research_result": {
     "production_authority_granted": false,
     "scientific_predictive_validity_claimed": false,
-    "claim_count": 7,
+    "claim_count": 8,
     "admitted_pairs": [
       "天相×命宮",
       "天梁×官祿宮",
@@ -444,7 +490,8 @@
       "破軍×遷移宮",
       "武曲×田宅宮",
       "天機×田宅宮",
-      "破軍×夫妻宮"
+      "破軍×夫妻宮",
+      "廉貞×財帛宮"
     ],
     "exhaustive_cartesian_dictionary": false,
     "rejected_as_non_material_overrides": [

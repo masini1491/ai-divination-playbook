@@ -1142,6 +1142,36 @@ Ordering rationale:
   - research owner + research README + backlog synchronized;
   - production admission remains a separate bounded action after research closure.
 
+### ZW-P2-027 — Admit 廉貞×財帛宮 sparse contextual claim
+
+- type: FEATURE / INTERPRETATION / PRODUCTION ADMISSION
+- status: IN_PROGRESS
+- priority: P2
+- owner: Zi Wei production maintenance
+- blocked_by:
+  - ZW-P2-026 natal-priority research classification
+- shared_development_playbook_reviewed: `masini1491/ai-development-playbook@9236b42550b7f748cc6c5744075d106e643c6042`
+- evidence_decision:
+  - `STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md` marks `廉貞×財帛宮` as `ADMISSION-CANDIDATE`;
+  - historical 財帛宮 evidence adds a materially distinct active-acquisition / initial-friction-to-later-improvement trajectory beyond generic 廉貞 core + 財帛 domain.
+- intended_production_delta:
+  - add exactly one historical-bounded `廉貞×財帛宮` claim to `sparse_star_palace_context_v1`;
+  - exact applicability = `fact_available:palace_occupancy` + `star_in_palace:廉貞:財帛宮`;
+  - base natal claims 66 → 67; maximum optional claims 83 → 84; star×palace claims 7 → 8;
+  - coverage resolved 33 → 34; dedicated L4 7 → 8; deferred 19 → 18;
+  - Scope-A pipeline remains `1.5.0`; no new runtime, geometry provider or claim type.
+- production_boundary:
+  - no guaranteed wealth, return, fixed income, business success or guaranteed loss;
+  - dignity / brightness remains modifier-only;
+  - no 14×12 Cartesian expansion;
+  - no borrowing doctrine from any different star×palace occupancy.
+- candidate_bridge:
+  - canonical Zi Wei bundle regeneration completed through the temporary PR bridge; the bridge is absent from the final candidate tree before formal validation.
+- completion_gate:
+  - registry / module admission / root admission / coverage decision+index / docs / tests synchronized;
+  - canonical generator refreshes derived Zi Wei bundle;
+  - formal PR validation + merge + canonical read-back complete; exact-main validation/artifact recorded only when established.
+
 ### ZW-P2-050 — Body-Palace overlay interpretation admission
 
 - type: FEATURE / INTERPRETATION / NATAL OVERLAY

@@ -9,7 +9,7 @@
   "claim_registry": "references/ziwei/ziwei_interpretation_claim_registry_star_palace_context_v1.json",
   "interpretation_profile": "ziwei.interpretation.tw_v1",
   "scope": {
-    "admitted_claims_added": 7,
+    "admitted_claims_added": 8,
     "admitted_pairs": [
       "天相×命宮",
       "天梁×官祿宮",
@@ -17,7 +17,8 @@
       "破軍×遷移宮",
       "武曲×田宅宮",
       "天機×田宅宮",
-      "破軍×夫妻宮"
+      "破軍×夫妻宮",
+      "廉貞×財帛宮"
     ],
     "claim_type": "star_palace_context",
     "exhaustive_cartesian_dictionary": false
@@ -78,6 +79,13 @@
       "source_role": "PRACTITIONER_REFERENCE",
       "source_revision": "c90006168195c0650328b7199669eb6a2d0cac93",
       "role": "corroboration_only_not_standalone_production_authority"
+    },
+    "v4_research_record": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md",
+    "v4_lianzhen_wealth_source": {
+      "source_id": "SRC-NANYANG-QUANSHU-PALACES",
+      "source_role": "PRIMARY_TEXT",
+      "locator": "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzop13hxgqx",
+      "admitted_scope": "廉貞×財帛宮 bounded historical contextual semantics"
     }
   },
   "fail_closed": [
@@ -96,7 +104,9 @@
     "天機×田宅宮 dignity language remains a modifier and does not authorize brightness-only doctrine",
     "破軍×夫妻宮 historical context must not become deterministic divorce separation spouse-harm fixed-marriage-count or guaranteed relationship-event prediction",
     "Nihai 破軍×夫妻宮 statement remains corroborative and must not become standalone production authority",
-    "破軍×夫妻宮 dignity language remains a modifier and does not authorize brightness-only doctrine"
+    "破軍×夫妻宮 dignity language remains a modifier and does not authorize brightness-only doctrine",
+    "廉貞×財帛宮 historical context must not become guaranteed wealth return income business success or guaranteed loss prediction",
+    "廉貞×財帛宮 dignity language remains a modifier and does not authorize brightness-only doctrine"
   ],
   "scientific_predictive_validity_claimed": false
 }

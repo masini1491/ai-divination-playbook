@@ -15,7 +15,7 @@ explicit Zi Wei production
    OR already-normalized lunar input + provenance
 → tools/ziwei_runtime.py (`run_ziwei`)
 → admitted natal_baseline facts
-→ allowlisted 52-claim first-layer retrieval + 2 sparse same-palace pair claims + 5 bounded Body-Palace overlay claims + 7 sparse star×palace contextual claims
+→ allowlisted 52-claim first-layer retrieval + 2 sparse same-palace pair claims + 5 bounded Body-Palace overlay claims + 8 sparse star×palace contextual claims
 → bounded conflict / uncertainty / safety delivery
 → CHATGPT_OUTPUT.md
 ```
@@ -29,11 +29,11 @@ IN — natal core:
 - `natal_baseline` Scope-A;
 - 14 major-star first-layer claims;
 - 12 palace first-layer claims;
-- 52 first-layer claims + 2 source-explicit same-palace pair claims + 5 bounded Body-Palace claims + 7 sparse star×palace contextual claims = 66 base natal claims total;
+- 52 first-layer claims + 2 source-explicit same-palace pair claims + 5 bounded Body-Palace claims + 8 sparse star×palace contextual claims = 67 base natal claims total;
 - admitted deterministic natal provider facts, including natal-baseline per-palace major-star occupancy / count / empty-palace applicability facts and deterministic Body-Palace overlay projection (`body_palace.branch` → existing palace identity);
 - bounded same-palace pair interpretation: only `武曲×天相` in `兄弟宮` / `官祿宮`, sourced from the pinned practitioner corpus and activated only by exact canonical occupancy facts; no Cartesian pair dictionary;
 - bounded Body-Palace interpretation: one `身宮=後天發展 overlay` methodology claim + exact overlay claims for `夫妻宮` / `財帛宮` / `官祿宮` / `遷移宮`; Body Palace remains `overlay_not_thirteenth_palace`, and all other overlay contexts remain without new doctrine;
-- sparse star×palace contextual interpretation: exact bounded overrides for practitioner-bounded `天相×命宮` / `天梁×官祿宮` plus historical-bounded `貪狼×夫妻宮` / `破軍×遷移宮` / `武曲×田宅宮` / `天機×田宅宮` / `破軍×夫妻宮`; exact canonical occupancy facts are required, generic star/palace evidence remains context, the Nihai spouse-age heuristic remains non-production, `破軍×遷移宮`不得擴張成出外必凶或事故預測，`武曲×田宅宮`不得擴張成保證繼承、必然置產或固定財富結果，`天機×田宅宮`不得擴張成必然失去祖產或保證另置新產，`破軍×夫妻宮`不得擴張成必然離婚、分居、克配偶、固定婚次或 guaranteed relationship event, and all non-admitted pairs fall back to bounded L5 composition without model-memory filler;
+- sparse star×palace contextual interpretation: exact bounded overrides for practitioner-bounded `天相×命宮` / `天梁×官祿宮` plus historical-bounded `貪狼×夫妻宮` / `破軍×遷移宮` / `武曲×田宅宮` / `天機×田宅宮` / `破軍×夫妻宮` / `廉貞×財帛宮`; exact canonical occupancy facts are required, generic star/palace evidence remains context, the Nihai spouse-age heuristic remains non-production, `破軍×遷移宮`不得擴張成出外必凶或事故預測，`武曲×田宅宮`不得擴張成保證繼承、必然置產或固定財富結果，`天機×田宅宮`不得擴張成必然失去祖產或保證另置新產，`破軍×夫妻宮`不得擴張成必然離婚、分居、克配偶、固定婚次或 guaranteed relationship event, and all non-admitted pairs fall back to bounded L5 composition without model-memory filler;
 - Gregorian birth datetime input via `ziwei.calendar.civil_v2` with an explicit IANA timezone within the admitted local-date range 1900-01-01..2100-12-31; `civil-time-zoneinfo-v1` validates DST/local-wall-time identity. Civil time remains the default. When `ziwei.true_solar.noaa_fractional_year_v1` + explicit longitude is requested, `tools/ziwei_true_solar_time.py` derives local apparent-solar Gregorian fields before Gregorian→lunar lookup; otherwise lookup uses validated civil local fields. Resolved UTC remains provenance rather than a lunar-conversion calendar. Explicit 民國年份 notation is deterministically converted by `tools/ziwei_year_notation.py` (`民國 N 年 → CE N+1911`) while preserving timezone / true-solar profile / longitude;
 - explicit provenance, omission, conflict and safety delivery.
 
