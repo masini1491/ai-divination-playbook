@@ -105,6 +105,84 @@ def valid_draft() -> dict:
     }
 
 
+def synthesis_handoff() -> dict:
+    handoff = admitted_handoff()
+    handoff["reading_run_identity"] = {"reading_mode": "natal"}
+    extra = [
+        ("fact:object:sun", "planet-sign-composable-semantics-research-v1", "claim:planet-function:sun"),
+        ("fact:object:moon", "planet-sign-composable-semantics-research-v1", "claim:planet-function:moon"),
+    ]
+    for fact_id, registry_id, claim_id in extra:
+        handoff["selected_facts"].append(
+            {
+                "bundle": "natal",
+                "collection": "objects",
+                "fact": {"fact_id": fact_id, "object_type": "planet"},
+            }
+        )
+        handoff["selected_claims"].append(
+            {
+                "registry_record_id": registry_id,
+                "claim_id": claim_id,
+                "source_provenance": [],
+                "cautions": [],
+                "fact_refs": [{"bundle": "natal", "fact_id": fact_id}],
+            }
+        )
+    return handoff
+
+
+def synthesis_draft() -> dict:
+    draft = valid_draft()
+    house_fact = {"bundle": "natal", "fact_id": "fact:house:7"}
+    house_claim = {
+        "registry_record_id": "first-seventh-house-axis-research-v1",
+        "claim_id": "claim:valens-seventh-place-marriage",
+    }
+    sun_fact = {"bundle": "natal", "fact_id": "fact:object:sun"}
+    sun_claim = {
+        "registry_record_id": "planet-sign-composable-semantics-research-v1",
+        "claim_id": "claim:planet-function:sun",
+    }
+    moon_fact = {"bundle": "natal", "fact_id": "fact:object:moon"}
+    moon_claim = {
+        "registry_record_id": "planet-sign-composable-semantics-research-v1",
+        "claim_id": "claim:planet-function:moon",
+    }
+    draft["natal_synthesis"] = {
+        "profile_id": "evidence-bounded-concrete-natal-v1",
+        "themes": [
+            {
+                "title": "Relational orientation",
+                "statement": "Partnership is a material symbolic domain in the selected evidence.",
+                "manifestation": "This may show as deliberate attention to how commitments are structured.",
+                "fact_refs": [house_fact],
+                "claim_refs": [house_claim],
+                "limiting_condition": {
+                    "text": "The solar evidence can pull attention back toward self-directed priorities.",
+                    "fact_refs": [sun_fact],
+                    "claim_refs": [sun_claim],
+                },
+            },
+            {
+                "title": "Self-directed emphasis",
+                "statement": "The admitted solar function contributes a distinct self-directed theme.",
+                "manifestation": "This may show as a preference to define a personal direction before adapting to others.",
+                "fact_refs": [sun_fact],
+                "claim_refs": [sun_claim],
+            },
+            {
+                "title": "Responsive emphasis",
+                "statement": "The admitted lunar function contributes a responsive or receptive theme.",
+                "manifestation": "This may show as greater sensitivity to context when deciding how to respond.",
+                "fact_refs": [moon_fact],
+                "claim_refs": [moon_claim],
+            },
+        ],
+    }
+    return draft
+
+
 class AstrologyOutputGuardTests(unittest.TestCase):
     def test_valid_draft_becomes_ready_for_user(self):
         result = build_output(admitted_handoff(), valid_draft())
@@ -218,6 +296,52 @@ class AstrologyOutputGuardTests(unittest.TestCase):
             {"bundle": "natal", "fact_id": "fact:angle:descendant"},
             result["used_fact_refs"],
         )
+
+    def test_valid_concrete_natal_synthesis_preserves_traceable_themes(self):
+        result = build_output(synthesis_handoff(), synthesis_draft())
+        self.assertEqual(
+            "evidence-bounded-concrete-natal-v1",
+            result["natal_synthesis"]["profile_id"],
+        )
+        self.assertEqual(3, len(result["natal_synthesis"]["themes"]))
+        self.assertIn("Major natal themes:", result["rendered_text"])
+        self.assertIn("Limiting condition / tension:", result["rendered_text"])
+        self.assertIn(
+            {"bundle": "natal", "fact_id": "fact:object:sun"},
+            result["used_fact_refs"],
+        )
+        self.assertIn(
+            {
+                "registry_record_id": "planet-sign-composable-semantics-research-v1",
+                "claim_id": "claim:planet-function:sun",
+            },
+            result["used_claim_refs"],
+        )
+
+    def test_natal_synthesis_requires_three_to_five_themes(self):
+        draft = synthesis_draft()
+        draft["natal_synthesis"]["themes"] = draft["natal_synthesis"]["themes"][:2]
+        with self.assertRaisesRegex(AstrologyOutputGuardError, "3 to 5"):
+            build_output(synthesis_handoff(), draft)
+
+    def test_natal_synthesis_theme_cannot_inflate_fact_only_semantics(self):
+        draft = synthesis_draft()
+        draft["natal_synthesis"]["themes"][0]["claim_refs"] = []
+        with self.assertRaisesRegex(AstrologyOutputGuardError, "admitted semantic evidence"):
+            build_output(synthesis_handoff(), draft)
+
+    def test_natal_synthesis_is_rejected_for_transit_handoff(self):
+        handoff = synthesis_handoff()
+        handoff["reading_run_identity"]["reading_mode"] = "transit"
+        with self.assertRaisesRegex(AstrologyOutputGuardError, "requires an admitted natal"):
+            build_output(handoff, synthesis_draft())
+
+    def test_natal_synthesis_limiting_condition_requires_admitted_refs(self):
+        draft = synthesis_draft()
+        draft["natal_synthesis"]["themes"][0]["limiting_condition"]["claim_refs"][0]["claim_id"] = "claim:not-selected"
+        with self.assertRaisesRegex(AstrologyOutputGuardError, "outside admitted handoff"):
+            build_output(synthesis_handoff(), draft)
+
 
 
 if __name__ == "__main__":
