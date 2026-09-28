@@ -586,3 +586,170 @@ cells = 14/14 reviewed. It is 10/14 resolved; `天相×官祿宮` plus the three
 new admission candidates remain unresolved. Production admission remains a
 separate bounded action.
 
+## V4 Batch 4 — natal-production priority cells
+
+This targeted batch follows the user's current natal production occupancy set.
+It does not reuse a different occupancy claim as doctrine. In particular,
+`天梁×官祿宮`, `武曲×田宅宮` and `破軍×夫妻宮` remain evidence only
+for those exact cells and are not transplanted into the targets below.
+
+The batch reviews the six previously-unreviewed priority cells and rechecks four
+already-reviewed controls. Existing V2/V4 resolved controls remain unchanged
+unless new material-distinct evidence passes the same source/admission gate.
+
+Primary historical locators used here:
+
+- 命／身 semantic witness:
+  `https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzop58rvdbm`
+- 兄弟宮:
+  `https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzop13hw26h`
+- 子女宮:
+  `https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzop13hx43t`
+- 財帛宮:
+  `https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzop13hxgqx`
+
+Pinned practitioner comparator:
+`Renhuai123/nihai-tianji-corpus@c90006168195c0650328b7199669eb6a2d0cac93`,
+`docs/01-主星.md`.
+
+### Admission candidates / reviewed unresolved
+
+#### 廉貞 × 財帛宮
+
+The historical 財帛 chapter gives a direct pair-specific resource trajectory:
+`廉貞在申寅宮` is associated with gaining resources amid activity/noise,
+while weaker conditions shift toward an initially difficult but later-improving
+pattern. This is more specific than generic 廉貞 authority/constraint/desire
+semantics plus the 財帛 resource domain.
+
+Normalized candidate:
+
+> 廉貞落財帛宮時，可作為「資源取得較偏主動經營、忙中求財，且穩定度受廟陷、
+> 吉煞與同會條件明顯修正」的 historical contextual modifier；較弱條件可保守
+> 表達為前段阻力較高、後續才逐步改善，不得翻成保證致富、固定收入或必然破財。
+
+Classification: `ADMISSION-CANDIDATE / DEFERRED_EVIDENCE / unresolved`.
+
+#### 武曲 × 命宮
+
+The historical witness preserves 武曲's dignity-sensitive prominence and
+身命-specific combination language; the pinned practitioner corpus also has a
+direct `武曲星坐命` statement describing a more immediately embodied /
+outward manifestation. The pair-specific value is the expression of 武曲's
+decisive/executive character through the core-self domain, not a transfer from
+the separately admitted `武曲×田宅宮` property claim.
+
+Normalized candidate:
+
+> 武曲落命宮時，可作為「剛決、執行與資源掌控傾向較直接成為核心自我表現」
+> 的 practitioner/historical-bounded contextual modifier；實際強度仍須合看
+> 廟旺、同會與吉煞，不得由此推出固定職業、財富、身材或社會地位。
+
+Classification: `ADMISSION-CANDIDATE / DEFERRED_EVIDENCE / unresolved`.
+
+### Resolved bounded-L5 cells
+
+#### 天府 × 財帛宮 — REJECT-REDUNDANT
+
+The historical 財帛 text gives a broadly favorable resource/storage direction,
+but 天府 core already owns storehouse/resource-conservation semantics and
+財帛宮 owns acquisition/accumulation/retention. No distinct pair mechanism is
+needed beyond bounded composition and existing condition handling.
+
+Routing: `BOUNDED_L5_COMPOSITION / resolved`.
+
+#### 天同 × 兄弟宮 — REJECT-REDUNDANT
+
+The historical 兄弟 text contains exact sibling-count and harmony statements,
+but the safe reusable semantic content is harmony/support versus reduced
+cohesion under adverse conditions. That is already representable by 天同's
+harmony/softness core plus the sibling relationship domain. Exact sibling
+counts are not admitted.
+
+Routing: `BOUNDED_L5_COMPOSITION / resolved`.
+
+#### 巨門 × 兄弟宮 — REJECT-REDUNDANT
+
+The historical 兄弟 text contains separation/disagreement language plus exact
+sibling counts. The safe semantic content is already covered by 巨門
+speech/dispute/divisiveness plus the sibling relationship domain; fixed counts,
+estrangement outcomes or guaranteed conflict are not admitted.
+
+Routing: `BOUNDED_L5_COMPOSITION / resolved`.
+
+### High-risk bounded cell
+
+#### 太陰 × 子女宮 — HIGH_RISK_BOUNDED
+
+The historical 子女 text is source-explicit but concentrates its distinct
+content on child sex/order, child counts, child robustness/achievement and
+adverse child outcomes. Those are fertility/family-outcome adjacent and are
+not suitable for ordinary deterministic production doctrine.
+
+Safe routing keeps only the independently admitted 太陰 core + 子女 domain and
+their already-admitted conditions. The source-explicit high-risk details remain
+research evidence only.
+
+Routing: `HIGH_RISK_BOUNDED / resolved`.
+
+Forbidden promotion examples include guaranteed child sex, child count,
+fertility, disability/health, survival, achievement or fixed parenting outcome.
+
+### Reopen gate — previously reviewed priority controls
+
+The following four cells were rechecked because they are in the current natal
+priority set. No new evidence in this pass materially exceeds their existing
+classification, so the prior resolved routing remains unchanged:
+
+- `紫微×官祿宮` → `BOUNDED_L5_COMPOSITION`; V2 already found the
+  historical authority/career wording non-material beyond 紫微 core + 官祿
+  domain.
+- `太陽×父母宮` → `BOUNDED_L5_COMPOSITION`; the distinct historical
+  material is dominated by parent-symbol / dignity / strong kinship outcome
+  language already controlled by parent-domain safety policy.
+- `天梁×父母宮` → `BOUNDED_L5_COMPOSITION`; 天梁's parent/elder
+  protection semantics already overlap directly with 父母宮.
+- `七殺×福德宮` → `BOUNDED_L5_COMPOSITION`; historical ease/unease is
+  condition-sensitive but remains representable through 七殺 intensity +
+  福德 inner-wellbeing composition.
+
+A future reclassification of any of these four requires genuinely new
+condition-specific or pair-specific evidence; priority alone is not a reason to
+manufacture a dedicated L4 claim.
+
+## Batch 4 decision
+
+```text
+priority cells requested = 10
+previously reviewed controls = 4
+new reviewed cells = 6
+new resolved cells = 4
+new admission candidates = 2
+new bounded L5 cells = 3
+new high-risk bounded cells = 1
+production claims added = 0
+```
+
+Coverage after batch 4:
+
+```text
+total       168
+reviewed     52
+resolved     33
+unreviewed  116
+dedicated     7
+bounded L5   25
+high-risk     1
+deferred     19
+```
+
+All ten requested natal-priority cells are now at least reviewed. The recommended
+production-admission order is:
+
+1. `廉貞×財帛宮` — stronger direct historical pair-specific trajectory;
+2. `武曲×命宮` — pair-specific self-expression supported by historical +
+   pinned practitioner evidence, but normalization must avoid appearance,
+   occupation, wealth or status determinism.
+
+Production admission remains a separate bounded action for each candidate.
+
