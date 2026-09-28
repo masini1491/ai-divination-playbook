@@ -153,15 +153,9 @@ Yod、Stellium、Grand Quintile 另走 `tools/astrology_special_pattern_projecti
 
 不要為了「完整」傾倒整張盤所有 factor；輸出仍受 `CHATGPT_OUTPUT.md` minimum-sufficient與Pre-Send gate約束。
 
-### 7.1 Evidence-bounded concrete natal synthesis
+### 7.1 Broad natal synthesis
 
-Broad natal可啟用 `evidence-bounded-concrete-natal-v1`；窄 natal / transit不強制。此 profile無 semantic authority：
-
-- 3–5 themes；每題綁 admitted natal fact + semantic claim refs；
-- manifestation只可具體化已引用語義，不得從 fact-only geometry補人格含義；
-- material tension須有 own refs；不得以泛化「兩面都有」消解衝突；
-- unsupported不補洞；不改 §5.1 precedence；
-- 只評 specificity / traceability / tension / scope；主觀「覺得準」不是 admission evidence。
+Broad natal synthesis若啟用 `evidence-bounded-concrete-natal-v1`，再讀 `ASTROLOGY_NATAL_SYNTHESIS.md`；窄 natal / transit跳過。該 sub-owner只整合已 admitted evidence，無 semantic / claim-admission authority。
 
 ## 8. Natal Unsupported / Uncertainty
 
