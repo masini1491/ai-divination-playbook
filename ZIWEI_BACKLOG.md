@@ -1182,8 +1182,16 @@ Ordering rationale:
   - coverage delta = +12 reviewed / +12 resolved;
   - coverage state = reviewed 129 / resolved 97 / unreviewed 39 / dedicated L4 9 / bounded L5 66 / high-risk 22 / deferred 32;
   - no new admission candidate; production claim count/runtime/pipeline remain unchanged.
+- batch_12_result:
+  - full `奴僕宮` row is now 14/14 reviewed and 13/14 resolved;
+  - all 12 newly reviewed cells route `BOUNDED_L5_COMPOSITION`;
+  - historical 奴僕 scope is not silently expanded into modern 交友 / peers / partnerships;
+  - `紫微×奴僕宮` remains the only unresolved cell in this row;
+  - coverage delta = +12 reviewed / +12 resolved;
+  - coverage state = reviewed 141 / resolved 109 / unreviewed 27 / dedicated L4 9 / bounded L5 78 / high-risk 22 / deferred 32;
+  - no new admission candidate; production claim count/runtime/pipeline remain unchanged.
 - next_batch:
-  - continue another complete ordinary palace row where feasible;
+  - continue with the remaining ordinary `子女宮` row;
   - keep all V4 admission candidates research-only until separate bounded production-admission authorization;
   - keep 疾厄宮 on its separate health-safe path.
 - completion_gate:
