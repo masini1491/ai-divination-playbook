@@ -67,14 +67,35 @@ Dignity描述 condition / resources / friction，不是道德好壞；不做 num
 
 ## 5. Natal Aspect Use
 
-Major-aspect geometry / orb屬 deterministic fact，orb machine authority由 runtime / admission contract擁有，本檔不重複數值表。
+Major-aspect geometry / orb屬 deterministic fact，orb machine authority由 runtime / admission contract擁有，本檔不重複數值表。Geometry fact 本身沒有 semantic interpretation authority。
 
-Interpretation：
+### 5.1 Natal semantic precedence / fallback
 
-- exact pair有 admitted claim → 可用 pair-specific meaning；
-- 只有 general aspect geometry → 只用 general geometry layer；
-- 沒有 admitted semantic claim → `unsupported_factor`；
-- research-only pair module不得偷渡。
+Production natal semantics固定使用下列 precedence：
+
+```text
+exact admitted emergent claim
+→ admitted bounded composition
+→ unsupported_factor
+```
+
+這是 interpretation evidence precedence，不改寫 deterministic chart facts。Exact claim 只補充其 source-backed material semantic delta；不得把同一 lower-level composition完整重講一次，也不得因 exact claim存在就修改 planet、sign、house、aspect、orb或其他 deterministic fact。
+
+**Planet × Sign**
+
+- current production baseline已 admission `planet-sign-composable-semantics-research-v1` 的 `planet_function` + `sign_style` primitives；
+- composition只有在兩個 primitives都由同一實際 planet fact的 typed applicability綁定、且符合 manifest要求的 explicit semantic profile時成立；
+- 若另有 exact Planet×Sign pair claim admission，exact claim優先提供其 emergent delta；**沒有 exact pair claim本身不構成 unsupported**，只要 admitted function + style composition完整成立；
+- 任一 primitive、profile、fact binding或source admission缺失 → `unsupported_factor`，不得由 model memory補語義。
+
+**Natal Aspect**
+
+- exact pair/aspect claim只有在實際 natal aspect fact、typed `aspect_pair` applicability、admitted registry/claim與 production source policy全部通過時可用；
+- current production已 admission的 pair-specific lane只限 manifest實際列入的 registry/claim + source-policy intersection；qualified-only registries仍不是 production authority；
+- current major-aspect geometry / orb policy只證明「這個 aspect fact存在」，**目前沒有 project-wide admitted planet-pair relationship semantic + general aspect-operator semantic primitives，因此一般 natal aspect bounded composition仍未 admission**；
+- 所以 current fallback是：exact admitted pair/aspect claim命中 → 使用；否則保留 geometry fact並將 semantic layer標成 `unsupported_factor`。不得把 conjunction / opposition / trine / square / sextile 的一般模型印象當成已 admission operator semantic。
+
+Typed applicability與 evidence lineage必須保持分離：Planet×Sign使用實際 object/sign fact binding；Natal Aspect使用實際 aspect fact + canonicalized pair/aspect applicability。Research-only pair module不得偷渡。
 
 ## 6. Policy-Derived Natal Projections
 
@@ -127,7 +148,7 @@ Yod、Stellium、Grand Quintile 另走 `tools/astrology_special_pattern_projecti
 ## 8. Natal Unsupported / Uncertainty
 
 - 無 house fact → 不從 Sun sign猜 house；
-- planet-in-sign interpretation 優先組合 production-admitted 的 planet-function + sign-style claims；該 composable semantics registry 必須由 typed request 明確選擇 production manifest 所列 semantic profile，不得在 tradition / framework 未指定時 silent-default。此 profile 是 project semantic profile，不得冒充 canonical astrology school。不得把兩者合成固定人格診斷。Exact planet/sign pair meaning只有在另有 pair-specific admitted claim時才可使用；無 source-backed claim → `unsupported_factor`；
+- planet-in-sign interpretation依 §5.1 precedence：有 separately admitted exact pair claim時只由它補 emergent delta；否則只要 production-admitted planet-function + sign-style claims、實際 fact binding與 explicit semantic profile全部成立，就使用 bounded composition。**缺 exact pair claim本身不是 unsupported 條件**；缺任一 required primitive/profile/applicability/source gate才是 `unsupported_factor`。不得把 composition寫成固定人格診斷；
 - North Node sign interpretation 只允許 `north-node-sign-semantics-research-v1` 的 bounded `north_node_function` 與既有 admitted sign-style composition。typed selection 必須以 `north_node_core` / `north_node_sign_style` 綁定實際 `NorthNode` point、實際 sign，並保留 production-admitted **mean North Node** provenance；普通 planet `sign_style` scope 仍不得接受 point。此 admission 不包含 North Node aspect meanings、South Node semantics、generic karma / past-life / soul-evolution doctrine，缺任一 admission 或 provenance gate 時保持 `unsupported_factor`；
 - `user_asserted` chart facts要標示未獨立重算；
 - birth-time uncertainty materially影響 house/angle時必須揭露；unknown-time invariant-only bundle不得被描述成完整星盤；

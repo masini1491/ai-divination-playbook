@@ -625,6 +625,57 @@
         "SouthNode"
       ],
       "interpretation_scope_note": "Descendant and ImumCoeli retain their explicit source-backed bindings. PartOfFortune admits only the bounded Valens Lot-of-Fortune doctrine. SouthNode remains deterministic fact-only: the reviewed Lilly evidence is conjunction-specific to SouthNode + PartOfFortune, while the current derived-fact handoff does not admit that co-fact/aspect applicability shape; no standalone SouthNode semantic claim is admitted."
+    },
+    "semantic_composition_fallback": {
+      "policy_id": "natal-semantic-composition-fallback-v1",
+      "precedence": [
+        "exact_admitted_emergent_claim",
+        "admitted_bounded_composition",
+        "unsupported_factor"
+      ],
+      "deterministic_fact_override": "forbidden",
+      "exact_claim_policy": {
+        "required": "separately_admitted_registry_claim_and_source_policy",
+        "role": "material_semantic_delta_only",
+        "duplicate_lower_level_composition": "forbidden"
+      },
+      "planet_sign": {
+        "baseline_registry_record_id": "planet-sign-composable-semantics-research-v1",
+        "required_claim_types": [
+          "planet_function",
+          "sign_style"
+        ],
+        "required_applicability_scopes": [
+          "object_core",
+          "sign_style"
+        ],
+        "required_semantic_profile": "composable-symbolic-modern-v1",
+        "exact_pair_missing_behavior": "use_bounded_composition_when_all_required_primitives_pass",
+        "current_exact_pair_registry_ids": []
+      },
+      "natal_aspect": {
+        "geometry_semantic_authority": false,
+        "exact_pair_applicability_scope": "aspect_pair",
+        "admitted_exact_registry_ids": [
+          "saturn-moon-major-aspects-research-v1"
+        ],
+        "exact_claim_must_pass_source_policy": true,
+        "qualified_only_registry_ids": [
+          "high-value-planet-aspects-research-v1"
+        ],
+        "general_pair_relationship_semantic_admitted": false,
+        "general_aspect_operator_semantic_admitted": false,
+        "bounded_composition_currently_available": false,
+        "missing_exact_claim_behavior": "preserve_geometry_fact_and_mark_semantic_unsupported_factor"
+      },
+      "fail_closed_on_missing": [
+        "required_semantic_primitive",
+        "required_semantic_profile",
+        "typed_fact_applicability",
+        "registry_or_claim_admission",
+        "source_admission"
+      ],
+      "model_memory_backfill": "forbidden"
     }
   },
   "extended_ephemeris_provider": {

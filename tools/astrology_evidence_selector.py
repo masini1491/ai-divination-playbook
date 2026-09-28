@@ -26,7 +26,7 @@ SELECTION_SCHEMA_VERSION = "1.0.0"
 SELECTOR_ID = "astrology-typed-evidence-selector-v1"
 SELECTOR_VERSION = "1.0.0"
 PRODUCTION_MANIFEST_PATH = "ASTROLOGY_PRODUCTION_ADMISSION_V1.json"
-APPLICABILITY_SCOPES = {"selector_shape", "object_core", "sign_style", "object_sign_pair", "north_node_core", "north_node_sign_style"}
+APPLICABILITY_SCOPES = {"selector_shape", "object_core", "sign_style", "object_sign_pair", "aspect_pair", "north_node_core", "north_node_sign_style"}
 HOUSE_NAMES = {
     1: "first house", 2: "second house", 3: "third house", 4: "fourth house",
     5: "fifth house", 6: "sixth house", 7: "seventh house", 8: "eighth house",
@@ -328,6 +328,32 @@ def _fact_bound_applicability(
 ) -> set[str]:
     if applicability_scope == "selector_shape":
         return _selector_applicability(selector)
+    if applicability_scope == "aspect_pair":
+        if selector["selector_kind"] != "aspect":
+            raise AstrologyEvidenceSelectionError(
+                "applicability_scope=aspect_pair requires natal aspect fact selectors"
+            )
+        canonical_order = {
+            object_id: index
+            for index, object_id in enumerate(
+                [
+                    "Sun", "Moon", "Mercury", "Venus", "Mars", "Jupiter",
+                    "Saturn", "Uranus", "Neptune", "Pluto", "NorthNode",
+                    "SouthNode", "Ascendant", "Descendant", "Midheaven",
+                    "ImumCoeli", "PartOfFortune",
+                ]
+            )
+        }
+        left = selector["left_object_id"]
+        right = selector["right_object_id"]
+        pair = sorted(
+            [left, right],
+            key=lambda object_id: (canonical_order.get(object_id, 10_000), object_id),
+        )
+        return {
+            selector["bundle"],
+            f"{pair[0]}-{pair[1]} {selector['aspect']}",
+        }
     if selector["selector_kind"] != "object":
         raise AstrologyEvidenceSelectionError(
             f"applicability_scope={applicability_scope} requires object fact selectors"
