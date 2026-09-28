@@ -1158,6 +1158,15 @@ Ordering rationale:
   - coverage delta = +11 reviewed / +6 resolved;
   - coverage state = reviewed 93 / resolved 67 / unreviewed 75 / dedicated L4 9 / bounded L5 41 / high-risk 17 / deferred 26;
   - production claim count/runtime/pipeline remain unchanged.
+- batch_9_result:
+  - full `田宅宮` row is now 14/14 reviewed and 8/14 resolved;
+  - new admission candidates / reviewed unresolved: `紫微×田宅宮`、`太陽×田宅宮`、`天同×田宅宮`、`貪狼×田宅宮`、`破軍×田宅宮`;
+  - new resolved bounded-L5 cells: `天府×田宅宮`、`太陰×田宅宮`、`巨門×田宅宮`、`天相×田宅宮`、`天梁×田宅宮`;
+  - new high-risk bounded cell: `廉貞×田宅宮`;
+  - new evidence-gap deferred cell: `七殺×田宅宮` — no clean standalone primary-text paragraph established;
+  - coverage delta = +12 reviewed / +6 resolved;
+  - coverage state = reviewed 105 / resolved 73 / unreviewed 63 / dedicated L4 9 / bounded L5 46 / high-risk 18 / deferred 32;
+  - production claim count/runtime/pipeline remain unchanged.
 - next_batch:
   - continue another complete ordinary palace row where feasible;
   - keep all V4 admission candidates research-only until separate bounded production-admission authorization;
