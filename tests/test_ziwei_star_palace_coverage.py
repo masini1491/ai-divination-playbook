@@ -12,7 +12,7 @@ class Tests(unittest.TestCase):
   self.assertEqual(168,self.index["total_cells"]); self.assertEqual(168,len(self.index["cells"])); self.assertEqual(168,len(self.cells))
   self.assertEqual(14,len({x["star"] for x in self.index["cells"]})); self.assertEqual(12,len({x["palace"] for x in self.index["cells"]}))
  def test_metrics(self):
-  m=self.index["metrics"]; self.assertEqual((141,106,27,9,74,35),(m["reviewed_cells"],m["resolved_cells"],m["unreviewed_cells"],m["dedicated_l4"],m["bounded_l5_composition"],m["deferred_evidence"])); self.assertEqual(23,m["high_risk_bounded"])
+  m=self.index["metrics"]; self.assertEqual((154,119,14,9,74,35),(m["reviewed_cells"],m["resolved_cells"],m["unreviewed_cells"],m["dedicated_l4"],m["bounded_l5_composition"],m["deferred_evidence"])); self.assertEqual(36,m["high_risk_bounded"])
   self.assertEqual(168,m["reviewed_cells"]+m["unreviewed_cells"]); self.assertLessEqual(m["resolved_cells"],m["reviewed_cells"])
  def test_dedicated_map(self):
   exp={f'{c["star"]}×{c["palace"]}':c["claim_id"] for c in self.registry["claims"]}
@@ -27,8 +27,9 @@ class Tests(unittest.TestCase):
   c=self.cells["廉貞×田宅宮"]; self.assertEqual("HIGH_RISK_BOUNDED",c["routing_mode"]); self.assertTrue(c["resolved"])
   for k in ("貪狼×兄弟宮","天梁×兄弟宮","七殺×兄弟宮","破軍×兄弟宮"): self.assertEqual("HIGH_RISK_BOUNDED",self.cells[k]["routing_mode"]); self.assertTrue(self.cells[k]["resolved"])
   c=self.cells["七殺×奴僕宮"]; self.assertEqual("HIGH_RISK_BOUNDED",c["routing_mode"]); self.assertTrue(c["resolved"])
+  for k in ("紫微×子女宮","天機×子女宮","太陽×子女宮","武曲×子女宮","天同×子女宮","廉貞×子女宮","天府×子女宮","貪狼×子女宮","巨門×子女宮","天相×子女宮","天梁×子女宮","七殺×子女宮","破軍×子女宮"): self.assertEqual("HIGH_RISK_BOUNDED",self.cells[k]["routing_mode"]); self.assertTrue(self.cells[k]["resolved"])
  def test_unreviewed(self):
-  c=self.cells["紫微×子女宮"]; self.assertEqual("UNREVIEWED",c["routing_mode"]); self.assertFalse(c["resolved"]); self.assertNotIn("claim_ref",c)
+  c=self.cells["紫微×疾厄宮"]; self.assertEqual("UNREVIEWED",c["routing_mode"]); self.assertFalse(c["resolved"]); self.assertNotIn("claim_ref",c)
  def test_compact(self): self.assertLess(INDEX.stat().st_size,45000)
  def test_current(self): subprocess.run([sys.executable,str(ROOT/"tools/build_ziwei_star_palace_coverage.py"),"--check"],check=True,cwd=ROOT)
 if __name__=="__main__": unittest.main()
