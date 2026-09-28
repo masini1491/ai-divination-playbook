@@ -1,0 +1,80 @@
+{
+  "schema_name": "astrology_sparse_exact_claim_admission_policy",
+  "schema_version": "1.0.0",
+  "authority": "REFERENCE_ONLY_RESEARCH_POLICY",
+  "production_routable": false,
+  "policy_id": "astrology-sparse-exact-claim-admission-v1",
+  "states": [
+    "composition_adequate",
+    "research_candidate",
+    "exact_claim_admitted",
+    "unsupported"
+  ],
+  "research_candidate_triggers": [
+    "materially_over_generic_after_valid_composition",
+    "recurring_gap_not_safely_expressible_by_admitted_primitives",
+    "source_backed_exact_semantics_materially_differ_from_composition",
+    "typed_context_requires_unrepresented_semantic_distinction"
+  ],
+  "anti_cartesian_rules": {
+    "planet_sign_matrix_completion": false,
+    "planet_pair_aspect_matrix_completion": false,
+    "neighboring_cell_auto_research": false,
+    "coverage_percentage_is_admission_trigger": false,
+    "subjective_accuracy_feedback_is_semantic_evidence": false
+  },
+  "promotion_boundary": [
+    "gap_evaluation",
+    "bounded_research_candidate",
+    "source_normalized_evidence",
+    "research_registry_validation",
+    "explicit_production_admission"
+  ],
+  "representative_cases": [
+    {
+      "case_id": "planet-sign-bounded-composition",
+      "subject_kind": "planet_sign",
+      "subject": "Sun×Taurus representative",
+      "expected_state": "composition_adequate",
+      "evidence_refs": [
+        "ASTROLOGY_NATAL.md#51-natal-semantic-precedence--fallback",
+        "references/astrology/planet_sign_composable_semantics_claim_family_registry.json",
+        "ASTROLOGY_PRODUCTION_ADMISSION_V1.json"
+      ],
+      "rationale": "Planet-function + sign-style are admitted bounded primitives; absence of a pair-specific claim does not itself create a gap."
+    },
+    {
+      "case_id": "qualified-high-value-aspect",
+      "subject_kind": "planet_pair_aspect",
+      "subject": "Mars×Saturn opposition representative",
+      "expected_state": "research_candidate",
+      "evidence_refs": [
+        "references/astrology/high_value_planet_aspects_claim_family_registry.json",
+        "ASTROLOGY_PRODUCTION_ADMISSION_V1.json"
+      ],
+      "rationale": "Pair-specific wording exists at qualified research level, but production source admission is not yet granted; a bounded evidence promotion node may be justified without creating neighboring matrix work."
+    },
+    {
+      "case_id": "admitted-moon-saturn-opposition",
+      "subject_kind": "planet_pair_aspect",
+      "subject": "Moon×Saturn opposition",
+      "expected_state": "exact_claim_admitted",
+      "evidence_refs": [
+        "references/astrology/saturn_moon_aspect_claim_family_registry.json",
+        "ASTROLOGY_PRODUCTION_ADMISSION_V1.json"
+      ],
+      "rationale": "An exact pair/aspect claim is already boundedly selectable under the production manifest and typed aspect-pair applicability."
+    },
+    {
+      "case_id": "generic-unadmitted-aspect-semantic",
+      "subject_kind": "planet_pair_aspect",
+      "subject": "generic natal aspect without exact admission",
+      "expected_state": "unsupported",
+      "evidence_refs": [
+        "ASTROLOGY_NATAL.md#51-natal-semantic-precedence--fallback",
+        "ASTROLOGY_PRODUCTION_ADMISSION_V1.json"
+      ],
+      "rationale": "Geometry exists, but project-wide planet-pair relationship semantics and general aspect-operator semantics remain unadmitted."
+    }
+  ]
+}
