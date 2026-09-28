@@ -125,7 +125,7 @@ Liuyao 若原題只需要 outcome / obstacle，就不因 engine 提供大量欄�
 
 核心原則：**輸出的是與契約有連結的證據，不是展示所有可能象徵或所有可取得欄位。**
 
-Astrology broad natal synthesis若啟用 `evidence-bounded-concrete-natal-v1`，final draft另須滿足 `ASTROLOGY_NATAL.md` §7.1；窄 natal / transit維持本節一般 minimum-sufficient contract。
+Astrology broad natal若啟用 `evidence-bounded-concrete-natal-v1`，final draft須同時滿足 `ASTROLOGY_NATAL.md` §7.1。
 
 ## 7. 信心語言要與證據相稱
 
