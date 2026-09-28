@@ -1535,3 +1535,66 @@ deferred     32
 
 The full 兄弟宮 row is now 14/14 reviewed and 14/14 resolved.
 
+## V4 Batch 12 — 奴僕宮 row
+
+This batch reviews the remaining twelve previously-unreviewed 奴僕宮 cells.
+Historical 奴僕 scope remains subordinate / servant / assistance relationships;
+modern 交友, peer, partnership or broad social-network semantics are not silently
+imported.
+
+Previously reviewed `紫微×奴僕宮` remains an admission candidate / unresolved,
+and `巨門×奴僕宮` remains bounded-L5 / resolved.
+
+### Resolved bounded-L5 cells
+
+The following twelve newly reviewed cells route
+`BOUNDED_L5_COMPOSITION / resolved`:
+
+- `天機×奴僕宮`
+- `太陽×奴僕宮`
+- `武曲×奴僕宮`
+- `天同×奴僕宮`
+- `廉貞×奴僕宮`
+- `天府×奴僕宮`
+- `太陰×奴僕宮`
+- `貪狼×奴僕宮`
+- `天相×奴僕宮`
+- `天梁×奴僕宮`
+- `七殺×奴僕宮`
+- `破軍×奴僕宮`
+
+Across these cells, source-explicit distinctions remain representable through
+existing star core + 奴僕宮 support/effectiveness/loyalty domain + admitted
+condition handling. No stable pair-specific trajectory was established strongly
+enough to justify another dedicated L4 candidate.
+
+Safe synthesis must preserve the historical-vs-modern scope conflict: a
+historical 奴僕 claim must not automatically become a prediction about friends,
+partners, coworkers or one's entire social circle.
+
+## Batch 12 decision
+
+```text
+new reviewed cells = 12
+new resolved cells = 12
+new admission candidates = 0
+new bounded L5 cells = 12
+production claims added = 0
+```
+
+Coverage after batch 12 research classification:
+
+```text
+total       168
+reviewed    141
+resolved    109
+unreviewed   27
+dedicated     9
+bounded L5   78
+high-risk    22
+deferred     32
+```
+
+The full 奴僕宮 row is now 14/14 reviewed and 13/14 resolved. Only the
+previously-deferred `紫微×奴僕宮` remains unresolved.
+
