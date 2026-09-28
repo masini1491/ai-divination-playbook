@@ -68,6 +68,9 @@ jobs:
       - name: Verify Zi Wei deterministic tool bundle
         run: python tools/build_ziwei_tool_bundle.py --check
 
+      - name: Verify Zi Wei star-palace coverage index
+        run: python tools/build_ziwei_star_palace_coverage.py --check
+
       - name: Verify Zi Wei deterministic regression selection
         run: python tools/behavioral_eval.py --matrix evals/regression_matrix.json --change-class ziwei-deterministic-materialization
 

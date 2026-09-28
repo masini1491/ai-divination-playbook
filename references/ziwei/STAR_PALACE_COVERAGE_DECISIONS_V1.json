@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "authority": "research_classification_input_only",
+  "purpose": "Non-dedicated star×palace coverage decisions established by bounded V1–V3 research. Production dedicated L4 cells come from the canonical production registry.",
+  "decisions": [
+    {
+      "star": "太陽",
+      "palace": "財帛宮",
+      "routing_mode": "BOUNDED_L5_COMPOSITION",
+      "resolved": true,
+      "research_state": "REJECT-REDUNDANT",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V1.md"
+    },
+    {
+      "star": "太陽",
+      "palace": "官祿宮",
+      "routing_mode": "BOUNDED_L5_COMPOSITION",
+      "resolved": true,
+      "research_state": "REJECT-REDUNDANT",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V1.md"
+    },
+    {
+      "star": "紫微",
+      "palace": "官祿宮",
+      "routing_mode": "BOUNDED_L5_COMPOSITION",
+      "resolved": true,
+      "research_state": "REJECT-REDUNDANT",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V2.md"
+    },
+    {
+      "star": "紫微",
+      "palace": "遷移宮",
+      "routing_mode": "BOUNDED_L5_COMPOSITION",
+      "resolved": true,
+      "research_state": "REJECT-REDUNDANT",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V3.md"
+    },
+    {
+      "star": "武曲",
+      "palace": "財帛宮",
+      "routing_mode": "DEFERRED_EVIDENCE",
+      "resolved": false,
+      "research_state": "DEFER-NO-ISOLATED-RULE",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V1.md"
+    },
+    {
+      "star": "巨門",
+      "palace": "夫妻宮",
+      "routing_mode": "DEFERRED_EVIDENCE",
+      "resolved": false,
+      "research_state": "DEFER-CONDITIONAL-CONTEXT",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V1.md"
+    },
+    {
+      "star": "天相",
+      "palace": "官祿宮",
+      "routing_mode": "DEFERRED_EVIDENCE",
+      "resolved": false,
+      "research_state": "DEFER-NO-ISOLATED-RULE",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V1.md"
+    },
+    {
+      "star": "貪狼",
+      "palace": "遷移宮",
+      "routing_mode": "DEFERRED_EVIDENCE",
+      "resolved": false,
+      "research_state": "DEFER-BORDERLINE",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V3.md"
+    }
+  ]
+}

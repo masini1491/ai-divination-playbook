@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ZIWEI_STAR_PALACE_COVERAGE_V1.schema.json",
+  "title": "Zi Wei 14×12 Star-Palace Coverage Index V1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "authority",
+    "total_cells",
+    "metrics",
+    "cells"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "authority": {
+      "const": "routing_coverage_index_only"
+    },
+    "generated_by": {
+      "type": "string"
+    },
+    "source_registry": {
+      "type": "string"
+    },
+    "decision_input": {
+      "type": "string"
+    },
+    "total_cells": {
+      "const": 168
+    },
+    "metrics": {
+      "type": "object"
+    },
+    "cells": {
+      "type": "array",
+      "minItems": 168,
+      "maxItems": 168
+    }
+  }
+}

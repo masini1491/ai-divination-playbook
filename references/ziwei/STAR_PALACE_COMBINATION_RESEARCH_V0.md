@@ -87,3 +87,16 @@ production authority = false
 ```
 
 `EXECUTABLE_RETRIEVAL_COMPOSITION_V0.md` subsequently admitted a bounded research-only selector/composer over the first-layer corpus. This does not establish scientific predictive validity or production interpretation authority.
+
+
+## 2026-09 coverage-architecture clarification
+
+The later full-coverage architecture does not reverse this document's rejection
+of 168 dedicated claims. The project now distinguishes:
+
+```text
+168 dedicated L4 doctrine records       still rejected
+168 machine-visible coverage identities adopted
+```
+
+See `STAR_PALACE_COVERAGE_ARCHITECTURE_V1.md`.

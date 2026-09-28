@@ -228,9 +228,29 @@ logical repository action closure
 
 核心原則：**每個會改變 fresh session 下一步的 material logical action closure最多留一筆 checkpoint；pointer over copy，current canonical truth永遠高於 continuity history。**
 
+#### Adopted routing index surface
+
+This Repo now adopts `indexes/ziwei/**` for compact machine-readable routing /
+coverage indexes. These are generated control-plane data only: they do not
+become interpretation/source authority, and they point to canonical owners
+instead of copying long-form doctrine.
+
+Current first adoption:
+
+```text
+indexes/ziwei/star_palace_coverage_v1.json
+← tools/build_ziwei_star_palace_coverage.py
+← production star×palace registry + bounded research decision input
+```
+
+The surface is eligible for bounded Hot-path retrieval when only identity /
+classification is needed.
+
 #### Other optional surfaces
 
-`indexes/`、`evidence/`、`fixtures/`、`validation/` 等 path 只有在本 Repo 未來真的採用時才建立；是否值得建立與其 generic semantics依 shared baseline canonical owners判斷。本檔不因目錄名稱存在而自行建立第二份 shared policy。
+`evidence/`、`fixtures/`、`validation/` and other optional paths are created
+only when this Repo actually adopts them. Their generic semantics follow shared
+baseline canonical owners.
 
 ## 4. Source / derived data / transport boundary
 
