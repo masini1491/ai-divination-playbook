@@ -35,6 +35,25 @@ Production v1 在 admitted facts / claims存在時可解讀：
 
 不得因 chart含更多可計算欄位就自動擴充到未 admitted systems。
 
+### 2.1 Semantic Profile Interaction Policy
+
+Ordinary natal interpretation 使用下列 project UX profile selection contract：
+
+```text
+使用者明確指定已 admitted semantic_profile
+→ 尊重 explicit choice
+→ semantic_profile_selection = explicit_user_choice
+
+使用者未指定、或 semantic_profile = null
+→ project UX default = composable-symbolic-modern-v1
+→ semantic_profile_selection = project_default
+→ user-facing output 必須揭露這是 project default
+```
+
+`composable-symbolic-modern-v1` 只是目前 production-admitted 的 bounded modern symbolic composition profile；**不是唯一或客觀正確的占星傳統，也不是科學人格模型**。Default 只決定已 admitted semantic registries/claims 的 selection profile，不會新增 claim admission、擴張 unsupported factors，亦不改變 Astrology 仍為 explicit-request-only 的 method routing。
+
+Profile identity 必須由 reading request / orchestrator 正規化並留下 `semantic_profile_selection` provenance；registry / typed selector 不得自行 silent-default。Explicit 未 admission 的 profile 必須 fail closed，不得自動混入或降級成 default。
+
 ## 3. House Policy
 
 Known-time production採用下列 interaction profile：

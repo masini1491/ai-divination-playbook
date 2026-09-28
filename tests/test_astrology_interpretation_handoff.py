@@ -198,6 +198,57 @@ class AstrologyInterpretationHandoffTests(unittest.TestCase):
         disclosure = "\n".join(result["required_disclosures"])
         self.assertNotIn("Placidus (project default)", disclosure)
 
+    def test_project_default_semantic_profile_is_disclosed_and_recorded(self):
+        run = admitted_run()
+        run["normalized_request"].update({
+            "semantic_profile": "composable-symbolic-modern-v1",
+            "semantic_profile_selection": "project_default",
+        })
+        result = build_handoff(run, valid_request(), repo_root=ROOT)
+        self.assertEqual(
+            "composable-symbolic-modern-v1",
+            result["reading_run_identity"]["semantic_profile"],
+        )
+        self.assertEqual(
+            "project_default",
+            result["reading_run_identity"]["semantic_profile_selection"],
+        )
+        disclosure = "\n".join(result["required_disclosures"])
+        self.assertIn("Semantic profile: composable-symbolic-modern-v1 (project default)", disclosure)
+        self.assertIn("not the unique, canonical, objectively correct", disclosure)
+
+    def test_explicit_semantic_profile_choice_does_not_get_default_disclosure(self):
+        run = admitted_run()
+        run["normalized_request"].update({
+            "semantic_profile": "composable-symbolic-modern-v1",
+            "semantic_profile_selection": "explicit_user_choice",
+        })
+        result = build_handoff(run, valid_request(), repo_root=ROOT)
+        disclosure = "\n".join(result["required_disclosures"])
+        self.assertNotIn("Semantic profile: composable-symbolic-modern-v1 (project default)", disclosure)
+
+    def test_profile_bound_registry_requires_normalized_reading_profile(self):
+        run = admitted_run()
+        run["fact_bundles"]["natal"]["facts"]["objects"].append({
+            "fact_id": "fact:object:sun",
+            "object_type": "planet",
+            "object_id": "Sun",
+            "sign": "Taurus",
+        })
+        request = valid_request()
+        ref = {"bundle": "natal", "fact_id": "fact:object:sun"}
+        request["fact_refs"] = [ref]
+        request["claim_requests"] = [{
+            "registry_record_id": "planet-sign-composable-semantics-research-v1",
+            "claim_id": "claim:planet-function:sun",
+            "fact_refs": [ref],
+        }]
+        with self.assertRaisesRegex(
+            InterpretationHandoffError,
+            "requires normalized semantic_profile=composable-symbolic-modern-v1",
+        ):
+            build_handoff(run, request, repo_root=ROOT)
+
     def test_approximate_birth_time_adds_disclosure(self):
         result = build_handoff(admitted_run(approximate=True), valid_request(), repo_root=ROOT)
         self.assertTrue(any("approximate" in item for item in result["required_disclosures"]))

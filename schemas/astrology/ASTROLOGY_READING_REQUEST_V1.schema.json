@@ -408,6 +408,14 @@
           "Vesta"
         ]
       }
+    },
+    "semantic_profile": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1,
+      "description": "Optional natal interpretation semantic profile. For reading_mode=natal, omitted/null is normalized by the orchestrator to the disclosed project UX default composable-symbolic-modern-v1; an explicit value must already be production-admitted. Transit requests do not activate this default."
     }
   },
   "allOf": [

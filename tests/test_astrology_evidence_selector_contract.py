@@ -183,5 +183,31 @@ class AstrologyEvidenceSelectorContractTests(unittest.TestCase):
         )
         self.assertEqual("forbidden", policy["model_memory_backfill"])
 
+    def test_semantic_profile_project_default_is_orchestrator_owned_not_registry_silent_default(self):
+        manifest = load(MANIFEST)
+        natal = manifest["natal_semantic_policy"]
+        profile = natal["semantic_profile_interaction_profile"]
+        self.assertEqual(
+            "semantic-profile-default-composable-symbolic-modern-v1",
+            profile["policy_id"],
+        )
+        self.assertEqual("composable-symbolic-modern-v1", profile["default_semantic_profile"])
+        self.assertEqual(["omitted", "null"], profile["default_on"])
+        self.assertTrue(profile["explicit_user_choice_overrides_default"])
+        self.assertEqual("semantic_profile_selection", profile["normalized_selection_field"])
+        self.assertEqual("project_default", profile["default_selection_value"])
+        self.assertEqual("explicit_user_choice", profile["explicit_selection_value"])
+        self.assertEqual("forbidden", profile["registry_or_selector_silent_default"])
+        self.assertEqual("fail_closed", profile["unsupported_profile_behavior"])
+        self.assertFalse(profile["transit_default_activation"])
+        self.assertEqual("forbidden_inside_registry_or_selector", natal["silent_default_semantic_profile"])
+
+        for registry_path in (
+            ROOT / "references" / "astrology" / "planet_sign_composable_semantics_claim_family_registry.json",
+            ROOT / "references" / "astrology" / "north_node_sign_semantics_claim_family_registry.json",
+        ):
+            registry = load(registry_path)
+            self.assertFalse(registry["selection_policy"]["silent_default_allowed"])
+
 if __name__ == "__main__":
     unittest.main()

@@ -36,6 +36,7 @@ RUN_SCHEMA_VERSION = "1.0.0"
 ORCHESTRATOR_ID = "astrology-production-orchestrator-v1"
 ORCHESTRATOR_VERSION = "1.0.0"
 REQUEST_SCHEMA_PATH = "ASTROLOGY_READING_REQUEST_V1.schema.json"
+PRODUCTION_MANIFEST_PATH = "ASTROLOGY_PRODUCTION_ADMISSION_V1.json"
 DEFAULT_HOUSE_SYSTEM = "Placidus"
 HOUSE_SYSTEM_SELECTION_DEFAULT = "project_default"
 HOUSE_SYSTEM_SELECTION_EXPLICIT = "explicit_user_choice"
@@ -57,6 +58,23 @@ def _load_place_resolver():
         raise
     return resolve_country_timezone, resolve_place
 
+
+
+def _semantic_profile_policy() -> tuple[dict[str, Any], set[str]]:
+    path = Path(__file__).resolve().parents[1] / PRODUCTION_MANIFEST_PATH
+    try:
+        manifest = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise OrchestrationInputError(f"cannot load semantic profile policy: {exc}") from exc
+    natal_policy = manifest.get("natal_semantic_policy", {})
+    interaction = natal_policy.get("semantic_profile_interaction_profile", {})
+    profiles = natal_policy.get("semantic_profiles", {})
+    if not isinstance(interaction, dict) or not isinstance(profiles, dict):
+        raise OrchestrationInputError("production semantic profile policy is invalid")
+    default_profile = interaction.get("default_semantic_profile")
+    if not isinstance(default_profile, str) or default_profile not in profiles:
+        raise OrchestrationInputError("production semantic profile default is not admitted")
+    return interaction, set(profiles)
 
 
 def _object(value: Any, path: str) -> dict[str, Any]:
@@ -256,7 +274,7 @@ def normalize_request(data: Any) -> dict[str, Any]:
     root = _object(data, "$")
     _exact_keys(
         root,
-        allowed={"schema_name", "schema_version", "reading_mode", "subject_ref", "birth", "transit", "extended_objects"},
+        allowed={"schema_name", "schema_version", "reading_mode", "subject_ref", "birth", "transit", "extended_objects", "semantic_profile"},
         required={"schema_name", "schema_version", "reading_mode", "subject_ref", "birth"},
         path="$",
     )
@@ -272,6 +290,24 @@ def normalize_request(data: Any) -> dict[str, Any]:
         raise OrchestrationInputError("$.transit is only allowed when reading_mode=transit")
     if reading_mode == "transit" and "transit" not in root:
         raise OrchestrationInputError("$.transit is required when reading_mode=transit")
+
+    semantic_profile: str | None = None
+    semantic_profile_selection: str | None = None
+    raw_semantic_profile = root.get("semantic_profile")
+    if reading_mode == "natal":
+        profile_policy, admitted_profiles = _semantic_profile_policy()
+        if raw_semantic_profile is None:
+            semantic_profile = profile_policy["default_semantic_profile"]
+            semantic_profile_selection = profile_policy["default_selection_value"]
+        else:
+            semantic_profile = _non_empty_string(raw_semantic_profile, "$.semantic_profile")
+            if semantic_profile not in admitted_profiles:
+                raise OrchestrationInputError(
+                    f"$.semantic_profile is not production-admitted: {semantic_profile}"
+                )
+            semantic_profile_selection = profile_policy["explicit_selection_value"]
+    elif raw_semantic_profile is not None:
+        raise OrchestrationInputError("$.semantic_profile is admitted only when reading_mode=natal")
 
     birth = _object(root["birth"], "$.birth")
     _exact_keys(
@@ -332,6 +368,9 @@ def normalize_request(data: Any) -> dict[str, Any]:
         "subject_ref": _non_empty_string(root["subject_ref"], "$.subject_ref"),
         "birth": normalized_birth,
     }
+    if semantic_profile is not None and semantic_profile_selection is not None:
+        normalized["semantic_profile"] = semantic_profile
+        normalized["semantic_profile_selection"] = semantic_profile_selection
     if "extended_objects" in root:
         extended_objects = _unique_strings(root["extended_objects"], "$.extended_objects")
         unsupported = [object_id for object_id in extended_objects if object_id not in EXTENDED_EPHEMERIS_OBJECT_IDS]
