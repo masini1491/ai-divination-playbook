@@ -27,6 +27,7 @@ HANDOFF_SCHEMA_VERSION = "1.0.0"
 ADAPTER_ID = "astrology-output-guard-v1"
 ADAPTER_VERSION = "1.0.0"
 DRAFT_SCHEMA_PATH = "ASTROLOGY_OUTPUT_DRAFT_V1.schema.json"
+NATAL_SYNTHESIS_PROFILE_ID = "evidence-bounded-concrete-natal-v1"
 
 ATTESTATION_KEYS = {
     "direct_answer_checked",
@@ -118,11 +119,77 @@ def _normalize_unit(value: Any, path: str) -> dict[str, Any]:
     return {"text": text, "fact_refs": fact_refs, "claim_refs": claim_refs}
 
 
+def _normalize_natal_theme(value: Any, path: str) -> dict[str, Any]:
+    row = _object(value, path)
+    _exact_keys(
+        row,
+        allowed={"title", "statement", "manifestation", "fact_refs", "claim_refs", "limiting_condition"},
+        required={"title", "statement", "manifestation", "fact_refs", "claim_refs"},
+        path=path,
+    )
+    unit = _normalize_unit(
+        {
+            "text": row["statement"],
+            "fact_refs": row["fact_refs"],
+            "claim_refs": row["claim_refs"],
+        },
+        path,
+    )
+    if not unit["claim_refs"]:
+        raise AstrologyOutputGuardError(f"{path}.claim_refs must contain admitted semantic evidence")
+    if any(ref["bundle"] != "natal" for ref in unit["fact_refs"]):
+        raise AstrologyOutputGuardError(f"{path}.fact_refs must be natal-only")
+    theme = {
+        "title": _text(row["title"], f"{path}.title"),
+        "statement": unit["text"],
+        "manifestation": _text(row["manifestation"], f"{path}.manifestation"),
+        "fact_refs": unit["fact_refs"],
+        "claim_refs": unit["claim_refs"],
+    }
+    if len(theme["manifestation"]) > 1600:
+        raise AstrologyOutputGuardError(f"{path}.manifestation exceeds 1600 characters")
+    if "limiting_condition" in row:
+        limiting = _normalize_unit(row["limiting_condition"], f"{path}.limiting_condition")
+        if not limiting["claim_refs"]:
+            raise AstrologyOutputGuardError(
+                f"{path}.limiting_condition.claim_refs must contain admitted semantic evidence"
+            )
+        if any(ref["bundle"] != "natal" for ref in limiting["fact_refs"]):
+            raise AstrologyOutputGuardError(f"{path}.limiting_condition.fact_refs must be natal-only")
+        theme["limiting_condition"] = limiting
+    return theme
+
+
+def _normalize_natal_synthesis(value: Any, path: str) -> dict[str, Any]:
+    row = _object(value, path)
+    _exact_keys(
+        row,
+        allowed={"profile_id", "themes"},
+        required={"profile_id", "themes"},
+        path=path,
+    )
+    if row["profile_id"] != NATAL_SYNTHESIS_PROFILE_ID:
+        raise AstrologyOutputGuardError(
+            f"{path}.profile_id must equal {NATAL_SYNTHESIS_PROFILE_ID}"
+        )
+    themes_raw = row["themes"]
+    if not isinstance(themes_raw, list) or not 3 <= len(themes_raw) <= 5:
+        raise AstrologyOutputGuardError(f"{path}.themes must contain 3 to 5 items")
+    themes = [
+        _normalize_natal_theme(item, f"{path}.themes[{index}]")
+        for index, item in enumerate(themes_raw)
+    ]
+    titles = [theme["title"] for theme in themes]
+    if len(set(titles)) != len(titles):
+        raise AstrologyOutputGuardError(f"{path}.themes titles must be unique")
+    return {"profile_id": NATAL_SYNTHESIS_PROFILE_ID, "themes": themes}
+
+
 def normalize_draft(value: Any) -> dict[str, Any]:
     root = _object(value, "$")
     _exact_keys(
         root,
-        allowed={"schema_name", "schema_version", "question_id", "conclusion", "evidence", "pre_send_attestations"},
+        allowed={"schema_name", "schema_version", "question_id", "conclusion", "evidence", "natal_synthesis", "pre_send_attestations"},
         required={"schema_name", "schema_version", "question_id", "conclusion", "evidence", "pre_send_attestations"},
         path="$",
     )
@@ -142,7 +209,7 @@ def normalize_draft(value: Any) -> dict[str, Any]:
         raise AstrologyOutputGuardError(
             "all required Pre-Send attestations must be true: " + ", ".join(false_keys)
         )
-    return {
+    normalized = {
         "schema_name": DRAFT_SCHEMA_NAME,
         "schema_version": DRAFT_SCHEMA_VERSION,
         "question_id": _text(root["question_id"], "$.question_id"),
@@ -150,6 +217,11 @@ def normalize_draft(value: Any) -> dict[str, Any]:
         "evidence": [_normalize_unit(item, f"$.evidence[{index}]") for index, item in enumerate(evidence_raw)],
         "pre_send_attestations": {key: True for key in sorted(ATTESTATION_KEYS)},
     }
+    if "natal_synthesis" in root:
+        normalized["natal_synthesis"] = _normalize_natal_synthesis(
+            root["natal_synthesis"], "$.natal_synthesis"
+        )
+    return normalized
 
 
 def _validate_handoff(value: Any) -> dict[str, Any]:
@@ -273,14 +345,45 @@ def build_output(handoff: Any, draft: Any) -> dict[str, Any]:
             claim_index=claim_index,
         )
 
+    natal_synthesis = normalized.get("natal_synthesis")
+    synthesis_units: list[dict[str, Any]] = []
+    if isinstance(natal_synthesis, dict):
+        identity = admitted_handoff.get("reading_run_identity", {})
+        if not isinstance(identity, dict) or identity.get("reading_mode") != "natal":
+            raise AstrologyOutputGuardError(
+                "natal_synthesis requires an admitted natal reading handoff"
+            )
+        for index, theme in enumerate(natal_synthesis["themes"]):
+            support_unit = {
+                "text": theme["statement"],
+                "fact_refs": theme["fact_refs"],
+                "claim_refs": theme["claim_refs"],
+            }
+            _validate_unit_refs(
+                support_unit,
+                path=f"$.natal_synthesis.themes[{index}]",
+                fact_index=fact_index,
+                claim_index=claim_index,
+            )
+            synthesis_units.append(support_unit)
+            limiting = theme.get("limiting_condition")
+            if isinstance(limiting, dict):
+                _validate_unit_refs(
+                    limiting,
+                    path=f"$.natal_synthesis.themes[{index}].limiting_condition",
+                    fact_index=fact_index,
+                    claim_index=claim_index,
+                )
+                synthesis_units.append(limiting)
+
     used_fact_keys = {
         _fact_key(ref)
-        for unit in [normalized["conclusion"], *normalized["evidence"]]
+        for unit in [normalized["conclusion"], *normalized["evidence"], *synthesis_units]
         for ref in unit["fact_refs"]
     }
     used_claim_keys = {
         _claim_key(ref)
-        for unit in [normalized["conclusion"], *normalized["evidence"]]
+        for unit in [normalized["conclusion"], *normalized["evidence"], *synthesis_units]
         for ref in unit["claim_refs"]
     }
 
@@ -289,7 +392,16 @@ def build_output(handoff: Any, draft: Any) -> dict[str, Any]:
     conflicts = [row for row in admitted_handoff.get("conflicts", []) if isinstance(row, dict)]
 
     rendered_lines = [normalized["conclusion"]["text"]]
-    rendered_lines.extend(f"- {unit['text']}" for unit in normalized["evidence"])
+    if isinstance(natal_synthesis, dict):
+        rendered_lines.append("Major natal themes:")
+        for theme in natal_synthesis["themes"]:
+            rendered_lines.append(f"- {theme['title']}: {theme['statement']}")
+            rendered_lines.append(f"  Concrete manifestation: {theme['manifestation']}")
+            limiting = theme.get("limiting_condition")
+            if isinstance(limiting, dict):
+                rendered_lines.append(f"  Limiting condition / tension: {limiting['text']}")
+    else:
+        rendered_lines.extend(f"- {unit['text']}" for unit in normalized["evidence"])
     if unsupported:
         rendered_lines.append("Unsupported / unavailable factors:")
         rendered_lines.extend(
@@ -326,6 +438,7 @@ def build_output(handoff: Any, draft: Any) -> dict[str, Any]:
         },
         "conclusion": normalized["conclusion"],
         "evidence": normalized["evidence"],
+        **({"natal_synthesis": natal_synthesis} if isinstance(natal_synthesis, dict) else {}),
         "required_disclosures": disclosures,
         "unsupported_factors": unsupported,
         "conflicts": conflicts,
