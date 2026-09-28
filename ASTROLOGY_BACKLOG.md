@@ -39,10 +39,9 @@ This SHA is review evidence only, not a pin. Every maintenance or implementation
 
 Active near-term Astrology work:
 
-1. **AST-P1-210 — Natal semantic composition fallback contract**
-2. **AST-P1-220 — Disclosed default semantic profile for ordinary natal interpretation**
-3. **AST-P1-230 — Evidence-bounded concrete natal synthesis contract**
-4. **AST-P1-240 — Sparse emergent exact-claim admission policy**
+1. **AST-P1-220 — Disclosed default semantic profile for ordinary natal interpretation**
+2. **AST-P1-230 — Evidence-bounded concrete natal synthesis contract**
+3. **AST-P1-240 — Sparse emergent exact-claim admission policy**
 
 Standing guard:
 
@@ -91,44 +90,15 @@ This item is a standing reconciliation guard. It is not a request to change curr
 
 ## P1 — active natal interpretation work
 
-### AST-P1-210 — Natal semantic composition fallback contract
-
-- type: ARCHITECTURE / INTERPRETATION / PRODUCTION POLICY
-- status: OPEN
-- priority: P1
-- owner: Astrology natal interpretation composition
-- blocked_by: none
-- current_evidence:
-  - `ASTROLOGY_NATAL.md` already permits production-admitted planet-function + sign-style composition only under an explicit admitted semantic profile;
-  - `composable-symbolic-modern-v1` is already admitted as a bounded project semantic profile, not a canonical astrology school;
-  - exact Planet×Sign pair meaning remains separately gated, and existing pair/aspect semantic coverage is sparse;
-  - deterministic chart geometry and semantic interpretation authority remain separate.
-- target:
-  - define one production precedence contract:
-    `exact admitted emergent claim → admitted bounded composition → unsupported_factor`;
-  - composition is allowed only when every required semantic primitive, relationship/operator semantic, profile and typed applicability precondition is independently production-admitted for the actual matched facts;
-  - an exact claim may add a material semantic delta but must not rewrite deterministic facts or duplicate the entire lower-level composition;
-  - Planet×Sign and natal-aspect composition must retain separate typed applicability and evidence lineage.
-- completion_gate:
-  - inventory which current Planet×Sign and natal-aspect primitives are actually production-admitted before changing fallback behavior;
-  - define precedence/conflict semantics in the canonical natal interpretation owner and machine-readable admission surface where required;
-  - fail closed when any required primitive/profile/context is missing rather than backfilling from model memory;
-  - add focused regression for exact-claim hit, compositional fallback, profile/context mismatch and unsupported cases;
-  - preserve deterministic Fact Gate and source/provenance boundaries.
-- non_goals:
-  - no requirement to author all 10×12 Planet×Sign combinations;
-  - no requirement to author every planet-pair × aspect-type combination;
-  - no automatic conversion of research-only registries into production authority;
-  - no scientific, psychometric or objective-predictive-validity claim.
-
 ### AST-P1-220 — Disclosed default semantic profile for ordinary natal interpretation
 
 - type: FEATURE / PRODUCT UX / INTERPRETATION PROFILE
 - status: OPEN
 - priority: P1
 - owner: Astrology natal interaction profile
-- blocked_by:
-  - AST-P1-210
+- blocked_by: none
+- prerequisite:
+  - AST-P1-210 — DONE; `natal-semantic-composition-fallback-v1` is canonical.
 - current_state:
   - `composable-symbolic-modern-v1` is production-admitted but currently requires explicit typed selection;
   - omission therefore permits deterministic chart calculation while ordinary semantic interpretation can remain unavailable even when the admitted compositional profile would otherwise apply.
@@ -156,8 +126,9 @@ This item is a standing reconciliation guard. It is not a request to change curr
 - priority: P1
 - owner: Astrology natal synthesis / user-facing interpretation
 - blocked_by:
-  - AST-P1-210
   - AST-P1-220
+- prerequisite:
+  - AST-P1-210 — DONE.
 - problem:
   - factor-by-factor output can remain technically correct while sounding repetitive, generic or internally contradictory;
   - improving user-perceived specificity must not create new semantic claims, hide unsupported factors or turn subjective resonance into evidence.
@@ -183,8 +154,9 @@ This item is a standing reconciliation guard. It is not a request to change curr
 - status: OPEN
 - priority: P1
 - owner: Astrology semantic research coordination
-- blocked_by:
-  - AST-P1-210
+- blocked_by: none
+- prerequisite:
+  - AST-P1-210 — DONE.
 - target:
   - establish when an exact Planet×Sign or Planet-Pair×Aspect claim is worth separate research/admission because admitted lower-level composition leaves a **material semantic delta**;
   - valid triggers may include a demonstrable production coverage gap, recurrent over-generic composition, materially distinct source-backed semantics, or a case where lower-level primitives cannot safely express the scoped meaning;
@@ -264,6 +236,7 @@ The items below are **DONE**. They are retained only as compact identity pointer
 - **AST-P1-180 — Exact-main connector-backed core handoff artifact publishing** — DONE.
 - **AST-P1-190 — Shared civil-time normalizer extraction/admission** — DONE.
 - **AST-P1-200 — Default house-system interaction profile** — DONE.
+- **AST-P1-210 — Natal semantic composition fallback contract** — DONE; canonical precedence is exact admitted claim → admitted bounded composition → `unsupported_factor`; typed `aspect_pair` supports admitted exact natal-aspect claims, while general natal-aspect semantic composition remains closed until its primitives are separately admitted.
 - **AST-P2-010 — Interpolated Black Moon Lilith** — DONE.
 - **AST-P2-041 — Piecewise Chebyshev five-body ephemeris feasibility** — DONE.
 - **AST-P2-042 — Continuity-constrained / overlap Chebyshev five-body feasibility** — DONE.
@@ -303,7 +276,6 @@ Unless the user explicitly asks for a different bounded task, a fresh Astrology 
 3. reconcile any changed item status against canonical owners
 4. enforce AST-P0-002 alongside any affected interpretation change
 5. continue the active P1 natal-interpretation sequence:
-   AST-P1-210 semantic composition fallback contract
    AST-P1-220 disclosed default semantic profile
    AST-P1-230 evidence-bounded concrete natal synthesis
    AST-P1-240 sparse emergent exact-claim admission policy
