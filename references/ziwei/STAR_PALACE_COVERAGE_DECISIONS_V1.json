@@ -674,6 +674,102 @@
       "resolved": false,
       "research_state": "ADMISSION-CANDIDATE",
       "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
+    },
+    {
+      "star": "紫微",
+      "palace": "田宅宮",
+      "routing_mode": "DEFERRED_EVIDENCE",
+      "resolved": false,
+      "research_state": "ADMISSION-CANDIDATE",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
+    },
+    {
+      "star": "太陽",
+      "palace": "田宅宮",
+      "routing_mode": "DEFERRED_EVIDENCE",
+      "resolved": false,
+      "research_state": "ADMISSION-CANDIDATE",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
+    },
+    {
+      "star": "天同",
+      "palace": "田宅宮",
+      "routing_mode": "DEFERRED_EVIDENCE",
+      "resolved": false,
+      "research_state": "ADMISSION-CANDIDATE",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
+    },
+    {
+      "star": "廉貞",
+      "palace": "田宅宮",
+      "routing_mode": "HIGH_RISK_BOUNDED",
+      "resolved": true,
+      "research_state": "HIGH-RISK-SOURCE-BOUNDED",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
+    },
+    {
+      "star": "天府",
+      "palace": "田宅宮",
+      "routing_mode": "BOUNDED_L5_COMPOSITION",
+      "resolved": true,
+      "research_state": "REJECT-REDUNDANT",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
+    },
+    {
+      "star": "太陰",
+      "palace": "田宅宮",
+      "routing_mode": "BOUNDED_L5_COMPOSITION",
+      "resolved": true,
+      "research_state": "REJECT-REDUNDANT",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
+    },
+    {
+      "star": "貪狼",
+      "palace": "田宅宮",
+      "routing_mode": "DEFERRED_EVIDENCE",
+      "resolved": false,
+      "research_state": "ADMISSION-CANDIDATE",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
+    },
+    {
+      "star": "巨門",
+      "palace": "田宅宮",
+      "routing_mode": "BOUNDED_L5_COMPOSITION",
+      "resolved": true,
+      "research_state": "REJECT-REDUNDANT",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
+    },
+    {
+      "star": "天相",
+      "palace": "田宅宮",
+      "routing_mode": "BOUNDED_L5_COMPOSITION",
+      "resolved": true,
+      "research_state": "REJECT-REDUNDANT",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
+    },
+    {
+      "star": "天梁",
+      "palace": "田宅宮",
+      "routing_mode": "BOUNDED_L5_COMPOSITION",
+      "resolved": true,
+      "research_state": "REJECT-REDUNDANT",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
+    },
+    {
+      "star": "七殺",
+      "palace": "田宅宮",
+      "routing_mode": "DEFERRED_EVIDENCE",
+      "resolved": false,
+      "research_state": "EVIDENCE-GAP",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
+    },
+    {
+      "star": "破軍",
+      "palace": "田宅宮",
+      "routing_mode": "DEFERRED_EVIDENCE",
+      "resolved": false,
+      "research_state": "ADMISSION-CANDIDATE",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
     }
   ]
 }
