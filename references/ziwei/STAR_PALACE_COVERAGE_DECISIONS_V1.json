@@ -998,9 +998,9 @@
     {
       "star": "廉貞",
       "palace": "奴僕宮",
-      "routing_mode": "BOUNDED_L5_COMPOSITION",
-      "resolved": true,
-      "research_state": "REJECT-REDUNDANT",
+      "routing_mode": "DEFERRED_EVIDENCE",
+      "resolved": false,
+      "research_state": "ADMISSION-CANDIDATE",
       "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
     },
     {
@@ -1022,17 +1022,17 @@
     {
       "star": "貪狼",
       "palace": "奴僕宮",
-      "routing_mode": "BOUNDED_L5_COMPOSITION",
-      "resolved": true,
-      "research_state": "REJECT-REDUNDANT",
+      "routing_mode": "DEFERRED_EVIDENCE",
+      "resolved": false,
+      "research_state": "ADMISSION-CANDIDATE",
       "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
     },
     {
       "star": "天相",
       "palace": "奴僕宮",
-      "routing_mode": "BOUNDED_L5_COMPOSITION",
-      "resolved": true,
-      "research_state": "REJECT-REDUNDANT",
+      "routing_mode": "DEFERRED_EVIDENCE",
+      "resolved": false,
+      "research_state": "ADMISSION-CANDIDATE",
       "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
     },
     {
@@ -1046,9 +1046,9 @@
     {
       "star": "七殺",
       "palace": "奴僕宮",
-      "routing_mode": "BOUNDED_L5_COMPOSITION",
+      "routing_mode": "HIGH_RISK_BOUNDED",
       "resolved": true,
-      "research_state": "REJECT-REDUNDANT",
+      "research_state": "HIGH-RISK-SOURCE-BOUNDED",
       "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
     },
     {
