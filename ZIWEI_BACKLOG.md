@@ -950,7 +950,7 @@ Ordering rationale:
 ### ZW-P2-025 — Admit 破軍×夫妻宮 sparse contextual claim
 
 - type: FEATURE / INTERPRETATION / PRODUCTION ADMISSION
-- status: IN_PROGRESS
+- status: DONE
 - priority: P2
 - owner: Zi Wei production maintenance
 - blocked_by:
@@ -958,24 +958,32 @@ Ordering rationale:
   - ZW-P2-024 — DONE
 - shared_development_playbook_reviewed: `masini1491/ai-development-playbook@9236b42550b7f748cc6c5744075d106e643c6042`
 - promotion_route:
-  - PR is required for the production candidate because current canonical `.github/workflows/validation.yml` provides candidate validation on `pull_request`; coordination-only closure may use direct non-force promotion when no PR-specific evidence is required.
+  - production candidate used PR because current canonical `.github/workflows/validation.yml` provides candidate validation on `pull_request`; this was current evidence need, not historical PR convention;
+  - this coordination-only closure uses direct non-force promotion because no independent review / PR-specific check is required, and main-push validation + canonical read-back provide the required closure evidence.
 - evidence_decision:
   - `STAR_PALACE_CONTEXTUAL_RESEARCH_V3.md` marks `破軍×夫妻宮` as `ADMISSION-CANDIDATE` with historical + practitioner corroboration and explicit relationship-safety hardening requirement;
   - production authority uses the historical primary-text source identity; practitioner evidence remains corroborative / conflict-detection evidence only.
-- intended_production_delta:
-  - add exactly one historical-bounded `破軍×夫妻宮` claim to existing `sparse_star_palace_context_v1`;
+- production_result:
+  - added exactly one historical-bounded `破軍×夫妻宮` claim to existing `sparse_star_palace_context_v1`;
   - exact applicability = `fact_available:palace_occupancy` + `star_in_palace:破軍:夫妻宮`;
-  - base natal claims 65 → 66; maximum optional claims 82 → 83; star×palace claims 6 → 7;
+  - base natal claims = 66; maximum optional claims = 83; star×palace claims = 7;
   - Scope-A pipeline remains `1.5.0`; no new runtime, geometry provider or claim type.
 - production_boundary:
   - no deterministic divorce, separation, spouse harm, fixed marriage count or other guaranteed relationship event;
   - practitioner categorical wording remains non-production;
   - dignity / brightness remains a modifier only and does not authorize brightness-only doctrine;
   - no 14×12 Cartesian expansion.
-- completion_gate:
-  - registry / module admission / root admission / index / docs / tests synchronized;
-  - canonical generators refresh derived Zi Wei bundle and ChatGPT load pack;
-  - formal PR candidate validation + merge + exact-main validation/artifact + canonical read-back complete before DONE.
+- completion_evidence:
+  - generator bridge run `36378833597` PASSed registry validation, focused admission regressions, canonical Zi Wei bundle regeneration/check, ChatGPT load-pack regeneration/check, load-budget check and bundle regression;
+  - generator-owned cache commit `43a58918fe9e4378374eaf81220671bc97b46199` removed the temporary bridge after regeneration;
+  - formal PR #333 run `36378887523` PASSed `validate` + `casting-runtime`, including full unit suite and structural checker;
+  - PR #333 merged to exact main `944fecf8e0837924db64b3408cfe5ce8caf5040d`;
+  - exact-main canonical read-back confirms 7 pairs `天相×命宮` / `天梁×官祿宮` / `貪狼×夫妻宮` / `破軍×遷移宮` / `武曲×田宅宮` / `天機×田宅宮` / `破軍×夫妻宮`, counts 66 / 83, pipeline `1.5.0`;
+  - exact-main run `36379027662` PASSed `validate` + `casting-runtime`, full unit suite, structural checker and exact-main Zi Wei handoff preparation/upload;
+  - exact-main artifact `10951843929` / `ziwei-deterministic-handoff-944fecf8e0837924db64b3408cfe5ce8caf5040d` published at 100,115 bytes with digest `sha256:0533227732b6510acfa7cb48bb23e1c648e73d020759883fbd1662720fb197c8`.
+- next_authorized_action:
+  - STOP — all four v3 admission candidates are now production-admitted; further star×palace expansion requires a new research stage or separate explicitly authorized research action.
+
 
 ### ZW-P2-050 — Body-Palace overlay interpretation admission
 
