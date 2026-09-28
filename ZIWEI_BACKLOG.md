@@ -655,7 +655,7 @@ Ordering rationale:
 ### ZW-P1-050 — Full 14×12 star×palace coverage routing architecture
 
 - type: ARCHITECTURE / ROUTING / COVERAGE INDEX
-- status: IN_PROGRESS
+- status: DONE
 - priority: P1
 - owner: Zi Wei interpretation architecture
 - blocked_by:
@@ -705,6 +705,17 @@ Ordering rationale:
   - V1–V3 backfill: 4 explicit redundant cells → `BOUNDED_L5_COMPOSITION`; 4 inconclusive/borderline cells → `DEFERRED_EVIDENCE`;
   - initial metrics = reviewed 15 / resolved 11 / unreviewed 153 / dedicated 7 / bounded-L5 4 / deferred 4;
   - V4 preliminary candidates remain unreviewed until V4 actually executes.
+- closure:
+  - architecture candidate merged by PR #334 to exact main `f0ef9b5fa303236ede34c77b1256144698b32765`;
+  - canonical 168-cell coverage index is generated at `indexes/ziwei/star_palace_coverage_v1.json` by `tools/build_ziwei_star_palace_coverage.py`;
+  - exact-main metrics = total 168 / reviewed 15 / resolved 11 / unreviewed 153 / dedicated L4 7 / bounded L5 4 / deferred 4;
+  - Hot routing index remains compact (~26 KB UTF-8) and does not inline long-form doctrine;
+  - existing star×palace production semantics remain unchanged at 7 dedicated L4 claims; this stage changes routing/coverage architecture only;
+  - PR #334 candidate run `36384551472` PASSed coverage generator check, full unit suite, structural checker and casting-runtime;
+  - exact-main run `36384710178` PASSed coverage generator check, full unit suite, structural checker, casting-runtime and exact-main Zi Wei handoff preparation/upload;
+  - exact-main Zi Wei artifact `10953549703` / `ziwei-deterministic-handoff-f0ef9b5fa303236ede34c77b1256144698b32765` published with digest `sha256:90f91e4cd1b7fbda1b098c633120ee06480d401489d51cc7e10543535b6605d5`.
+- next_authorized_action:
+  - resume `ZW-P2-026` V4 research under the admitted 168-cell coverage architecture; update reviewed/resolved metrics in bounded batches.
 - completion_gate:
   - schema/index/generator/architecture docs and tests are synchronized;
   - index contains exactly 168 unique canonical star×palace cells;
@@ -1056,7 +1067,7 @@ Ordering rationale:
 - owner: Zi Wei interpretation evidence
 - blocked_by:
   - ZW-P2-025 — DONE
-  - ZW-P1-050 — IN_PROGRESS
+  - ZW-P1-050 — DONE
 - shared_development_playbook_reviewed: `masini1491/ai-development-playbook@9236b42550b7f748cc6c5744075d106e643c6042`
 - trigger:
   - all four v3 admission candidates are production-admitted;
