@@ -1598,3 +1598,82 @@ deferred     32
 The full 奴僕宮 row is now 14/14 reviewed and 13/14 resolved. Only the
 previously-deferred `紫微×奴僕宮` remains unresolved.
 
+## V4 Batch 13 — 子女宮 row
+
+This batch reviews the remaining thirteen previously-unreviewed 子女宮 cells.
+The historical owner is:
+
+`https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzop13hx43t`
+
+Previously reviewed `太陰×子女宮` remains `HIGH_RISK_BOUNDED / resolved`.
+
+The chapter is unusually dominated by exact child counts, child sex/order,
+fertility/no-child outcomes, disability/health language, achievement judgments,
+loss/survival and "送終／絕祀" style outcomes. Those distinctions are
+source-explicit but are not appropriate for ordinary deterministic production
+doctrine.
+
+### High-risk bounded cells
+
+The following thirteen newly reviewed cells route
+`HIGH_RISK_BOUNDED / resolved`:
+
+- `紫微×子女宮`
+- `天機×子女宮`
+- `太陽×子女宮`
+- `武曲×子女宮`
+- `天同×子女宮`
+- `廉貞×子女宮`
+- `天府×子女宮`
+- `貪狼×子女宮`
+- `巨門×子女宮`
+- `天相×子女宮`
+- `天梁×子女宮`
+- `七殺×子女宮`
+- `破軍×子女宮`
+
+Safe synthesis may use only independently admitted star-core semantics, the
+子女宮 relationship/offspring domain, and already-admitted general condition
+handling.
+
+Forbidden promotion examples include:
+
+- exact number of children;
+- child sex or birth order;
+- guaranteed fertility / infertility / no-child outcomes;
+- disability, injury, illness, survival or death predictions;
+- "克子", "絕祀", "送終" or equivalent categorical lineage outcomes;
+- guaranteed child achievement, failure, character or social status;
+- fixed adoption, step-child, extramarital-child or parentage outcomes.
+
+These exclusions apply even when the historical text is explicit.
+
+## Batch 13 decision
+
+```text
+new reviewed cells = 13
+new resolved cells = 13
+new admission candidates = 0
+new high-risk bounded cells = 13
+production claims added = 0
+```
+
+Coverage after batch 13:
+
+```text
+total       168
+reviewed    154
+resolved    122
+unreviewed   14
+dedicated     9
+bounded L5   78
+high-risk    35
+deferred     32
+```
+
+The full 子女宮 row is now 14/14 reviewed and 14/14 resolved.
+
+All ordinary non-health palace rows are now fully reviewed. The only remaining
+unreviewed cells are the fourteen `疾厄宮` cells, which remain outside ordinary
+V4 batching and require the separate health-safe bounded research path.
+
