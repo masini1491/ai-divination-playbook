@@ -31,7 +31,7 @@ class AstrologyEvidenceSelectorContractTests(unittest.TestCase):
         self.assertNotIn("fact_refs", schema["properties"])
         self.assertNotIn("claim_id", schema["properties"])
         self.assertEqual(
-            ["selector_shape", "object_core", "sign_style", "object_sign_pair", "north_node_core", "north_node_sign_style"],
+            ["selector_shape", "object_core", "sign_style", "object_sign_pair", "aspect_pair", "north_node_core", "north_node_sign_style"],
             schema["$defs"]["claim_selector"]["properties"]["applicability_scope"]["enum"],
         )
 
@@ -150,6 +150,38 @@ class AstrologyEvidenceSelectorContractTests(unittest.TestCase):
         self.assertIn("solar_return", manifest["unsupported_scopes"])
         self.assertIn("raw_birth_data_model_calculation", manifest["unsupported_scopes"])
 
+
+    def test_natal_semantic_fallback_policy_is_machine_readable_and_fail_closed(self):
+        manifest = load(MANIFEST)
+        policy = manifest["natal_semantic_policy"]["semantic_composition_fallback"]
+        self.assertEqual("natal-semantic-composition-fallback-v1", policy["policy_id"])
+        self.assertEqual(
+            ["exact_admitted_emergent_claim", "admitted_bounded_composition", "unsupported_factor"],
+            policy["precedence"],
+        )
+        self.assertEqual("forbidden", policy["deterministic_fact_override"])
+        self.assertEqual(
+            "planet-sign-composable-semantics-research-v1",
+            policy["planet_sign"]["baseline_registry_record_id"],
+        )
+        self.assertEqual(
+            ["planet_function", "sign_style"],
+            policy["planet_sign"]["required_claim_types"],
+        )
+        self.assertEqual(
+            "use_bounded_composition_when_all_required_primitives_pass",
+            policy["planet_sign"]["exact_pair_missing_behavior"],
+        )
+        self.assertEqual("aspect_pair", policy["natal_aspect"]["exact_pair_applicability_scope"])
+        self.assertFalse(policy["natal_aspect"]["geometry_semantic_authority"])
+        self.assertFalse(policy["natal_aspect"]["general_pair_relationship_semantic_admitted"])
+        self.assertFalse(policy["natal_aspect"]["general_aspect_operator_semantic_admitted"])
+        self.assertFalse(policy["natal_aspect"]["bounded_composition_currently_available"])
+        self.assertEqual(
+            "preserve_geometry_fact_and_mark_semantic_unsupported_factor",
+            policy["natal_aspect"]["missing_exact_claim_behavior"],
+        )
+        self.assertEqual("forbidden", policy["model_memory_backfill"])
 
 if __name__ == "__main__":
     unittest.main()

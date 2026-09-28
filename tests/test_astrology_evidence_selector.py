@@ -674,5 +674,101 @@ class AstrologyEvidenceSelectorTests(unittest.TestCase):
         with self.assertRaisesRegex(AstrologyEvidenceSelectionError, "requires applicability_scope=north_node_core"):
             select_evidence(run, typed, repo_root=ROOT)
 
+    def test_exact_natal_aspect_claim_binds_through_aspect_pair_scope(self):
+        run = run_request(load(NATAL_READING))
+        objects = {
+            row["object_id"]: row["fact_id"]
+            for row in run["fact_bundles"]["natal"]["facts"]["objects"]
+            if row.get("object_id") in {"Moon", "Saturn"}
+        }
+        self.assertEqual({"Moon", "Saturn"}, set(objects))
+        aspects = run["fact_bundles"]["natal"]["facts"]["aspects"]
+        aspects[:] = [
+            row for row in aspects
+            if row.get("fact_id") != "fact:aspect:moon:opposition:saturn:ast-p1-210"
+        ]
+        aspects.append({
+            "fact_id": "fact:aspect:moon:opposition:saturn:ast-p1-210",
+            "aspect": "opposition",
+            "orb_deg": 1.2,
+            "left_ref": objects["Moon"],
+            "right_ref": objects["Saturn"],
+            "scope": "natal",
+        })
+        typed = {
+            "schema_name": "astrology_typed_evidence_selection_request",
+            "schema_version": "1.0.0",
+            "question_id": "typed-exact-moon-saturn-opposition",
+            "question": "Use only the admitted exact Moon-Saturn opposition semantic claim.",
+            "fact_selectors": [{
+                "selector_id": "moon-saturn-opposition",
+                "selector_kind": "aspect",
+                "bundle": "natal",
+                "cardinality": "exactly_one",
+                "left_object_id": "Saturn",
+                "right_object_id": "Moon",
+                "aspect": "opposition",
+            }],
+            "claim_selectors": [{
+                "selector_id": "exact-moon-saturn-opposition",
+                "registry_record_id": "saturn-moon-major-aspects-research-v1",
+                "claim_type": "aspect_meaning",
+                "applicability_scope": "aspect_pair",
+                "applies_to_all": ["natal"],
+                "fact_selector_ids": ["moon-saturn-opposition"],
+            }],
+            "unsupported_factors": [],
+        }
+        selection = select_evidence(run, typed, repo_root=ROOT)
+        self.assertEqual(
+            ["claim:greene-moon-saturn-parent-image"],
+            [row["claim_id"] for row in selection["claim_requests"]],
+        )
+
+    def test_missing_exact_aspect_semantics_preserves_geometry_as_unsupported(self):
+        run = run_request(load(NATAL_READING))
+        objects = {
+            row["object_id"]: row["fact_id"]
+            for row in run["fact_bundles"]["natal"]["facts"]["objects"]
+            if row.get("object_id") in {"Mars", "Saturn"}
+        }
+        self.assertEqual({"Mars", "Saturn"}, set(objects))
+        aspects = run["fact_bundles"]["natal"]["facts"]["aspects"]
+        aspects.append({
+            "fact_id": "fact:aspect:mars:opposition:saturn:ast-p1-210",
+            "aspect": "opposition",
+            "orb_deg": 1.0,
+            "left_ref": objects["Mars"],
+            "right_ref": objects["Saturn"],
+            "scope": "natal",
+        })
+        typed = {
+            "schema_name": "astrology_typed_evidence_selection_request",
+            "schema_version": "1.0.0",
+            "question_id": "typed-unsupported-mars-saturn-opposition",
+            "question": "Preserve the admitted geometry while keeping unsupported semantics explicit.",
+            "fact_selectors": [{
+                "selector_id": "mars-saturn-opposition",
+                "selector_kind": "aspect",
+                "bundle": "natal",
+                "cardinality": "exactly_one",
+                "left_object_id": "Mars",
+                "right_object_id": "Saturn",
+                "aspect": "opposition",
+            }],
+            "claim_selectors": [],
+            "unsupported_factors": [{
+                "factor": "Mars-Saturn opposition semantic interpretation",
+                "reason": "No production-admitted exact claim or general aspect-composition primitives are available.",
+            }],
+        }
+        selection = select_evidence(run, typed, repo_root=ROOT)
+        self.assertEqual(
+            [{"bundle": "natal", "fact_id": "fact:aspect:mars:opposition:saturn:ast-p1-210"}],
+            selection["fact_refs"],
+        )
+        self.assertEqual([], selection["claim_requests"])
+        self.assertEqual(typed["unsupported_factors"], selection["unsupported_factors"])
+
 if __name__ == "__main__":
     unittest.main()

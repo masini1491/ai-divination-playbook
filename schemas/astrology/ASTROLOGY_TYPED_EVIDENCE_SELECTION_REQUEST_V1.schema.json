@@ -378,6 +378,7 @@
             "object_core",
             "sign_style",
             "object_sign_pair",
+            "aspect_pair",
             "north_node_core",
             "north_node_sign_style"
           ],
