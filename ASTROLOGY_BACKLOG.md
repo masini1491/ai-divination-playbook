@@ -29,119 +29,42 @@ Last reviewed against:
 
 ```text
 ai-divination-playbook main
-b71240faa4f1c8bf15ff69c68559b523a6e99782
-Remove failed repository setting bridge
+314b2479297f909423908f76d51958631b5862e8
+Plan evidence-bounded natal synthesis work
 ```
 
 This SHA is review evidence only, not a pin. Every maintenance or implementation task must resolve current `main` again before mutation.
 
-Recent maintenance reconciliation closure:
-
-- audit scope: AST-P1-190 / AST-P1-200 post-closure stale-state and regression hygiene;
-- candidate began at `c0d30179fc4358e0bc83b5cdf93cd3dd060b7f34`;
-- temporary regeneration run `36306323482` passed canonical Astrology core-bundle regeneration/check plus focused interpretation-handoff, full reading-pipeline and core-bundle tests;
-- generated commit `6326a07f86eb83fa7f90e5c23ef4876fa842ccd5` updated the derived Astrology core bundle and removed the temporary workflow;
-- initial PR validation `36306323386` failed only at the expected stale pre-regeneration core-bundle check;
-- post-regeneration PR validation `36306376787` passed casting-runtime, core-bundle verification, full unit tests and structural checker;
-- PR #307 merged at main `bc3fb15380a6f5225abbd5b8c5bd32e39c30ce0f`;
-- exact-main run `36306507646` passed casting-runtime, core-bundle verification, full unit tests, structural checker and exact-main Astrology / Zi Wei handoff artifact publication;
-- current-main Astrology artifact `10928065166` / `astrology-core-handoff-bc3fb15380a6f5225abbd5b8c5bd32e39c30ce0f` was published with digest `sha256:94e202eade6ace6883e6f1b424aabf67559f7ee77510c7482fd613c6c5362cc1`;
-- canonical read-back confirms stale civil-time wording, shared follow-up status, admission-driven house-system disclosure and omitted-house-system final-output regression are aligned on current main.
-
-Recent Astrology closure sequence reviewed:
-
-```text
-#142  Add Astrology core materialization transport
-#143  Record Astrology materialization product PASS
-#144  Close Astrology place resolver cold-start transport
-#145  Admit Astrology E1 derived axes
-#146  Admit Astrology E4 Fortune and deterministic sect
-#147  Close Astrology derived fact interpretation bypass
-#148  Reconcile Astrology extended-chart roadmap
-#149  Admit Astrology E7 named rulership projections
-#150  Admit Astrology E5 aspect policy identity
-#151  Admit Astrology E6 major-aspect pattern topology
-#152  Admit bounded Descendant and IC interpretation claims
-#154  Harden Astrology E5 E6 runtime boundaries
-#155  Reconcile Astrology E8 and natal projection routing
-#156  Research ChatGPT-only extended ephemeris alternatives
-```
-
-The closed work above must not be repeatedly rediscovered as open work unless a new regression or explicit scope expansion appears.
-
 ## Recommended execution order
 
-Active near-term Astrology work is now the evidence-bounded natal interpretation sequence below:
+Active near-term Astrology work:
 
 1. **AST-P1-210 — Natal semantic composition fallback contract**
-   - OPEN; define the exact-claim → bounded-composition → unsupported precedence and typed applicability boundary before widening ordinary interpretation behavior.
 2. **AST-P1-220 — Disclosed default semantic profile for ordinary natal interpretation**
-   - OPEN; after AST-P1-210, evaluate/admit `composable-symbolic-modern-v1` as a project UX default when omitted, while preserving explicit user choice and mandatory disclosure.
 3. **AST-P1-230 — Evidence-bounded concrete natal synthesis contract**
-   - OPEN; after the composition/default boundary is stable, define a compact, factor-traceable synthesis that emphasizes concrete manifestations, tensions and limiting conditions without adding semantic authority.
 4. **AST-P1-240 — Sparse emergent exact-claim admission policy**
-   - OPEN; define when a source-backed exact Planet×Sign or Planet-Pair×Aspect claim is warranted because admitted composition leaves a material semantic delta.
 
-Deferred work remains:
+Standing guard:
 
-1. **AST-P2-020 — Named consumer compatibility profile**
-   - DEFERRED; start only when a concrete named consumer/profile requires compatibility.
-2. **AST-P2-030 — Optional Swiss compatibility/provider lane**
-   - DEFERRED; start only when explicit Swiss compatibility/provider demand appears.
+- **AST-P0-002** remains OPEN and is enforced alongside affected interpretation changes.
 
-`AST-P0-002` remains a standing reconciliation guard, not a one-shot feature. Already-DONE items must not be rediscovered as open work. The P1 sequence above does **not** create a Cartesian-completion target for every Planet×Sign or Planet-Pair×Aspect combination.
+Deferred / trigger-based work:
 
-Recent blocker-resolution result:
+- **AST-P2-020** — Named consumer compatibility profile.
+- **AST-P2-030** — Optional Swiss compatibility/provider lane.
 
-- **AST-P2-042 — Continuity-constrained / overlap Chebyshev feasibility — DONE / PASS**
-  - three frozen variants passed every architecture gate; `c1-cheb-d7-w60` is the current research front-runner and preserves a one-segment / 64-byte ordinary query envelope.
+The active P1 sequence does **not** create a Cartesian-completion target for every Planet×Sign or Planet-Pair×Aspect combination.
 
-Recent production-admission closure:
+## Backlog retention rule
 
-- **AST-P2-040 — Broader extended ephemeris objects — DONE**
-  - Chiron/Ceres/Pallas/Juno/Vesta are production-admitted as explicit known-time natal calculation facts only.
-  - provider: `astrology-extended-ephemeris-c1-v1`; exact data commit: `0052ba1c0a3b65238b4f9ec3a94a1aff47e341ea`; dataset SHA-256: `580bb2a8ef463dfc6527ea611f27daad3562cb1fa5698391b3e2baeba64987bf`.
-  - query-bounded materialization uses 17 float32 C1 Chebyshev shards; maximum shard transport is 30,720 raw bytes / 40,960 compact base64 characters.
-  - final admission merged in PR #245 at main `cb1722ea5e52484f48811cd9e28404c0a4ca9c49`.
-  - canonical main read-back verified admission manifest, machine index, pinned data commit and derived core bundle.
-  - main push Validate Playbook run `36224576380` passed `validate`, `casting-runtime`, unit tests and structural checker.
-  - semantic interpretation, default aspect participation, unknown-time and transit extended-object paths remain closed.
+This file is an active / deferred coordination surface, not a completed-work archive.
 
-Standing / pointer items are not numbered feature work:
-
-- `AST-P0-002` remains a standing regression/reconciliation guard and should be enforced alongside affected changes rather than treated as a one-shot feature.
-- `AST-SHARED-002` is pointer-only; canonical mutable status remains `ZIWEI_BACKLOG.md#ZW-SHARED-001`, currently `DONE`.
+- `OPEN`, `IN_PROGRESS`, current critical-path `BLOCKED`, standing guards and `DEFERRED` trigger-based work may keep their minimum-sufficient task contracts here.
+- `DONE` task bodies are removed after canonical closure; detailed execution history remains in Git history and canonical owners/evidence.
+- A completed item stays here only as a compact anti-rediscovery pointer when forgetting it would materially cause the work to be reopened or a deliberate boundary to be lost.
+- Do not create a parallel backlog-history document merely to preserve removed closure prose.
 
 ## P0 — correctness and reconciliation
-
-### AST-P0-001 — Reconcile E8 extended-object readiness after ChatGPT-only feasibility research
-
-- type: MAINTENANCE / RECONCILIATION
-- status: DONE
-- priority: P0
-- owner: Astrology extended-chart research coordination
-- blocked_by: none
-- canonical_evidence:
-  - `references/astrology/extended_chart_e8_admission_readiness.json`
-  - `references/astrology/EXTENDED_CHART_E8_PRODUCTION_ADMISSION_READINESS.md`
-  - `references/astrology/CHATGPT_ONLY_EXTENDED_EPHEMERIS_FEASIBILITY.md`
-- problem:
-  - PR #156 correctly broadened D1 from a Swiss-centered three-way choice into capability lanes;
-  - the candidate rows for Chiron / Ceres / Pallas / Juno / Vesta / Lilith / Vertex / Equatorial Ascendant still retain the older `BLOCKED_ON_PROVIDER_OR_LICENSE` research class;
-  - that historical class is useful evidence, but fresh gap reviews can read it as if local analytical / bundled-ephemeris feasibility had not been established.
-- closure:
-  - preserved every historical `candidates[].readiness` row, including `BLOCKED_ON_PROVIDER_OR_LICENSE`;
-  - added `current_research_overlay` as a separate machine-readable post-PR-156 research-eligibility layer;
-  - Chiron/Ceres/Pallas/Juno/Vesta route to `BUNDLED_EPHEMERIS` research;
-  - Mean/Osculating Lilith family research and Vertex/Equatorial Ascendant route to `LOCAL_ANALYTICAL` research, while Interpolated Lilith remains a separate compatibility definition;
-  - overlay explicitly keeps `production_mutation_authorized = false`, `production_selection = null`, and all affected factors `NOT_ADMITTED`;
-  - Markdown readiness review now explains historical-readiness vs current-research-eligibility semantics.
-- completion_gate:
-  - preserve historical E8 evidence rather than rewriting it as if the later research existed at the time;
-  - add explicit current-state/supersession metadata or a new readiness layer;
-  - distinguish `provider/license blocked under original E8 implementation surface` from `local analytical / bundled ephemeris research now eligible`;
-  - do not grant production admission;
-  - regression / structural validation passes.
 
 ### AST-P0-002 — Keep current-stack closure and projection routing synchronized
 
@@ -166,570 +89,7 @@ Standing / pointer items are not numbered feature work:
 
 This item is a standing reconciliation guard. It is not a request to change current behavior immediately.
 
-## P1 — place-resolution transport
-
-### AST-P1-005 — Query-bounded place-resolver shard transport admission
-
-- type: RESEARCH / MATERIALIZATION / PROVIDER TRANSPORT
-- status: DONE
-- priority: P1
-- owner: Astrology place-resolution materialization
-- blocked_by: none
-- canonical_evidence:
-  - `ASTROLOGY_MATERIALIZATION.md`
-  - `ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json`
-  - `REPOSITORY_ARCHITECTURE.md`
-  - `reports/astrology/ASTROLOGY_PLACE_RESOLVER_MATERIALIZATION_FEASIBILITY.md`
-  - `tools/astrology_place_shard_benchmark.py`
-  - `tools/astrology_place_split_shard_benchmark.py`
-- current_state:
-  - original A-MAT-2 whole-package/model-mediated cold-start transport remains not admitted;
-  - PR #172 exact-byte research POC satisfies the query-bounded-shard feasibility re-open trigger;
-  - all four admitted `geonamescache==3.0.2` dataset identities matched the prior A-MAT-2 hashes;
-  - fixture parity passed for 樹林區/TW, Tokyo/JP and ambiguous Springfield cases across all tested profiles and widths;
-  - PR #173 split-store POC preserved fixture parity across all four profiles and selected alias-3hex + candidate-3hex as the current format candidate;
-  - split 3+3 reduces aggregate generated storage from 314,579,927 bytes to 189,935,792 bytes (~39.6% reduction);
-  - `cities500` split 3+3 unique lookup measured 18,494 bytes for 樹林區/TW and 23,702 bytes for Tokyo/JP; Springfield ambiguity preview measured 63,069 bytes;
-  - split 3+3 theoretical file surface is 8,192 shard paths/profile; candidate 2-hex was too costly for ambiguity retrieval and candidate 4-hex created an excessive file surface.
-  - PR #189 transport-contract probe passed exact source identity, deterministic rebuild, 13-query corpus parity, <=100 KB corpus query payload, <=10 ambiguity preview records and zero-byte repeated-query cache gates across all four profiles;
-  - durable split 3+3 format/provenance/generator contract is frozen under `data/astrology/place/v1/**`; generated shard corpus and production transport remain not admitted.
-- remaining_gate:
-  - same-repo deterministic-data format/provenance/generator contract: COMPLETE (data corpus intentionally not committed yet);
-  - deterministic corpus parity beyond the original POC fixtures: COMPLETE for the frozen 13-query research corpus;
-  - same-commit GitHub Connect bounded shard retrieval + exact-ref/path retrieval + returned Git blob identity: COMPLETE at connector-surface proof scope via temporary non-merge PR #208;
-  - bounded alias-first → local country/ambiguity filtering → candidate-on-demand orchestration: COMPLETE at connector-surface proof scope; GitHub Connect does not expose server-side filtering;
-  - connector cache-hit/network-byte telemetry: UNAVAILABLE; do not treat repeated identical retrieval as a zero-byte cache proof;
-  - real generated-shard bounded corpus payload + semantic route evidence: COMPLETE at profile-500 research scope via temporary non-merge PR #210 / workflow 36139602395 / artifact 10866252034;
-  - real committed generated shard → GitHub Connect exact-ref retrieval / byte identity / bounded payload / semantic-chain product validation: COMPLETE via temporary non-merge PR #212; connector wall-clock/network latency telemetry is not exposed and must not be fabricated;
-  - research validation is complete; PR #215 measured the default profile-500 deployment candidate at 8,192 shard files / 75,086,146 bytes / aggregate digest `6e542fd50c4d821d783c74c2f392bea087df68666ba1781970df66d47dc719a0`;
-  - production deployment topology is now defined as dedicated generated-data ref `data/astrology-place-v1`, pinned by exact data commit from the main manifest; publisher and admission remain separate actions;
-  - one-shot Remote Deterministic Mutation Bridge (PR #216 / workflow 36144555281) published profile 500 to `data/astrology-place-v1` at exact data commit `d18be87abe762433e43e844f33f4b43f7fad9f3b`;
-  - GitHub Connect canonical read-back verified generated identity and exact Shulin alias/candidate Git blob identities against prior product evidence;
-  - profile-500 query-bounded shard materialization is production-admitted; profiles 1000/5000/15000 remain not admitted for shard materialization and may not silently fall back to 500.
-- completion_gate:
-  - deterministic generated-data provenance from the four exact admitted source datasets;
-  - bounded worst-case retrieval supported by measured evidence;
-  - exact-name/alternate-name, country filtering, ambiguity and not-found semantics preserve current resolver behavior;
-  - license / attribution obligations are explicit;
-  - production admission remains a separate reviewed change.
-
-## P1 — extended astronomical facts
-
-### AST-P1-010 — EXP-1 five-body compact ephemeris feasibility
-
-- type: RESEARCH / PROVIDER FEASIBILITY
-- status: DONE
-- priority: P1
-- owner: Astrology extended ephemeris research
-- blocked_by: none
-- subjects:
-  - Chiron
-  - Ceres
-  - Pallas
-  - Juno
-  - Vesta
-- canonical_research:
-  - `references/astrology/CHATGPT_ONLY_EXTENDED_EPHEMERIS_FEASIBILITY.md`
-  - `references/astrology/EXTENDED_CHART_E2_EPHEMERIS_OBJECTS_RESEARCH.md`
-  - `references/astrology/ASTROLOGY_EXP1_SAMPLED_EPHEMERIS_FEASIBILITY.md`
-  - `references/astrology/astrology_exp1_sampled_ephemeris_feasibility.json`
-- target:
-  - compare bounded local representations without making a live third-party API a production runtime dependency.
-- candidate representations:
-  1. bounded SPK excerpt;
-  2. piecewise Chebyshev coefficients;
-  3. sampled vectors/longitude + interpolation;
-  4. multi-epoch osculating elements.
-- measured_result:
-  - temporary non-merge PR #181 / workflow run `36086788978` evaluated `sampled-wrapped-longitude-hermite-v0` with 10/20/40-day spacing;
-  - source authority was NASA/JPL Horizons in build/research execution only; candidate runtime network dependency remained false;
-  - all three variants were evaluated against the same 12 E2 F/H/V fixture instants × five objects;
-  - no variant passed the prospectively frozen feasibility gate;
-  - 10-day spacing was closest: 767,760-byte float64 payload, longitude p95 4.340 arcsec, longitude max 25.284 arcsec, but speed max 0.002074545 deg/day exceeded the frozen 0.001 deg/day gate;
-  - 20/40-day spacing reduced payload but materially worsened longitude and speed residuals;
-  - Chiron remained separately measured from direct Horizons samples; no one-epoch or generic Keplerian downgrade was used;
-  - selected passing candidate remains `null`; production admission remains unchanged.
-- research_boundary:
-  - this negative result rejects only the tested sampled/Hermite candidate under the frozen gate;
-  - bounded SPK, piecewise Chebyshev and multi-epoch osculating alternatives remain unevaluated research options;
-  - their existence does not create an automatic follow-up or production task.
-- completion_gate:
-  - at least one representation is evaluated under the same bounded fixture set;
-  - no silent Keplerian downgrade;
-  - Chiron receives separate perturbation-sensitive treatment;
-  - build/research network use is separated from ordinary ChatGPT runtime;
-  - feasibility result does not itself grant production admission.
-
-### AST-P1-020 — EXP-2 Mean Black Moon Lilith local analytical parity
-
-- type: RESEARCH / DERIVED FACT
-- status: DONE
-- priority: P1
-- owner: Astrology Lilith research
-- blocked_by: none
-- canonical_research:
-  - `references/astrology/CHATGPT_ONLY_EXTENDED_EPHEMERIS_FEASIBILITY.md`
-  - `references/astrology/EXTENDED_CHART_E3_LILITH_RESEARCH.md`
-  - `references/astrology/ASTROLOGY_EXP2_MEAN_LILITH_PARITY.md`
-  - `references/astrology/astrology_exp2_mean_lilith_iers2003_parity.json`
-  - `references/astrology/mean_lilith_iers2003_research.py`
-- target:
-  - independently implement and validate one explicitly named Mean Lilith definition;
-  - pin authoritative formula source, frame/equinox policy and longitude normalization.
-- measured_result:
-  - explicit fact id `black_moon_lilith_mean_iers2003_v1`;
-  - definition pinned to IERS 2003 secular mean lunar apogee `F + Omega - l + 180°`, mean ecliptic / mean equinox of date, TT centuries from J2000, modulo-360 longitude;
-  - temporary non-merge PR #183 / workflow run `36088099046` evaluated 17 prospective fixtures over research window `T=-2..+2` Julian centuries (~1800-2200);
-  - ERFA same-definition max residual `2.0463630789890885e-10 arcsec` passed the frozen `0.0001 arcsec` gate;
-  - independent XALEN/Meeus compatibility max residual `0.7098061008719014 arcsec` passed the frozen `1.0 arcsec` gate;
-  - Swiss `SE_MEAN_APOG` was explicitly report-only because it is a different ELP-hybrid definition; observed compatibility residual ranged ~79.044-416.343 arcsec;
-  - no bare `Lilith` alias was introduced;
-  - research validation window is not a production-admitted date window;
-  - production admission remains `NOT_GRANTED`.
-- closure:
-  - Mean Lilith project-owned analytical research → parity PASS → definition identity resolved → research implementation retained under `references/` → NOT production-admitted.
-- completion_gate:
-  - no bare `Lilith` alias;
-  - prospective bounded fixtures across the prospectively declared research validation window;
-  - comparison against at least two independent reference paths where practical;
-  - residual policy documented before result review;
-  - production admission remains separate.
-
-### AST-P1-030 — EXP-3 Osculating / True Lilith local state-vector parity
-
-- type: RESEARCH / DERIVED FACT
-- status: DONE
-- priority: P1
-- owner: Astrology Lilith research
-- blocked_by: none
-- canonical_research:
-  - `references/astrology/CHATGPT_ONLY_EXTENDED_EPHEMERIS_FEASIBILITY.md`
-  - `references/astrology/EXTENDED_CHART_E3_LILITH_RESEARCH.md`
-  - `references/astrology/ASTROLOGY_EXP3_OSCULATING_LILITH_STATE_VECTOR.md`
-  - `references/astrology/astrology_exp3_osculating_lilith_state_vector.json`
-  - `references/astrology/osculating_lilith_state_research.py`
-- target:
-  - test whether the pinned Astronomy Engine Moon state capability can support a project-owned instantaneous lunar-apogee research derivation;
-  - keep osculating/true identity separate from Mean and Interpolated Lilith;
-  - do not infer production state-vector admission from dependency capability.
-- measured_result:
-  - candidate id `black_moon_lilith_osculating_lrl_aengine_v0` uses geocentric EQJ `GeoMoonState()`, Earth-Moon-system μ, LRL eccentricity vector and ECT output longitude;
-  - temporary non-merge PR #185 / workflow run `36093918723` evaluated 17 prospective fixtures over research window `T=-0.5..+0.5` Julian centuries (~1950-2050);
-  - exact-state vs 0.05-day finite-difference max `0.0736442766763048°` passed the frozen `0.25°` gate;
-  - 0.025/0.05/0.1-day finite-difference spread max `0.2771757229215268°` passed the frozen `0.50°` gate;
-  - changing Earth-Moon μ to Earth-only μ shifted the derived direction by up to `16.91063143396633°`, establishing material model sensitivity;
-  - Swiss `SE_OSCU_APOG` residual ranged `0.011865695005838006°..0.15242307614090578°` and remains report-only; no Swiss-exact or same-definition claim is granted;
-  - required Moon state input fails closed in the retained research implementation;
-  - production calculation and semantic interpretation admission remain `NOT_GRANTED`.
-- closure:
-  - Osculating/True Lilith project-owned state-vector research → stability PASS → LRL definition + Earth-Moon μ identity resolved → model sensitivity measured → research implementation retained under `references/` → NOT production-admitted.
-- completion_gate:
-  - explicit mathematical definition;
-  - exact research input/state-vector authority documented without implying production fact admission;
-  - model sensitivity reported;
-  - no claim of Swiss-exact compatibility unless independently demonstrated;
-  - fail closed when required state vectors are unavailable.
-
-### AST-P1-040 — EXP-4 Vertex / Equatorial Ascendant formula admission study
-
-- type: RESEARCH / DERIVED GEOMETRY
-- status: DONE
-- priority: P1
-- owner: Astrology extended-point research
-- blocked_by: none
-- subjects:
-  - Vertex
-  - Equatorial Ascendant
-  - East Point naming/alias policy
-- canonical_research:
-  - `references/astrology/CHATGPT_ONLY_EXTENDED_EPHEMERIS_FEASIBILITY.md`
-  - `references/astrology/EXTENDED_CHART_E4_SPECIAL_POINTS_RESEARCH.md`
-  - `references/astrology/ASTROLOGY_EXP4_SPECIAL_POINTS_GEOMETRY.md`
-  - `references/astrology/astrology_exp4_special_points_geometry.json`
-  - `references/astrology/special_points_geometry_research.py`
-- measured_result:
-  - `vertex_prime_vertical_ecliptic_v0` defines Vertex as the western prime-vertical/ecliptic intersection;
-  - `equatorial_ascendant_ra_plus_90_v0` defines Equatorial Ascendant as the ecliptic point with RA = ARMC + 90°;
-  - temporary non-merge PR #187 / workflow run `36095412306` validated seven synthetic geometry fixtures including ±89° latitude and five public real-location fixtures;
-  - synthetic plane residual max `5.551115123125783e-17` passed the frozen `1e-12` gate;
-  - Equatorial Ascendant RA-identity residual max `2.842170943040401e-14°` passed the frozen `1e-10°` gate;
-  - same-input Swiss max residual `2.842170943040401e-14°` passed the frozen `1e-8°` gate;
-  - current project sidereal-time/mean-obliquity input path max Swiss residual `0.0016446705079715684°` passed the frozen `0.05°` gate;
-  - Astrolog `EP` → Swiss `SE_EQUASC` provides named East Point compatibility evidence, but canonical mathematical identity and production alias admission remain separate;
-  - no new ephemeris dependency is required;
-  - production calculation and semantic interpretation admission remain `NOT_GRANTED`.
-- closure:
-  - Vertex / Equatorial Ascendant project-owned geometry research → formula parity PASS → identities/frame conventions resolved → East Point retained as named compatibility evidence only → research implementation retained under `references/` → NOT production-admitted.
-- completion_gate:
-  - formulas and frame conventions pinned;
-  - synthetic + real-location fixtures;
-  - Vertex and Equatorial Ascendant identities remain distinct;
-  - `East Point` is not production-admitted merely from compatibility evidence;
-  - no new ephemeris dependency solely for these derived points.
-
-## P1 — interpretation and policy expansion
-
-### AST-P1-100 — Source-backed South Node / Part of Fortune interpretation admission
-
-- type: FEATURE / INTERPRETATION
-- status: DONE
-- priority: P1
-- owner: Astrology natal interpretation evidence
-- blocked_by: none
-- current_state:
-  - Mean South Node deterministic fact is admitted;
-  - Part of Fortune + deterministic sect are admitted;
-  - both remain fact-only under current derived-fact interpretation boundary.
-- target:
-  - admit only source-backed bounded semantic claims where the source and applicability are explicit.
-- completion_gate:
-  - exact claim bindings;
-  - source/tradition scope preserved;
-  - typed selector/handoff exact allowlist;
-  - no generic model-memory meaning;
-  - facts remain usable even when no semantic claim is admitted.
-- closure:
-  - added `south-node-fortune-research-v1` with bounded primary-text evidence and explicit tradition/source scope;
-  - admitted only `claim:valens-fortune-life-prosperity` for `PartOfFortune`;
-  - kept `SouthNode` fact-only because the reviewed Lilly evidence is conjunction-specific to SouthNode + PartOfFortune and current derived-fact handoff does not enforce that co-fact/aspect applicability shape;
-  - no generic modern karmic South Node meaning is admitted;
-  - typed selector/handoff remains exact-allowlist and fail-closed.
-
-### AST-P1-110 — Extended aspect participant policies
-
-- type: FEATURE / POLICY
-- status: DONE
-- priority: P1
-- owner: Astrology aspect policy
-- blocked_by:
-  - relevant extended deterministic facts must be admitted first
-- current_state:
-  - `aspect-participants-core-bodies-v1` is admitted;
-  - current major-aspect/orb identity is admitted;
-  - extended points/angles are not silently included.
-- target:
-  - add versioned participant policies only for admitted calculable facts;
-  - keep current core policy unchanged.
-- completion_gate:
-  - explicit policy IDs;
-  - no auto-include when a provider learns a new object;
-  - separate semantic admission from geometric participation.
-- closure:
-  - retained `aspect-participants-core-bodies-v1` as the unchanged provider/default policy;
-  - admitted three explicit-selector projection policies: `core-plus-angles`, `core-plus-south-node`, and `core-plus-fortune`;
-  - all three reuse the existing `major-aspects-v1` + `major-aspect-orbs-v1` geometry/orb identity;
-  - angle/Fortune projections require exact birth time; South Node uses the admitted deterministic point fact;
-  - new provider objects are never auto-included; no extended default policy exists;
-  - projected aspect geometry grants no semantic interpretation authority.
-
-### AST-P1-120 — Yod / Stellium / Grand Quintile policy expansion
-
-- type: FEATURE / PATTERN POLICY
-- status: DONE
-- priority: P1
-- owner: Astrology pattern topology
-- blocked_by:
-  - AST-P1-110 for any extended participants
-- current_state:
-  - T-Square / Grand Trine / Grand Cross / Kite / Mystic Rectangle / Cradle / Grand Sextile admitted under current major-aspect topology;
-  - Yod requires quincunx;
-  - Stellium definition remains unadmitted;
-  - Grand Quintile requires quintile/biquintile policy;
-  - exact 唐綺陽 compatibility remains unverified.
-- completion_gate:
-  - named aspect/orb/participant/pattern policies;
-  - Stellium minimum-count/span/sign-boundary definition explicitly selected;
-  - no exact consumer-compatibility claim without independent evidence;
-  - current admitted topology behavior preserved.
-
-- closure:
-  - special projection path is separate from the existing major-pattern topology;
-  - Yod uses explicit sextile + quincunx geometry under `pattern-aspects-yod-quintile-v1` / `pattern-aspect-orbs-yod-quintile-v1`;
-  - Grand Quintile uses explicit quintile + biquintile geometry under the same named policy;
-  - Stellium uses `stellium-planets-same-sign-span10-min3-v1`: eligible planets only, minimum 3, same sign, maximum 10° span;
-  - semantic interpretation authority remains false;
-  - exact consumer / 唐綺陽 compatibility remains unclaimed.
-
-### AST-P1-130 — Transit house search / temporal house context
-
-- type: FEATURE / TRANSIT
-- status: DONE
-- priority: P1
-- owner: Astrology transit calculation + interpretation
-- blocked_by: none
-- source:
-  - E8 `recommended_order` retains `TRANSIT_HOUSE_SEARCH`.
-- current_state:
-  - exact transit-to-natal major aspects, stations and ingresses are admitted;
-  - no canonical production transit-house search owner is recorded.
-- completion_gate:
-  - exact request scope and time-window behavior;
-  - deterministic house fact authority;
-  - unknown/approximate natal-time fail-closed behavior;
-  - separate calculation and semantic admission;
-  - bounded search/runtime cost.
-- closure:
-  - added standalone `house_ingress` event family to the deterministic transit provider;
-  - request contract now supports `include_transit_to_natal` and `include_house_ingresses`, so house-only searches do not require dummy natal-target/aspect selections;
-  - house ingress roots use the admitted natal house cusp facts for Whole Sign / Placidus and retain the existing <=400-day bounded UTC window;
-  - exact birth time is required; approximate and unknown birth time fail closed;
-  - runtime gate admits the calculation fact only; transit-house semantic interpretation remains not admitted without a separate source-backed claim family;
-  - typed evidence selector can select exact house-ingress facts but does not create semantic meaning.
-
-### AST-P1-140 — Point-in-time transit house context
-
-- type: FEATURE / TRANSIT
-- status: DONE
-- priority: P1
-- owner: Astrology transit calculation + interpretation
-- blocked_by:
-  - AST-P1-130
-- source:
-  - residual gap discovered while reconciling stale PR #219 against the merged AST-P1-130 implementation.
-- completion_gate:
-  - explicit UTC point-in-time selector distinct from ingress search;
-  - deterministic current-house fact authority;
-  - exact-birth-time and admitted-house-system fail-closed behavior;
-  - runtime / typed-evidence admission;
-  - no semantic interpretation authority;
-  - preserve existing <=400-day search bound and ingress behavior.
-- closure:
-  - transit provider v1.2 admits deterministic `house_context` point-in-time events;
-  - callers must explicitly provide `house_context_utc`, and the timestamp must remain inside the existing <=400-day bounded request window;
-  - exact birth time, all 12 admitted natal house cusps, and Whole Sign / Placidus are required; approximate / unknown birth time fails closed;
-  - runtime gate and typed evidence selection admit the calculation fact only;
-  - transit-house semantic interpretation authority remains unadmitted without a separate source-backed claim family;
-  - existing `house_ingress` search behavior is preserved;
-  - stale PR #219 is superseded by the merged AST-P1-130 path plus this follow-up and is not a merge source.
-
-### AST-P1-150 — Runtime reuse / host integration binding
-
-- type: MATERIALIZATION / HOST INTEGRATION
-- status: DONE
-- priority: P1
-- owner: Astrology deterministic materialization
-- blocked_by: none
-- source:
-  - ChatGPT cold-start audit after Zi Wei PR #225 exposed the same shared host-transport risk at the Astrology method boundary.
-- current_state:
-  - core bundle integrity, pinned Astronomy Engine dependency, and query-bounded place-resolver transport are already admitted;
-  - Astrology materialization already probes a local marker, but prior wording treated revision mismatch too aggressively as MISS and routed a real miss directly to full bundle acquisition;
-  - shared AI Development Playbook owns generic runtime reuse, artifact handoff, direct-handoff preference, provenance/currentness separation, and layered host status.
-- completion_gate:
-  - verified local Astrology runtime reuse is explicitly first;
-  - current HEAD advancement alone does not invalidate byte-compatible materialized assets or rewrite provenance;
-  - only real cache miss / invalid identity enters Host Capability Gate;
-  - direct byte/file-aware handoff is preferred before bounded opaque bundle transport;
-  - explicit No Full-Bundle-First rule protects model-visible context;
-  - existing chunk/archive/per-file integrity and astronomy-engine==2.1.19 pin remain unchanged;
-  - explicit coordinates bypass place resolver, while place-name resolution remains resolver-specific and query-bounded;
-  - existing product scenario / regression test protects the operational binding without copying shared ownership.
-- closure:
-  - `ASTROLOGY_MATERIALIZATION.md` now binds shared Runtime Asset Reuse / Artifact Handoff / Inbound Verified Transport semantics to Astrology's concrete cache, core bundle and resolver split;
-  - `/mnt/data/divination-astrology-runtime/core_bundle_verification.json` is probed before bundle acquisition, but directory or marker existence alone remains insufficient evidence;
-  - materially unchanged cached bytes may be reused across newer repository HEAD observations without rewriting `materialized_source_commit` provenance;
-  - real cache miss / invalid identity enters a Host Capability Gate: direct byte/file-aware handoff first, bounded verified opaque bundle fallback second;
-  - No Full-Bundle-First explicitly prevents full bundle/chunk transfer into model-visible context before cache reuse and handoff necessity are established;
-  - layered host status uses the shared Acquisition / Payload handoff / Materialization / Integrity / Execution vocabulary;
-  - `astronomy-engine==2.1.19`, chunk/archive/per-file integrity gates, and cold-start bundle fallback remain unchanged;
-  - explicit coordinates remain resolver-free; place/country resolution reuses compatible verified resolver/query cache when available and otherwise stays on the admitted profile-500 query-bounded shard path;
-  - product scenario and discoverability regression cover the method-specific binding; Zi Wei ownership/files remain untouched.
-
-### AST-P1-160 — Taiwan administrative locality input normalization
-
-- type: FEATURE / INPUT NORMALIZATION / PLACE RESOLUTION
-- status: DONE
-- priority: P1
-- owner: Astrology place input normalization / resolver
-- blocked_by:
-  - AST-P1-005
-- canonical_evidence:
-  - `tools/astrology_place_resolver.py`
-  - `runtime/astrology/TW_ADMIN_LOCALITY_V1.json`
-  - `ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json`
-  - `data/astrology/place/v1/MANIFEST.json`
-  - `tests/test_astrology_place_resolver.py`
-  - `ASTROLOGY_MATERIALIZATION.md`
-- production_observation:
-  - natural Taiwan administrative input such as `新北市樹林區` did not directly resolve under the prior exact locality/alternate-name lookup;
-  - admitted locality identity `樹林區 / TW` resolves to GeoNames ID `1668875`, coordinates and `Asia/Taipei`;
-  - profile-500 transport already contained the bounded `樹林區` alias/candidate path, so the gap was input normalization rather than transport admission.
-- completion_gate:
-  - bounded deterministic normalization for common Taiwan forms such as `市/縣 → 區/鄉/鎮/市`;
-  - preserve raw input plus normalized provenance;
-  - feed normalized locality + country/admin context into the existing exact resolver rather than fuzzy contains search;
-  - same-name administrative units remain fail-closed unless deterministic country/admin context resolves them uniquely;
-  - installed resolver and query-bounded profile-500 transport preserve equivalent semantics;
-  - explicit coordinates + IANA timezone continue to bypass the resolver;
-  - no generic web geocoding or unrestricted fuzzy matching.
-- closure:
-  - added versioned `taiwan-admin-locality-v1` policy with 22 county/city values and 371 exact county/city × township/district pairs;
-  - policy applies bounded `台→臺` script normalization only inside recognized Taiwan administrative parsing, validates the hierarchy pair, then emits only the validated locality token plus effective country `TW`;
-  - `新北市樹林區` now resolves through the existing exact GeoNames resolver to GeoNames ID `1668875` / `Asia/Taipei`;
-  - invalid pairs such as `新北市中正區` and conflicting explicit country codes fail closed;
-  - resolver v1.1 preserves `contains_search=False`; the policy is not coordinate authority and supplies no geocoding result itself;
-  - ChatGPT query-bounded transport applies the same policy before alias-shard hashing, so installed resolver and cold-start profile-500 transport share the same normalization semantics;
-  - explicit coordinates + IANA timezone remain resolver-free;
-  - external precedent was reviewed only as development cross-check: `moskytw/zipcodetw@1b348c344a9eaa50c7666e9046a91cf38cbb447b` (MIT) demonstrates `台→臺` normalization and administrative-unit tokenization; no external runtime dependency or network geocoder was introduced.
-
-### AST-P1-170 — North Node sign semantic claim-family admission
-
-- type: FEATURE / INTERPRETATION / CLAIM ADMISSION
-- status: DONE
-- priority: P1
-- owner: Astrology natal semantic admission / North Node interpretation
-- blocked_by: none
-- canonical_evidence:
-  - `ASTROLOGY_PRODUCTION_ADMISSION_V1.json#/natal_semantic_policy`
-  - `ASTROLOGY_NATAL.md`
-  - `ASTROLOGY_PROVIDER_ADMISSION_V1.json`
-  - `references/astrology/PLANET_SIGN_COMPOSABLE_SEMANTICS_EVIDENCE.md`
-  - `references/astrology/planet_sign_composable_semantics_claim_family_registry.json`
-  - `references/astrology/NORTH_NODE_SIGN_SEMANTICS_EVIDENCE.md`
-  - `references/astrology/north_node_sign_semantics_claim_family_registry.json`
-  - `tools/astrology_evidence_selector.py`
-  - `tests/test_astrology_evidence_selector.py`
-  - `tests/test_astrology_evidence_selector_contract.py`
-  - `tests/test_astrology_production_contract.py`
-- production_observation:
-  - admitted natal facts produce `NorthNode` longitude/sign as an `object_type=point` deterministic fact;
-  - production provider/admission now explicitly records `north_node_definition = mean`;
-  - North Node remains eligible for deterministic core major-aspect geometry, but that geometry grants no aspect semantic authority.
-- current_state:
-  - bounded North Node sign interpretation is production-admitted as composition of a separate `north_node_function` claim plus the actual admitted sign-style claim;
-  - source-backed Node function evidence is pinned to `aryaminus/astro@82df4c1c285cb470625373a716bab86c343e4b6e` (MIT) and stored only as metadata/locator plus project-authored normalized paraphrase;
-  - dedicated typed scopes `north_node_core` and `north_node_sign_style` bind the actual `NorthNode` point and sign while preserving mean-node provenance;
-  - ordinary planet `sign_style` applicability remains planet-only and was not widened to generic points;
-  - North Node aspect meanings, South Node semantics, generic karmic doctrine, past-life doctrine and soul-evolution doctrine remain outside this admission.
-- completion_gate:
-  - review source-backed North Node sign-level semantic evidence and admit only a bounded claim family if evidence is sufficient;
-  - keep node semantics separate from ordinary planet-function claims;
-  - typed applicability must bind the actual `NorthNode + admitted sign fact` and retain mean-node provenance;
-  - preserve source/tradition/profile identity and fail closed on retrieval/admission miss;
-  - do not auto-admit generic karmic / past-life doctrine without separate explicit source/admission;
-  - do not expand this item into North Node aspect semantic claims; those remain a separate future claim-family question;
-  - deterministic North Node facts remain usable even when semantic selection is not requested.
-- closure:
-  - admitted `north-node-sign-semantics-research-v1` with one bounded `north_node_function` claim: developmental direction / unfamiliar growth edge in the explicit `composable-symbolic-modern-v1` project semantic profile;
-  - reused existing sign-style claims only through `north_node_sign_style`, so the selected sign is derived from the matched admitted NorthNode fact rather than caller redirection;
-  - added fail-closed checks for wrong sign, missing/unadmitted provider provenance, explicit non-mean node definition, and attempts to use generic `object_core` for the Node-function registry;
-  - provider runtime/core bundle was not changed; mean provenance is closed by exact admitted provider identity/version plus explicit provider/admission manifest policy;
-  - PR #232 candidate `47211cbb73411dd560d783ba5d8f643d1fd4cbd5` passed Validate Playbook run #824, including `Run unit tests`, `Run structural checker`, Astrology core-bundle verification, rule-layering checks and casting-runtime.
-
-
-### AST-P1-180 — Exact-main connector-backed core handoff artifact publishing
-
-- type: MATERIALIZATION / HOST INTEGRATION / CI HANDOFF
-- status: DONE
-- priority: P1
-- owner: Astrology deterministic materialization / repository CI
-- blocked_by: none
-- canonical_evidence:
-  - `.github/workflows/validation.yml`
-  - `ASTROLOGY_MATERIALIZATION.md`
-  - `evals/ASTROLOGY_MATERIALIZATION_PRODUCT_SCENARIO.md`
-  - `evals/product_runs/2026-09-26-astrology-mat-beh-001-exact-main-artifact-0d736dc5.json`
-  - `tests/test_astrology_materialization_discoverability.py`
-- source:
-  - production cold-start feedback first exposed premature-stop non-compliance, then a more precise host audit proved connector-backed artifact file handoff works while successful current-main validation published no ready-to-download Astrology core artifact;
-  - existing `ASTROLOGY-MAT-BEH-001` already covered direct-handoff miss → bounded verified transport, so this item did not duplicate the behavioral scenario or reopen AST-P1-150.
-- closure:
-  - successful `main` push validation now publishes `astrology-core-handoff-<exact github.sha>` only after the normal validation steps pass; PR validation skips both prepare/upload steps;
-  - artifact payload is limited to same-commit `CHATGPT_DETERMINISTIC_CORE_BUNDLE.json`, canonical verifier, `PLAYBOOK_COMMIT` and `HANDOFF_MANIFEST.json`;
-  - artifact remains temporary transport convenience with 90-day retention, not source/calculation/admission authority;
-  - `ASTROLOGY_MATERIALIZATION.md` now orders cold start as verified cache → direct byte/file handoff → exact-main connector-backed artifact → existing same-commit bounded opaque chunk fallback;
-  - first main artifact at `ec2294457778eb99105e012136d7f6fdc8755e2b` correctly matched its GitHub digest but smoke testing caught invalid manifest JSON caused by literal `\\n`; bounded repair PR #252 fixed the writer and added regression coverage;
-  - repaired main `0d736dc5d5eaf59b05ee0d5f2fe0e39d1ecb0ad2` passed Validate Playbook run `36228860402`, including unit tests, structural checker, artifact preparation and upload;
-  - artifact `10901344879` / `astrology-core-handoff-0d736dc5d5eaf59b05ee0d5f2fe0e39d1ecb0ad2` was connector-downloaded and intentionally Files-rematerialized; execution-container SHA-256 exactly matched GitHub digest `c572c9c739675963268cf1378eee88587d7a243e4c9c022bab35fa9ba7e1435d`;
-  - manifest JSON, exact commit marker and every manifest payload hash passed; canonical bundle verifier returned zero errors; 12 runtime/dependency files materialized with archive SHA-256 `0e2fa80fa9a7bfacde612723e3f19cb6dd28261e5c01d4f7f43d353b85dd736b`;
-  - isolated `python -S` synthetic explicit-coordinate natal execution returned `status=admitted`, `interpretation_allowed=true`, provider `astronomy-engine-natal-v1@1.3.0`, `fact_source=approved_provider`, `calculation_verification=verified_provider`, and an admitted runtime gate with no errors;
-  - artifact absence/expiry/identity failure remains a route miss only and falls through to the prior same-commit bounded opaque transport instead of declaring Astrology unavailable.
-- non_goals:
-  - AST-P1-150 remains DONE and is not reopened;
-  - no new behavioral scenario was added;
-  - Astronomy Engine version, calculation admission, place-resolver scope and extended-ephemeris transport remain unchanged;
-  - Actions artifacts do not become permanent source-of-truth storage.
-
-
-### AST-P1-190 — Shared civil-time normalizer extraction/admission
-
-- type: FEATURE / INPUT NORMALIZATION / CROSS-METHOD DETERMINISTIC ADAPTER
-- status: DONE
-- priority: P1
-- owner: shared civil-time implementation with Astrology as first consumer
-- blocked_by: none
-- current_state:
-  - Astrology already production-validates IANA timezone input, Sydney civil time, DST nonexistent/ambiguous fail-closed behavior, and rejection of fixed-offset-only timezone identity inside `tools/astrology_provider.py`;
-  - Zi Wei production Gregorian input remains `Asia/Taipei`-only and must not duplicate a second generic timezone/DST resolver.
-- closure:
-  - shared adapter `civil-time-zoneinfo-v1@1.0.0` is production-admitted by `CIVIL_TIME_NORMALIZER_ADMISSION_V1.json`, with Astrology admitted as the first consumer and Zi Wei explicitly still NOT_ADMITTED;
-  - `tools/astrology_provider.py` delegates the existing backward-compatible `_resolve_local_time()` tuple contract to `tools/civil_time_normalizer.py`; provider identity/version and outward natal fact semantics remain unchanged;
-  - deterministic fixtures cover Sydney, Taipei, Tokyo local-date-vs-UTC-boundary preservation, New York DST gap/fold fail-closed behavior, fixed-offset rejection and timezone-aware local-input rejection;
-  - temporary regeneration run `36296516159` passed bundle regeneration/check plus focused shared-normalizer, Astrology provider and core-bundle tests;
-  - generated commit `a85398f82c7630fac1d0ab78fff44238a02b8246` regenerated the derived Astrology core bundle and removed the temporary workflow;
-  - initial PR validation `36296516152` failed only at the stale pre-regeneration bundle check; final post-regeneration PR run `36296570853` passed casting-runtime, core-bundle verification, full unit tests and structural checker;
-  - PR #298 merged at main `75995d9a19d41e931dce20f77b75e02d77e42e0d`;
-  - exact-main run `36296693211` passed casting-runtime, core-bundle verification, full unit tests, structural checker and both exact-main handoff artifact publishers;
-  - current-main Astrology handoff artifact `10924085965` / `astrology-core-handoff-75995d9a19d41e931dce20f77b75e02d77e42e0d` was published successfully;
-  - canonical read-back confirms the shared implementation/admission/index binding on the merged main revision.
-- completion_gate:
-  - extract or otherwise establish one project-owned shared deterministic civil-time normalizer that implements `CIVIL_TIME_NORMALIZATION.md`;
-  - preserve current Astrology production semantics and parity while making Astrology a consumer of the shared adapter;
-  - expose validated local civil datetime and resolved UTC instant as distinct facts with IANA timezone provenance;
-  - keep DST gap/fold behavior fail-closed unless a separately admitted explicit disambiguation selector exists;
-  - add focused cross-method regression fixtures before Zi Wei consumes the adapter;
-  - do not widen Zi Wei timezone admission in this item.
-- non_goals:
-  - no birthplace→timezone guessing;
-  - no true-solar-time correction;
-  - no change to Astrology calculation/interpretation authority;
-  - no Zi Wei Gregorian→lunar production admission beyond `Asia/Taipei`.
-
-
-
-### AST-P1-200 — Default house-system interaction profile
-
-- type: FEATURE / PRODUCT UX / INPUT NORMALIZATION
-- status: DONE
-- priority: P1
-- owner: Astrology natal interaction profile
-- blocked_by: none
-- decision:
-  - project UX default for exact/approximate known-time requests with omitted/null `house_system`: `Placidus`;
-  - explicit `Whole Sign` or `Placidus` always overrides the default;
-  - user-facing output must disclose when Placidus was applied by default and mention Whole Sign as the supported alternative;
-  - this is a product-default decision only, not an objective-accuracy or historical-superiority claim.
-- closure:
-  - known-time exact/approximate requests with omitted or null `house_system` now normalize to `Placidus` with `house_system_selection = project_default`;
-  - explicit `Whole Sign` / `Placidus` remains authoritative and records `house_system_selection = explicit_user_choice`;
-  - unknown birth time remains house-system-free;
-  - `ASTROLOGY_NATAL.md` defines this only as a project UX default, not an objective-accuracy or historical-superiority claim;
-  - interpretation handoff adds a required disclosure only for the project-default path: Placidus is being used by default and Whole Sign remains available; explicit user choice does not receive that default disclosure;
-  - provider house-system authority, Placidus latitude boundary and fail-closed behavior remain unchanged; there is no silent fallback to Whole Sign;
-  - temporary regeneration run `36302699667` passed canonical bundle regeneration/check plus focused orchestrator, interpretation-handoff, orchestration-contract and core-bundle tests;
-  - generated commit `88da7e4d8002929af0fe79900e074b7191844403` updated the derived Astrology core bundle and removed the temporary regeneration workflow;
-  - initial PR validation `36302699645` failed only at the expected stale pre-regeneration bundle check;
-  - final post-regeneration PR validation `36302743057` passed casting-runtime, core-bundle verification, full unit tests and structural checker;
-  - PR #301 merged at main `090610f7ca0775ef134f9176bd0ca2c4ca882b89`;
-  - exact-main run `36302853696` passed casting-runtime, core-bundle verification, full unit tests, structural checker and both exact-main handoff artifact publishers;
-  - current-main Astrology handoff artifact `10925677790` / `astrology-core-handoff-090610f7ca0775ef134f9176bd0ca2c4ca882b89` was published successfully;
-  - canonical read-back verifies the request schema default, orchestrator selection provenance, production admission profile and user-facing disclosure binding.
-- completion_gate:
-  - request schema no longer requires explicit `house_system` for exact/approximate birth time and documents the default;
-  - orchestrator deterministically records `house_system_selection = project_default | explicit_user_choice`;
-  - defaulted Placidus reaches the existing provider/runtime gate without changing provider house-system authority;
-  - interpretation handoff emits the required alternative-system disclosure only for the project-default path;
-  - explicit Whole Sign remains unchanged and is not silently replaced;
-  - unknown birth time remains house-system-free;
-  - derived Astrology core bundle regenerated from canonical generator;
-  - focused regression + full repository validation PASS;
-  - merge + canonical read-back before DONE.
-- non_goals:
-  - no claim that Placidus is objectively more accurate;
-  - no removal or demotion of Whole Sign;
-  - no automatic dual-system comparison;
-  - no silent fallback from rejected Placidus to Whole Sign.
-
+## P1 — active natal interpretation work
 
 ### AST-P1-210 — Natal semantic composition fallback contract
 
@@ -761,7 +121,6 @@ This item is a standing reconciliation guard. It is not a request to change curr
   - no automatic conversion of research-only registries into production authority;
   - no scientific, psychometric or objective-predictive-validity claim.
 
-
 ### AST-P1-220 — Disclosed default semantic profile for ordinary natal interpretation
 
 - type: FEATURE / PRODUCT UX / INTERPRETATION PROFILE
@@ -789,7 +148,6 @@ This item is a standing reconciliation guard. It is not a request to change curr
   - no automatic blending of traditional/modern profiles;
   - no default semantic admission for Astrology factors that remain unsupported;
   - no change to Astrology ordinary method routing, which remains explicit-request only.
-
 
 ### AST-P1-230 — Evidence-bounded concrete natal synthesis contract
 
@@ -819,7 +177,6 @@ This item is a standing reconciliation guard. It is not a request to change curr
   - no optimization loop that rewards statements merely because users report that they “feel accurate”;
   - no user-feedback signal may become semantic/source authority.
 
-
 ### AST-P1-240 — Sparse emergent exact-claim admission policy
 
 - type: RESEARCH POLICY / INTERPRETATION / CLAIM ADMISSION
@@ -844,35 +201,7 @@ This item is a standing reconciliation guard. It is not a request to change curr
   - no automatic claim generation from model synthesis;
   - no feedback-driven semantic promotion merely because an interpretation is popular or subjectively resonant.
 
-
 ## P2 — deferred compatibility / provider expansion
-
-### AST-P2-010 — Interpolated Black Moon Lilith
-
-- type: RESEARCH / COMPATIBILITY
-- status: DONE
-- priority: P2
-- owner: Astrology Lilith research
-- blocked_by: none
-- canonical_research:
-  - `references/astrology/ASTROLOGY_P2_010_INTERPOLATED_LILITH_DEFINITION.md`
-  - `references/astrology/EXTENDED_CHART_E3_LILITH_RESEARCH.md`
-  - `references/astrology/extended_chart_e3_e7_policy_manifest.json`
-  - `references/astrology/extended_chart_e8_admission_readiness.json`
-- current_state:
-  - Mean and Osculating/True Lilith research prerequisites are DONE and remain separate mathematical identities;
-  - Swiss `SE_INTP_APOG` exposes a distinct interpolated lunar-apogee product with its own iterative Moon-model algorithm;
-  - an independent modern implementation (`g-battaglia/libephemeris`) defines a different smooth DE440-anchored apsis-passage curve and explicitly documents non-zero divergence from Swiss between passages;
-  - therefore `Interpolated Lilith` is not treated as one provider-neutral mathematical identity and no project-wide default definition is selected.
-- closure:
-  - research characterized Interpolated Lilith as a compatibility-definition family rather than a generic interpolation of Mean and Osculating Lilith;
-  - exact Swiss compatibility, if ever required, belongs to an explicit named Swiss/provider lane and inherits its license/admission gates;
-  - independently defined smooth apsis curves may be researched as separate named products but must not be mislabeled as Swiss-exact `SE_INTP_APOG`;
-  - no production calculation fact, bare `Lilith` alias, semantic interpretation, or default provider was admitted.
-- rule:
-  - treat as a separate definition/product;
-  - never alias to Mean or Osculating Lilith;
-  - require an explicit named definition/provider before any future calculation admission.
 
 ### AST-P2-020 — Named consumer compatibility profile
 
@@ -904,114 +233,8 @@ This item is a standing reconciliation guard. It is not a request to change curr
   - license posture and technical admission are separate gates;
   - no production dependency is authorized by the current research.
 
-### AST-P2-041 — Piecewise Chebyshev five-body ephemeris feasibility
+## SHARED / pointer-only coordination
 
-- type: RESEARCH / PROVIDER FEASIBILITY
-- status: DONE
-- priority: P2
-- owner: Astrology extended ephemeris research
-- blocked_by: none
-- canonical_evidence:
-  - `references/astrology/ASTROLOGY_P2_041_CHEBYSHEV_FEASIBILITY_CONTRACT.md`
-  - `references/astrology/astrology_p2_041_chebyshev_feasibility_contract.json`
-  - `references/astrology/ASTROLOGY_P2_041_CHEBYSHEV_FEASIBILITY_RESULT.md`
-  - `references/astrology/astrology_p2_041_chebyshev_feasibility.json`
-- closure:
-  - contract frozen before execution at `2ac7a91e743fd460a639095d12dd470d72a51634`;
-  - PR #236 / head `47e5b052a22b2d9dd59dcf3af09b77364106b523` executed in Validate Playbook run #832;
-  - no frozen variant passed every gate;
-  - D5/W45, D7/W60 and D7/W80 failed only boundary-speed continuity;
-  - D7/W120 also failed fixture-speed and boundary-longitude gates;
-  - no production admission was granted.
-- consequence:
-  - independent-segment Chebyshev v0 is rejected;
-  - AST-P2-040 remains blocked;
-  - bounded SPK and continuity-constrained/overlap Chebyshev remain separate future research options.
-
-### AST-P2-042 — Continuity-constrained / overlap Chebyshev five-body feasibility
-
-- type: RESEARCH / PROVIDER FEASIBILITY
-- status: DONE
-- priority: P2
-- owner: Astrology extended ephemeris research
-- blocked_by: none
-- canonical_evidence:
-  - `references/astrology/ASTROLOGY_P2_042_CONTINUITY_CHEBYSHEV_FEASIBILITY_CONTRACT.md`
-  - `references/astrology/astrology_p2_042_continuity_chebyshev_feasibility_contract.json`
-  - `references/astrology/ASTROLOGY_P2_042_CONTINUITY_CHEBYSHEV_FEASIBILITY_RESULT.md`
-  - `references/astrology/astrology_p2_042_continuity_chebyshev_feasibility.json`
-- closure:
-  - contract frozen before first execution at `6786fb20128c204f525971d06bdd1827620f318f`;
-  - PR #238 / head `6d60eef7176a53cd7cab0955e460a591e8f4c7cc` executed in Validate Playbook run #835;
-  - `c1-cheb-d5-w45`, `c1-cheb-d7-w60`, and `overlap-cheb-d7-w60-p15` passed every frozen gate;
-  - `overlap-cheb-d5-w45-p10` failed only boundary-speed continuity;
-  - `c1-cheb-d7-w60` is the current research front-runner because it combines exact C1 continuity with the strongest observed worst-case 5-day-grid longitude margin while remaining within the ~1 MiB / 64-byte envelope;
-  - no production provider/calculation admission was granted.
-- consequence:
-  - the five-body transport/precision architecture prerequisite is satisfied for research coordination;
-  - AST-P2-040 is unblocked for a separate production-admission review;
-  - feasibility PASS does not by itself admit Chiron, Ceres, Pallas, Juno or Vesta.
-
-### AST-P2-040 — Broader extended ephemeris objects
-
-- type: FEATURE / PROVIDER
-- status: DONE
-- priority: P2
-- owner: Astrology extended ephemeris
-- blocked_by: none
-- canonical_evidence:
-  - `ASTROLOGY_EXTENDED_EPHEMERIS_ADMISSION_V1.json`
-  - `ASTROLOGY_PRODUCTION_ADMISSION_V1.json`
-  - `ASTROLOGY_MATERIALIZATION.md`
-  - `tools/astrology_extended_ephemeris.py`
-  - `tools/generate_astrology_extended_ephemeris.py`
-  - `tests/test_astrology_extended_ephemeris_admission.py`
-  - `runtime/astrology/CHATGPT_DETERMINISTIC_CORE_BUNDLE.json`
-- historical_frozen_evidence:
-  - `references/astrology/ASTROLOGY_P2_040_PRODUCTION_ADMISSION_CONTRACT.md`
-  - `references/astrology/astrology_p2_040_production_admission_contract.json`
-  - `references/astrology/ASTROLOGY_P2_040_F32_TRANSPORT_CONTRACT.md`
-  - `references/astrology/astrology_p2_040_f32_transport_contract.json`
-  - these preserve the prospectively frozen pre-execution review inputs; final production authority remains the current admission manifest, runtime owners and exact admitted data commit.
-- closure:
-  - Chiron/Ceres/Pallas/Juno/Vesta are production-admitted only through explicit `extended_objects` requests for known-time natal calculation facts;
-  - provider `astrology-extended-ephemeris-c1-v1` is pinned to exact data commit `0052ba1c0a3b65238b4f9ec3a94a1aff47e341ea`;
-  - admitted dataset SHA-256 is `580bb2a8ef463dfc6527ea611f27daad3562cb1fa5698391b3e2baeba64987bf`, using `c1-cheb-d7-w60-f32-c0mod360-v1`;
-  - corrected generated-data publisher run `36222976811` produced 17 query-bounded float32 shards and canonical exact-commit read-back passed manifest, generated identity and shard Git blob checks;
-  - production PR #245 merged at `cb1722ea5e52484f48811cd9e28404c0a4ca9c49`;
-  - main push Validate Playbook run `36224576380` passed validate, casting-runtime, unit tests and structural checker;
-  - deterministic core materialization includes the extended evaluator and preserves no-network ordinary runtime behavior;
-  - Fact Gate rejects spoofed dataset/provider identities and keeps default aspect participation closed;
-  - semantic interpretation authority, unknown-time extended facts and transit extended-object paths remain NOT_ADMITTED.
-- rule:
-  - calculation admission does not imply interpretation admission;
-  - generated-data branch status alone is not production authority; main admission manifest + exact pinned data commit remain authoritative;
-  - no opportunistic auto-admission from an upstream catalog or research artifact.
-
-## SHARED / parallel
-
-### AST-SHARED-001 — Casting/Vercel deployment isolation completion
-
-- type: SHARED / CI / DEPLOYMENT
-- status: DONE
-- priority: SHARED
-- owner: casting runtime / repository CI
-- blocked_by: none
-- reconciliation:
-  - PR #153 was closed/unmerged, but its provenance-tree design and `runtime/casting/vercel.json` path-bounded deployment behavior were already present byte-for-byte on main;
-  - the remaining gap was GitHub Actions topology: general `.github/workflows/validation.yml` still ran live Vercel smoke on every main push.
-- closure:
-  - local casting contract validation remains in the general `.github/workflows/validation.yml` workflow;
-  - live Vercel smoke moved to `.github/workflows/casting-production-smoke.yml`;
-  - the live smoke is triggered only by `main` pushes changing `runtime/casting/**`;
-  - existing deployed-ancestor + `runtime/casting` tree-equivalence provenance semantics are preserved;
-  - `runtime/casting/vercel.json` remains path-bounded through its existing `ignoreCommand`;
-  - unrelated Astrology / Zi Wei / docs / governance main changes no longer inherit live Vercel availability as a validation gate;
-  - `tests/casting/test_deployment_provenance_contract.py` protects both workflow separation and runtime-tree provenance behavior.
-
-- completion_evidence:
-  - PR #231 candidate validation: `validate` PASS and `casting-runtime` PASS;
-  - PR validation intentionally does not run the live production-smoke workflow because that workflow is main-push + `runtime/casting/**` path-bounded.
 ### AST-SHARED-002 — Astrology × Zi Wei reconciliation pointer
 
 - type: SHARED POINTER ONLY
@@ -1019,46 +242,35 @@ This item is a standing reconciliation guard. It is not a request to change curr
 - canonical technical contract: `CROSS_VALIDATION.md` §7
 - mutable status is **not** tracked here; follow the Zi Wei backlog owner to avoid divergent shared state.
 
-### AST-SHARED-003 — Shared civil-time normalization contract
+## Completed anti-rediscovery index
 
-- type: SHARED / DETERMINISTIC INPUT CONTRACT
-- status: DONE
-- priority: SHARED
-- owner: cross-method civil-time normalization
-- blocked_by: none
-- canonical_contract:
-  - `CIVIL_TIME_NORMALIZATION.md`
-- consumers:
-  - Astrology known-time / unknown-time deterministic input paths
-  - `ZIWEI_BACKLOG.md#ZW-P2-030`
-- current_evidence:
-  - Astrology production already admits explicit IANA timezone input and preserves resolved UTC provenance;
-  - `tests/test_astrology_provider.py` covers `Australia/Sydney`, DST-nonexistent and DST-ambiguous `America/New_York` fail-closed behavior, and rejection of fixed offsets as timezone identity;
-  - Zi Wei calendar admission remains intentionally `Asia/Taipei`-only.
-- contract_boundary:
-  - shared semantics validate local civil wall time against an explicit/admitted IANA timezone and preserve both validated local identity and resolved UTC instant;
-  - DST gaps fail closed; DST folds fail closed unless a separately admitted explicit disambiguation selector exists;
-  - birthplace→timezone resolution stays separate and may not be guessed;
-  - Zi Wei must perform Gregorian→lunar conversion from validated **local civil Gregorian fields**, not from UTC-rebased calendar fields;
-  - true-solar-time remains outside this contract and stays under `ZW-P2-040`.
-- completion_gate:
-  - canonical contract merged on main;
-  - machine routing points to the shared owner;
-  - Astrology and Zi Wei coordination surfaces point to one shared contract without duplicating technical authority;
-  - structural regression protects the single-owner / pointer topology;
-  - canonical read-back + required CI PASS.
-- closure:
-  - PR #294 merged the canonical contract and coordination/routing bindings at main `94721f1925d90e4a7850d84e6a51fbca08c5871a`;
-  - `CIVIL_TIME_NORMALIZATION.md` freezes IANA timezone identity, DST gap/fold fail-closed semantics, separate local-civil vs UTC identities, Zi Wei local-Gregorian consumption, and true-solar-time separation;
-  - `PLAYBOOK_INDEX.json` routes `input.civil-time-normalization` to the shared contract and records AST-SHARED-003 / AST-P1-190 / ZW-P2-030 linkage;
-  - repository architecture regression protects the single shared coordination owner and Zi Wei pointer/dependency topology;
-  - PR validation run `36295175847` passed `casting-runtime`, unit tests and structural checker;
-  - exact-main validation run `36295281032` passed `casting-runtime`, unit tests, structural checker, and exact-main Astrology handoff artifact preparation/upload;
-  - no provider/runtime/admission semantics were changed by contract closure.
-- followup:
-  - shared implementation/admission is complete at `AST-P1-190`;
-  - Zi Wei consumer expansion is complete at `ZIWEI_BACKLOG.md#ZW-P2-030`; future timezone/profile expansion requires a new explicit scope/admission decision rather than treating this shared contract as still blocked.
+The items below are **DONE**. They are retained only as compact identity pointers; do not reopen them unless a new regression, explicit scope expansion, or canonical-owner change creates a new judgment node.
 
+- **AST-P0-001 — Reconcile E8 extended-object readiness after ChatGPT-only feasibility research** — DONE.
+- **AST-P1-005 — Query-bounded place-resolver shard transport admission** — DONE.
+- **AST-P1-010 — EXP-1 five-body compact ephemeris feasibility** — DONE.
+- **AST-P1-020 — EXP-2 Mean Black Moon Lilith local analytical parity** — DONE.
+- **AST-P1-030 — EXP-3 Osculating / True Lilith local state-vector parity** — DONE.
+- **AST-P1-040 — EXP-4 Vertex / Equatorial Ascendant formula admission study** — DONE.
+- **AST-P1-100 — Source-backed South Node / Part of Fortune interpretation admission** — DONE.
+- **AST-P1-110 — Extended aspect participant policies** — DONE.
+- **AST-P1-120 — Yod / Stellium / Grand Quintile policy expansion** — DONE.
+- **AST-P1-130 — Transit house search / temporal house context** — DONE.
+- **AST-P1-140 — Point-in-time transit house context** — DONE.
+- **AST-P1-150 — Runtime reuse / host integration binding** — DONE.
+- **AST-P1-160 — Taiwan administrative locality input normalization** — DONE.
+- **AST-P1-170 — North Node sign semantic claim-family admission** — DONE.
+- **AST-P1-180 — Exact-main connector-backed core handoff artifact publishing** — DONE.
+- **AST-P1-190 — Shared civil-time normalizer extraction/admission** — DONE.
+- **AST-P1-200 — Default house-system interaction profile** — DONE.
+- **AST-P2-010 — Interpolated Black Moon Lilith** — DONE.
+- **AST-P2-041 — Piecewise Chebyshev five-body ephemeris feasibility** — DONE.
+- **AST-P2-042 — Continuity-constrained / overlap Chebyshev five-body feasibility** — DONE.
+- **AST-P2-040 — Broader extended ephemeris objects** — DONE.
+- **AST-SHARED-001 — Casting/Vercel deployment isolation completion** — DONE.
+- **AST-SHARED-003 — Shared civil-time normalization contract** — DONE.
+
+Detailed PR / workflow / artifact / candidate-commit history is intentionally omitted from this active coordination surface and remains recoverable from Git history plus the canonical owners/evidence referenced by those revisions.
 
 ## Intentionally not backlog blockers
 
