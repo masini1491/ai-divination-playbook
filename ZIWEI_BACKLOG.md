@@ -796,7 +796,7 @@ Ordering rationale:
 ### ZW-P2-021 — Sparse star×palace contextual research v3
 
 - type: RESEARCH / INTERPRETATION
-- status: IN_PROGRESS
+- status: DONE
 - priority: P2
 - owner: Zi Wei interpretation evidence
 - blocked_by: none
@@ -804,7 +804,7 @@ Ordering rationale:
   - explicit user request to continue the Zi Wei research line after v2 / production closure.
 - research_scope:
   - targeted re-review `破軍×遷移宮`;
-  - source-first discovery of 3–5 additional star×palace candidates;
+  - source-first discovery of additional star×palace candidates;
   - material-distinctness comparison against current star-core + palace-domain evidence;
   - research-only; no production admission in this action.
 - evidence_decision:
@@ -821,9 +821,19 @@ Ordering rationale:
   - no claim registry / runtime / admission manifest / pipeline / count change;
   - no 14×12 Cartesian expansion;
   - no deterministic marriage, wealth, property, travel-accident or other guaranteed event prediction.
-- completion_gate:
-  - research record + research owner + coordination backlog synchronized;
-  - formal PR CI, merge, exact-main CI and canonical read-back complete before DONE.
+- recommended_next_admission_order:
+  1. `破軍×遷移宮`
+  2. `武曲×田宅宮`
+  3. `天機×田宅宮`
+  4. `破軍×夫妻宮`
+- completion_evidence:
+  - research implementation PR #328 run `36361592025` PASSed `validate` + `casting-runtime`, including full unit suite and structural checker;
+  - PR #328 merged to exact main `fff3c5bd9a5724aa35e90890fb99ca0755fab558`;
+  - exact-main canonical read-back confirms `STAR_PALACE_CONTEXTUAL_RESEARCH_V3.md` and this backlog item are present while production remains base 62 / maximum optional 79 / star×palace 3 / pipeline `1.5.0`;
+  - exact-main run `36361727278` PASSed `validate` + `casting-runtime`, full unit suite, structural checker and exact-main Zi Wei handoff preparation/upload;
+  - exact-main artifact `10946220860` / `ziwei-deterministic-handoff-fff3c5bd9a5724aa35e90890fb99ca0755fab558` published at 98,678 bytes with digest `sha256:77a6379187f6a23db5d169f6aea29acc0da2ba2c33672ba3e8cbdfe5df70cfd2`.
+- next_authorized_action:
+  - STOP — any production admission of the v3 candidates is a separate bounded action.
 
 ### ZW-P2-050 — Body-Palace overlay interpretation admission
 
