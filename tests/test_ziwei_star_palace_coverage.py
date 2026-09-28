@@ -27,7 +27,7 @@ class Tests(unittest.TestCase):
   c=self.cells["廉貞×田宅宮"]; self.assertEqual("HIGH_RISK_BOUNDED",c["routing_mode"]); self.assertTrue(c["resolved"])
   for k in ("貪狼×兄弟宮","天梁×兄弟宮","七殺×兄弟宮","破軍×兄弟宮"): self.assertEqual("HIGH_RISK_BOUNDED",self.cells[k]["routing_mode"]); self.assertTrue(self.cells[k]["resolved"])
  def test_unreviewed(self):
-  c=self.cells["紫微×兄弟宮"]; self.assertEqual("UNREVIEWED",c["routing_mode"]); self.assertFalse(c["resolved"]); self.assertNotIn("claim_ref",c)
+  c=self.cells["紫微×子女宮"]; self.assertEqual("UNREVIEWED",c["routing_mode"]); self.assertFalse(c["resolved"]); self.assertNotIn("claim_ref",c)
  def test_compact(self): self.assertLess(INDEX.stat().st_size,45000)
  def test_current(self): subprocess.run([sys.executable,str(ROOT/"tools/build_ziwei_star_palace_coverage.py"),"--check"],check=True,cwd=ROOT)
 if __name__=="__main__": unittest.main()
