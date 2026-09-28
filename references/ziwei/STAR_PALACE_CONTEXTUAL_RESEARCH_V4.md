@@ -885,3 +885,76 @@ The full 財帛宮 row is now 14/14 reviewed and 8/14 resolved. The four new
 admission candidates remain research-only. Any production promotion requires a
 separate bounded admission action with fresh main/read-back and claim-count
 synchronization.
+
+
+## V4 Batch 6 — 父母宮 health/family-outcome-safe row
+
+This batch reviews the remaining eleven previously-unreviewed 父母宮 cells. The
+historical owner is the Nanyang-Hall 父母宮 chapter:
+
+`https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzop13hzx8p`
+
+Previously reviewed `太陽×父母宮`, `太陰×父母宮` and
+`天梁×父母宮` remain bounded-L5 controls and are not reclassified.
+
+The chapter's pair-specific distinctions are dominated by concrete parent
+survival/loss, injury, estrangement, adoption/re-parenting and lineage outcomes.
+Those details are materially source-explicit but are not suitable as ordinary
+deterministic production doctrine. The canonical parent-palace conditional
+claim already requires a safety gate for these historical strong assertions.
+
+### High-risk bounded cells
+
+The following eleven cells are classified
+`HIGH_RISK_BOUNDED / resolved`:
+
+- `紫微×父母宮`
+- `天機×父母宮`
+- `武曲×父母宮`
+- `天同×父母宮`
+- `廉貞×父母宮`
+- `天府×父母宮`
+- `貪狼×父母宮`
+- `巨門×父母宮`
+- `天相×父母宮`
+- `七殺×父母宮`
+- `破軍×父母宮`
+
+For each cell, safe production routing remains the independently admitted star
+core + 父母宮 relationship/kinship domain + existing condition handling. The
+historical pair-specific strong outcomes remain research evidence only.
+
+Forbidden promotion examples include guaranteed parental death/longevity,
+injury, abandonment, adoption, estrangement, fixed family completeness,
+fixed inheritance/ancestral-property loss, or deterministic timing/order of
+parental loss.
+
+No admission candidate is created merely because the historical chapter
+contains an exact star×palace sentence: the distinct content must also survive
+the family/health-outcome safety gate as reusable non-deterministic semantics.
+
+## Batch 6 decision
+
+```text
+new reviewed cells = 11
+new resolved cells = 11
+new admission candidates = 0
+new high-risk bounded cells = 11
+production claims added = 0
+```
+
+Coverage after batch 6:
+
+```text
+total       168
+reviewed     71
+resolved     50
+unreviewed   97
+dedicated     9
+bounded L5   29
+high-risk    12
+deferred     21
+```
+
+The full 父母宮 row is now 14/14 reviewed and 14/14 resolved. Production claim
+count, runtime and pipeline remain unchanged.
