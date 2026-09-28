@@ -135,6 +135,20 @@ class AstrologyUserFacingOutputContractTests(unittest.TestCase):
             set(result["question"]),
         )
 
+    def test_schema_exposes_optional_concrete_natal_synthesis_profile(self):
+        schema = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
+        self.assertNotIn("natal_synthesis", schema["required"])
+        self.assertEqual(
+            "evidence-bounded-concrete-natal-v1",
+            schema["$defs"]["natal_synthesis"]["properties"]["profile_id"]["const"],
+        )
+        themes = schema["$defs"]["natal_synthesis"]["properties"]["themes"]
+        self.assertEqual(3, themes["minItems"])
+        self.assertEqual(5, themes["maxItems"])
+        theme = schema["$defs"]["natal_theme"]
+        self.assertIn("claim_refs", theme["required"])
+        self.assertEqual(1, theme["properties"]["claim_refs"]["minItems"])
+
     def test_manifest_and_machine_index_publish_same_schema(self):
         manifest = json.loads((ROOT / "ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
         index = json.loads((ROOT / "PLAYBOOK_INDEX.json").read_text(encoding="utf-8"))
@@ -149,6 +163,16 @@ class AstrologyUserFacingOutputContractTests(unittest.TestCase):
         self.assertEqual(output["output_schema"], method["user_facing_output_schema"])
         self.assertFalse(output["semantic_interpretation_authority"])
         self.assertFalse(output["final_text_authority"])
+        synthesis = output["natal_synthesis_profile"]
+        self.assertEqual("evidence-bounded-concrete-natal-v1", synthesis["profile_id"])
+        self.assertEqual("explicit_output_draft_only", synthesis["activation"])
+        self.assertEqual("natal", synthesis["reading_mode"])
+        self.assertEqual({"min": 3, "max": 5}, synthesis["theme_count"])
+        self.assertTrue(synthesis["theme_requires_admitted_semantic_claim_refs"])
+        self.assertTrue(synthesis["limiting_condition_requires_own_evidence_refs"])
+        self.assertFalse(synthesis["semantic_interpretation_authority"])
+        self.assertFalse(synthesis["claim_admission_authority"])
+        self.assertFalse(synthesis["user_feedback_semantic_authority"])
 
 
 if __name__ == "__main__":
