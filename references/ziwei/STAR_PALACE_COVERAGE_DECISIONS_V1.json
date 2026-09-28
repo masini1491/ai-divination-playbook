@@ -586,6 +586,94 @@
       "resolved": true,
       "research_state": "HIGH-RISK-SOURCE-BOUNDED",
       "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
+    },
+    {
+      "star": "天機",
+      "palace": "遷移宮",
+      "routing_mode": "DEFERRED_EVIDENCE",
+      "resolved": false,
+      "research_state": "ADMISSION-CANDIDATE",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
+    },
+    {
+      "star": "太陽",
+      "palace": "遷移宮",
+      "routing_mode": "DEFERRED_EVIDENCE",
+      "resolved": false,
+      "research_state": "ADMISSION-CANDIDATE",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
+    },
+    {
+      "star": "武曲",
+      "palace": "遷移宮",
+      "routing_mode": "DEFERRED_EVIDENCE",
+      "resolved": false,
+      "research_state": "ADMISSION-CANDIDATE",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
+    },
+    {
+      "star": "天同",
+      "palace": "遷移宮",
+      "routing_mode": "BOUNDED_L5_COMPOSITION",
+      "resolved": true,
+      "research_state": "REJECT-REDUNDANT",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
+    },
+    {
+      "star": "廉貞",
+      "palace": "遷移宮",
+      "routing_mode": "DEFERRED_EVIDENCE",
+      "resolved": false,
+      "research_state": "ADMISSION-CANDIDATE",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
+    },
+    {
+      "star": "天府",
+      "palace": "遷移宮",
+      "routing_mode": "BOUNDED_L5_COMPOSITION",
+      "resolved": true,
+      "research_state": "REJECT-REDUNDANT",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
+    },
+    {
+      "star": "太陰",
+      "palace": "遷移宮",
+      "routing_mode": "BOUNDED_L5_COMPOSITION",
+      "resolved": true,
+      "research_state": "REJECT-REDUNDANT",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
+    },
+    {
+      "star": "巨門",
+      "palace": "遷移宮",
+      "routing_mode": "BOUNDED_L5_COMPOSITION",
+      "resolved": true,
+      "research_state": "REJECT-REDUNDANT",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
+    },
+    {
+      "star": "天相",
+      "palace": "遷移宮",
+      "routing_mode": "BOUNDED_L5_COMPOSITION",
+      "resolved": true,
+      "research_state": "REJECT-REDUNDANT",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
+    },
+    {
+      "star": "天梁",
+      "palace": "遷移宮",
+      "routing_mode": "BOUNDED_L5_COMPOSITION",
+      "resolved": true,
+      "research_state": "REJECT-REDUNDANT",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
+    },
+    {
+      "star": "七殺",
+      "palace": "遷移宮",
+      "routing_mode": "DEFERRED_EVIDENCE",
+      "resolved": false,
+      "research_state": "ADMISSION-CANDIDATE",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
     }
   ]
 }
