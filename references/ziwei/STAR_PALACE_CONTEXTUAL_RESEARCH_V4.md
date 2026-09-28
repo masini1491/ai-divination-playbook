@@ -436,3 +436,153 @@ deferred     14
 The full 福德宮 row is now reviewed: 2 previously-reviewed cells + 12 batch-2
 cells = 14/14 reviewed. It is not yet 14/14 resolved because admission
 candidates remain unresolved pending separate admission or later reclassification.
+
+## V4 Batch 3 — 官祿宮 row
+
+This batch reviews the remaining 10 previously-unreviewed 官祿宮 cells. The
+historical owner is the Nanyang-Hall 官祿宮 chapter:
+
+`https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzop13hyvbd`
+
+The already-reviewed `紫微×官祿宮`, `太陽×官祿宮`,
+`天相×官祿宮` and production-admitted `天梁×官祿宮` cells are not
+reclassified here.
+
+The pinned practitioner comparator remains
+`Renhuai123/nihai-tianji-corpus@c90006168195c0650328b7199669eb6a2d0cac93`,
+`docs/01-主星.md`. This pass did not establish a clean isolated practitioner
+sentence for the three new admission candidates below, so independent
+practitioner corroboration is not claimed.
+
+### Admission candidates / reviewed unresolved
+
+#### 天機 × 官祿宮
+
+The historical career-palace text gives a direct condition-sensitive career
+trajectory: favorable dignity/support can strengthen office-role expression,
+while weaker conditions can reverse toward loss of position or a lower-level
+service foothold. Generic 天機 planning/adaptability + 官祿 career/public-role
+composition does not itself encode that stability reversal.
+
+Normalized candidate:
+
+> 天機落官祿宮時，可作為「事業／職位表現對廟陷、吉煞與同會條件高度敏感」
+> 的 historical contextual modifier；條件較弱時可保守描述為職位穩定性下降
+> 或較偏基層／執行型角色，不得翻成必升官、必失職或固定職業。
+
+Classification: `ADMISSION-CANDIDATE / DEFERRED_EVIDENCE / unresolved`.
+
+#### 廉貞 × 官祿宮
+
+The historical career-palace text gives an explicit authority-versus-duration
+pattern: an active authority / martial-role expression can coexist with reduced
+durability. The duration component is not supplied by the generic 廉貞
+authority/constraint core plus 官祿 domain.
+
+Normalized candidate:
+
+> 廉貞落官祿宮時，可作為「職務權責可能有發揮，但持續性／穩定性需保守判斷」
+> 的 historical contextual modifier；不得翻成必然短任、降職、失業或固定職業。
+
+Classification: `ADMISSION-CANDIDATE / DEFERRED_EVIDENCE / unresolved`.
+
+#### 巨門 × 官祿宮
+
+The historical career-palace text distinguishes progress/retreat and duration
+by dignity and same-palace context. That role-continuity trajectory is more
+specific than generic 巨門 speech/dispute/obscurity semantics plus the 官祿
+career domain.
+
+Normalized candidate:
+
+> 巨門落官祿宮時，可作為「職場／職位的持續性與進退節奏較受廟陷、表達互動
+> 與同會條件影響」的 historical contextual modifier；不得由此推出必然官司、
+> 必然失職或固定升降結果。
+
+Classification: `ADMISSION-CANDIDATE / DEFERRED_EVIDENCE / unresolved`.
+
+### Resolved bounded-L5 cells
+
+#### 武曲 × 官祿宮 — REJECT-REDUNDANT
+
+Historical martial/authority and resource-management wording is already
+representable through 武曲 finance/resource/execution core, its admitted
+combination conditions, and the 官祿 career/public-responsibility domain.
+
+Routing: `BOUNDED_L5_COMPOSITION / resolved`.
+
+#### 天同 × 官祿宮 — REJECT-REDUNDANT
+
+Historical broad suitability for civil/martial work does not add a stable
+pair-specific mechanism beyond 天同 harmony/softness semantics plus the 官祿
+domain and existing conditional context.
+
+Routing: `BOUNDED_L5_COMPOSITION / resolved`.
+
+#### 天府 × 官祿宮 — REJECT-REDUNDANT
+
+Historical favorable office-role wording is adequately represented by 天府
+storehouse/conservation/support-order semantics plus the 官祿 domain. No
+distinct pair trajectory is established in this pass.
+
+Routing: `BOUNDED_L5_COMPOSITION / resolved`.
+
+#### 太陰 × 官祿宮 — REJECT-REDUNDANT
+
+Historical dignity-sensitive favorable/adverse career wording is already
+covered by 太陰's admitted dignity sensitivity plus the 官祿 domain. No
+additional pair-specific doctrine is required.
+
+Routing: `BOUNDED_L5_COMPOSITION / resolved`.
+
+#### 貪狼 × 官祿宮 — REJECT-REDUNDANT
+
+Historical authority language under 火鈴／dignity conditions is already
+represented by 貪狼's admitted condition-sensitive authority/resource semantics
+plus the 官祿 domain.
+
+Routing: `BOUNDED_L5_COMPOSITION / resolved`.
+
+#### 七殺 × 官祿宮 — REJECT-REDUNDANT
+
+Historical martial authority/achievement wording largely restates 七殺's
+admitted authority, decisiveness and condition-sensitive achievement semantics
+inside the career/public-role domain.
+
+Routing: `BOUNDED_L5_COMPOSITION / resolved`.
+
+#### 破軍 × 官祿宮 — REJECT-REDUNDANT
+
+Historical martial-role and dignity-sensitive prominence wording is adequately
+represented by 破軍's admitted change/restructuring core, favorable-condition
+authority semantics and the 官祿 domain.
+
+Routing: `BOUNDED_L5_COMPOSITION / resolved`.
+
+## Batch 3 decision
+
+```text
+new reviewed cells = 10
+new resolved cells = 7
+new admission candidates = 3
+new bounded L5 cells = 7
+production claims added = 0
+```
+
+Coverage after batch 3:
+
+```text
+total       168
+reviewed     46
+resolved     29
+unreviewed  122
+dedicated     7
+bounded L5   22
+deferred     17
+```
+
+The full 官祿宮 row is now reviewed: 4 previously-reviewed cells + 10 batch-3
+cells = 14/14 reviewed. It is 10/14 resolved; `天相×官祿宮` plus the three
+new admission candidates remain unresolved. Production admission remains a
+separate bounded action.
+
