@@ -838,31 +838,39 @@ Ordering rationale:
 ### ZW-P2-022 — Admit 破軍×遷移宮 sparse contextual claim
 
 - type: FEATURE / INTERPRETATION / PRODUCTION ADMISSION
-- status: IN_PROGRESS
+- status: DONE
 - priority: P2
 - owner: Zi Wei production maintenance
 - blocked_by:
   - ZW-P2-021 — DONE
 - shared_development_playbook_reviewed: `masini1491/ai-development-playbook@9236b42550b7f748cc6c5744075d106e643c6042`
 - promotion_route:
-  - PR is required for this action because current canonical `.github/workflows/validation.yml` provides candidate validation on `pull_request` and exact-main validation on `push main`; this is current evidence need, not historical PR convention.
+  - production candidate used PR because current canonical `.github/workflows/validation.yml` provides candidate validation on `pull_request`; this was current evidence need, not historical PR convention;
+  - this coordination-only closure uses direct non-force promotion because no independent review / PR-specific check is required, and main-push validation + canonical read-back provide the required closure evidence.
 - evidence_decision:
   - `STAR_PALACE_CONTEXTUAL_RESEARCH_V3.md` upgrades `破軍×遷移宮` to `ADMISSION-CANDIDATE` using direct Nanyang-Hall 遷移宮 evidence with baseline + dignity + malefic-condition semantics.
-- intended_production_delta:
-  - add exactly one historical-bounded `破軍×遷移宮` claim to existing `sparse_star_palace_context_v1`;
+- production_result:
+  - added exactly one historical-bounded `破軍×遷移宮` claim to existing `sparse_star_palace_context_v1`;
   - exact applicability = `fact_available:palace_occupancy` + `star_in_palace:破軍:遷移宮`;
-  - base natal claims 62 → 63; maximum optional claims 79 → 80; star×palace claims 3 → 4;
+  - base natal claims = 63; maximum optional claims = 80; star×palace claims = 4;
   - Scope-A pipeline remains `1.5.0`; no new runtime, geometry provider or claim type;
-  - repair stale `ZIWEI.md` activation-flow count while synchronizing affected current-state owners.
+  - stale `ZIWEI.md` activation-flow star×palace count was repaired from 2 to 4 while affected current-state owners were synchronized.
 - production_boundary:
   - no "出外必凶" doctrine;
   - no deterministic travel failure, accident, injury or other guaranteed adverse-event prediction;
   - dignity / brightness remains a modifier only and does not authorize brightness-only doctrine;
   - no 14×12 Cartesian expansion.
-- completion_gate:
-  - registry / module admission / root admission / index / docs / tests / shared reviewed revision synchronized;
-  - canonical generators refresh derived Zi Wei bundle and ChatGPT load pack;
-  - formal PR candidate validation + merge + exact-main validation/artifact + canonical read-back complete before DONE.
+- completion_evidence:
+  - generator bridge run `36362822915` PASSed registry validation, focused admission regressions, canonical Zi Wei bundle regeneration/check, ChatGPT load-pack regeneration/check, load-budget check and bundle regression;
+  - generator-owned cache commit `9ab80ccd776c7a50d3f7560b3876f8577c6b8b8b` removed the temporary bridge after regeneration;
+  - formal PR #330 run `36362895240` PASSed `validate` + `casting-runtime`, including full unit suite and structural checker;
+  - PR #330 merged to exact main `8f6031f83548ebca11396fa2144bae706909109b`;
+  - exact-main canonical read-back confirms 4 pairs `天相×命宮` / `天梁×官祿宮` / `貪狼×夫妻宮` / `破軍×遷移宮`, counts 63 / 80, pipeline `1.5.0`, declared shared baseline `main`, and reviewed shared revision `9236b42550b7f748cc6c5744075d106e643c6042`;
+  - exact-main run `36363026681` PASSed `validate` + `casting-runtime`, full unit suite, structural checker and exact-main Zi Wei handoff preparation/upload;
+  - exact-main artifact `10946208245` / `ziwei-deterministic-handoff-8f6031f83548ebca11396fa2144bae706909109b` published at 99,154 bytes with digest `sha256:c267f152ead7c6b888deffbbf8e387c219e6b8f7267e05def615eb464b45b306`.
+- next_authorized_action:
+  - STOP — next research-approved production candidate is `武曲×田宅宮`; it requires a separate bounded production-admission action.
+
 
 ### ZW-P2-050 — Body-Palace overlay interpretation admission
 
