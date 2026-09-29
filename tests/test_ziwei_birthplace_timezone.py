@@ -39,6 +39,10 @@ class ZiWeiBirthplaceTimezoneTests(unittest.TestCase):
         self.assertEqual("Asia/Taipei",result["calendar_profile"]["timezone"])
         self.assertEqual("ziwei-birthplace-timezone-tw-v1",provenance["resolver_id"])
 
+    def test_non_allowlisted_locality_suffix_fails_closed(self):
+        with self.assertRaises(ZiWeiBirthplaceTimezoneError):
+            resolve_birthplace_timezone("頭份市某處")
+
     def test_unsupported_non_taiwan_fails_closed(self):
         for value in ("Tokyo", "日本東京", "", "Mars Colony"):
             with self.subTest(value=value):
