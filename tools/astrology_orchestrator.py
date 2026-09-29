@@ -14,12 +14,10 @@ import json
 from pathlib import Path
 from typing import Any
 
-from tools.astrology_provider import (
-    BODY_NAMES,
-    SUPPORTED_HOUSE_SYSTEMS,
-    ProviderInputError,
-    build_natal_bundle,
-    build_unknown_time_natal_bundle,
+from tools.astrology_provider_selector import (
+    ASTRONOMY_PROVIDER_ID,
+    SWISS_PROVIDER_ID,
+    select_natal_provider,
 )
 from tools.astrology_extended_ephemeris import (
     OBJECT_IDS as EXTENDED_EPHEMERIS_OBJECT_IDS,
@@ -27,8 +25,6 @@ from tools.astrology_extended_ephemeris import (
     build_extended_object_rows,
 )
 from tools.astrology_runtime import MAJOR_ASPECT_ORBS, gate_bundle
-from tools.astrology_transit_provider import TransitProviderInputError, build_transit_bundle
-
 REQUEST_SCHEMA_NAME = "astrology_reading_request"
 REQUEST_SCHEMA_VERSION = "1.0.0"
 RUN_SCHEMA_NAME = "astrology_reading_run"
@@ -40,10 +36,49 @@ PRODUCTION_MANIFEST_PATH = "ASTROLOGY_PRODUCTION_ADMISSION_V1.json"
 DEFAULT_HOUSE_SYSTEM = "Placidus"
 HOUSE_SYSTEM_SELECTION_DEFAULT = "project_default"
 HOUSE_SYSTEM_SELECTION_EXPLICIT = "explicit_user_choice"
+BODY_NAMES = (
+    "Sun", "Moon", "Mercury", "Venus", "Mars", "Jupiter",
+    "Saturn", "Uranus", "Neptune", "Pluto", "NorthNode",
+)
+SUPPORTED_HOUSE_SYSTEMS = {"Whole Sign", "Placidus"}
 
 
 class OrchestrationInputError(ValueError):
     """A reading request cannot be admitted by the orchestration contract."""
+
+def _load_astronomy_natal_provider():
+    try:
+        from tools.astrology_provider import (
+            build_natal_bundle,
+            build_unknown_time_natal_bundle,
+        )
+    except ModuleNotFoundError as exc:
+        if exc.name == "astronomy":
+            raise OrchestrationInputError(
+                "portable Astronomy Engine natal runtime unavailable; "
+                "resolve ASTROLOGY_MATERIALIZATION.md before classifying Astrology unavailable"
+            ) from exc
+        raise
+    return build_natal_bundle, build_unknown_time_natal_bundle
+
+
+def _load_swiss_natal_provider():
+    from tools import astrology_swiss_provider
+    return astrology_swiss_provider
+
+
+def _load_transit_provider():
+    try:
+        from tools.astrology_transit_provider import build_transit_bundle
+    except ModuleNotFoundError as exc:
+        if exc.name == "astronomy":
+            raise OrchestrationInputError(
+                "portable Astronomy Engine transit runtime unavailable; "
+                "resolve ASTROLOGY_MATERIALIZATION.md before classifying Astrology unavailable"
+            ) from exc
+        raise
+    return build_transit_bundle
+
 
 def _load_place_resolver():
     """Load the admitted offline resolver only when place/country input needs it."""
@@ -470,18 +505,58 @@ def _engine_provenance(
     return result
 
 
-def run_request(data: Any) -> dict[str, Any]:
+def run_request(
+    data: Any, *, host_family: str = "portable"
+) -> dict[str, Any]:
     normalized = normalize_request(data)
     resolved, input_resolution = _resolve_location(normalized)
     birth = normalized["birth"]
 
+    provider_selection = select_natal_provider(
+        host_family=host_family,
+        reading_mode=normalized["reading_mode"],
+        birth_time_certainty=birth["birth_time_certainty"],
+    )
+
     if birth["birth_time_certainty"] == "unknown":
+        _, build_unknown_time_natal_bundle = _load_astronomy_natal_provider()
         natal_bundle = build_unknown_time_natal_bundle(
             local_date=birth["local_date"],
             timezone_name=resolved["timezone_name"],
             subject_ref=normalized["subject_ref"],
         )
+    elif provider_selection["selected_provider_id"] == SWISS_PROVIDER_ID:
+        swiss_provider = _load_swiss_natal_provider()
+        try:
+            natal_bundle = swiss_provider.build_natal_bundle(
+                local_datetime=birth["local_datetime"],
+                timezone_name=resolved["timezone_name"],
+                latitude=resolved["latitude"],
+                longitude=resolved["longitude"],
+                house_system=birth["house_system"],
+                subject_ref=normalized["subject_ref"],
+                birth_time_certainty=birth["birth_time_certainty"],
+            )
+        except swiss_provider.SwissProviderUnavailable:
+            build_natal_bundle, _ = _load_astronomy_natal_provider()
+            natal_bundle = build_natal_bundle(
+                local_datetime=birth["local_datetime"],
+                timezone_name=resolved["timezone_name"],
+                latitude=resolved["latitude"],
+                longitude=resolved["longitude"],
+                house_system=birth["house_system"],
+                subject_ref=normalized["subject_ref"],
+                birth_time_certainty=birth["birth_time_certainty"],
+            )
+            provider_selection = {
+                **provider_selection,
+                "selected_provider_id": ASTRONOMY_PROVIDER_ID,
+                "fallback_used": True,
+                "reason_codes": provider_selection.get("reason_codes", [])
+                + ["SWISS_RUNTIME_LOST_AFTER_PROBE"],
+            }
     else:
+        build_natal_bundle, _ = _load_astronomy_natal_provider()
         natal_bundle = build_natal_bundle(
             local_datetime=birth["local_datetime"],
             timezone_name=resolved["timezone_name"],
@@ -505,6 +580,7 @@ def run_request(data: Any) -> dict[str, Any]:
     transit_gate: dict[str, Any] | None = None
     if normalized["reading_mode"] == "transit":
         transit = normalized["transit"]
+        build_transit_bundle = _load_transit_provider()
         transit_bundle = build_transit_bundle(
             natal_bundle,
             start_utc=transit["start_utc"],
@@ -541,6 +617,7 @@ def run_request(data: Any) -> dict[str, Any]:
         },
         "normalized_request": normalized,
         "input_resolution": input_resolution,
+        "provider_selection": provider_selection,
         "fact_bundles": bundles,
         "runtime_gates": gates,
         "reading_record_bridge": {
@@ -564,16 +641,20 @@ def main() -> int:
         description="Run one normalized Astrology Production v1 natal/transit request end to end."
     )
     parser.add_argument("request", type=Path, help="Path to astrology_reading_request@1.0.0 JSON")
+    parser.add_argument(
+        "--host-family",
+        choices=["chatgpt", "portable"],
+        default="portable",
+        help="ChatGPT may use only a preinstalled host-native Swiss runtime.",
+    )
     args = parser.parse_args()
     try:
         data = json.loads(args.request.read_text(encoding="utf-8"))
-        result = run_request(data)
+        result = run_request(data, host_family=args.host_family)
     except (
         OSError,
         json.JSONDecodeError,
         OrchestrationInputError,
-        ProviderInputError,
-        TransitProviderInputError,
         ExtendedEphemerisError,
         RuntimeError,
     ) as exc:
