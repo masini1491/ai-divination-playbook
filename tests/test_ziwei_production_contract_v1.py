@@ -45,6 +45,14 @@ class ZiWeiProductionContractV1Tests(unittest.TestCase):
         )
         self.assertFalse(m["admission_decision"]["g8_ordinary_routing_admitted"])
         self.assertFalse(m["admission_decision"]["scientific_predictive_validity_claimed"])
+        self.assertIn("gregorian_birth_datetime_via_taiwan_birthplace_timezone_pre_adapter",m["accepted_method_inputs"])
+        greg=next(x for x in m["input_adapters"] if x["id"]=="gregorian_calendar_v2")
+        place=greg["birthplace_timezone_pre_adapter"]
+        self.assertEqual("production_admitted_taiwan_only",place["status"])
+        self.assertEqual("tools/ziwei_birthplace_timezone.py",place["runtime_owner"])
+        self.assertEqual("Asia/Taipei",place["output_timezone"])
+        self.assertFalse(place["broader_global_place_resolution"])
+        self.assertFalse(place["longitude_resolved"])
         self.assertIn("ziwei_interpretation_claim_registry_same_palace_pairs_v1.json",m["admitted_research_registries"])
         pair=m["separate_natal_interpretation_admissions"][0]
         self.assertEqual("same_palace_major_star_pairs_v1",pair["module_id"])
