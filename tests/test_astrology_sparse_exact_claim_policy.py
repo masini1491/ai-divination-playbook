@@ -1,6 +1,9 @@
 import json
 import unittest
+from copy import deepcopy
 from pathlib import Path
+
+from references.astrology.validate_exact_claim_admission_policy import validate
 
 ROOT = Path(__file__).resolve().parents[1]
 POLICY = ROOT / "references" / "astrology" / "EXACT_CLAIM_ADMISSION_POLICY_V1.json"
@@ -10,6 +13,18 @@ HIGH_VALUE = ROOT / "references" / "astrology" / "high_value_planet_aspects_clai
 SATURN_MOON = ROOT / "references" / "astrology" / "saturn_moon_aspect_claim_family_registry.json"
 
 class AstrologySparseExactClaimPolicyTests(unittest.TestCase):
+    def test_canonical_policy_passes_standalone_validator(self):
+        policy = self.load(POLICY)
+        self.assertEqual([], validate(policy))
+
+    def test_validator_fails_closed_for_illegal_policy_mutation(self):
+        policy = deepcopy(self.load(POLICY))
+        policy["production_routable"] = True
+        policy["anti_cartesian_rules"]["planet_sign_matrix_completion"] = True
+        errors = validate(policy)
+        self.assertIn("production_routable", errors)
+        self.assertIn("anti_cartesian_rules.planet_sign_matrix_completion", errors)
+
     def load(self, path):
         return json.loads(path.read_text(encoding="utf-8"))
 
