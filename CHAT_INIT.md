@@ -20,20 +20,25 @@ minimum connector/read recovery
 
 ## GitHub Connect Minimum Capability Probe｜不得未試即判 unavailable
 
-當本題需要 current GitHub content、artifact、connector-backed file handoff 或 deterministic runtime bytes 時，**不得因 local checkout／package／verified cache 缺失，或尚未記住／嘗試 connector operation，就直接判定 unavailable**。
+當本題需要 current GitHub content、artifact、connector-backed file handoff 或 deterministic runtime bytes 時，**不得因 local checkout／package／verified cache 缺失，或 local import／execution 失敗，就直接判定 unavailable**。
+
+若 selected method／capability 需要 deterministic execution，local provider／dependency／cache MISS（含 import fail）是 **capability-gap trigger，不是 unavailable verdict**。先從 current `PLAYBOOK_INDEX.json` resolve selected capability entry 的 `materialization_contract`；若有宣告，該 owner 是 conditional mandatory owner，**必須先讀取並 exhaust 其 admitted recovery routes，不能等 deeper method owner 再提醒**。
 
 最低 probe：
 
 ```text
 exact repo/ref/path read
-→ 若需 runtime bytes：probe direct file/byte handoff
-→ owner 有 exact-commit Actions handoff artifact：probe artifact discovery/download + reusable file handle
-→ direct route不成立：走 owner-admitted bounded materialization fallback
-→ 分別驗 source identity / handoff / materialization / integrity / execution
-→ required admitted routes實際 unavailable後，才分類 access / environment / method gap
+→ local deterministic execution PASS? → continue
+→ MISS / import fail
+   → resolve selected capability.materialization_contract
+   → declared → MUST read / exhaust that owner
+   → undeclared → probe only the generic capability actually required
+→ verify source identity / handoff / materialization / integrity / execution separately
+→ required admitted routes actually unavailable
+   → only then classify access / environment / method gap
 ```
 
-只 probe 本題必要 capability，不全面盤點產品 surface。Handle／file reference 只建立 handoff candidate，不等於 materialization、integrity 或 execution PASS。
+Materialization owner 可再指定 direct handoff、exact-commit artifact、bundle 或其他 admitted fallback；root 不複製其 mechanics。Handle／file reference 只建立 handoff candidate，不等於 materialization、integrity 或 execution PASS。
 
 這是 ordinary reading 也會使用的 **project-native hot rule**；完整 GitHub operation mechanics 仍由 shared AI Development Playbook 擁有，**不得為此 probe 本身 broad-load／啟動 shared baseline**。
 

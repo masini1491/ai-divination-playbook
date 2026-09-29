@@ -742,8 +742,8 @@
       "bootstrap.default_interaction": {
         "owner": "CHAT_INIT.md",
         "heading": "## Default Interaction Profile｜只給 Repo 也能直接使用",
-        "start_line": 46,
-        "end_line": 104,
+        "start_line": 51,
+        "end_line": 109,
         "next_heading": "## ChatGPT Load Pack Fast Path｜one retrieval cache"
       },
       "explicit_astrology.routing_scope": {
@@ -790,20 +790,32 @@
         "followup": "TAROT.md"
       },
       "explicit_meihua": {
-        "followup": "MEIHUA.md"
+        "followup": "MEIHUA.md",
+        "capability_gap_followup": "PLAYBOOK_INDEX.json → method.meihua.materialization_contract"
       },
       "explicit_liuyao": {
-        "followup": "LIUYAO.md"
+        "followup": "LIUYAO.md",
+        "capability_gap_followup": "PLAYBOOK_INDEX.json → method.liuyao.materialization_contract"
       },
       "continuation_stochastic": {
         "followup": "READING_LIFECYCLE.md → selected method owner"
       },
       "explicit_ziwei": {
-        "followup": "ZIWEI.md"
+        "followup": "ZIWEI.md",
+        "capability_gap_followup": "PLAYBOOK_INDEX.json → method.ziwei.materialization_contract"
+      },
+      "explicit_astrology": {
+        "followup": "ASTROLOGY.md → selected Astrology mode owner",
+        "capability_gap_followup": "PLAYBOOK_INDEX.json → method.astrology.materialization_contract"
       }
     },
     "bypass_profiles": {
       "explicit_research": "AGENTS.md → CHAT_INIT.md bounded bootstrap → RESEARCH_ROUTING.md → named research owner"
+    },
+    "conditional_owner_resolution": {
+      "trigger": "selected deterministic capability local provider/dependency/cache miss or import/execution failure",
+      "pointer_field": "capabilities[].materialization_contract",
+      "rule": "when declared, resolve and exhaust the materialization owner before unavailable classification"
     }
   },
   "adapters": {
