@@ -207,7 +207,7 @@
       "natal_provider": "tools/ziwei_natal_provider.py",
       "admission_manifest": "ZIWEI_PRODUCTION_ADMISSION_V1.json",
       "interpretation_profile": "ziwei.interpretation.tw_v1",
-      "claim_count": 68,
+      "claim_count": 70,
       "research_owner": "references/ziwei/README.md",
       "optional_modules": {
         "brightness_v1": {
@@ -296,7 +296,7 @@
         "tools/ziwei_brightness_pipeline.py",
         "tools/ziwei_gregorian_pipeline.py"
       ],
-      "maximum_claim_count_with_optional_modules": 85,
+      "maximum_claim_count_with_optional_modules": 87,
       "exact_main_handoff_artifact": "ziwei-deterministic-handoff-${{ github.sha }}",
       "exact_main_handoff_retention_days": 90,
       "exact_main_handoff_includes_calendar_shards": false,
@@ -536,7 +536,7 @@
         "activation": "automatic-on-exact-admitted-star-in-palace-fact",
         "admission_manifest": "ZIWEI_STAR_PALACE_CONTEXT_ADMISSION_V1.json",
         "registry": "references/ziwei/ziwei_interpretation_claim_registry_star_palace_context_v1.json",
-        "claim_count": 9,
+        "claim_count": 11,
         "admitted_pairs": [
           "天相×命宮",
           "天梁×官祿宮",
@@ -546,7 +546,9 @@
           "天機×田宅宮",
           "破軍×夫妻宮",
           "廉貞×財帛宮",
-          "武曲×命宮"
+          "武曲×命宮",
+          "巨門×兄弟宮",
+          "七殺×福德宮"
         ],
         "cartesian_expansion": false
       },
@@ -555,11 +557,11 @@
         "authority": "routing-control-plane-only",
         "total_cells": 168,
         "reviewed_cells": 154,
-        "resolved_cells": 117,
+        "resolved_cells": 119,
         "unreviewed_cells": 14,
-        "dedicated_l4": 9,
+        "dedicated_l4": 11,
         "bounded_l5_composition": 71,
-        "deferred_evidence": 37,
+        "deferred_evidence": 35,
         "index": "indexes/ziwei/star_palace_coverage_v1.json",
         "schema": "schemas/ziwei/ZIWEI_STAR_PALACE_COVERAGE_V1.schema.json",
         "generator": "tools/build_ziwei_star_palace_coverage.py",
@@ -576,7 +578,7 @@
         "status": "production-admitted-selection-only",
         "module_id": "natal_synthesis_v1",
         "version": "1.0.0",
-        "scope": "default_68_base_natal_claims_only",
+        "scope": "default_70_base_natal_claims_only",
         "focus_target": {
           "min": 4,
           "max": 6
