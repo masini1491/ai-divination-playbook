@@ -29,8 +29,8 @@ Last reviewed against:
 
 ```text
 ai-divination-playbook main
-1bb1eb2fcb94933eae4ea0a98ab076c25a0a5648
-Merge pull request #372 from masini1491/fix/chatgpt-github-capability-probe
+34b69c1a6bd643e19d5814383e0d80ba97502a26
+Merge pull request #374 from masini1491/fix/deterministic-materialization-owner-escalation
 ```
 
 This SHA is review evidence only, not a pin. Every maintenance or implementation task must resolve current `main` again before mutation.
@@ -45,7 +45,7 @@ Standing guard:
 
 Current user-activated P2 research:
 
-- **AST-P2-030** — Optional Swiss host-native compatibility/provider lane; capability-probe phase is OPEN and remains REFERENCE-ONLY.
+- **AST-P2-030** — ChatGPT-preferred Swiss natal provider + portable Astronomy fallback; selector architecture is active, Swiss production activation remains blocked by explicit license/admission gates.
 
 Deferred / trigger-based work:
 
@@ -104,31 +104,43 @@ This item is a standing reconciliation guard. It is not a request to change curr
   - profiles may compose named policies but must not hide their identities;
   - exact 唐綺陽 compatibility remains forbidden until independently established.
 
-### AST-P2-030 — Optional Swiss host-native compatibility/provider lane
+### AST-P2-030 — ChatGPT-preferred Swiss provider / portable Astronomy fallback
 
-- type: PROVIDER / LICENSE / HOST CAPABILITY
-- status: OPEN
+- type: PROVIDER / ROUTING / LICENSE / HOST CAPABILITY
+- status: IN_PROGRESS
 - priority: P2
 - owner: Astrology provider strategy
-- blocked_by: none
-- current_phase: host-native capability feasibility
+- blocked_by:
+  - Swiss license posture must explicitly select `SWISS_AGPL` or `SWISS_PROFESSIONAL`;
+  - `swiss-host-natal-v1` must separately reach `PRODUCTION_ADMITTED`.
+- current_phase: provider-routing architecture
+- canonical_routing:
+  - `ASTROLOGY_PROVIDER_ROUTING_V1.json`
+  - `tools/astrology_provider_selector.py`
+- candidate_admission:
+  - `ASTROLOGY_SWISS_PROVIDER_ADMISSION_V1.json`
 - evidence:
   - `references/astrology/HOST_NATIVE_SWISSEPH_CAPABILITY.md`
   - `references/astrology/host_native_swisseph_probe.py`
   - `references/astrology/ENGINE_COMPARISON_RESULTS.md`
-- current_decision:
-  - host-preinstalled `swisseph` may be probed as REFERENCE-ONLY session capability;
-  - requested SWIEPH may return MOSEPH, so actual `retflag` / backend provenance is mandatory;
-  - no PySwissEph dependency, production fallback or provider authority is admitted.
+- target_policy:
+  - ChatGPT known-time natal → prefer `swiss-host-natal-v1`;
+  - Swiss unavailable / scope mismatch / license or admission gate not closed → fallback `astronomy-engine-natal-v1`;
+  - non-ChatGPT / portable host → `astronomy-engine-natal-v1` remains default;
+  - unknown-time natal and transit remain on the existing portable provider path until separately admitted.
+- current_effective_state:
+  - selector architecture is implemented;
+  - Swiss preference is declared but **not active** while license/admission status is unresolved;
+  - current production behavior therefore fails safely to the existing Astronomy Engine provider.
 - remaining_gates:
-  - provenance schema;
-  - like-for-like nodes / motion / exact-transit / polar-house parity with prospective tolerances;
-  - legal/license posture for dynamic use of host-preinstalled Swiss/PySwissEph;
-  - fail-closed date/object/configuration scope;
-  - only then review a Fact Bundle adapter through the canonical runtime gate.
+  - choose license posture without silently relicensing this public repository;
+  - implement/admit a Fact-Bundle-compatible Swiss known-time natal provider;
+  - close node / speed-motion / houses / sect / Part of Fortune / aspect parity under prospective tolerances;
+  - preserve requested flags, actual `retflag`, effective backend and PySwissEph version in provider provenance;
+  - only then set Swiss admission to `PRODUCTION_ADMITTED`.
 - rule:
-  - Swiss remains optional;
-  - host capability is session evidence, not plan/tier evidence or production authority.
+  - provider preference never overrides license/admission/runtime evidence;
+  - fallback must preserve current portable Astronomy Engine behavior and the single `astrology_fact_bundle@1.0.0` contract.
 
 
 ## SHARED / pointer-only coordination
