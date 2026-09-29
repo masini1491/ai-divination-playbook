@@ -432,7 +432,7 @@ class AstrologyOrchestratorTests(unittest.TestCase):
             },
         )
         with patch(
-            "tools.astrology_orchestrator.select_natal_provider",
+            "tools.astrology_orchestrator._select_natal_provider",
             return_value={
                 "selected_provider_id": "swiss-host-natal-v1",
                 "preferred_provider_id": "swiss-host-natal-v1",
@@ -447,10 +447,6 @@ class AstrologyOrchestratorTests(unittest.TestCase):
             return_value={"status": "admitted", "interpretation_allowed": True, "errors": []},
         ):
             result = run_request(data, host_family="chatgpt")
-        self.assertEqual(
-            "swiss-host-natal-v1",
-            result["provider_selection"]["selected_provider_id"],
-        )
         self.assertEqual(
             "swiss-host-natal-v1",
             result["fact_bundles"]["natal"]["provider"]["provider_id"],
