@@ -29,8 +29,8 @@ Last reviewed against:
 
 ```text
 ai-divination-playbook main
-4c460fbf938c8bcd1d77c4df51c9dce4d2d05df4
-Make AST-P1-250 regression lifecycle-neutral (#363)
+38648d682dc35735fdd3fdf96fb980ea1503fca5
+Close Zi Wei birthplace timezone input gap
 ```
 
 This SHA is review evidence only, not a pin. Every maintenance or implementation task must resolve current `main` again before mutation.
@@ -171,7 +171,7 @@ The following are already-closed capabilities or deliberate product boundaries a
 - bounded transit provider/search ≤400 days — admitted;
 - unknown-time invariant natal facts — admitted;
 - deterministic core ChatGPT materialization — product PASS;
-- place-resolver model-mediated cold-start transport — intentionally **not admitted** after feasibility study; explicit coordinates + IANA timezone remain the fallback;
+- place resolver query-bounded shard materialization — admitted for default profile 500 under `ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json`; whole-package/model-mediated transport remains rejected, and explicit coordinates + IANA timezone remain the fallback when the admitted resolver/materialization path cannot satisfy the request;
 - Mean South Node / Descendant / IC / Part of Fortune deterministic facts — admitted;
 - bounded Descendant / IC interpretation claims — admitted;
 - traditional + modern rulership projections — admitted under explicit selectors;
