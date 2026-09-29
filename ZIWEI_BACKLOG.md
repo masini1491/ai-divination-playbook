@@ -92,7 +92,7 @@ This file is an active / deferred coordination surface, not a completed-work arc
 ### ZW-P1-080 — Birthplace → IANA timezone input resolution
 
 - type: FEATURE / INPUT NORMALIZATION / PLACE RESOLUTION
-- status: OPEN
+- status: IN_PROGRESS
 - priority: P1
 - owner: Zi Wei input normalization
 - blocked_by: none
@@ -104,10 +104,10 @@ This file is an active / deferred coordination surface, not a completed-work arc
   - shared `civil-time-zoneinfo-v1` validates an already-known IANA timezone but explicitly does not resolve birthplace;
   - this repository already contains an Astrology-specific deterministic place resolver / query-bounded place corpus, but that admission is not automatically Zi Wei authority;
   - Taiwan administrative locality evidence already exists in-repo and can support a narrower Zi Wei consumer lane without admitting global fuzzy geocoding.
-- target:
-  - admit a deterministic Zi Wei pre-calendar adapter that converts supported birthplace identity to one IANA timezone with explicit provenance;
-  - first evaluate a minimal Taiwan administrative-locality lane (`recognized Taiwan county/city or county/city + township/district → Asia/Taipei`) before importing broader GeoNames transport;
-  - if broader place resolution is later needed, reuse a shared/existing deterministic corpus through an explicit Zi Wei consumer/admission decision rather than duplicating the dataset.
+- selected_scope:
+  - Taiwan-only pre-adapter: recognized Taiwan top-level county/city prefix, with optional trailing locality text → `Asia/Taipei`;
+  - exact district geocoding is not required for timezone identity and is not claimed;
+  - broader/global GeoNames resolution remains outside this admission and may later reuse shared/existing deterministic corpus through a separate consumer/admission decision.
 - boundaries:
   - no fuzzy place guessing, silent largest-city selection or model-memory timezone inference;
   - timezone resolution does not imply birthplace→longitude admission and must not silently activate true-solar time;
@@ -204,7 +204,7 @@ These headings remain only because other current repository surfaces point to th
 - shared implementation pointer: `ASTROLOGY_BACKLOG.md#AST-P1-190`
 - current boundary:
   - Zi Wei consumes the admitted shared IANA civil-time normalizer and preserves validated local Gregorian fields for Gregorian→lunar conversion;
-  - automatic birthplace→timezone guessing remains outside admission;
+  - bounded Taiwan birthplace→timezone pre-resolution is separately admitted under `ZW-P1-080`; broader/global place guessing remains outside admission;
   - true-solar-time remains a separate explicit policy.
 
 ### ZW-SHARED-001 — Astrology × Zi Wei reconciliation contract
