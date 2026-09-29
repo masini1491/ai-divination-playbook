@@ -16,14 +16,12 @@ ROUTING = json.loads(
     (ROOT / "ASTROLOGY_PROVIDER_ROUTING_V1.json").read_text(encoding="utf-8")
 )
 SWISS = json.loads(
-    (ROOT / "ASTROLOGY_SWISS_PROVIDER_ADMISSION_V1.json").read_text(
-        encoding="utf-8"
-    )
+    (ROOT / "ASTROLOGY_SWISS_PROVIDER_ADMISSION_V1.json").read_text(encoding="utf-8")
 )
 
 
 class AstrologyProviderSelectorTests(unittest.TestCase):
-    def test_current_chatgpt_route_falls_back_while_swiss_is_not_admitted(self):
+    def test_chatgpt_known_time_selects_host_swiss_when_probe_passes(self):
         result = select_natal_provider(
             host_family="chatgpt",
             reading_mode="natal",
@@ -32,50 +30,23 @@ class AstrologyProviderSelectorTests(unittest.TestCase):
             routing_manifest=ROUTING,
             swiss_admission=SWISS,
         )
-        self.assertEqual(ASTRONOMY_PROVIDER_ID, result["selected_provider_id"])
-        self.assertEqual(SWISS_PROVIDER_ID, result["preferred_provider_id"])
-        self.assertTrue(result["fallback_used"])
-        self.assertIn("SWISS_PROVIDER_NOT_ADMITTED", result["reason_codes"])
-        self.assertIn("SWISS_LICENSE_UNRESOLVED", result["reason_codes"])
-
-    def test_chatgpt_selects_swiss_only_after_all_activation_gates_close(self):
-        admitted = copy.deepcopy(SWISS)
-        admitted["status"] = "PRODUCTION_ADMITTED"
-        admitted["license"]["status"] = "RESOLVED"
-        admitted["license"]["selected_mode"] = "SWISS_PROFESSIONAL"
-        admitted["implementation"]["status"] = "PRODUCTION_ADMITTED"
-        admitted["implementation"]["runtime_owner"] = "tools/astrology_swiss_provider.py"
-        result = select_natal_provider(
-            host_family="chatgpt",
-            reading_mode="natal",
-            birth_time_certainty="approximate",
-            runtime_probe={"available": True, "version": "2.10.03"},
-            routing_manifest=ROUTING,
-            swiss_admission=admitted,
-        )
         self.assertEqual(SWISS_PROVIDER_ID, result["selected_provider_id"])
         self.assertFalse(result["fallback_used"])
-        self.assertEqual("SWISS_PROFESSIONAL", result["license_mode"])
+        self.assertEqual("host_preinstalled_only", result["runtime_source"])
 
-    def test_chatgpt_falls_back_when_swiss_runtime_is_missing(self):
-        admitted = copy.deepcopy(SWISS)
-        admitted["status"] = "PRODUCTION_ADMITTED"
-        admitted["license"]["status"] = "RESOLVED"
-        admitted["license"]["selected_mode"] = "SWISS_AGPL"
-        admitted["implementation"]["status"] = "PRODUCTION_ADMITTED"
-        admitted["implementation"]["runtime_owner"] = "tools/astrology_swiss_provider.py"
+    def test_chatgpt_falls_back_when_host_swiss_probe_fails(self):
         result = select_natal_provider(
             host_family="chatgpt",
             reading_mode="natal",
             birth_time_certainty="exact",
             runtime_probe={"available": False},
             routing_manifest=ROUTING,
-            swiss_admission=admitted,
+            swiss_admission=SWISS,
         )
         self.assertEqual(ASTRONOMY_PROVIDER_ID, result["selected_provider_id"])
         self.assertIn("SWISS_RUNTIME_UNAVAILABLE", result["reason_codes"])
 
-    def test_portable_host_keeps_astronomy_default_even_if_swiss_exists(self):
+    def test_non_chatgpt_never_selects_swiss(self):
         result = select_natal_provider(
             host_family="portable",
             reading_mode="natal",
@@ -87,7 +58,7 @@ class AstrologyProviderSelectorTests(unittest.TestCase):
         self.assertEqual(ASTRONOMY_PROVIDER_ID, result["selected_provider_id"])
         self.assertEqual(["PORTABLE_HOST_DEFAULT"], result["reason_codes"])
 
-    def test_unknown_time_and_transit_remain_portable(self):
+    def test_unknown_time_and_transit_never_select_swiss(self):
         unknown = select_natal_provider(
             host_family="chatgpt",
             reading_mode="natal",
@@ -106,8 +77,20 @@ class AstrologyProviderSelectorTests(unittest.TestCase):
         )
         self.assertEqual(ASTRONOMY_PROVIDER_ID, unknown["selected_provider_id"])
         self.assertEqual(ASTRONOMY_PROVIDER_ID, transit["selected_provider_id"])
-        self.assertEqual(["UNKNOWN_TIME_PORTABLE_ROUTE"], unknown["reason_codes"])
-        self.assertEqual(["TRANSIT_PORTABLE_ROUTE"], transit["reason_codes"])
+
+    def test_invalid_host_boundary_fails_safe_to_astronomy(self):
+        broken = copy.deepcopy(SWISS)
+        broken["dependency_boundary"]["runtime_source"] = "repo_installed"
+        result = select_natal_provider(
+            host_family="chatgpt",
+            reading_mode="natal",
+            birth_time_certainty="exact",
+            runtime_probe={"available": True},
+            routing_manifest=ROUTING,
+            swiss_admission=broken,
+        )
+        self.assertEqual(ASTRONOMY_PROVIDER_ID, result["selected_provider_id"])
+        self.assertIn("SWISS_HOST_BOUNDARY_INVALID", result["reason_codes"])
 
 
 if __name__ == "__main__":

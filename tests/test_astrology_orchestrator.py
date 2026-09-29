@@ -384,5 +384,73 @@ class AstrologyOrchestratorTests(unittest.TestCase):
             normalize_request(natal_with_transit)
 
 
+    def test_chatgpt_known_time_can_route_to_host_swiss_without_portable_provider(self):
+        from unittest.mock import patch
+        data = {
+            "schema_name": "astrology_reading_request",
+            "schema_version": "1.0.0",
+            "reading_mode": "natal",
+            "subject_ref": "subject:synthetic-chatgpt-swiss",
+            "birth": {
+                "local_datetime": "1990-06-15T10:00:00",
+                "birth_time_certainty": "exact",
+                "house_system": "Placidus",
+                "location": {"coordinates": {
+                    "latitude": -33.8688,
+                    "longitude": 151.2093,
+                    "timezone_name": "Australia/Sydney",
+                }},
+            },
+        }
+        fake_bundle = {
+            "schema_name": "astrology_fact_bundle",
+            "schema_version": "1.0.0",
+            "method": "Astrology",
+            "reading_mode": "natal",
+            "fact_source": "approved_provider",
+            "calculation_verification": "verified_provider",
+            "subject_ref": data["subject_ref"],
+            "birth_time_certainty": "exact",
+            "configuration": {
+                "zodiac_system": "tropical",
+                "center": "geocentric",
+                "house_system": "Placidus",
+            },
+            "provider": {
+                "provider_id": "swiss-host-natal-v1",
+                "provider_version": "1.0.0",
+                "resolved_utc_iso": "1990-06-15T00:00:00+00:00",
+            },
+            "facts": {"objects": [], "houses": [], "aspects": [], "events": []},
+        }
+        fake_module = type(
+            "FakeSwissProvider",
+            (),
+            {
+                "SwissProviderUnavailable": RuntimeError,
+                "build_natal_bundle": staticmethod(lambda **_: fake_bundle),
+            },
+        )
+        with patch(
+            "tools.astrology_orchestrator._select_natal_provider",
+            return_value={
+                "selected_provider_id": "swiss-host-natal-v1",
+                "preferred_provider_id": "swiss-host-natal-v1",
+                "fallback_used": False,
+                "reason_codes": ["CHATGPT_HOST_SWISS_PREFERRED"],
+            },
+        ), patch(
+            "tools.astrology_orchestrator._load_swiss_natal_provider",
+            return_value=fake_module,
+        ), patch(
+            "tools.astrology_orchestrator._admit_bundle",
+            return_value={"status": "admitted", "interpretation_allowed": True, "errors": []},
+        ):
+            result = run_request(data, host_family="chatgpt")
+        self.assertEqual(
+            "swiss-host-natal-v1",
+            result["fact_bundles"]["natal"]["provider"]["provider_id"],
+        )
+
 if __name__ == "__main__":
     unittest.main()

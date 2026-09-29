@@ -56,7 +56,7 @@ raw birth data
 
 Canonical runtime gate：`tools/astrology_runtime.py`；所有 generated provider bundle都必須通過它。Fact Bundle / runtime schema與 production admission以 `ASTROLOGY_PRODUCTION_ADMISSION_V1.json` + schemas為 machine truth。
 
-Provider selection依 `ASTROLOGY_PROVIDER_ROUTING_V1.json` + `tools/astrology_provider_selector.py`：**ChatGPT known-time natal 優先 admitted host-native Swiss；其餘或 Swiss gate未 closure時 fallback `astronomy-engine-natal-v1`**。Unknown-time natal與 transit暫留 portable provider；所有 provider仍輸出同一 `astrology_fact_bundle@1.0.0`。
+Provider selection依 `ASTROLOGY_PROVIDER_ROUTING_V1.json` + `tools/astrology_provider_selector.py`：**ChatGPT execution surface 的 exact/approximate known-time natal 先 probe host-preinstalled `swisseph`，PASS 即使用 `swiss-host-natal-v1`；其他 host、probe FAIL、unknown-time或 transit 一律使用 `astronomy-engine-natal-v1`**。Repo不得為 Swiss route 安裝、宣告 dependency、vendor source/data；所有 provider仍輸出同一 `astrology_fact_bundle@1.0.0`。ChatGPT 呼叫 orchestrator時必須顯式傳入 `host_family="chatgpt"`（CLI：`--host-family chatgpt`）；其他執行面預設 `portable`。
 
 只有 selector落到 portable Astronomy path且 local runtime缺少 approved provider時，才進 `ASTROLOGY_MATERIALIZATION.md` 的 **verified cache reuse / Host Capability Gate**，並禁止 full-bundle-first；local miss仍不得直接判 deterministic facts unavailable。Core materialization只涵蓋 explicit coordinates + IANA timezone；place/country resolution繼續使用 admitted resolver／query-bounded transport，不得由模型或 generic web補造。
 

@@ -1,6 +1,6 @@
 {
   "schema_name": "astrology_provider_routing",
-  "schema_version": "1.0.0",
+  "schema_version": "1.1.0",
   "status": "PRODUCTION_ROUTING_POLICY",
   "selector_owner": "tools/astrology_provider_selector.py",
   "fact_bundle_schema": "astrology_fact_bundle@1.0.0",
@@ -15,10 +15,10 @@
     },
     "swiss-host-natal-v1": {
       "role": [
-        "chatgpt_preferred_candidate"
+        "chatgpt_host_native_preferred"
       ],
       "admission_manifest": "ASTROLOGY_SWISS_PROVIDER_ADMISSION_V1.json",
-      "status": "LICENSE_AND_ADMISSION_GATED"
+      "status": "PRODUCTION_ADMITTED_HOST_CONDITIONAL"
     }
   },
   "routes": {
@@ -27,8 +27,7 @@
         "preferred_provider_id": "swiss-host-natal-v1",
         "fallback_provider_id": "astronomy-engine-natal-v1",
         "preference_requires": [
-          "provider_admission=PRODUCTION_ADMITTED",
-          "license_status=RESOLVED",
+          "host_family=chatgpt",
           "host_runtime_probe=PASS",
           "request_scope_admitted=true"
         ]
@@ -57,11 +56,14 @@
     "preserve_fact_bundle_schema": true,
     "preserve_runtime_gate": true,
     "swiss_probe_failure_does_not_block_astrology": true,
-    "swiss_license_or_admission_gap_does_not_block_astronomy_fallback": true
+    "non_chatgpt_never_uses_swiss": true
   },
   "host_identity": {
     "chatgpt_must_be_asserted_by_execution_surface": true,
     "subscription_plan_is_not_capability_evidence": true,
-    "runtime_capability_must_be_probed": true
+    "runtime_capability_must_be_probed": true,
+    "swiss_source": "host_preinstalled_only",
+    "repository_install_or_distribution": "forbidden",
+    "non_chatgpt_swiss_use": "forbidden"
   }
 }

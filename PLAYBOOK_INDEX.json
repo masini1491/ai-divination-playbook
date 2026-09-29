@@ -655,9 +655,11 @@
       "extended_ephemeris_dataset_sha256": "580bb2a8ef463dfc6527ea611f27daad3562cb1fa5698391b3e2baeba64987bf",
       "provider_routing_contract": "ASTROLOGY_PROVIDER_ROUTING_V1.json",
       "provider_selector": "tools/astrology_provider_selector.py",
-      "swiss_provider_candidate_admission_manifest": "ASTROLOGY_SWISS_PROVIDER_ADMISSION_V1.json",
       "portable_natal_provider": "tools/astrology_provider.py",
-      "chatgpt_known_time_natal_preference": "swiss-host-natal-v1 when license+admission+runtime gates pass; otherwise astronomy-engine-natal-v1"
+      "chatgpt_known_time_natal_preference": "host-preinstalled swiss-host-natal-v1 when runtime probe passes; otherwise astronomy-engine-natal-v1",
+      "swiss_host_native_admission_manifest": "ASTROLOGY_SWISS_PROVIDER_ADMISSION_V1.json",
+      "swiss_host_native_provider": "tools/astrology_swiss_provider.py",
+      "non_chatgpt_swiss_use": "forbidden"
     },
     {
       "id": "method.astrology.natal",

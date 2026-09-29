@@ -2,7 +2,7 @@
 
 Status: **TASK-SPECIFIC CANONICAL CONTRACT**
 
-本檔只在 explicit Astrology production 已命中 `ASTROLOGY.md`，且 `ASTROLOGY_PROVIDER_ROUTING_V1.json` / provider selector已落到 portable `astronomy-engine-natal-v1`／transit path後，ChatGPT local runtime仍缺少 verified Astrology core tools或 `astronomy-engine` 時載入。它是 portable fallback 的 materialization owner，不取得 provider-preference、method routing、interpretation、claim admission、place-resolution或 research authority。
+本檔只在 explicit Astrology production 已命中 `ASTROLOGY.md`，且 `ASTROLOGY_PROVIDER_ROUTING_V1.json` / provider selector已因 non-ChatGPT、Swiss host probe FAIL、unknown-time或 transit 落到 portable `astronomy-engine-natal-v1`／transit path後，ChatGPT local runtime仍缺少 verified Astrology core tools或 `astronomy-engine` 時載入。它是 portable fallback 的 materialization owner，不取得 provider-preference、method routing、interpretation、claim admission、place-resolution或 research authority。
 
 ## 1. Canonical authority
 
@@ -19,7 +19,7 @@ ASTROLOGY_PROVIDER_ADMISSION_V1.json
 ASTROLOGY_TRANSIT_PROVIDER_ADMISSION_V1.json
 ```
 
-Provider preference／fallback policy另由 `ASTROLOGY_PROVIDER_ROUTING_V1.json` 擁有；本檔不得自行把 Swiss candidate升格為 admitted provider。
+Provider preference／fallback policy另由 `ASTROLOGY_PROVIDER_ROUTING_V1.json` 擁有；本檔只 materialize portable Astronomy fallback，不得安裝、下載或 vendor Swiss/PySwissEph。
 
 Core astronomical dependency固定為：
 

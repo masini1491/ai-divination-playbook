@@ -748,5 +748,23 @@
     "semantic_interpretation_authority": false,
     "unknown_time": "not_admitted",
     "transit": "not_admitted"
+  },
+  "natal_provider_routing": {
+    "routing_manifest": "ASTROLOGY_PROVIDER_ROUTING_V1.json",
+    "selector_owner": "tools/astrology_provider_selector.py",
+    "chatgpt_known_time_preferred_provider": {
+      "provider_id": "swiss-host-natal-v1",
+      "admission_manifest": "ASTROLOGY_SWISS_PROVIDER_ADMISSION_V1.json",
+      "runtime_owner": "tools/astrology_swiss_provider.py",
+      "activation": "host_preinstalled_swisseph_probe_pass",
+      "repository_install_or_distribution": "forbidden"
+    },
+    "portable_default_provider": {
+      "provider_id": "astronomy-engine-natal-v1",
+      "admission_manifest": "ASTROLOGY_PROVIDER_ADMISSION_V1.json",
+      "runtime_owner": "tools/astrology_provider.py"
+    },
+    "unknown_time_provider": "astronomy-engine-natal-v1",
+    "transit_natal_baseline_provider": "astronomy-engine-natal-v1"
   }
 }
