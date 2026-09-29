@@ -84,8 +84,6 @@ This file is an active / deferred coordination surface, not a completed-work arc
 
 This item is a standing reconciliation guard. It is not a request to change current behavior immediately.
 
-## P1 — active natal interpretation work
-
 ## P2 — deferred compatibility / provider expansion
 
 ### AST-P2-020 — Named consumer compatibility profile
