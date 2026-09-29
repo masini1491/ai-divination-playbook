@@ -345,7 +345,7 @@ def select_natal_synthesis_focus(
         "module_id": "natal_synthesis_v1",
         "version": NATAL_SYNTHESIS_VERSION,
         "authority": "selection-only-admitted-claims-no-new-doctrine",
-        "eligible_scope": "default_68_base_natal_claims_only",
+        "eligible_scope": "default_70_base_natal_claims_only",
         "focus_target": {"min": target_min, "max": target_max},
         "eligible_claim_count": len(claims),
         "candidate_signal_count": len(candidates),
