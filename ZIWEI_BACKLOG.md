@@ -47,7 +47,7 @@ Standing guard:
 
 Deferred / trigger-based work:
 
-- **ZW-P2-026 — Sparse star×palace contextual research v4/v8** — resume only for a recurring real-reading semantic gap or an explicitly authorized bounded research question; targeted V5/V6 rechecks reopened `七殺×福德宮`, `天梁×父母宮`, and `巨門×兄弟宮`; V7 kept `太陰×子女宮` `HIGH_RISK_BOUNDED / resolved`; V8 advances `七殺×福德宮` and `巨門×兄弟宮` to research `ADMISSION-CANDIDATE`, while `天梁×父母宮` remains deferred as `DEFER-BORDERLINE`.
+- **ZW-P2-026 — Sparse star×palace contextual research v4/v8** — resume only for a recurring real-reading semantic gap or an explicitly authorized bounded research question; targeted V5/V6 rechecks reopened `七殺×福德宮`, `天梁×父母宮`, and `巨門×兄弟宮`; V7 kept `太陰×子女宮` `HIGH_RISK_BOUNDED / resolved`; V8 advanced `七殺×福德宮` and `巨門×兄弟宮` to research `ADMISSION-CANDIDATE`; the two candidates are now separately production-admitted, while `天梁×父母宮` remains deferred as `DEFER-BORDERLINE`.
 
 The 168-cell matrix remains a routing/control plane and long-term research horizon. It is not a near-term product KPI or release blocker.
 
@@ -146,12 +146,12 @@ This file is an active / deferred coordination surface, not a completed-work arc
   - `indexes/ziwei/star_palace_coverage_v1.json`
 - current_state:
   - all ordinary non-health palace rows are reviewed;
-  - current coverage = 168 total / 154 reviewed / 117 resolved / 14 unreviewed;
+  - current coverage = 168 total / 154 reviewed / 119 resolved / 14 unreviewed;
   - the 14 unreviewed identities are the 疾厄宮 row;
   - V5 targeted recheck keeps `紫微×官祿宮` and `天府×財帛宮` resolved bounded-L5, but reopens `七殺×福德宮` as `DEFERRED_EVIDENCE / ADMISSION-CANDIDATE-RECHECK`;
   - V6 targeted recheck keeps `太陽×父母宮` and `天同×兄弟宮` resolved bounded-L5, but reopens `天梁×父母宮` and `巨門×兄弟宮` as `DEFERRED_EVIDENCE / ADMISSION-CANDIDATE-RECHECK`;
   - V7 high-risk recheck keeps `太陰×子女宮` `HIGH_RISK_BOUNDED / resolved`; no coverage metric changes and no production claim added;
-  - V8 evidence review advances `七殺×福德宮` and `巨門×兄弟宮` to research `ADMISSION-CANDIDATE`; `天梁×父母宮` remains `DEFERRED_EVIDENCE / DEFER-BORDERLINE`;
+  - V8 evidence review advanced `七殺×福德宮` and `巨門×兄弟宮` to research `ADMISSION-CANDIDATE`; both are now production-admitted dedicated-L4 contextual claims, while `天梁×父母宮` remains `DEFERRED_EVIDENCE / DEFER-BORDERLINE`;
   - production dedicated-L4 expansion is sparse and remains separately admitted from research classification.
 - trigger:
   - a recurring real-reading semantic gap identifies a specific unresolved / insufficient star×palace cell; or

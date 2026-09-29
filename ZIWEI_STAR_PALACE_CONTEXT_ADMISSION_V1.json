@@ -9,7 +9,7 @@
   "claim_registry": "references/ziwei/ziwei_interpretation_claim_registry_star_palace_context_v1.json",
   "interpretation_profile": "ziwei.interpretation.tw_v1",
   "scope": {
-    "admitted_claims_added": 9,
+    "admitted_claims_added": 11,
     "admitted_pairs": [
       "天相×命宮",
       "天梁×官祿宮",
@@ -19,7 +19,9 @@
       "天機×田宅宮",
       "破軍×夫妻宮",
       "廉貞×財帛宮",
-      "武曲×命宮"
+      "武曲×命宮",
+      "巨門×兄弟宮",
+      "七殺×福德宮"
     ],
     "claim_type": "star_palace_context",
     "exhaustive_cartesian_dictionary": false
@@ -93,6 +95,29 @@
       "source_role": "PRIMARY_TEXT",
       "locator": "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzoopnqo0t6",
       "admitted_scope": "武曲×命宮 bounded historical contextual semantics"
+    },
+    "v8_research_record": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V8.md",
+    "v8_jumen_sibling_source": {
+      "source_id": "SRC-ZHONGZHOU-JUMEN-SIBLING",
+      "source_role": "PRACTITIONER_REFERENCE",
+      "source_repository": "Wei-Xin27/Wei-Xin27.github.io",
+      "source_revision": "4e1d27f25f00c1d497ee79b03477baeba13b8587",
+      "locator": "虎頭排盤/紫微斗數/三合派/中州派筆記/中州派兄弟宮.txt",
+      "admitted_scope": "巨門×兄弟宮 bounded relationship-depth contextual semantics"
+    },
+    "v8_qisha_fortune_historical_source": {
+      "source_id": "SRC-NANYANG-QUANSHU-PALACES",
+      "source_role": "PRIMARY_TEXT",
+      "locator": "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzop13hzkll",
+      "admitted_scope": "七殺×福德宮 bounded historical condition semantics"
+    },
+    "v8_qisha_fortune_practitioner_source": {
+      "source_id": "SRC-ZHONGZHOU-QISHA-FUDE",
+      "source_role": "PRACTITIONER_REFERENCE",
+      "source_repository": "Wei-Xin27/Wei-Xin27.github.io",
+      "source_revision": "4e1d27f25f00c1d497ee79b03477baeba13b8587",
+      "locator": "虎頭排盤/紫微斗數/三合派/中州派筆記/中州派 古訣今註 星曜.txt",
+      "admitted_scope": "七殺×福德宮 bounded activation/rest-regulation contextual semantics"
     }
   },
   "fail_closed": [
@@ -115,7 +140,11 @@
     "廉貞×財帛宮 historical context must not become guaranteed wealth return income business success or guaranteed loss prediction",
     "廉貞×財帛宮 dignity language remains a modifier and does not authorize brightness-only doctrine",
     "武曲×命宮 historical context must not become fixed occupation wealth body type gender-role office-rank or social-status prediction",
-    "武曲×命宮 dignity and supporting-star language remains modifier-only and does not authorize deterministic status doctrine"
+    "武曲×命宮 dignity and supporting-star language remains modifier-only and does not authorize deterministic status doctrine",
+    "巨門×兄弟宮 contextual claim must not become deterministic estrangement betrayal lawsuit financial-loss or categorical no-cooperation doctrine",
+    "巨門×兄弟宮 dignity and malefic language remains modifier-only and does not authorize deterministic relationship outcomes",
+    "七殺×福德宮 contextual claim must not become mental-health diagnosis work-addiction diagnosis guaranteed hardship fixed happiness or concrete-event prediction",
+    "七殺×福德宮 dignity and supporting/malefic language remains modifier-only and does not authorize brightness-only doctrine"
   ],
   "scientific_predictive_validity_claimed": false
 }

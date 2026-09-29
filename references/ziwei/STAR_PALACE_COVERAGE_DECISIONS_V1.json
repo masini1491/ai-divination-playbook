@@ -228,14 +228,6 @@
       "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
     },
     {
-      "star": "七殺",
-      "palace": "福德宮",
-      "routing_mode": "DEFERRED_EVIDENCE",
-      "resolved": false,
-      "research_state": "ADMISSION-CANDIDATE",
-      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V8.md"
-    },
-    {
       "star": "天機",
       "palace": "官祿宮",
       "routing_mode": "DEFERRED_EVIDENCE",
@@ -330,14 +322,6 @@
       "resolved": true,
       "research_state": "REJECT-REDUNDANT",
       "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
-    },
-    {
-      "star": "巨門",
-      "palace": "兄弟宮",
-      "routing_mode": "DEFERRED_EVIDENCE",
-      "resolved": false,
-      "research_state": "ADMISSION-CANDIDATE",
-      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V8.md"
     },
     {
       "star": "太陰",

@@ -84,7 +84,8 @@
         "武曲×田宅宮 bounded historical contextual semantics",
         "天機×田宅宮 bounded historical contextual semantics",
         "破軍×夫妻宮 bounded historical contextual semantics",
-        "廉貞×財帛宮 bounded historical contextual semantics"
+        "廉貞×財帛宮 bounded historical contextual semantics",
+        "七殺×福德宮 bounded historical condition semantics"
       ],
       "excluded_scope": [
         "unverified glyph-level variants",
@@ -93,6 +94,54 @@
       ],
       "notes": [
         "Per-claim chapter locators retained; normalized paraphrases only."
+      ]
+    },
+    {
+      "source_id": "SRC-ZHONGZHOU-JUMEN-SIBLING",
+      "source_role": "PRACTITIONER_REFERENCE",
+      "admission_status": [
+        "CLAIM_ELIGIBLE"
+      ],
+      "storage_mode": [
+        "metadata_locator_normalized_paraphrase"
+      ],
+      "independence_status": "independent_practitioner_lineage",
+      "title": "中州派兄弟宮筆記 — 巨門",
+      "repository": "Wei-Xin27/Wei-Xin27.github.io",
+      "immutable_revision": "4e1d27f25f00c1d497ee79b03477baeba13b8587",
+      "locator": "虎頭排盤/紫微斗數/三合派/中州派筆記/中州派兄弟宮.txt",
+      "admission_scope": [
+        "巨門×兄弟宮 bounded relationship-depth contextual semantics"
+      ],
+      "excluded_scope": [
+        "deterministic sibling estrangement or betrayal",
+        "categorical prohibition on cooperation",
+        "lawsuit or financial-loss prediction",
+        "fixed sibling outcome"
+      ]
+    },
+    {
+      "source_id": "SRC-ZHONGZHOU-QISHA-FUDE",
+      "source_role": "PRACTITIONER_REFERENCE",
+      "admission_status": [
+        "CLAIM_ELIGIBLE"
+      ],
+      "storage_mode": [
+        "metadata_locator_normalized_paraphrase"
+      ],
+      "independence_status": "independent_practitioner_lineage",
+      "title": "中州派古訣今註 — 七殺獨坐福德宮",
+      "repository": "Wei-Xin27/Wei-Xin27.github.io",
+      "immutable_revision": "4e1d27f25f00c1d497ee79b03477baeba13b8587",
+      "locator": "虎頭排盤/紫微斗數/三合派/中州派筆記/中州派 古訣今註 星曜.txt",
+      "admission_scope": [
+        "七殺×福德宮 bounded activation/rest-regulation contextual semantics"
+      ],
+      "excluded_scope": [
+        "archaic gendered fatalism",
+        "mental-health diagnosis",
+        "work-addiction diagnosis",
+        "guaranteed hardship or happiness outcome"
       ]
     }
   ],
@@ -503,6 +552,98 @@
       "support_status": "historical_only",
       "conflict_group_ids": [],
       "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-SP-JUMEN-SIBLING-001",
+      "layer": "L4",
+      "claim_type": "star_palace_context",
+      "subject": "巨門×兄弟宮",
+      "subjects": [
+        "巨門",
+        "兄弟宮"
+      ],
+      "star": "巨門",
+      "palace": "兄弟宮",
+      "assertion_class": "practitioner_heuristic",
+      "normalized_statement": "在此 practitioner-bounded profile 中，巨門落兄弟宮可作為「關係或合作綁定越深，溝通、界線與分歧摩擦越可能被放大；較有邊界的互動反而較易維持」的 contextual modifier；仍須合看廟陷、吉煞與同會，不得翻成必然反目、不得合作、訴訟、背叛、破財或固定手足結果。",
+      "source_refs": [
+        "SRC-ZHONGZHOU-JUMEN-SIBLING"
+      ],
+      "source_locators": [
+        "Wei-Xin27/Wei-Xin27.github.io@4e1d27f25f00c1d497ee79b03477baeba13b8587:虎頭排盤/紫微斗數/三合派/中州派筆記/中州派兄弟宮.txt"
+      ],
+      "applicability": {
+        "requires": [
+          "fact_available:palace_occupancy",
+          "star_in_palace:巨門:兄弟宮"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "dignity_brightness",
+          "supporting_stars",
+          "malefic_stars",
+          "sanfang_sizheng",
+          "tradition_profile"
+        ],
+        "palace_scope": [
+          "兄弟宮"
+        ],
+        "topology_scope": [
+          "self"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "qualified",
+      "support_status": "tradition_bounded",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
+    },
+    {
+      "claim_id": "ZW-SP-QISHA-FORTUNE-001",
+      "layer": "L4",
+      "claim_type": "star_palace_context",
+      "subject": "七殺×福德宮",
+      "subjects": [
+        "七殺",
+        "福德宮"
+      ],
+      "star": "七殺",
+      "palace": "福德宮",
+      "assertion_class": "project_adoption",
+      "normalized_statement": "在 historical condition evidence 與 bounded practitioner profile 共同支持下，七殺落福德宮可作為「內在安定未必偏向純靜態休息，較可能透過持續投入、變動或目標性活動維持內在秩序」的 contextual modifier；廟陷、吉煞與同會條件會實質改變其表現，不得翻成必然勞苦、工作成癮、心理疾病、固定幸福程度或具體人生事件。",
+      "source_refs": [
+        "SRC-NANYANG-QUANSHU-PALACES",
+        "SRC-ZHONGZHOU-QISHA-FUDE"
+      ],
+      "source_locators": [
+        "https://www.shidianguji.com/zh/book/SDZJ0170/chapter/1jvzop13hzkll",
+        "Wei-Xin27/Wei-Xin27.github.io@4e1d27f25f00c1d497ee79b03477baeba13b8587:虎頭排盤/紫微斗數/三合派/中州派筆記/中州派 古訣今註 星曜.txt"
+      ],
+      "applicability": {
+        "requires": [
+          "fact_available:palace_occupancy",
+          "star_in_palace:七殺:福德宮"
+        ],
+        "forbids": [],
+        "modifiers": [
+          "dignity_brightness",
+          "supporting_stars",
+          "malefic_stars",
+          "sanfang_sizheng",
+          "tradition_profile"
+        ],
+        "palace_scope": [
+          "福德宮"
+        ],
+        "topology_scope": [
+          "self"
+        ],
+        "temporal_scope": "natal_baseline"
+      },
+      "confidence_status": "qualified",
+      "support_status": "multi_source_supported",
+      "conflict_group_ids": [],
+      "adoption_state": "RESEARCH_CLAIM_ELIGIBLE"
     }
   ],
   "conflict_groups": [
@@ -529,7 +670,7 @@
   "research_result": {
     "production_authority_granted": false,
     "scientific_predictive_validity_claimed": false,
-    "claim_count": 9,
+    "claim_count": 11,
     "admitted_pairs": [
       "天相×命宮",
       "天梁×官祿宮",
@@ -539,7 +680,9 @@
       "天機×田宅宮",
       "破軍×夫妻宮",
       "廉貞×財帛宮",
-      "武曲×命宮"
+      "武曲×命宮",
+      "巨門×兄弟宮",
+      "七殺×福德宮"
     ],
     "exhaustive_cartesian_dictionary": false,
     "rejected_as_non_material_overrides": [
