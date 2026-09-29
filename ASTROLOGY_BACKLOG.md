@@ -116,29 +116,19 @@ This item is a standing reconciliation guard. It is not a request to change curr
   - `references/astrology/HOST_NATIVE_SWISSEPH_CAPABILITY.md`
   - `references/astrology/host_native_swisseph_probe.py`
   - `references/astrology/ENGINE_COMPARISON_RESULTS.md`
-- observed_trigger:
-  - ChatGPT Python hosts may expose `swisseph` without any Repo materialization or package install;
-  - effective backend must be read from returned flags because requested `SWIEPH` may silently fall back to `MOSEPH`;
-  - host capability is session evidence only and must not be inferred from ChatGPT plan/tier.
-- candidate_lanes:
-  - `HOST_NATIVE_PYSWISSEPH_MOSEPH` — dynamically use a preinstalled host runtime only if separately production-admitted;
-  - `SWISS_AGPL` — explicit project dependency under an AGPL-compatible posture;
-  - `SWISS_PROFESSIONAL` — explicit project dependency under a separately obtained professional license.
 - current_decision:
-  - the Repo may ship a REFERENCE-ONLY capability probe that dynamically imports a host-provided `swisseph`;
-  - the Repo does **not** add `pyswisseph` / Swiss Ephemeris to production requirements;
-  - current production calculation authority remains the admitted Astronomy Engine provider;
-  - no automatic host-native fallback is authorized yet.
+  - host-preinstalled `swisseph` may be probed as REFERENCE-ONLY session capability;
+  - requested SWIEPH may return MOSEPH, so actual `retflag` / backend provenance is mandatory;
+  - no PySwissEph dependency, production fallback or provider authority is admitted.
 - remaining_gates:
-  - freeze a provider identity/provenance schema that preserves requested flags, actual `retflag`, effective backend and version per relevant fact;
-  - extend like-for-like parity beyond the existing three-fixture Sun–Pluto/Placidus result to nodes, speed/retrograde/station behavior, exact transit timing and polar-house failure semantics;
-  - resolve the legal/license posture for dynamically invoking a host-preinstalled AGPL Swiss/PySwissEph runtime without distributing or declaring it as a project dependency;
-  - define fail-closed date/object/configuration scope and production tolerances prospectively;
-  - only after the above, review whether a host-native adapter may emit the existing Astrology Fact Bundle through the canonical runtime gate.
+  - provenance schema;
+  - like-for-like nodes / motion / exact-transit / polar-house parity with prospective tolerances;
+  - legal/license posture for dynamic use of host-preinstalled Swiss/PySwissEph;
+  - fail-closed date/object/configuration scope;
+  - only then review a Fact Bundle adapter through the canonical runtime gate.
 - rule:
-  - Swiss remains an optional compatibility/provider lane, not a mandatory Astrology foundation;
-  - license posture and technical admission are separate gates;
-  - current host capability evidence must never be promoted directly into production authority.
+  - Swiss remains optional;
+  - host capability is session evidence, not plan/tier evidence or production authority.
 
 
 ## SHARED / pointer-only coordination
