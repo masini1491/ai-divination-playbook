@@ -29,17 +29,15 @@ Last reviewed against:
 
 ```text
 ai-divination-playbook main
-8cd4afb444d2616bf23e18f24979965c608ec41a
-Close post-AST-P1-240 housekeeping gaps (#361)
+d8e32587009962e17b98aca510bba996e1efda3e
+Add post-reading natal gap escalation gate (#362)
 ```
 
 This SHA is review evidence only, not a pin. Every maintenance or implementation task must resolve current `main` again before mutation.
 
 ## Recommended execution order
 
-Active near-term Astrology work:
-
-1. **AST-P1-250 — Post-Reading Natal Gap Escalation Gate**
+There is currently no active one-shot Astrology P1 implementation/research item after AST-P1-250 closure.
 
 Standing guard:
 
@@ -85,37 +83,6 @@ This file is an active / deferred coordination surface, not a completed-work arc
   - no regression reopens already-closed current-stack gaps.
 
 This item is a standing reconciliation guard. It is not a request to change current behavior immediately.
-
-## P1 — active natal interpretation work
-
-### AST-P1-250 — Post-Reading Natal Gap Escalation Gate
-
-- type: OUTPUT GOVERNANCE / REGRESSION
-- status: IN_PROGRESS
-- priority: P1
-- owner: `ASTROLOGY_NATAL_SYNTHESIS.md`
-- blocked_by: none
-- prerequisite:
-  - AST-P1-230 — DONE
-  - AST-P1-240 — DONE
-- target:
-  - allow a concrete post-reading passage failure to create bounded Repo work without turning subjective accuracy feedback into semantic authority;
-  - only recognize `too_generic / repetitive / tension_not_integrated / unsupported_leakage`;
-  - route reproducible `output_contract_gap` to bounded synthesis/output-guard repair;
-  - route `semantic_resolution_gap` through `references/astrology/EXACT_CLAIM_ADMISSION_POLICY_V1.md`;
-  - no identifiable private reading data may be persisted; only abstract/synthetic regression material.
-- completion_gate:
-  - no vague “not accurate” feedback can directly create Repo mutation;
-  - output and semantic lanes are explicit and non-overlapping;
-  - semantic lane cannot bypass AST-P1-240 policy;
-  - synthetic-regression-only public persistence boundary is explicit;
-  - no-gap / non-reproducible-gap resolves to no Repo work;
-  - regression PASS, merge, canonical read-back, then collapse to a compact DONE pointer.
-- non_goals:
-  - no accuracy score;
-  - no repeated-run harness or theme-stability KPI;
-  - no new selector / salience engine / semantic engine;
-  - no permanent evaluation queue.
 
 ## P2 — deferred compatibility / provider expansion
 
@@ -184,6 +151,7 @@ The items below are **DONE**. They are retained only as compact identity pointer
 - **AST-P1-220 — Disclosed default semantic profile for ordinary natal interpretation** — DONE; omitted/null natal `semantic_profile` normalizes to `composable-symbolic-modern-v1` with `project_default` provenance and disclosure; explicit admitted choice remains `explicit_user_choice`; registry/selector silent defaults remain forbidden and unadmitted profiles fail closed.
 - **AST-P1-230 — Evidence-bounded concrete natal synthesis contract** — DONE; broad natal may explicitly use `evidence-bounded-concrete-natal-v1`: 3–5 traceable themes, admitted natal fact + semantic claim refs, independently cited material tensions, unsupported suppression, no semantic/claim-admission authority; detailed rules are conditionally loaded from `ASTROLOGY_NATAL_SYNTHESIS.md`.
 - **AST-P1-240 — Sparse emergent exact-claim admission policy** — DONE; `references/astrology/EXACT_CLAIM_ADMISSION_POLICY_V1.*` formalizes `composition_adequate / research_candidate / exact_claim_admitted / unsupported`, rejects Cartesian or feedback-driven expansion, and requires explicit production admission after bounded research.
+- **AST-P1-250 — Post-Reading Natal Gap Escalation Gate** — DONE; `ASTROLOGY_NATAL_SYNTHESIS.md` now gates concrete passage-level `too_generic / repetitive / tension_not_integrated / unsupported_leakage` findings: reproducible output gaps may create bounded synthesis/guard fixes, semantic-resolution gaps must pass AST-P1-240, vague accuracy feedback creates no Repo work, and public persistence is synthetic/abstract only.
 - **AST-P2-010 — Interpolated Black Moon Lilith** — DONE.
 - **AST-P2-041 — Piecewise Chebyshev five-body ephemeris feasibility** — DONE.
 - **AST-P2-042 — Continuity-constrained / overlap Chebyshev five-body feasibility** — DONE.
@@ -222,9 +190,9 @@ Unless the user explicitly asks for a different bounded task, a fresh Astrology 
 2. read ASTROLOGY_BACKLOG.md
 3. reconcile any changed item status against canonical owners
 4. enforce AST-P0-002 alongside any affected interpretation change
-5. complete AST-P1-250 without adding an evaluation harness or permanent queue
+5. no one-shot P1 item is currently active; do not invent evaluation-harness or matrix-completion work
 6. keep AST-P2-020 / AST-P2-030 deferred unless their explicit trigger appears
-7. semantic-resolution findings from AST-P1-250 must pass `references/astrology/EXACT_CLAIM_ADMISSION_POLICY_V1.md` before exact-claim research
+7. concrete post-reading broad-natal gaps follow `ASTROLOGY_NATAL_SYNTHESIS.md` §4.1; semantic-resolution gaps then pass `references/astrology/EXACT_CLAIM_ADMISSION_POLICY_V1.md` before exact-claim research
 ```
 
 Do not infer from this ordering that every item is automatically authorized for production mutation. Research, calculation admission, semantic admission, UX defaulting and routing remain separate gates.
