@@ -29,8 +29,8 @@ Last reviewed against:
 
 ```text
 ai-divination-playbook main
-4805d3d57e25dcaa8d0464562238b5423bc4639e
-Define sparse exact-claim admission policy (#360)
+8cd4afb444d2616bf23e18f24979965c608ec41a
+Close post-AST-P1-240 housekeeping gaps (#361)
 ```
 
 This SHA is review evidence only, not a pin. Every maintenance or implementation task must resolve current `main` again before mutation.
