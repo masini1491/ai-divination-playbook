@@ -266,7 +266,7 @@
         "compatibility_adapter": "tools/ziwei_gregorian_pipeline.py",
         "timezone_mode": "explicit_IANA",
         "shared_civil_time_adapter": "civil-time-zoneinfo-v1@1.0.0",
-        "birthplace_timezone_resolution": false,
+        "birthplace_timezone_resolution": true,
         "true_solar_time": {
           "status": "production-admitted-optional",
           "activation": "explicit-profile-and-longitude-only",
@@ -277,7 +277,12 @@
           "latitude_required": false,
           "birthplace_longitude_resolution": false,
           "default": false
-        }
+        },
+        "birthplace_timezone_scope": "taiwan_top_level_admin_region_prefix_only",
+        "birthplace_timezone_adapter": "tools/ziwei_birthplace_timezone.py",
+        "birthplace_timezone_admission_manifest": "ZIWEI_BIRTHPLACE_TIMEZONE_ADMISSION_V1.json",
+        "birthplace_timezone_output": "Asia/Taipei",
+        "birthplace_longitude_resolution": false
       },
       "materialization_contract": "ZIWEI_MATERIALIZATION.md",
       "deterministic_transport_bundle": "runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json",
