@@ -14,11 +14,6 @@ import json
 from pathlib import Path
 from typing import Any
 
-from tools.astrology_provider_selector import (
-    ASTRONOMY_PROVIDER_ID,
-    SWISS_PROVIDER_ID,
-    select_natal_provider,
-)
 from tools.astrology_extended_ephemeris import (
     OBJECT_IDS as EXTENDED_EPHEMERIS_OBJECT_IDS,
     ExtendedEphemerisError,
@@ -36,6 +31,8 @@ PRODUCTION_MANIFEST_PATH = "ASTROLOGY_PRODUCTION_ADMISSION_V1.json"
 DEFAULT_HOUSE_SYSTEM = "Placidus"
 HOUSE_SYSTEM_SELECTION_DEFAULT = "project_default"
 HOUSE_SYSTEM_SELECTION_EXPLICIT = "explicit_user_choice"
+ASTRONOMY_PROVIDER_ID = "astronomy-engine-natal-v1"
+SWISS_PROVIDER_ID = "swiss-host-natal-v1"
 BODY_NAMES = (
     "Sun", "Moon", "Mercury", "Venus", "Mars", "Jupiter",
     "Saturn", "Uranus", "Neptune", "Pluto", "NorthNode",
@@ -45,6 +42,30 @@ SUPPORTED_HOUSE_SYSTEMS = {"Whole Sign", "Placidus"}
 
 class OrchestrationInputError(ValueError):
     """A reading request cannot be admitted by the orchestration contract."""
+
+def _select_natal_provider(
+    *,
+    host_family: str,
+    reading_mode: str,
+    birth_time_certainty: str,
+):
+    if host_family == "portable":
+        return {
+            "selected_provider_id": ASTRONOMY_PROVIDER_ID,
+            "preferred_provider_id": None,
+            "fallback_used": False,
+            "reason_codes": ["PORTABLE_HOST_DEFAULT"],
+            "runtime_probe": None,
+        }
+    if host_family != "chatgpt":
+        raise OrchestrationInputError(f"unsupported host_family: {host_family}")
+    from tools.astrology_provider_selector import select_natal_provider
+    return select_natal_provider(
+        host_family=host_family,
+        reading_mode=reading_mode,
+        birth_time_certainty=birth_time_certainty,
+    )
+
 
 def _load_astronomy_natal_provider():
     try:
@@ -512,7 +533,7 @@ def run_request(
     resolved, input_resolution = _resolve_location(normalized)
     birth = normalized["birth"]
 
-    provider_selection = select_natal_provider(
+    provider_selection = _select_natal_provider(
         host_family=host_family,
         reading_mode=normalized["reading_mode"],
         birth_time_certainty=birth["birth_time_certainty"],
@@ -617,7 +638,6 @@ def run_request(
         },
         "normalized_request": normalized,
         "input_resolution": input_resolution,
-        "provider_selection": provider_selection,
         "fact_bundles": bundles,
         "runtime_gates": gates,
         "reading_record_bridge": {
