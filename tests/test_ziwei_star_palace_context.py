@@ -160,7 +160,7 @@ class ZiWeiStarPalaceContextTests(unittest.TestCase):
         self.assertEqual(["SRC-ZHONGZHOU-JUMEN-SIBLING"],claim["source_refs"])
         self.assertIn("star_in_palace:巨門:兄弟宮",claim["applicability"]["requires"])
         self.assertIn("不得",claim["normalized_statement"])
-        self.assertNotIn("必然反目",claim["normalized_statement"].replace("不得翻成",""))
+        self.assertIn("不得翻成必然反目",claim["normalized_statement"])
 
     def test_qisha_fortune_is_multi_source_bounded_and_health_safe(self):
         claim=next(x for x in self.registry["claims"] if x["claim_id"]=="ZW-SP-QISHA-FORTUNE-001")
