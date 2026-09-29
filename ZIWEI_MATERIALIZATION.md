@@ -54,17 +54,39 @@ ordinary production runtime **不 import、pip install 或 materialize lunar_pyt
 
 **local cache miss ≠ Zi Wei unavailable**。聊天室沒有 repo checkout、沒有 Zi Wei source、沒有 calendar manifest 或缺少本次需要的 year shard，都先走 same-commit verified materialization；不得由模型手算補齊。
 
-### Explicit Minguo-year notation pre-adapter
+### Input pre-adapters
 
-明確民國紀年仍先取同 exact commit 的 `tools/ziwei_year_notation.py`：
+Canonical Zi Wei deterministic bundle includes the admitted input pre-adapters:
+
+```text
+tools/ziwei_year_notation.py
+tools/ziwei_birthplace_timezone.py
+ZIWEI_BIRTHPLACE_TIMEZONE_ADMISSION_V1.json
+```
+
+明確民國紀年：
 
 ```text
 explicit 民國 year
-→ same-commit tools/ziwei_year_notation.py
+→ verified bundled tools/ziwei_year_notation.py
 → deterministic CE year
 → GregorianBirthInput
 → ordinary Zi Wei materialization path
 ```
+
+If an older/partial host cache lacks this file, same-exact-commit direct file acquisition is an admitted fallback; the bundle contract itself must include the canonical adapter.
+
+Taiwan birthplace-only timezone pre-resolution:
+
+```text
+recognized Taiwan top-level administrative-region prefix
+→ verified bundled tools/ziwei_birthplace_timezone.py
+→ Asia/Taipei + provenance
+→ GregorianBirthInput
+→ shared civil-time validation
+```
+
+This resolver does not geocode coordinates/longitude and cannot activate true-solar time. Unsupported/non-Taiwan input fails closed and requests an explicit IANA timezone.
 
 converted Gregorian date仍必須落在 admitted 1900-01-01..2100-12-31 range。
 
@@ -127,7 +149,7 @@ The main-push handoff artifact is a **temporary transport convenience**, not sou
 
 **Do not fetch or dump the full bundle/chunk payload into model-visible context before cache reuse and host-handoff necessity have been established.** Model-visible base64/chunk content proves acquisition visibility only; it is not automatic filesystem materialization.
 
-The shared civil-time adapter and Zi Wei-owned true-solar profile runtime are bundled with Zi Wei runtime source; birthplace→timezone and birthplace→longitude guessing remain outside this path. Calendar shards remain **query-bounded** data acquisitions，不得為方便把完整202-shard dataset塞進 bundle或 active Context。successful materialization **does not require pip/network installation afterward**；GitHub Connect exact-commit shard retrieval本身仍是 acquisition step。
+The shared civil-time adapter, Zi Wei Taiwan-only birthplace→timezone pre-adapter, year-notation adapter and Zi Wei-owned true-solar profile runtime are bundled with Zi Wei runtime source. Broader/global birthplace→timezone resolution and all birthplace→longitude guessing remain outside this path. Calendar shards remain **query-bounded** data acquisitions，不得為方便把完整202-shard dataset塞進 bundle或 active Context。successful materialization **does not require pip/network installation afterward**；GitHub Connect exact-commit shard retrieval本身仍是 acquisition step。
 
 ### Layered Host Status
 
