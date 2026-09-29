@@ -20,41 +20,22 @@ minimum connector/read recovery
 
 ## GitHub Connect Minimum Capability Probe｜不得未試即判 unavailable
 
-當本次 task 已建立本 Repo 的 current GitHub authority，後續仍需要 current repository content、Actions artifact、connector-backed file handoff 或 deterministic runtime bytes 時，在宣告 `unavailable`、`ACCESS BLOCKED`、`CHATGPT_ENVIRONMENT_GAP` 或 method-specific acquisition gap 前，先對**本題真正需要的** GitHub Connect 能力做最低充分 probe。
+當本題需要 current GitHub content、artifact、connector-backed file handoff 或 deterministic runtime bytes 時，**不得因 local checkout／package／verified cache 缺失，或尚未記住／嘗試 connector operation，就直接判定 unavailable**。
 
-本 gate 對 ordinary reading 也是 project-native hot rule；**不因執行此 probe 就啟動 shared development baseline**。
-
-下列任一 local miss 都不得單獨推導 capability unavailable：
-
-- local repository checkout 不存在；
-- verified runtime cache 尚未建立；
-- required package 尚未安裝；
-- model 沒有記住某個 GitHub connector action 名稱；
-- source 已能被模型讀到，但 connector→runtime handoff 尚未建立。
-
-最低路徑：
+最低 probe：
 
 ```text
-exact repository / ref / path acquisition
-→ model-visible canonical text 已足夠？
-   ├─ yes → continue with canonical owner
-   └─ no, exact runtime bytes / file required
-      → probe current product exposed direct byte/file-aware connector→runtime handoff
-      → method/runtime owner 若定義 exact-commit GitHub Actions handoff artifact
-         → probe exact-commit artifact discovery / download
-         → reusable connector-backed file reference / handle when exposed
-      → direct route仍不可用
-         → use owner-admitted bounded opaque / materialization fallback
-→ verify source identity / payload handoff / byte materialization / integrity / execution as separate gates
-→ only after required admitted routes are actually unavailable
-   → classify the access / environment / method-specific gap
+exact repo/ref/path read
+→ 若需 runtime bytes：probe direct file/byte handoff
+→ owner 有 exact-commit Actions handoff artifact：probe artifact discovery/download + reusable file handle
+→ direct route不成立：走 owner-admitted bounded materialization fallback
+→ 分別驗 source identity / handoff / materialization / integrity / execution
+→ required admitted routes實際 unavailable後，才分類 access / environment / method gap
 ```
 
-**不得因為 connector operation 尚未被預載、名稱不熟悉或尚未嘗試，就直接宣告該能力不存在。** 若本題 correctness materially 依賴該 operation，先以 current connector/tool surface 做最低必要 discovery／probe；但不得為此全面盤點所有產品 capability。
+只 probe 本題必要 capability，不全面盤點產品 surface。Handle／file reference 只建立 handoff candidate，不等於 materialization、integrity 或 execution PASS。
 
-Connector-backed handle／file reference 只證明 handoff candidate，不能自行證明 bytes 已 materialize、integrity PASS 或 runtime 可執行；各層仍依 method/runtime owner 驗證。
-
-完整、跨專案的 GitHub operation mechanics 仍由 shared AI Development Playbook 擁有；ordinary reading 只使用本 gate + selected method/runtime owner 的必要 binding，**不得為了這個 probe 就 broad-load shared Playbook**。
+這是 ordinary reading 也會使用的 **project-native hot rule**；完整 GitHub operation mechanics 仍由 shared AI Development Playbook 擁有，**不得為此 probe 本身 broad-load／啟動 shared baseline**。
 
 ## Shared Development Playbook Activation Gate｜共通上位規則啟用條件
 
