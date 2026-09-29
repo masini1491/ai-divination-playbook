@@ -33,8 +33,9 @@ research-only scaffold
 - star×palace research follow-up：`STAR_PALACE_CONTEXTUAL_RESEARCH_V2.md` 的 `貪狼×夫妻宮` historical bounded candidate 已 separately production-admitted；Nihai 配偶年齡 heuristic 仍為 practitioner-only defer，`紫微×官祿宮` 維持 non-material rejection，`破軍×遷移宮` 維持 borderline/defer
 - star×palace research v3：`STAR_PALACE_CONTEXTUAL_RESEARCH_V3.md` research-only admission candidates `破軍×遷移宮`、`武曲×田宅宮`、`天機×田宅宮`、`破軍×夫妻宮` 均已 separately production-admitted；`貪狼×遷移宮` 維持 borderline/defer，`紫微×遷移宮` 維持 redundant rejection
 
-- star×palace coverage architecture V1：168 identities 已 admission；目前 reviewed 154 / resolved 120 / unreviewed 14，dedicated L4 為 9。168/168 resolved 保留為長期 research horizon，不是近期 product KPI / release blocker；matrix continuation 改為 reading-gap-driven，不再 bulk sweep。
+- star×palace coverage architecture V1：168 identities 已 admission；目前 reviewed 154 / resolved 119 / unreviewed 14，dedicated L4 為 9。168/168 resolved 保留為長期 research horizon，不是近期 product KPI / release blocker；matrix continuation 改為 reading-gap-driven，不再 bulk sweep。
 - star×palace research v4：`STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md` 已推進至 batch 13；所有 ordinary non-health palace rows 已 14/14 reviewed；只剩 14 個疾厄宮 identities 尚未 reviewed。疾厄宮維持 separate health-safe research path，但不阻擋 natal synthesis v1；research candidate 仍不等於 production claim。
+- star×palace targeted recheck v5：`STAR_PALACE_CONTEXTUAL_RESEARCH_V5.md` 依實際 reading specificity gap 只重查 `紫微×官祿宮`、`七殺×福德宮`、`天府×財帛宮`；前後兩格維持 `BOUNDED_L5_COMPOSITION`，`七殺×福德宮` 重新開為 `DEFERRED_EVIDENCE / ADMISSION-CANDIDATE-RECHECK`，尚未取得 production authority。
 - natal synthesis v1：production-admitted selection-only layer over the default 68 base natal claims；保留 full selected-claim trace，預設聚焦 4–6 個高辨識度且盡量不重複的 evidence-bounded signals，不新增 doctrine，不更改 optional-module defaults。
 - optional M1 auxiliary profile：`ziwei.auxiliary.m1.common_v1` admission 天魁／天鉞／祿存／天馬／擎羊／陀羅／火星／鈴星／地空／地劫十星 natal placement + 10 條 bounded modifier-role policy；runtime 必須與 M0 同時啟用，M0+M1 才提供 broader auxiliary completeness；M2/M3與高風險事件斷語仍未 admission
 - deterministic ChatGPT materialization：`ZIWEI_MATERIALIZATION.md` + bundle 已建立

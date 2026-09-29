@@ -230,10 +230,10 @@
     {
       "star": "七殺",
       "palace": "福德宮",
-      "routing_mode": "BOUNDED_L5_COMPOSITION",
-      "resolved": true,
-      "research_state": "REJECT-REDUNDANT",
-      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
+      "routing_mode": "DEFERRED_EVIDENCE",
+      "resolved": false,
+      "research_state": "ADMISSION-CANDIDATE-RECHECK",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V5.md"
     },
     {
       "star": "天機",

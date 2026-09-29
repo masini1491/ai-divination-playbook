@@ -47,7 +47,7 @@ Standing guard:
 
 Deferred / trigger-based work:
 
-- **ZW-P2-026 — Sparse star×palace contextual research v4** — resume only for a recurring real-reading semantic gap or an explicitly authorized bounded research question.
+- **ZW-P2-026 — Sparse star×palace contextual research v4/v5** — resume only for a recurring real-reading semantic gap or an explicitly authorized bounded research question; current targeted V5 recheck has reopened only `七殺×福德宮`.
 
 The 168-cell matrix remains a routing/control plane and long-term research horizon. It is not a near-term product KPI or release blocker.
 
@@ -130,7 +130,7 @@ This file is an active / deferred coordination surface, not a completed-work arc
 
 ## P2 — deferred / trigger-based research
 
-### ZW-P2-026 — Sparse star×palace contextual research v4
+### ZW-P2-026 — Sparse star×palace contextual research v4/v5
 
 - type: RESEARCH / INTERPRETATION
 - status: DEFERRED
@@ -138,12 +138,14 @@ This file is an active / deferred coordination surface, not a completed-work arc
 - owner: Zi Wei interpretation evidence
 - canonical_research:
   - `references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md`
+  - `references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V5.md`
   - `references/ziwei/STAR_PALACE_COVERAGE_ARCHITECTURE_V1.md`
   - `indexes/ziwei/star_palace_coverage_v1.json`
 - current_state:
   - all ordinary non-health palace rows are reviewed;
-  - current coverage = 168 total / 154 reviewed / 120 resolved / 14 unreviewed;
+  - current coverage = 168 total / 154 reviewed / 119 resolved / 14 unreviewed;
   - the 14 unreviewed identities are the 疾厄宮 row;
+  - V5 targeted recheck keeps `紫微×官祿宮` and `天府×財帛宮` resolved bounded-L5, but reopens `七殺×福德宮` as `DEFERRED_EVIDENCE / ADMISSION-CANDIDATE-RECHECK`;
   - production dedicated-L4 expansion is sparse and remains separately admitted from research classification.
 - trigger:
   - a recurring real-reading semantic gap identifies a specific unresolved / insufficient star×palace cell; or
