@@ -46,7 +46,7 @@ class AstrologyNatalSynthesisGapGateTests(unittest.TestCase):
 
     def test_gate_remains_non_harness_after_backlog_closure(self):
         self.assertIn("不是長期 evaluation harness", self.owner)
-        self.assertIn("不得建立 accuracy KPI", self.owner)
+        self.assertIn("不建立 accuracy KPI", self.owner)
         self.assertIn("不產生 mutation", self.owner)
 
 
