@@ -29,17 +29,15 @@ Last reviewed against:
 
 ```text
 ai-divination-playbook main
-d8aca589e4d32fb13358129530be38dc006ac6d4
-Add evidence-bounded concrete natal synthesis (#359)
+4805d3d57e25dcaa8d0464562238b5423bc4639e
+Define sparse exact-claim admission policy (#360)
 ```
 
 This SHA is review evidence only, not a pin. Every maintenance or implementation task must resolve current `main` again before mutation.
 
 ## Recommended execution order
 
-Active near-term Astrology work:
-
-1. **AST-P1-240 — Sparse emergent exact-claim admission policy**
+There is currently no active one-shot Astrology P1 implementation/research item after AST-P1-240 closure.
 
 Standing guard:
 
@@ -87,31 +85,6 @@ This file is an active / deferred coordination surface, not a completed-work arc
 This item is a standing reconciliation guard. It is not a request to change current behavior immediately.
 
 ## P1 — active natal interpretation work
-
-### AST-P1-240 — Sparse emergent exact-claim admission policy
-
-- type: RESEARCH POLICY / INTERPRETATION / CLAIM ADMISSION
-- status: OPEN
-- priority: P1
-- owner: Astrology semantic research coordination
-- blocked_by: none
-- prerequisite:
-  - AST-P1-210 — DONE.
-- target:
-  - establish when an exact Planet×Sign or Planet-Pair×Aspect claim is worth separate research/admission because admitted lower-level composition leaves a **material semantic delta**;
-  - valid triggers may include a demonstrable production coverage gap, recurrent over-generic composition, materially distinct source-backed semantics, or a case where lower-level primitives cannot safely express the scoped meaning;
-  - each exact claim still requires source/profile/context/applicability admission and must preserve the lower-level evidence lineage it refines;
-  - discovery of one gap may create one bounded research candidate, but does not automatically create a permanent ranking/queue or neighboring matrix work.
-- completion_gate:
-  - publish explicit candidate/admission criteria and anti-duplication rules;
-  - distinguish `composition adequate`, `research candidate`, `exact claim admitted` and `unsupported` states;
-  - add at least representative regression/fixture coverage proving that an exact claim enriches rather than duplicates or overrides valid lower-level semantics;
-  - keep research admission separate from production mutation and routing.
-- non_goals:
-  - no 120-cell Planet×Sign completion target;
-  - no full planet-pair × major-aspect Cartesian completion target;
-  - no automatic claim generation from model synthesis;
-  - no feedback-driven semantic promotion merely because an interpretation is popular or subjectively resonant.
 
 ## P2 — deferred compatibility / provider expansion
 
@@ -179,6 +152,7 @@ The items below are **DONE**. They are retained only as compact identity pointer
 - **AST-P1-210 — Natal semantic composition fallback contract** — DONE; canonical precedence is exact admitted claim → admitted bounded composition → `unsupported_factor`; typed `aspect_pair` supports admitted exact natal-aspect claims, while general natal-aspect semantic composition remains closed until its primitives are separately admitted.
 - **AST-P1-220 — Disclosed default semantic profile for ordinary natal interpretation** — DONE; omitted/null natal `semantic_profile` normalizes to `composable-symbolic-modern-v1` with `project_default` provenance and disclosure; explicit admitted choice remains `explicit_user_choice`; registry/selector silent defaults remain forbidden and unadmitted profiles fail closed.
 - **AST-P1-230 — Evidence-bounded concrete natal synthesis contract** — DONE; broad natal may explicitly use `evidence-bounded-concrete-natal-v1`: 3–5 traceable themes, admitted natal fact + semantic claim refs, independently cited material tensions, unsupported suppression, no semantic/claim-admission authority; detailed rules are conditionally loaded from `ASTROLOGY_NATAL_SYNTHESIS.md`.
+- **AST-P1-240 — Sparse emergent exact-claim admission policy** — DONE; `references/astrology/EXACT_CLAIM_ADMISSION_POLICY_V1.*` formalizes `composition_adequate / research_candidate / exact_claim_admitted / unsupported`, rejects Cartesian or feedback-driven expansion, and requires explicit production admission after bounded research.
 - **AST-P2-010 — Interpolated Black Moon Lilith** — DONE.
 - **AST-P2-041 — Piecewise Chebyshev five-body ephemeris feasibility** — DONE.
 - **AST-P2-042 — Continuity-constrained / overlap Chebyshev five-body feasibility** — DONE.
@@ -217,9 +191,9 @@ Unless the user explicitly asks for a different bounded task, a fresh Astrology 
 2. read ASTROLOGY_BACKLOG.md
 3. reconcile any changed item status against canonical owners
 4. enforce AST-P0-002 alongside any affected interpretation change
-5. continue the active P1 natal-interpretation sequence:
-   AST-P1-240 sparse emergent exact-claim admission policy
+5. no one-shot P1 item is currently active; do not invent matrix-completion work
 6. keep AST-P2-020 / AST-P2-030 deferred unless their explicit trigger appears
+7. if a concrete semantic gap appears, evaluate it through `references/astrology/EXACT_CLAIM_ADMISSION_POLICY_V1.md` before creating new exact-claim research
 ```
 
 Do not infer from this ordering that every item is automatically authorized for production mutation. Research, calculation admission, semantic admission, UX defaulting and routing remain separate gates.
