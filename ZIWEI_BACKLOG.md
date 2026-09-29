@@ -29,8 +29,8 @@ Last reviewed against:
 
 ```text
 ai-divination-playbook main
-8569dc3d37c31f667dc5d6cd30e7210a18f3a587
-Close Zi Wei natal synthesis v1
+d8e32587009962e17b98aca510bba996e1efda3e
+Add post-reading natal gap escalation gate (#362)
 ```
 
 This SHA is review evidence only, not a pin. Every maintenance, evaluation or implementation task must resolve current `main` again before mutation.
@@ -39,7 +39,8 @@ This SHA is review evidence only, not a pin. Every maintenance, evaluation or im
 
 Active near-term Zi Wei work:
 
-1. **ZW-P1-070 — Natal synthesis v1 end-to-end reading evaluation**
+1. **ZW-P1-080 — Birthplace → IANA timezone input resolution**
+2. **ZW-P1-070 — Natal synthesis v1 end-to-end reading evaluation**
 
 Standing guard:
 
@@ -86,7 +87,38 @@ This file is an active / deferred coordination surface, not a completed-work arc
 - rule:
   - this is a standing reconciliation guard, not a request to change current production behavior by itself.
 
-## P1 — active natal synthesis evaluation
+## P1 — active input / natal synthesis work
+
+### ZW-P1-080 — Birthplace → IANA timezone input resolution
+
+- type: FEATURE / INPUT NORMALIZATION / PLACE RESOLUTION
+- status: OPEN
+- priority: P1
+- owner: Zi Wei input normalization
+- blocked_by: none
+- problem:
+  - current Gregorian production input requires an explicit IANA timezone;
+  - a user who supplies only a birthplace such as `新北市樹林區` cannot enter the admitted Zi Wei Gregorian/calendar path without an external/model-inferred timezone;
+  - model-memory timezone guessing is not deterministic production authority.
+- current_evidence:
+  - shared `civil-time-zoneinfo-v1` validates an already-known IANA timezone but explicitly does not resolve birthplace;
+  - this repository already contains an Astrology-specific deterministic place resolver / query-bounded place corpus, but that admission is not automatically Zi Wei authority;
+  - Taiwan administrative locality evidence already exists in-repo and can support a narrower Zi Wei consumer lane without admitting global fuzzy geocoding.
+- target:
+  - admit a deterministic Zi Wei pre-calendar adapter that converts supported birthplace identity to one IANA timezone with explicit provenance;
+  - first evaluate a minimal Taiwan administrative-locality lane (`recognized Taiwan county/city or county/city + township/district → Asia/Taipei`) before importing broader GeoNames transport;
+  - if broader place resolution is later needed, reuse a shared/existing deterministic corpus through an explicit Zi Wei consumer/admission decision rather than duplicating the dataset.
+- boundaries:
+  - no fuzzy place guessing, silent largest-city selection or model-memory timezone inference;
+  - timezone resolution does not imply birthplace→longitude admission and must not silently activate true-solar time;
+  - ambiguous / unsupported place identity fails closed and asks for an explicit IANA timezone;
+  - do not treat `ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json` as Zi Wei authority without a separate consumer/admission contract.
+- completion_gate:
+  - supported place input resolves deterministically to one IANA timezone with provenance;
+  - unsupported/ambiguous input fails closed;
+  - Zi Wei method owner / admission / machine routing / materialization surfaces are synchronized;
+  - natural-input production regression proves a Taiwan fixture such as `新北市樹林區` reaches the existing Gregorian calendar path without model inference;
+  - explicit IANA timezone input remains unchanged and authoritative.
 
 ### ZW-P1-070 — Natal synthesis v1 end-to-end reading evaluation
 
@@ -96,6 +128,9 @@ This file is an active / deferred coordination surface, not a completed-work arc
 - owner: Zi Wei production evaluation
 - blocked_by:
   - ZW-P1-060 — DONE
+- input_lane_note:
+  - explicit-IANA-timezone readings can proceed now;
+  - natural birthplace-only readings are blocked on `ZW-P1-080`, so absence of a completed reading in that lane must not be misclassified as a synthesis or star×palace semantic failure.
 - current_authority:
   - `natal_synthesis_v1` is already production-admitted as a selection-only layer over the default admitted natal claim set;
   - it creates no new doctrine and does not change optional-module defaults;
@@ -245,8 +280,9 @@ Unless the user explicitly asks for a different bounded Zi Wei task, a fresh dev
 2. read ZIWEI_BACKLOG.md
 3. reconcile changed status against canonical owners
 4. enforce ZW-P0-003 alongside any affected production change
-5. continue ZW-P1-070 small end-to-end natal synthesis evaluation
-6. keep ZW-P2-026 deferred unless its recurring-gap / explicit-research trigger appears
+5. resolve ZW-P1-080 for natural birthplace-only production input; explicit-IANA readings may bypass this blocker
+6. continue ZW-P1-070 small end-to-end natal synthesis evaluation
+7. keep ZW-P2-026 deferred unless its recurring-gap / explicit-research trigger appears
 ```
 
 Do not infer from this ordering that a backlog entry authorizes production mutation. Research, evaluation, semantic admission, calculation admission, routing and production mutation remain separate gates.
