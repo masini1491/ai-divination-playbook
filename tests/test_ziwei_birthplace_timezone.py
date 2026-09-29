@@ -22,6 +22,13 @@ class ZiWeiBirthplaceTimezoneTests(unittest.TestCase):
         self.assertEqual("臺北市中正區",r.normalized_birthplace)
         self.assertEqual("臺北市",r.matched_region)
 
+    def test_toufen_locality_alias_resolves_to_miaoli_timezone(self):
+        r=resolve_birthplace_timezone("頭份市")
+        self.assertEqual("苗栗縣",r.matched_region)
+        self.assertEqual("Asia/Taipei",r.timezone)
+        self.assertFalse(r.provenance()["coordinates_resolved"])
+        self.assertFalse(r.provenance()["longitude_resolved"])
+
     def test_birthplace_pre_adapter_reaches_existing_calendar_path(self):
         birth, provenance=gregorian_birth_from_birthplace(
             birthplace="新北市樹林區",
