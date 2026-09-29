@@ -100,7 +100,7 @@ class RepositoryArchitectureContractTests(unittest.TestCase):
             encoding="utf-8"
         )
         self.assertIn(
-            "Last reviewed source revision：`9236b42550b7f748cc6c5744075d106e643c6042`",
+            "Last reviewed source revision：`5d624c74787ebe022096a7f631f5122d2f6df92f`",
             text,
         )
         self.assertIn("Method-scoped coordination topology", text)

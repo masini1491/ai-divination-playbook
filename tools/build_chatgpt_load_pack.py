@@ -69,19 +69,23 @@ PROFILES = {
     "explicit_meihua": {
         "fragments": ["bootstrap", "runtime_fast_path", "output_core"],
         "required_followup": ["MEIHUA.md"],
+        "capability_gap_followup": "PLAYBOOK_INDEX.json → method.meihua.materialization_contract",
     },
     "explicit_liuyao": {
         "fragments": ["bootstrap", "runtime_fast_path", "output_core"],
         "required_followup": ["LIUYAO.md"],
+        "capability_gap_followup": "PLAYBOOK_INDEX.json → method.liuyao.materialization_contract",
     },
     "explicit_astrology": {
         "fragments": ["bootstrap", "output_core"],
         "required_followup": ["ASTROLOGY.md", "selected Astrology mode owner"],
+        "capability_gap_followup": "PLAYBOOK_INDEX.json → method.astrology.materialization_contract",
         "notes": "Production Astrology only; after the root owner, load ASTROLOGY_NATAL.md or ASTROLOGY_TRANSIT.md by reading_mode. Research intent continues to bypass the pack.",
     },
     "explicit_ziwei": {
         "fragments": ["bootstrap", "output_core"],
         "required_followup": ["ZIWEI.md"],
+        "capability_gap_followup": "PLAYBOOK_INDEX.json → method.ziwei.materialization_contract",
         "notes": "Production Zi Wei Scope-A only; research intent continues to bypass the pack.",
     },
     "continuation_stochastic": {

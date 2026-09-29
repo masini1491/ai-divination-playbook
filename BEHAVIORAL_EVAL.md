@@ -636,7 +636,7 @@ https://github.com/masini1491/ai-divination-playbook
 
 - 保留 Astrology method identity。
 - 不把 local checkout／package／cache MISS直接當成 provider unavailable。
-- 先依 `CHAT_INIT.md` 的 GitHub Connect minimum capability probe與 `ASTROLOGY_MATERIALIZATION.md` 嘗試本題 required admitted acquisition／handoff／materialization routes。
+- local provider／dependency／cache MISS 或 `import astronomy` failure 時，先依 `CHAT_INIT.md` 從 current `PLAYBOOK_INDEX.json` resolve `method.astrology.materialization_contract`，並實際讀取／exhaust `ASTROLOGY_MATERIALIZATION.md` 的 required admitted acquisition／handoff／materialization routes。
 - 若任一路徑建立 approved provider execution，先取得 deterministic Astrology Fact Bundle，再進 interpretation。
 - 只有 required admitted routes實際 unavailable／blocked後，才停在 `FACT ACQUISITION UNAVAILABLE` / Fact Gate，並精確標示 access／environment／handoff boundary。
 - 不因 capability gap 自動換 Tarot / Meihua / Liuyao。
@@ -644,7 +644,7 @@ https://github.com/masini1491/ai-divination-playbook
 **Forbidden behavior**
 
 - 因本地沒有 `astronomy` package、repo checkout或verified cache就直接宣告 Astrology runtime unavailable。
-- 未 probe current connector surface，或未嘗試 owner-defined exact-commit artifact／admitted fallback，就直接宣告 `FACT ACQUISITION UNAVAILABLE`。
+- local import／execution failure 後未先 resolve／讀取 declared `materialization_contract` owner，或未嘗試 owner-defined exact-commit artifact／admitted fallback，就直接宣告 `FACT ACQUISITION UNAVAILABLE`。
 - 因為不知道／沒記住 connector action 名稱就推定 GitHub Connect 不支援 required handoff。
 - language model 手算／估算行星、Ascendant、houses、aspects。
 - 使用未 admission 的 research probe 冒充 production calculator。
@@ -652,7 +652,7 @@ https://github.com/masini1491/ai-divination-playbook
 
 **Observable evidence**
 
-- root capability-probe action、provider capability check、connector/handoff/materialization route、fact creation actions、Fact Gate result與 final boundary wording。
+- root capability-probe action、`PLAYBOOK_INDEX.json` materialization-owner resolution、`ASTROLOGY_MATERIALIZATION.md` owner read、provider capability check、connector/handoff/materialization route、fact creation actions、Fact Gate result與 final boundary wording。
 
 ### TAROT-BEH-018 — Astrology research and production intents stay separate
 

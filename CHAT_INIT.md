@@ -20,22 +20,25 @@ minimum connector/read recovery
 
 ## GitHub Connect Minimum Capability Probe｜不得未試即判 unavailable
 
-當本題需要 current GitHub content、artifact、connector-backed file handoff 或 deterministic runtime bytes 時，**不得因 local checkout／package／verified cache 缺失，或尚未記住／嘗試 connector operation，就直接判定 unavailable**。
+需要 current GitHub content、artifact 或 deterministic runtime 時，**local checkout／package／cache MISS、import／execution fail 都不是 unavailable verdict**。
 
-最低 probe：
+若 selected capability 需要 deterministic execution：
 
 ```text
-exact repo/ref/path read
-→ 若需 runtime bytes：probe direct file/byte handoff
-→ owner 有 exact-commit Actions handoff artifact：probe artifact discovery/download + reusable file handle
-→ direct route不成立：走 owner-admitted bounded materialization fallback
-→ 分別驗 source identity / handoff / materialization / integrity / execution
-→ required admitted routes實際 unavailable後，才分類 access / environment / method gap
+local execution PASS → continue
+MISS / import fail
+→ current PLAYBOOK_INDEX.json
+→ resolve capability.materialization_contract
+→ declared: MUST read / exhaust owner
+→ undeclared: probe only required generic capability
+→ verify handoff / materialization / integrity / execution
+→ admitted routes actually unavailable
+→ only then classify gap
 ```
 
-只 probe 本題必要 capability，不全面盤點產品 surface。Handle／file reference 只建立 handoff candidate，不等於 materialization、integrity 或 execution PASS。
+Materialization owner決定 direct handoff、exact-commit artifact、bundle等 recovery mechanics；root不複製。Handle／file reference也不等於 materialization或execution PASS。
 
-這是 ordinary reading 也會使用的 **project-native hot rule**；完整 GitHub operation mechanics 仍由 shared AI Development Playbook 擁有，**不得為此 probe 本身 broad-load／啟動 shared baseline**。
+這是 ordinary reading 的 **project-native hot rule**；不得為此 broad-load shared Playbook。
 
 ## Shared Development Playbook Activation Gate｜共通上位規則啟用條件
 
