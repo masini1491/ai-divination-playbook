@@ -37,3 +37,12 @@ def test_materialization_normalizes_taiwan_admin_input_before_alias_hashing():
     assert "exact county/city × township/district hierarchy validation" in text
     assert "valid pair: query = validated township/district, effective country = TW" in text
     assert "it never supplies coordinates" in text
+
+def test_docs_do_not_reopen_admitted_profile500_resolver_transport():
+    materialization=(ROOT/"ASTROLOGY_MATERIALIZATION.md").read_text(encoding="utf-8")
+    backlog=(ROOT/"ASTROLOGY_BACKLOG.md").read_text(encoding="utf-8")
+    assert "profile-500 query-bounded shard transport" in materialization
+    assert "place resolver query-bounded shard materialization — admitted for default profile 500" in backlog
+    assert "place-resolver model-mediated cold-start transport — intentionally **not admitted**" not in backlog
+    assert "或未來另有 verified resolver materialization transport" not in materialization
+
