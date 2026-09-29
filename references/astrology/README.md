@@ -157,6 +157,16 @@ AST-P1-010 found **no passing 10/20/40-day sampled/Hermite variant** under its p
 
 REFERENCE-ONLY; not production.
 
+### Host-native PySwissEph capability research
+
+Current host-native lane remains REFERENCE-ONLY:
+
+- [`HOST_NATIVE_SWISSEPH_CAPABILITY.md`](HOST_NATIVE_SWISSEPH_CAPABILITY.md) — host/session capability boundary and admission gates.
+- [`host_native_swisseph_probe.py`](host_native_swisseph_probe.py) — dynamically probes a preinstalled `swisseph` runtime without making it a project dependency.
+- [`ENGINE_COMPARISON_RESULTS.md`](ENGINE_COMPARISON_RESULTS.md) — existing bounded Moshier-backed PySwissEph vs Astronomy-Engine-family comparison.
+
+A successful host probe proves only the current session's execution capability. It does not imply plan/tier availability and does not create production provider authority.
+
 ### Historical engine/timing research
 
 - [`ENGINE_COMPARISON_RESULTS.md`](ENGINE_COMPARISON_RESULTS.md)

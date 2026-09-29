@@ -29,8 +29,8 @@ Last reviewed against:
 
 ```text
 ai-divination-playbook main
-38648d682dc35735fdd3fdf96fb980ea1503fca5
-Close Zi Wei birthplace timezone input gap
+1bb1eb2fcb94933eae4ea0a98ab076c25a0a5648
+Merge pull request #372 from masini1491/fix/chatgpt-github-capability-probe
 ```
 
 This SHA is review evidence only, not a pin. Every maintenance or implementation task must resolve current `main` again before mutation.
@@ -43,10 +43,13 @@ Standing guard:
 
 - **AST-P0-002** remains OPEN and is enforced alongside affected interpretation changes.
 
+Current user-activated P2 research:
+
+- **AST-P2-030** — Optional Swiss host-native compatibility/provider lane; capability-probe phase is OPEN and remains REFERENCE-ONLY.
+
 Deferred / trigger-based work:
 
 - **AST-P2-020** — Named consumer compatibility profile.
-- **AST-P2-030** — Optional Swiss compatibility/provider lane.
 
 The active P1 sequence does **not** create a Cartesian-completion target for every Planet×Sign or Planet-Pair×Aspect combination.
 
@@ -101,20 +104,42 @@ This item is a standing reconciliation guard. It is not a request to change curr
   - profiles may compose named policies but must not hide their identities;
   - exact 唐綺陽 compatibility remains forbidden until independently established.
 
-### AST-P2-030 — Optional Swiss compatibility/provider lane
+### AST-P2-030 — Optional Swiss host-native compatibility/provider lane
 
-- type: PROVIDER / LICENSE
-- status: DEFERRED
+- type: PROVIDER / LICENSE / HOST CAPABILITY
+- status: OPEN
 - priority: P2
 - owner: Astrology provider strategy
 - blocked_by: none
-- options:
-  - `SWISS_AGPL`
-  - `SWISS_PROFESSIONAL`
+- current_phase: host-native capability feasibility
+- evidence:
+  - `references/astrology/HOST_NATIVE_SWISSEPH_CAPABILITY.md`
+  - `references/astrology/host_native_swisseph_probe.py`
+  - `references/astrology/ENGINE_COMPARISON_RESULTS.md`
+- observed_trigger:
+  - ChatGPT Python hosts may expose `swisseph` without any Repo materialization or package install;
+  - effective backend must be read from returned flags because requested `SWIEPH` may silently fall back to `MOSEPH`;
+  - host capability is session evidence only and must not be inferred from ChatGPT plan/tier.
+- candidate_lanes:
+  - `HOST_NATIVE_PYSWISSEPH_MOSEPH` — dynamically use a preinstalled host runtime only if separately production-admitted;
+  - `SWISS_AGPL` — explicit project dependency under an AGPL-compatible posture;
+  - `SWISS_PROFESSIONAL` — explicit project dependency under a separately obtained professional license.
+- current_decision:
+  - the Repo may ship a REFERENCE-ONLY capability probe that dynamically imports a host-provided `swisseph`;
+  - the Repo does **not** add `pyswisseph` / Swiss Ephemeris to production requirements;
+  - current production calculation authority remains the admitted Astronomy Engine provider;
+  - no automatic host-native fallback is authorized yet.
+- remaining_gates:
+  - freeze a provider identity/provenance schema that preserves requested flags, actual `retflag`, effective backend and version per relevant fact;
+  - extend like-for-like parity beyond the existing three-fixture Sun–Pluto/Placidus result to nodes, speed/retrograde/station behavior, exact transit timing and polar-house failure semantics;
+  - resolve the legal/license posture for dynamically invoking a host-preinstalled AGPL Swiss/PySwissEph runtime without distributing or declaring it as a project dependency;
+  - define fail-closed date/object/configuration scope and production tolerances prospectively;
+  - only after the above, review whether a host-native adapter may emit the existing Astrology Fact Bundle through the canonical runtime gate.
 - rule:
-  - Swiss is an optional compatibility/provider lane, not a mandatory Astrology foundation;
+  - Swiss remains an optional compatibility/provider lane, not a mandatory Astrology foundation;
   - license posture and technical admission are separate gates;
-  - no production dependency is authorized by the current research.
+  - current host capability evidence must never be promoted directly into production authority.
+
 
 ## SHARED / pointer-only coordination
 
