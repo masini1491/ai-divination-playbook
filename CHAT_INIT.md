@@ -20,27 +20,25 @@ minimum connector/read recovery
 
 ## GitHub Connect Minimum Capability Probe｜不得未試即判 unavailable
 
-當本題需要 current GitHub content、artifact、connector-backed file handoff 或 deterministic runtime bytes 時，**不得因 local checkout／package／verified cache 缺失，或 local import／execution 失敗，就直接判定 unavailable**。
+需要 current GitHub content、artifact 或 deterministic runtime 時，**local checkout／package／cache MISS、import／execution fail 都不是 unavailable verdict**。
 
-若 selected method／capability 需要 deterministic execution，local provider／dependency／cache MISS（含 import fail）是 **capability-gap trigger，不是 unavailable verdict**。先從 current `PLAYBOOK_INDEX.json` resolve selected capability entry 的 `materialization_contract`；若有宣告，該 owner 是 conditional mandatory owner，**必須先讀取並 exhaust 其 admitted recovery routes，不能等 deeper method owner 再提醒**。
-
-最低 probe：
+若 selected capability 需要 deterministic execution：
 
 ```text
-exact repo/ref/path read
-→ local deterministic execution PASS? → continue
-→ MISS / import fail
-   → resolve selected capability.materialization_contract
-   → declared → MUST read / exhaust that owner
-   → undeclared → probe only the generic capability actually required
-→ verify source identity / handoff / materialization / integrity / execution separately
-→ required admitted routes actually unavailable
-   → only then classify access / environment / method gap
+local execution PASS → continue
+MISS / import fail
+→ current PLAYBOOK_INDEX.json
+→ resolve capability.materialization_contract
+→ declared: MUST read / exhaust owner
+→ undeclared: probe only required generic capability
+→ verify handoff / materialization / integrity / execution
+→ admitted routes actually unavailable
+→ only then classify gap
 ```
 
-Materialization owner 可再指定 direct handoff、exact-commit artifact、bundle 或其他 admitted fallback；root 不複製其 mechanics。Handle／file reference 只建立 handoff candidate，不等於 materialization、integrity 或 execution PASS。
+Materialization owner決定 direct handoff、exact-commit artifact、bundle等 recovery mechanics；root不複製。Handle／file reference也不等於 materialization或execution PASS。
 
-這是 ordinary reading 也會使用的 **project-native hot rule**；完整 GitHub operation mechanics 仍由 shared AI Development Playbook 擁有，**不得為此 probe 本身 broad-load／啟動 shared baseline**。
+這是 ordinary reading 的 **project-native hot rule**；不得為此 broad-load shared Playbook。
 
 ## Shared Development Playbook Activation Gate｜共通上位規則啟用條件
 
