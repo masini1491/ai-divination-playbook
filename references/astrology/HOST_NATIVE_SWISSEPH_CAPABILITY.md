@@ -184,3 +184,27 @@ Production routing remains NOT ADMITTED.
 ```
 
 The next useful work is not another proof that `swisseph` can import. It is admission-quality provenance + parity + license closure.
+
+
+## 10. Host-native production admission outcome
+
+The project admits one deliberately narrow production lane:
+
+```text
+ChatGPT execution surface
++ exact/approximate known-time natal
++ host-preinstalled swisseph capability probe PASS
+→ swiss-host-natal-v1
+```
+
+The repository does not install, declare, vendor, redistribute, or download Swiss/PySwissEph or Swiss ephemeris data. This contract makes no assertion about the platform provider's licensing arrangement; it records only the repository boundary.
+
+All other cases route to the portable Astronomy Engine provider:
+
+- non-ChatGPT execution;
+- unknown birth time;
+- transit;
+- missing/broken host `swisseph`;
+- any request that would require installing or vendoring Swiss.
+
+The Swiss provider preserves actual `retflag` and effective backend per calculated object, so requested SWIEPH silently falling back to MOSEPH remains visible in provenance.
