@@ -56,7 +56,9 @@ raw birth data
 
 Canonical runtime gate：`tools/astrology_runtime.py`；所有 generated provider bundle都必須通過它。Fact Bundle / runtime schema與 production admission以 `ASTROLOGY_PRODUCTION_ADMISSION_V1.json` + schemas為 machine truth。
 
-ChatGPT local runtime 缺少 approved provider files／`astronomy-engine` 時，local miss 不等於 Astrology deterministic facts unavailable；依 `ASTROLOGY_MATERIALIZATION.md` 必須先走 verified cache reuse / Host Capability Gate，只有 real cache miss 才進 direct handoff或 bounded bundle transport，禁止 full-bundle-first。Core materialization只涵蓋 explicit coordinates + IANA timezone 的 natal/transit calculation；`place`／`country` name resolution仍需 admitted `geonamescache` resolver或其 query-bounded verified transport，不得由模型或 generic web geocoding補造。
+Provider selection先依 `ASTROLOGY_PROVIDER_ROUTING_V1.json` + `tools/astrology_provider_selector.py`。目標政策是：**ChatGPT known-time natal 優先 admitted host-native Swiss；其他 host、Swiss unavailable、scope 不符或 license/admission gate未 closure時使用 `astronomy-engine-natal-v1` portable fallback**。Unknown-time natal與 transit在另行 admission前維持既有 portable provider。所有 provider最後仍輸出同一 `astrology_fact_bundle@1.0.0`，不得建立第二套 interpretation contract。
+
+只有 selector已落到 portable Astronomy path且 local runtime缺少 approved provider files／`astronomy-engine` 時，才進 `ASTROLOGY_MATERIALIZATION.md`。Local miss不等於 Astrology deterministic facts unavailable；materialization owner必須先走 verified cache reuse / Host Capability Gate，只有 real cache miss才進 direct handoff或 bounded bundle transport，禁止 full-bundle-first。Core materialization只涵蓋 explicit coordinates + IANA timezone 的 natal/transit calculation；`place`／`country` name resolution仍需 admitted `geonamescache` resolver或其 query-bounded verified transport，不得由模型或 generic web geocoding補造。
 
 ## 3. Mode Owners
 
