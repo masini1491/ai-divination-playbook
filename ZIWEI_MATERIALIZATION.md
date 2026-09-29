@@ -80,6 +80,7 @@ Taiwan birthplace-only timezone pre-resolution:
 
 ```text
 recognized Taiwan top-level administrative-region prefix
+OR exact explicitly allowlisted locality-only alias such as 頭份市
 → verified bundled tools/ziwei_birthplace_timezone.py
 → Asia/Taipei + provenance
 → GregorianBirthInput
@@ -149,7 +150,7 @@ The main-push handoff artifact is a **temporary transport convenience**, not sou
 
 **Do not fetch or dump the full bundle/chunk payload into model-visible context before cache reuse and host-handoff necessity have been established.** Model-visible base64/chunk content proves acquisition visibility only; it is not automatic filesystem materialization.
 
-The shared civil-time adapter, Zi Wei Taiwan-only birthplace→timezone pre-adapter, year-notation adapter and Zi Wei-owned true-solar profile runtime are bundled with Zi Wei runtime source. Broader/global birthplace→timezone resolution and all birthplace→longitude guessing remain outside this path. Calendar shards remain **query-bounded** data acquisitions，不得為方便把完整202-shard dataset塞進 bundle或 active Context。successful materialization **does not require pip/network installation afterward**；GitHub Connect exact-commit shard retrieval本身仍是 acquisition step。
+The shared civil-time adapter, Zi Wei Taiwan-only birthplace→timezone pre-adapter, year-notation adapter and Zi Wei-owned true-solar profile runtime are bundled with Zi Wei runtime source. Broader/global birthplace→timezone resolution, fuzzy locality inference, non-allowlisted locality-only names, and all birthplace→longitude guessing remain outside this path. Calendar shards remain **query-bounded** data acquisitions，不得為方便把完整202-shard dataset塞進 bundle或 active Context。successful materialization **does not require pip/network installation afterward**；GitHub Connect exact-commit shard retrieval本身仍是 acquisition step。
 
 ### Layered Host Status
 
