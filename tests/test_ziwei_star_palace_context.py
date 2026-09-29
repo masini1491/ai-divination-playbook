@@ -25,6 +25,8 @@ ADMITTED={
     ("破軍","夫妻宮"):"ZW-SP-POJUN-SPOUSE-001",
     ("廉貞","財帛宮"):"ZW-SP-LIANZHEN-WEALTH-001",
     ("武曲","命宮"):"ZW-SP-WUQU-MING-001",
+    ("巨門","兄弟宮"):"ZW-SP-JUMEN-SIBLING-001",
+    ("七殺","福德宮"):"ZW-SP-QISHA-FORTUNE-001",
 }
 
 class ZiWeiStarPalaceContextTests(unittest.TestCase):
@@ -36,9 +38,9 @@ class ZiWeiStarPalaceContextTests(unittest.TestCase):
         p=subprocess.run([sys.executable,str(VALIDATOR),str(REGISTRY)],cwd=ROOT,text=True,capture_output=True)
         self.assertEqual(0,p.returncode,msg=p.stdout+"\n"+p.stderr)
         self.assertFalse(self.registry["production_routable"])
-        self.assertEqual(9,len(self.registry["claims"]))
+        self.assertEqual(11,len(self.registry["claims"]))
         self.assertEqual(
-            {"天相×命宮","天梁×官祿宮","貪狼×夫妻宮","破軍×遷移宮","武曲×田宅宮","天機×田宅宮","破軍×夫妻宮","廉貞×財帛宮","武曲×命宮"},
+            {"天相×命宮","天梁×官祿宮","貪狼×夫妻宮","破軍×遷移宮","武曲×田宅宮","天機×田宅宮","破軍×夫妻宮","廉貞×財帛宮","武曲×命宮","巨門×兄弟宮","七殺×福德宮"},
             set(self.registry["research_result"]["admitted_pairs"]),
         )
         self.assertFalse(self.registry["research_result"]["exhaustive_cartesian_dictionary"])
@@ -151,6 +153,25 @@ class ZiWeiStarPalaceContextTests(unittest.TestCase):
         self.assertIn("dignity_brightness",claim["applicability"]["modifiers"])
         self.assertIn("不得",claim["normalized_statement"])
 
+    def test_jumen_sibling_is_practitioner_bounded_and_relationship_safe(self):
+        claim=next(x for x in self.registry["claims"] if x["claim_id"]=="ZW-SP-JUMEN-SIBLING-001")
+        self.assertEqual("practitioner_heuristic",claim["assertion_class"])
+        self.assertEqual("tradition_bounded",claim["support_status"])
+        self.assertEqual(["SRC-ZHONGZHOU-JUMEN-SIBLING"],claim["source_refs"])
+        self.assertIn("star_in_palace:巨門:兄弟宮",claim["applicability"]["requires"])
+        self.assertIn("不得",claim["normalized_statement"])
+        self.assertNotIn("必然反目",claim["normalized_statement"].replace("不得翻成",""))
+
+    def test_qisha_fortune_is_multi_source_bounded_and_health_safe(self):
+        claim=next(x for x in self.registry["claims"] if x["claim_id"]=="ZW-SP-QISHA-FORTUNE-001")
+        self.assertEqual("project_adoption",claim["assertion_class"])
+        self.assertEqual("multi_source_supported",claim["support_status"])
+        self.assertEqual({"SRC-NANYANG-QUANSHU-PALACES","SRC-ZHONGZHOU-QISHA-FUDE"},set(claim["source_refs"]))
+        self.assertIn("star_in_palace:七殺:福德宮",claim["applicability"]["requires"])
+        self.assertIn("dignity_brightness",claim["applicability"]["modifiers"])
+        self.assertIn("不得",claim["normalized_statement"])
+        self.assertIn("心理疾病",claim["normalized_statement"])
+
     def test_reviewed_non_material_sun_career_pair_has_no_context_override(self):
         birth=self._find_star_in_palace_birth("太陽","官祿宮")
         r=run_ziwei(ZiWeiReadingRequest(
@@ -166,8 +187,8 @@ class ZiWeiStarPalaceContextTests(unittest.TestCase):
     def test_admission_is_bounded_not_cartesian(self):
         m=json.loads(ADMISSION.read_text(encoding="utf-8"))
         self.assertEqual("PRODUCTION_ADMITTED_BOUNDED_INTERPRETATION",m["status"])
-        self.assertEqual(9,m["scope"]["admitted_claims_added"])
-        self.assertEqual(["天相×命宮","天梁×官祿宮","貪狼×夫妻宮","破軍×遷移宮","武曲×田宅宮","天機×田宅宮","破軍×夫妻宮","廉貞×財帛宮","武曲×命宮"],m["scope"]["admitted_pairs"])
+        self.assertEqual(11,m["scope"]["admitted_claims_added"])
+        self.assertEqual(["天相×命宮","天梁×官祿宮","貪狼×夫妻宮","破軍×遷移宮","武曲×田宅宮","天機×田宅宮","破軍×夫妻宮","廉貞×財帛宮","武曲×命宮","巨門×兄弟宮","七殺×福德宮"],m["scope"]["admitted_pairs"])
         self.assertFalse(m["scope"]["exhaustive_cartesian_dictionary"])
         self.assertFalse(m["deterministic_applicability"]["new_geometry_provider_required"])
         self.assertFalse(m["scientific_predictive_validity_claimed"])
