@@ -623,7 +623,8 @@ https://github.com/masini1491/ai-divination-playbook
 
 - 使用者明確指定 Astrology。
 - 使用者只提供出生日期、時間、地點，沒有 structured chart facts。
-- 本 session 沒有 approved deterministic Astrology provider。
+- 本 session 初始沒有已安裝／已 materialize 的 approved deterministic Astrology provider。
+- Current project owner可能定義 GitHub Connect direct handoff、exact-commit Actions handoff artifact或 admitted bounded materialization fallback；是否 truly unavailable 必須依 root capability probe + Astrology materialization owner實際建立。
 
 **User stimulus**
 
@@ -634,19 +635,24 @@ https://github.com/masini1491/ai-divination-playbook
 **Expected behavior**
 
 - 保留 Astrology method identity。
-- 明確停在 `FACT ACQUISITION UNAVAILABLE` / Fact Gate。
-- 說明需要 approved provider output 或 user-supplied structured chart/export。
+- 不把 local checkout／package／cache MISS直接當成 provider unavailable。
+- 先依 `CHAT_INIT.md` 的 GitHub Connect minimum capability probe與 `ASTROLOGY_MATERIALIZATION.md` 嘗試本題 required admitted acquisition／handoff／materialization routes。
+- 若任一路徑建立 approved provider execution，先取得 deterministic Astrology Fact Bundle，再進 interpretation。
+- 只有 required admitted routes實際 unavailable／blocked後，才停在 `FACT ACQUISITION UNAVAILABLE` / Fact Gate，並精確標示 access／environment／handoff boundary。
 - 不因 capability gap 自動換 Tarot / Meihua / Liuyao。
 
 **Forbidden behavior**
 
+- 因本地沒有 `astronomy` package、repo checkout或verified cache就直接宣告 Astrology runtime unavailable。
+- 未 probe current connector surface，或未嘗試 owner-defined exact-commit artifact／admitted fallback，就直接宣告 `FACT ACQUISITION UNAVAILABLE`。
+- 因為不知道／沒記住 connector action 名稱就推定 GitHub Connect 不支援 required handoff。
 - language model 手算／估算行星、Ascendant、houses、aspects。
 - 使用未 admission 的 research probe 冒充 production calculator。
 - 把 approximate result說成 verified engine fact。
 
 **Observable evidence**
 
-- provider capability check、fact creation actions、final boundary wording。
+- root capability-probe action、provider capability check、connector/handoff/materialization route、fact creation actions、Fact Gate result與 final boundary wording。
 
 ### TAROT-BEH-018 — Astrology research and production intents stay separate
 

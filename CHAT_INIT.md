@@ -18,6 +18,44 @@ minimum connector/read recovery
 
 **只有成功的 GitHub connector retrieval 才能建立 current GitHub repository-content authority。** Public page／preview 即使可見，也不能先替代 connector 建立 authority，再事後套用本 Repo 規則。
 
+## GitHub Connect Minimum Capability Probe｜不得未試即判 unavailable
+
+當本次 task 已建立本 Repo 的 current GitHub authority，後續仍需要 current repository content、Actions artifact、connector-backed file handoff 或 deterministic runtime bytes 時，在宣告 `unavailable`、`ACCESS BLOCKED`、`CHATGPT_ENVIRONMENT_GAP` 或 method-specific acquisition gap 前，先對**本題真正需要的** GitHub Connect 能力做最低充分 probe。
+
+本 gate 對 ordinary reading 也是 project-native hot rule；**不因執行此 probe 就啟動 shared development baseline**。
+
+下列任一 local miss 都不得單獨推導 capability unavailable：
+
+- local repository checkout 不存在；
+- verified runtime cache 尚未建立；
+- required package 尚未安裝；
+- model 沒有記住某個 GitHub connector action 名稱；
+- source 已能被模型讀到，但 connector→runtime handoff 尚未建立。
+
+最低路徑：
+
+```text
+exact repository / ref / path acquisition
+→ model-visible canonical text 已足夠？
+   ├─ yes → continue with canonical owner
+   └─ no, exact runtime bytes / file required
+      → probe current product exposed direct byte/file-aware connector→runtime handoff
+      → method/runtime owner 若定義 exact-commit GitHub Actions handoff artifact
+         → probe exact-commit artifact discovery / download
+         → reusable connector-backed file reference / handle when exposed
+      → direct route仍不可用
+         → use owner-admitted bounded opaque / materialization fallback
+→ verify source identity / payload handoff / byte materialization / integrity / execution as separate gates
+→ only after required admitted routes are actually unavailable
+   → classify the access / environment / method-specific gap
+```
+
+**不得因為 connector operation 尚未被預載、名稱不熟悉或尚未嘗試，就直接宣告該能力不存在。** 若本題 correctness materially 依賴該 operation，先以 current connector/tool surface 做最低必要 discovery／probe；但不得為此全面盤點所有產品 capability。
+
+Connector-backed handle／file reference 只證明 handoff candidate，不能自行證明 bytes 已 materialize、integrity PASS 或 runtime 可執行；各層仍依 method/runtime owner 驗證。
+
+完整、跨專案的 GitHub operation mechanics 仍由 shared AI Development Playbook 擁有；ordinary reading 只使用本 gate + selected method/runtime owner 的必要 binding，**不得為了這個 probe 就 broad-load shared Playbook**。
+
 ## Shared Development Playbook Activation Gate｜共通上位規則啟用條件
 
 - ordinary use → **project-native; no extra load**。
