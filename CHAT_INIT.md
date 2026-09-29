@@ -18,6 +18,25 @@ minimum connector/read recovery
 
 **只有成功的 GitHub connector retrieval 才能建立 current GitHub repository-content authority。** Public page／preview 即使可見，也不能先替代 connector 建立 authority，再事後套用本 Repo 規則。
 
+## GitHub Connect Minimum Capability Probe｜不得未試即判 unavailable
+
+當本題需要 current GitHub content、artifact、connector-backed file handoff 或 deterministic runtime bytes 時，**不得因 local checkout／package／verified cache 缺失，或尚未記住／嘗試 connector operation，就直接判定 unavailable**。
+
+最低 probe：
+
+```text
+exact repo/ref/path read
+→ 若需 runtime bytes：probe direct file/byte handoff
+→ owner 有 exact-commit Actions handoff artifact：probe artifact discovery/download + reusable file handle
+→ direct route不成立：走 owner-admitted bounded materialization fallback
+→ 分別驗 source identity / handoff / materialization / integrity / execution
+→ required admitted routes實際 unavailable後，才分類 access / environment / method gap
+```
+
+只 probe 本題必要 capability，不全面盤點產品 surface。Handle／file reference 只建立 handoff candidate，不等於 materialization、integrity 或 execution PASS。
+
+這是 ordinary reading 也會使用的 **project-native hot rule**；完整 GitHub operation mechanics 仍由 shared AI Development Playbook 擁有，**不得為此 probe 本身 broad-load／啟動 shared baseline**。
+
 ## Shared Development Playbook Activation Gate｜共通上位規則啟用條件
 
 - ordinary use → **project-native; no extra load**。

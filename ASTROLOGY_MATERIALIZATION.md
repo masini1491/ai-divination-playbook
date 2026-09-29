@@ -55,6 +55,8 @@ GeoNames datasets
 
 聊天室沒有 repo checkout、沒有 `astronomy` package、或 `/mnt/data/divination-astrology-runtime` 不存在，本身都不等於 Astrology deterministic runtime unavailable。
 
+在把 local checkout／package／verified cache MISS 分類為 provider、handoff 或 runtime unavailable 前，先套用 root `CHAT_INIT.md` → `GitHub Connect Minimum Capability Probe｜不得未試即判 unavailable`；ordinary Astrology production 不因這個 probe 本身啟動 shared development baseline。
+
 Shared generic semantics仍由已啟動的 AI Development Playbook 擁有：
 `CHATGPT_RUNTIME_EXECUTION.md` → `Runtime Asset Reuse Fast Path` / `Artifact Handoff / Materialization Gate`，
 以及 `GITHUB_OPERATIONS.md` → `Inbound Verified Transport`。
