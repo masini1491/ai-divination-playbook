@@ -49,7 +49,7 @@ geonamescache==3.0.2
 GeoNames datasets
 ```
 
-因此 `place`／`country` name input仍要求 admitted resolver runtime已存在，或未來另有 verified resolver materialization transport。不得因 core bundle PASS 就宣稱 place resolver也已 materialize；也不得用 generic web geocoding或模型猜座標／timezone補洞。
+因此 `place`／`country` name input仍與 core bundle分層：installed admitted resolver可直接使用；resolver runtime/cache缺失時，依 §6.1 已 admission 的 profile-500 query-bounded shard transport materialize本題所需 alias/candidate資料。不得因 core bundle PASS 就宣稱 resolver path也已 materialize；也不得用 generic web geocoding或模型猜座標／timezone補洞。
 
 ## 3. Local miss is not source unavailability
 
