@@ -30,6 +30,41 @@ Tension / limiting condition 必須有自己的 admitted fact + semantic claim r
 
 品質檢查只看：specificity、traceability、tension handling、scope fidelity 與是否避免不必要重複。不得建立 synthetic「準確度分數」，也不得把使用者主觀「覺得準」當成 source / semantic admission evidence。
 
+### 4.1 Post-Reading Gap Escalation Gate
+
+本 gate 只回答「一次實際 broad natal reading 已暴露具體問題時，是否值得產生 Repo 工作」。它不是長期 evaluation harness，也不建立 accuracy KPI、重跑同盤、theme-stability score 或永久 audit queue。
+
+**Eligible trigger** 只有：
+
+1. 使用者指出可定位到具體 passage 的：
+   - `too_generic`
+   - `repetitive`
+   - `tension_not_integrated`
+   - `unsupported_leakage`
+2. Pre-Send / regression 已能重現同一 failure pattern。
+
+只有「覺得不準／不夠準」但無法定位 passage → **no_repo_work**。主觀回饋只能作 locator，不是 semantic evidence。
+
+觸發後只分兩條 lane：
+
+```text
+output_contract_gap
+→ 只有 synthetic regression 可重現時
+→ bounded synthesis / output-guard fix
+
+semantic_resolution_gap
+→ references/astrology/EXACT_CLAIM_ADMISSION_POLICY_V1.md
+→ composition_adequate / research_candidate / exact_claim_admitted / unsupported
+→ 只有 research_candidate 才可建立 bounded exact-claim research
+```
+
+Privacy / persistence：
+
+- 真實私人 reading、可識別出生資料與原始對話不得寫入 public repo；
+- Repo 只保存抽象 failure pattern、去識別化 contract wording 或 synthetic regression；
+- 沒有 reproducible gap → 不產生 mutation；
+- 本 gate 不新增 semantic、claim-admission、calculation 或 routing authority。
+
 Machine-enforced shape與 provenance gate 由：
 
 - `ASTROLOGY_PRODUCTION_ADMISSION_V1.json`
