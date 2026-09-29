@@ -29,8 +29,8 @@ Last reviewed against:
 
 ```text
 ai-divination-playbook main
-d8e32587009962e17b98aca510bba996e1efda3e
-Add post-reading natal gap escalation gate (#362)
+4c460fbf938c8bcd1d77c4df51c9dce4d2d05df4
+Make AST-P1-250 regression lifecycle-neutral (#363)
 ```
 
 This SHA is review evidence only, not a pin. Every maintenance or implementation task must resolve current `main` again before mutation.
