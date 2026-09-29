@@ -29,7 +29,7 @@ research-only scaffold
 - optional brightness profile：`ziwei.brightness.iztro_v1` 已 admitted，僅 explicit add-on
 - sparse same-palace pair interpretation：`武曲×天相` 目前只 admission `兄弟宮` / `官祿宮` 2 條 practitioner-bounded claims；exact canonical occupancy match 才啟動，無 14×14 Cartesian expansion
 - Body-Palace overlay interpretation：production admission 1 條 `身宮=後天發展 overlay` methodology + `夫妻宮` / `財帛宮` / `官祿宮` / `遷移宮` 4 條 exact overlay claims；deterministic fact 只把 `body_palace.branch` 映射回既有十二宮，不建立第十三宮
-- sparse star×palace contextual interpretation：production admission `天相×命宮`、`天梁×官祿宮` 2 條 practitioner-bounded overrides + `貪狼×夫妻宮`、`破軍×遷移宮`、`武曲×田宅宮`、`天機×田宅宮`、`破軍×夫妻宮`、`廉貞×財帛宮`、`武曲×命宮` 7 條 historical-bounded overrides；只吃 canonical occupancy，無 14×12 Cartesian expansion，未 admission 組合維持 L5 composition
+- sparse star×palace contextual interpretation：production admission `天相×命宮`、`天梁×官祿宮`、`巨門×兄弟宮` 3 條 practitioner-bounded overrides + `貪狼×夫妻宮`、`破軍×遷移宮`、`武曲×田宅宮`、`天機×田宅宮`、`破軍×夫妻宮`、`廉貞×財帛宮`、`武曲×命宮` 7 條 historical-bounded overrides + `七殺×福德宮` 1 條 historical-condition + practitioner-bounded override；只吃 canonical occupancy，無 14×12 Cartesian expansion，未 admission 組合維持 L5 composition
 - star×palace research follow-up：`STAR_PALACE_CONTEXTUAL_RESEARCH_V2.md` 的 `貪狼×夫妻宮` historical bounded candidate 已 separately production-admitted；Nihai 配偶年齡 heuristic 仍為 practitioner-only defer，`紫微×官祿宮` 維持 non-material rejection，`破軍×遷移宮` 維持 borderline/defer
 - star×palace research v3：`STAR_PALACE_CONTEXTUAL_RESEARCH_V3.md` research-only admission candidates `破軍×遷移宮`、`武曲×田宅宮`、`天機×田宅宮`、`破軍×夫妻宮` 均已 separately production-admitted；`貪狼×遷移宮` 維持 borderline/defer，`紫微×遷移宮` 維持 redundant rejection
 
@@ -39,7 +39,7 @@ research-only scaffold
 - star×palace targeted recheck v6：`STAR_PALACE_CONTEXTUAL_RESEARCH_V6.md` 只重查 `太陽×父母宮`、`天梁×父母宮`、`天同×兄弟宮`、`巨門×兄弟宮`；太陽／天同維持 bounded-L5，天梁／巨門重新開為 `DEFERRED_EVIDENCE / ADMISSION-CANDIDATE-RECHECK`；`太陰×子女宮` 仍留給 separate high-risk gate。
 - star×palace high-risk targeted recheck v7：`STAR_PALACE_CONTEXTUAL_RESEARCH_V7.md` 單獨重查 `太陰×子女宮`；排除性別／數量／生育／健康存亡／固定成就等高風險斷語後，沒有留下超越現有 `太陰 core + 子女宮 domain + dignity condition` 的 material distinction，因此維持 `HIGH_RISK_BOUNDED / resolved`，coverage metrics 不變。
 - star×palace admission-candidate evidence review v8：`STAR_PALACE_CONTEXTUAL_RESEARCH_V8.md` 對 V5/V6 reopened cells 做下一層 evidence gate；`巨門×兄弟宮`、`七殺×福德宮` 升為 research `ADMISSION-CANDIDATE`，`天梁×父母宮` 改為 `DEFER-BORDERLINE`；routing 仍為 `DEFERRED_EVIDENCE / unresolved`，production claim count 與 coverage metrics 不變。
-- natal synthesis v1：production-admitted selection-only layer over the default 68 base natal claims；保留 full selected-claim trace，預設聚焦 4–6 個高辨識度且盡量不重複的 evidence-bounded signals，不新增 doctrine，不更改 optional-module defaults。
+- natal synthesis v1：production-admitted selection-only layer over the default 70 base natal claims；保留 full selected-claim trace，預設聚焦 4–6 個高辨識度且盡量不重複的 evidence-bounded signals，不新增 doctrine，不更改 optional-module defaults。
 - optional M1 auxiliary profile：`ziwei.auxiliary.m1.common_v1` admission 天魁／天鉞／祿存／天馬／擎羊／陀羅／火星／鈴星／地空／地劫十星 natal placement + 10 條 bounded modifier-role policy；runtime 必須與 M0 同時啟用，M0+M1 才提供 broader auxiliary completeness；M2/M3與高風險事件斷語仍未 admission
 - deterministic ChatGPT materialization：`ZIWEI_MATERIALIZATION.md` + bundle 已建立
 - ordinary unspecified auto-routing：仍刻意為 false
