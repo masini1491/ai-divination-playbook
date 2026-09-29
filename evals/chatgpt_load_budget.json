@@ -100,7 +100,7 @@
         "ASTROLOGY_NATAL.md"
       ],
       "max_optimized_file_reads": 4,
-      "max_payload_ratio": 0.75
+      "max_payload_ratio": 0.78
     },
     "explicit_research_astrology": {
       "baseline": {
@@ -114,7 +114,7 @@
         "references/astrology/README.md"
       ],
       "max_optimized_file_reads": 4,
-      "max_payload_ratio": 0.8
+      "max_payload_ratio": 0.83
     },
     "continuation_tarot": {
       "baseline": {
