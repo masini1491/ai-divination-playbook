@@ -176,6 +176,10 @@ high-risk             37
 deferred              37
 ```
 
+Derived coverage note: the machine coverage index was regenerated after the
+research-state changes above. Routing counts remain unchanged; only the three
+cells' research-state / research-ref metadata changed.
+
 ## Next gate
 
 ### 巨門×兄弟宮 / 七殺×福德宮
