@@ -12,15 +12,15 @@ class Tests(unittest.TestCase):
   self.assertEqual(168,self.index["total_cells"]); self.assertEqual(168,len(self.index["cells"])); self.assertEqual(168,len(self.cells))
   self.assertEqual(14,len({x["star"] for x in self.index["cells"]})); self.assertEqual(12,len({x["palace"] for x in self.index["cells"]}))
  def test_metrics(self):
-  m=self.index["metrics"]; self.assertEqual((154,119,14,9,73,35),(m["reviewed_cells"],m["resolved_cells"],m["unreviewed_cells"],m["dedicated_l4"],m["bounded_l5_composition"],m["deferred_evidence"])); self.assertEqual(37,m["high_risk_bounded"])
+  m=self.index["metrics"]; self.assertEqual((154,117,14,9,71,37),(m["reviewed_cells"],m["resolved_cells"],m["unreviewed_cells"],m["dedicated_l4"],m["bounded_l5_composition"],m["deferred_evidence"])); self.assertEqual(37,m["high_risk_bounded"])
   self.assertEqual(168,m["reviewed_cells"]+m["unreviewed_cells"]); self.assertLessEqual(m["resolved_cells"],m["reviewed_cells"])
  def test_dedicated_map(self):
   exp={f'{c["star"]}×{c["palace"]}':c["claim_id"] for c in self.registry["claims"]}
   act={k:v["claim_ref"] for k,v in self.cells.items() if v["routing_mode"]=="DEDICATED_L4"}
   self.assertEqual(exp,act)
  def test_backfill(self):
-  for k in ("太陽×財帛宮","太陽×官祿宮","紫微×官祿宮","紫微×遷移宮","天機×財帛宮","巨門×奴僕宮","破軍×福德宮","太陽×父母宮","太陰×父母宮","天梁×父母宮","天同×福德宮","太陰×福德宮","巨門×福德宮","天梁×福德宮","武曲×官祿宮","天同×官祿宮","天府×官祿宮","太陰×官祿宮","貪狼×官祿宮","七殺×官祿宮","破軍×官祿宮","天府×財帛宮","天同×兄弟宮","巨門×兄弟宮","紫微×財帛宮","太陰×財帛宮","天相×財帛宮","七殺×財帛宮","天同×遷移宮","天府×遷移宮","太陰×遷移宮","巨門×遷移宮","天相×遷移宮","天梁×遷移宮","天府×田宅宮","太陰×田宅宮","巨門×田宅宮","天相×田宅宮","天梁×田宅宮","紫微×命宮","天機×命宮","太陽×命宮","天同×命宮","廉貞×命宮","天府×命宮","太陰×命宮","貪狼×命宮","巨門×命宮","天梁×命宮","七殺×命宮","破軍×命宮","紫微×兄弟宮","天機×兄弟宮","太陽×兄弟宮","武曲×兄弟宮","廉貞×兄弟宮","天府×兄弟宮","太陰×兄弟宮","天相×兄弟宮","天機×奴僕宮","太陽×奴僕宮","武曲×奴僕宮","天同×奴僕宮","天府×奴僕宮","太陰×奴僕宮","天梁×奴僕宮","破軍×奴僕宮"): self.assertEqual("BOUNDED_L5_COMPOSITION",self.cells[k]["routing_mode"])
-  for k in ("武曲×財帛宮","天相×官祿宮","貪狼×遷移宮","天機×福德宮","紫微×奴僕宮","天同×財帛宮","紫微×福德宮","太陽×福德宮","武曲×福德宮","廉貞×福德宮","天府×福德宮","貪狼×福德宮","天相×福德宮","天機×官祿宮","廉貞×官祿宮","巨門×官祿宮","貪狼×財帛宮","巨門×財帛宮","天梁×財帛宮","破軍×財帛宮","天機×遷移宮","太陽×遷移宮","武曲×遷移宮","廉貞×遷移宮","七殺×遷移宮","紫微×田宅宮","太陽×田宅宮","天同×田宅宮","貪狼×田宅宮","七殺×田宅宮","破軍×田宅宮","廉貞×奴僕宮","貪狼×奴僕宮","天相×奴僕宮","七殺×福德宮"): self.assertEqual("DEFERRED_EVIDENCE",self.cells[k]["routing_mode"])
+  for k in ("太陽×財帛宮","太陽×官祿宮","紫微×官祿宮","紫微×遷移宮","天機×財帛宮","巨門×奴僕宮","破軍×福德宮","太陽×父母宮","太陰×父母宮","天同×福德宮","太陰×福德宮","巨門×福德宮","天梁×福德宮","武曲×官祿宮","天同×官祿宮","天府×官祿宮","太陰×官祿宮","貪狼×官祿宮","七殺×官祿宮","破軍×官祿宮","天府×財帛宮","天同×兄弟宮","紫微×財帛宮","太陰×財帛宮","天相×財帛宮","七殺×財帛宮","天同×遷移宮","天府×遷移宮","太陰×遷移宮","巨門×遷移宮","天相×遷移宮","天梁×遷移宮","天府×田宅宮","太陰×田宅宮","巨門×田宅宮","天相×田宅宮","天梁×田宅宮","紫微×命宮","天機×命宮","太陽×命宮","天同×命宮","廉貞×命宮","天府×命宮","太陰×命宮","貪狼×命宮","巨門×命宮","天梁×命宮","七殺×命宮","破軍×命宮","紫微×兄弟宮","天機×兄弟宮","太陽×兄弟宮","武曲×兄弟宮","廉貞×兄弟宮","天府×兄弟宮","太陰×兄弟宮","天相×兄弟宮","天機×奴僕宮","太陽×奴僕宮","武曲×奴僕宮","天同×奴僕宮","天府×奴僕宮","太陰×奴僕宮","天梁×奴僕宮","破軍×奴僕宮"): self.assertEqual("BOUNDED_L5_COMPOSITION",self.cells[k]["routing_mode"])
+  for k in ("武曲×財帛宮","天相×官祿宮","貪狼×遷移宮","天機×福德宮","紫微×奴僕宮","天同×財帛宮","紫微×福德宮","太陽×福德宮","武曲×福德宮","廉貞×福德宮","天府×福德宮","貪狼×福德宮","天相×福德宮","天機×官祿宮","廉貞×官祿宮","巨門×官祿宮","貪狼×財帛宮","巨門×財帛宮","天梁×財帛宮","破軍×財帛宮","天機×遷移宮","太陽×遷移宮","武曲×遷移宮","廉貞×遷移宮","七殺×遷移宮","紫微×田宅宮","太陽×田宅宮","天同×田宅宮","貪狼×田宅宮","七殺×田宅宮","破軍×田宅宮","廉貞×奴僕宮","貪狼×奴僕宮","天相×奴僕宮","七殺×福德宮","天梁×父母宮","巨門×兄弟宮"): self.assertEqual("DEFERRED_EVIDENCE",self.cells[k]["routing_mode"])
  def test_high_risk_bounded(self):
   c=self.cells["太陰×子女宮"]; self.assertEqual("HIGH_RISK_BOUNDED",c["routing_mode"]); self.assertTrue(c["resolved"])
   for k in ("巨門×夫妻宮","紫微×父母宮","天機×父母宮","武曲×父母宮","天同×父母宮","廉貞×父母宮","天府×父母宮","貪狼×父母宮","巨門×父母宮","天相×父母宮","七殺×父母宮","破軍×父母宮"): self.assertEqual("HIGH_RISK_BOUNDED",self.cells[k]["routing_mode"]); self.assertTrue(self.cells[k]["resolved"])
