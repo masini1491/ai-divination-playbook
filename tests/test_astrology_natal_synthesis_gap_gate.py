@@ -38,12 +38,16 @@ class AstrologyNatalSynthesisGapGateTests(unittest.TestCase):
         self.assertIn("不得寫入 public repo", self.owner)
         self.assertIn("synthetic regression", self.owner)
 
-    def test_backlog_declares_one_shot_non_harness_scope(self):
+    def test_backlog_preserves_ast_p1_250_identity_across_lifecycle(self):
         self.assertIn("AST-P1-250 — Post-Reading Natal Gap Escalation Gate", self.backlog)
-        self.assertIn("status: IN_PROGRESS", self.backlog)
-        self.assertIn("no accuracy score", self.backlog)
-        self.assertIn("no repeated-run harness or theme-stability KPI", self.backlog)
-        self.assertIn("no permanent evaluation queue", self.backlog)
+        active = "status: IN_PROGRESS" in self.backlog
+        closed = "**AST-P1-250 — Post-Reading Natal Gap Escalation Gate** — DONE" in self.backlog
+        self.assertTrue(active or closed)
+
+    def test_gate_remains_non_harness_after_backlog_closure(self):
+        self.assertIn("不是長期 evaluation harness", self.owner)
+        self.assertIn("不建立 accuracy KPI", self.owner)
+        self.assertIn("不產生 mutation", self.owner)
 
 
 if __name__ == "__main__":
