@@ -12,8 +12,16 @@ from dataclasses import dataclass
 from tools.ziwei_calendar_provider import GregorianBirthInput
 
 RESOLVER_ID = "ziwei-birthplace-timezone-tw-v1"
-RESOLVER_VERSION = "1.0.0"
+RESOLVER_VERSION = "1.1.0"
 TIMEZONE = "Asia/Taipei"
+
+TAIWAN_LOCALITY_ALIASES = {
+    # Bounded locality-only aliases for places whose municipality/city name is
+    # commonly supplied without the top-level county/city prefix.
+    # Alias values identify the canonical top-level administrative region only;
+    # they do not geocode coordinates or infer longitude.
+    "頭份市": "苗栗縣",
+}
 
 TAIWAN_TOP_LEVEL_REGIONS = (
     "臺北市","新北市","桃園市","臺中市","臺南市","高雄市",
@@ -54,14 +62,18 @@ def normalize_taiwan_birthplace(value: str) -> str:
 def resolve_birthplace_timezone(birthplace: str) -> ResolvedBirthplaceTimezone:
     normalized = normalize_taiwan_birthplace(birthplace)
     matches = [region for region in TAIWAN_TOP_LEVEL_REGIONS if normalized.startswith(region)]
-    if len(matches) != 1:
+    if len(matches) == 1:
+        matched_region = matches[0]
+    elif normalized in TAIWAN_LOCALITY_ALIASES:
+        matched_region = TAIWAN_LOCALITY_ALIASES[normalized]
+    else:
         raise ZiWeiBirthplaceTimezoneError(
             "unsupported or ambiguous birthplace for Zi Wei timezone resolution; provide explicit IANA timezone"
         )
     return ResolvedBirthplaceTimezone(
         raw_birthplace=birthplace,
         normalized_birthplace=normalized,
-        matched_region=matches[0],
+        matched_region=matched_region,
     )
 
 def gregorian_birth_from_birthplace(

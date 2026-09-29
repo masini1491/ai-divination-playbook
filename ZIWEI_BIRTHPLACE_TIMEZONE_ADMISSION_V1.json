@@ -5,14 +5,17 @@
   "status": "PRODUCTION_ADMITTED_INPUT_PRE_ADAPTER",
   "runtime_owner": "tools/ziwei_birthplace_timezone.py",
   "resolver_id": "ziwei-birthplace-timezone-tw-v1",
-  "resolver_version": "1.0.0",
+  "resolver_version": "1.1.0",
   "scope": {
-    "input": "recognized Taiwan top-level administrative region prefix, with optional trailing locality text",
+    "input": "recognized Taiwan top-level administrative region prefix, or explicitly allowlisted locality-only alias, with optional trailing locality text only for top-level-prefix inputs",
     "output": "Asia/Taipei",
     "coordinates": false,
     "longitude": false,
     "true_solar_time": false,
-    "global_place_resolution": false
+    "global_place_resolution": false,
+    "locality_aliases": {
+      "頭份市": "苗栗縣"
+    }
   },
   "activation": "birthplace supplied and explicit IANA timezone omitted",
   "precedence": "explicit IANA timezone remains authoritative and bypasses this resolver",
@@ -26,6 +29,7 @@
     "timezone resolution does not imply exact-place geocoding",
     "timezone resolution does not imply birthplace-to-longitude admission",
     "true solar time still requires explicit admitted profile plus longitude",
-    "Astrology place-resolver admission is not inherited"
+    "Astrology place-resolver admission is not inherited",
+    "locality-only aliases are explicit allowlist entries only; no fuzzy place-name inference"
   ]
 }

@@ -180,7 +180,12 @@
         "broader_global_place_resolution": false,
         "coordinates_resolved": false,
         "longitude_resolved": false,
-        "true_solar_time_activated": false
+        "true_solar_time_activated": false,
+        "resolver_version": "1.1.0",
+        "locality_alias_mode": "exact_allowlist_only",
+        "locality_aliases": {
+          "頭份市": "苗栗縣"
+        }
       }
     }
   ],

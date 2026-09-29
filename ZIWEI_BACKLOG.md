@@ -215,7 +215,7 @@ The items below are **DONE**. They are retained only as compact identity pointer
 - **ZW-P1-040 — Dynamic interpretation claim corpus** — DONE.
 - **ZW-P1-050 — Full 14×12 star×palace coverage routing architecture** — DONE.
 - **ZW-P1-060 — Evidence-bounded natal synthesis v1** — DONE.
-- **ZW-P1-080 — Taiwan birthplace → IANA timezone pre-adapter** — DONE; PR #364, Taiwan-only `Asia/Taipei`, no coordinates/longitude inference; canonical Minguo adapter is now included in the deterministic Zi Wei bundle.
+- **ZW-P1-080 — Taiwan birthplace → IANA timezone pre-adapter** — DONE; Taiwan-only `Asia/Taipei`, now supports top-level-region prefixes plus exact allowlisted locality-only aliases such as `頭份市 → 苗栗縣`; no fuzzy geocoding, coordinates or longitude inference; canonical Minguo adapter remains bundled.
 - **ZW-P2-010 — M1 high-impact auxiliary stars** — DONE.
 - **ZW-P2-020 — Sparse star×palace contextual claims** — DONE.
 - **ZW-P2-021 — Sparse star×palace contextual research v3** — DONE.
