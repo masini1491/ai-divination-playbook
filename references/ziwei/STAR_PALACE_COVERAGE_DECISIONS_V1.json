@@ -134,10 +134,10 @@
     {
       "star": "天梁",
       "palace": "父母宮",
-      "routing_mode": "BOUNDED_L5_COMPOSITION",
-      "resolved": true,
-      "research_state": "REJECT-REDUNDANT",
-      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
+      "routing_mode": "DEFERRED_EVIDENCE",
+      "resolved": false,
+      "research_state": "ADMISSION-CANDIDATE-RECHECK",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V6.md"
     },
     {
       "star": "紫微",
@@ -334,10 +334,10 @@
     {
       "star": "巨門",
       "palace": "兄弟宮",
-      "routing_mode": "BOUNDED_L5_COMPOSITION",
-      "resolved": true,
-      "research_state": "REJECT-REDUNDANT",
-      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md"
+      "routing_mode": "DEFERRED_EVIDENCE",
+      "resolved": false,
+      "research_state": "ADMISSION-CANDIDATE-RECHECK",
+      "research_ref": "references/ziwei/STAR_PALACE_CONTEXTUAL_RESEARCH_V6.md"
     },
     {
       "star": "太陰",
