@@ -119,7 +119,7 @@ explicit Astrology request
 → deterministic input resolution
 → provider routing
    ChatGPT exact/approximate known-time natal
-   → probe host-preinstalled swisseph
+   → probe host-preinstalled PySwissEph API
       PASS → swiss-host-natal-v1
       FAIL → astronomy-engine-natal-v1
    non-ChatGPT / unknown-time / transit
@@ -264,7 +264,7 @@ Astrology Production v1 適合使用者明確要求：
 explicit Astrology request
 → optional tools/astrology_place_resolver.py
 → tools/astrology_provider_selector.py
-   ChatGPT exact/approximate known-time natal + host swisseph probe PASS
+   ChatGPT exact/approximate known-time natal + host PySwissEph API probe PASS
    → tools/astrology_swiss_provider.py
    otherwise
    → tools/astrology_provider.py / tools/astrology_transit_provider.py
@@ -279,7 +279,7 @@ explicit Astrology request
 重要邊界：
 
 - Astrology **不參與 ordinary auto-routing**；
-- ChatGPT host-native Swiss只 admission exact/approximate known-time natal；unknown-time、transit、non-ChatGPT或 probe FAIL一律回 Astronomy Engine portable path；
+- ChatGPT host-native `swiss-host-natal-v1` 是 PySwissEph provider/API identity；exact/approximate known-time natal可優先使用，但 actual backend由每個物件的 `retflag` 決定。只有 `SWIEPH_ONLY` 可稱 Swiss Ephemeris data；MOSEPH/MIXED必須明示；unknown-time、transit、non-ChatGPT或 API probe FAIL回 Astronomy Engine portable path；
 - Repo不安裝、不宣告 dependency、不 vendor Swiss/PySwissEph source或 ephemeris data；
 - raw birth data 不授權 language model 自行手算 planets / houses / aspects；
 - birth time、timezone 或 location identity 有 material ambiguity 時必須 fail closed；
