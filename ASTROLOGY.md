@@ -56,11 +56,11 @@ raw birth data
 
 Canonical runtime gate：`tools/astrology_runtime.py`；所有 generated provider bundle都必須通過它。Fact Bundle / runtime schema與 production admission以 `ASTROLOGY_PRODUCTION_ADMISSION_V1.json` + schemas為 machine truth。
 
-**Location resolution先於 provider selection。** Explicit coordinates + IANA timezone可直接進 provider routing；`place`／`country` name input必須先走 admitted resolver。Installed resolver/runtime/cache MISS時，不論後續會選 Swiss或 Astronomy，都必須讀 `ASTROLOGY_PLACE_RESOLVER_MATERIALIZATION.md` 並 exhaust admitted profile-500 query-bounded transport；不得改用 generic web、public GeoNames search、map search或模型記憶補座標。
+**Location resolution先於 provider selection。** `place`／`country` resolver MISS → `ASTROLOGY_PLACE_RESOLVER_MATERIALIZATION.md`；generic web / public GeoNames / map search / model-memory coordinates均禁止。Explicit coordinates + IANA timezone可直接進 provider routing。
 
-Provider selection依 `ASTROLOGY_PROVIDER_ROUTING_V1.json` + `tools/astrology_provider_selector.py`：**ChatGPT execution surface 的 exact/approximate known-time natal 在 location resolution完成後 probe host-preinstalled `swisseph`，PASS 即使用 `swiss-host-natal-v1`；其他 host、probe FAIL、unknown-time或 transit 一律使用 `astronomy-engine-natal-v1`**。Repo不得為 Swiss route 安裝、宣告 dependency、vendor source/data；所有 provider仍輸出同一 `astrology_fact_bundle@1.0.0`。ChatGPT 呼叫 orchestrator時必須顯式傳入 `host_family="chatgpt"`（CLI：`--host-family chatgpt`）；其他執行面預設 `portable`。
+Provider selection依 `ASTROLOGY_PROVIDER_ROUTING_V1.json`：ChatGPT known-time natal 在 location完成後 probe host `swisseph`；PASS → `swiss-host-natal-v1`，其餘 → Astronomy Engine。所有 provider仍輸出 `astrology_fact_bundle@1.0.0`；Repo不安裝／vendor Swiss。ChatGPT orchestrator使用 `host_family="chatgpt"`。
 
-只有 selector落到 portable Astronomy path且 local runtime缺少 approved provider時，才進 `ASTROLOGY_MATERIALIZATION.md` 的 **verified cache reuse / Host Capability Gate**，並禁止 full-bundle-first；local miss仍不得直接判 deterministic facts unavailable。Core materialization只涵蓋 explicit coordinates + IANA timezone；place-resolution recovery由獨立 owner處理。
+Portable Astronomy runtime MISS → `ASTROLOGY_MATERIALIZATION.md` verified cache / Host Capability Gate，禁止 full-bundle-first；core只涵蓋 explicit coordinates + IANA timezone。
 
 ## 3. Mode Owners
 
