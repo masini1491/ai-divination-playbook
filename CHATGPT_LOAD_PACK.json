@@ -127,7 +127,7 @@
         "selected Astrology mode owner"
       ],
       "notes": "Production Astrology only; after the root owner, load ASTROLOGY_NATAL.md or ASTROLOGY_TRANSIT.md by reading_mode. Research intent continues to bypass the pack.",
-      "capability_gap_followup": "Calculation/runtime gap → PLAYBOOK_INDEX.json → method.astrology.materialization_contract; place-resolution gap → PLAYBOOK_INDEX.json → method.astrology.place_resolver_materialization_contract"
+      "capability_gap_followup": "calc→method.astrology.materialization_contract; place→method.astrology.place_resolver_materialization_contract"
     },
     "explicit_ziwei": {
       "fragments": [
