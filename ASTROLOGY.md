@@ -60,7 +60,7 @@ Canonical runtime gate：`tools/astrology_runtime.py`；所有 generated provide
 
 Provider selection依 `ASTROLOGY_PROVIDER_ROUTING_V1.json`：ChatGPT known-time natal 在 location完成後 probe host `swisseph`；PASS → `swiss-host-natal-v1`，其餘 → Astronomy Engine。所有 provider仍輸出 `astrology_fact_bundle@1.0.0`；Repo不安裝／vendor Swiss。ChatGPT orchestrator使用 `host_family="chatgpt"`。
 
-Portable Astronomy runtime MISS → `ASTROLOGY_MATERIALIZATION.md` verified cache / Host Capability Gate，禁止 full-bundle-first；core只涵蓋 explicit coordinates + IANA timezone。
+Portable Astronomy runtime MISS → `ASTROLOGY_MATERIALIZATION.md` verified cache reuse / Host Capability Gate，禁止 full-bundle-first；core只涵蓋 explicit coordinates + IANA timezone。
 
 ## 3. Mode Owners
 
