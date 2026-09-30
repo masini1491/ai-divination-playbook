@@ -29,8 +29,8 @@ Last reviewed against:
 
 ```text
 ai-divination-playbook main
-4b675bc1a6b87aacb6824e4b98fff98deeb43dc6
-Add Zi Wei Taiwan birthplace timezone pre-adapter (#364)
+838d689ab3f5ca31dbfe40ff6d240ac67aa61281
+Fix Swiss North Node provenance closure (#377)
 ```
 
 This SHA is review evidence only, not a pin. Every maintenance, evaluation or implementation task must resolve current `main` again before mutation.
@@ -130,7 +130,7 @@ This file is an active / deferred coordination surface, not a completed-work arc
 
 ## P2 — deferred / trigger-based research
 
-### ZW-P2-026 — Sparse star×palace contextual research v4/v5
+### ZW-P2-026 — Sparse star×palace contextual research v4/v8
 
 - type: RESEARCH / INTERPRETATION
 - status: DEFERRED
@@ -148,10 +148,10 @@ This file is an active / deferred coordination surface, not a completed-work arc
   - all ordinary non-health palace rows are reviewed;
   - current coverage = 168 total / 154 reviewed / 119 resolved / 14 unreviewed;
   - the 14 unreviewed identities are the 疾厄宮 row;
-  - V5 targeted recheck keeps `紫微×官祿宮` and `天府×財帛宮` resolved bounded-L5, but reopens `七殺×福德宮` as `DEFERRED_EVIDENCE / ADMISSION-CANDIDATE-RECHECK`;
-  - V6 targeted recheck keeps `太陽×父母宮` and `天同×兄弟宮` resolved bounded-L5, but reopens `天梁×父母宮` and `巨門×兄弟宮` as `DEFERRED_EVIDENCE / ADMISSION-CANDIDATE-RECHECK`;
-  - V7 high-risk recheck keeps `太陰×子女宮` `HIGH_RISK_BOUNDED / resolved`; no coverage metric changes and no production claim added;
-  - V8 evidence review advanced `七殺×福德宮` and `巨門×兄弟宮` to research `ADMISSION-CANDIDATE`; both are now production-admitted dedicated-L4 contextual claims, while `天梁×父母宮` remains `DEFERRED_EVIDENCE / DEFER-BORDERLINE`;
+  - `紫微×官祿宮` / `天府×財帛宮` / `太陽×父母宮` / `天同×兄弟宮` remain resolved bounded-L5 after targeted recheck;
+  - `太陰×子女宮` remains `HIGH_RISK_BOUNDED / resolved` after the separate V7 high-risk review;
+  - `七殺×福德宮` and `巨門×兄弟宮` are now production-admitted dedicated-L4 contextual claims;
+  - `天梁×父母宮` remains the only V5–V8 reading-gap candidate still `DEFERRED_EVIDENCE / DEFER-BORDERLINE`;
   - production dedicated-L4 expansion is sparse and remains separately admitted from research classification.
 - trigger:
   - a recurring real-reading semantic gap identifies a specific unresolved / insufficient star×palace cell; or

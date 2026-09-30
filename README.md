@@ -290,7 +290,7 @@ Zi Wei 目前是 bounded natal production method，適合使用者明確要求�
 - `natal_baseline` only；
 - 14 主星 first-layer facts / claims；
 - 12 宮 first-layer claims；
-- 52 first-layer claims + 2 source-explicit `武曲×天相` same-palace claims（兄弟宮／官祿宮）+ 5 bounded Body-Palace claims + 2 sparse star×palace contextual claims，共 61 base natal claims；
+- 52 first-layer claims + 2 source-explicit `武曲×天相` same-palace claims（兄弟宮／官祿宮）+ 5 bounded Body-Palace claims + 11 sparse star×palace contextual claims，共 70 base natal claims；
 - 命宮、身宮、五行局、14 主星 placement 等 deterministic natal facts；身宮另 deterministic 投影到既有十二宮之一，不建立第十三宮；
 - same-palace pair claims只在 canonical occupancy facts 同時證明兩星落入 admitted 同一宮位時啟動；沒有 pair-specific source evidence 時維持原 bounded composition，不用模型記憶補齊；
 - Body-Palace overlay interpretation只 admission `身宮` methodology + `夫妻宮`／`財帛宮`／`官祿宮`／`遷移宮` 四個 exact overlay context；其他身宮落宮不補造語義；
@@ -312,6 +312,8 @@ explicit Zi Wei request
 → tools/ziwei_calendar_provider.py（西元生日）或 normalized lunar input
 → tools/ziwei_natal_provider.py
 → optional tools/ziwei_brightness_provider.py
+→ optional tools/ziwei_m0_auxiliary_provider.py
+→ optional tools/ziwei_m1_auxiliary_provider.py（requires m0_auxiliary_v1）
 → optional tools/ziwei_sihua_provider.py + 3 source-explicit fact-gated claims
 → tools/ziwei_claim_retrieval.py + tools/ziwei_delivery.py
 → typed Zi Wei result
@@ -323,7 +325,7 @@ Legacy `run_scope_a_*` pipelines are compatibility adapters only; they are not t
 重要邊界：
 
 - Zi Wei **不參與 ordinary auto-routing**；
-- current production 除 bounded natal Scope-A 與 optional facts 外，已分層 admission 大限／流年／流月／流日／流時計算；V7–V11 另只 admission 大限、流年、流月、流日與流時的 bounded methodology interpretation。未另行 admission 的 temporal Si Hua／day/hour-pillar 斷語、generic temporal filler、非 M0 輔／雜星 interpretation與未另 admission 的 star×palace contextual corpus仍 fail closed；
+- current production 除 bounded natal Scope-A 與 optional facts 外，已分層 admission 大限／流年／流月／流日／流時計算；V7–V11 另只 admission 大限、流年、流月、流日與流時的 bounded methodology interpretation。未另行 admission 的 temporal Si Hua／day/hour-pillar 斷語、generic temporal filler、M0/M1 以外的輔／雜星 interpretation與未另 admission 的 star×palace contextual corpus仍 fail closed；
 - raw birth data 不授權 language model 自行手算農曆、命身宮、主星 placement 或 brightness；
 - Research Zi Wei 與 Production Zi Wei 分離：research 走 [`RESEARCH_ROUTING.md`](RESEARCH_ROUTING.md) → `references/ziwei/**`；
 - ChatGPT local runtime 缺少 Zi Wei source、calendar manifest 或本次所需 year shard 時，先依 [`ZIWEI_MATERIALIZATION.md`](ZIWEI_MATERIALIZATION.md) 走 verified same-commit bundle + query-bounded calendar-data materialization；ordinary production 不需要 `lunar_python` runtime。
