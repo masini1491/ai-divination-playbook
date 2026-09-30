@@ -42,6 +42,16 @@ def _backend_name(swe, retflag):
     if retflag & swe.FLG_MOSEPH: return "MOSEPH"
     return f"UNKNOWN({retflag})"
 
+def _backend_summary(data):
+    backends={row["effective_backend"] for row in data.values()}
+    if backends=={"SWIEPH"}: return "SWIEPH_ONLY"
+    if backends=={"MOSEPH"}: return "MOSEPH_ONLY"
+    if backends and backends.issubset({"SWIEPH","MOSEPH"}):
+        return "MIXED_SWIEPH_MOSEPH"
+    raise SwissProviderUnavailable(
+        "unadmitted effective backend(s): " + ",".join(sorted(backends))
+    )
+
 def _norm(v): return v%360.0
 def _delta(a,b): return ((b-a+180.0)%360.0)-180.0
 def _motion(speed): return "stationary" if abs(speed)<0.01 else ("retrograde" if speed<0 else "direct")
@@ -85,6 +95,7 @@ def build_natal_bundle(*,local_datetime,timezone_name,latitude,longitude,house_s
     swe=_load_swisseph(); local,utc,fold=_resolve_local_time(local_datetime,timezone_name); jd=_julian_day(swe,utc)
     cusps,asc,mc=_house_geometry(swe,jd,latitude,longitude,house_system)
     data={b:_calc_body(swe,jd,b) for b in CORE_BODY_NAMES}
+    backend_summary=_backend_summary(data)
     alt=_sun_alt(swe,jd,latitude,longitude,data["Sun"]); sect="diurnal" if alt>0 else ("nocturnal" if alt<0 else None)
     if sect is None: raise SwissProviderInputError("sect-geometric-solar-altitude-v1 is undefined at exact 0 degree solar altitude")
     objs=[]
@@ -107,7 +118,7 @@ def build_natal_bundle(*,local_datetime,timezone_name,latitude,longitude,house_s
         ar=_aspect(data[l]["longitude_deg"],data[r]["longitude_deg"])
         if ar:
             name,orb=ar; aspects.append({"fact_id":f"fact:aspect:{l.lower()}:{name}:{r.lower()}","aspect":name,"orb_deg":orb,"left_ref":f"fact:object:{l.lower()}","right_ref":f"fact:object:{r.lower()}","scope":"natal","participant_policy_id":ASPECT_PARTICIPANT_POLICY_ID,"aspect_policy_id":ASPECT_POLICY_ID,"orb_policy_id":ORB_POLICY_ID})
-    bundle={"schema_name":"astrology_fact_bundle","schema_version":"1.0.0","method":"Astrology","reading_mode":"natal","fact_source":"approved_provider","calculation_verification":"verified_provider","subject_ref":subject_ref,"birth_time_certainty":birth_time_certainty,"configuration":{"zodiac_system":"tropical","center":"geocentric","house_system":house_system},"provider":{"provider_id":PROVIDER_ID,"provider_version":PROVIDER_VERSION,"runtime_source":"host_preinstalled_only","pyswisseph_version":getattr(swe,"version",None),"requested_ephemeris_flags":int(swe.FLG_SWIEPH|swe.FLG_SPEED),"actual_retflag_per_calculated_object":{b:data[b]["retflag"] for b in CORE_BODY_NAMES},"effective_backend_per_calculated_object":{b:data[b]["effective_backend"] for b in CORE_BODY_NAMES},"local_datetime":local_datetime,"timezone_name":timezone_name,"resolved_local_iso":local.isoformat(),"resolved_utc_iso":utc.isoformat(),"fold":fold,"latitude":latitude,"longitude":longitude,"julian_day_ut":jd,"aspect_policies":{"participant_policy_id":ASPECT_PARTICIPANT_POLICY_ID,"participant_object_ids":list(CORE_BODY_NAMES),"aspect_policy_id":ASPECT_POLICY_ID,"aspect_types":list(MAJOR_ASPECT_ORBS),"orb_policy_id":ORB_POLICY_ID,"max_orb_degrees":dict(MAJOR_ASPECT_ORBS),"extended_points_or_angles":"not_admitted"},"sect":{"classification":sect,"policy_id":SECT_POLICY_ID,"sun_geometric_altitude_deg":alt,"refraction":"Airless/true_altitude","sun_frame":"geocentric-ecliptic-to-horizontal"}},"facts":{"objects":objs,"houses":houses,"aspects":aspects,"events":[]}}
+    bundle={"schema_name":"astrology_fact_bundle","schema_version":"1.0.0","method":"Astrology","reading_mode":"natal","fact_source":"approved_provider","calculation_verification":"verified_provider","subject_ref":subject_ref,"birth_time_certainty":birth_time_certainty,"configuration":{"zodiac_system":"tropical","center":"geocentric","house_system":house_system},"provider":{"provider_id":PROVIDER_ID,"provider_version":PROVIDER_VERSION,"provider_api_family":"PySwissEph","runtime_source":"host_preinstalled_only","pyswisseph_version":getattr(swe,"version",None),"effective_backend_summary":backend_summary,"requested_ephemeris_flags":int(swe.FLG_SWIEPH|swe.FLG_SPEED),"actual_retflag_per_calculated_object":{b:data[b]["retflag"] for b in CORE_BODY_NAMES},"effective_backend_per_calculated_object":{b:data[b]["effective_backend"] for b in CORE_BODY_NAMES},"local_datetime":local_datetime,"timezone_name":timezone_name,"resolved_local_iso":local.isoformat(),"resolved_utc_iso":utc.isoformat(),"fold":fold,"latitude":latitude,"longitude":longitude,"julian_day_ut":jd,"aspect_policies":{"participant_policy_id":ASPECT_PARTICIPANT_POLICY_ID,"participant_object_ids":list(CORE_BODY_NAMES),"aspect_policy_id":ASPECT_POLICY_ID,"aspect_types":list(MAJOR_ASPECT_ORBS),"orb_policy_id":ORB_POLICY_ID,"max_orb_degrees":dict(MAJOR_ASPECT_ORBS),"extended_points_or_angles":"not_admitted"},"sect":{"classification":sect,"policy_id":SECT_POLICY_ID,"sun_geometric_altitude_deg":alt,"refraction":"Airless/true_altitude","sun_frame":"geocentric-ecliptic-to-horizontal"}},"facts":{"objects":objs,"houses":houses,"aspects":aspects,"events":[]}}
     gate=gate_bundle(bundle)
     if not gate["interpretation_allowed"]: raise RuntimeError("host-native Swiss provider emitted rejected bundle: "+json.dumps(gate["errors"],ensure_ascii=False))
     return bundle
