@@ -9,6 +9,7 @@ class AstrologyMaterializationDiscoverabilityTests(unittest.TestCase):
         self.index=json.loads((ROOT/"PLAYBOOK_INDEX.json").read_text(encoding="utf-8"))
         self.matrix=json.loads((ROOT/"evals"/"regression_matrix.json").read_text(encoding="utf-8"))
         self.contract=(ROOT/"ASTROLOGY_MATERIALIZATION.md").read_text(encoding="utf-8")
+        self.place_contract=(ROOT/"ASTROLOGY_PLACE_RESOLVER_MATERIALIZATION.md").read_text(encoding="utf-8")
         self.scenario=(ROOT/"evals"/"ASTROLOGY_MATERIALIZATION_PRODUCT_SCENARIO.md").read_text(encoding="utf-8")
         self.workflow=(ROOT/".github"/"workflows"/"validation.yml").read_text(encoding="utf-8")
 
@@ -17,6 +18,7 @@ class AstrologyMaterializationDiscoverabilityTests(unittest.TestCase):
         self.assertEqual("ASTROLOGY.md",c["owner"])
         self.assertEqual("ASTROLOGY_MATERIALIZATION.md",c["materialization_contract"])
         self.assertEqual("runtime/astrology/CHATGPT_DETERMINISTIC_CORE_BUNDLE.json",c["deterministic_core_transport_bundle"])
+        self.assertEqual("ASTROLOGY_PLACE_RESOLVER_MATERIALIZATION.md",c["place_resolver_materialization_contract"])
         self.assertEqual("tools/build_astrology_core_bundle.py",c["core_transport_generator"])
         self.assertIn("place-resolver-excluded",c["core_bundle_scope"])
         self.assertEqual("production-admitted-profile-500-query-bounded",c["place_resolver_materialization_status"])
@@ -35,11 +37,19 @@ class AstrologyMaterializationDiscoverabilityTests(unittest.TestCase):
             "astronomy-engine==2.1.19",
             "place resolver → separate admitted input-resolution authority",
             "does **not require pip/network installation afterward**",
+            "ASTROLOGY_PLACE_RESOLVER_MATERIALIZATION.md",
+        ):
+            self.assertIn(phrase,self.contract)
+        self.assertNotIn("A-MAT-2 query-bounded resolver materialization",self.contract)
+        for phrase in (
+            "provider-independent input resolution",
             "The original whole-package / model-mediated A-MAT-2 transport remains rejected",
             "production-admitted for the default profile `500` only",
             "never silently substitute profile 500",
+            "do NOT use generic web",
+            "苗栗縣頭份市",
         ):
-            self.assertIn(phrase,self.contract)
+            self.assertIn(phrase,self.place_contract)
 
     def test_runtime_reuse_and_host_integration_binding(self):
         for phrase in (
@@ -89,11 +99,25 @@ class AstrologyMaterializationDiscoverabilityTests(unittest.TestCase):
         self.assertIn("print(json.dumps(manifest",self.workflow)
         self.assertNotIn("write_text(json.dumps(manifest",self.workflow)
 
-    def test_root_owner_routes_runtime_miss_to_materialization(self):
+    def test_root_owner_routes_runtime_and_place_gaps_to_distinct_owners(self):
         text=(ROOT/"ASTROLOGY.md").read_text(encoding="utf-8")
         self.assertIn("ASTROLOGY_MATERIALIZATION.md",text)
+        self.assertIn("ASTROLOGY_PLACE_RESOLVER_MATERIALIZATION.md",text)
         self.assertIn("verified cache reuse / Host Capability Gate",text)
         self.assertIn("禁止 full-bundle-first",text)
         self.assertIn("Core materialization只涵蓋 explicit coordinates + IANA timezone",text)
+        self.assertLess(
+            text.index("ASTROLOGY_PLACE_RESOLVER_MATERIALIZATION.md"),
+            text.index("Provider selection依"),
+        )
+
+    def test_chatgpt_swiss_pass_does_not_bypass_place_materialization(self):
+        pack=json.loads((ROOT/"CHATGPT_LOAD_PACK.json").read_text(encoding="utf-8"))
+        followup=pack["profiles"]["explicit_astrology"]["capability_gap_followup"]
+        self.assertIn("place_resolver_materialization_contract",followup)
+        self.assertIn("Swiss capability PASS只回答 astronomical provider capability",self.place_contract)
+        self.assertIn("host swisseph probe: PASS",self.place_contract)
+        self.assertIn("installed geonamescache: MISS",self.place_contract)
+        self.assertIn("do NOT use generic web",self.place_contract)
 
 if __name__=="__main__": unittest.main()

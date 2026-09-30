@@ -16,7 +16,7 @@ def test_profile500_transport_identity_is_pinned_and_admitted():
     assert transport["other_profiles"]=="NOT_ADMITTED_FOR_SHARD_MATERIALIZATION"
 
 def test_materialization_requires_exact_data_commit_and_no_profile_substitution():
-    text=(ROOT/"ASTROLOGY_MATERIALIZATION.md").read_text()
+    text=(ROOT/"ASTROLOGY_PLACE_RESOLVER_MATERIALIZATION.md").read_text()
     assert "Every retrieval MUST use the exact admitted data commit" in text
     assert "not admitted for shard materialization transport" in text
     assert "never silently substitute profile 500" in text
@@ -32,14 +32,14 @@ def test_taiwan_admin_normalization_policy_is_small_versioned_and_transport_safe
     assert policy["semantics"]["coordinates_authority"] is False
 
 def test_materialization_normalizes_taiwan_admin_input_before_alias_hashing():
-    text=(ROOT/"ASTROLOGY_MATERIALIZATION.md").read_text()
+    text=(ROOT/"ASTROLOGY_PLACE_RESOLVER_MATERIALIZATION.md").read_text()
     assert "runtime/astrology/TW_ADMIN_LOCALITY_V1.json" in text
     assert "exact county/city × township/district hierarchy validation" in text
     assert "valid pair: query = validated township/district, effective country = TW" in text
     assert "it never supplies coordinates" in text
 
 def test_docs_do_not_reopen_admitted_profile500_resolver_transport():
-    materialization=(ROOT/"ASTROLOGY_MATERIALIZATION.md").read_text(encoding="utf-8")
+    materialization=(ROOT/"ASTROLOGY_PLACE_RESOLVER_MATERIALIZATION.md").read_text(encoding="utf-8")
     backlog=(ROOT/"ASTROLOGY_BACKLOG.md").read_text(encoding="utf-8")
     assert "profile-500 query-bounded shard transport" in materialization
     assert "place resolver query-bounded shard materialization — admitted for default profile 500" in backlog
