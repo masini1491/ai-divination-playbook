@@ -659,7 +659,8 @@
       "chatgpt_known_time_natal_preference": "host-preinstalled swiss-host-natal-v1 when runtime probe passes; otherwise astronomy-engine-natal-v1",
       "swiss_host_native_admission_manifest": "ASTROLOGY_SWISS_PROVIDER_ADMISSION_V1.json",
       "swiss_host_native_provider": "tools/astrology_swiss_provider.py",
-      "non_chatgpt_swiss_use": "forbidden"
+      "non_chatgpt_swiss_use": "forbidden",
+      "place_resolver_materialization_contract": "ASTROLOGY_PLACE_RESOLVER_MATERIALIZATION.md"
     },
     {
       "id": "method.astrology.natal",
