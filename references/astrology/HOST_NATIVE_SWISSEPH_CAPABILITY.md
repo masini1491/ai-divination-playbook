@@ -96,95 +96,18 @@ MIXED_NATAL_BASELINE
 
 These labels describe host execution capability only.
 
-## 5. Production boundary
+## 5–9. Historical pre-admission record — SUPERSEDED
 
-Current production authority remains unchanged:
+Sections 5–9 of the original capability study described the state **before** host-native production admission. Their earlier conclusions such as `Current production authority remains unchanged`, `Current route remains unchanged`, and `Production routing remains NOT ADMITTED` are historical only and MUST NOT be used as current routing authority.
 
-```text
-astronomy-engine==2.1.19
-→ project-owned Astrology providers
-→ tools/astrology_runtime.py
-→ admitted Astrology Fact Bundle
-```
+Current machine truth is owned by:
 
-The host-native probe MUST NOT be inserted into ordinary production routing merely because it succeeds.
+- `ASTROLOGY_PROVIDER_ROUTING_V1.json`;
+- `ASTROLOGY_SWISS_PROVIDER_ADMISSION_V1.json`;
+- `ASTROLOGY_PRODUCTION_ADMISSION_V1.json#/natal_provider_routing`;
+- `tools/astrology_provider_selector.py`.
 
-In particular:
-
-```text
-swisseph import PASS
-→ NOT sufficient
-
-Sun..Pluto + houses PASS
-→ NOT sufficient
-
-bounded parity PASS
-→ still NOT sufficient
-
-separate provider/license/admission closure
-→ required before production use
-```
-
-## 6. License boundary
-
-Existing project research records Swiss Ephemeris / PySwissEph as a dual-license / AGPL-sensitive family and explicitly forbids silently adding it as a production dependency.
-
-This research adds a new architectural case:
-
-```text
-project distributes no Swiss code/data
-+
-host already exposes swisseph
-+
-project dynamically invokes host capability
-```
-
-Whether that case is acceptable for this public project's intended use must be resolved deliberately; this report does not provide legal advice or a production license conclusion.
-
-Until resolved:
-
-- do not add PySwissEph to production requirements;
-- do not vendor Swiss source or `.se1` files;
-- do not copy AGPL implementation into permissive production code;
-- keep the host probe REFERENCE-ONLY.
-
-## 7. Remaining technical admission gates
-
-Before any host-native provider can emit canonical Astrology facts:
-
-1. **Provenance schema** — preserve module/version, requested flags, actual `retflag`, effective backend and relevant configuration.
-2. **Node parity** — compare like-for-like mean/true node definitions.
-3. **Motion parity** — stress speed sign, retrograde boundaries and station timing.
-4. **Transit parity** — compare exact transit-event timing under frozen tolerances.
-5. **House edge behavior** — test high/polar latitudes and require explicit fail-closed semantics.
-6. **Scope freeze** — prospectively define accepted dates, objects, zodiac/center/house systems and tolerance.
-7. **Fact Bundle adapter** — only after admission, normalize host results through the existing runtime gate rather than creating a second fact schema.
-8. **License/admission closure** — technical PASS and legal/license posture are independent gates.
-
-## 8. Candidate future routing, not yet authorized
-
-Only if AST-P2-030 later receives production admission could a route such as this be considered:
-
-```text
-verified canonical Astrology cache
-→ admitted host-native provider available?
-   → yes: execute admitted adapter + preserve backend provenance
-   → no: existing GitHub artifact/materialization route
-→ canonical Astrology runtime Fact Gate
-```
-
-Current route remains unchanged.
-
-## 9. Decision
-
-```text
-Host-native PySwissEph/Moshier execution is FEASIBLE as a capability lane.
-Existing bounded parity evidence is encouraging.
-Production routing remains NOT ADMITTED.
-```
-
-The next useful work is not another proof that `swisseph` can import. It is admission-quality provenance + parity + license closure.
-
+The retained research evidence still establishes the bounded feasibility background: host-native PySwissEph may execute with mixed effective backends, actual `retflag` must be preserved, and repository installation/vendoring of Swiss remains forbidden. Current production outcome is recorded in §10 below.
 
 ## 10. Host-native production admission outcome
 
