@@ -79,7 +79,7 @@ PROFILES = {
     "explicit_astrology": {
         "fragments": ["bootstrap", "output_core"],
         "required_followup": ["ASTROLOGY.md", "selected Astrology mode owner"],
-        "capability_gap_followup": "PLAYBOOK_INDEX.json → method.astrology.materialization_contract",
+        "capability_gap_followup": "Calculation/runtime gap → PLAYBOOK_INDEX.json → method.astrology.materialization_contract; place-resolution gap → PLAYBOOK_INDEX.json → method.astrology.place_resolver_materialization_contract",
         "notes": "Production Astrology only; after the root owner, load ASTROLOGY_NATAL.md or ASTROLOGY_TRANSIT.md by reading_mode. Research intent continues to bypass the pack.",
     },
     "explicit_ziwei": {
