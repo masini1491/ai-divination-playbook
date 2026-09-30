@@ -756,8 +756,9 @@
       "provider_id": "swiss-host-natal-v1",
       "admission_manifest": "ASTROLOGY_SWISS_PROVIDER_ADMISSION_V1.json",
       "runtime_owner": "tools/astrology_swiss_provider.py",
-      "activation": "host_preinstalled_swisseph_probe_pass",
-      "repository_install_or_distribution": "forbidden"
+      "activation": "host_preinstalled_pyswisseph_api_probe_pass",
+      "repository_install_or_distribution": "forbidden",
+      "backend_semantics": "actual per-object retflag controls effective backend provenance; provider identity alone does not imply SWIEPH data"
     },
     "portable_default_provider": {
       "provider_id": "astronomy-engine-natal-v1",
