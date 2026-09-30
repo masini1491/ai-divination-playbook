@@ -116,7 +116,14 @@ Agent 依 `CHAT_INIT.md`：
 
 ```text
 explicit Astrology request
-→ deterministic input resolution / natal or transit calculation
+→ deterministic input resolution
+→ provider routing
+   ChatGPT exact/approximate known-time natal
+   → probe host-preinstalled swisseph
+      PASS → swiss-host-natal-v1
+      FAIL → astronomy-engine-natal-v1
+   non-ChatGPT / unknown-time / transit
+   → Astronomy Engine portable path
 → Astrology Fact Gate
 → admitted evidence selection / interpretation handoff
 → bounded synthesis
@@ -256,7 +263,11 @@ Astrology Production v1 適合使用者明確要求：
 ```text
 explicit Astrology request
 → optional tools/astrology_place_resolver.py
-→ tools/astrology_provider.py / tools/astrology_transit_provider.py
+→ tools/astrology_provider_selector.py
+   ChatGPT exact/approximate known-time natal + host swisseph probe PASS
+   → tools/astrology_swiss_provider.py
+   otherwise
+   → tools/astrology_provider.py / tools/astrology_transit_provider.py
 → Astrology Fact Bundle 1.0
 → tools/astrology_runtime.py
 → tools/astrology_orchestrator.py
@@ -268,6 +279,8 @@ explicit Astrology request
 重要邊界：
 
 - Astrology **不參與 ordinary auto-routing**；
+- ChatGPT host-native Swiss只 admission exact/approximate known-time natal；unknown-time、transit、non-ChatGPT或 probe FAIL一律回 Astronomy Engine portable path；
+- Repo不安裝、不宣告 dependency、不 vendor Swiss/PySwissEph source或 ephemeris data；
 - raw birth data 不授權 language model 自行手算 planets / houses / aspects；
 - birth time、timezone 或 location identity 有 material ambiguity 時必須 fail closed；
 - Research Astrology 與 Production Astrology 分離：來源／架構／evidence 研究走 [`RESEARCH_ROUTING.md`](RESEARCH_ROUTING.md) → `references/astrology/**`。
@@ -410,8 +423,10 @@ Canonical production implementation：
 
 ```text
 tools/astrology_place_resolver.py
-tools/astrology_provider.py
-tools/astrology_transit_provider.py
+tools/astrology_provider_selector.py       # host-aware provider routing
+tools/astrology_swiss_provider.py          # ChatGPT host-native known-time natal only
+tools/astrology_provider.py                # Astronomy Engine portable natal provider / fallback
+tools/astrology_transit_provider.py        # portable transit provider
 tools/astrology_runtime.py
 tools/astrology_orchestrator.py
 tools/astrology_evidence_selector.py
@@ -432,7 +447,7 @@ tools/astrology_output_guard.py
 | Tarot | 人物心理／互動、選項比較、主觀適配、牌位拆解 | Canonical stochastic core (`runtime/casting/core.py`) via full Runtime adapter (`runtime/casting/randomizer.py`) | [`TAROT.md`](TAROT.md) |
 | Meihua | 事件演化、主客／體用、轉折、節奏與象徵應期 | Canonical stochastic core (`runtime/casting/core.py`) via full Runtime adapter (`runtime/casting/randomizer.py`) | [`MEIHUA.md`](MEIHUA.md) |
 | Liuyao | 單一具體事件是否成立、阻礙來源、較具體 outcome / timing | local Randomizer three-coin Raw Cast + local deterministic engine/calendar/runtime | [`LIUYAO.md`](LIUYAO.md) |
-| Astrology | 本命盤、行運與 admitted natal/transit factors；explicit-request only | local deterministic place resolver + natal/transit providers + Fact Gate | [`ASTROLOGY.md`](ASTROLOGY.md) |
+| Astrology | 本命盤、行運與 admitted natal/transit factors；explicit-request only | place resolver + provider selector；ChatGPT known-time natal 可優先 host-native Swiss，其他情境走 Astronomy Engine portable natal/transit path + Fact Gate | [`ASTROLOGY.md`](ASTROLOGY.md) |
 | Zi Wei | bounded natal first layer + explicit dynamic calculation through hourly；V7–V11 bounded decadal/yearly/monthly/daily/hourly methodology interpretation；explicit-request only | Gregorian/calendar adapters + local Zi Wei providers/runtime + verified ChatGPT transport bundle | [`ZIWEI.md`](ZIWEI.md) |
 
 ## Authority boundary

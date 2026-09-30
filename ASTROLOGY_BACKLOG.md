@@ -29,8 +29,8 @@ Last reviewed against:
 
 ```text
 ai-divination-playbook main
-34b69c1a6bd643e19d5814383e0d80ba97502a26
-Merge pull request #374 from masini1491/fix/deterministic-materialization-owner-escalation
+794e9b00d2c58ab975f22ba4dea0a13dd65962fd
+Merge pull request #378 from masini1491/fix/ziwei-readme-backlog-reconciliation
 ```
 
 This SHA is review evidence only, not a pin. Every maintenance or implementation task must resolve current `main` again before mutation.
@@ -182,7 +182,7 @@ Unless the user explicitly asks for a different bounded task, a fresh Astrology 
 3. reconcile any changed item status against canonical owners
 4. enforce AST-P0-002 alongside any affected interpretation change
 5. no one-shot P1 item is currently active; do not invent evaluation-harness or matrix-completion work
-6. keep AST-P2-020 / AST-P2-030 deferred unless their explicit trigger appears
+6. keep AST-P2-020 deferred unless its explicit trigger appears; AST-P2-030 is closed and must not be reopened unless a new regression or explicit scope expansion appears
 7. concrete post-reading broad-natal gaps follow `ASTROLOGY_NATAL_SYNTHESIS.md` §4.1; semantic-resolution gaps then pass `references/astrology/EXACT_CLAIM_ADMISSION_POLICY_V1.md` before exact-claim research
 ```
 
