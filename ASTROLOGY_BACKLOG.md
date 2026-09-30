@@ -48,6 +48,7 @@ No active one-shot Astrology P2 provider task remains after AST-P2-030 closure.
 Closed anti-rediscovery boundary:
 
 - **AST-P2-030** — ChatGPT exact/approximate known-time natal may use only host-preinstalled `swisseph`; non-ChatGPT, unknown-time, transit, runtime-probe failure, or any route requiring install/vendor falls back to Astronomy Engine. Repo never installs or distributes Swiss.
+- **Place-resolver materialization ownership** — CLOSED: named-place/country recovery is provider-independent and owned by `ASTROLOGY_PLACE_RESOLVER_MATERIALIZATION.md`; Swiss PASS never authorizes generic-web coordinate substitution.
 
 Deferred / trigger-based work:
 
