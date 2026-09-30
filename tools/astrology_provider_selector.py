@@ -59,6 +59,13 @@ def probe_host_swisseph() -> dict[str, Any]:
             swe.get_library_path() if hasattr(swe, "get_library_path") else None
         ),
         "sun_retflag": int(retflag),
+        "sun_effective_backend": (
+            "JPLEPH" if retflag & swe.FLG_JPLEPH
+            else "SWIEPH" if retflag & swe.FLG_SWIEPH
+            else "MOSEPH" if retflag & swe.FLG_MOSEPH
+            else f"UNKNOWN({int(retflag)})"
+        ),
+        "capability_kind": "PYSWISSEPH_API_EXECUTABLE",
         "sun_longitude_deg": float(values[0]) % 360.0,
         "ascendant_deg": float(ascmc[0]) % 360.0,
         "midheaven_deg": float(ascmc[1]) % 360.0,

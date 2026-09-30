@@ -1,6 +1,6 @@
 {
   "schema_name": "astrology_provider_routing",
-  "schema_version": "1.1.0",
+  "schema_version": "1.2.0",
   "status": "PRODUCTION_ROUTING_POLICY",
   "selector_owner": "tools/astrology_provider_selector.py",
   "fact_bundle_schema": "astrology_fact_bundle@1.0.0",
@@ -28,7 +28,7 @@
         "fallback_provider_id": "astronomy-engine-natal-v1",
         "preference_requires": [
           "host_family=chatgpt",
-          "host_runtime_probe=PASS",
+          "host_pyswisseph_api_probe=PASS",
           "request_scope_admitted=true"
         ]
       },
@@ -64,6 +64,7 @@
     "runtime_capability_must_be_probed": true,
     "swiss_source": "host_preinstalled_only",
     "repository_install_or_distribution": "forbidden",
-    "non_chatgpt_swiss_use": "forbidden"
+    "non_chatgpt_swiss_use": "forbidden",
+    "provider_api_vs_backend": "provider_id/API availability must not be represented as effective SWIEPH data backend"
   }
 }

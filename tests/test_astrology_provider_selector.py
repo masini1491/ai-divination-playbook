@@ -26,7 +26,12 @@ class AstrologyProviderSelectorTests(unittest.TestCase):
             host_family="chatgpt",
             reading_mode="natal",
             birth_time_certainty="exact",
-            runtime_probe={"available": True, "version": "2.10.03"},
+            runtime_probe={
+                "available": True,
+                "version": "2.10.03",
+                "sun_effective_backend": "MOSEPH",
+                "capability_kind": "PYSWISSEPH_API_EXECUTABLE",
+            },
             routing_manifest=ROUTING,
             swiss_admission=SWISS,
         )

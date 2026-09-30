@@ -81,6 +81,14 @@ class FakeSwiss:
         return 0.0, 30.0, 30.0
 
 
+class FakeJplSwiss(FakeSwiss):
+    @staticmethod
+    def calc_ut(_jd, body, _flags):
+        name, speed = FakeSwiss.BODY[body]
+        lon = FIXTURE["expected"]["longitudes"][name]
+        return (lon, 0.0, 1.0, speed, 0.0, 0.0), 257
+
+
 class AstrologySwissProviderTests(unittest.TestCase):
     def _fake_bundle(self, house_system="Placidus"):
         inp = FIXTURE["input"]
@@ -102,6 +110,8 @@ class AstrologySwissProviderTests(unittest.TestCase):
         self.assertTrue(gate_bundle(bundle)["interpretation_allowed"])
         self.assertEqual("swiss-host-natal-v1", bundle["provider"]["provider_id"])
         self.assertEqual("host_preinstalled_only", bundle["provider"]["runtime_source"])
+        self.assertEqual("PySwissEph", bundle["provider"]["provider_api_family"])
+        self.assertEqual("MIXED_SWIEPH_MOSEPH", bundle["provider"]["effective_backend_summary"])
 
     def test_provenance_preserves_effective_backend_and_retflags(self):
         provider = self._fake_bundle()["provider"]
@@ -109,6 +119,20 @@ class AstrologySwissProviderTests(unittest.TestCase):
         self.assertEqual(258, provider["actual_retflag_per_calculated_object"]["NorthNode"])
         self.assertEqual("MOSEPH", provider["effective_backend_per_calculated_object"]["Sun"])
         self.assertEqual("SWIEPH", provider["effective_backend_per_calculated_object"]["NorthNode"])
+
+    def test_backend_summary_does_not_relabel_mixed_as_swieph_data(self):
+        provider = self._fake_bundle()["provider"]
+        self.assertEqual("MIXED_SWIEPH_MOSEPH", provider["effective_backend_summary"])
+        admission = json.loads(
+            (ROOT / "ASTROLOGY_SWISS_PROVIDER_ADMISSION_V1.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        wording = admission["calculation_policy"]["terminology_contract"][
+            "MIXED_SWIEPH_MOSEPH"
+        ]
+        self.assertIn("must not imply all facts used Swiss Ephemeris data", wording)
+
 
     def test_sydney_fixture_house_placements_match(self):
         bundle = self._fake_bundle()
@@ -183,6 +207,24 @@ class AstrologySwissProviderTests(unittest.TestCase):
         for key in admission["calculation_policy"]["required_provenance"]:
             self.assertIn(key, provider)
 
+
+    def test_unadmitted_jpl_backend_fails_safe(self):
+        inp = FIXTURE["input"]
+        with patch(
+            "tools.astrology_swiss_provider._load_swisseph",
+            return_value=FakeJplSwiss,
+        ):
+            with self.assertRaisesRegex(
+                Exception, "unadmitted effective backend"
+            ):
+                build_natal_bundle(
+                    local_datetime=inp["local_datetime"],
+                    timezone_name=inp["timezone_name"],
+                    latitude=inp["latitude"],
+                    longitude=inp["longitude"],
+                    house_system=inp["house_system"],
+                    subject_ref="subject:jpl-not-admitted",
+                )
 
     @unittest.skipUnless(
         importlib.util.find_spec("swisseph") is not None,
