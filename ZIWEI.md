@@ -61,7 +61,7 @@ OPTIONAL / explicit add-on:
 
 OUT / fail closed:
 
-- non-M0 auxiliary / minor-star interpretation;
+- auxiliary / minor-star interpretation beyond the separately admitted M0 + M1 modules;
 - Four-Transformation interpretation beyond the 3 separately admitted source-explicit transformed-star claims in `sihua_v1`;
 - star×palace contextual claims beyond the eleven separately admitted sparse overrides;
 - decadal concrete-event / generic吉凶 prediction beyond the separately admitted bounded methodology claims;
