@@ -52,7 +52,7 @@
       "requested_ephemeris_flags",
       "actual_retflag_per_calculated_object",
       "effective_backend_per_calculated_object",
-      "host_runtime_source"
+      "runtime_source"
     ]
   },
   "validation": {

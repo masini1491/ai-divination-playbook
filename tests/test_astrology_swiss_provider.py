@@ -7,6 +7,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 from tools.astrology_runtime import gate_bundle
+from tools.astrology_evidence_selector import select_evidence
 from tools.astrology_swiss_provider import build_natal_bundle
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -100,7 +101,7 @@ class AstrologySwissProviderTests(unittest.TestCase):
         bundle = self._fake_bundle()
         self.assertTrue(gate_bundle(bundle)["interpretation_allowed"])
         self.assertEqual("swiss-host-natal-v1", bundle["provider"]["provider_id"])
-        self.assertEqual("chatgpt_host_preinstalled", bundle["provider"]["runtime_source"])
+        self.assertEqual("host_preinstalled_only", bundle["provider"]["runtime_source"])
 
     def test_provenance_preserves_effective_backend_and_retflags(self):
         provider = self._fake_bundle()["provider"]
@@ -119,6 +120,69 @@ class AstrologySwissProviderTests(unittest.TestCase):
         bundle = self._fake_bundle("Whole Sign")
         self.assertTrue(gate_bundle(bundle)["interpretation_allowed"])
         self.assertEqual("Whole Sign", bundle["configuration"]["house_system"])
+
+    def test_north_node_explicit_mean_provenance_reaches_typed_semantics(self):
+        bundle = self._fake_bundle()
+        node = next(
+            row for row in bundle["facts"]["objects"]
+            if row.get("object_id") == "NorthNode"
+        )
+        self.assertEqual("mean", node["node_definition"])
+
+        run = {
+            "schema_name": "astrology_reading_run",
+            "schema_version": "1.0.0",
+            "status": "admitted",
+            "interpretation_allowed": True,
+            "normalized_request": {
+                "semantic_profile": "composable-symbolic-modern-v1",
+                "semantic_profile_selection": "project_default",
+            },
+            "fact_bundles": {"natal": bundle},
+            "runtime_gates": {"natal": gate_bundle(bundle)},
+        }
+        typed = {
+            "schema_name": "astrology_typed_evidence_selection_request",
+            "schema_version": "1.0.0",
+            "question_id": "swiss-north-node-provenance",
+            "question": "What bounded symbolic North Node interpretation is admitted?",
+            "fact_selectors": [{
+                "selector_id": "node",
+                "selector_kind": "object",
+                "bundle": "natal",
+                "cardinality": "exactly_one",
+                "object_id": "NorthNode",
+                "object_type": "point",
+            }],
+            "claim_selectors": [{
+                "selector_id": "node-function",
+                "registry_record_id": "north-node-sign-semantics-research-v1",
+                "semantic_profile": "composable-symbolic-modern-v1",
+                "claim_type": "north_node_function",
+                "applicability_scope": "north_node_core",
+                "applies_to_all": ["natal"],
+                "fact_selector_ids": ["node"],
+            }],
+            "unsupported_factors": [],
+        }
+        selection = select_evidence(run, typed, repo_root=ROOT)
+        self.assertEqual("selected", selection["status"])
+        self.assertEqual(
+            "claim:north-node-function:growth-edge",
+            selection["claim_requests"][0]["claim_id"],
+        )
+
+    def test_manifest_required_provenance_matches_emitted_provider_keys(self):
+        bundle = self._fake_bundle()
+        admission = json.loads(
+            (ROOT / "ASTROLOGY_SWISS_PROVIDER_ADMISSION_V1.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        provider = bundle["provider"]
+        for key in admission["calculation_policy"]["required_provenance"]:
+            self.assertIn(key, provider)
+
 
     @unittest.skipUnless(
         importlib.util.find_spec("swisseph") is not None,
