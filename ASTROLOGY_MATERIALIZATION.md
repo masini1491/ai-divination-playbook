@@ -51,7 +51,7 @@ geonamescache==3.0.2
 GeoNames datasets
 ```
 
-因此 `place`／`country` name input仍與 core bundle分層：installed admitted resolver可直接使用；resolver runtime/cache缺失時，依 §6.1 已 admission 的 profile-500 query-bounded shard transport materialize本題所需 alias/candidate資料。不得因 core bundle PASS 就宣稱 resolver path也已 materialize；也不得用 generic web geocoding或模型猜座標／timezone補洞。
+因此 `place`／`country` name input仍與 core bundle分層：installed admitted resolver可直接使用；resolver runtime/cache缺失時，必須改讀 `ASTROLOGY_PLACE_RESOLVER_MATERIALIZATION.md`。該 owner 的 profile-500 query-bounded transport與 astronomical provider selection無關。不得因 core bundle或 Swiss probe PASS 就宣稱 resolver path已完成；也不得用 generic web geocoding或模型猜座標／timezone補洞。
 
 ## 3. Local miss is not source unavailability
 
@@ -147,77 +147,7 @@ core_bundle_verification.json
 
 marker至少綁定 repository、materialized source revision、bundle contract、archive SHA、dependency identity與所有 files。新 session不得只靠記憶假設 cache存在；但 marker中的 source revision不同於 current HEAD也不自動等於 MISS，必須依上方 Cache Identity Probe 判斷 materially relevant identities 是否仍相容。
 
-## 6. Place resolver boundary
-
-`tools/astrology_orchestrator.py` 對 explicit coordinates path不得 unconditional import `geonamescache`。只有 `place`／`country` input需要 resolver時才 lazy-load admitted resolver。
-
-若 resolver runtime缺失：
-
-```text
-coordinates + timezone request → core path仍可執行
-place/country request → resolver-specific unavailable / materialization requirement
-```
-
-不得把 resolver dependency miss升格成整個 Astrology core runtime unavailable。
-
-### 6.1 A-MAT-2 query-bounded resolver materialization
-
-The original whole-package / model-mediated A-MAT-2 transport remains rejected. A separate query-bounded shard transport is production-admitted for the default profile `500` only.
-
-Canonical identity is owned by `data/astrology/place/v1/MANIFEST.json`. Current admitted corpus:
-
-```text
-dataset: astrology-place-geonamescache-v1
-profile: 500
-data ref: refs/heads/data/astrology-place-v1
-exact data commit: d18be87abe762433e43e844f33f4b43f7fad9f3b
-aggregate digest: 6e542fd50c4d821d783c74c2f392bea087df68666ba1781970df66d47dc719a0
-```
-
-For a place/country request，先檢查 admitted resolver runtime / 已驗證 query result or shard cache 是否仍符合 exact data-commit + profile identity；compatible 時可 reuse。只有 resolver/runtime/cache真正不可用或 identity不足時才進 query-bounded transport。
-
-Taiwan full administrative locality input must first apply the same method-owned policy used by `tools/astrology_place_resolver.py`:
-
-```text
-same-commit runtime/astrology/TW_ADMIN_LOCALITY_V1.json
-→ bounded 台→臺 script normalization
-→ exact county/city prefix match
-→ exact county/city × township/district hierarchy validation
-→ valid pair: query = validated township/district, effective country = TW
-→ invalid/mismatched pair: fail closed
-```
-
-The policy file is input-normalization evidence only; it never supplies coordinates. After normalization, the existing admitted GeoNames alias/candidate transport remains the sole coordinate/timezone resolution path. Do not fetch the whole GeoNames corpus and do not use fuzzy contains search.
-
-```text
-normalize query = strip then casefold
-→ SHA-256(normalized query), first 3 hex
-→ GitHub Connect exact-data-commit alias shard
-→ exact alias lookup
-→ optional ISO alpha-2 country filter
-→ if zero routes: fail closed NOT_FOUND
-→ if multiple surviving routes: fail closed with first 10 deterministic candidates
-→ for one selected geoname id, SHA-256(decimal geoname id), first 3 hex
-→ GitHub Connect exact-data-commit candidate shard
-→ exact geoname-id lookup
-→ return admitted resolver fields
-```
-
-Path derivation follows the manifest:
-
-```text
-aliases/{first_hex}/{remaining_two_hex}.json
-candidates/{first_hex}/{remaining_two_hex}.json
-```
-
-Every retrieval MUST use the exact admitted data commit, not the moving data branch. Missing path, malformed schema, profile mismatch, missing alias/id, or identity mismatch fails closed. GitHub Connect does not expose connector-internal cache/network-byte/latency telemetry; do not invent those properties.
-
-This transport preserves the existing resolver semantics; it does not create a second geocoder or semantic authority. Profiles `1000`, `5000`, and `15000` remain supported by the installed `geonamescache` resolver but are **not admitted for shard materialization transport**. If a request explicitly requires one of those profiles and the installed resolver is unavailable, request explicit coordinates + IANA timezone or report the resolver-specific materialization limitation; never silently substitute profile 500.
-
-The corpus is generated from the exact admitted `geonamescache==3.0.2` / GeoNames source identity, remains CC-BY-4.0 attribution-bearing derived deterministic data, and does not become astronomical authority.
-
-
-### 6.2 Extended ephemeris query-bounded materialization
+## 6. Extended ephemeris query-bounded materialization
 
 Chiron / Ceres / Pallas / Juno / Vesta 的 production calculation facts 使用獨立 generated-data lane；它不屬於 Astronomy Engine core bundle，也不要求 ordinary runtime 連線 Horizons。
 
