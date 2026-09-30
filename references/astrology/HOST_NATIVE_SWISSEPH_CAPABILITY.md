@@ -130,4 +130,4 @@ All other cases route to the portable Astronomy Engine provider:
 - missing/broken host `swisseph`;
 - any request that would require installing or vendoring Swiss.
 
-The Swiss provider preserves actual `retflag` and effective backend per calculated object, so requested SWIEPH silently falling back to MOSEPH remains visible in provenance.
+The host-native provider is a **PySwissEph API provider identity**, not a guarantee of file-backed SWIEPH data. It preserves actual `retflag` and effective backend per calculated object. Current production admits validated SWIEPH, MOSEPH, and SWIEPH/MOSEPH-mixed summaries; only `SWIEPH_ONLY` may be described as using Swiss Ephemeris data. MOSEPH or mixed execution must be labeled explicitly. JPLEPH/unknown effective backends remain outside this admission and fail safe.
