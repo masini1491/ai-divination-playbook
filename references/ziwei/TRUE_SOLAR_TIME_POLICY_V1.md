@@ -3,8 +3,8 @@
 Authority: **RESEARCH EVIDENCE + PRODUCTION POLICY RATIONALE**
 
 This record closes the research/policy decision behind `ZW-P2-040`. Production
-authority is owned separately by `ZIWEI_TRUE_SOLAR_TIME_ADMISSION_V1.json`,
-`ZIWEI_CALENDAR_ADMISSION_V1.json` and the production runtime.
+authority is owned separately by `admissions/ziwei/ZIWEI_TRUE_SOLAR_TIME_ADMISSION_V1.json`,
+`admissions/ziwei/ZIWEI_CALENDAR_ADMISSION_V1.json` and the production runtime.
 
 ## Decision
 
