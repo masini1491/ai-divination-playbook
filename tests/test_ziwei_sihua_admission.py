@@ -20,7 +20,7 @@ class ZiWeiSihuaAdmissionTests(unittest.TestCase):
         self.birth=NormalizedNatalInput(1987,5,20,"酉","synthetic:sihua-admission")
 
     def test_manifest_admits_exact_three_source_explicit_claims(self):
-        m=json.loads((ROOT/"ZIWEI_SIHUA_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        m=json.loads((ROOT/"admissions/ziwei/optional/ZIWEI_SIHUA_ADMISSION_V1.json").read_text(encoding="utf-8"))
         self.assertEqual("PRODUCTION_ADMITTED_OPTIONAL_MODULE",m["status"])
         self.assertEqual(SIHUA_MODULE,m["module_id"])
         self.assertEqual(SIHUA_PROFILE_ID,m["profile_id"])
@@ -120,7 +120,7 @@ class ZiWeiSihuaAdmissionTests(unittest.TestCase):
             ))
 
     def test_root_admission_counts_only_exact_bounded_claims(self):
-        m=json.loads((ROOT/"ZIWEI_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        m=json.loads((ROOT/"admissions/ziwei/ZIWEI_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
         self.assertEqual(70,m["scope"]["admitted_claims"])
         self.assertEqual(87,m["scope"]["maximum_admitted_claims_with_optional_modules"])
         self.assertEqual(3,m["scope"]["optional_sihua_claims"])
