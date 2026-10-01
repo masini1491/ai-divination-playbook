@@ -132,7 +132,7 @@ This file is an active / deferred coordination surface, not a completed-work arc
 ### ZW-P1-090 — Zi Wei root-surface / domain-path normalization
 
 - type: REPOSITORY ARCHITECTURE / AI RETRIEVAL / PATH MIGRATION
-- status: OPEN
+- status: IN_PROGRESS
 - priority: P1
 - owner: Zi Wei repository-architecture maintenance
 - blocked_by: none
