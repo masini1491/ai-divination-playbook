@@ -6,7 +6,7 @@ This module intentionally separates two roles:
 - runtime resolution reads repo-local JSON shards only.
 
 Nothing in this file is production-admitted. Production authority remains
-ZIWEI_CALENDAR_ADMISSION_V1.json + tools/ziwei_calendar_provider.py until a
+admissions/ziwei/ZIWEI_CALENDAR_ADMISSION_V1.json + tools/ziwei_calendar_provider.py until a
 separate admission changes that contract.
 """
 from __future__ import annotations
