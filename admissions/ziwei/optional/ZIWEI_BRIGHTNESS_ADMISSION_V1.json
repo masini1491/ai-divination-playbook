@@ -6,7 +6,7 @@
   "status": "PRODUCTION_ADMITTED_OPTIONAL",
   "activation": "explicit_brightness_or_dignity_request_only",
   "default_scope_unchanged": true,
-  "parent_admission": "ZIWEI_PRODUCTION_ADMISSION_V1.json",
+  "parent_admission": "admissions/ziwei/ZIWEI_PRODUCTION_ADMISSION_V1.json",
   "scope": {
     "temporal_scope": "natal_baseline",
     "major_star_subjects": 14,
