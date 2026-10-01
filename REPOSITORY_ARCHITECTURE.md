@@ -248,6 +248,15 @@ Shared Phase B
 
 Phase B 是後續 reconciliation boundary，不因本節自動 admission `PLAYBOOK_INDEX.json` sharding、historical relocation或其他 global refactor。
 
+Phase B reconciliation result（2026-10）：
+
+- Astrology / Zi Wei method migrations complete 後，root file count 已由 normalization 前的 72 降至 43；不再需要 broad method-file relocation。
+- shared civil-time admission 收斂至 `admissions/shared/**`，使 shared / Astrology / Zi Wei admission topology一致。
+- completed Randomizer migration / retirement readiness 與 research-routing integration validation移出 root，保留為 `reports/shared/**` historical / validation evidence。
+- `PLAYBOOK_INDEX.json` **暫不 shard**：current direct-leaf bypass已允許 known-owner task略過 index；現有 loader generators、structural checks與多個 method tests把單一 index當 routing control plane。沒有 evidence 顯示新增 shard lookup hop 可提供淨 retrieval benefit，因此保持單檔 canonical routing index。
+- 未來只有在 index growth materially 造成 bounded-read / maintenance / hot-path regression 時，才重新開啟 sharding judgment node。
+
+
 核心原則：**Shared architecture只固定跨 method 必須一致的 boundary；method-specific layout由其 retrieval intent決定；最後再用實際結果收斂 global routing，而不是先把完整目錄設計死。**
 
 #### Method-scoped coordination topology

@@ -2,7 +2,7 @@
 
 Status: **PHASE 5 READINESS PASS — PHASE 6 RETIREMENT COMPLETE**
 
-This record captures the evidence required by `RANDOMIZER_INTEGRATION_MIGRATION.md` before the legacy repository may be converted to a compatibility/archive surface, and records the completed Phase 6 transition.
+This record captures the evidence required by `reports/shared/RANDOMIZER_INTEGRATION_MIGRATION.md` before the legacy repository may be converted to a compatibility/archive surface, and records the completed Phase 6 transition.
 
 ## Evidence baseline
 

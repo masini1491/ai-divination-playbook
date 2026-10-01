@@ -308,7 +308,7 @@ Legacy repository can be retired only when all are true:
 9. historical provenance remains readable without rewriting old records;
 10. rollback procedure has been tested conceptually and no required secret/config would be lost by retirement.
 
-Evidence record: `RANDOMIZER_RETIREMENT_READINESS.md`.
+Evidence record: `reports/shared/RANDOMIZER_RETIREMENT_READINESS.md`.
 
 Only then may the old repository be converted to a compatibility/archive surface.
 

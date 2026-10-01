@@ -14,7 +14,7 @@ tools/civil_time_normalizer.py
 tools/astrology_provider.py
 tools/astrology_transit_provider.py
 tools/astrology_orchestrator.py
-CIVIL_TIME_NORMALIZER_ADMISSION_V1.json
+admissions/shared/CIVIL_TIME_NORMALIZER_ADMISSION_V1.json
 admissions/astrology/ASTROLOGY_PROVIDER_ADMISSION_V1.json
 admissions/astrology/ASTROLOGY_TRANSIT_PROVIDER_ADMISSION_V1.json
 ```
