@@ -13,7 +13,7 @@ Production v1 admits only the already-selected Scope A:
 - registered-conflict preservation;
 - uncertainty/safety delivery actions.
 
-Production authority is granted by `ZIWEI_PRODUCTION_ADMISSION_V1.json` plus `tools/ziwei_scope_a_pipeline.py`. Research registries remain historically `production_routable=false`; they are allowlisted by the production manifest rather than rewritten.
+Production authority is granted by `admissions/ziwei/ZIWEI_PRODUCTION_ADMISSION_V1.json` plus `tools/ziwei_scope_a_pipeline.py`. Research registries remain historically `production_routable=false`; they are allowlisted by the production manifest rather than rewritten.
 
 ## Input boundary
 
