@@ -5,7 +5,7 @@
   "module": "hourly_calculation_v1",
   "status": "PRODUCTION_ADMITTED_CALCULATION_ONLY",
   "activation": "explicit_ziwei_hourly_request_only",
-  "parent_admission": "ZIWEI_DAILY_ADMISSION_V1.json",
+  "parent_admission": "admissions/ziwei/temporal/calculation/ZIWEI_DAILY_ADMISSION_V1.json",
   "temporal_scope": "hourly",
   "profile": {
     "profile_id": "hourly.daily_parent_hour_branch_next_day_23_v1",
@@ -30,7 +30,7 @@
     "compatibility": "same explicit normalized lunar year/month/day + leap identity/provenance must resolve under the admitted daily parent"
   },
   "calendar_policy": {
-    "owner": "ZIWEI_CALENDAR_ADMISSION_V1.json",
+    "owner": "admissions/ziwei/ZIWEI_CALENDAR_ADMISSION_V1.json",
     "target_input": "explicit normalized lunar year/month/day + is_leap_month + hour_branch + rat_hour_policy + provenance",
     "rat_hour_policy": "next_day_at_23",
     "alternate_rat_hour_policy": "NOT_ADMITTED",
@@ -54,7 +54,7 @@
       "revision": "2c7ef9be669df7b19d1799f4dce335fed3794f78",
       "path": "src/astro/FunctionalAstrolabe.ts"
     },
-    "project_calendar_policy": "ZIWEI_CALENDAR_ADMISSION_V1.json",
+    "project_calendar_policy": "admissions/ziwei/ZIWEI_CALENDAR_ADMISSION_V1.json",
     "project_research": "references/ziwei/CALCULATION_ENGINE_RESEARCH.md"
   },
   "fail_closed": [
