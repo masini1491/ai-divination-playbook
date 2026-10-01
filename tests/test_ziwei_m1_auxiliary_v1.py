@@ -18,7 +18,7 @@ from tools.ziwei_runtime import (
 
 ROOT=Path(__file__).resolve().parents[1]
 REGISTRY=ROOT/"references"/"ziwei"/"ziwei_interpretation_claim_registry_m1_auxiliary_v1.json"
-ADMISSION=ROOT/"ZIWEI_M1_AUXILIARY_ADMISSION_V1.json"
+ADMISSION=ROOT/"admissions/ziwei/optional/ZIWEI_M1_AUXILIARY_ADMISSION_V1.json"
 
 class ZiWeiM1AuxiliaryV1Tests(unittest.TestCase):
     def major(self):

@@ -72,7 +72,7 @@ Research authority：
 REFERENCE-ONLY / RESEARCH-ONLY
 ```
 
-Research history remains non-production-routable；production authority 另由 `ZIWEI.md` + `ZIWEI_PRODUCTION_ADMISSION_V1.json` 擁有。
+Research history remains non-production-routable；production authority 另由 `ZIWEI.md` + `admissions/ziwei/ZIWEI_PRODUCTION_ADMISSION_V1.json` 擁有。
 
 目前研究涵蓋 deterministic calculation、source/tradition、profile divergence 與 interpretation / provenance architecture。研究 default candidate 以「一般使用者載入 ChatGPT 後的主觀貼合／命中感」為產品目標之一，但 Tarot 覆核只屬 research decision evidence；**不等於科學驗證、客觀預測效度或唯一正統來源**。
 
@@ -188,7 +188,7 @@ Astrology 與 Zi Wei 的 production admission 都是另外的 explicit decision�
 ASTROLOGY.md
 ASTROLOGY_PRODUCTION_ADMISSION_V1.json
 ZIWEI.md
-ZIWEI_PRODUCTION_ADMISSION_V1.json
+admissions/ziwei/ZIWEI_PRODUCTION_ADMISSION_V1.json
 ```
 
 它不改變這項原則，也不為其他 research line 建立捷徑。

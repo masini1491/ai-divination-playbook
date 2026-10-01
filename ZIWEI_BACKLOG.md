@@ -29,8 +29,8 @@ Last reviewed against:
 
 ```text
 ai-divination-playbook main
-7f307858d6f2a688b6e2cba5dcbbc9641d5cf19a
-Add Astrology repository architecture backlog item
+4658a2a364241ba65c1cb5dbd303f198a8d8278d
+Define shared method-domain topology contract
 ```
 
 This SHA is review evidence only, not a pin. Every maintenance, evaluation or implementation task must resolve current `main` again before mutation.
@@ -40,7 +40,7 @@ This SHA is review evidence only, not a pin. Every maintenance, evaluation or im
 Active near-term Zi Wei work:
 
 1. **ZW-P1-070 — Natal synthesis v1 end-to-end reading evaluation**
-2. **ZW-P1-080 — Zi Wei root-surface / domain-path normalization**
+2. **ZW-P1-090 — Zi Wei root-surface / domain-path normalization**
 
 Standing guard:
 
@@ -73,8 +73,8 @@ This file is an active / deferred coordination surface, not a completed-work arc
 - blocked_by: none
 - canonical_evidence:
   - `ZIWEI.md`
-  - `ZIWEI_PRODUCTION_ADMISSION_V1.json`
-  - `ZIWEI_CALENDAR_ADMISSION_V1.json`
+  - `admissions/ziwei/ZIWEI_PRODUCTION_ADMISSION_V1.json`
+  - `admissions/ziwei/ZIWEI_CALENDAR_ADMISSION_V1.json`
   - `ZIWEI_MATERIALIZATION.md`
   - `PLAYBOOK_INDEX.json`
   - `tools/ziwei_runtime.py`
@@ -129,10 +129,10 @@ This file is an active / deferred coordination surface, not a completed-work arc
   - the dominant outcome is classified as A / B / C with concrete evidence;
   - any follow-up is persisted only as the minimum bounded coordination delta required by that outcome.
 
-### ZW-P1-080 — Zi Wei root-surface / domain-path normalization
+### ZW-P1-090 — Zi Wei root-surface / domain-path normalization
 
 - type: REPOSITORY ARCHITECTURE / AI RETRIEVAL / PATH MIGRATION
-- status: OPEN
+- status: IN_PROGRESS
 - priority: P1
 - owner: Zi Wei repository-architecture maintenance
 - blocked_by: none
@@ -148,7 +148,7 @@ This file is an active / deferred coordination surface, not a completed-work arc
   - keep `ZIWEI_BACKLOG.md` at its current allowlisted coordination path unless shared governance is explicitly changed;
   - migrate Zi Wei-specific admission manifests into one domain-scoped admission namespace under the shared topology contract;
   - preserve useful sub-grouping where it has independent retrieval intent, especially temporal calculation vs temporal interpretation and optional natal modules;
-  - move `requirements-ziwei-calendar.txt` out of root if the shared dependency-path convention admits a dedicated requirements surface;
+  - move `requirements/ziwei-calendar.txt` out of root if the shared dependency-path convention admits a dedicated requirements surface;
   - update every exact path pointer in `PLAYBOOK_INDEX.json`, `ZIWEI.md`, materialization docs, tests, generators, schemas/fixtures/workflows and validation surfaces in the same bounded migration;
   - keep `indexes/ziwei/**` as routing/control-plane data rather than folding it into admission authority;
   - preserve production semantics, optional-module defaults, temporal scope, star×palace control-plane semantics and deterministic transport provenance exactly; this is not a Zi Wei feature expansion.

@@ -10,7 +10,7 @@ ROOT=Path(__file__).resolve().parents[1]
 
 class ZiWeiProductionContractV1Tests(unittest.TestCase):
     def test_manifest_is_bounded_and_not_auto_routed(self):
-        m=json.loads((ROOT/"ZIWEI_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        m=json.loads((ROOT/"admissions/ziwei/ZIWEI_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
         self.assertEqual("PRODUCTION_ADMITTED",m["status"])
         self.assertEqual("explicit_user_request_only",m["activation"])
         self.assertFalse(m["ordinary_auto_routing"])
@@ -132,7 +132,7 @@ class ZiWeiProductionContractV1Tests(unittest.TestCase):
         )
 
     def test_research_registries_remain_historically_non_routable(self):
-        m=json.loads((ROOT/"ZIWEI_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        m=json.loads((ROOT/"admissions/ziwei/ZIWEI_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
         for name in m["admitted_research_registries"]:
             r=json.loads((ROOT/"references"/"ziwei"/name).read_text(encoding="utf-8"))
             self.assertFalse(r["production_routable"])

@@ -3,7 +3,7 @@
 
 The dataset MANIFEST is an integrity/provenance artifact, not admission
 authority. Production permission is owned separately by
-ZIWEI_CALENDAR_ADMISSION_V1.json, which allowlists the exact dataset identity,
+admissions/ziwei/ZIWEI_CALENDAR_ADMISSION_V1.json, which allowlists the exact dataset identity,
 aggregate hash and supported input range.
 """
 from __future__ import annotations

@@ -5,7 +5,7 @@
   "module": "daily_calculation_v1",
   "status": "PRODUCTION_ADMITTED_CALCULATION_ONLY",
   "activation": "explicit_ziwei_daily_request_only",
-  "parent_admission": "ZIWEI_MONTHLY_ADMISSION_V1.json",
+  "parent_admission": "admissions/ziwei/temporal/calculation/ZIWEI_MONTHLY_ADMISSION_V1.json",
   "temporal_scope": "daily",
   "profile": {
     "profile_id": "daily.monthly_parent_lunar_day_v1",
@@ -30,7 +30,7 @@
     "compatibility": "same explicit lunar year/month/day + leap identity/provenance must resolve under the admitted monthly parent"
   },
   "calendar_policy": {
-    "owner": "ZIWEI_CALENDAR_ADMISSION_V1.json",
+    "owner": "admissions/ziwei/ZIWEI_CALENDAR_ADMISSION_V1.json",
     "target_input": "explicit normalized lunar year/month/day + is_leap_month + provenance",
     "day_boundary_profile": "explicit_lunar_day_identity_v1",
     "timestamp_day_divide": "NOT_ADMITTED",

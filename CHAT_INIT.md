@@ -123,7 +123,7 @@ GitHub Connect resolve requested/current ref → exact commit
 → STOP
 ```
 
-目前 pack 主要優化 ordinary Tarot / Meihua / Liuyao、explicit stochastic method、explicit Astrology production、explicit Zi Wei production 與 stochastic continuation。Explicit Astrology production 可用 pack 的 bootstrap + output-core 後讀 `ASTROLOGY.md`，再依 reading_mode讀 `ASTROLOGY_NATAL.md` 或 `ASTROLOGY_TRANSIT.md`；explicit Zi Wei production 讀 `ZIWEI.md` 並遵守 `ZIWEI_PRODUCTION_ADMISSION_V1.json`；explicit research 仍 bypass pack，從 bounded `CHAT_INIT.md` 進 named research owner。
+目前 pack 主要優化 ordinary Tarot / Meihua / Liuyao、explicit stochastic method、explicit Astrology production、explicit Zi Wei production 與 stochastic continuation。Explicit Astrology production 可用 pack 的 bootstrap + output-core 後讀 `ASTROLOGY.md`，再依 reading_mode讀 `ASTROLOGY_NATAL.md` 或 `ASTROLOGY_TRANSIT.md`；explicit Zi Wei production 讀 `ZIWEI.md` 並遵守 `admissions/ziwei/ZIWEI_PRODUCTION_ADMISSION_V1.json`；explicit research 仍 bypass pack，從 bounded `CHAT_INIT.md` 進 named research owner。
 
 Load-pack 使用規則：
 

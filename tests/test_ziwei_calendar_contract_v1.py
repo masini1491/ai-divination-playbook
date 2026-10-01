@@ -14,7 +14,7 @@ ROOT=Path(__file__).resolve().parents[1]
 
 class ZiWeiCalendarContractV1Tests(unittest.TestCase):
     def test_manifest_admits_exact_dataset_and_build_source_boundary(self):
-        m=json.loads((ROOT/"ZIWEI_CALENDAR_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        m=json.loads((ROOT/"admissions/ziwei/ZIWEI_CALENDAR_ADMISSION_V1.json").read_text(encoding="utf-8"))
         self.assertEqual("PRODUCTION_ADMITTED_INPUT_ADAPTER",m["status"])
         self.assertEqual("ziwei-calendar-interval-data",m["calculation"]["provider_id"])
         self.assertEqual("2.2.0",m["calculation"]["provider_version"])

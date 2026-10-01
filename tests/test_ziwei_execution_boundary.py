@@ -32,7 +32,7 @@ class ZiWeiExecutionBoundaryTests(unittest.TestCase):
         self.assertNotIn('"references/ziwei/validate_uncertainty_safety_delivery_v0.py"',text)
 
     def test_admission_points_to_production_execution_owners(self):
-        data=json.loads((ROOT/"ZIWEI_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        data=json.loads((ROOT/"admissions/ziwei/ZIWEI_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
         self.assertEqual("tools/ziwei_claim_retrieval.py",data["pipeline"]["claim_retrieval_runtime"])
         self.assertEqual("tools/ziwei_delivery.py",data["pipeline"]["delivery_runtime"])
         self.assertNotIn("research_retriever",data["pipeline"])

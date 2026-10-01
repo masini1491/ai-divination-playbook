@@ -5,7 +5,7 @@
   "status": "PRODUCTION_ADMITTED_BOUNDED_INTERPRETATION",
   "activation": "automatic_on_exact_admitted_body_palace_overlay_fact",
   "temporal_scope": "natal_baseline",
-  "parent_admission": "ZIWEI_PRODUCTION_ADMISSION_V1.json",
+  "parent_admission": "admissions/ziwei/ZIWEI_PRODUCTION_ADMISSION_V1.json",
   "claim_registry": "references/ziwei/ziwei_interpretation_claim_registry_body_palace_overlay_v1.json",
   "interpretation_profile": "ziwei.interpretation.tw_v1",
   "scope": {

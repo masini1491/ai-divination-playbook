@@ -44,7 +44,7 @@ class ZiWeiToolBundleTests(unittest.TestCase):
         self.assertIn("tools/ziwei_calendar_data_provider.py",paths)
         self.assertIn("tools/ziwei_year_notation.py",paths)
         self.assertIn("tools/ziwei_birthplace_timezone.py",paths)
-        self.assertIn("ZIWEI_BIRTHPLACE_TIMEZONE_ADMISSION_V1.json",paths)
+        self.assertIn("admissions/ziwei/ZIWEI_BIRTHPLACE_TIMEZONE_ADMISSION_V1.json",paths)
         self.assertFalse(any(x["path"].startswith("lunar_python/") for x in self.b["source_files"]))
         self.assertFalse(self.b["execution_contract"]["dependency_install_required_after_materialization"])
 

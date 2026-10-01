@@ -5,7 +5,7 @@
   "module": "true_solar_time_v1",
   "status": "PRODUCTION_ADMITTED_OPTIONAL_INPUT_POLICY",
   "activation": "explicit_profile_and_longitude_only",
-  "parent_admission": "ZIWEI_CALENDAR_ADMISSION_V1.json",
+  "parent_admission": "admissions/ziwei/ZIWEI_CALENDAR_ADMISSION_V1.json",
   "profile": {
     "profile_id": "ziwei.true_solar.noaa_fractional_year_v1",
     "profile_version": "1.0.0",

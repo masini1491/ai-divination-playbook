@@ -160,7 +160,7 @@ normalized input / chart fact
 
 ```text
 production reading
-→ ZIWEI.md + ZIWEI_PRODUCTION_ADMISSION_V1.json
+→ ZIWEI.md + admissions/ziwei/ZIWEI_PRODUCTION_ADMISSION_V1.json
 
 research / source / architecture maintenance
 → RESEARCH_ROUTING.md → references/ziwei/**
@@ -174,10 +174,10 @@ Research evidence 詳細不代表自動 production-admitted；production admissi
 ZIWEI.md
 → root production method owner / activation / scope / interpretation boundary
 
-ZIWEI_PRODUCTION_ADMISSION_V1.json
+admissions/ziwei/ZIWEI_PRODUCTION_ADMISSION_V1.json
 → machine admission truth
 
-ZIWEI_CALENDAR_ADMISSION_V1.json
+admissions/ziwei/ZIWEI_CALENDAR_ADMISSION_V1.json
 → Gregorian input/calendar normalization admission truth
 
 tools/ziwei_runtime.py + schemas/ziwei/ZIWEI_READING_{REQUEST,RESULT}_V1.schema.json
@@ -186,7 +186,7 @@ tools/ziwei_runtime.py + schemas/ziwei/ZIWEI_READING_{REQUEST,RESULT}_V1.schema.
 tools/ziwei_year_notation.py + tools/ziwei_calendar_provider.py + tools/ziwei_gregorian_pipeline.py
 → 民國年份 deterministic notation adapter + Gregorian normalization provider + legacy compatibility adapter
 
-tools/ziwei_true_solar_time.py + ZIWEI_TRUE_SOLAR_TIME_ADMISSION_V1.json
+tools/ziwei_true_solar_time.py + admissions/ziwei/ZIWEI_TRUE_SOLAR_TIME_ADMISSION_V1.json
 → optional explicit local-apparent-solar clock policy；longitude + equation-of-time correction only after shared civil-time validation
 
 tools/ziwei_natal_provider.py
@@ -201,13 +201,13 @@ tools/ziwei_claim_retrieval.py + tools/ziwei_delivery.py
 tools/ziwei_brightness_provider.py + tools/ziwei_brightness_pipeline.py
 → optional profile-bound brightness facts + legacy compatibility adapter
 
-tools/ziwei_m0_auxiliary_provider.py + ZIWEI_M0_AUXILIARY_ADMISSION_V1.json
+tools/ziwei_m0_auxiliary_provider.py + admissions/ziwei/optional/ZIWEI_M0_AUXILIARY_ADMISSION_V1.json
 → optional M0 左輔／右弼／文昌／文曲 placement / modifier facts + bounded auxiliary-role policy claim admission; independent historical star semantics remain outside this admission
 
-tools/ziwei_sihua_provider.py + ZIWEI_SIHUA_ADMISSION_V1.json
+tools/ziwei_sihua_provider.py + admissions/ziwei/optional/ZIWEI_SIHUA_ADMISSION_V1.json
 → optional profile-bound 生年四化 facts + exactly 3 source-explicit fact-gated transformed-star claims; generic transformation doctrine remains unadmitted
 
-ZIWEI_BRIGHTNESS_ADMISSION_V1.json
+admissions/ziwei/optional/ZIWEI_BRIGHTNESS_ADMISSION_V1.json
 → optional brightness production admission truth
 
 ZIWEI_MATERIALIZATION.md + runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json

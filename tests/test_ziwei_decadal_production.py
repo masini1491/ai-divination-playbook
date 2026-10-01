@@ -15,7 +15,7 @@ ROOT=Path(__file__).resolve().parents[1]
 
 class ZiWeiDecadalProductionTests(unittest.TestCase):
     def test_admission_is_calculation_only_and_profile_bound(self):
-        a=json.loads((ROOT/"ZIWEI_DECADAL_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        a=json.loads((ROOT/"admissions/ziwei/temporal/calculation/ZIWEI_DECADAL_ADMISSION_V1.json").read_text(encoding="utf-8"))
         self.assertEqual("PRODUCTION_ADMITTED_CALCULATION_ONLY",a["status"])
         self.assertEqual("decadal.quanji_common_v1",a["profile"]["profile_id"])
         self.assertEqual("traditional_nominal_age",a["profile"]["rules"]["age_basis"])
@@ -72,7 +72,7 @@ class ZiWeiDecadalProductionTests(unittest.TestCase):
             request_from_transport(p)
 
     def test_root_admission_registers_separate_dynamic_runtime(self):
-        a=json.loads((ROOT/"ZIWEI_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        a=json.loads((ROOT/"admissions/ziwei/ZIWEI_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
         d=a["separate_temporal_calculation_admissions"][0]
         self.assertEqual("decadal",d["temporal_scope"])
         self.assertFalse(d["interpretation_admitted"])

@@ -145,7 +145,7 @@ def calculate_monthly(natal_input:NormalizedNatalInput,target:MonthlyTarget)->di
             "primary_reference_path":"packages/ziwei/src/limits.ts",
             "comparator_reference":"SylarLong/iztro@2c7ef9be669df7b19d1799f4dce335fed3794f78",
             "comparator_reference_path":"src/astro/FunctionalAstrolabe.ts",
-            "leap_policy_owner":"ZIWEI_CALENDAR_ADMISSION_V1.json",
+            "leap_policy_owner":"admissions/ziwei/ZIWEI_CALENDAR_ADMISSION_V1.json",
             "birth_calendar_provenance":natal_input.calendar_provenance,
             "birth_leap_month_identity":natal_input.leap_month_identity,
         },

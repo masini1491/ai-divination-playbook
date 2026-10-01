@@ -154,7 +154,7 @@
   "input_adapters": [
     {
       "id": "gregorian_calendar_v2",
-      "admission_manifest": "ZIWEI_CALENDAR_ADMISSION_V1.json",
+      "admission_manifest": "admissions/ziwei/ZIWEI_CALENDAR_ADMISSION_V1.json",
       "runtime_owner": "tools/ziwei_calendar_provider.py",
       "pipeline": "tools/ziwei_runtime.py",
       "profile_id": "ziwei.calendar.civil_v2",
@@ -167,14 +167,14 @@
         "activation": "explicit_profile_and_longitude_only",
         "profile_id": "ziwei.true_solar.noaa_fractional_year_v1",
         "runtime_owner": "tools/ziwei_true_solar_time.py",
-        "admission_manifest": "ZIWEI_TRUE_SOLAR_TIME_ADMISSION_V1.json",
+        "admission_manifest": "admissions/ziwei/ZIWEI_TRUE_SOLAR_TIME_ADMISSION_V1.json",
         "birthplace_longitude_resolution": false
       },
       "birthplace_timezone_pre_adapter": {
         "status": "production_admitted_taiwan_only",
         "activation": "explicit_timezone_omitted_and_supported_taiwan_birthplace_supplied",
         "runtime_owner": "tools/ziwei_birthplace_timezone.py",
-        "admission_manifest": "ZIWEI_BIRTHPLACE_TIMEZONE_ADMISSION_V1.json",
+        "admission_manifest": "admissions/ziwei/ZIWEI_BIRTHPLACE_TIMEZONE_ADMISSION_V1.json",
         "resolver_id": "ziwei-birthplace-timezone-tw-v1",
         "output_timezone": "Asia/Taipei",
         "broader_global_place_resolution": false,
@@ -371,7 +371,7 @@
   "optional_module_admissions": [
     {
       "module_id": "m0_auxiliary_v1",
-      "admission_manifest": "ZIWEI_M0_AUXILIARY_ADMISSION_V1.json",
+      "admission_manifest": "admissions/ziwei/optional/ZIWEI_M0_AUXILIARY_ADMISSION_V1.json",
       "provider": "tools/ziwei_m0_auxiliary_provider.py",
       "profile_id": "ziwei.auxiliary.m0.iztro_v1",
       "admitted_claims_added": 4,
@@ -383,7 +383,7 @@
     },
     {
       "module_id": "sihua_v1",
-      "admission_manifest": "ZIWEI_SIHUA_ADMISSION_V1.json",
+      "admission_manifest": "admissions/ziwei/optional/ZIWEI_SIHUA_ADMISSION_V1.json",
       "provider": "tools/ziwei_sihua_provider.py",
       "profile_id": "sihua.default_v1",
       "admitted_claims_added": 3,
@@ -398,7 +398,7 @@
       "requires_modules": [
         "m0_auxiliary_v1"
       ],
-      "admission_manifest": "ZIWEI_M1_AUXILIARY_ADMISSION_V1.json",
+      "admission_manifest": "admissions/ziwei/optional/ZIWEI_M1_AUXILIARY_ADMISSION_V1.json",
       "runtime_owner": "tools/ziwei_runtime.py",
       "provider": "tools/ziwei_m1_auxiliary_provider.py",
       "profile_id": "ziwei.auxiliary.m1.common_v1",
@@ -418,7 +418,7 @@
     {
       "temporal_scope": "decadal",
       "module_id": "decadal_calculation_v1",
-      "admission_manifest": "ZIWEI_DECADAL_ADMISSION_V1.json",
+      "admission_manifest": "admissions/ziwei/temporal/calculation/ZIWEI_DECADAL_ADMISSION_V1.json",
       "provider": "tools/ziwei_decadal_provider.py",
       "runtime_owner": "tools/ziwei_runtime.py",
       "runtime_id": "ziwei-production-runtime-v2",
@@ -429,7 +429,7 @@
     {
       "temporal_scope": "yearly",
       "module_id": "yearly_calculation_v1",
-      "admission_manifest": "ZIWEI_YEARLY_ADMISSION_V1.json",
+      "admission_manifest": "admissions/ziwei/temporal/calculation/ZIWEI_YEARLY_ADMISSION_V1.json",
       "provider": "tools/ziwei_yearly_provider.py",
       "runtime_owner": "tools/ziwei_runtime.py",
       "runtime_id": "ziwei-production-runtime-v3",
@@ -441,7 +441,7 @@
     {
       "temporal_scope": "monthly",
       "module_id": "monthly_calculation_v1",
-      "admission_manifest": "ZIWEI_MONTHLY_ADMISSION_V1.json",
+      "admission_manifest": "admissions/ziwei/temporal/calculation/ZIWEI_MONTHLY_ADMISSION_V1.json",
       "provider": "tools/ziwei_monthly_provider.py",
       "runtime_owner": "tools/ziwei_runtime.py",
       "runtime_id": "ziwei-production-runtime-v4",
@@ -453,7 +453,7 @@
     {
       "temporal_scope": "daily",
       "module_id": "daily_calculation_v1",
-      "admission_manifest": "ZIWEI_DAILY_ADMISSION_V1.json",
+      "admission_manifest": "admissions/ziwei/temporal/calculation/ZIWEI_DAILY_ADMISSION_V1.json",
       "provider": "tools/ziwei_daily_provider.py",
       "runtime_owner": "tools/ziwei_runtime.py",
       "runtime_id": "ziwei-production-runtime-v5",
@@ -465,7 +465,7 @@
     {
       "temporal_scope": "hourly",
       "module_id": "hourly_calculation_v1",
-      "admission_manifest": "ZIWEI_HOURLY_ADMISSION_V1.json",
+      "admission_manifest": "admissions/ziwei/temporal/calculation/ZIWEI_HOURLY_ADMISSION_V1.json",
       "provider": "tools/ziwei_hourly_provider.py",
       "runtime_owner": "tools/ziwei_runtime.py",
       "runtime_id": "ziwei-production-runtime-v6",
@@ -479,7 +479,7 @@
     {
       "temporal_scope": "decadal",
       "module_id": "decadal_interpretation_v1",
-      "admission_manifest": "ZIWEI_DECADAL_INTERPRETATION_ADMISSION_V1.json",
+      "admission_manifest": "admissions/ziwei/temporal/interpretation/ZIWEI_DECADAL_INTERPRETATION_ADMISSION_V1.json",
       "registry": "references/ziwei/ziwei_interpretation_claim_registry_decadal_v1.json",
       "runtime_owner": "tools/ziwei_runtime.py",
       "runtime_id": "ziwei-production-runtime-v7",
@@ -492,7 +492,7 @@
     {
       "temporal_scope": "yearly",
       "module_id": "yearly_interpretation_v1",
-      "admission_manifest": "ZIWEI_YEARLY_INTERPRETATION_ADMISSION_V1.json",
+      "admission_manifest": "admissions/ziwei/temporal/interpretation/ZIWEI_YEARLY_INTERPRETATION_ADMISSION_V1.json",
       "registry": "references/ziwei/ziwei_interpretation_claim_registry_yearly_v1.json",
       "runtime_owner": "tools/ziwei_runtime.py",
       "runtime_id": "ziwei-production-runtime-v8",
@@ -508,7 +508,7 @@
     {
       "temporal_scope": "monthly",
       "module_id": "monthly_interpretation_v1",
-      "admission_manifest": "ZIWEI_MONTHLY_INTERPRETATION_ADMISSION_V1.json",
+      "admission_manifest": "admissions/ziwei/temporal/interpretation/ZIWEI_MONTHLY_INTERPRETATION_ADMISSION_V1.json",
       "registry": "references/ziwei/ziwei_interpretation_claim_registry_monthly_v1.json",
       "runtime_owner": "tools/ziwei_runtime.py",
       "runtime_id": "ziwei-production-runtime-v9",
@@ -524,7 +524,7 @@
     {
       "temporal_scope": "daily",
       "module_id": "daily_interpretation_v1",
-      "admission_manifest": "ZIWEI_DAILY_INTERPRETATION_ADMISSION_V1.json",
+      "admission_manifest": "admissions/ziwei/temporal/interpretation/ZIWEI_DAILY_INTERPRETATION_ADMISSION_V1.json",
       "registry": "references/ziwei/ziwei_interpretation_claim_registry_daily_v1.json",
       "runtime_owner": "tools/ziwei_runtime.py",
       "runtime_id": "ziwei-production-runtime-v10",
@@ -542,7 +542,7 @@
     {
       "temporal_scope": "hourly",
       "module_id": "hourly_interpretation_v1",
-      "admission_manifest": "ZIWEI_HOURLY_INTERPRETATION_ADMISSION_V1.json",
+      "admission_manifest": "admissions/ziwei/temporal/interpretation/ZIWEI_HOURLY_INTERPRETATION_ADMISSION_V1.json",
       "registry": "references/ziwei/ziwei_interpretation_claim_registry_hourly_v1.json",
       "runtime_owner": "tools/ziwei_runtime.py",
       "runtime_id": "ziwei-production-runtime-v11",
@@ -562,7 +562,7 @@
   "separate_natal_interpretation_admissions": [
     {
       "module_id": "same_palace_major_star_pairs_v1",
-      "admission_manifest": "ZIWEI_SAME_PALACE_PAIR_ADMISSION_V1.json",
+      "admission_manifest": "admissions/ziwei/ZIWEI_SAME_PALACE_PAIR_ADMISSION_V1.json",
       "registry": "references/ziwei/ziwei_interpretation_claim_registry_same_palace_pairs_v1.json",
       "runtime_owner": "tools/ziwei_runtime.py",
       "interpretation_profile": "ziwei.interpretation.tw_v1",
@@ -575,7 +575,7 @@
     },
     {
       "module_id": "body_palace_overlay_v1",
-      "admission_manifest": "ZIWEI_BODY_PALACE_OVERLAY_ADMISSION_V1.json",
+      "admission_manifest": "admissions/ziwei/ZIWEI_BODY_PALACE_OVERLAY_ADMISSION_V1.json",
       "registry": "references/ziwei/ziwei_interpretation_claim_registry_body_palace_overlay_v1.json",
       "runtime_owner": "tools/ziwei_runtime.py",
       "interpretation_profile": "ziwei.interpretation.tw_v1",
@@ -589,7 +589,7 @@
     },
     {
       "module_id": "sparse_star_palace_context_v1",
-      "admission_manifest": "ZIWEI_STAR_PALACE_CONTEXT_ADMISSION_V1.json",
+      "admission_manifest": "admissions/ziwei/ZIWEI_STAR_PALACE_CONTEXT_ADMISSION_V1.json",
       "registry": "references/ziwei/ziwei_interpretation_claim_registry_star_palace_context_v1.json",
       "runtime_owner": "tools/ziwei_runtime.py",
       "interpretation_profile": "ziwei.interpretation.tw_v1",

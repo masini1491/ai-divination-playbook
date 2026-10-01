@@ -284,7 +284,7 @@ The remaining data-admission work is now:
    as the pinned build/parity dependency;
 3. update deterministic materialization/runtime transport so ordinary Zi Wei
    production no longer carries the full calendar implementation;
-4. update `ZIWEI_CALENDAR_ADMISSION_V1.json`, production tests and regression
+4. update `admissions/ziwei/ZIWEI_CALENDAR_ADMISSION_V1.json`, production tests and regression
    evidence together in one bounded admission gate.
 
 ## Deterministic interval dataset build / verification mechanism
@@ -345,7 +345,7 @@ admission described below.
 `tools/ziwei_calendar_data_provider.py` is the dependency-free resolver now
 bound by the production `tools/ziwei_calendar_provider.py`. Dataset integrity
 metadata remains separate from admission authority:
-`ZIWEI_CALENDAR_ADMISSION_V1.json` allowlists the exact dataset id, aggregate
+`admissions/ziwei/ZIWEI_CALENDAR_ADMISSION_V1.json` allowlists the exact dataset id, aggregate
 hash and supported Gregorian range.
 
 Candidate contract:
@@ -375,7 +375,7 @@ The bounded admission gate is now implemented as:
 
 ```text
 production runtime:
-ZIWEI_CALENDAR_ADMISSION_V1.json
+admissions/ziwei/ZIWEI_CALENDAR_ADMISSION_V1.json
 → tools/ziwei_calendar_provider.py
 → tools/ziwei_calendar_data_provider.py
 → data/calendar/ziwei_tw_interval/v1/MANIFEST.json
