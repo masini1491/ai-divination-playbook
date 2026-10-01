@@ -29,15 +29,17 @@ Last reviewed against:
 
 ```text
 ai-divination-playbook main
-794e9b00d2c58ab975f22ba4dea0a13dd65962fd
-Merge pull request #378 from masini1491/fix/ziwei-readme-backlog-reconciliation
+eabd5bdf22a4cd74b2f2e6591b9cf1424ca9ccb7
+Merge pull request #381 from masini1491/fix/astrology-pyswisseph-backend-semantics
 ```
 
 This SHA is review evidence only, not a pin. Every maintenance or implementation task must resolve current `main` again before mutation.
 
 ## Recommended execution order
 
-There is currently no active one-shot Astrology P1 implementation/research item after AST-P1-250 closure.
+Active near-term Astrology repository-architecture work:
+
+1. **AST-P1-260 — Astrology root-surface / domain-path normalization**
 
 Standing guard:
 
@@ -90,6 +92,48 @@ This file is an active / deferred coordination surface, not a completed-work arc
   - no regression reopens already-closed current-stack gaps.
 
 This item is a standing reconciliation guard. It is not a request to change current behavior immediately.
+
+## P1 — repository information architecture
+
+### AST-P1-260 — Astrology root-surface / domain-path normalization
+
+- type: REPOSITORY ARCHITECTURE / AI RETRIEVAL / PATH MIGRATION
+- status: OPEN
+- priority: P1
+- owner: Astrology repository-architecture maintenance
+- blocked_by: none
+- shared_precondition:
+  - before any path move, close one minimum shared topology contract in `REPOSITORY_ARCHITECTURE.md` for root-retention rules, domain-scoped admission paths and routing/index update responsibility;
+  - do **not** duplicate that shared mutable contract in both Astrology and Zi Wei backlogs.
+- current_state:
+  - Astrology already has domain-scoped `tools/astrology_*`, `schemas/astrology/**`, `runtime/astrology/**`, `data/astrology/**`, `references/astrology/**` and `reports/astrology/**`;
+  - root still carries a large Astrology-specific surface, especially admission manifests, provider/materialization support contracts and the provider requirements file;
+  - ordinary production routing is currently protected by `CHAT_INIT.md`, `CHATGPT_LOAD_PACK.json` and `PLAYBOOK_INDEX.json`, so this task is a discovery/search-noise and maintenance-cost reduction, not a claim that every reading currently loads all root files.
+- scope:
+  - keep `ASTROLOGY.md` as the root method entry owner unless measured retrieval evidence proves a better route;
+  - keep `ASTROLOGY_BACKLOG.md` at its current allowlisted coordination path unless shared governance is explicitly changed;
+  - evaluate and migrate Astrology-specific admission manifests into one domain-scoped admission namespace under the shared topology contract;
+  - evaluate moving subordinate Astrology support documents such as materialization / place-deployment contracts only when they have independent retrieval intent and the move lowers net retrieval/search cost;
+  - move `requirements-astrology-provider.txt` out of root if the shared dependency-path convention admits a dedicated requirements surface;
+  - update every exact path pointer in `PLAYBOOK_INDEX.json`, method owners, tests, generators, workflows and validation surfaces in the same bounded migration;
+  - preserve production semantics, provider identity, admission scope, deterministic bundle authority and provenance exactly; this is not an Astrology feature expansion.
+- exclusions:
+  - no semantic rewrite of Natal / Transit;
+  - no provider-policy redesign;
+  - no SWIEPH/MOSEPH routing change;
+  - no bulk relocation of already well-scoped `tools/**`, `data/**`, `runtime/**`, `references/**` or `schemas/**`;
+  - no directory-depth increase unless it yields concrete retrieval, scope-isolation or search-noise benefit.
+- sequencing:
+  - **shared phase A first:** establish only the minimum common path/topology contract required to prevent Astrology and Zi Wei from choosing incompatible layouts;
+  - **method phase next:** perform this Astrology migration independently with exact-path reconciliation and method-specific validation;
+  - **shared phase B last:** after Astrology and Zi Wei method migrations, reconcile thin global routing/index, root historical cleanup and cross-method load-budget effects from the actual resulting paths.
+- completion_gate:
+  - Astrology-specific root clutter is materially reduced without increasing ordinary Astrology routing hops;
+  - all moved paths have one current canonical pointer and no stale current-authority aliases;
+  - `PLAYBOOK_INDEX.json`, loader/bounded-range metadata and any generated routing metadata are synchronized only where materially affected;
+  - Astrology production/materialization regressions and structural checks pass;
+  - current ChatGPT load-budget profiles do not regress merely because files were reorganized;
+  - canonical read-back confirms the new paths and the old root paths are absent or explicitly retained by contract.
 
 ## P2 — deferred compatibility / provider expansion
 
