@@ -43,7 +43,7 @@
     "ZiWei": {
       "status": "PRODUCTION_ADMITTED",
       "provider": "tools/ziwei_calendar_provider.py",
-      "provider_admission": "ZIWEI_CALENDAR_ADMISSION_V1.json",
+      "provider_admission": "admissions/ziwei/ZIWEI_CALENDAR_ADMISSION_V1.json",
       "behavior": "shared adapter validates explicit IANA local civil time; Zi Wei Gregorian-to-lunar conversion consumes validated local Gregorian fields and preserves resolved UTC as provenance only"
     }
   },
