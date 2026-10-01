@@ -26,18 +26,18 @@ class ZiWeiMaterializationDiscoverabilityTests(unittest.TestCase):
         pair=c["same_palace_pair_interpretation"]
         self.assertEqual("production-admitted-bounded",pair["status"])
         self.assertEqual(2,pair["claim_count"])
-        self.assertEqual("ZIWEI_SAME_PALACE_PAIR_ADMISSION_V1.json",pair["admission_manifest"])
+        self.assertEqual("admissions/ziwei/ZIWEI_SAME_PALACE_PAIR_ADMISSION_V1.json",pair["admission_manifest"])
         self.assertFalse(pair["cartesian_expansion"])
         body=c["body_palace_overlay_interpretation"]
         self.assertEqual("production-admitted-bounded",body["status"])
         self.assertEqual(5,body["claim_count"])
         self.assertEqual(4,body["overlay_claims"])
-        self.assertEqual("ZIWEI_BODY_PALACE_OVERLAY_ADMISSION_V1.json",body["admission_manifest"])
+        self.assertEqual("admissions/ziwei/ZIWEI_BODY_PALACE_OVERLAY_ADMISSION_V1.json",body["admission_manifest"])
         self.assertFalse(body["thirteenth_palace"])
         star_palace=c["star_palace_context_interpretation"]
         self.assertEqual("production-admitted-bounded",star_palace["status"])
         self.assertEqual(11,star_palace["claim_count"])
-        self.assertEqual("ZIWEI_STAR_PALACE_CONTEXT_ADMISSION_V1.json",star_palace["admission_manifest"])
+        self.assertEqual("admissions/ziwei/ZIWEI_STAR_PALACE_CONTEXT_ADMISSION_V1.json",star_palace["admission_manifest"])
         self.assertFalse(star_palace["cartesian_expansion"])
         self.assertIn("sihua_v1",c["optional_modules"])
         self.assertIn("m1_auxiliary_v1",c["optional_modules"])
