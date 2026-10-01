@@ -17,7 +17,7 @@ ROOT=Path(__file__).resolve().parents[1]
 
 class AstrologyExtendedEphemerisInfrastructureTests(unittest.TestCase):
     def test_admission_is_exact_data_commit_pinned_after_publish(self):
-        data=json.loads((ROOT/"ASTROLOGY_EXTENDED_EPHEMERIS_ADMISSION_V1.json").read_text())
+        data=json.loads((ROOT/"admissions/astrology/ASTROLOGY_EXTENDED_EPHEMERIS_ADMISSION_V1.json").read_text())
         self.assertEqual("PRODUCTION_ADMITTED",data["status"])
         self.assertEqual("explicit_request_only",data["activation"])
         self.assertEqual(list(OBJECT_IDS),data["object_ids"])

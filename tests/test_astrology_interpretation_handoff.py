@@ -170,7 +170,7 @@ class AstrologyInterpretationHandoffTests(unittest.TestCase):
             "house_system": "Placidus",
             "house_system_selection": "project_default",
         }
-        manifest = json.loads((ROOT / "ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        manifest = json.loads((ROOT / "admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
         manifest["orchestration"]["house_system_interaction_profile"]["alternative_house_system"] = "Whole Sign Test"
         original_load_json = __import__(
             "tools.astrology_interpretation_handoff",
@@ -178,7 +178,7 @@ class AstrologyInterpretationHandoffTests(unittest.TestCase):
         )._load_json
 
         def load_with_profile(path):
-            if Path(path).name == "ASTROLOGY_PRODUCTION_ADMISSION_V1.json":
+            if Path(path).name == "admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json":
                 return manifest
             return original_load_json(path)
 

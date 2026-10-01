@@ -7,7 +7,7 @@ from references.astrology.validate_exact_claim_admission_policy import validate
 
 ROOT = Path(__file__).resolve().parents[1]
 POLICY = ROOT / "references" / "astrology" / "EXACT_CLAIM_ADMISSION_POLICY_V1.json"
-MANIFEST = ROOT / "ASTROLOGY_PRODUCTION_ADMISSION_V1.json"
+MANIFEST = ROOT / "admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json"
 PLANET_SIGN = ROOT / "references" / "astrology" / "planet_sign_composable_semantics_claim_family_registry.json"
 HIGH_VALUE = ROOT / "references" / "astrology" / "high_value_planet_aspects_claim_family_registry.json"
 SATURN_MOON = ROOT / "references" / "astrology" / "saturn_moon_aspect_claim_family_registry.json"

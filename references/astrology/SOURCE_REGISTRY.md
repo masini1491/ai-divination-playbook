@@ -190,7 +190,7 @@ Reviewed revision `82df4c1c285cb470625373a716bab86c343e4b6e` carries an MIT lice
 - no source code or interpretive corpus is vendored;
 - no `soul`, `karma`, `past-life`, fate, or reincarnation doctrine is admitted by this source review;
 - no South Node meaning, North Node aspect meaning, Vedic Rahu/Ketu system, or evolutionary-astrology doctrine is promoted;
-- the source does not choose this Playbook's node calculation definition. Production continues to use the separately admitted **mean North Node** provenance from `ASTROLOGY_PROVIDER_ADMISSION_V1.json`;
+- the source does not choose this Playbook's node calculation definition. Production continues to use the separately admitted **mean North Node** provenance from `admissions/astrology/ASTROLOGY_PROVIDER_ADMISSION_V1.json`;
 - the external repository remains REFERENCE-ONLY at repository level; production claim authority, if any, comes only from an explicitly admitted bounded claim registry.
 
 ## 9. `g-battaglia/libephemeris`

@@ -80,7 +80,7 @@ class AstrologyFactRuntimeContractTests(unittest.TestCase):
         self.assertEqual("FACT_SOURCE_FORBIDDEN", rejected["errors"][0]["code"])
 
     def test_manifest_and_index_publish_fact_and_gate_contracts(self):
-        manifest = load(ROOT / "ASTROLOGY_PRODUCTION_ADMISSION_V1.json")
+        manifest = load(ROOT / "admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json")
         index = load(ROOT / "PLAYBOOK_INDEX.json")
         method = {row["id"]: row for row in index["capabilities"]}["method.astrology"]
 

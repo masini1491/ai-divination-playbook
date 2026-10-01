@@ -99,7 +99,7 @@ def known_time_request() -> dict:
 
 class AstrologyExtendedEphemerisAdmissionTests(unittest.TestCase):
     def test_admission_manifest_is_exact_commit_pinned_and_fact_only(self):
-        data = json.loads((ROOT / "ASTROLOGY_EXTENDED_EPHEMERIS_ADMISSION_V1.json").read_text())
+        data = json.loads((ROOT / "admissions/astrology/ASTROLOGY_EXTENDED_EPHEMERIS_ADMISSION_V1.json").read_text())
         self.assertEqual("PRODUCTION_ADMITTED", data["status"])
         self.assertEqual(DATA_COMMIT, data["dataset"]["exact_data_commit"])
         self.assertEqual(DATASET_SHA, data["dataset"]["expected_sha256"])

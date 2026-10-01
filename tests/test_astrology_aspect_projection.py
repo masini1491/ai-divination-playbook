@@ -79,7 +79,7 @@ class AstrologyExtendedAspectProjectionTests(unittest.TestCase):
             )
 
     def test_runtime_policy_membership_matches_machine_admission(self):
-        manifest=json.loads((ROOT/"ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        manifest=json.loads((ROOT/"admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
         definitions=manifest["aspect_policy"]["extended_participant_policies"]
         self.assertEqual(set(PARTICIPANT_POLICIES),set(definitions))
         for policy_id,runtime_policy in PARTICIPANT_POLICIES.items():

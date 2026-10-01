@@ -122,7 +122,7 @@ class AstrologySpecialPatternProjectionTests(unittest.TestCase):
         self.assertFalse(result["exact_consumer_compatibility_claimed"])
 
     def test_machine_admission_pins_every_special_policy(self):
-        manifest = json.loads((ROOT / "ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        manifest = json.loads((ROOT / "admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
         policy = manifest["orchestration"]["policy_projections"]["special_patterns"]
         self.assertEqual(ASPECT_POLICY_ID, policy["aspect_policy_id"])
         self.assertEqual(ORB_POLICY_ID, policy["orb_policy_id"])

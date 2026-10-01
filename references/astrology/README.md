@@ -6,10 +6,10 @@ Production owner: [`../../ASTROLOGY.md`](../../ASTROLOGY.md)
 
 Production admissions:
 
-- [`../../ASTROLOGY_PRODUCTION_ADMISSION_V1.json`](../../ASTROLOGY_PRODUCTION_ADMISSION_V1.json)
-- [`../../ASTROLOGY_PROVIDER_ADMISSION_V1.json`](../../ASTROLOGY_PROVIDER_ADMISSION_V1.json)
-- [`../../ASTROLOGY_TRANSIT_PROVIDER_ADMISSION_V1.json`](../../ASTROLOGY_TRANSIT_PROVIDER_ADMISSION_V1.json)
-- [`../../ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json`](../../ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json)
+- [`../../admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json`](../../admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json)
+- [`../../admissions/astrology/ASTROLOGY_PROVIDER_ADMISSION_V1.json`](../../admissions/astrology/ASTROLOGY_PROVIDER_ADMISSION_V1.json)
+- [`../../admissions/astrology/ASTROLOGY_TRANSIT_PROVIDER_ADMISSION_V1.json`](../../admissions/astrology/ASTROLOGY_TRANSIT_PROVIDER_ADMISSION_V1.json)
+- [`../../admissions/astrology/ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json`](../../admissions/astrology/ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json)
 
 Production execution evidence:
 
@@ -32,7 +32,7 @@ references/astrology/**
 → remains REFERENCE-ONLY unless boundedly selected by production policy
 
 ASTROLOGY.md
-+ ASTROLOGY_PRODUCTION_ADMISSION_V1.json
++ admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json
 + provider/resolver admission manifests
 + tools/astrology_place_resolver.py
 + tools/astrology_provider.py
@@ -105,7 +105,7 @@ astronomy-engine==2.1.19
 
 Admission/evidence：
 
-- [`../../ASTROLOGY_PROVIDER_ADMISSION_V1.json`](../../ASTROLOGY_PROVIDER_ADMISSION_V1.json)
+- [`../../admissions/astrology/ASTROLOGY_PROVIDER_ADMISSION_V1.json`](../../admissions/astrology/ASTROLOGY_PROVIDER_ADMISSION_V1.json)
 - [`../../reports/astrology/ASTROLOGY_NATAL_PROVIDER_ADMISSION_RESULTS.md`](../../reports/astrology/ASTROLOGY_NATAL_PROVIDER_ADMISSION_RESULTS.md)
 - [`PRODUCTION_NATAL_PROVIDER_EVIDENCE.md`](PRODUCTION_NATAL_PROVIDER_EVIDENCE.md)
 
@@ -137,7 +137,7 @@ Bounded production scope：
 
 Admission/evidence：
 
-- [`../../ASTROLOGY_TRANSIT_PROVIDER_ADMISSION_V1.json`](../../ASTROLOGY_TRANSIT_PROVIDER_ADMISSION_V1.json)
+- [`../../admissions/astrology/ASTROLOGY_TRANSIT_PROVIDER_ADMISSION_V1.json`](../../admissions/astrology/ASTROLOGY_TRANSIT_PROVIDER_ADMISSION_V1.json)
 - [`../../reports/astrology/ASTROLOGY_CALCULATION_COMPLETION_RESULTS.md`](../../reports/astrology/ASTROLOGY_CALCULATION_COMPLETION_RESULTS.md)
 
 ### Extended-object compact ephemeris research

@@ -192,7 +192,7 @@
         "default_participant_policy_id": null,
         "auto_include_new_objects": false,
         "semantic_interpretation_authority": false,
-        "policy_definitions_owner": "ASTROLOGY_PRODUCTION_ADMISSION_V1.json#/aspect_policy/extended_participant_policies",
+        "policy_definitions_owner": "admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json#/aspect_policy/extended_participant_policies",
         "explicit_aspect_policy_selector_required": true,
         "explicit_orb_policy_selector_required": true
       },
@@ -277,7 +277,7 @@
   },
   "natal_provider": {
     "provider_id": "astronomy-engine-natal-v1",
-    "admission_manifest": "ASTROLOGY_PROVIDER_ADMISSION_V1.json",
+    "admission_manifest": "admissions/astrology/ASTROLOGY_PROVIDER_ADMISSION_V1.json",
     "runtime_owner": "tools/astrology_provider.py",
     "scope": [
       "natal",
@@ -323,7 +323,7 @@
   },
   "place_resolver": {
     "resolver_id": "geonamescache-city-v1",
-    "admission_manifest": "ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json",
+    "admission_manifest": "admissions/astrology/ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json",
     "runtime_owner": "tools/astrology_place_resolver.py",
     "scope": [
       "city_or_locality_name_to_coordinates_and_iana_timezone",
@@ -342,7 +342,7 @@
   },
   "transit_provider": {
     "provider_id": "astronomy-engine-transit-v1",
-    "admission_manifest": "ASTROLOGY_TRANSIT_PROVIDER_ADMISSION_V1.json",
+    "admission_manifest": "admissions/astrology/ASTROLOGY_TRANSIT_PROVIDER_ADMISSION_V1.json",
     "runtime_owner": "tools/astrology_transit_provider.py",
     "scope": [
       "transit_to_natal_exact_aspects",
@@ -718,7 +718,7 @@
   "extended_ephemeris_provider": {
     "provider_id": "astrology-extended-ephemeris-c1-v1",
     "provider_version": "1.0.0",
-    "admission_manifest": "ASTROLOGY_EXTENDED_EPHEMERIS_ADMISSION_V1.json",
+    "admission_manifest": "admissions/astrology/ASTROLOGY_EXTENDED_EPHEMERIS_ADMISSION_V1.json",
     "runtime_owner": "tools/astrology_extended_ephemeris.py",
     "activation": "explicit_request_only",
     "request_selector": "extended_objects",
@@ -754,7 +754,7 @@
     "selector_owner": "tools/astrology_provider_selector.py",
     "chatgpt_known_time_preferred_provider": {
       "provider_id": "swiss-host-natal-v1",
-      "admission_manifest": "ASTROLOGY_SWISS_PROVIDER_ADMISSION_V1.json",
+      "admission_manifest": "admissions/astrology/ASTROLOGY_SWISS_PROVIDER_ADMISSION_V1.json",
       "runtime_owner": "tools/astrology_swiss_provider.py",
       "activation": "host_preinstalled_pyswisseph_api_probe_pass",
       "repository_install_or_distribution": "forbidden",
@@ -762,7 +762,7 @@
     },
     "portable_default_provider": {
       "provider_id": "astronomy-engine-natal-v1",
-      "admission_manifest": "ASTROLOGY_PROVIDER_ADMISSION_V1.json",
+      "admission_manifest": "admissions/astrology/ASTROLOGY_PROVIDER_ADMISSION_V1.json",
       "runtime_owner": "tools/astrology_provider.py"
     },
     "unknown_time_provider": "astronomy-engine-natal-v1",

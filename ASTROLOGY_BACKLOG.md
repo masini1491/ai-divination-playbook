@@ -79,7 +79,7 @@ This file is an active / deferred coordination surface, not a completed-work arc
 - blocked_by: none
 - canonical_evidence:
   - `ASTROLOGY_NATAL.md`
-  - `ASTROLOGY_PRODUCTION_ADMISSION_V1.json`
+  - `admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json`
   - `references/astrology/extended_chart_e8_admission_readiness.json`
   - `tools/astrology_rulership_projection.py`
   - `tools/astrology_pattern_topology.py`
@@ -114,7 +114,7 @@ This item is a standing reconciliation guard. It is not a request to change curr
   - keep `ASTROLOGY_BACKLOG.md` at its current allowlisted coordination path unless shared governance is explicitly changed;
   - evaluate and migrate Astrology-specific admission manifests into one domain-scoped admission namespace under the shared topology contract;
   - evaluate moving subordinate Astrology support documents such as materialization / place-deployment contracts only when they have independent retrieval intent and the move lowers net retrieval/search cost;
-  - move `requirements-astrology-provider.txt` out of root if the shared dependency-path convention admits a dedicated requirements surface;
+  - move `requirements/astrology-provider.txt` out of root if the shared dependency-path convention admits a dedicated requirements surface;
   - update every exact path pointer in `PLAYBOOK_INDEX.json`, method owners, tests, generators, workflows and validation surfaces in the same bounded migration;
   - preserve production semantics, provider identity, admission scope, deterministic bundle authority and provenance exactly; this is not an Astrology feature expansion.
 - exclusions:
@@ -208,7 +208,7 @@ The following are already-closed capabilities or deliberate product boundaries a
 - bounded transit provider/search ≤400 days — admitted;
 - unknown-time invariant natal facts — admitted;
 - deterministic core ChatGPT materialization — product PASS;
-- place resolver query-bounded shard materialization — admitted for default profile 500 under `ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json`; whole-package/model-mediated transport remains rejected, and explicit coordinates + IANA timezone remain the fallback when the admitted resolver/materialization path cannot satisfy the request;
+- place resolver query-bounded shard materialization — admitted for default profile 500 under `admissions/astrology/ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json`; whole-package/model-mediated transport remains rejected, and explicit coordinates + IANA timezone remain the fallback when the admitted resolver/materialization path cannot satisfy the request;
 - Mean South Node / Descendant / IC / Part of Fortune deterministic facts — admitted;
 - bounded Descendant / IC interpretation claims — admitted;
 - traditional + modern rulership projections — admitted under explicit selectors;

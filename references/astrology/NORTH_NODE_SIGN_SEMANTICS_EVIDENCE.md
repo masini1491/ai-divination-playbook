@@ -7,7 +7,7 @@ Can the production-admitted deterministic `NorthNode` sign fact support a source
 
 ## Deterministic boundary
 - `NorthNode` is an `object_type=point` fact, not a planet.
-- `ASTROLOGY_PROVIDER_ADMISSION_V1.json` owns the production mean-node definition.
+- `admissions/astrology/ASTROLOGY_PROVIDER_ADMISSION_V1.json` owns the production mean-node definition.
 - sign/longitude facts remain deterministic provider authority.
 - major-aspect geometry does not grant aspect semantic authority.
 

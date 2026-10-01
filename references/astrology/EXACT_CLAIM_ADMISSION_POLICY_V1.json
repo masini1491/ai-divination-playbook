@@ -39,7 +39,7 @@
       "evidence_refs": [
         "ASTROLOGY_NATAL.md#51-natal-semantic-precedence--fallback",
         "references/astrology/planet_sign_composable_semantics_claim_family_registry.json",
-        "ASTROLOGY_PRODUCTION_ADMISSION_V1.json"
+        "admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json"
       ],
       "rationale": "Planet-function + sign-style are admitted bounded primitives; absence of a pair-specific claim does not itself create a gap."
     },
@@ -50,7 +50,7 @@
       "expected_state": "research_candidate",
       "evidence_refs": [
         "references/astrology/high_value_planet_aspects_claim_family_registry.json",
-        "ASTROLOGY_PRODUCTION_ADMISSION_V1.json"
+        "admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json"
       ],
       "rationale": "Pair-specific wording exists at qualified research level, but production source admission is not yet granted; a bounded evidence promotion node may be justified without creating neighboring matrix work."
     },
@@ -61,7 +61,7 @@
       "expected_state": "exact_claim_admitted",
       "evidence_refs": [
         "references/astrology/saturn_moon_aspect_claim_family_registry.json",
-        "ASTROLOGY_PRODUCTION_ADMISSION_V1.json"
+        "admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json"
       ],
       "rationale": "An exact pair/aspect claim is already boundedly selectable under the production manifest and typed aspect-pair applicability."
     },
@@ -72,7 +72,7 @@
       "expected_state": "unsupported",
       "evidence_refs": [
         "ASTROLOGY_NATAL.md#51-natal-semantic-precedence--fallback",
-        "ASTROLOGY_PRODUCTION_ADMISSION_V1.json"
+        "admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json"
       ],
       "rationale": "Geometry exists, but project-wide planet-pair relationship semantics and general aspect-operator semantics remain unadmitted."
     }

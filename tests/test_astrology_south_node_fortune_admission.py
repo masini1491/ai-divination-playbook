@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 def test_fortune_is_bounded_and_south_node_stays_fact_only():
-    m=json.loads((ROOT/"ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text())
+    m=json.loads((ROOT/"admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text())
     p=m["natal_semantic_policy"]["derived_fact_interpretation"]
     assert "south-node-fortune-research-v1" in m["admitted_research_registries"]
     assert p["admitted_claim_bindings"]["PartOfFortune"]==[{"registry_record_id":"south-node-fortune-research-v1","claim_id":"claim:valens-fortune-life-prosperity"}]

@@ -39,7 +39,7 @@ Research authority：
 REFERENCE-ONLY / RESEARCH EVIDENCE
 ```
 
-Astrology research v1 已完成並保留歷史 evidence。它**不因 production v1 已 admission 就回頭改寫成 production source of truth**；production authority 由 `ASTROLOGY.md` + `ASTROLOGY_PRODUCTION_ADMISSION_V1.json` 另外擁有。
+Astrology research v1 已完成並保留歷史 evidence。它**不因 production v1 已 admission 就回頭改寫成 production source of truth**；production authority 由 `ASTROLOGY.md` + `admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json` 另外擁有。
 
 若使用者說：
 
@@ -186,7 +186,7 @@ Astrology 與 Zi Wei 的 production admission 都是另外的 explicit decision�
 
 ```text
 ASTROLOGY.md
-ASTROLOGY_PRODUCTION_ADMISSION_V1.json
+admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json
 ZIWEI.md
 admissions/ziwei/ZIWEI_PRODUCTION_ADMISSION_V1.json
 ```

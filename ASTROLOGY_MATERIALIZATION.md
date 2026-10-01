@@ -15,8 +15,8 @@ tools/astrology_provider.py
 tools/astrology_transit_provider.py
 tools/astrology_orchestrator.py
 CIVIL_TIME_NORMALIZER_ADMISSION_V1.json
-ASTROLOGY_PROVIDER_ADMISSION_V1.json
-ASTROLOGY_TRANSIT_PROVIDER_ADMISSION_V1.json
+admissions/astrology/ASTROLOGY_PROVIDER_ADMISSION_V1.json
+admissions/astrology/ASTROLOGY_TRANSIT_PROVIDER_ADMISSION_V1.json
 ```
 
 Provider preference／fallback policy另由 `ASTROLOGY_PROVIDER_ROUTING_V1.json` 擁有；本檔只 materialize portable Astronomy fallback，不得安裝、下載或 vendor Swiss/PySwissEph。
@@ -180,7 +180,7 @@ exact admitted data commit
 
 Maximum admitted shard = 30,720 raw bytes / 40,960 compact base64 characters. Missing manifest/identity/shard, wrong digest/blob, unsupported object, out-of-coverage date or generator-source mismatch全部 fail closed。不得 fallback live Horizons、Swiss Ephemeris、模型手算或其他近似軌道。
 
-Generated-data branch 的 `GENERATED_CANDIDATE_ONLY` 不是 production authority；production admission 只由 main 的 `ASTROLOGY_EXTENDED_EPHEMERIS_ADMISSION_V1.json` 授權並 pin exact data commit。
+Generated-data branch 的 `GENERATED_CANDIDATE_ONLY` 不是 production authority；production admission 只由 main 的 `admissions/astrology/ASTROLOGY_EXTENDED_EPHEMERIS_ADMISSION_V1.json` 授權並 pin exact data commit。
 
 ## 7. Fallback / fail closed
 

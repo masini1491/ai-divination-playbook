@@ -67,7 +67,7 @@ Privacy / persistence：
 
 Machine-enforced shape與 provenance gate 由：
 
-- `ASTROLOGY_PRODUCTION_ADMISSION_V1.json`
+- `admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json`
 - `schemas/astrology/ASTROLOGY_OUTPUT_DRAFT_V1.schema.json`
 - `schemas/astrology/ASTROLOGY_USER_FACING_OUTPUT_V1.schema.json`
 - `tools/astrology_output_guard.py`

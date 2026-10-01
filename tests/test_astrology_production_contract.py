@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class AstrologyProductionContractTests(unittest.TestCase):
     def test_admission_manifest_is_bounded_and_not_auto_routed(self):
-        data = json.loads((ROOT / "ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        data = json.loads((ROOT / "admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
         self.assertEqual("astrology_production_admission", data["schema_name"])
         self.assertEqual("1.0.0", data["schema_version"])
         self.assertEqual("PRODUCTION_ADMITTED", data["status"])
@@ -19,7 +19,7 @@ class AstrologyProductionContractTests(unittest.TestCase):
         self.assertFalse(data["admission_decision"]["scientific_predictive_validity_claimed"])
 
     def test_manifest_admits_natal_transit_and_place_resolution(self):
-        data = json.loads((ROOT / "ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        data = json.loads((ROOT / "admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
         natal = data["natal_provider"]
         transit = data["transit_provider"]
         place = data["place_resolver"]
@@ -48,7 +48,7 @@ class AstrologyProductionContractTests(unittest.TestCase):
         self.assertNotIn("provider_geocoding", data["unsupported_scopes"])
 
     def test_manifest_admits_natal_and_transit_interpretation_only(self):
-        data = json.loads((ROOT / "ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        data = json.loads((ROOT / "admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
         self.assertEqual({"natal", "transit"}, set(data["reading_modes"]))
         self.assertIn("synastry", data["unsupported_scopes"])
         self.assertIn("raw_birth_data_model_calculation", data["unsupported_scopes"])
@@ -56,7 +56,7 @@ class AstrologyProductionContractTests(unittest.TestCase):
         self.assertIn("unbounded_transit_search", data["unsupported_scopes"])
 
     def test_natal_provider_admission_manifest_is_pinned_and_bounded(self):
-        data = json.loads((ROOT / "ASTROLOGY_PROVIDER_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        data = json.loads((ROOT / "admissions/astrology/ASTROLOGY_PROVIDER_ADMISSION_V1.json").read_text(encoding="utf-8"))
         self.assertEqual("astrology_provider_admission", data["schema_name"])
         self.assertEqual("PRODUCTION_ADMITTED", data["status"])
         self.assertEqual("1.3.0", data["provider_version"])
@@ -82,7 +82,7 @@ class AstrologyProductionContractTests(unittest.TestCase):
         )
 
     def test_transit_provider_admission_manifest_is_pinned_and_bounded(self):
-        data = json.loads((ROOT / "ASTROLOGY_TRANSIT_PROVIDER_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        data = json.loads((ROOT / "admissions/astrology/ASTROLOGY_TRANSIT_PROVIDER_ADMISSION_V1.json").read_text(encoding="utf-8"))
         self.assertEqual("astrology_transit_provider_admission", data["schema_name"])
         self.assertEqual("PRODUCTION_ADMITTED", data["status"])
         self.assertIn("transit_to_natal_exact_aspects", data["scope"])
@@ -94,7 +94,7 @@ class AstrologyProductionContractTests(unittest.TestCase):
         self.assertEqual("UTC", data["calculation_policy"]["canonical_event_time"])
 
     def test_place_resolver_admission_manifest_is_offline_and_attributed(self):
-        data = json.loads((ROOT / "ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        data = json.loads((ROOT / "admissions/astrology/ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json").read_text(encoding="utf-8"))
         self.assertEqual("astrology_place_resolver_admission", data["schema_name"])
         self.assertEqual("PRODUCTION_ADMITTED", data["status"])
         self.assertEqual("1.1.0", data["resolver_version"])
@@ -114,7 +114,7 @@ class AstrologyProductionContractTests(unittest.TestCase):
         self.assertEqual("fail_closed", data["resolution_policy"]["country_multiple_timezones"])
 
     def test_manifest_keeps_reference_only_pair_registry_qualified(self):
-        data = json.loads((ROOT / "ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        data = json.loads((ROOT / "admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
         self.assertIn("high-value-planet-aspects-research-v1", data["qualified_only_registries"])
         self.assertEqual(
             "not_admitted_until_claim_sources_are_independently_admitted",
@@ -185,9 +185,9 @@ class AstrologyProductionContractTests(unittest.TestCase):
     def test_astrology_mode_owners_point_to_machine_truth_without_copying_provider_specs(self):
         natal = (ROOT / "ASTROLOGY_NATAL.md").read_text(encoding="utf-8")
         transit = (ROOT / "ASTROLOGY_TRANSIT.md").read_text(encoding="utf-8")
-        self.assertIn("ASTROLOGY_PROVIDER_ADMISSION_V1.json", natal)
-        self.assertIn("ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json", natal)
-        self.assertIn("ASTROLOGY_TRANSIT_PROVIDER_ADMISSION_V1.json", transit)
+        self.assertIn("admissions/astrology/ASTROLOGY_PROVIDER_ADMISSION_V1.json", natal)
+        self.assertIn("admissions/astrology/ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json", natal)
+        self.assertIn("admissions/astrology/ASTROLOGY_TRANSIT_PROVIDER_ADMISSION_V1.json", transit)
         self.assertNotIn("astronomy-engine==", natal)
         self.assertNotIn("Whole Sign or Placidus", natal)
         self.assertNotIn("\ndomicile\nexaltation\ndetriment\nfall\n", natal)
@@ -203,7 +203,7 @@ class AstrologyProductionContractTests(unittest.TestCase):
 
 
     def test_e1_admission_keeps_aspect_and_interpretation_boundaries_closed(self):
-        manifest = json.loads((ROOT / "ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        manifest = json.loads((ROOT / "admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
         participants = manifest["aspect_policy"]["participant_object_ids"]
         self.assertEqual(
             ["Sun", "Moon", "Mercury", "Venus", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto", "NorthNode"],
@@ -227,8 +227,8 @@ class AstrologyProductionContractTests(unittest.TestCase):
 
 
     def test_e4_admission_is_named_fail_closed_and_fact_only(self):
-        provider = json.loads((ROOT / "ASTROLOGY_PROVIDER_ADMISSION_V1.json").read_text(encoding="utf-8"))
-        production = json.loads((ROOT / "ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        provider = json.loads((ROOT / "admissions/astrology/ASTROLOGY_PROVIDER_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        production = json.loads((ROOT / "admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
 
         sect = provider["calculation_policy"]["sect_policy"]
         self.assertEqual("sect-geometric-solar-altitude-v1", sect["policy_id"])
@@ -260,7 +260,7 @@ class AstrologyProductionContractTests(unittest.TestCase):
         self.assertNotIn("PartOfFortune", production["aspect_policy"]["participant_object_ids"])
 
     def test_e7_rulership_is_dual_policy_and_has_no_silent_default(self):
-        manifest = json.loads((ROOT / "ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        manifest = json.loads((ROOT / "admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
         policy = manifest["orchestration"]["policy_projections"]["rulership"]
         self.assertEqual("deterministic_policy_projection_only", policy["authority"])
         self.assertEqual("explicit_selector_only", policy["activation"])
@@ -274,7 +274,7 @@ class AstrologyProductionContractTests(unittest.TestCase):
 
 
     def test_e5_names_current_aspect_policy_without_expanding_behavior(self):
-        manifest = json.loads((ROOT / "ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        manifest = json.loads((ROOT / "admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
         policy = manifest["aspect_policy"]
         self.assertEqual("aspect-participants-core-bodies-v1", policy["participant_policy_id"])
         self.assertEqual("major-aspects-v1", policy["aspect_policy_id"])
@@ -284,7 +284,7 @@ class AstrologyProductionContractTests(unittest.TestCase):
         self.assertTrue({"SouthNode", "Ascendant", "Descendant", "Midheaven", "ImumCoeli", "PartOfFortune"}.isdisjoint(policy["participant_object_ids"]))
 
     def test_e6_topology_requires_explicit_e5_and_projection_policies(self):
-        manifest = json.loads((ROOT / "ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        manifest = json.loads((ROOT / "admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
         policy = manifest["orchestration"]["policy_projections"]["pattern_topology"]
         self.assertEqual("explicit_selector_only", policy["activation"])
         self.assertEqual("aspect-participants-core-bodies-v1", policy["required_participant_policy_id"])
@@ -299,7 +299,7 @@ class AstrologyProductionContractTests(unittest.TestCase):
         self.assertFalse(policy["semantic_interpretation_authority"])
 
     def test_p1_120_special_patterns_are_explicit_and_do_not_mutate_major_topology(self):
-        manifest = json.loads((ROOT / "ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        manifest = json.loads((ROOT / "admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
         major = manifest["orchestration"]["policy_projections"]["pattern_topology"]
         special = manifest["orchestration"]["policy_projections"]["special_patterns"]
         self.assertEqual("major-aspects-v1", major["required_aspect_policy_id"])
@@ -322,7 +322,7 @@ class AstrologyProductionContractTests(unittest.TestCase):
 
 
     def test_derived_interpretation_admission_is_exact_claim_allowlist(self):
-        manifest = json.loads((ROOT / "ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        manifest = json.loads((ROOT / "admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
         policy = manifest["natal_semantic_policy"]["derived_fact_interpretation"]
         descendant = {
             (row["registry_record_id"], row["claim_id"])
@@ -352,8 +352,8 @@ class AstrologyProductionContractTests(unittest.TestCase):
 
 
     def test_p1_170_north_node_semantic_admission_is_bounded_and_separate(self):
-        production = json.loads((ROOT / "ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
-        provider = json.loads((ROOT / "ASTROLOGY_PROVIDER_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        production = json.loads((ROOT / "admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        provider = json.loads((ROOT / "admissions/astrology/ASTROLOGY_PROVIDER_ADMISSION_V1.json").read_text(encoding="utf-8"))
         registry = json.loads((ROOT / "references" / "astrology" / "north_node_sign_semantics_claim_family_registry.json").read_text(encoding="utf-8"))
 
         self.assertEqual("mean", provider["calculation_policy"]["north_node_definition"])

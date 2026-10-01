@@ -5,7 +5,7 @@ ROOT=Path(__file__).resolve().parents[1]
 
 def test_profile500_transport_identity_is_pinned_and_admitted():
     dataset=json.loads((ROOT/"data/astrology/place/v1/MANIFEST.json").read_text())
-    resolver=json.loads((ROOT/"ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json").read_text())
+    resolver=json.loads((ROOT/"admissions/astrology/ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json").read_text())
     transport=resolver["materialization_transport"]
     assert dataset["production_admission"]=="PROFILE_500_ONLY"
     assert dataset["deployment"]["exact_data_commit"]=="d18be87abe762433e43e844f33f4b43f7fad9f3b"

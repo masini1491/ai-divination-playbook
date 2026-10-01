@@ -37,7 +37,7 @@
     "Astrology": {
       "status": "PRODUCTION_ADMITTED",
       "provider": "tools/astrology_provider.py",
-      "provider_admission": "ASTROLOGY_PROVIDER_ADMISSION_V1.json",
+      "provider_admission": "admissions/astrology/ASTROLOGY_PROVIDER_ADMISSION_V1.json",
       "behavior": "shared adapter replaces method-local wall-time resolver while preserving provider output semantics"
     },
     "ZiWei": {

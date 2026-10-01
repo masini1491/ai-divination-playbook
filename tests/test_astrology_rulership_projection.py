@@ -68,7 +68,7 @@ class AstrologyRulershipProjectionTests(unittest.TestCase):
             build_rulership_projection(unknown, "rulership-modern-v1")
 
     def test_machine_admission_is_explicit_selector_only(self):
-        manifest = json.loads((ROOT / "ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        manifest = json.loads((ROOT / "admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
         policy = manifest["orchestration"]["policy_projections"]["rulership"]
         self.assertEqual("explicit_selector_only", policy["activation"])
         self.assertEqual(

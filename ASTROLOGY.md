@@ -54,11 +54,11 @@ raw birth data
 2. user-supplied structured chart/export；
 3. verified existing Astrology Fact Bundle / Reading Record。
 
-Canonical runtime gate：`tools/astrology_runtime.py`；所有 generated provider bundle都必須通過它。Fact Bundle / runtime schema與 production admission以 `ASTROLOGY_PRODUCTION_ADMISSION_V1.json` + schemas為 machine truth。
+Canonical runtime gate：`tools/astrology_runtime.py`。Fact Bundle / runtime schema / production admission machine truth：`admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json` + schemas。
 
-**Location resolution先於 provider selection。** `place`／`country` resolver MISS → `ASTROLOGY_PLACE_RESOLVER_MATERIALIZATION.md`；generic web / public GeoNames / map search / model-memory coordinates均禁止。Explicit coordinates + IANA timezone可直接進 provider routing。
+**Location resolution先於 provider selection。** `place`／`country` resolver MISS → `ASTROLOGY_PLACE_RESOLVER_MATERIALIZATION.md`；禁止 generic web / public GeoNames / map search / model-memory coordinates。Explicit coordinates + IANA timezone可直接進 provider routing。
 
-Provider selection依 `ASTROLOGY_PROVIDER_ROUTING_V1.json`：ChatGPT known-time natal 在 location完成後 probe host PySwissEph API；PASS → `swiss-host-natal-v1`，其餘 → Astronomy Engine。`swiss-host-natal-v1` 是 provider/API identity，不等於 SWIEPH data backend；actual `retflag` 才是 backend authority。只有 `SWIEPH_ONLY` 可描述為 Swiss Ephemeris data；MOSEPH/MIXED 必須明示。所有 provider仍輸出 `astrology_fact_bundle@1.0.0`。
+Provider selection：`ASTROLOGY_PROVIDER_ROUTING_V1.json`。ChatGPT known-time natal 在 location完成後 probe host PySwissEph API；PASS → `swiss-host-natal-v1`，否則 Astronomy Engine。Provider/API identity ≠ data backend；actual `retflag` authoritative。只有 `SWIEPH_ONLY` 可稱 Swiss Ephemeris data；MOSEPH/MIXED 必須明示。所有 provider輸出 `astrology_fact_bundle@1.0.0`。
 
 Portable Astronomy runtime MISS → `ASTROLOGY_MATERIALIZATION.md` verified cache reuse / Host Capability Gate，禁止 full-bundle-first；Core materialization只涵蓋 explicit coordinates + IANA timezone。
 
@@ -73,7 +73,7 @@ Portable Astronomy runtime MISS → `ASTROLOGY_MATERIALIZATION.md` verified cach
 - natal minimum-sufficient synthesis order；
 - natal-specific unsupported / uncertainty handling。
 
-Calculation / resolver mechanics不在該檔重複；由 `ASTROLOGY_PROVIDER_ADMISSION_V1.json`、`ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json` 與對應 tools擁有。
+Natal calculation / resolver mechanics由 `admissions/astrology/ASTROLOGY_PROVIDER_ADMISSION_V1.json`、`admissions/astrology/ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json` 與對應 tools擁有；本檔不重複。
 
 ### Transit
 
@@ -84,13 +84,13 @@ Calculation / resolver mechanics不在該檔重複；由 `ASTROLOGY_PROVIDER_ADM
 - transit minimum-sufficient synthesis order；
 - transit-specific unsupported / uncertainty handling。
 
-Transit search mechanics不在該檔重複；由 `ASTROLOGY_TRANSIT_PROVIDER_ADMISSION_V1.json` + `tools/astrology_transit_provider.py` 擁有。
+Transit search mechanics由 `admissions/astrology/ASTROLOGY_TRANSIT_PROVIDER_ADMISSION_V1.json` + `tools/astrology_transit_provider.py` 擁有；本檔不重複。
 
 若同一問題同時要求 natal baseline + transit，依序讀兩個 mode owner；不得把兩者揉成未標示的混合規則。
 
 ## 4. Shared Source / Evidence Policy
 
-Interpretation admission：`ASTROLOGY_PRODUCTION_ADMISSION_V1.json`。
+Interpretation admission：`admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json`。
 
 共通原則：
 

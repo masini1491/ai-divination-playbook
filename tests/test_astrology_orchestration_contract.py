@@ -63,7 +63,7 @@ class AstrologyOrchestrationContractTests(unittest.TestCase):
         self.assertNotIn("solar_return", json.dumps(data))
 
     def test_production_manifest_admits_composition_only_orchestrator(self):
-        data = json.loads((ROOT / "ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        data = json.loads((ROOT / "admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
         orchestration = data["orchestration"]
         self.assertEqual("astrology-production-orchestrator-v1", orchestration["orchestrator_id"])
         self.assertEqual("tools/astrology_orchestrator.py", orchestration["runtime_owner"])
@@ -85,7 +85,7 @@ class AstrologyOrchestrationContractTests(unittest.TestCase):
         self.assertIn("solar_return", data["unsupported_scopes"])
 
     def test_production_manifest_admits_evidence_packaging_handoff_only(self):
-        data = json.loads((ROOT / "ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        data = json.loads((ROOT / "admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
         handoff = data["orchestration"]["interpretation_handoff"]
         self.assertEqual("astrology-interpretation-handoff-v1", handoff["adapter_id"])
         self.assertEqual("tools/astrology_interpretation_handoff.py", handoff["runtime_owner"])
@@ -100,7 +100,7 @@ class AstrologyOrchestrationContractTests(unittest.TestCase):
         self.assertEqual("CHATGPT_OUTPUT.md", handoff["final_output_owner"])
 
     def test_production_manifest_admits_output_guard_without_semantic_authority(self):
-        data = json.loads((ROOT / "ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        data = json.loads((ROOT / "admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
         output = data["orchestration"]["output_delivery"]
         self.assertEqual("astrology-output-guard-v1", output["adapter_id"])
         self.assertEqual("tools/astrology_output_guard.py", output["runtime_owner"])
@@ -114,7 +114,7 @@ class AstrologyOrchestrationContractTests(unittest.TestCase):
         self.assertFalse(output["final_text_authority"])
 
     def test_production_manifest_admits_composition_only_end_to_end_pipeline(self):
-        data = json.loads((ROOT / "ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        data = json.loads((ROOT / "admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
         pipeline = data["orchestration"]["end_to_end_pipeline"]
         self.assertEqual("astrology-production-reading-pipeline-v1", pipeline["pipeline_id"])
         self.assertEqual("tools/astrology_reading_pipeline.py", pipeline["runtime_owner"])

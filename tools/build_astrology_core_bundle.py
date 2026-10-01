@@ -21,7 +21,7 @@ DEPENDENCY_LICENSE="MIT"
 DEPENDENCY_LICENSE_SHA256="b4d9dd0fd80fce3879c4cd9e3754364f74fc5ec046f33276475ba3876785c8b7"
 
 PROJECT_PATHS=(
- "ASTROLOGY_PRODUCTION_ADMISSION_V1.json",
+ "admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json",
  "tools/astrology_runtime.py",
  "tools/civil_time_normalizer.py",
  "tools/astrology_provider.py",
