@@ -29,8 +29,8 @@ Last reviewed against:
 
 ```text
 ai-divination-playbook main
-808516dcf67f086ec89ca534acebb2760108ede9
-Add Astrology coordination backlog (#158)
+da9105f28c72e84751b01fd1b35d926250b7ef6a
+Reconcile Palmistry current research state (#387)
 ```
 
 This SHA is review evidence only, not a pin. Every maintenance or implementation task must resolve current `main` again before mutation.
@@ -62,7 +62,7 @@ Closed work above must not be reopened merely because a fresh session has not se
 ### PALM-P0-001 — Reconcile stale Palmistry overview / roadmap statements
 
 - type: MAINTENANCE / RECONCILIATION
-- status: OPEN
+- status: DONE
 - priority: P0
 - owner: Palmistry research coordination
 - blocked_by: none
@@ -86,6 +86,11 @@ Closed work above must not be reopened merely because a fresh session has not se
   - mark detector agreement as completed bounded evidence rather than pending;
   - structural validation passes;
   - no production promotion.
+- closure_evidence:
+  - PR #387 — `Reconcile Palmistry current research state`;
+  - canonical main `da9105f28c72e84751b01fd1b35d926250b7ef6a`;
+  - exact-main Validate Playbook run `36844713931` — SUCCESS;
+  - `references/palmistry/README.md` now identifies detector agreement as bounded completed evidence and formal B2 S2/S3 capture collection as the active dependency.
 
 ### PALM-P0-002 — Keep B2 source-selection / freeze discipline synchronized
 
