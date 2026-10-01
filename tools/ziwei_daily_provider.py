@@ -125,7 +125,7 @@ def calculate_daily(natal_input:NormalizedNatalInput,target:DailyTarget)->dict[s
             "primary_reference_path":"packages/ziwei/src/limits.ts",
             "comparator_reference":"SylarLong/iztro@2c7ef9be669df7b19d1799f4dce335fed3794f78",
             "comparator_reference_path":"src/astro/FunctionalAstrolabe.ts",
-            "calendar_policy_owner":"ZIWEI_CALENDAR_ADMISSION_V1.json",
+            "calendar_policy_owner":"admissions/ziwei/ZIWEI_CALENDAR_ADMISSION_V1.json",
             "birth_calendar_provenance":natal_input.calendar_provenance,
             "birth_leap_month_identity":natal_input.leap_month_identity,
         },
