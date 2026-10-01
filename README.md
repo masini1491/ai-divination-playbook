@@ -16,7 +16,7 @@ Zi Wei Dou Shu / 紫微斗數（explicit-request only；Scope-A natal first laye
 
 - Tarot / Meihua / Liuyao 參與 ordinary method routing；
 - Astrology Production v1 已正式可用，但只在使用者明確要求「用占星／看本命盤／看行運」時啟用，不加入 ordinary auto-routing；
-- Zi Wei Scope-A Production v1 已正式可用，但只在使用者明確要求「用紫微／看紫微命盤」時啟用，不加入 ordinary auto-routing；目前支援 bounded natal first layer、Asia/Taipei 西元生日輸入與 optional brightness facts；
+- Zi Wei 以 bounded natal Scope-A 為 production core，但另有 explicit dynamic layers；仍只在使用者明確要求「用紫微／看紫微命盤」時啟用，不加入 ordinary auto-routing。Gregorian input 支援 explicit IANA timezone 與 bounded Taiwan birthplace→timezone pre-resolution；optional modules 包含 brightness、M0/M1 auxiliary 與生年四化，另已 admission 大限／流年／流月／流日／流時計算及 V7–V11 bounded methodology interpretation；
 - Tarot + Meihua 與 Astrology natal + Zi Wei natal baseline 已有 canonical reconciliation contract；其他 method pair 在沒有專門 contract 前，不宣稱為正式 cross-validation。
 
 > **AI / ChatGPT 快速入口：** 實際使用本手冊時，直接從 [`CHAT_INIT.md`](CHAT_INIT.md) 開始並依 task routing 只讀最低必要文件／sections；不需要先完整閱讀本 README，也不要為了「熟悉手冊」掃描整個 Repository。
@@ -138,8 +138,9 @@ explicit Zi Wei request
    OR admitted normalized lunar input
 → deterministic calendar / natal provider
 → Scope-A Fact Gate
-→ allowlisted 52 first-layer claims + 2 sparse same-palace pair claims + 5 bounded Body-Palace claims
-→ optional brightness_v1（明確要求時）
+→ 70 base natal claims（52 first-layer + 2 same-palace + 5 Body-Palace + 11 star×palace）
+→ optional brightness / M0 / M1 / sihua modules（explicit activation）
+→ explicit dynamic request 時另進 admitted decadal/yearly/monthly/daily/hourly calculation + bounded methodology interpretation
 → bounded synthesis
 ```
 
@@ -289,7 +290,7 @@ Production owner：[`ASTROLOGY.md`](ASTROLOGY.md)。
 
 ### Zi Wei Dou Shu｜紫微斗數（Scope-A Production v1 / explicit-request only）
 
-Zi Wei 目前是 bounded natal production method，適合使用者明確要求：
+Zi Wei 以 bounded natal Scope-A 為 production core，並另有 explicit temporal calculation / bounded methodology interpretation layers；適合使用者明確要求：
 
 ```text
 用紫微幫我看本命盤
@@ -300,7 +301,7 @@ Zi Wei 目前是 bounded natal production method，適合使用者明確要求�
 
 目前 admitted production scope 包括：
 
-- `natal_baseline` only；
+- `natal_baseline` 是預設 production core；大限／流年／流月／流日／流時為分離、explicit-request 的 admitted temporal layers，不把 dynamic scope 混入預設 natal reading；
 - 14 主星 first-layer facts / claims；
 - 12 宮 first-layer claims；
 - 52 first-layer claims + 2 source-explicit `武曲×天相` same-palace claims（兄弟宮／官祿宮）+ 5 bounded Body-Palace claims + 11 sparse star×palace contextual claims，共 70 base natal claims；
@@ -529,6 +530,7 @@ BACKTEST JUDGMENT
 | [`AGENTS.md`](AGENTS.md) | repository governance / project AI mode / maintenance boundary |
 | [`CHAT_INIT.md`](CHAT_INIT.md) | fresh chat bootstrap、repository access、freshness、task routing、handoff gate |
 | [`PLAYBOOK_INDEX.json`](PLAYBOOK_INDEX.json) | machine-readable routing-only owner index |
+| [`REPOSITORY_ARCHITECTURE.md`](REPOSITORY_ARCHITECTURE.md) | repository topology / supporting-surface mapping / root-retention owner |
 | [`METHOD_ROUTING.md`](METHOD_ROUTING.md) | ordinary Tarot / Meihua / Liuyao method selection；Astrology / Zi Wei explicit override boundary |
 | [`RESEARCH_ROUTING.md`](RESEARCH_ROUTING.md) | explicit research-line discovery / research vs production separation |
 | [`INPUT_CONTRACT.md`](INPUT_CONTRACT.md) | 題目與 method input / provenance contract |
@@ -549,7 +551,12 @@ BACKTEST JUDGMENT
 | [`references/astrology/`](references/astrology/) | Astrology research evidence；不是 production owner |
 | [`references/ziwei/`](references/ziwei/) | Zi Wei research evidence / source-policy history；不是 production owner |
 | [`references/palmistry/`](references/palmistry/) | Palmistry research line；目前不是 production method |
+| [`admissions/astrology/`](admissions/astrology/) | Astrology machine admission manifests |
+| [`admissions/ziwei/`](admissions/ziwei/) | Zi Wei machine admission manifests |
+| [`admissions/shared/`](admissions/shared/) | shared cross-method machine admission manifests |
+| [`requirements/`](requirements/) | project-owned provider / calendar dependency pins |
 | [`reports/astrology/`](reports/astrology/) | Astrology production admission / execution evidence reports |
+| [`reports/shared/`](reports/shared/) | completed shared migration / validation evidence; historical, not production authority |
 | [`schemas/astrology/`](schemas/astrology/) | Astrology Production v1 machine contracts |
 
 ## Cross-validation 現況
@@ -585,7 +592,7 @@ Research discoverability 不等於 production admission。
 目前：
 
 - Astrology：Research v1 evidence 保留於 `references/astrology/**`；另外已有獨立的 Production v1 authority。
-- Zi Wei：Research evidence / architecture history 保留於 `references/ziwei/**`；另外已有獨立的 Scope-A Production v1 authority、Gregorian input adapter、optional brightness 與 ChatGPT deterministic transport。
+- Zi Wei：Research evidence / architecture history 保留於 `references/ziwei/**`；production 以 bounded natal Scope-A 為核心，另有 Gregorian / bounded birthplace-timezone input、optional brightness / M0 / M1 / sihua、explicit temporal calculation through hourly、V7–V11 bounded methodology interpretation，以及 ChatGPT deterministic transport。
 - Palmistry：已有 bounded research line，但目前仍不是 ordinary production method。
 
 任何 research line 未來進 production，仍需完整完成 method owner、fact/runtime authority、routing、provenance、behavioral regression 與 explicit admission。
