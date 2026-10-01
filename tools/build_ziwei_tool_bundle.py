@@ -40,7 +40,7 @@ PROJECT_PATHS=(
  "tools/ziwei_birthplace_timezone.py",
  "admissions/ziwei/ZIWEI_BIRTHPLACE_TIMEZONE_ADMISSION_V1.json",
  "tools/civil_time_normalizer.py",
- "CIVIL_TIME_NORMALIZER_ADMISSION_V1.json",
+ "admissions/shared/CIVIL_TIME_NORMALIZER_ADMISSION_V1.json",
  "tools/ziwei_true_solar_time.py",
  "admissions/ziwei/ZIWEI_TRUE_SOLAR_TIME_ADMISSION_V1.json",
  "tools/ziwei_calendar_data_provider.py",

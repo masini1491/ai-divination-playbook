@@ -14,7 +14,7 @@ from tools.civil_time_normalizer import (
 
 ROOT = Path(__file__).resolve().parents[1]
 FIXTURE = ROOT / "tests" / "fixtures" / "civil_time_normalization_v1.json"
-ADMISSION = ROOT / "CIVIL_TIME_NORMALIZER_ADMISSION_V1.json"
+ADMISSION = ROOT / "admissions/shared/CIVIL_TIME_NORMALIZER_ADMISSION_V1.json"
 
 
 class CivilTimeNormalizerTests(unittest.TestCase):

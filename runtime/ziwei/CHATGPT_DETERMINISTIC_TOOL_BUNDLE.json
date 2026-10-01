@@ -70,7 +70,7 @@
       "git_blob_sha": "2bfc54398c2ad29a537c17f8fb7de701729c8118"
     },
     {
-      "path": "CIVIL_TIME_NORMALIZER_ADMISSION_V1.json",
+      "path": "admissions/shared/CIVIL_TIME_NORMALIZER_ADMISSION_V1.json",
       "origin": "playbook",
       "byte_size": 2421,
       "offset": 115650,

@@ -33,7 +33,7 @@
     "civil_time_normalization": {
       "contract": "CIVIL_TIME_NORMALIZATION.md",
       "implementation": "tools/civil_time_normalizer.py",
-      "admission_manifest": "CIVIL_TIME_NORMALIZER_ADMISSION_V1.json",
+      "admission_manifest": "admissions/shared/CIVIL_TIME_NORMALIZER_ADMISSION_V1.json",
       "adapter_id": "civil-time-zoneinfo-v1",
       "adapter_version": "1.0.0"
     },
