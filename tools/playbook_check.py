@@ -16,6 +16,9 @@ MARKDOWN_LINK_RE = re.compile(r"!?\[[^\]]*\]\(([^)]+)\)")
 HEADING_RE = re.compile(r"^(#{1,6})\s+(.+?)\s*#*\s*$")
 FENCE_RE = re.compile(r"^\s{0,3}(`{3,}|~{3,})(.*)$")
 CODE_SPAN_RE = re.compile(r"`([^`\n]+)`")
+SEMANTIC_POINTER_RE = re.compile(
+    r"(?P<path>(?:[A-Za-z0-9_.-]+/)*[A-Za-z0-9_.-]+\.md)#(?P<id>[A-Z]{2,}(?:-[A-Z0-9]+){2,})"
+)
 URL_SCHEME_RE = re.compile(r"^[A-Za-z][A-Za-z0-9+.-]*:")
 BEHAVIOR_ID_RE = re.compile(r"^###\s+(TAROT-BEH-\d{3})\b", re.MULTILINE)
 INDEX_NAME = "PLAYBOOK_INDEX.json"
@@ -30,6 +33,7 @@ INDEX_REQUIRED_LOCAL_LOCATORS = {
 MATRIX_SCHEMA_VERSION = 1
 MATRIX_AUTHORITY = "selection-only"
 TEXT_SUFFIXES = {".md", ".json", ".py"}
+SEMANTIC_POINTER_SUFFIXES = {".md", ".json"}
 DEPRECATED_IDENTIFIERS = (
     "tarot-" + "plum-randomizer",
     "tarot-meihua-" + "question-playbook",
@@ -154,6 +158,50 @@ def check_markdown_links(root: Path) -> list[str]:
                     anchors = anchor_cache.setdefault(resolved, heading_anchors(resolved.read_text(encoding="utf-8")))
                     if fragment not in anchors:
                         errors.append(f"{path.relative_to(root)}:{line_no}: missing Markdown anchor: {match.group(1)}")
+    return errors
+
+
+def semantic_heading_ids(text: str) -> set[str]:
+    ids: set[str] = set()
+    for _line_no, line in outside_fence_lines(text):
+        match = HEADING_RE.match(line)
+        if not match:
+            continue
+        ids.update(re.findall(r"\b[A-Z]{2,}(?:-[A-Z0-9]+){2,}\b", match.group(2)))
+    return ids
+
+
+def check_semantic_work_pointers(root: Path) -> list[str]:
+    errors: list[str] = []
+    id_cache: dict[Path, set[str]] = {}
+    root_resolved = root.resolve()
+    for path in text_files(root):
+        if path.suffix.lower() not in SEMANTIC_POINTER_SUFFIXES:
+            continue
+        try:
+            text = path.read_text(encoding="utf-8")
+        except UnicodeDecodeError:
+            continue
+        for line_no, line in outside_fence_lines(text) if path.suffix.lower() == ".md" else enumerate(text.splitlines(), 1):
+            for match in SEMANTIC_POINTER_RE.finditer(line):
+                raw_path = match.group("path")
+                work_id = match.group("id")
+                resolved = (path.parent / raw_path).resolve()
+                try:
+                    resolved.relative_to(root_resolved)
+                except ValueError:
+                    errors.append(f"{path.relative_to(root)}:{line_no}: semantic pointer escapes repository: {match.group(0)}")
+                    continue
+                if not resolved.is_file():
+                    errors.append(f"{path.relative_to(root)}:{line_no}: semantic pointer target missing: {match.group(0)}")
+                    continue
+                if resolved.suffix.lower() != ".md":
+                    continue
+                ids = id_cache.setdefault(resolved, semantic_heading_ids(resolved.read_text(encoding="utf-8")))
+                if work_id not in ids:
+                    errors.append(
+                        f"{path.relative_to(root)}:{line_no}: semantic work pointer target heading missing: {match.group(0)}"
+                    )
     return errors
 
 
@@ -392,6 +440,7 @@ def check_behavioral_matrix(root: Path) -> list[str]:
 def validate(root: Path) -> list[str]:
     errors: list[str] = []
     errors.extend(check_markdown_links(root))
+    errors.extend(check_semantic_work_pointers(root))
     errors.extend(check_deprecated_identifiers(root))
     errors.extend(check_index(root))
     errors.extend(check_chat_init_router(root))
