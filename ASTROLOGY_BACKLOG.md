@@ -118,6 +118,30 @@ This item is a standing reconciliation guard. It is not a request to change curr
 - canonical technical contract: `CROSS_VALIDATION.md` §7
 - mutable status is **not** tracked here; follow the Zi Wei backlog owner to avoid divergent shared state.
 
+## Completed routing anchors
+
+These headings are retained because current repository surfaces use their semantic work IDs as durable routing pointers. They are **DONE** and are not active backlog items.
+
+### AST-SHARED-003 — Shared civil-time normalization contract
+
+- type: COMPLETED SHARED COORDINATION POINTER
+- status: DONE
+- canonical contract: `CIVIL_TIME_NORMALIZATION.md`
+- implementation: `tools/civil_time_normalizer.py`
+- admission: `admissions/shared/CIVIL_TIME_NORMALIZER_ADMISSION_V1.json`
+- consumer pointers:
+  - `AST-P1-190`
+  - `ZIWEI_BACKLOG.md#ZW-P2-030`
+
+### AST-P1-190 — Shared civil-time normalizer extraction/admission
+
+- type: COMPLETED IMPLEMENTATION POINTER
+- status: DONE
+- canonical contract: `CIVIL_TIME_NORMALIZATION.md`
+- implementation: `tools/civil_time_normalizer.py`
+- admission: `admissions/shared/CIVIL_TIME_NORMALIZER_ADMISSION_V1.json`
+- shared coordination pointer: `AST-SHARED-003`
+
 ## Completed anti-rediscovery index
 
 The items below are **DONE**. They are retained only as compact identity pointers; do not reopen them unless a new regression, explicit scope expansion, or canonical-owner change creates a new judgment node.

@@ -218,6 +218,28 @@ class PlaybookCheckTests(unittest.TestCase):
         errors = playbook_check.validate(root)
         self.assertTrue(any("routed owner missing" in error for error in errors))
 
+    def test_semantic_work_pointer_valid_heading_passes(self):
+        root = self.make_repo()
+        write(root, "BACKLOG.md", "# Backlog\n\n### AST-P1-190 — Completed work\n")
+        write(root, "POINTERS.md", "owner: `BACKLOG.md#AST-P1-190`\n")
+        self.assertEqual(playbook_check.validate(root), [])
+
+    def test_semantic_work_pointer_missing_heading_fails(self):
+        root = self.make_repo()
+        write(root, "BACKLOG.md", "# Backlog\n\n- **AST-P1-190 — Completed work** — DONE.\n")
+        write(root, "POINTERS.md", "owner: `BACKLOG.md#AST-P1-190`\n")
+        errors = playbook_check.validate(root)
+        self.assertTrue(any("semantic work pointer target heading missing" in error for error in errors))
+
+    def test_semantic_work_pointer_in_json_fails_closed(self):
+        root = self.make_repo()
+        write(root, "BACKLOG.md", "# Backlog\n\n- AST-SHARED-003 done\n")
+        data = json.loads((root / "PLAYBOOK_INDEX.json").read_text(encoding="utf-8"))
+        data["capabilities"][0]["coordination_owner"] = "BACKLOG.md#AST-SHARED-003"
+        (root / "PLAYBOOK_INDEX.json").write_text(json.dumps(data), encoding="utf-8")
+        errors = playbook_check.validate(root)
+        self.assertTrue(any("AST-SHARED-003" in error and "heading missing" in error for error in errors))
+
     def test_deprecated_repository_identity_fails(self):
         root = self.make_repo()
         deprecated = "tarot-" + "plum-randomizer"
