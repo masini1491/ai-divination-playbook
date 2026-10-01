@@ -29,7 +29,7 @@ Explicit `coordinates + timezone_name` input不需要本檔，直接走 core/pro
 Resolver admission：
 
 ```text
-ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json
+admissions/astrology/ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json
 tools/astrology_place_resolver.py
 ```
 
@@ -146,7 +146,7 @@ Swiss capability PASS只回答 astronomical provider capability；不能跳過 l
 
 ```text
 GitHub Connect → exact shard acquisition authority
-ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json → resolver/materialization admission truth
+admissions/astrology/ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json → resolver/materialization admission truth
 this contract → resolver recovery / query-bounded transport owner
 ASTROLOGY_PROVIDER_ROUTING_V1.json → astronomical provider preference/fallback
 ASTROLOGY_MATERIALIZATION.md → portable Astronomy core materialization only

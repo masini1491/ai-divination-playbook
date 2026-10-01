@@ -25,7 +25,7 @@ SELECTION_SCHEMA_NAME = "astrology_typed_evidence_selection"
 SELECTION_SCHEMA_VERSION = "1.0.0"
 SELECTOR_ID = "astrology-typed-evidence-selector-v1"
 SELECTOR_VERSION = "1.0.0"
-PRODUCTION_MANIFEST_PATH = "ASTROLOGY_PRODUCTION_ADMISSION_V1.json"
+PRODUCTION_MANIFEST_PATH = "admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json"
 APPLICABILITY_SCOPES = {"selector_shape", "object_core", "sign_style", "object_sign_pair", "aspect_pair", "north_node_core", "north_node_sign_style"}
 HOUSE_NAMES = {
     1: "first house", 2: "second house", 3: "third house", 4: "fourth house",

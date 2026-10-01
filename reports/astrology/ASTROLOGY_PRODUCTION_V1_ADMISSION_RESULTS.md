@@ -26,7 +26,7 @@ built-in ephemeris         no
 LLM chart calculation      forbidden
 fact runtime               tools/astrology_runtime.py
 method owner               ASTROLOGY.md
-admission manifest         ASTROLOGY_PRODUCTION_ADMISSION_V1.json
+admission manifest         admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json
 ```
 
 This admission does not claim scientific or predictive validity.
@@ -141,7 +141,7 @@ Production authority is added separately through:
 
 ```text
 ASTROLOGY.md
-ASTROLOGY_PRODUCTION_ADMISSION_V1.json
+admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json
 ```
 
 The manifest records admitted registry families and a source policy requiring `CLAIM_ELIGIBLE` / `POLICY_PROVENANCE_ELIGIBLE` evidence for production use. `REFERENCE_ONLY` sources do not self-promote.

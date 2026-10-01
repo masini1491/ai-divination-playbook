@@ -15,8 +15,8 @@ ASTROLOGY.md
 
 Raw birth data 的 calculation 由 `tools/astrology_provider.py` 執行；若只有 city/locality，可先走 `tools/astrology_place_resolver.py`。Exact provider/resolver scope、DST、latitude、dependency 與 not-admitted boundary以：
 
-- `ASTROLOGY_PROVIDER_ADMISSION_V1.json`
-- `ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json`
+- `admissions/astrology/ASTROLOGY_PROVIDER_ADMISSION_V1.json`
+- `admissions/astrology/ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json`
 
 為 machine truth。不得在本檔或模型中另造 calculation rule。
 
@@ -69,7 +69,7 @@ Unknown birth time 不套用 house-system default，仍維持 `house_system = nu
 
 ## 4. Essential Dignity Policy
 
-只使用 `ASTROLOGY_PRODUCTION_ADMISSION_V1.json` 當前 admitted 的 dignity categories；本 mode owner不重複保存 exact enum。
+只使用 `admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json` 當前 admitted 的 dignity categories；本 mode owner不重複保存 exact enum。
 
 Dignity描述 condition / resources / friction，不是道德好壞；不做 numeric scoring。未由 production admission啟用的 dignity layer不得自行補入。
 
@@ -173,7 +173,7 @@ The natal provider's default aspect graph remains `aspect-participants-core-bodi
 
 ## Explicit extended ephemeris facts
 
-使用者明確要求 Chiron / Ceres / Pallas / Juno / Vesta 且出生時間為 exact / approximate 時，可透過 `extended_objects` selector 啟動 `ASTROLOGY_EXTENDED_EPHEMERIS_ADMISSION_V1.json` 的獨立 provider lane。
+使用者明確要求 Chiron / Ceres / Pallas / Juno / Vesta 且出生時間為 exact / approximate 時，可透過 `extended_objects` selector 啟動 `admissions/astrology/ASTROLOGY_EXTENDED_EPHEMERIS_ADMISSION_V1.json` 的獨立 provider lane。
 
 此 lane 只 admission deterministic calculation facts：
 

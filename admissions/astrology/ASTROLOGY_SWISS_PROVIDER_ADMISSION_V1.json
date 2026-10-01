@@ -92,7 +92,7 @@
   },
   "fallback": {
     "provider_id": "astronomy-engine-natal-v1",
-    "admission_manifest": "ASTROLOGY_PROVIDER_ADMISSION_V1.json",
+    "admission_manifest": "admissions/astrology/ASTROLOGY_PROVIDER_ADMISSION_V1.json",
     "materialization_contract": "ASTROLOGY_MATERIALIZATION.md"
   },
   "not_admitted": [

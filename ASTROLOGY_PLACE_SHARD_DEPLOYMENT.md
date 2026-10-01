@@ -6,7 +6,7 @@ This contract owns persistence and identity for the query-bounded Astrology plac
 
 ## Selected topology
 
-The default production transport candidate is profile `500`, matching `ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json` default resolver semantics.
+The default production transport candidate is profile `500`, matching `admissions/astrology/ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json` default resolver semantics.
 
 The generated corpus MUST NOT be copied into the ordinary `main` hot tree merely to make it retrievable. It is published to a dedicated generated-data ref:
 

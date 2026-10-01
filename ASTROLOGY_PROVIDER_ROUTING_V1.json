@@ -10,14 +10,14 @@
         "portable_default",
         "fallback"
       ],
-      "admission_manifest": "ASTROLOGY_PROVIDER_ADMISSION_V1.json",
+      "admission_manifest": "admissions/astrology/ASTROLOGY_PROVIDER_ADMISSION_V1.json",
       "status": "PRODUCTION_ADMITTED"
     },
     "swiss-host-natal-v1": {
       "role": [
         "chatgpt_host_native_preferred"
       ],
-      "admission_manifest": "ASTROLOGY_SWISS_PROVIDER_ADMISSION_V1.json",
+      "admission_manifest": "admissions/astrology/ASTROLOGY_SWISS_PROVIDER_ADMISSION_V1.json",
       "status": "PRODUCTION_ADMITTED_HOST_CONDITIONAL"
     }
   },

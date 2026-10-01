@@ -19,7 +19,7 @@ Resolver authority:
 
 ```text
 tools/astrology_place_resolver.py
-ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json
+admissions/astrology/ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json
 
 geonamescache==3.0.2
 yaph/geonamescache@df4f6497b321f7981645ab0c5c77d3354c63bd01

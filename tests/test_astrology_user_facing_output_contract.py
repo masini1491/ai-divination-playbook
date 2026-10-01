@@ -150,7 +150,7 @@ class AstrologyUserFacingOutputContractTests(unittest.TestCase):
         self.assertEqual(1, theme["properties"]["claim_refs"]["minItems"])
 
     def test_manifest_and_machine_index_publish_same_schema(self):
-        manifest = json.loads((ROOT / "ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        manifest = json.loads((ROOT / "admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
         index = json.loads((ROOT / "PLAYBOOK_INDEX.json").read_text(encoding="utf-8"))
         output = manifest["orchestration"]["output_delivery"]
         rows = {row["id"]: row for row in index["capabilities"]}

@@ -80,7 +80,7 @@
           "const": "CHATGPT_OUTPUT.md"
         },
         "production_manifest": {
-          "const": "ASTROLOGY_PRODUCTION_ADMISSION_V1.json"
+          "const": "admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json"
         },
         "request_schema": {
           "const": "ASTROLOGY_INTERPRETATION_REQUEST_V1.schema.json"

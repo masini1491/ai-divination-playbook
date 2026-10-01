@@ -16,7 +16,7 @@ ROUTING = json.loads(
     (ROOT / "ASTROLOGY_PROVIDER_ROUTING_V1.json").read_text(encoding="utf-8")
 )
 SWISS = json.loads(
-    (ROOT / "ASTROLOGY_SWISS_PROVIDER_ADMISSION_V1.json").read_text(encoding="utf-8")
+    (ROOT / "admissions/astrology/ASTROLOGY_SWISS_PROVIDER_ADMISSION_V1.json").read_text(encoding="utf-8")
 )
 
 

@@ -34,7 +34,7 @@ The upstream repository supplies deterministic Sun/Moon/planet astronomy under a
 
 This avoids silently binding the Playbook to Swiss Ephemeris / `pyswisseph`, whose dual-license and ephemeris-asset boundaries remain materially different.
 
-No Astronomy Engine source file is vendored into this repository. It remains an external pinned dependency installed through `requirements-astrology-provider.txt`.
+No Astronomy Engine source file is vendored into this repository. It remains an external pinned dependency installed through `requirements/astrology-provider.txt`.
 
 ## Astrology-specific derived calculations
 

@@ -89,7 +89,7 @@ class AstrologyRuntimeArtifactContractTests(unittest.TestCase):
         self.assertFalse(self.pipeline["pipeline"]["final_text_authored"])
 
     def test_manifest_and_index_publish_all_runtime_artifact_schemas(self):
-        manifest = load(ROOT / "ASTROLOGY_PRODUCTION_ADMISSION_V1.json")
+        manifest = load(ROOT / "admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json")
         index = load(ROOT / "PLAYBOOK_INDEX.json")
         row = {item["id"]: item for item in index["capabilities"]}["method.astrology"]
         orchestration = manifest["orchestration"]

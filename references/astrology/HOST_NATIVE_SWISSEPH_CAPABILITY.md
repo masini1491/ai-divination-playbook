@@ -103,8 +103,8 @@ Sections 5–9 of the original capability study described the state **before** h
 Current machine truth is owned by:
 
 - `ASTROLOGY_PROVIDER_ROUTING_V1.json`;
-- `ASTROLOGY_SWISS_PROVIDER_ADMISSION_V1.json`;
-- `ASTROLOGY_PRODUCTION_ADMISSION_V1.json#/natal_provider_routing`;
+- `admissions/astrology/ASTROLOGY_SWISS_PROVIDER_ADMISSION_V1.json`;
+- `admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json#/natal_provider_routing`;
 - `tools/astrology_provider_selector.py`.
 
 The retained research evidence still establishes the bounded feasibility background: host-native PySwissEph may execute with mixed effective backends, actual `retflag` must be preserved, and repository installation/vendoring of Swiss remains forbidden. Current production outcome is recorded in §10 below.

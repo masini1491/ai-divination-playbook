@@ -124,7 +124,7 @@ class AstrologySwissProviderTests(unittest.TestCase):
         provider = self._fake_bundle()["provider"]
         self.assertEqual("MIXED_SWIEPH_MOSEPH", provider["effective_backend_summary"])
         admission = json.loads(
-            (ROOT / "ASTROLOGY_SWISS_PROVIDER_ADMISSION_V1.json").read_text(
+            (ROOT / "admissions/astrology/ASTROLOGY_SWISS_PROVIDER_ADMISSION_V1.json").read_text(
                 encoding="utf-8"
             )
         )
@@ -199,7 +199,7 @@ class AstrologySwissProviderTests(unittest.TestCase):
     def test_manifest_required_provenance_matches_emitted_provider_keys(self):
         bundle = self._fake_bundle()
         admission = json.loads(
-            (ROOT / "ASTROLOGY_SWISS_PROVIDER_ADMISSION_V1.json").read_text(
+            (ROOT / "admissions/astrology/ASTROLOGY_SWISS_PROVIDER_ADMISSION_V1.json").read_text(
                 encoding="utf-8"
             )
         )

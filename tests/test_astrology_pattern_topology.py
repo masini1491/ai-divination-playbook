@@ -162,7 +162,7 @@ class AstrologyPatternTopologyTests(unittest.TestCase):
             )
 
     def test_current_policy_does_not_admit_yod_stellium_or_quintile_patterns(self):
-        manifest = json.loads((ROOT / "ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        manifest = json.loads((ROOT / "admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json").read_text(encoding="utf-8"))
         policy = manifest["orchestration"]["policy_projections"]["pattern_topology"]
         self.assertEqual(
             ["T-Square", "Grand Trine", "Grand Cross", "Kite", "Mystic Rectangle", "Cradle", "Grand Sextile"],

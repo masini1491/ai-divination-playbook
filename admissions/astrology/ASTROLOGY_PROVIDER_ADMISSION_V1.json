@@ -208,7 +208,7 @@
         "semantic_interpretation_authority": false,
         "explicit_aspect_policy_selector_required": true,
         "explicit_orb_policy_selector_required": true,
-        "policy_definitions_owner": "ASTROLOGY_PRODUCTION_ADMISSION_V1.json#/aspect_policy/extended_participant_policies"
+        "policy_definitions_owner": "admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json#/aspect_policy/extended_participant_policies"
       }
     }
   },
