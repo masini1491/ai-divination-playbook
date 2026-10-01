@@ -178,7 +178,7 @@ class AstrologyInterpretationHandoffTests(unittest.TestCase):
         )._load_json
 
         def load_with_profile(path):
-            if Path(path).name == "admissions/astrology/ASTROLOGY_PRODUCTION_ADMISSION_V1.json":
+            if Path(path).name == "ASTROLOGY_PRODUCTION_ADMISSION_V1.json":
                 return manifest
             return original_load_json(path)
 
