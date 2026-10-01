@@ -25,7 +25,7 @@ MONTH={
 
 class ZiWeiMonthlyInterpretationTests(unittest.TestCase):
     def test_admission_is_bounded_and_three_claims_only(self):
-        a=json.loads((ROOT/"ZIWEI_MONTHLY_INTERPRETATION_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        a=json.loads((ROOT/"admissions/ziwei/temporal/interpretation/ZIWEI_MONTHLY_INTERPRETATION_ADMISSION_V1.json").read_text(encoding="utf-8"))
         self.assertEqual("PRODUCTION_ADMITTED_BOUNDED_INTERPRETATION",a["status"])
         self.assertEqual("monthly",a["temporal_scope"])
         self.assertEqual(3,len(a["admitted_claim_ids"]))
