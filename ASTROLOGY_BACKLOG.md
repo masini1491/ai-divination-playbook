@@ -103,8 +103,8 @@ This item is a standing reconciliation guard. It is not a request to change curr
 - owner: Astrology repository-architecture maintenance
 - blocked_by: none
 - shared_precondition:
-  - before any path move, close one minimum shared topology contract in `REPOSITORY_ARCHITECTURE.md` for root-retention rules, domain-scoped admission paths and routing/index update responsibility;
-  - do **not** duplicate that shared mutable contract in both Astrology and Zi Wei backlogs.
+  - CLOSED by `REPOSITORY_ARCHITECTURE.md` → `Root / method-domain topology contract`;
+  - this backlog stores only the pointer; shared topology remains single-owner and must not be duplicated as mutable state here.
 - current_state:
   - Astrology already has domain-scoped `tools/astrology_*`, `schemas/astrology/**`, `runtime/astrology/**`, `data/astrology/**`, `references/astrology/**` and `reports/astrology/**`;
   - root still carries a large Astrology-specific surface, especially admission manifests, provider/materialization support contracts and the provider requirements file;

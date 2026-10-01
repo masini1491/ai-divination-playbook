@@ -137,8 +137,8 @@ This file is an active / deferred coordination surface, not a completed-work arc
 - owner: Zi Wei repository-architecture maintenance
 - blocked_by: none
 - shared_precondition:
-  - before any path move, close one minimum shared topology contract in `REPOSITORY_ARCHITECTURE.md` for root-retention rules, domain-scoped admission paths and routing/index update responsibility;
-  - do **not** duplicate that shared mutable contract in both Astrology and Zi Wei backlogs.
+  - CLOSED by `REPOSITORY_ARCHITECTURE.md` → `Root / method-domain topology contract`;
+  - this backlog stores only the pointer; shared topology remains single-owner and must not be duplicated as mutable state here.
 - current_state:
   - Zi Wei already has domain-scoped `tools/ziwei_*`, `schemas/ziwei/**`, `runtime/ziwei/**`, `data/ziwei/**`, `references/ziwei/**` and `indexes/ziwei/**`;
   - root still carries a very large Zi Wei-specific surface, especially production / optional-module / temporal calculation / temporal interpretation admission manifests plus the calendar requirements file;

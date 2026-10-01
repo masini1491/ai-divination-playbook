@@ -168,6 +168,88 @@ Supporting-surface 的 **generic semantics 不由本檔重定義**。Shared deve
 
 本 Repo 只保存實際採用的 physical mapping 與 stricter local delta。
 
+#### Root / method-domain topology contract
+
+本節是 Astrology / Zi Wei root-surface normalization 前置的 **minimum shared topology contract**。它只固定跨 method 必須一致的 physical-path boundary；不替 method owner 決定其 subordinate document taxonomy，也不把目錄結構升格成 calculation / interpretation / admission authority。
+
+Root surface 原則：
+
+- repository root 優先保留 fresh-session bootstrap、repo/global governance、global routing/output/lifecycle owners、top-level method entry owner，以及 project governance 已明確 allowlist 的 method-scoped coordination surface；
+- `ASTROLOGY.md`、`ZIWEI.md`、`ASTROLOGY_BACKLOG.md`、`ZIWEI_BACKLOG.md` 在本次 normalization 保持 root entry，不因整理目錄增加 ordinary method routing hop；
+- root-retention 是 retrieval / discoverability decision，不代表「root 內的檔案自動更有 authority」；authority 仍由各 canonical owner 建立；
+- compatibility adapter 若因 host discovery 必須位於 root，可保留 thin handoff，但不得複製 method policy。
+
+Method-specific admission manifests 統一採：
+
+```text
+admissions/<method>/**
+```
+
+目前 normalization target 至少包含：
+
+```text
+admissions/astrology/**
+admissions/ziwei/**
+```
+
+規則：
+
+- method-specific production / provider / optional-module / temporal calculation / temporal interpretation admission manifest 都歸該 method namespace；
+- 優先保留既有 canonical filename，降低 path migration 之外的 semantic churn；
+- method namespace 下只有在存在 independent retrieval intent 時才再分 subgroup；不為目錄對稱強制增加層級；
+- shared / cross-method admission 若未來需要 normalization，使用 `admissions/shared/**`；本 Phase A 不授權順手搬移目前 shared admission files；
+- admission file 的新位置不改變其 authority、admitted scope、schema/version、runtime behavior或 provenance。
+
+Project-owned dependency requirement files 統一採：
+
+```text
+requirements/**
+```
+
+例如 method migration 可把既有 root requirement files relocation 到該 surface；path relocation 不得改變 dependency version、runtime/install policy或 build-time/runtime dependency semantics。
+
+Method subordinate documents：
+
+- materialization、deployment、mode-specific support contract 等是否移出 root，由各 method migration依 Independent Retrieval Intent / Context Cohesion / AI Readability gates個別判斷；
+- shared contract **不預先指定 universal `docs/<method>` 或其他額外層級**；
+- 沒有 concrete retrieval / scope-isolation / search-noise benefit時，保持既有 canonical path比為了整齊增加 routing depth更好。
+
+Path-move closure：
+
+```text
+shared topology contract
+→ method-scoped migration
+→ exact pointer / consumer reconciliation
+→ method-specific validation
+→ canonical read-back
+```
+
+任何 canonical file relocation 必須在同一 bounded migration中：
+
+- 更新 `PLAYBOOK_INDEX.json`、method owner、materialization owner、test / generator / workflow / schema / fixture 等所有 materially affected exact-path consumer；
+- generated routing metadata只在其 canonical generator / input真的受影響時更新；
+- 不以 duplicate root copy作為永久 compatibility alias；若 temporary compatibility pointer確有必要，必須明示 non-authoritative role與retirement condition；
+- ordinary ChatGPT hot path不得只因 physical relocation新增固定 lookup hop；
+- current load-budget / structural-routing evidence依 affected scope重新驗證。
+
+Normalization sequencing：
+
+```text
+Shared Phase A
+→ establish this minimum cross-method topology contract only
+
+Method Phase
+→ Astrology and Zi Wei each perform their own bounded migration
+
+Shared Phase B
+→ reconcile thin global routing/index shape, root historical/search-noise cleanup,
+  and cross-method load-budget effects from the actual migrated state
+```
+
+Phase B 是後續 reconciliation boundary，不因本節自動 admission `PLAYBOOK_INDEX.json` sharding、historical relocation或其他 global refactor。
+
+核心原則：**Shared architecture只固定跨 method 必須一致的 boundary；method-specific layout由其 retrieval intent決定；最後再用實際結果收斂 global routing，而不是先把完整目錄設計死。**
+
 #### Method-scoped coordination topology
 
 本 Repo 已採用三個 peer coordination surfaces：
