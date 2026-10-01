@@ -21,7 +21,7 @@ research-only scaffold
 目前 production 狀態：
 
 - Scope-A natal provider：G1 admitted
-- Scope-A v1 production binding：G7 admitted (`ZIWEI_PRODUCTION_ADMISSION_V1.json`)
+- Scope-A v1 production binding：G7 admitted (`admissions/ziwei/ZIWEI_PRODUCTION_ADMISSION_V1.json`)
 - root production owner：`ZIWEI.md` 已建立
 - explicit Zi Wei routing：已 admitted；使用者明確要求紫微時可進 production Scope-A
 - Gregorian input adapter：`ziwei.calendar.civil_v2` 已 admitted（explicit IANA civil time；shared `civil-time-zoneinfo-v1` validation）
@@ -54,7 +54,7 @@ research-only scaffold
 
 ## Production boundary
 
-Research registries remain historical research owners and keep `production_routable=false`. Scope-A v1 production authority is added separately by root `ZIWEI_PRODUCTION_ADMISSION_V1.json` and `tools/ziwei_scope_a_pipeline.py`; this does not make the research directory itself an ordinary production router.
+Research registries remain historical research owners and keep `production_routable=false`. Scope-A v1 production authority is added separately by root `admissions/ziwei/ZIWEI_PRODUCTION_ADMISSION_V1.json` and `tools/ziwei_scope_a_pipeline.py`; this does not make the research directory itself an ordinary production router.
 
 ## Research objective
 
