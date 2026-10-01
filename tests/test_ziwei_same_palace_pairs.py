@@ -13,7 +13,7 @@ from tools.ziwei_runtime import ZiWeiReadingRequest, run_ziwei
 ROOT=Path(__file__).resolve().parents[1]
 REGISTRY=ROOT/"references"/"ziwei"/"ziwei_interpretation_claim_registry_same_palace_pairs_v1.json"
 VALIDATOR=ROOT/"references"/"ziwei"/"validate_interpretation_claim_registry.py"
-ADMISSION=ROOT/"ZIWEI_SAME_PALACE_PAIR_ADMISSION_V1.json"
+ADMISSION=ROOT/"admissions/ziwei/ZIWEI_SAME_PALACE_PAIR_ADMISSION_V1.json"
 
 PAIR_IDS={
     "兄弟宮":"ZW-PAIR-WUQU-TIANXIANG-SIBLINGS-001",
