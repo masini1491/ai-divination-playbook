@@ -5,7 +5,7 @@
   "module": "decadal_interpretation_v1",
   "status": "PRODUCTION_ADMITTED_BOUNDED_INTERPRETATION",
   "activation": "explicit_ziwei_decadal_request_only",
-  "parent_calculation_admission": "ZIWEI_DECADAL_ADMISSION_V1.json",
+  "parent_calculation_admission": "admissions/ziwei/temporal/calculation/ZIWEI_DECADAL_ADMISSION_V1.json",
   "temporal_scope": "decadal",
   "interpretation_profile": "ziwei.interpretation.tw_v1",
   "admitted_claim_registry": "references/ziwei/ziwei_interpretation_claim_registry_decadal_v1.json",
