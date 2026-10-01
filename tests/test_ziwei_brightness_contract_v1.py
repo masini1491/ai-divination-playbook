@@ -12,7 +12,7 @@ ROOT=Path(__file__).resolve().parents[1]
 
 class ZiWeiBrightnessContractV1Tests(unittest.TestCase):
     def test_optional_manifest_is_bounded(self):
-        m=json.loads((ROOT/"ZIWEI_BRIGHTNESS_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        m=json.loads((ROOT/"admissions/ziwei/optional/ZIWEI_BRIGHTNESS_ADMISSION_V1.json").read_text(encoding="utf-8"))
         self.assertEqual("PRODUCTION_ADMITTED_OPTIONAL",m["status"])
         self.assertTrue(m["default_scope_unchanged"])
         self.assertEqual(0,m["scope"]["admitted_claims_added"])
