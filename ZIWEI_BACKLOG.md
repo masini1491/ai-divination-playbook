@@ -29,8 +29,8 @@ Last reviewed against:
 
 ```text
 ai-divination-playbook main
-7f307858d6f2a688b6e2cba5dcbbc9641d5cf19a
-Add Astrology repository architecture backlog item
+4658a2a364241ba65c1cb5dbd303f198a8d8278d
+Define shared method-domain topology contract
 ```
 
 This SHA is review evidence only, not a pin. Every maintenance, evaluation or implementation task must resolve current `main` again before mutation.
