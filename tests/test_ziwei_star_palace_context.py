@@ -13,7 +13,7 @@ from tools.ziwei_runtime import ZiWeiReadingRequest, run_ziwei
 ROOT=Path(__file__).resolve().parents[1]
 REGISTRY=ROOT/"references"/"ziwei"/"ziwei_interpretation_claim_registry_star_palace_context_v1.json"
 VALIDATOR=ROOT/"references"/"ziwei"/"validate_interpretation_claim_registry.py"
-ADMISSION=ROOT/"ZIWEI_STAR_PALACE_CONTEXT_ADMISSION_V1.json"
+ADMISSION=ROOT/"admissions/ziwei/ZIWEI_STAR_PALACE_CONTEXT_ADMISSION_V1.json"
 
 ADMITTED={
     ("天相","命宮"):"ZW-SP-TIANXIANG-MING-001",
