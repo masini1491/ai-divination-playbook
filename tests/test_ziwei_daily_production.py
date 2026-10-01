@@ -20,7 +20,7 @@ def p5(scope,target):
 
 class ZiWeiDailyProductionTests(unittest.TestCase):
     def test_daily_admission_is_calculation_only(self):
-        a=json.loads((ROOT/"ZIWEI_DAILY_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        a=json.loads((ROOT/"admissions/ziwei/temporal/calculation/ZIWEI_DAILY_ADMISSION_V1.json").read_text(encoding="utf-8"))
         self.assertEqual("PRODUCTION_ADMITTED_CALCULATION_ONLY",a["status"])
         self.assertEqual("daily.monthly_parent_lunar_day_v1",a["profile"]["profile_id"])
         self.assertEqual("monthly",a["parent_scope"]["required"])
