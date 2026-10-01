@@ -58,7 +58,7 @@ Canonical runtime gate：`tools/astrology_runtime.py`。Fact Bundle / runtime sc
 
 **Location resolution先於 provider selection。** `place`／`country` resolver MISS → `ASTROLOGY_PLACE_RESOLVER_MATERIALIZATION.md`；禁止 generic web / public GeoNames / map search / model-memory coordinates。Explicit coordinates + IANA timezone可直接進 provider routing。
 
-Provider selection：`ASTROLOGY_PROVIDER_ROUTING_V1.json`。ChatGPT known-time natal 在 location完成後 probe host PySwissEph API；PASS → `swiss-host-natal-v1`，否則 Astronomy Engine。Provider/API identity ≠ data backend；actual `retflag` authoritative。只有 `SWIEPH_ONLY` 可稱 Swiss Ephemeris data；MOSEPH/MIXED 必須明示。所有 provider輸出 `astrology_fact_bundle@1.0.0`。
+Provider selection依 `ASTROLOGY_PROVIDER_ROUTING_V1.json`：ChatGPT known-time natal 在 location完成後 probe host PySwissEph API；PASS → `swiss-host-natal-v1`，否則 Astronomy Engine。Provider/API identity ≠ data backend；actual `retflag` authoritative。只有 `SWIEPH_ONLY` 可稱 Swiss Ephemeris data；MOSEPH/MIXED 必須明示。所有 provider輸出 `astrology_fact_bundle@1.0.0`。
 
 Portable Astronomy runtime MISS → `ASTROLOGY_MATERIALIZATION.md` verified cache reuse / Host Capability Gate，禁止 full-bundle-first；Core materialization只涵蓋 explicit coordinates + IANA timezone。
 
