@@ -23,7 +23,7 @@ def p4(scope,target):
 
 class ZiWeiMonthlyProductionTests(unittest.TestCase):
     def test_monthly_admission_is_calculation_only(self):
-        a=json.loads((ROOT/"ZIWEI_MONTHLY_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        a=json.loads((ROOT/"admissions/ziwei/temporal/calculation/ZIWEI_MONTHLY_ADMISSION_V1.json").read_text(encoding="utf-8"))
         self.assertEqual("PRODUCTION_ADMITTED_CALCULATION_ONLY",a["status"])
         self.assertEqual("monthly.doujun_effective_month_split15_v1",a["profile"]["profile_id"])
         self.assertEqual("yearly",a["parent_scope"]["required"])
