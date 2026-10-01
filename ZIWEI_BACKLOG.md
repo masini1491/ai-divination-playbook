@@ -129,6 +129,47 @@ This file is an active / deferred coordination surface, not a completed-work arc
   - the dominant outcome is classified as A / B / C with concrete evidence;
   - any follow-up is persisted only as the minimum bounded coordination delta required by that outcome.
 
+### ZW-P1-080 — Zi Wei root-surface / domain-path normalization
+
+- type: REPOSITORY ARCHITECTURE / AI RETRIEVAL / PATH MIGRATION
+- status: OPEN
+- priority: P1
+- owner: Zi Wei repository-architecture maintenance
+- blocked_by: none
+- shared_precondition:
+  - before any path move, close one minimum shared topology contract in `REPOSITORY_ARCHITECTURE.md` for root-retention rules, domain-scoped admission paths and routing/index update responsibility;
+  - do **not** duplicate that shared mutable contract in both Astrology and Zi Wei backlogs.
+- current_state:
+  - Zi Wei already has domain-scoped `tools/ziwei_*`, `schemas/ziwei/**`, `runtime/ziwei/**`, `data/ziwei/**`, `references/ziwei/**` and `indexes/ziwei/**`;
+  - root still carries a very large Zi Wei-specific surface, especially production / optional-module / temporal calculation / temporal interpretation admission manifests plus the calendar requirements file;
+  - ordinary production routing is currently protected by `CHAT_INIT.md`, `CHATGPT_LOAD_PACK.json` and `PLAYBOOK_INDEX.json`, so this task targets discovery/search-noise and maintenance scaling rather than assuming every Zi Wei reading currently loads the full root.
+- scope:
+  - keep `ZIWEI.md` as the root method entry owner unless measured retrieval evidence proves a better route;
+  - keep `ZIWEI_BACKLOG.md` at its current allowlisted coordination path unless shared governance is explicitly changed;
+  - migrate Zi Wei-specific admission manifests into one domain-scoped admission namespace under the shared topology contract;
+  - preserve useful sub-grouping where it has independent retrieval intent, especially temporal calculation vs temporal interpretation and optional natal modules;
+  - move `requirements-ziwei-calendar.txt` out of root if the shared dependency-path convention admits a dedicated requirements surface;
+  - update every exact path pointer in `PLAYBOOK_INDEX.json`, `ZIWEI.md`, materialization docs, tests, generators, schemas/fixtures/workflows and validation surfaces in the same bounded migration;
+  - keep `indexes/ziwei/**` as routing/control-plane data rather than folding it into admission authority;
+  - preserve production semantics, optional-module defaults, temporal scope, star×palace control-plane semantics and deterministic transport provenance exactly; this is not a Zi Wei feature expansion.
+- exclusions:
+  - no 14×12 matrix completion;
+  - no new star×palace semantic admission;
+  - no dynamic-method expansion;
+  - no change to birthplace/timezone, calendar, true-solar-time or optional-module behavior;
+  - no directory-depth increase without concrete retrieval, scope-isolation or search-noise benefit.
+- sequencing:
+  - **shared phase A first:** establish only the minimum common path/topology contract required to prevent Astrology and Zi Wei from choosing incompatible layouts;
+  - **method phase next:** perform this Zi Wei migration independently with exact-path reconciliation and method-specific validation;
+  - **shared phase B last:** after Astrology and Zi Wei method migrations, reconcile thin global routing/index, root historical cleanup and cross-method load-budget effects from the actual resulting paths.
+- completion_gate:
+  - Zi Wei-specific root clutter is materially reduced without increasing ordinary Zi Wei routing hops;
+  - all moved admission paths have one current canonical pointer and no stale current-authority aliases;
+  - `PLAYBOOK_INDEX.json`, `ZIWEI.md`, materialization pointers and generated routing metadata remain synchronized;
+  - Zi Wei deterministic bundle, star-palace coverage, temporal/optional-module regressions and structural checks pass where affected;
+  - current ChatGPT load-budget profiles do not regress merely because files were reorganized;
+  - canonical read-back confirms the new paths and the old root paths are absent or explicitly retained by contract.
+
 ## P2 — deferred / trigger-based research
 
 ### ZW-P2-026 — Sparse star×palace contextual research v4/v8
