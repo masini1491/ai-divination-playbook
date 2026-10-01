@@ -5,7 +5,7 @@
   "module": "gregorian_calendar_input_v2",
   "status": "PRODUCTION_ADMITTED_INPUT_ADAPTER",
   "activation": "explicit_ziwei_request_with_gregorian_birth_datetime",
-  "parent_admission": "ZIWEI_PRODUCTION_ADMISSION_V1.json",
+  "parent_admission": "admissions/ziwei/ZIWEI_PRODUCTION_ADMISSION_V1.json",
   "scope": {
     "accepted_calendar": "gregorian",
     "timezone": "explicit_IANA",
@@ -34,7 +34,7 @@
       "true_solar_time": {
         "status": "PRODUCTION_ADMITTED_OPTIONAL_INPUT_POLICY",
         "profile_id": "ziwei.true_solar.noaa_fractional_year_v1",
-        "admission_manifest": "ZIWEI_TRUE_SOLAR_TIME_ADMISSION_V1.json",
+        "admission_manifest": "admissions/ziwei/ZIWEI_TRUE_SOLAR_TIME_ADMISSION_V1.json",
         "implementation": "tools/ziwei_true_solar_time.py",
         "longitude_required": true,
         "birthplace_longitude_resolution": false
@@ -85,7 +85,7 @@
     "year_notation_owner": "tools/ziwei_year_notation.py",
     "shared_civil_time_adapter": "tools/civil_time_normalizer.py",
     "true_solar_time_owner": "tools/ziwei_true_solar_time.py",
-    "true_solar_time_admission": "ZIWEI_TRUE_SOLAR_TIME_ADMISSION_V1.json"
+    "true_solar_time_admission": "admissions/ziwei/ZIWEI_TRUE_SOLAR_TIME_ADMISSION_V1.json"
   },
   "fail_closed": [
     "explicit IANA timezone required",
