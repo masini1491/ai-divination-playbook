@@ -20,7 +20,7 @@ def p6(scope,target):
 
 class ZiWeiHourlyProductionTests(unittest.TestCase):
     def test_hourly_admission_is_calculation_only(self):
-        a=json.loads((ROOT/"ZIWEI_HOURLY_ADMISSION_V1.json").read_text(encoding="utf-8"))
+        a=json.loads((ROOT/"admissions/ziwei/temporal/calculation/ZIWEI_HOURLY_ADMISSION_V1.json").read_text(encoding="utf-8"))
         self.assertEqual("PRODUCTION_ADMITTED_CALCULATION_ONLY",a["status"])
         self.assertEqual("hourly.daily_parent_hour_branch_next_day_23_v1",a["profile"]["profile_id"])
         self.assertEqual("daily",a["parent_scope"]["required"])
