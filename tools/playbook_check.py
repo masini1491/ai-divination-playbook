@@ -33,6 +33,7 @@ INDEX_REQUIRED_LOCAL_LOCATORS = {
 MATRIX_SCHEMA_VERSION = 1
 MATRIX_AUTHORITY = "selection-only"
 TEXT_SUFFIXES = {".md", ".json", ".py"}
+SEMANTIC_POINTER_SUFFIXES = {".md", ".json"}
 DEPRECATED_IDENTIFIERS = (
     "tarot-" + "plum-randomizer",
     "tarot-meihua-" + "question-playbook",
@@ -175,6 +176,8 @@ def check_semantic_work_pointers(root: Path) -> list[str]:
     id_cache: dict[Path, set[str]] = {}
     root_resolved = root.resolve()
     for path in text_files(root):
+        if path.suffix.lower() not in SEMANTIC_POINTER_SUFFIXES:
+            continue
         try:
             text = path.read_text(encoding="utf-8")
         except UnicodeDecodeError:
