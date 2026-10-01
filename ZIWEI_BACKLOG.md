@@ -29,8 +29,8 @@ Last reviewed against:
 
 ```text
 ai-divination-playbook main
-838d689ab3f5ca31dbfe40ff6d240ac67aa61281
-Fix Swiss North Node provenance closure (#377)
+7f307858d6f2a688b6e2cba5dcbbc9641d5cf19a
+Add Astrology repository architecture backlog item
 ```
 
 This SHA is review evidence only, not a pin. Every maintenance, evaluation or implementation task must resolve current `main` again before mutation.
@@ -40,6 +40,7 @@ This SHA is review evidence only, not a pin. Every maintenance, evaluation or im
 Active near-term Zi Wei work:
 
 1. **ZW-P1-070 — Natal synthesis v1 end-to-end reading evaluation**
+2. **ZW-P1-080 — Zi Wei root-surface / domain-path normalization**
 
 Standing guard:
 
