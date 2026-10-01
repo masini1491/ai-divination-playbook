@@ -13,7 +13,7 @@ from tools.ziwei_runtime import ZiWeiReadingRequest, run_ziwei
 ROOT=Path(__file__).resolve().parents[1]
 REGISTRY=ROOT/"references"/"ziwei"/"ziwei_interpretation_claim_registry_body_palace_overlay_v1.json"
 VALIDATOR=ROOT/"references"/"ziwei"/"validate_interpretation_claim_registry.py"
-ADMISSION=ROOT/"ZIWEI_BODY_PALACE_OVERLAY_ADMISSION_V1.json"
+ADMISSION=ROOT/"admissions/ziwei/ZIWEI_BODY_PALACE_OVERLAY_ADMISSION_V1.json"
 
 OVERLAY_IDS={
     "夫妻宮":"ZW-BODY-SPOUSE-001",
