@@ -29,17 +29,15 @@ Last reviewed against:
 
 ```text
 ai-divination-playbook main
-eabd5bdf22a4cd74b2f2e6591b9cf1424ca9ccb7
-Merge pull request #381 from masini1491/fix/astrology-pyswisseph-backend-semantics
+563b820a1205f51d34e0f0c0072320fd1afd66e2
+Merge pull request #383 from masini1491/work/ast-p1-260-candidate
 ```
 
 This SHA is review evidence only, not a pin. Every maintenance or implementation task must resolve current `main` again before mutation.
 
 ## Recommended execution order
 
-Active near-term Astrology repository-architecture work:
-
-1. **AST-P1-260 — Astrology root-surface / domain-path normalization**
+There is currently no active one-shot Astrology P1 implementation / repository-architecture item after AST-P1-260 closure.
 
 Standing guard:
 
@@ -92,48 +90,6 @@ This file is an active / deferred coordination surface, not a completed-work arc
   - no regression reopens already-closed current-stack gaps.
 
 This item is a standing reconciliation guard. It is not a request to change current behavior immediately.
-
-## P1 — repository information architecture
-
-### AST-P1-260 — Astrology root-surface / domain-path normalization
-
-- type: REPOSITORY ARCHITECTURE / AI RETRIEVAL / PATH MIGRATION
-- status: OPEN
-- priority: P1
-- owner: Astrology repository-architecture maintenance
-- blocked_by: none
-- shared_precondition:
-  - CLOSED by `REPOSITORY_ARCHITECTURE.md` → `Root / method-domain topology contract`;
-  - this backlog stores only the pointer; shared topology remains single-owner and must not be duplicated as mutable state here.
-- current_state:
-  - Astrology already has domain-scoped `tools/astrology_*`, `schemas/astrology/**`, `runtime/astrology/**`, `data/astrology/**`, `references/astrology/**` and `reports/astrology/**`;
-  - root still carries a large Astrology-specific surface, especially admission manifests, provider/materialization support contracts and the provider requirements file;
-  - ordinary production routing is currently protected by `CHAT_INIT.md`, `CHATGPT_LOAD_PACK.json` and `PLAYBOOK_INDEX.json`, so this task is a discovery/search-noise and maintenance-cost reduction, not a claim that every reading currently loads all root files.
-- scope:
-  - keep `ASTROLOGY.md` as the root method entry owner unless measured retrieval evidence proves a better route;
-  - keep `ASTROLOGY_BACKLOG.md` at its current allowlisted coordination path unless shared governance is explicitly changed;
-  - evaluate and migrate Astrology-specific admission manifests into one domain-scoped admission namespace under the shared topology contract;
-  - evaluate moving subordinate Astrology support documents such as materialization / place-deployment contracts only when they have independent retrieval intent and the move lowers net retrieval/search cost;
-  - move `requirements/astrology-provider.txt` out of root if the shared dependency-path convention admits a dedicated requirements surface;
-  - update every exact path pointer in `PLAYBOOK_INDEX.json`, method owners, tests, generators, workflows and validation surfaces in the same bounded migration;
-  - preserve production semantics, provider identity, admission scope, deterministic bundle authority and provenance exactly; this is not an Astrology feature expansion.
-- exclusions:
-  - no semantic rewrite of Natal / Transit;
-  - no provider-policy redesign;
-  - no SWIEPH/MOSEPH routing change;
-  - no bulk relocation of already well-scoped `tools/**`, `data/**`, `runtime/**`, `references/**` or `schemas/**`;
-  - no directory-depth increase unless it yields concrete retrieval, scope-isolation or search-noise benefit.
-- sequencing:
-  - **shared phase A first:** establish only the minimum common path/topology contract required to prevent Astrology and Zi Wei from choosing incompatible layouts;
-  - **method phase next:** perform this Astrology migration independently with exact-path reconciliation and method-specific validation;
-  - **shared phase B last:** after Astrology and Zi Wei method migrations, reconcile thin global routing/index, root historical cleanup and cross-method load-budget effects from the actual resulting paths.
-- completion_gate:
-  - Astrology-specific root clutter is materially reduced without increasing ordinary Astrology routing hops;
-  - all moved paths have one current canonical pointer and no stale current-authority aliases;
-  - `PLAYBOOK_INDEX.json`, loader/bounded-range metadata and any generated routing metadata are synchronized only where materially affected;
-  - Astrology production/materialization regressions and structural checks pass;
-  - current ChatGPT load-budget profiles do not regress merely because files were reorganized;
-  - canonical read-back confirms the new paths and the old root paths are absent or explicitly retained by contract.
 
 ## P2 — deferred compatibility / provider expansion
 
@@ -189,6 +145,7 @@ The items below are **DONE**. They are retained only as compact identity pointer
 - **AST-P1-230 — Evidence-bounded concrete natal synthesis contract** — DONE; broad natal may explicitly use `evidence-bounded-concrete-natal-v1`: 3–5 traceable themes, admitted natal fact + semantic claim refs, independently cited material tensions, unsupported suppression, no semantic/claim-admission authority; detailed rules are conditionally loaded from `ASTROLOGY_NATAL_SYNTHESIS.md`.
 - **AST-P1-240 — Sparse emergent exact-claim admission policy** — DONE; `references/astrology/EXACT_CLAIM_ADMISSION_POLICY_V1.*` formalizes `composition_adequate / research_candidate / exact_claim_admitted / unsupported`, rejects Cartesian or feedback-driven expansion, and requires explicit production admission after bounded research.
 - **AST-P1-250 — Post-Reading Natal Gap Escalation Gate** — DONE; `ASTROLOGY_NATAL_SYNTHESIS.md` now gates concrete passage-level `too_generic / repetitive / tension_not_integrated / unsupported_leakage` findings: reproducible output gaps may create bounded synthesis/guard fixes, semantic-resolution gaps must pass AST-P1-240, vague accuracy feedback creates no Repo work, and public persistence is synthetic/abstract only.
+- **AST-P1-260 — Astrology root-surface / domain-path normalization** — DONE; six Astrology admission manifests now live under `admissions/astrology/**`, provider requirements under `requirements/astrology-provider.txt`; exact-path consumers and Astrology/Zi Wei deterministic bundles were reconciled. Root method/materialization/Natal/Transit/provider-routing support owners were intentionally retained because moving them did not establish a net retrieval benefit.
 - **AST-P2-010 — Interpolated Black Moon Lilith** — DONE.
 - **AST-P2-041 — Piecewise Chebyshev five-body ephemeris feasibility** — DONE.
 - **AST-P2-042 — Continuity-constrained / overlap Chebyshev five-body feasibility** — DONE.
