@@ -197,6 +197,42 @@ CONTRACTS: dict[str, list[tuple[str, tuple[str, ...]]]] = {
             ),
         )
     ],
+    "TAROT-BEH-028": [
+        (
+            "RUNTIME_DRAW.md",
+            (
+                "Runtime Hot Path｜stochastic first-view recovery",
+                "MISS ≠ unavailable",
+                "Cold-start Recovery Gate｜Free ChatGPT 首次不可過早判 unavailable",
+                "runtime.draw.materialization_contract",
+                "core.execute_stochastic()",
+            ),
+        ),
+        (
+            "PLAYBOOK_INDEX.json",
+            (
+                '"id": "runtime.draw"',
+                '"materialization_contract": "RUNTIME_DRAW.md"',
+                '"cold_start_recovery_section": "Cold-start Recovery Gate"',
+            ),
+        ),
+        (
+            "CHATGPT_LOAD_PACK.json",
+            (
+                "Runtime Hot Path｜stochastic first-view recovery",
+                "MISS ≠ unavailable",
+                "Cold-start Recovery Gate",
+            ),
+        ),
+        (
+            "BEHAVIORAL_EVAL.md",
+            (
+                "TAROT-BEH-028 — Free ChatGPT cold-start discovers stochastic recovery before manual fallback",
+                "cache MISS／import FAIL後未讀 recovery owner就宣告 runtime unavailable",
+                "core.execute_stochastic()",
+            ),
+        ),
+    ],
     "TAROT-BEH-025": [
         (
             "MEIHUA_MATERIALIZATION.md",
