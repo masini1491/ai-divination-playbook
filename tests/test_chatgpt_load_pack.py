@@ -39,6 +39,21 @@ class ChatGPTLoadPackTests(unittest.TestCase):
             pack["profiles"]["ordinary_unspecified"]["required_followup"],
         )
 
+    def test_stochastic_profiles_expose_cold_start_recovery(self):
+        pack = self.builder.build_pack(ROOT)
+        runtime = pack["fragments"]["runtime_fast_path"]
+        self.assertIn(
+            "## Runtime Hot Path｜stochastic first-view recovery",
+            runtime["sections"],
+        )
+        self.assertIn("MISS ≠ unavailable", runtime["content"])
+        self.assertIn("Cold-start Recovery Gate", runtime["content"])
+
+    def test_runtime_draw_uses_current_canonical_execution_entrypoint(self):
+        runtime = (ROOT / "RUNTIME_DRAW.md").read_text(encoding="utf-8")
+        self.assertNotIn("core.make_result(", runtime)
+        self.assertIn("core.execute_stochastic(", runtime)
+
     def test_explicit_astrology_profile_reuses_only_nonstochastic_shared_fragments(self):
         pack = self.builder.build_pack(ROOT)
         profile = pack["profiles"]["explicit_astrology"]

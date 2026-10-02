@@ -36,8 +36,7 @@ FRAGMENT_SPECS = {
     "runtime_fast_path": {
         "owner": "RUNTIME_DRAW.md",
         "sections": [
-            "## Section Router｜最低必要載入",
-            "## Fast Path｜普通占問預設",
+            "## Runtime Hot Path｜stochastic first-view recovery",
         ],
     },
     "output_core": {
