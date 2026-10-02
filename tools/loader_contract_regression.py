@@ -233,6 +233,44 @@ CONTRACTS: dict[str, list[tuple[str, tuple[str, ...]]]] = {
             ),
         ),
     ],
+    "TAROT-BEH-029": [
+        (
+            "RUNTIME_DRAW.md",
+            (
+                "Free ChatGPT streaming capsule transport v3",
+                "streaming-model-mediated-opaque-handoff-v3",
+                "one fetch = one chunk",
+                "verify encoded_length + encoded_sha256 immediately",
+                "v2 compatibility fallback",
+            ),
+        ),
+        (
+            "PLAYBOOK_INDEX.json",
+            (
+                '"preferred_free_chatgpt_transport": "runtime/casting/capsule-v3/MANIFEST.json"',
+                '"preferred_free_chatgpt_transport_contract": "streaming-model-mediated-opaque-handoff-v3"',
+                '"compatibility_transport": "runtime/casting/CHATGPT_RUNTIME_CAPSULE.json"',
+            ),
+        ),
+        (
+            "runtime/casting/capsule-v3/MANIFEST.json",
+            (
+                '"schema_version":3',
+                '"transport_contract":"streaming-model-mediated-opaque-handoff-v3"',
+                '"streaming_fetch":"one-chunk-file-at-a-time"',
+                '"verify_before_next_fetch":true',
+                '"decoded_sha256":',
+            ),
+        ),
+        (
+            "BEHAVIORAL_EVAL.md",
+            (
+                "TAROT-BEH-029 — Streaming capsule v3 verifies each chunk before next fetch",
+                "每次只 fetch一個 `chunk-XX.txt`",
+                "final decoded SHA未通過仍執行抽牌",
+            ),
+        ),
+    ],
     "TAROT-BEH-025": [
         (
             "MEIHUA_MATERIALIZATION.md",

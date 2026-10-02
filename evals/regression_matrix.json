@@ -29,7 +29,8 @@
     "TAROT-BEH-025",
     "TAROT-BEH-026",
     "TAROT-BEH-027",
-    "TAROT-BEH-028"
+    "TAROT-BEH-028",
+    "TAROT-BEH-029"
   ],
   "change_classes": {
     "bootstrap-access": [
@@ -62,7 +63,8 @@
       "TAROT-BEH-008",
       "TAROT-BEH-010",
       "TAROT-BEH-012",
-      "TAROT-BEH-028"
+      "TAROT-BEH-028",
+      "TAROT-BEH-029"
     ],
     "liuyao-presentation": [
       "TAROT-BEH-019",
@@ -102,7 +104,8 @@
       "TAROT-BEH-022",
       "TAROT-BEH-023",
       "TAROT-BEH-027",
-      "TAROT-BEH-028"
+      "TAROT-BEH-028",
+      "TAROT-BEH-029"
     ],
     "cold-start-architecture": [
       "TAROT-BEH-001",
@@ -116,7 +119,8 @@
       "TAROT-BEH-018",
       "TAROT-BEH-022",
       "TAROT-BEH-023",
-      "TAROT-BEH-028"
+      "TAROT-BEH-028",
+      "TAROT-BEH-029"
     ],
     "loader-optimization": [
       "TAROT-BEH-001",
@@ -131,7 +135,8 @@
       "TAROT-BEH-018",
       "TAROT-BEH-022",
       "TAROT-BEH-025",
-      "TAROT-BEH-028"
+      "TAROT-BEH-028",
+      "TAROT-BEH-029"
     ],
     "agent-skills-adapter": [
       "TAROT-BEH-001",
@@ -211,6 +216,7 @@
   "supporting_product_scenarios": {
     "liuyao-deterministic-materialization": "evals/LIUYAO_MATERIALIZATION_PRODUCT_SCENARIO.md",
     "ziwei-deterministic-materialization": "evals/ZIWEI_MATERIALIZATION_PRODUCT_SCENARIO.md",
-    "astrology-deterministic-materialization": "evals/ASTROLOGY_MATERIALIZATION_PRODUCT_SCENARIO.md"
+    "astrology-deterministic-materialization": "evals/ASTROLOGY_MATERIALIZATION_PRODUCT_SCENARIO.md",
+    "free-chatgpt-stochastic-transport": "evals/FREE_CHATGPT_STOCHASTIC_TRANSPORT_PRODUCT_SCENARIO.md"
   }
 }

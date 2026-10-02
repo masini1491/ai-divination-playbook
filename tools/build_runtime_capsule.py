@@ -1,18 +1,21 @@
 #!/usr/bin/env python3
-"""Build or verify the derived Free ChatGPT stochastic-core transport capsule."""
-
+"""Build or verify derived Free ChatGPT stochastic-core transport artifacts."""
 from __future__ import annotations
 
 import argparse
 import base64
 import hashlib
 import json
+import shutil
 import zlib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CORE = ROOT / "runtime" / "casting" / "core.py"
-OUTPUT = ROOT / "runtime" / "casting" / "CHATGPT_RUNTIME_CAPSULE.json"
+OUTPUT_V2 = ROOT / "runtime" / "casting" / "CHATGPT_RUNTIME_CAPSULE.json"
+OUTPUT_V3_DIR = ROOT / "runtime" / "casting" / "capsule-v3"
+OUTPUT_V3_MANIFEST = OUTPUT_V3_DIR / "MANIFEST.json"
+
 MAX_PAYLOAD_CHARS = 5000
 MAX_DECODED_BYTES = 8192
 CHUNK_CHARS = 444
@@ -35,6 +38,14 @@ CACHE_REQUIRED_MARKER_FIELDS = [
     "tarot_deck_size",
 ]
 
+def _encode_core() -> tuple[bytes, str]:
+    data = CORE.read_bytes()
+    payload = base64.b64encode(zlib.compress(data, level=9)).decode("ascii")
+    if len(data) > MAX_DECODED_BYTES:
+        raise ValueError(f"core.py exceeds {MAX_DECODED_BYTES} decoded-byte admission bound")
+    if len(payload) > MAX_PAYLOAD_CHARS:
+        raise ValueError(f"capsule payload exceeds {MAX_PAYLOAD_CHARS}-character admission bound")
+    return data, payload
 
 def _chunk_payload(payload: str) -> list[dict[str, object]]:
     chunks: list[dict[str, object]] = []
@@ -48,23 +59,27 @@ def _chunk_payload(payload: str) -> list[dict[str, object]]:
                 "payload": chunk,
             }
         )
-    return chunks
-
-
-def build_capsule() -> dict:
-    data = CORE.read_bytes()
-    payload = base64.b64encode(zlib.compress(data, level=9)).decode("ascii")
-    if len(data) > MAX_DECODED_BYTES:
-        raise ValueError(f"core.py exceeds {MAX_DECODED_BYTES} decoded-byte admission bound")
-    if len(payload) > MAX_PAYLOAD_CHARS:
-        raise ValueError(f"capsule payload exceeds {MAX_PAYLOAD_CHARS}-character admission bound")
-
-    chunks = _chunk_payload(payload)
     if any(chunk["encoded_length"] > MAX_CHUNK_CHARS for chunk in chunks):
         raise ValueError(f"capsule chunk exceeds {MAX_CHUNK_CHARS}-character admission bound")
+    return chunks
 
+def _core_identity(data: bytes) -> dict[str, object]:
     namespace: dict[str, object] = {}
     exec(compile(data, str(CORE), "exec"), namespace)
+    return {
+        "decoded_size": len(data),
+        "decoded_sha256": hashlib.sha256(data).hexdigest(),
+        "core_version": namespace["CORE_VERSION"],
+        "algorithm_version": namespace["ALGORITHM_VERSION"],
+        "supported_methods": list(namespace["SUPPORTED_METHODS"]),
+        "runtime_invariants": namespace["runtime_invariants"](),
+    }
+
+def build_capsule() -> dict:
+    """Legacy v2 single-file compatibility artifact."""
+    data, payload = _encode_core()
+    chunks = _chunk_payload(payload)
+    identity = _core_identity(data)
     return {
         "schema_version": 2,
         "authority": "derived-transport-cache-only",
@@ -84,12 +99,7 @@ def build_capsule() -> dict:
         "chunk_size": CHUNK_CHARS,
         "chunk_count": len(chunks),
         "encoded_size": len(payload),
-        "decoded_size": len(data),
-        "decoded_sha256": hashlib.sha256(data).hexdigest(),
-        "core_version": namespace["CORE_VERSION"],
-        "algorithm_version": namespace["ALGORITHM_VERSION"],
-        "supported_methods": list(namespace["SUPPORTED_METHODS"]),
-        "runtime_invariants": namespace["runtime_invariants"](),
+        **identity,
         "cache_contract": {
             "marker_filename": CACHE_MARKER_FILENAME,
             "cache_locator_version": CACHE_LOCATOR_VERSION,
@@ -104,33 +114,111 @@ def build_capsule() -> dict:
         },
     }
 
+def build_capsule_v3() -> tuple[dict, list[str]]:
+    """Streaming v3 manifest plus individually retrievable chunk files."""
+    data, payload = _encode_core()
+    chunks = _chunk_payload(payload)
+    identity = _core_identity(data)
+    chunk_files = [f"chunk-{chunk['index']:02d}.txt" for chunk in chunks]
+    manifest_chunks = []
+    payloads = []
+    for chunk, filename in zip(chunks, chunk_files, strict=True):
+        manifest_chunks.append(
+            {
+                "index": chunk["index"],
+                "path": f"runtime/casting/capsule-v3/{filename}",
+                "encoded_length": chunk["encoded_length"],
+                "encoded_sha256": chunk["encoded_sha256"],
+            }
+        )
+        payloads.append(str(chunk["payload"]) + "\n")
+    manifest = {
+        "schema_version": 3,
+        "authority": "derived-transport-cache-only",
+        "transport_contract": "streaming-model-mediated-opaque-handoff-v3",
+        "priority": "preferred-free-chatgpt-cold-start-transport",
+        "fallback_transport": "runtime/casting/CHATGPT_RUNTIME_CAPSULE.json",
+        "automatic_object_bridge_required": False,
+        "must_attempt_when_python_available": True,
+        "same_turn_attempt_required": True,
+        "streaming_fetch": "one-chunk-file-at-a-time",
+        "verify_before_next_fetch": True,
+        "chunk_retry_required_on_mismatch": True,
+        "chunk_retry_limit": CHUNK_RETRY_LIMIT,
+        "chunk_retry_source": "fresh-same-commit-single-chunk-file-read",
+        "chunk_reassembly": "index-ascending-concat-after-each-chunk-verified",
+        "source_repository": "masini1491/ai-divination-playbook",
+        "source_path": "runtime/casting/core.py",
+        "payload_encoding": "base64+zlib",
+        "chunk_encoding": "ascii",
+        "chunk_size": CHUNK_CHARS,
+        "chunk_count": len(chunks),
+        "encoded_size": len(payload),
+        **identity,
+        "cache_contract": {
+            "marker_filename": CACHE_MARKER_FILENAME,
+            "cache_locator_version": CACHE_LOCATOR_VERSION,
+            "marker_write_required_before_execution": True,
+            "marker_readback_required_before_execution": True,
+            "post_write_probe_required_before_execution": True,
+            "required_marker_fields": CACHE_REQUIRED_MARKER_FIELDS,
+        },
+        "chunks": manifest_chunks,
+    }
+    return manifest, payloads
 
-def render(capsule: dict) -> str:
-    return json.dumps(capsule, ensure_ascii=False, separators=(",", ":")) + "\n"
+def render_json(payload: dict) -> str:
+    return json.dumps(payload, ensure_ascii=False, separators=(",", ":")) + "\n"
 
+def _expected_v3_files() -> dict[Path, str]:
+    manifest, payloads = build_capsule_v3()
+    expected = {OUTPUT_V3_MANIFEST: render_json(manifest)}
+    for entry, payload in zip(manifest["chunks"], payloads, strict=True):
+        expected[ROOT / entry["path"]] = payload
+    return expected
+
+def _write_v3() -> None:
+    expected = _expected_v3_files()
+    if OUTPUT_V3_DIR.exists():
+        shutil.rmtree(OUTPUT_V3_DIR)
+    OUTPUT_V3_DIR.mkdir(parents=True)
+    for path, content in expected.items():
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(content, encoding="utf-8")
+
+def _check_v3() -> None:
+    expected = _expected_v3_files()
+    actual_files = {p for p in OUTPUT_V3_DIR.glob("*") if p.is_file()}
+    if actual_files != set(expected):
+        missing = sorted(str(p.relative_to(ROOT)) for p in set(expected) - actual_files)
+        extra = sorted(str(p.relative_to(ROOT)) for p in actual_files - set(expected))
+        raise SystemExit(f"capsule-v3 file set mismatch; missing={missing}; extra={extra}")
+    for path, content in expected.items():
+        if path.read_text(encoding="utf-8") != content:
+            raise SystemExit(f"stale {path.relative_to(ROOT)}")
 
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
-    expected = render(build_capsule())
 
+    expected_v2 = render_json(build_capsule())
     if args.check:
-        if not OUTPUT.is_file():
-            raise SystemExit(f"missing {OUTPUT.relative_to(ROOT)}")
-        current = OUTPUT.read_text(encoding="utf-8")
-        if current != expected:
+        if not OUTPUT_V2.is_file():
+            raise SystemExit(f"missing {OUTPUT_V2.relative_to(ROOT)}")
+        if OUTPUT_V2.read_text(encoding="utf-8") != expected_v2:
             raise SystemExit(
                 "CHATGPT_RUNTIME_CAPSULE.json is stale; run "
                 "python tools/build_runtime_capsule.py and commit the result"
             )
-        print("ChatGPT runtime capsule: PASS")
+        _check_v3()
+        print("ChatGPT runtime capsule v2/v3: PASS")
         return 0
 
-    OUTPUT.write_text(expected, encoding="utf-8")
-    print(f"wrote {OUTPUT.relative_to(ROOT)}")
+    OUTPUT_V2.write_text(expected_v2, encoding="utf-8")
+    _write_v3()
+    print(f"wrote {OUTPUT_V2.relative_to(ROOT)} and {OUTPUT_V3_DIR.relative_to(ROOT)}/")
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

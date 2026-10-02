@@ -23,8 +23,64 @@ class ChatGPTRuntimeCapsuleTests(unittest.TestCase):
     def setUpClass(cls):
         cls.core_path = CASTING_ROOT / "core.py"
         cls.capsule_path = CASTING_ROOT / "CHATGPT_RUNTIME_CAPSULE.json"
+        cls.v3_manifest_path = CASTING_ROOT / "capsule-v3" / "MANIFEST.json"
         cls.core_bytes = cls.core_path.read_bytes()
         cls.capsule = json.loads(cls.capsule_path.read_text(encoding="utf-8"))
+        cls.v3_manifest = json.loads(cls.v3_manifest_path.read_text(encoding="utf-8"))
+
+    def test_streaming_v3_manifest_contract(self):
+        manifest = self.v3_manifest
+        self.assertEqual(manifest["schema_version"], 3)
+        self.assertEqual(manifest["authority"], "derived-transport-cache-only")
+        self.assertEqual(
+            manifest["transport_contract"],
+            "streaming-model-mediated-opaque-handoff-v3",
+        )
+        self.assertEqual(manifest["streaming_fetch"], "one-chunk-file-at-a-time")
+        self.assertTrue(manifest["verify_before_next_fetch"])
+        self.assertEqual(
+            manifest["fallback_transport"],
+            "runtime/casting/CHATGPT_RUNTIME_CAPSULE.json",
+        )
+        self.assertEqual(manifest["source_path"], "runtime/casting/core.py")
+
+    def test_streaming_v3_chunk_files_match_manifest_and_round_trip(self):
+        manifest = self.v3_manifest
+        parts = []
+        self.assertEqual(
+            [entry["index"] for entry in manifest["chunks"]],
+            list(range(manifest["chunk_count"])),
+        )
+        for entry in manifest["chunks"]:
+            path = ROOT / entry["path"]
+            self.assertTrue(path.is_file(), entry["path"])
+            payload = path.read_text(encoding="utf-8").rstrip("\n")
+            self.assertEqual(len(payload), entry["encoded_length"])
+            self.assertEqual(
+                hashlib.sha256(payload.encode("ascii")).hexdigest(),
+                entry["encoded_sha256"],
+            )
+            parts.append(payload)
+        encoded = "".join(parts)
+        self.assertEqual(len(encoded), manifest["encoded_size"])
+        decoded = zlib.decompress(base64.b64decode(encoded, validate=True))
+        self.assertEqual(decoded, self.core_bytes)
+        self.assertEqual(len(decoded), manifest["decoded_size"])
+        self.assertEqual(hashlib.sha256(decoded).hexdigest(), manifest["decoded_sha256"])
+
+    def test_streaming_v3_and_v2_share_exact_core_identity(self):
+        self.assertEqual(self.v3_manifest["decoded_size"], self.capsule["decoded_size"])
+        self.assertEqual(self.v3_manifest["decoded_sha256"], self.capsule["decoded_sha256"])
+        self.assertEqual(self.v3_manifest["core_version"], self.capsule["core_version"])
+        self.assertEqual(self.v3_manifest["algorithm_version"], self.capsule["algorithm_version"])
+        self.assertEqual(self.v3_manifest["runtime_invariants"], self.capsule["runtime_invariants"])
+
+    def test_streaming_v3_generator_file_set_matches_committed_artifacts(self):
+        expected = build_runtime_capsule._expected_v3_files()
+        actual = {p for p in (CASTING_ROOT / "capsule-v3").glob("*") if p.is_file()}
+        self.assertEqual(actual, set(expected))
+        for path, content in expected.items():
+            self.assertEqual(path.read_text(encoding="utf-8"), content)
 
     def test_capsule_is_derived_transport_only(self):
         self.assertEqual(self.capsule["schema_version"], 2)
@@ -97,6 +153,8 @@ class ChatGPTRuntimeCapsuleTests(unittest.TestCase):
 
     def test_generator_matches_committed_capsule(self):
         self.assertEqual(build_runtime_capsule.build_capsule(), self.capsule)
+        manifest, _payloads = build_runtime_capsule.build_capsule_v3()
+        self.assertEqual(manifest, self.v3_manifest)
 
     def test_randomizer_reuses_canonical_core_execution(self):
         self.assertIs(randomizer.execute_stochastic, core.execute_stochastic)

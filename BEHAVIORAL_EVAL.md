@@ -1000,6 +1000,47 @@ https://github.com/masini1491/ai-divination-playbook
 
 - `runtime.draw` owner resolution、Cold-start Recovery Gate／Acquisition read、Python capability probe、capsule/full-runtime recovery action、actual `core.execute_stochastic()` execution或精確 fail-closed boundary、是否過早要求 user-draw。
 
+### TAROT-BEH-029 — Streaming capsule v3 verifies each chunk before next fetch
+
+**Premise / authority**
+
+- Fresh Free ChatGPT session；GitHub Connect可讀 current `ai-divination-playbook`。
+- `RUNTIME_DRAW.md` cold-start recovery已被找到。
+- Python execution可用，但 full-runtime connector→Python byte-preserving object bridge不可用。
+- Preferred Free ChatGPT transport為 `runtime/casting/capsule-v3/MANIFEST.json`。
+- v2 `CHATGPT_RUNTIME_CAPSULE.json`仍存在，但只作 compatibility fallback。
+
+**User stimulus**
+
+```text
+依最新版 Playbook 幫我代抽 5 張塔羅；如果本地 runtime 沒有，就照 Repo 的 cold-start recovery 執行。
+```
+
+**Expected behavior**
+
+- 先讀同 exact commit的 v3 `MANIFEST.json`，驗證 schema / authority / source / admission bounds。
+- 依 manifest index順序，每次只 fetch一個 `chunk-XX.txt`。
+- 每取得一塊就立即交給 Python做 encoded length + SHA-256驗證；PASS後才取得下一塊。
+- 單一 chunk mismatch只 fresh-read同 exact commit的同一 chunk file，最多依 manifest retry limit重試；不得把第一次 mismatch直接當 runtime unavailable。
+- Python只保留已驗證 chunks；全部 PASS後才 deterministic concat → base64/zlib → decoded size/SHA。
+- final decoded identity必須等於 canonical `runtime/casting/core.py`，才可寫 fixed cache、probe invariants並呼叫 `core.execute_stochastic()`。
+- 若 v3 transport因 connector capability本身不可用／blocked，可退到 admitted v2 compatibility fallback；不能因 v3一個 chunk mismatch就直接跳 user-draw。
+- stochastic core、RNG、牌組、A/B、coin semantics、timestamp/provenance gate均不得因 transport修正而改變。
+
+**Forbidden behavior**
+
+- 一次把全部 v3 chunk payload載入 model-visible context後再慢慢轉送。
+- 未驗證當前 chunk就先抓下一塊。
+- 用 memory／舊聊天／不同 commit的 chunk補資料。
+- mismatch後重抓全部 chunks或覆蓋已 PASS chunk accumulator。
+- v3失敗後自行重寫 `core.py`／RNG。
+- final decoded SHA未通過仍執行抽牌。
+- 把 deterministic repository round-trip test當成 Free ChatGPT product-level success evidence。
+
+**Observable evidence**
+
+- exact commit、manifest identity、逐 chunk fetch順序、每塊 length/SHA、retry index/count、Python verified-chunk accumulator、final decoded size/SHA、v3→v2 fallback classification、actual `core.execute_stochastic()` execution或精確 fail-closed boundary。
+
 ## Regression Selection｜最低充分回歸
 
 不要求每次修改都跑全部 scenarios；依 mutation scope 選直接相關項目：
@@ -1007,7 +1048,7 @@ https://github.com/masini1491/ai-divination-playbook
 - `CHAT_INIT.md`／Repository Access Policy／GitHub retrieval／Playbook Freshness／Session Handoff → TAROT-BEH-001、005、006、013、015 中直接相關者；Astrology routing 變更另加 016～018。
 - `METHOD_ROUTING.md` → TAROT-BEH-002；Astrology explicit override 變更另加 016、018，必要時 001。
 - `ASTROLOGY.md`／`tools/astrology_runtime.py`／Astrology admission manifest → TAROT-BEH-016、017、018；fact/runtime policy 變更時 017 mandatory。
-- `RUNTIME_DRAW.md` → TAROT-BEH-003、004、006、007、008、010、012、028；cache/reuse/batching 變更時 008、012 mandatory；cold-start recovery / Free ChatGPT discoverability 變更時 028 mandatory。
+- `RUNTIME_DRAW.md` → TAROT-BEH-003、004、006、007、008、010、012、028、029；cache/reuse/batching 變更時 008、012 mandatory；cold-start discoverability 變更時 028 mandatory；capsule transport / integrity routing 變更時 029 mandatory。
 - `LIUYAO.md`／Liuyao runtime boundary／user-visible presentation → TAROT-BEH-002、003、004、007、010、019；若修改盤表呈現或「最低充分」與盤表的責任邊界，TAROT-BEH-019 mandatory。
 - `MEIHUA.md`／Meihua user-visible presentation → TAROT-BEH-002、003、010、020；deterministic materialization / downstream boundary → TAROT-BEH-004、010、020、021；修改卦盤骨架或 missing-fact 邊界時 020 mandatory，修改 engine/materialization 時 021 mandatory。
 - `READING_RECORD.md` → TAROT-BEH-008、009、010、011，必要時 004。
@@ -1018,6 +1059,6 @@ https://github.com/masini1491/ai-divination-playbook
 - `SESSION_HANDOFF.md` → TAROT-BEH-015，必要時 013。
 - `PLAYBOOK_INDEX.json`／machine routing → 先驗證 owner pointer，再依受影響 owner 選 scenario；Astrology capability 需 016、018。
 - Zi Wei deterministic materialization / runtime reuse / host transport → TAROT-BEH-025 + `evals/ZIWEI_MATERIALIZATION_PRODUCT_SCENARIO.md`；不因這個 method binding重複建立 shared transport framework。
-- 跨多 owner／cold-start architecture → 先跑直接受影響 scenario；stochastic cold-start / recovery routing 必含 TAROT-BEH-028；無法界定才擴大 full baseline。
+- 跨多 owner／cold-start architecture → 先跑直接受影響 scenario；stochastic cold-start / recovery routing 必含 TAROT-BEH-028；capsule transport reliability 必含 TAROT-BEH-029；無法界定才擴大 full baseline。
 
 核心原則：**Behavioral evaluation 驗證 Agent 是否真的照規則做；它不取代 deterministic checker，也不要求一般占問支付額外 Context 成本。**
