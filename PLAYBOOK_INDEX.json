@@ -166,7 +166,10 @@
       "kind": "contract",
       "implementation": "runtime/casting/core.py",
       "adapter": "runtime/casting/randomizer.py",
-      "execution_entrypoint": "core.execute_stochastic"
+      "execution_entrypoint": "core.execute_stochastic",
+      "materialization_contract": "RUNTIME_DRAW.md",
+      "cold_start_recovery_section": "Cold-start Recovery Gate",
+      "cold_start_policy": "local-cache-or-import-miss-is-not-unavailable; exhaust-applicable-admitted-recovery-before-manual-fallback"
     },
     {
       "id": "method.tarot",

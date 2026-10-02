@@ -304,7 +304,7 @@ https://github.com/masini1491/ai-divination-playbook
 **Expected behavior**
 
 - 先固定 A／B／C 的 child order，再執行 Runtime。
-- full Randomizer path 使用一次 canonical batch execution（例如 `tarot --count 5 --repeat 3`）；verified capsule-core path 則在同一 Python invocation 依 pre-fixed order bounded loop 呼叫 canonical `core.make_result(...)`，不是三次 serial Python startup。
+- full Randomizer path 使用一次 canonical batch execution（例如 `tarot --count 5 --repeat 3`）；verified capsule-core path 則在同一 Python invocation 依 pre-fixed order bounded loop 呼叫 canonical `core.execute_stochastic(...)`，不是三次 serial Python startup。
 - `results[0] / [1] / [2]` 依 pre-fixed order 一對一對應 A／B／C。
 - 每個 child fresh RNG；batch／bounded loop 不使用上一題剩餘牌組。
 - A／B／C 各自保留獨立 question identity、Draw Fact identity、必要時 stable `reading_id`。
@@ -964,6 +964,42 @@ https://github.com/masini1491/ai-divination-playbook
 
 - owner routing, reading-mode/scope identity, source fact/claim lineage, reconciliation state, conflict wording, absence of invented cross-system mappings.
 
+### TAROT-BEH-028 — Free ChatGPT cold-start discovers stochastic recovery before manual fallback
+
+**Premise / authority**
+
+- Fresh ChatGPT session；GitHub Connect可讀 current `ai-divination-playbook`。
+- 使用者要求 ChatGPT／AI 代抽 Tarot（同樣規則適用 Meihua／Liuyao raw cast）。
+- 本地沒有預裝 Randomizer，fixed cache MISS 或 import FAIL。
+- Host仍可能具 Python execution，因此 Repo內的 verified capsule/materialization path是否可用尚未被實際 exhaust。
+
+**User stimulus**
+
+```text
+依最新版 Playbook 幫我抽 5 張塔羅牌解讀；請由你代抽。
+```
+
+**Expected behavior**
+
+- 固定 question / Tarot contract後，進 `RUNTIME_DRAW.md`。
+- local cache／tool／package MISS **不得**直接判 stochastic runtime unavailable。
+- 由 `PLAYBOOK_INDEX.json → runtime.draw.materialization_contract` 找到 `RUNTIME_DRAW.md`，進 `Cold-start Recovery Gate`／`Acquisition`。
+- Python可執行時，先嘗試 applicable admitted full-runtime handoff或 verified `CHATGPT_RUNTIME_CAPSULE.json` recovery；成功後使用唯一正式 entrypoint `core.execute_stochastic()` 建立帶 execution timestamp/provenance 的 Draw Fact。
+- 只有 applicable admitted recovery routes實際失敗／blocked，或 Python execution capability本身不存在時，才精確 fail closed並進已允許的 manual fallback。
+- 若 Python本身不存在，應說明是 execution-capability boundary，而不是宣稱 Repo沒有 Tarot runtime方法。
+
+**Forbidden behavior**
+
+- 「我這個環境沒有 Tarot Runtime 工具」後立刻要求使用者自己抽 5 張。
+- cache MISS／import FAIL後未讀 recovery owner就宣告 runtime unavailable。
+- 跳過 capsule integrity checks，以模型自行生成牌名冒充 canonical Runtime Draw。
+- 使用不存在的 `core.make_result()` 或 bare `_..._raw` helper作正式 execution。
+- 因 Free ChatGPT host限制而改寫 stochastic core或降低 provenance gate。
+
+**Observable evidence**
+
+- `runtime.draw` owner resolution、Cold-start Recovery Gate／Acquisition read、Python capability probe、capsule/full-runtime recovery action、actual `core.execute_stochastic()` execution或精確 fail-closed boundary、是否過早要求 user-draw。
+
 ## Regression Selection｜最低充分回歸
 
 不要求每次修改都跑全部 scenarios；依 mutation scope 選直接相關項目：
@@ -971,7 +1007,7 @@ https://github.com/masini1491/ai-divination-playbook
 - `CHAT_INIT.md`／Repository Access Policy／GitHub retrieval／Playbook Freshness／Session Handoff → TAROT-BEH-001、005、006、013、015 中直接相關者；Astrology routing 變更另加 016～018。
 - `METHOD_ROUTING.md` → TAROT-BEH-002；Astrology explicit override 變更另加 016、018，必要時 001。
 - `ASTROLOGY.md`／`tools/astrology_runtime.py`／Astrology admission manifest → TAROT-BEH-016、017、018；fact/runtime policy 變更時 017 mandatory。
-- `RUNTIME_DRAW.md` → TAROT-BEH-003、004、006、007、008、010、012；cache/reuse/batching 變更時 008、012 mandatory。
+- `RUNTIME_DRAW.md` → TAROT-BEH-003、004、006、007、008、010、012、028；cache/reuse/batching 變更時 008、012 mandatory；cold-start recovery / Free ChatGPT discoverability 變更時 028 mandatory。
 - `LIUYAO.md`／Liuyao runtime boundary／user-visible presentation → TAROT-BEH-002、003、004、007、010、019；若修改盤表呈現或「最低充分」與盤表的責任邊界，TAROT-BEH-019 mandatory。
 - `MEIHUA.md`／Meihua user-visible presentation → TAROT-BEH-002、003、010、020；deterministic materialization / downstream boundary → TAROT-BEH-004、010、020、021；修改卦盤骨架或 missing-fact 邊界時 020 mandatory，修改 engine/materialization 時 021 mandatory。
 - `READING_RECORD.md` → TAROT-BEH-008、009、010、011，必要時 004。
@@ -982,6 +1018,6 @@ https://github.com/masini1491/ai-divination-playbook
 - `SESSION_HANDOFF.md` → TAROT-BEH-015，必要時 013。
 - `PLAYBOOK_INDEX.json`／machine routing → 先驗證 owner pointer，再依受影響 owner 選 scenario；Astrology capability 需 016、018。
 - Zi Wei deterministic materialization / runtime reuse / host transport → TAROT-BEH-025 + `evals/ZIWEI_MATERIALIZATION_PRODUCT_SCENARIO.md`；不因這個 method binding重複建立 shared transport framework。
-- 跨多 owner／cold-start architecture → 先跑直接受影響 scenario；無法界定才擴大 full baseline。
+- 跨多 owner／cold-start architecture → 先跑直接受影響 scenario；stochastic cold-start / recovery routing 必含 TAROT-BEH-028；無法界定才擴大 full baseline。
 
 核心原則：**Behavioral evaluation 驗證 Agent 是否真的照規則做；它不取代 deterministic checker，也不要求一般占問支付額外 Context 成本。**

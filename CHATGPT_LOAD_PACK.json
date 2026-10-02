@@ -36,14 +36,12 @@
     "runtime_fast_path": {
       "owner": "RUNTIME_DRAW.md",
       "sections": [
-        "## Section Router｜最低必要載入",
-        "## Fast Path｜普通占問預設"
+        "## Runtime Hot Path｜stochastic first-view recovery"
       ],
       "section_sha256": [
-        "42e810ebe9c6b370d0699967849e1b627390e3d19f7ab76749b150ca792777e2",
-        "bd1b21950e925ba970d0257767bff62cce197a081a980e1b271c5302655046b4"
+        "125f044ee434d49927ae587fb85a9123081e93008d2d36a59f17afe8cb0caded"
       ],
-      "content": "## Section Router｜最低必要載入\n\n- **普通代抽／代起卦 + verified cache PASS** → `Fast Path` + 對應 Method Contract + `Execution` + `Fact / Fail-Closed`；STOP。\n- **cache FAIL／首次 acquisition** → 再讀 `Acquisition`。\n- **多個合法獨立 readings** → `Automatic Batching`。\n- **完整 provenance／audit／保存** → 再讀 `Provenance` + `READING_RECORD.md`。\n- **補占／重占／copy-ready** → `READING_LIFECYCLE.md`／`CHATGPT_OUTPUT.md`。\n- **維護 Randomizer** → 本檔 `Validation` + `runtime/casting/**` + `tests/casting/**`。\n\n不要為形式載入 acquisition／audit／maintenance sections。**Fast path 已足夠時就 STOP。**\n## Fast Path｜普通占問預設\n\n```text\nQuestion Contract fixed\n→ fixed-slot probe\n→ PASS\n→ reuse already-loaded module if available; otherwise import cached module\n→ one direct generate_payload() call\n→ compact_ai_payload()\n→ Draw / Cast Fact fixed\n→ Interpretation\n```\n\n條件：Python 可執行、fixed cache 通過最低 probe、方法已驗證、無 Randomizer-specific refresh trigger。\n\n\nPASS 後：\n\n- 不抓 GitHub、不重新 materialize、不跑 full smoke；\n- 同 interpreter 且 cache identity 未變 → reuse imported module；不重啟 CLI/subprocess；\n- runtime restart 後不得假設 module reuse；新 interpreter 從 verified cache import；\n- 新 question identity 仍 fresh RNG；不得重用 outcome；\n- compatible independent readings 依 `Automatic Batching` 合併 calls；\n- 用 `compact_ai_payload()`／`ai-json`；新 stochastic result 須在牌／卦前列 `YYYY-MM-DD HH:mm:ss（Asia/Taipei）`，不顯示 `+08:00`；audit→full JSON。\n\n核心：**verified runtime；每題 fresh draw；最低充分 facts。**\n"
+      "content": "## Runtime Hot Path｜stochastic first-view recovery\n\n```text\nQuestion Contract fixed\n→ verified local Runtime / capsule probe\n→ PASS: execute canonical entrypoint → Draw / Cast Fact\n→ MISS: Cold-start Recovery Gate → Acquisition if needed\n```\n\n**MISS ≠ unavailable。** AI 代抽／代起不得因沒有預裝 Randomizer、cache MISS 或 import FAIL就直接要求使用者自行抽／起；先走本檔 recovery owner。\n"
     },
     "output_core": {
       "owner": "CHATGPT_OUTPUT.md",

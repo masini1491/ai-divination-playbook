@@ -24,13 +24,30 @@ runtime/casting/CHATGPT_RUNTIME_CAPSULE.json
 ## Section Router｜最低必要載入
 
 - **普通代抽／代起卦 + verified cache PASS** → `Fast Path` + 對應 Method Contract + `Execution` + `Fact / Fail-Closed`；STOP。
-- **cache FAIL／首次 acquisition** → 再讀 `Acquisition`。
+- **cache FAIL／首次 acquisition** → `Cold-start Recovery Gate` → 必要時再讀 `Acquisition`。
 - **多個合法獨立 readings** → `Automatic Batching`。
 - **完整 provenance／audit／保存** → 再讀 `Provenance` + `READING_RECORD.md`。
 - **補占／重占／copy-ready** → `READING_LIFECYCLE.md`／`CHATGPT_OUTPUT.md`。
 - **維護 Randomizer** → 本檔 `Validation` + `runtime/casting/**` + `tests/casting/**`。
 
 不要為形式載入 acquisition／audit／maintenance sections。**Fast path 已足夠時就 STOP。**
+
+## Runtime Hot Path｜stochastic first-view recovery
+
+```text
+Question Contract fixed
+→ verified local Runtime / capsule probe
+→ PASS: execute canonical entrypoint → Draw / Cast Fact
+→ MISS: Cold-start Recovery Gate → Acquisition if needed
+```
+
+**MISS ≠ unavailable。** AI 代抽／代起不得因沒有預裝 Randomizer、cache MISS 或 import FAIL就直接要求使用者自行抽／起；先走本檔 recovery owner。
+
+## Cold-start Recovery Gate｜Free ChatGPT 首次不可過早判 unavailable
+
+- Tarot／Meihua／Liuyao 的 local cache／tool／import MISS **≠ runtime unavailable**。
+- AI 代抽／代起時，MISS → `PLAYBOOK_INDEX.json → runtime.draw.materialization_contract` → 本檔 `Acquisition`；先 exhaust applicable admitted recovery，才可進 manual fallback。
+- Python execution本身不可用時，標示 execution-capability boundary；不得誤報成「Repo 沒有方法」。
 
 ## Stochastic Fact Completeness Gate｜不可跳過
 
@@ -379,23 +396,23 @@ python /mnt/data/divination-casting-runtime/randomizer.py batch --counts 5,3,6,5
 
 ```python
 # Tarot
-result = core.make_result("tarot", 5)
+result = core.execute_stochastic("tarot", count=5, repeat=1, source_commit=SHA)
 
 # Meihua
-result = core.make_result("plum")
+result = core.execute_stochastic("plum", repeat=1, source_commit=SHA)
 
 # Liuyao
-result = core.make_result("liuyao")
+result = core.execute_stochastic("liuyao", repeat=1, source_commit=SHA)
 ```
 
-這些回傳值就是 canonical stochastic Raw Draw / Cast Fact。`runtime_source_commit`、capsule/core SHA、執行時間等 provenance 由 caller 依實際 tool evidence另外保存；不得由 core 內不存在的欄位捏造。多個已合法固定的 independent readings 可用最薄 caller 對 `core.make_result(...)` 做 bounded loop；不得在 caller 重寫 stochastic core。
+`core.execute_stochastic()` 回傳同一 canonical execution envelope中的 stochastic result、runtime source identity與 UTC／Taipei timestamp；這個 envelope才可成立為新的 Raw Draw / Cast Fact。Capsule/core SHA等 materialization provenance可由 caller依實際 tool evidence另存，但不得事後補造 execution timestamp。多個已合法固定的 independent readings優先直接用 `repeat`／`batch` 參數交給同一 canonical entrypoint；不得在 caller重寫 stochastic core。
 
 ## Automatic Batching｜一次執行，多個獨立 Fact
 
 同一 request 有多個**已合法成立且 contract 已固定**的 independent question identities 時，優先最少 execution calls。
 
 - full Runtime：同方法同 contract → `--repeat N`／direct API `repeat=N`；Tarot 張數不同 → `batch --counts ...`／direct API batch；
-- verified capsule core：允許在同一 Python invocation 依 pre-fixed child order bounded loop 呼叫 `core.make_result(...)`；每個 call 仍 fresh RNG；
+- verified capsule core：直接使用 `core.execute_stochastic(..., repeat=N)`；Tarot 張數不同時使用 `core.execute_stochastic("batch", counts=[...], method="tarot")`；每個 child仍 fresh RNG；
 - mixed methods → 依 method 分組，各自最少 calls；不要濫用 legacy `both`。
 
 Batching Contract：
