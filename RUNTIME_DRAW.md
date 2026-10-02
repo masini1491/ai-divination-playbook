@@ -9,13 +9,15 @@ runtime/casting/core.py        # canonical stochastic core
 runtime/casting/randomizer.py  # full API / CLI adapter，直接重用 core.py
 ```
 
-Free ChatGPT cold-start transport artifact：
+Free ChatGPT cold-start transport artifacts：
 
 ```text
-runtime/casting/CHATGPT_RUNTIME_CAPSULE.json
+runtime/casting/capsule-v3/MANIFEST.json       # preferred streaming transport
+runtime/casting/capsule-v3/chunk-XX.txt        # individually retrievable opaque chunks
+runtime/casting/CHATGPT_RUNTIME_CAPSULE.json   # v2 compatibility fallback
 ```
 
-`CHATGPT_RUNTIME_CAPSULE.json` 只是由 `core.py` 產生的 derived byte-transport cache，不取得 stochastic policy／algorithm authority；解碼後 bytes 必須以 size + SHA-256 驗證等於 canonical `core.py` 才可執行。
+這些檔案都只是由 `core.py` 產生的 derived byte-transport cache，不取得 stochastic policy／algorithm authority；只有 deterministic reassembly後的 decoded bytes以 size + SHA-256 驗證等於 canonical `core.py`，才可執行。
 
 支援：Tarot、Meihua、Liuyao three-coin raw cast。六爻 deterministic structured facts 由 `LIUYAO.md` 治理。
 
@@ -186,7 +188,8 @@ Python capability
 → PASS ? execute verified core : continue
 → GitHub Connect resolve ai-divination-playbook ref → exact commit
 → preferred: exact full-runtime handoff when product bridge exists
-→ otherwise: verified bounded capsule transport
+→ otherwise: preferred streaming capsule-v3 transport
+→ if v3 transport is unavailable/blocked: v2 single-file capsule compatibility fallback
 → write verified cache + marker
 → bounded smoke
 → import
@@ -216,7 +219,53 @@ GitHub Connect fetch exact runtime/casting/randomizer.py as base64
 
 這條 bridge 只搬運 canonical bytes，不授權 Python 自己連 GitHub，也不授權模型重建 source。Python 端允許的 materialization logic 只應處理 base64 decode、filesystem write、hash／marker 驗證與 canonical module import／execution；不得在 bridge 中重寫 RNG、牌組、A/B、coin、mapping、schema 或 provenance core。
 
-### B. Free ChatGPT verified bounded capsule transport
+### B. Free ChatGPT streaming capsule transport v3｜優先
+
+若 GitHub acquisition PASS、Python PASS，但產品沒有完整 connector→Python automatic payload bridge，優先使用 **streaming v3**。這條路徑的目的，是避免模型先承載整個 4–5K opaque payload再逐段轉送；每次只取得一個 chunk file，立即交給 Python驗證，PASS才進下一塊。
+
+Canonical v3 transport：
+
+```text
+GitHub Connect fetch same exact commit runtime/casting/capsule-v3/MANIFEST.json
+→ verify schema_version = 3
+→ verify authority = derived-transport-cache-only
+→ verify transport_contract = streaming-model-mediated-opaque-handoff-v3
+→ verify source_path = runtime/casting/core.py
+→ verify payload_encoding = base64+zlib
+→ verify chunk_count / encoded_size / decoded_size admission bounds
+→ initialize empty verified-chunk accumulator in Python
+→ for manifest chunk index 0..N-1:
+     GitHub Connect fetch ONLY that exact chunk path from the same exact commit
+     pass that one opaque ASCII payload into Python
+     verify encoded_length + encoded_sha256 immediately
+     mismatch ? fresh-read ONLY that same chunk path from same exact commit, up to chunk_retry_limit
+              : retain verified chunk in Python accumulator and continue
+→ after every index PASS, concatenate verified chunks in ascending index
+→ verify concatenated encoded length == manifest encoded_size
+→ base64 decode + zlib decompress
+→ verify decoded_size + decoded_sha256
+→ only then write fixed-cache core.py + capsule_verification.json
+→ import verified core.py
+→ core.runtime_invariants() == manifest runtime_invariants
+→ execute canonical core.execute_stochastic()
+```
+
+v3 rules：
+
+- **one fetch = one chunk**；不得先把全部 chunk payload載入 model-visible context再轉送；
+- manifest只帶 chunk path／length／SHA，不內嵌 opaque payload；
+- Python accumulator只接受已通過該 index length + SHA的 chunk；未驗證內容不得進 final reassembly；
+- retry只重抓失敗的 single chunk file，不重抓 manifest以外的其他已 PASS chunks；
+- retry仍固定同一 resolved exact commit；不得換 ref、用 memory、舊聊天或另一 commit補資料；
+- manifest file set與 chunk paths由 generator deterministic產生；不得手工新增／省略 chunk；
+- v3 final decoded bytes與 v2 capsule都必須 exact round-trip回同一 canonical `core.py`；
+- v3 unavailable／connector無法逐檔取得時，才可進下一節 v2 compatibility fallback；**v3單一 chunk首次 mismatch不是整體 runtime unavailable。**
+
+這次 transport只改 acquisition方式，不改 RNG、Tarot deck、Meihua A/B、Liuyao coin semantics、schema、timestamp或正式 execution entrypoint。
+
+### C. Free ChatGPT verified bounded capsule transport v2｜compatibility fallback
+
+
 
 若 GitHub acquisition PASS、Python PASS，但產品沒有完整 connector→Python automatic payload bridge，**不得立刻停止**。先嘗試本 Repo 專為 Free ChatGPT cold start 提供的 chunked bounded capsule。Canonical transport contract 是 `chunked-model-mediated-opaque-handoff-v2`：
 
@@ -266,12 +315,12 @@ Admission / retry contract：
 - manifest 與 retry 都必須由同一 resolved exact commit 的 GitHub Connect retrieval 取得；memory／舊聊天中的 payload 不可代替 current acquisition；
 - `CHATGPT_RUNTIME_CAPSULE.json` 是 derived transport cache，canonical stochastic authority 仍是 `core.py`；CI 必須驗證 chunks deterministic reassembly 後可 exact round-trip 回該 core bytes。
 
-這條路徑存在的目的就是處理 Free ChatGPT 已實測的 host 限制：GitHub Connect 可讀、Python 可執行，但沒有 connector payload object 可直接注入 Python，而且 monolithic opaque payload 曾實測出現「decoded size PASS、final SHA-256 FAIL」的搬運失真。**只要 v2 chunks 與 final canonical bytes exact verification PASS，這不再是 `MATERIALIZATION HANDOFF CAPABILITY GAP`；它已建立可驗證的 byte-preserving handoff。**
+v2保留為 compatibility fallback；current Free ChatGPT cold-start優先使用前節 streaming v3。只要任一 admitted transport完成 per-chunk與 final canonical bytes exact verification，這不再是 `MATERIALIZATION HANDOFF CAPABILITY GAP`。
 
 只有以下情況才標記 `MATERIALIZATION HANDOFF CAPABILITY GAP`：
 
-- direct full-runtime bridge 不可用，且同 commit capsule 無法取得；
-- capsule／chunk metadata 不符或超過 admission bounds；
+- direct full-runtime bridge不可用，且同 commit v3 manifest/chunks與v2 capsule都無法取得／使用；
+- v3或v2 manifest／chunk metadata不符或超過 admission bounds；
 - chunk payload 在 required fresh same-commit retries 後仍無法通過 encoded length/SHA-256；
 - chunks 無法完整、唯一、依 index 重組，或 concatenated encoded_size 不符；
 - base64／zlib decode、decoded size 或 final SHA-256 驗證失敗；

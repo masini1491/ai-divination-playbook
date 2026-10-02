@@ -169,7 +169,12 @@
       "execution_entrypoint": "core.execute_stochastic",
       "materialization_contract": "RUNTIME_DRAW.md",
       "cold_start_recovery_section": "Cold-start Recovery Gate",
-      "cold_start_policy": "local-cache-or-import-miss-is-not-unavailable; exhaust-applicable-admitted-recovery-before-manual-fallback"
+      "cold_start_policy": "local-cache-or-import-miss-is-not-unavailable; exhaust-applicable-admitted-recovery-before-manual-fallback",
+      "preferred_free_chatgpt_transport": "runtime/casting/capsule-v3/MANIFEST.json",
+      "preferred_free_chatgpt_transport_contract": "streaming-model-mediated-opaque-handoff-v3",
+      "compatibility_transport": "runtime/casting/CHATGPT_RUNTIME_CAPSULE.json",
+      "compatibility_transport_contract": "chunked-model-mediated-opaque-handoff-v2",
+      "transport_policy": "prefer-v3-single-chunk-fetch-and-immediate-verification; use-v2-only-as-compatibility-fallback"
     },
     {
       "id": "method.tarot",
