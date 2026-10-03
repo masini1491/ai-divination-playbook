@@ -64,16 +64,19 @@ PROFILES = {
     "explicit_tarot": {
         "fragments": ["bootstrap", "runtime_fast_path", "output_core"],
         "required_followup": ["TAROT.md"],
+        "stochastic_capability_gap_followup": "PLAYBOOK_INDEX.json → runtime.draw.materialization_contract",
     },
     "explicit_meihua": {
         "fragments": ["bootstrap", "runtime_fast_path", "output_core"],
         "required_followup": ["MEIHUA.md"],
         "capability_gap_followup": "PLAYBOOK_INDEX.json → method.meihua.materialization_contract",
+        "stochastic_capability_gap_followup": "PLAYBOOK_INDEX.json → runtime.draw.materialization_contract",
     },
     "explicit_liuyao": {
         "fragments": ["bootstrap", "runtime_fast_path", "output_core"],
         "required_followup": ["LIUYAO.md"],
         "capability_gap_followup": "PLAYBOOK_INDEX.json → method.liuyao.materialization_contract",
+        "stochastic_capability_gap_followup": "PLAYBOOK_INDEX.json → runtime.draw.materialization_contract",
     },
     "explicit_astrology": {
         "fragments": ["bootstrap", "output_core"],
