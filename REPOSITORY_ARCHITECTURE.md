@@ -343,6 +343,27 @@ classification is needed.
 only when this Repo actually adopts them. Their generic semantics follow shared
 baseline canonical owners.
 
+### Project-native execution closure invariant
+
+Ordinary divination reading and production runtime execution must be able to close using canonical owners inside this repository. External engineering references may inform maintenance/design review, but they are **not a required next hop** for completing a user reading, runtime materialization, deterministic execution, or fail-closed classification.
+
+Minimum repository-local execution closure:
+
+```text
+local verified asset?
+→ reuse after sufficient identity/integrity probe
+→ otherwise resolve ai-divination-playbook to one exact commit
+→ direct byte/file-aware handoff available?
+   → verify and materialize required same-commit assets
+   → otherwise use the method owner’s admitted repository-local artifact/bundle fallback
+→ verify per-unit / archive / per-file identity as that local owner requires
+→ deterministic reassembly/materialization
+→ final canonical identity established?
+   → execute the project-owned runtime
+   → otherwise fail closed at the observed boundary
+```
+
+Repository-local owners may preserve maintenance-only references to external engineering guidance, but the executable user path must remain fully specified here. This invariant does not create a new universal transport implementation and does not force method owners to adopt identical bundle shapes; method-specific materialization contracts remain authoritative for their concrete cache, bundle, provider and data layout.
 ## 4. Source / derived data / transport boundary
 
 任何 deterministic-data feature 必須先分類三層：
