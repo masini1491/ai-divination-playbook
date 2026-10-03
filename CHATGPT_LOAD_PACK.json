@@ -39,9 +39,9 @@
         "## Runtime Hot Path｜stochastic first-view recovery"
       ],
       "section_sha256": [
-        "125f044ee434d49927ae587fb85a9123081e93008d2d36a59f17afe8cb0caded"
+        "47f10962313f19df0799c0a0733525a22650cddf938d7b524176e379807a87ad"
       ],
-      "content": "## Runtime Hot Path｜stochastic first-view recovery\n\n```text\nQuestion Contract fixed\n→ verified local Runtime / capsule probe\n→ PASS: execute canonical entrypoint → Draw / Cast Fact\n→ MISS: Cold-start Recovery Gate → Acquisition if needed\n```\n\n**MISS ≠ unavailable。** AI 代抽／代起不得因沒有預裝 Randomizer、cache MISS 或 import FAIL就直接要求使用者自行抽／起；先走本檔 recovery owner。\n"
+      "content": "## Runtime Hot Path｜stochastic first-view recovery\n\n```text\nQuestion Contract fixed\n→ verified local Runtime / capsule probe\n→ PASS: execute canonical entrypoint → Draw / Cast Fact\n→ MISS / import fail / canonical source readable but not directly executable\n   → PLAYBOOK_INDEX.json → runtime.draw.materialization_contract\n   → Cold-start Recovery Gate → Acquisition if needed\n```\n\n**MISS ≠ unavailable。** AI 代抽／代起不得因沒有預裝 Randomizer、cache MISS、import FAIL，或「GitHub Connect 可讀 `runtime/casting/core.py` 但目前不能直接執行該 source」就直接要求使用者自行抽／起或停在等待 Runtime。**Source readable but not directly executable 只是 handoff/materialization state，不是 runtime unavailable verdict。** 必須先 resolve `runtime.draw.materialization_contract`、走本檔 recovery owner並 exhaust applicable admitted recovery。\n"
     },
     "output_core": {
       "owner": "CHATGPT_OUTPUT.md",
@@ -91,7 +91,8 @@
       ],
       "required_followup": [
         "TAROT.md"
-      ]
+      ],
+      "stochastic_capability_gap_followup": "PLAYBOOK_INDEX.json → runtime.draw.materialization_contract"
     },
     "explicit_meihua": {
       "fragments": [
@@ -102,7 +103,8 @@
       "required_followup": [
         "MEIHUA.md"
       ],
-      "capability_gap_followup": "PLAYBOOK_INDEX.json → method.meihua.materialization_contract"
+      "capability_gap_followup": "PLAYBOOK_INDEX.json → method.meihua.materialization_contract",
+      "stochastic_capability_gap_followup": "PLAYBOOK_INDEX.json → runtime.draw.materialization_contract"
     },
     "explicit_liuyao": {
       "fragments": [
@@ -113,7 +115,8 @@
       "required_followup": [
         "LIUYAO.md"
       ],
-      "capability_gap_followup": "PLAYBOOK_INDEX.json → method.liuyao.materialization_contract"
+      "capability_gap_followup": "PLAYBOOK_INDEX.json → method.liuyao.materialization_contract",
+      "stochastic_capability_gap_followup": "PLAYBOOK_INDEX.json → runtime.draw.materialization_contract"
     },
     "explicit_astrology": {
       "fragments": [

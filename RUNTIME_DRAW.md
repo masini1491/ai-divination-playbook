@@ -40,15 +40,18 @@ runtime/casting/CHATGPT_RUNTIME_CAPSULE.json   # v2 compatibility fallback
 Question Contract fixed
 → verified local Runtime / capsule probe
 → PASS: execute canonical entrypoint → Draw / Cast Fact
-→ MISS: Cold-start Recovery Gate → Acquisition if needed
+→ MISS / import fail / canonical source readable but not directly executable
+   → PLAYBOOK_INDEX.json → runtime.draw.materialization_contract
+   → Cold-start Recovery Gate → Acquisition if needed
 ```
 
-**MISS ≠ unavailable。** AI 代抽／代起不得因沒有預裝 Randomizer、cache MISS 或 import FAIL就直接要求使用者自行抽／起；先走本檔 recovery owner。
+**MISS ≠ unavailable。** AI 代抽／代起不得因沒有預裝 Randomizer、cache MISS、import FAIL，或「GitHub Connect 可讀 `runtime/casting/core.py` 但目前不能直接執行該 source」就直接要求使用者自行抽／起或停在等待 Runtime。**Source readable but not directly executable 只是 handoff/materialization state，不是 runtime unavailable verdict。** 必須先 resolve `runtime.draw.materialization_contract`、走本檔 recovery owner並 exhaust applicable admitted recovery。
 
 ## Cold-start Recovery Gate｜Free ChatGPT 首次不可過早判 unavailable
 
 - Tarot／Meihua／Liuyao 的 local cache／tool／import MISS **≠ runtime unavailable**。
-- AI 代抽／代起時，MISS → `PLAYBOOK_INDEX.json → runtime.draw.materialization_contract` → 本檔 `Acquisition`；先 exhaust applicable admitted recovery，才可進 manual fallback。
+- GitHub Connect 已能讀 canonical `core.py`，但目前環境不能直接 execute connector-visible source，**也 ≠ runtime unavailable**；這代表 direct-execution path MISS，必須繼續 handoff/materialization recovery。
+- AI 代抽／代起時，任一上述 MISS → `PLAYBOOK_INDEX.json → runtime.draw.materialization_contract` → 本檔 `Acquisition`；先 exhaust applicable admitted recovery，才可進 manual fallback。
 - Python execution本身不可用時，標示 execution-capability boundary；不得誤報成「Repo 沒有方法」。
 
 ## Stochastic Fact Completeness Gate｜不可跳過
