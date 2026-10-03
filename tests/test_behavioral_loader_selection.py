@@ -62,6 +62,7 @@ class BehavioralEvalLoaderSelectionTests(unittest.TestCase):
             "TAROT-BEH-018",
             "TAROT-BEH-028",
             "TAROT-BEH-029",
+            "TAROT-BEH-030",
         }
         self.assertTrue(required.issubset(selected))
 

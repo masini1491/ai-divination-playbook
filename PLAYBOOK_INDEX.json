@@ -179,7 +179,11 @@
     {
       "id": "method.tarot",
       "owner": "TAROT.md",
-      "kind": "contract"
+      "kind": "contract",
+      "stochastic_runtime": "runtime.draw",
+      "casting_implementation": "runtime/casting/core.py",
+      "casting_adapter": "runtime/casting/randomizer.py",
+      "casting_entrypoint": "core.execute_stochastic"
     },
     {
       "id": "method.meihua",
@@ -188,7 +192,11 @@
       "engine": "tools/meihua_engine.py",
       "materialization_contract": "MEIHUA_MATERIALIZATION.md",
       "deterministic_transport_bundle": "runtime/meihua/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json",
-      "transport_generator": "tools/build_meihua_tool_bundle.py"
+      "transport_generator": "tools/build_meihua_tool_bundle.py",
+      "stochastic_runtime": "runtime.draw",
+      "casting_implementation": "runtime/casting/core.py",
+      "casting_adapter": "runtime/casting/randomizer.py",
+      "casting_entrypoint": "core.execute_stochastic"
     },
     {
       "id": "method.liuyao",
@@ -203,7 +211,8 @@
       "transport_generator": "tools/build_liuyao_tool_bundle.py",
       "materialization_product_scenario": "evals/LIUYAO_MATERIALIZATION_PRODUCT_SCENARIO.md",
       "casting_adapter": "runtime/casting/randomizer.py",
-      "casting_entrypoint": "core.execute_stochastic"
+      "casting_entrypoint": "core.execute_stochastic",
+      "stochastic_runtime": "runtime.draw"
     },
     {
       "id": "method.ziwei",
