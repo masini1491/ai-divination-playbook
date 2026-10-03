@@ -93,10 +93,26 @@ converted Gregorian date仍必須落在 admitted 1900-01-01..2100-12-31 range。
 
 ## 3. Zi Wei ChatGPT Runtime Reuse / Host Integration Fast Path
 
-Shared generic semantics remain owned by the activated AI Development Playbook:
-`CHATGPT_RUNTIME_EXECUTION.md` → `Runtime Asset Reuse Fast Path` / `Artifact Handoff / Materialization Gate`,
-and `GITHUB_OPERATIONS.md` → `Inbound Verified Transport`.
-This section only binds those shared rules to Zi Wei's concrete cache, bundle and calendar-shard layout.
+Zi Wei production materialization is self-contained in this repository; ordinary user execution does not need another repository to determine the next runtime/materialization step.
+
+Repository-local minimum execution contract:
+
+```text
+verified local Zi Wei runtime/cache exists
+→ cheap identity / integrity / executability probe
+→ sufficient ? REUSE : continue
+→ resolve ai-divination-playbook current ref to one exact commit
+→ direct byte/file-aware handoff available
+   → materialize required same-commit runtime assets + admitted calendar manifest/shards
+   → unavailable: use this owner’s admitted exact-commit handoff artifact or deterministic tool-bundle fallback
+→ verify bundle chunk/archive/per-file identities and required calendar-shard identities
+→ deterministic materialization
+→ final canonical identity + executability established
+   → execute tools/ziwei_runtime.py
+   → otherwise fail closed at the observed handoff/materialization/integrity boundary
+```
+
+Local cache/source/shard MISS alone is not unavailable; model-visible source alone is not verified materialization; and model reconstruction must never impersonate canonical source bytes. External engineering references may still be consulted during maintenance/design review, but they are maintenance-only references, not production runtime dependencies.
 
 ```text
 explicit Zi Wei Gregorian request + explicit IANA timezone

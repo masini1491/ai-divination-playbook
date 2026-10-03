@@ -59,10 +59,26 @@ GeoNames datasets
 
 在把 local checkout／package／verified cache MISS 分類為 provider、handoff 或 runtime unavailable 前，先套用 root `CHAT_INIT.md` → `GitHub Connect Minimum Capability Probe｜不得未試即判 unavailable`；ordinary Astrology production 不因這個 probe 本身啟動 shared development baseline。
 
-Shared generic semantics仍由已啟動的 AI Development Playbook 擁有：
-`CHATGPT_RUNTIME_EXECUTION.md` → `Runtime Asset Reuse Fast Path` / `Artifact Handoff / Materialization Gate`，
-以及 `GITHUB_OPERATIONS.md` → `Inbound Verified Transport`。
-本檔只把這些 shared rules 綁定到 Astrology 的 core bundle、pinned Astronomy Engine 與 place-resolver split；不另建 shared framework。
+Astrology production materialization在本 Repo內必須自足閉合；ordinary user execution不需要讀取其他 repository 才能判斷下一步。
+
+本地最低 execution contract：
+
+```text
+verified local Astrology runtime/cache exists
+→ cheap identity / integrity / executability probe
+→ sufficient ? REUSE : continue
+→ resolve ai-divination-playbook current ref to one exact commit
+→ direct byte/file-aware connector→filesystem handoff available
+   → materialize required same-commit core assets and verify identity
+   → unavailable: use this owner’s admitted exact-commit handoff artifact or deterministic core bundle fallback
+→ verify chunk/archive/per-file identity and pinned Astronomy Engine dependency identity as required below
+→ deterministic materialization
+→ final canonical identity + executability established
+   → execute project-owned Astrology runtime/provider
+   → otherwise fail closed at the observed handoff/materialization/integrity boundary
+```
+
+Local checkout/package/cache MISS alone is not unavailable; model-visible source alone is not verified materialization; and model reconstruction must never impersonate canonical source bytes. External engineering references may still be consulted during maintenance/design review, but they are maintenance-only references, not production runtime dependencies.
 
 ## 4. Runtime Reuse / Host Integration Fast Path
 
