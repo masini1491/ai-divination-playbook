@@ -271,6 +271,43 @@ CONTRACTS: dict[str, list[tuple[str, tuple[str, ...]]]] = {
             ),
         ),
     ],
+    "TAROT-BEH-030": [
+        (
+            "RUNTIME_DRAW.md",
+            (
+                "source readable but not directly executable",
+                "runtime.draw.materialization_contract",
+                "Source readable but not directly executable",
+                "Cold-start Recovery Gate",
+            ),
+        ),
+        (
+            "PLAYBOOK_INDEX.json",
+            (
+                '"id": "method.tarot"',
+                '"stochastic_runtime": "runtime.draw"',
+                '"casting_entrypoint": "core.execute_stochastic"',
+                '"id": "method.meihua"',
+                '"id": "method.liuyao"',
+            ),
+        ),
+        (
+            "CHATGPT_LOAD_PACK.json",
+            (
+                "source readable but not directly executable",
+                "runtime.draw.materialization_contract",
+                "stochastic_capability_gap_followup",
+            ),
+        ),
+        (
+            "BEHAVIORAL_EVAL.md",
+            (
+                "TAROT-BEH-030 — Direct-execution miss must continue into stochastic materialization",
+                "source readable but not directly executable",
+                "未 resolve `runtime.draw.materialization_contract` 就要求使用者自行抽牌／擲幣",
+            ),
+        ),
+    ],
     "TAROT-BEH-025": [
         (
             "MEIHUA_MATERIALIZATION.md",
