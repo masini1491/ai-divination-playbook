@@ -9,7 +9,7 @@ Tarot
 Meihua
 Liuyao
 Astrology（explicit-request only）
-Zi Wei Dou Shu / 紫微斗數（explicit-request only；Scope-A natal first layer）
+Zi Wei Dou Shu / 紫微斗數（explicit-request only；bounded natal core + explicit temporal layers）
 ```
 
 其中：
@@ -52,6 +52,8 @@ ai-divination-playbook
 ```
 
 **Adoption ≠ unconditional activation。** 普通 Tarot／Meihua／Liuyao／Astrology／Zi Wei 使用、reading continuation 與方法解讀維持本 Repo 的短 hot path，不為形式載入 shared Playbook；只有 repository maintenance、governance／AI workflow、GitHub operations、source/tests/tooling/workflow mutation 或 validation architecture 等工程工作才解析 declared baseline、進入其 `CHAT_INIT.md` 並載入最低充分 owner。
+
+**Ordinary production execution / materialization 也必須能在本 Repo內閉合。** Astrology／Zi Wei 遇到 local runtime、cache 或 handoff缺口時，依本 Repo 的 canonical materialization owner 完成 same-commit acquisition、verification、materialization、execution／fail-closed；外部 engineering baseline 不是完成一次使用者 reading 的 required next hop。
 
 本 Repo 的 project-specific governance 與 technical source of truth 仍優先；尤其 **GitHub Connect-only** repository authority、公開 Repo privacy、Reading Record storage boundary 與各 divination method/runtime owner 都是 local rules／overrides，不因 shared baseline 的 generic default 而放寬。採用與 override 紀錄見 [`references/ai-development-playbook.md`](references/ai-development-playbook.md)。
 
@@ -369,6 +371,8 @@ Liuyao three-coin Raw Cast
 
 `core.py` 決定 canonical stochastic raw result；`randomizer.py` 提供 full API / CLI transport 並 delegate 到同一 core，不負責 interpretation。logical runtime identity 仍為 `divination-casting-randomizer-python`；legacy `masini1491/divination-casting-randomizer` 僅保留歷史 provenance、rollback 與 compatibility / historical deployment reference。current Runtime Draw 與 production authority 均位於本 Repo 的 `runtime/casting/**`。
 
+Free ChatGPT cold-start：**local runtime／cache MISS ≠ unavailable**。目前優先使用 `runtime/casting/capsule-v3/MANIFEST.json` 的 streaming verified transport；若 v3 transport capability本身不可用／blocked，才使用 `runtime/casting/CHATGPT_RUNTIME_CAPSULE.json` v2 compatibility fallback。完整 acquisition、integrity、retry與 fail-closed規則仍以 [`RUNTIME_DRAW.md`](RUNTIME_DRAW.md) 為唯一 authority；README 不複製 runtime policy。
+
 ### Liuyao deterministic engine
 
 ```text
@@ -539,8 +543,11 @@ BACKTEST JUDGMENT
 | [`MEIHUA.md`](MEIHUA.md) | Meihua-specific contract |
 | [`LIUYAO.md`](LIUYAO.md) | Liuyao judgment、Raw Cast → Structured Fact、解讀與 fail-closed contract |
 | [`ASTROLOGY.md`](ASTROLOGY.md) | Astrology Production v1 method owner、Fact Gate、interpretation / unsupported-factor governance |
-| [`ZIWEI.md`](ZIWEI.md) | Zi Wei Scope-A Production v1 method owner、Gregorian input、brightness / unsupported-layer boundary |
-| [`ZIWEI_MATERIALIZATION.md`](ZIWEI_MATERIALIZATION.md) | Zi Wei ChatGPT deterministic bundle、verification、cache / fail-closed materialization contract |
+| [`ZIWEI.md`](ZIWEI.md) | Zi Wei bounded natal core + explicit temporal layers method owner、Gregorian input、optional modules / unsupported-layer boundary |
+| [`ASTROLOGY_MATERIALIZATION.md`](ASTROLOGY_MATERIALIZATION.md) | Astrology project-native runtime reuse、same-commit handoff、deterministic core-bundle verification / fail-closed materialization contract |
+| [`ZIWEI_MATERIALIZATION.md`](ZIWEI_MATERIALIZATION.md) | Zi Wei project-native deterministic bundle、calendar-shard verification、cache / fail-closed materialization contract |
+| [`MEIHUA_MATERIALIZATION.md`](MEIHUA_MATERIALIZATION.md) | Meihua deterministic engine bundle、verified cache / materialization contract |
+| [`LIUYAO_MATERIALIZATION.md`](LIUYAO_MATERIALIZATION.md) | Liuyao deterministic tool bundle、calendar / engine/runtime verified materialization contract |
 | [`RUNTIME_DRAW.md`](RUNTIME_DRAW.md) | Runtime Draw / Cast、cache、source、provenance、fail closed |
 | [`CROSS_VALIDATION.md`](CROSS_VALIDATION.md) | canonical Tarot × Meihua + Astrology natal × Zi Wei natal-baseline reconciliation / evidence lineage |
 | [`READING_LIFECYCLE.md`](READING_LIFECYCLE.md) | 新題、承接、條件世界、補占、重占、現實更新、完成、回測 |
@@ -628,4 +635,4 @@ Repository 名稱泛化不代表 AI 可以自行發明未定義的方法流程�
 
 ## 狀態
 
-持續演進中。現在的 production surface 已涵蓋 Tarot、Meihua、Liuyao、explicit-request Astrology Production v1 與 explicit-request Zi Wei Scope-A Production v1；後續仍以真實使用中反覆出現的 judgment gap、routing collision、runtime / deterministic calculation、record integrity 與 backtest 問題反向萃取規則，而不是追求文件數量或術數數量。
+持續演進中。現在的 production surface 已涵蓋 Tarot、Meihua、Liuyao、explicit-request Astrology Production v1，以及以 bounded natal core 為預設、另含 explicit temporal layers 的 Zi Wei production；後續仍以真實使用中反覆出現的 judgment gap、routing collision、runtime / deterministic calculation、record integrity 與 backtest 問題反向萃取規則，而不是追求文件數量或術數數量。
