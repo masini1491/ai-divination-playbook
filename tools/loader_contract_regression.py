@@ -312,9 +312,9 @@ CONTRACTS: dict[str, list[tuple[str, tuple[str, ...]]]] = {
         (
             "RUNTIME_DRAW.md",
             (
-                "ordinary ChatGPT: skip project-owned HTTP /api/cast entirely",
+                "ordinary ChatGPT: project HTTP /api/cast = unavailable-by-policy; DO NOT probe",
                 "unavailable-by-policy",
-                "不得 probe",
+                "DO NOT probe",
                 "capsule-v3",
             ),
         ),
@@ -329,7 +329,7 @@ CONTRACTS: dict[str, list[tuple[str, tuple[str, ...]]]] = {
         (
             "CHATGPT_LOAD_PACK.json",
             (
-                "ordinary ChatGPT: skip project-owned HTTP /api/cast entirely",
+                "ordinary ChatGPT: project HTTP /api/cast = unavailable-by-policy; DO NOT probe",
                 "unavailable-by-policy",
                 "runtime.draw.materialization_contract",
             ),
