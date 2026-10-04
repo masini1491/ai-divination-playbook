@@ -308,6 +308,57 @@ CONTRACTS: dict[str, list[tuple[str, tuple[str, ...]]]] = {
             ),
         ),
     ],
+    "TAROT-BEH-031": [
+        (
+            "RUNTIME_DRAW.md",
+            (
+                "ordinary ChatGPT: skip project-owned HTTP /api/cast entirely",
+                "unavailable-by-policy",
+                "不得 probe",
+                "capsule-v3",
+            ),
+        ),
+        (
+            "PLAYBOOK_INDEX.json",
+            (
+                '"ordinary_chat_project_http_api": "unavailable-by-policy"',
+                '"ordinary_chat_http_probe": "forbidden"',
+                '"natural_entry_product_scenario": "evals/FREE_CHATGPT_STOCHASTIC_NATURAL_ENTRY_PRODUCT_SCENARIO.md"',
+            ),
+        ),
+        (
+            "CHATGPT_LOAD_PACK.json",
+            (
+                "ordinary ChatGPT: skip project-owned HTTP /api/cast entirely",
+                "unavailable-by-policy",
+                "runtime.draw.materialization_contract",
+            ),
+        ),
+        (
+            "runtime/casting/API.md",
+            (
+                "不是 ordinary ChatGPT 代抽／代起卦的 admitted execution route",
+                "ordinary ChatGPT MUST NOT probe",
+                "RUNTIME_DRAW.md",
+            ),
+        ),
+        (
+            "BEHAVIORAL_EVAL.md",
+            (
+                "TAROT-BEH-031 — Natural ChatGPT entry must bypass project HTTP API",
+                "用 repo 直接實抽",
+                "production casting API",
+            ),
+        ),
+        (
+            "evals/FREE_CHATGPT_STOCHASTIC_NATURAL_ENTRY_PRODUCT_SCENARIO.md",
+            (
+                "用 repo 直接實抽",
+                "MUST NOT probe",
+                "core.execute_stochastic()",
+            ),
+        ),
+    ],
     "TAROT-BEH-025": [
         (
             "MEIHUA_MATERIALIZATION.md",

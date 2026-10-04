@@ -1077,6 +1077,41 @@ https://github.com/masini1491/ai-divination-playbook
 
 - selected method → `runtime.draw` binding、direct-execution MISS classification、materialization-contract resolution、recovery route action、actual canonical execution或精確 exhaust boundary。
 
+### TAROT-BEH-031 — Natural ChatGPT entry must bypass project HTTP API
+
+**Premise / authority**
+
+- Fresh ordinary ChatGPT／Free ChatGPT session；GitHub Connect可讀 current `ai-divination-playbook`。
+- 使用者要求 ChatGPT／AI 代抽 Tarot，或代起 Meihua／Liuyao raw cast。
+- Repo內存在 `runtime/casting/API.md`、`openapi.json` 與 deployed casting service，但目前 host **沒有明確已配置且已授權**、可呼叫該 project-owned HTTP endpoint的 tool / plugin / action。
+- local verified stochastic cache尚未 PASS；Python execution仍可能可用。
+
+**User stimulus**
+
+```text
+用 repo 直接實抽
+```
+
+**Expected behavior**
+
+- 把「用 repo 直接實抽」解析成使用 Repo 的 canonical stochastic runtime authority，不是要求 HTTP API。
+- 不 probe、不嘗試、不等待 deployed `/api/cast`／Vercel endpoint；不得因 Repo 有 OpenAPI／production service就推定 host可呼叫。
+- 直接依 load-pack hot path／`runtime.draw`：local/direct MISS → `runtime.draw.materialization_contract` → `RUNTIME_DRAW.md` → capsule-v3 preferred recovery → verified `core.execute_stochastic()`。
+- 若 admitted capsule/materialization route實際 exhaust，才依既有 fail-closed／user-mediated fallback規則處理；不得把「production HTTP API unavailable」當成停止理由。
+- 只有 future Repo governance 明確 admission 一個已觀察、已配置且已授權的 host HTTP tool capability後，才可在該獨立 profile使用 HTTP casting route。
+
+**Forbidden behavior**
+
+- 先搜尋、猜測、probe或呼叫 project-owned production HTTP endpoint。
+- 回答「目前無法連到 repo 指定的 production casting API，所以只能停在這裡」。
+- 把 `API.md`／`openapi.json`／Vercel production smoke當成 ChatGPT tool availability evidence。
+- 要求使用者提醒「Repo內有工具」才繼續 materialization。
+- 因 HTTP route不存在而改用模型自行生成牌／A-B／爻值。
+
+**Observable evidence**
+
+- natural-language entry classification、HTTP probe absence、`runtime.draw` resolution、materialization-contract continuation、capsule recovery action、canonical execution或真正 exhaust boundary。
+
 ## Regression Selection｜最低充分回歸
 
 不要求每次修改都跑全部 scenarios；依 mutation scope 選直接相關項目：
@@ -1084,7 +1119,7 @@ https://github.com/masini1491/ai-divination-playbook
 - `CHAT_INIT.md`／Repository Access Policy／GitHub retrieval／Playbook Freshness／Session Handoff → TAROT-BEH-001、005、006、013、015 中直接相關者；Astrology routing 變更另加 016～018。
 - `METHOD_ROUTING.md` → TAROT-BEH-002；Astrology explicit override 變更另加 016、018，必要時 001。
 - `ASTROLOGY.md`／`tools/astrology_runtime.py`／Astrology admission manifest → TAROT-BEH-016、017、018；fact/runtime policy 變更時 017 mandatory。
-- `RUNTIME_DRAW.md` → TAROT-BEH-003、004、006、007、008、010、012、028、029、030；cache/reuse/batching 變更時 008、012 mandatory；cold-start discoverability 變更時 028 mandatory；capsule transport / integrity routing 變更時 029 mandatory；direct-execution / capability-resolution continuity 變更時 030 mandatory。
+- `RUNTIME_DRAW.md` → TAROT-BEH-003、004、006、007、008、010、012、028、029、030、031；cache/reuse/batching 變更時 008、012 mandatory；cold-start discoverability 變更時 028 mandatory；capsule transport / integrity routing 變更時 029 mandatory；direct-execution / capability-resolution continuity 變更時 030 mandatory；ordinary ChatGPT HTTP-capability routing 變更時 031 mandatory.
 - `LIUYAO.md`／Liuyao runtime boundary／user-visible presentation → TAROT-BEH-002、003、004、007、010、019；若修改盤表呈現或「最低充分」與盤表的責任邊界，TAROT-BEH-019 mandatory。
 - `MEIHUA.md`／Meihua user-visible presentation → TAROT-BEH-002、003、010、020；deterministic materialization / downstream boundary → TAROT-BEH-004、010、020、021；修改卦盤骨架或 missing-fact 邊界時 020 mandatory，修改 engine/materialization 時 021 mandatory。
 - `READING_RECORD.md` → TAROT-BEH-008、009、010、011，必要時 004。
@@ -1095,6 +1130,6 @@ https://github.com/masini1491/ai-divination-playbook
 - `SESSION_HANDOFF.md` → TAROT-BEH-015，必要時 013。
 - `PLAYBOOK_INDEX.json`／machine routing → 先驗證 owner pointer，再依受影響 owner 選 scenario；Astrology capability 需 016、018。
 - Zi Wei deterministic materialization / runtime reuse / host transport → TAROT-BEH-025 + `evals/ZIWEI_MATERIALIZATION_PRODUCT_SCENARIO.md`；不因這個 method binding重複建立 shared transport framework。
-- 跨多 owner／cold-start architecture → 先跑直接受影響 scenario；stochastic cold-start / recovery routing 必含 TAROT-BEH-028；capsule transport reliability 必含 TAROT-BEH-029；direct-execution / materialization continuity 必含 TAROT-BEH-030；無法界定才擴大 full baseline。
+- 跨多 owner／cold-start architecture → 先跑直接受影響 scenario；stochastic cold-start / recovery routing 必含 TAROT-BEH-028；capsule transport reliability 必含 TAROT-BEH-029；direct-execution / materialization continuity 必含 TAROT-BEH-030；ordinary ChatGPT natural-entry / HTTP capability boundary 必含 TAROT-BEH-031；無法界定才擴大 full baseline。
 
 核心原則：**Behavioral evaluation 驗證 Agent 是否真的照規則做；它不取代 deterministic checker，也不要求一般占問支付額外 Context 成本。**

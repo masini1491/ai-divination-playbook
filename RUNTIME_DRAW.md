@@ -6,7 +6,7 @@ Canonical stochastic core 與完整 Runtime adapter：
 
 ```text
 runtime/casting/core.py        # canonical stochastic core
-runtime/casting/randomizer.py  # full API / CLI adapter，直接重用 core.py
+runtime/casting/randomizer.py  # full adapter layer（Python / CLI / HTTP），直接重用 core.py；HTTP 不屬 ordinary ChatGPT routing
 ```
 
 Free ChatGPT cold-start transport artifacts：
@@ -38,6 +38,7 @@ runtime/casting/CHATGPT_RUNTIME_CAPSULE.json   # v2 compatibility fallback
 
 ```text
 Question Contract fixed
+→ ordinary ChatGPT: skip project-owned HTTP /api/cast entirely; Repo/OpenAPI presence ≠ callable host tool
 → verified local Runtime / capsule probe
 → PASS: execute canonical entrypoint → Draw / Cast Fact
 → MISS / import fail / canonical source readable but not directly executable
@@ -45,11 +46,14 @@ Question Contract fixed
    → Cold-start Recovery Gate → Acquisition if needed
 ```
 
+**Ordinary ChatGPT HTTP capability invariant：** 本專案把一般 ChatGPT 對 project-owned arbitrary HTTP casting endpoint（含 deployed `/api/cast` / Vercel endpoint）視為 **unavailable-by-policy**。不得 probe、不得先嘗試連線、不得因 Repo 有 `API.md`／`openapi.json`／production deployment 就推定目前 host 可以呼叫。這個 fail-closed假設持續有效，直到未來以獨立 Repo governance 變更明確 admission 一個已觀察、已配置且已授權的 host tool / plugin / action capability；單純 OpenAI 產品政策改變或 API 仍在線都不自動改 routing。
+
 **MISS ≠ unavailable。** AI 代抽／代起不得因沒有預裝 Randomizer、cache MISS、import FAIL，或「GitHub Connect 可讀 `runtime/casting/core.py` 但目前不能直接執行該 source」就直接要求使用者自行抽／起或停在等待 Runtime。**Source readable but not directly executable 只是 handoff/materialization state，不是 runtime unavailable verdict。** 必須先 resolve `runtime.draw.materialization_contract`、走本檔 recovery owner並 exhaust applicable admitted recovery。
 
 ## Cold-start Recovery Gate｜Free ChatGPT 首次不可過早判 unavailable
 
 - Tarot／Meihua／Liuyao 的 local cache／tool／import MISS **≠ runtime unavailable**。
+- ordinary ChatGPT 不具有本專案 admitted 的 arbitrary project-owned HTTP casting capability；不得把 HTTP endpoint probe 插在 cache/direct MISS 與 materialization之間。
 - GitHub Connect 已能讀 canonical `core.py`，但目前環境不能直接 execute connector-visible source，**也 ≠ runtime unavailable**；這代表 direct-execution path MISS，必須繼續 handoff/materialization recovery。
 - AI 代抽／代起時，任一上述 MISS → `PLAYBOOK_INDEX.json → runtime.draw.materialization_contract` → 本檔 `Acquisition`；先 exhaust applicable admitted recovery，才可進 manual fallback。
 - Python execution本身不可用時，標示 execution-capability boundary；不得誤報成「Repo 沒有方法」。
@@ -58,9 +62,9 @@ Question Contract fixed
 
 任何 **AI／Runtime 新產生** 的 Tarot／Meihua／Liuyao stochastic result，只有在同一 canonical execution envelope 同時具備 stochastic result、`generated_at_utc`、`generated_at_taipei`、`timezone = Asia/Taipei` 與 runtime/source provenance 時，才成立為 Raw Draw / Cast Fact。
 
-缺任一項 → `STOCHASTIC EXECUTION FACT INVALID` → **立即停止 interpretation / deterministic downstream / record / Vault write**。不得拿聊天室時間、commit time、事後 `now()` 或估計值補成原 execution timestamp；需要正式 reading 時只能重新執行 canonical stochastic API，形成新的 execution identity。
+缺任一項 → `STOCHASTIC EXECUTION FACT INVALID` → **立即停止 interpretation / deterministic downstream / record / Vault write**。不得拿聊天室時間、commit time、事後 `now()` 或估計值補成原 execution timestamp；需要正式 reading 時只能重新執行 canonical stochastic entrypoint，形成新的 execution identity。
 
-正式 stochastic execution API 只有 `core.execute_stochastic()`；full `randomizer.generate_payload()` 必須 delegate 到它。`core.py` 內 `_..._raw` helper 只是 implementation detail，其 bare return value永遠不是有效 Reading Fact。
+正式 stochastic execution entrypoint 只有 `core.execute_stochastic()`；full `randomizer.generate_payload()` 必須 delegate 到它。`core.py` 內 `_..._raw` helper 只是 implementation detail，其 bare return value永遠不是有效 Reading Fact。
 
 ## Fast Path｜普通占問預設
 
@@ -400,7 +404,7 @@ Raw Cast Fact 至少保留 six values；需要 audit／engine 時保留 coin val
 
 ## Execution｜優先順序
 
-### A. In-memory direct API｜最快
+### A. In-memory Python call｜最快
 
 同一 persistent Python interpreter 且 verified full Runtime module 已 import：
 
@@ -496,7 +500,7 @@ Contract fixed
 
 若 batch 部分 child 已可信固定、其他 child failure，不得重跑整批覆蓋已固定 facts；保留可信 child，對 unresolved child 最小修復或 fail closed。
 
-若 direct connector→Python full-runtime handoff unavailable，**先嘗試本章 admitted verified capsule path**。只有 capsule 也無法取得／搬運／exact 驗證／執行，或 Python 不可用時，才可改用仍在線的 deployed Randomizer Web UI 或使用者自行抽／起；這是 runtime fallback，不改變 GitHub repository authority。若 GitHub source acquisition 本身被阻擋，仍遵守 `ACCESS BLOCKED`。
+若 direct connector→Python full-runtime handoff unavailable，**先嘗試本章 admitted verified capsule path**。ordinary ChatGPT 不得在這裡改試 project-owned HTTP `/api/cast`。只有 capsule 也無法取得／搬運／exact 驗證／執行，或 Python 不可用時，才可**提供**仍在線的 deployed Randomizer Web UI 給使用者自行操作，或請使用者自行抽／起；ChatGPT 不得宣稱自己已呼叫該 Web/API surface。這是 user-mediated runtime fallback，不改變 GitHub repository authority。若 GitHub source acquisition 本身被阻擋，仍遵守 `ACCESS BLOCKED`。
 
 Runtime 快、batch 方便都不創造補占 authority；同題／新題／補占仍由 `READING_LIFECYCLE.md` 決定。
 
