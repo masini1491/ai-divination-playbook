@@ -39,7 +39,7 @@ runtime/casting/CHATGPT_RUNTIME_CAPSULE.json   # v2 compatibility fallback
 ```text
 Question Contract fixed
 → stochastic method selected + fresh fact required: same-turn runtime.draw; DO NOT defer to a future runtime
-→ ordinary ChatGPT: /api/cast = unavailable-by-policy; DO NOT probe
+→ ordinary ChatGPT: Vercel / Web UI / HTTP `/api/cast` = NON-ROUTING; DO NOT probe/call/wait/redirect
 → connector read-only / cannot execute source ≠ host Python unavailable
 → verified local Runtime / capsule probe
 → PASS: execute canonical entrypoint → Draw / Cast Fact
@@ -48,14 +48,14 @@ Question Contract fixed
    → Cold-start Recovery Gate → Acquisition if needed
 ```
 
-Repo/API/deployment presence ≠ callable host tool. GitHub Connect limits、missing workflow dispatch、HTTP unavailability都不是 host-Python unavailable evidence；只有 current-host capability evidence可以建立該 boundary。
+**Execution-surface boundary：** ordinary ChatGPT 的 stochastic execution routing 只由本檔擁有。Vercel deployment、deployed Web UI、`openapi.json`、`/api/cast`、production smoke 都只是 deployment／external-client surface，**永遠不屬 ordinary ChatGPT execution 或 fallback routing**；不得 probe、call、wait、redirect，也不得用其可用／不可用狀態判定 Runtime 或 Python capability。GitHub Connect limits、missing workflow dispatch 同樣不是 host-Python unavailable evidence；只有 current-host capability evidence可以建立該 boundary。
 
 **MISS ≠ unavailable。** AI 代抽／代起不得因沒有預裝 Randomizer、cache MISS、import FAIL，或「GitHub Connect 可讀 `runtime/casting/core.py` 但目前不能直接執行該 source」就直接要求使用者自行抽／起或停在等待 Runtime。**Source readable but not directly executable 只是 handoff/materialization state，不是 runtime unavailable verdict。** 必須先 resolve `runtime.draw.materialization_contract`、走本檔 recovery owner並 exhaust applicable admitted recovery。
 
 ## Cold-start Recovery Gate｜Free ChatGPT 首次不可過早判 unavailable
 
 - Tarot／Meihua／Liuyao 的 local cache／tool／import MISS **≠ runtime unavailable**。
-- ordinary ChatGPT 不具有本專案 admitted 的 arbitrary project-owned HTTP casting capability；不得把 HTTP endpoint probe 插在 cache/direct MISS 與 materialization之間。
+- ordinary ChatGPT 對 project-owned Vercel deployment／Web UI／HTTP casting surface一律 **non-routing**；不得把 probe／call／wait／redirect 插在 cache/direct MISS、materialization 或 fail-closed boundary之間。
 - GitHub Connect 已能讀 canonical `core.py`，但 connector本身不能 execute connector-visible source，**也 ≠ runtime unavailable，更不等於 host Python unavailable**；這只建立 direct-execution path MISS。
 - **Forbidden Python-unavailability inference：** GitHub Connect read-only、connector不能執行 source、沒有 workflow dispatch／遠端 runner權限、project HTTP unavailable，都不能單獨或合併證明 Python execution不存在。
 - 若 current host實際暴露 Python execution surface，MUST 在同一 turn繼續 `runtime.draw.materialization_contract` → `Acquisition` → preferred capsule-v3；不得先要求使用者提供 raw cast。
@@ -505,7 +505,7 @@ Contract fixed
 
 若 batch 部分 child 已可信固定、其他 child failure，不得重跑整批覆蓋已固定 facts；保留可信 child，對 unresolved child 最小修復或 fail closed。
 
-若 direct connector→Python full-runtime handoff unavailable，**先嘗試本章 admitted verified capsule path**。ordinary ChatGPT 不得在這裡改試 project-owned HTTP `/api/cast`。只有 capsule 也無法取得／搬運／exact 驗證／執行，或 Python 不可用時，才可**提供**仍在線的 deployed Randomizer Web UI 給使用者自行操作，或請使用者自行抽／起；ChatGPT 不得宣稱自己已呼叫該 Web/API surface。這是 user-mediated runtime fallback，不改變 GitHub repository authority。若 GitHub source acquisition 本身被阻擋，仍遵守 `ACCESS BLOCKED`。
+若 direct connector→Python full-runtime handoff unavailable，**先嘗試本章 admitted verified capsule path**。ordinary ChatGPT 不得改試、等待或導向任何 project-owned Vercel／HTTP／Web UI surface。若 admitted capsule/materialization routes 已真正 exhaust，或 Python execution capability確實不可用，應在精確 execution boundary fail closed；只有既有 method contract允許時，才可接受使用者自行提供的合法 Raw Draw / Cast Fact，或請使用者獨立完成原始抽牌／起卦。**不得把使用者導向本專案 Vercel deployment 當成 runtime fallback。** 若 GitHub source acquisition 本身被阻擋，仍遵守 `ACCESS BLOCKED`。
 
 Runtime 快、batch 方便都不創造補占 authority；同題／新題／補占仍由 `READING_LIFECYCLE.md` 決定。
 

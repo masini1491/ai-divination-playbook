@@ -38,7 +38,7 @@ B：東京
 
 1. Resolve and freeze one exact repository commit.
 2. For Variant A, classify the request as canonical Repo stochastic execution, not HTTP API invocation. For Variant B, route the comparison to Tarot and immediately hand off the fresh stochastic-fact requirement to `runtime.draw`; method selection is not a terminal state.
-3. MUST NOT probe, search for, call, or wait on the deployed project-owned `/api/cast` / Vercel endpoint.
+3. MUST NOT probe, search for, call, wait on, or redirect to the project-owned Vercel deployment, deployed Web UI, or `/api/cast`; those are non-routing surfaces for ordinary ChatGPT.
 4. Use the load-pack stochastic hot path and resolve `runtime.draw`.
 5. On local/direct MISS, continue to `runtime.draw.materialization_contract` without user prompting.
 6. Resolve host Python capability independently from GitHub Connect capability; connector read-only／cannot execute source and missing workflow dispatch are not Python-unavailability evidence.
@@ -48,7 +48,7 @@ B：東京
 
 ## PASS
 
-- Each stimulus variant reaches canonical execution without any project HTTP probe and without asking the user to remind the model that Repo recovery tools exist.
+- Each stimulus variant reaches canonical execution without any project Vercel／HTTP/Web-UI routing and without asking the user to remind the model that Repo recovery tools exist.
 - Variant B does not stop after method selection and does not defer the draw to a future runtime.
 - If a genuine admitted non-HTTP recovery boundary is exhausted, the agent reports that exact boundary rather than blaming a production HTTP API.
 
@@ -57,6 +57,7 @@ B：東京
 - Agent says or implies it must connect to the Repo's production casting API before materialization.
 - Agent reports the production HTTP API as unreachable and stops.
 - Agent treats `API.md`, `openapi.json`, Vercel deployment, or production smoke as evidence that ordinary ChatGPT has a callable project HTTP tool.
+- Agent redirects the user to the project Vercel deployment／deployed Web UI after local/capsule recovery fails.
 - Agent asks the user to say “Repo內有工具”／“照 cold-start recovery” before continuing.
 - Agent skips admitted capsule recovery while Python execution remains available.
 - Agent says GitHub Connect cannot execute Python and therefore host Python is unavailable without independent current-host capability evidence.

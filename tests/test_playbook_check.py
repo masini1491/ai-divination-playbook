@@ -108,6 +108,21 @@ class PlaybookCheckTests(unittest.TestCase):
         (root / "PLAYBOOK_INDEX.json").write_text(json.dumps(data), encoding="utf-8")
         self.assertEqual(playbook_check.validate(root), [])
 
+    def test_runtime_draw_policy_metadata_fails_routing_only_boundary(self):
+        root = self.make_repo()
+        data = json.loads((root / "PLAYBOOK_INDEX.json").read_text(encoding="utf-8"))
+        data["capabilities"][0]["id"] = "runtime.draw"
+        data["capabilities"][0]["implementation"] = "runtime/casting/randomizer.py"
+        data["capabilities"][0]["ordinary_chat_http_probe"] = "forbidden"
+        (root / "PLAYBOOK_INDEX.json").write_text(json.dumps(data), encoding="utf-8")
+        errors = playbook_check.validate(root)
+        self.assertTrue(
+            any(
+                "routing-only" in error and "ordinary_chat_http_probe" in error
+                for error in errors
+            )
+        )
+
     def test_cutover_runtime_implementation_missing_local_pointer_fails(self):
         root = self.make_repo()
         data = json.loads((root / "PLAYBOOK_INDEX.json").read_text(encoding="utf-8"))

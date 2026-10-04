@@ -2,7 +2,7 @@
 
 `/api/cast` 是 `randomizer.py` 的薄 HTTP transport adapter。它不實作第二份 RNG、不接收占卜題目，也不負責 routing 或 interpretation。
 
-> **ChatGPT host boundary：** 本 HTTP surface 不是 ordinary ChatGPT 代抽／代起卦的 admitted execution route。Repo 內存在本檔、`openapi.json`、Vercel deployment 或 production smoke，都**不代表目前 ChatGPT host 具備 arbitrary project-owned HTTP call capability**。ordinary ChatGPT MUST NOT probe／call本 endpoint，也不得把「API 連不到」當成 stochastic runtime failure；應依 `RUNTIME_DRAW.md` 直接走 verified local runtime／capsule-v3 materialization。只有未來 Repo governance 明確 admission 一個已觀察、已配置且已授權的 host tool / plugin / action時，才可建立獨立 ChatGPT HTTP execution profile。
+> **Authority boundary：** 本檔只擁有 HTTP adapter／deployment contract，不擁有 ChatGPT routing policy。ordinary ChatGPT 的 stochastic execution-surface policy只由 `RUNTIME_DRAW.md` 擁有；依 current owner，Vercel deployment、deployed Web UI、`openapi.json`、`/api/cast` 與 production smoke 都是 **non-routing surfaces**，不得被 ordinary ChatGPT probe／call／wait／redirect或當作 fallback。此處只保留 external-client／deployment implementation 說明。
 
 ## Request
 

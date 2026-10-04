@@ -169,26 +169,11 @@
       "execution_entrypoint": "core.execute_stochastic",
       "materialization_contract": "RUNTIME_DRAW.md",
       "cold_start_recovery_section": "Cold-start Recovery Gate",
-      "cold_start_policy": "local-cache-or-import-miss-is-not-unavailable; exhaust-applicable-admitted-recovery-before-manual-fallback",
       "preferred_free_chatgpt_transport": "runtime/casting/capsule-v3/MANIFEST.json",
       "preferred_free_chatgpt_transport_contract": "streaming-model-mediated-opaque-handoff-v3",
       "compatibility_transport": "runtime/casting/CHATGPT_RUNTIME_CAPSULE.json",
       "compatibility_transport_contract": "chunked-model-mediated-opaque-handoff-v2",
-      "transport_policy": "prefer-v3-single-chunk-fetch-and-immediate-verification; use-v2-only-as-compatibility-fallback",
-      "ordinary_chat_project_http_api": "unavailable-by-policy",
-      "ordinary_chat_http_probe": "forbidden",
-      "ordinary_chat_http_reenable_gate": "explicit-repository-governance-update-after-verified-configured-authorized-host-tool-capability",
-      "natural_entry_product_scenario": "evals/FREE_CHATGPT_STOCHASTIC_NATURAL_ENTRY_PRODUCT_SCENARIO.md",
-      "connector_execution_miss_is_not_python_unavailable": true,
-      "python_unavailability_evidence_policy": "current-host-capability-evidence-only",
-      "python_unavailability_forbidden_inference": [
-        "github-connect-read-only",
-        "connector-cannot-execute-source",
-        "workflow-dispatch-unavailable",
-        "project-http-unavailable"
-      ],
-      "python_available_action": "same-turn-attempt-runtime.draw.materialization_contract-prefer-capsule-v3",
-      "same_session_verified_execution_policy": "positive-capability-evidence-until-current-contradictory-evidence"
+      "section": "Runtime Hot Path｜stochastic first-view recovery"
     },
     {
       "id": "method.tarot",
