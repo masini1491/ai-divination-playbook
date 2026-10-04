@@ -38,7 +38,8 @@ runtime/casting/CHATGPT_RUNTIME_CAPSULE.json   # v2 compatibility fallback
 
 ```text
 Question Contract fixed
-→ ordinary ChatGPT: project HTTP /api/cast = unavailable-by-policy; DO NOT probe
+→ ordinary ChatGPT: /api/cast = unavailable-by-policy; DO NOT probe
+→ connector read-only / cannot execute source ≠ host Python unavailable
 → verified local Runtime / capsule probe
 → PASS: execute canonical entrypoint → Draw / Cast Fact
 → MISS / import fail / canonical source readable but not directly executable
@@ -46,7 +47,7 @@ Question Contract fixed
    → Cold-start Recovery Gate → Acquisition if needed
 ```
 
-Repo/API/OpenAPI/deployment presence ≠ callable ChatGPT host tool. HTTP routing stays disabled until a future Repo governance update explicitly admits a verified configured + authorized host tool capability.
+Repo/API/deployment presence ≠ callable host tool. GitHub Connect limits、missing workflow dispatch、HTTP unavailability都不是 host-Python unavailable evidence；只有 current-host capability evidence可以建立該 boundary。
 
 **MISS ≠ unavailable。** AI 代抽／代起不得因沒有預裝 Randomizer、cache MISS、import FAIL，或「GitHub Connect 可讀 `runtime/casting/core.py` 但目前不能直接執行該 source」就直接要求使用者自行抽／起或停在等待 Runtime。**Source readable but not directly executable 只是 handoff/materialization state，不是 runtime unavailable verdict。** 必須先 resolve `runtime.draw.materialization_contract`、走本檔 recovery owner並 exhaust applicable admitted recovery。
 
@@ -54,9 +55,12 @@ Repo/API/OpenAPI/deployment presence ≠ callable ChatGPT host tool. HTTP routin
 
 - Tarot／Meihua／Liuyao 的 local cache／tool／import MISS **≠ runtime unavailable**。
 - ordinary ChatGPT 不具有本專案 admitted 的 arbitrary project-owned HTTP casting capability；不得把 HTTP endpoint probe 插在 cache/direct MISS 與 materialization之間。
-- GitHub Connect 已能讀 canonical `core.py`，但目前環境不能直接 execute connector-visible source，**也 ≠ runtime unavailable**；這代表 direct-execution path MISS，必須繼續 handoff/materialization recovery。
+- GitHub Connect 已能讀 canonical `core.py`，但 connector本身不能 execute connector-visible source，**也 ≠ runtime unavailable，更不等於 host Python unavailable**；這只建立 direct-execution path MISS。
+- **Forbidden Python-unavailability inference：** GitHub Connect read-only、connector不能執行 source、沒有 workflow dispatch／遠端 runner權限、project HTTP unavailable，都不能單獨或合併證明 Python execution不存在。
+- 若 current host實際暴露 Python execution surface，MUST 在同一 turn繼續 `runtime.draw.materialization_contract` → `Acquisition` → preferred capsule-v3；不得先要求使用者提供 raw cast。
+- 只有 current-host capability inspection／actual execution attempt顯示 Python surface不存在或被阻擋，才可標示 execution-capability boundary；不得用 connector限制代替這份 evidence。
+- 同一 conversation/session 若剛完成過 verified canonical Python execution，該成功是正向 capability evidence；除非有 current tool removal／execution failure等新 evidence，不得無故降級成「Python 不可用」。
 - AI 代抽／代起時，任一上述 MISS → `PLAYBOOK_INDEX.json → runtime.draw.materialization_contract` → 本檔 `Acquisition`；先 exhaust applicable admitted recovery，才可進 manual fallback。
-- Python execution本身不可用時，標示 execution-capability boundary；不得誤報成「Repo 沒有方法」。
 
 ## Stochastic Fact Completeness Gate｜不可跳過
 

@@ -359,6 +359,49 @@ CONTRACTS: dict[str, list[tuple[str, tuple[str, ...]]]] = {
             ),
         ),
     ],
+    "TAROT-BEH-032": [
+        (
+            "RUNTIME_DRAW.md",
+            (
+                "connector read-only / cannot execute source ≠ host Python unavailable",
+                "Forbidden Python-unavailability inference",
+                "current-host capability evidence",
+                "preferred capsule-v3",
+            ),
+        ),
+        (
+            "PLAYBOOK_INDEX.json",
+            (
+                '"connector_execution_miss_is_not_python_unavailable": true',
+                '"python_unavailability_evidence_policy": "current-host-capability-evidence-only"',
+                '"python_available_action": "same-turn-attempt-runtime.draw.materialization_contract-prefer-capsule-v3"',
+            ),
+        ),
+        (
+            "CHATGPT_LOAD_PACK.json",
+            (
+                "connector read-only / cannot execute source ≠ host Python unavailable",
+                "current-host capability evidence",
+                "runtime.draw.materialization_contract",
+            ),
+        ),
+        (
+            "BEHAVIORAL_EVAL.md",
+            (
+                "TAROT-BEH-032 — Connector execution limits must not masquerade as host-Python unavailability",
+                "GitHub Connect不能執行 Python，因此我不能起卦／抽牌",
+                "workflow dispatch",
+            ),
+        ),
+        (
+            "evals/FREE_CHATGPT_STOCHASTIC_NATURAL_ENTRY_PRODUCT_SCENARIO.md",
+            (
+                "Resolve host Python capability independently from GitHub Connect capability",
+                "missing workflow dispatch",
+                "same-conversation/session verified canonical Python execution",
+            ),
+        ),
+    ],
     "TAROT-BEH-025": [
         (
             "MEIHUA_MATERIALIZATION.md",

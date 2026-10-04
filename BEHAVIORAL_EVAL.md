@@ -1112,6 +1112,41 @@ https://github.com/masini1491/ai-divination-playbook
 
 - natural-language entry classification、HTTP probe absence、`runtime.draw` resolution、materialization-contract continuation、capsule recovery action、canonical execution或真正 exhaust boundary。
 
+### TAROT-BEH-032 — Connector execution limits must not masquerade as host-Python unavailability
+
+**Premise / authority**
+
+- Fresh or ongoing ordinary／Free ChatGPT session；GitHub Connect可讀 current `ai-divination-playbook` exact commit。
+- local/direct stochastic execution尚未 PASS。
+- current host實際有 Python execution surface，或同一 conversation/session剛有 verified canonical Python execution且沒有新的 current contradictory evidence。
+- GitHub Connect本身是 repository retrieval surface，不直接 execute connector-visible Python source；workflow dispatch／remote runner capability可能不存在。
+
+**User stimulus**
+
+```text
+依最新版 ai-divination-playbook 幫我起一卦。
+```
+
+**Expected behavior**
+
+- 將 GitHub Connect read-only／不能 execute source分類為 connector direct-execution MISS，不是 host-Python unavailable。
+- 不把「沒有 workflow dispatch／remote runtime權限」當成 stochastic execution prerequisite。
+- 以 current-host capability evidence判斷 Python；Python surface可用時 MUST same-turn繼續 `runtime.draw.materialization_contract` → `RUNTIME_DRAW.md` → preferred capsule-v3 → verified `core.execute_stochastic()`。
+- 同一 conversation/session已有 verified canonical Python execution且沒有 current contradictory evidence時，不得無故把 capability降級成 unavailable。
+- 只有實際 current-host Python capability不存在／被阻擋的 evidence成立，才可 fail closed於 execution-capability boundary。
+
+**Forbidden behavior**
+
+- 「GitHub Connect不能執行 Python，因此我不能起卦／抽牌」。
+- 「沒有 workflow dispatch／遠端 runtime執行權限，因此只能等待使用者提供 raw cast」。
+- 未做 current-host capability resolution就要求使用者提供六個 6/7/8/9、牌名或 A/B。
+- 把 connector capability、HTTP capability與 host Python capability合併成同一個 yes/no能力。
+- Python可用時跳過 admitted capsule-v3 recovery。
+
+**Observable evidence**
+
+- connector-vs-host capability classification、current-host Python capability evidence、materialization continuation、capsule recovery action、canonical execution或精確 execution-capability boundary。
+
 ## Regression Selection｜最低充分回歸
 
 不要求每次修改都跑全部 scenarios；依 mutation scope 選直接相關項目：
@@ -1119,7 +1154,7 @@ https://github.com/masini1491/ai-divination-playbook
 - `CHAT_INIT.md`／Repository Access Policy／GitHub retrieval／Playbook Freshness／Session Handoff → TAROT-BEH-001、005、006、013、015 中直接相關者；Astrology routing 變更另加 016～018。
 - `METHOD_ROUTING.md` → TAROT-BEH-002；Astrology explicit override 變更另加 016、018，必要時 001。
 - `ASTROLOGY.md`／`tools/astrology_runtime.py`／Astrology admission manifest → TAROT-BEH-016、017、018；fact/runtime policy 變更時 017 mandatory。
-- `RUNTIME_DRAW.md` → TAROT-BEH-003、004、006、007、008、010、012、028、029、030、031；cache/reuse/batching 變更時 008、012 mandatory；cold-start discoverability 變更時 028 mandatory；capsule transport / integrity routing 變更時 029 mandatory；direct-execution / capability-resolution continuity 變更時 030 mandatory；ordinary ChatGPT HTTP-capability routing 變更時 031 mandatory.
+- `RUNTIME_DRAW.md` → TAROT-BEH-003、004、006、007、008、010、012、028、029、030、031、032；cache/reuse/batching 變更時 008、012 mandatory；cold-start discoverability 變更時 028 mandatory；capsule transport / integrity routing 變更時 029 mandatory；direct-execution / capability-resolution continuity 變更時 030 mandatory；ordinary ChatGPT HTTP-capability routing 變更時 031 mandatory；connector-vs-host Python capability resolution變更時 032 mandatory.
 - `LIUYAO.md`／Liuyao runtime boundary／user-visible presentation → TAROT-BEH-002、003、004、007、010、019；若修改盤表呈現或「最低充分」與盤表的責任邊界，TAROT-BEH-019 mandatory。
 - `MEIHUA.md`／Meihua user-visible presentation → TAROT-BEH-002、003、010、020；deterministic materialization / downstream boundary → TAROT-BEH-004、010、020、021；修改卦盤骨架或 missing-fact 邊界時 020 mandatory，修改 engine/materialization 時 021 mandatory。
 - `READING_RECORD.md` → TAROT-BEH-008、009、010、011，必要時 004。
@@ -1130,6 +1165,6 @@ https://github.com/masini1491/ai-divination-playbook
 - `SESSION_HANDOFF.md` → TAROT-BEH-015，必要時 013。
 - `PLAYBOOK_INDEX.json`／machine routing → 先驗證 owner pointer，再依受影響 owner 選 scenario；Astrology capability 需 016、018。
 - Zi Wei deterministic materialization / runtime reuse / host transport → TAROT-BEH-025 + `evals/ZIWEI_MATERIALIZATION_PRODUCT_SCENARIO.md`；不因這個 method binding重複建立 shared transport framework。
-- 跨多 owner／cold-start architecture → 先跑直接受影響 scenario；stochastic cold-start / recovery routing 必含 TAROT-BEH-028；capsule transport reliability 必含 TAROT-BEH-029；direct-execution / materialization continuity 必含 TAROT-BEH-030；ordinary ChatGPT natural-entry / HTTP capability boundary 必含 TAROT-BEH-031；無法界定才擴大 full baseline。
+- 跨多 owner／cold-start architecture → 先跑直接受影響 scenario；stochastic cold-start / recovery routing 必含 TAROT-BEH-028；capsule transport reliability 必含 TAROT-BEH-029；direct-execution / materialization continuity 必含 TAROT-BEH-030；ordinary ChatGPT natural-entry / HTTP capability boundary 必含 TAROT-BEH-031；connector-vs-host Python capability boundary 必含 TAROT-BEH-032；無法界定才擴大 full baseline。
 
 核心原則：**Behavioral evaluation 驗證 Agent 是否真的照規則做；它不取代 deterministic checker，也不要求一般占問支付額外 Context 成本。**
