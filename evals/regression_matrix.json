@@ -33,7 +33,8 @@
     "TAROT-BEH-029",
     "TAROT-BEH-030",
     "TAROT-BEH-031",
-    "TAROT-BEH-032"
+    "TAROT-BEH-032",
+    "TAROT-BEH-033"
   ],
   "change_classes": {
     "bootstrap-access": [
@@ -70,7 +71,8 @@
       "TAROT-BEH-029",
       "TAROT-BEH-030",
       "TAROT-BEH-031",
-      "TAROT-BEH-032"
+      "TAROT-BEH-032",
+      "TAROT-BEH-033"
     ],
     "liuyao-presentation": [
       "TAROT-BEH-019",
@@ -114,7 +116,8 @@
       "TAROT-BEH-029",
       "TAROT-BEH-030",
       "TAROT-BEH-031",
-      "TAROT-BEH-032"
+      "TAROT-BEH-032",
+      "TAROT-BEH-033"
     ],
     "cold-start-architecture": [
       "TAROT-BEH-001",
@@ -132,7 +135,8 @@
       "TAROT-BEH-029",
       "TAROT-BEH-030",
       "TAROT-BEH-031",
-      "TAROT-BEH-032"
+      "TAROT-BEH-032",
+      "TAROT-BEH-033"
     ],
     "loader-optimization": [
       "TAROT-BEH-001",
@@ -151,7 +155,8 @@
       "TAROT-BEH-029",
       "TAROT-BEH-030",
       "TAROT-BEH-031",
-      "TAROT-BEH-032"
+      "TAROT-BEH-032",
+      "TAROT-BEH-033"
     ],
     "agent-skills-adapter": [
       "TAROT-BEH-001",

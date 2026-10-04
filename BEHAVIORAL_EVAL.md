@@ -1147,6 +1147,44 @@ https://github.com/masini1491/ai-divination-playbook
 
 - connector-vs-host capability classification、current-host Python capability evidence、materialization continuation、capsule recovery action、canonical execution或精確 execution-capability boundary。
 
+### TAROT-BEH-033 — Selected stochastic method must continue into runtime in the same turn
+
+**Premise / authority**
+
+- ordinary／Free ChatGPT receives a natural question with no Repo/runtime/capsule hint.
+- method routing legitimately selects Tarot, Meihua, or Liuyao.
+- answering the selected method requires a new stochastic Draw / Cast Fact; no valid existing fact has been supplied.
+- existing `RUNTIME_DRAW.md` capability/recovery rules remain authoritative for execution details.
+
+**User stimulus**
+
+```text
+年底想去滑雪：
+A：北海道
+B：東京
+哪一個比較適合我？
+```
+
+**Expected behavior**
+
+- route the comparison to Tarot.
+- treat method selection as a handoff, not a terminal answer.
+- in the same turn, enter `runtime.draw` and apply the existing hot-path capability/recovery contract.
+- only after admitted runtime recovery is actually exhausted may execution fail closed.
+- do not create a second capability framework in method routing; runtime execution details remain owned by `RUNTIME_DRAW.md`.
+
+**Forbidden behavior**
+
+- 「正式 Tarot runtime 可用時，我可以再幫你抽」。
+- 「目前不能實抽，所以先等 runtime」。
+- offering a future draw/cast instead of attempting current `runtime.draw`.
+- stopping after correctly selecting Tarot／Meihua／Liuyao while a fresh stochastic fact is still required.
+- fabricating cards／A-B／lines instead of canonical execution.
+
+**Observable evidence**
+
+- method selected → same-turn `runtime.draw` handoff → existing recovery path → canonical execution or a genuinely exhausted execution boundary.
+
 ## Regression Selection｜最低充分回歸
 
 不要求每次修改都跑全部 scenarios；依 mutation scope 選直接相關項目：
@@ -1154,7 +1192,7 @@ https://github.com/masini1491/ai-divination-playbook
 - `CHAT_INIT.md`／Repository Access Policy／GitHub retrieval／Playbook Freshness／Session Handoff → TAROT-BEH-001、005、006、013、015 中直接相關者；Astrology routing 變更另加 016～018。
 - `METHOD_ROUTING.md` → TAROT-BEH-002；Astrology explicit override 變更另加 016、018，必要時 001。
 - `ASTROLOGY.md`／`tools/astrology_runtime.py`／Astrology admission manifest → TAROT-BEH-016、017、018；fact/runtime policy 變更時 017 mandatory。
-- `RUNTIME_DRAW.md` → TAROT-BEH-003、004、006、007、008、010、012、028、029、030、031、032；cache/reuse/batching 變更時 008、012 mandatory；cold-start discoverability 變更時 028 mandatory；capsule transport / integrity routing 變更時 029 mandatory；direct-execution / capability-resolution continuity 變更時 030 mandatory；ordinary ChatGPT HTTP-capability routing 變更時 031 mandatory；connector-vs-host Python capability resolution變更時 032 mandatory.
+- `RUNTIME_DRAW.md` → TAROT-BEH-003、004、006、007、008、010、012、028、029、030、031、032、033；cache/reuse/batching 變更時 008、012 mandatory；cold-start discoverability 變更時 028 mandatory；capsule transport / integrity routing 變更時 029 mandatory；direct-execution / capability-resolution continuity 變更時 030 mandatory；ordinary ChatGPT HTTP-capability routing 變更時 031 mandatory；connector-vs-host Python capability resolution變更時 032 mandatory；method-selection → stochastic-execution continuity變更時 033 mandatory.
 - `LIUYAO.md`／Liuyao runtime boundary／user-visible presentation → TAROT-BEH-002、003、004、007、010、019；若修改盤表呈現或「最低充分」與盤表的責任邊界，TAROT-BEH-019 mandatory。
 - `MEIHUA.md`／Meihua user-visible presentation → TAROT-BEH-002、003、010、020；deterministic materialization / downstream boundary → TAROT-BEH-004、010、020、021；修改卦盤骨架或 missing-fact 邊界時 020 mandatory，修改 engine/materialization 時 021 mandatory。
 - `READING_RECORD.md` → TAROT-BEH-008、009、010、011，必要時 004。

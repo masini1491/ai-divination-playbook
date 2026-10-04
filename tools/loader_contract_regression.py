@@ -402,6 +402,38 @@ CONTRACTS: dict[str, list[tuple[str, tuple[str, ...]]]] = {
             ),
         ),
     ],
+    "TAROT-BEH-033": [
+        (
+            "RUNTIME_DRAW.md",
+            (
+                "stochastic method selected + fresh fact required: same-turn runtime.draw; DO NOT defer to a future runtime",
+                "runtime.draw.materialization_contract",
+            ),
+        ),
+        (
+            "CHATGPT_LOAD_PACK.json",
+            (
+                "stochastic method selected + fresh fact required: same-turn runtime.draw; DO NOT defer to a future runtime",
+                "runtime.draw.materialization_contract",
+            ),
+        ),
+        (
+            "BEHAVIORAL_EVAL.md",
+            (
+                "TAROT-BEH-033 — Selected stochastic method must continue into runtime in the same turn",
+                "正式 Tarot runtime 可用時，我可以再幫你抽",
+                "method selection as a handoff",
+            ),
+        ),
+        (
+            "evals/FREE_CHATGPT_STOCHASTIC_NATURAL_ENTRY_PRODUCT_SCENARIO.md",
+            (
+                "Variant B — ordinary comparison with no Repo/runtime hint",
+                "A：北海道",
+                "does not defer the draw to a future runtime",
+            ),
+        ),
+    ],
     "TAROT-BEH-025": [
         (
             "MEIHUA_MATERIALIZATION.md",

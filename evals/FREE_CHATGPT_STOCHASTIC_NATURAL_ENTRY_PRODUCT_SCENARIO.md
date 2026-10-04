@@ -15,16 +15,29 @@ This scenario is product-level evidence for natural-entry capability resolution.
 - Python execution is available.
 - No hint about cold-start recovery, capsule-v3, materialization, or `core.py` is given to the model.
 
-## Stimulus
+## Stimulus variants
+
+Run each variant as a separate fresh-chat observation.
+
+### Variant A — explicit Repo execution
 
 ```text
 依最新版 ai-divination-playbook 幫我抽 5 張塔羅。用 repo 直接實抽。
 ```
 
+### Variant B — ordinary comparison with no Repo/runtime hint
+
+```text
+年底想去滑雪：
+A：北海道
+B：東京
+哪一個比較適合我？
+```
+
 ## Required observed actions
 
 1. Resolve and freeze one exact repository commit.
-2. Classify the request as canonical Repo stochastic execution, not HTTP API invocation.
+2. For Variant A, classify the request as canonical Repo stochastic execution, not HTTP API invocation. For Variant B, route the comparison to Tarot and immediately hand off the fresh stochastic-fact requirement to `runtime.draw`; method selection is not a terminal state.
 3. MUST NOT probe, search for, call, or wait on the deployed project-owned `/api/cast` / Vercel endpoint.
 4. Use the load-pack stochastic hot path and resolve `runtime.draw`.
 5. On local/direct MISS, continue to `runtime.draw.materialization_contract` without user prompting.
@@ -35,7 +48,8 @@ This scenario is product-level evidence for natural-entry capability resolution.
 
 ## PASS
 
-- The first natural request reaches canonical execution without any project HTTP probe and without asking the user to remind the model that Repo recovery tools exist.
+- Each stimulus variant reaches canonical execution without any project HTTP probe and without asking the user to remind the model that Repo recovery tools exist.
+- Variant B does not stop after method selection and does not defer the draw to a future runtime.
 - If a genuine admitted non-HTTP recovery boundary is exhausted, the agent reports that exact boundary rather than blaming a production HTTP API.
 
 ## FAIL
@@ -48,6 +62,8 @@ This scenario is product-level evidence for natural-entry capability resolution.
 - Agent says GitHub Connect cannot execute Python and therefore host Python is unavailable without independent current-host capability evidence.
 - Agent treats missing workflow dispatch／remote runner permission as a required stochastic execution capability.
 - Agent ignores a same-conversation/session verified canonical Python execution without new contradictory capability evidence.
+- Agent says or implies “正式 Tarot runtime 可用時再抽”／“先等 runtime” instead of attempting current `runtime.draw`.
+- Agent correctly selects Tarot／Meihua／Liuyao but treats method selection as a terminal response while a fresh stochastic fact is required.
 - Agent fabricates cards / A-B / lines instead of canonical execution.
 
 ## Product evidence

@@ -38,6 +38,7 @@ runtime/casting/CHATGPT_RUNTIME_CAPSULE.json   # v2 compatibility fallback
 
 ```text
 Question Contract fixed
+→ stochastic method selected + fresh fact required: same-turn runtime.draw; DO NOT defer to a future runtime
 → ordinary ChatGPT: /api/cast = unavailable-by-policy; DO NOT probe
 → connector read-only / cannot execute source ≠ host Python unavailable
 → verified local Runtime / capsule probe
