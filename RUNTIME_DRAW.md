@@ -48,9 +48,7 @@ Question Contract fixed
    → Cold-start Recovery Gate → Acquisition if needed
 ```
 
-**Execution-surface boundary：** ordinary ChatGPT 的 stochastic execution routing 只由本檔擁有。Vercel deployment、deployed Web UI、`openapi.json`、`/api/cast`、production smoke 都只是 deployment／external-client surface，**永遠不屬 ordinary ChatGPT execution 或 fallback routing**；不得 probe、call、wait、redirect，也不得用其可用／不可用狀態判定 Runtime 或 Python capability。GitHub Connect limits、missing workflow dispatch 同樣不是 host-Python unavailable evidence；只有 current-host capability evidence可以建立該 boundary。
-
-**MISS ≠ unavailable。** AI 代抽／代起不得因沒有預裝 Randomizer、cache MISS、import FAIL，或「GitHub Connect 可讀 `runtime/casting/core.py` 但目前不能直接執行該 source」就直接要求使用者自行抽／起或停在等待 Runtime。**Source readable but not directly executable 只是 handoff/materialization state，不是 runtime unavailable verdict。** 必須先 resolve `runtime.draw.materialization_contract`、走本檔 recovery owner並 exhaust applicable admitted recovery。
+Vercel／Web UI／HTTP deployment state不影響 Runtime/Python capability判定；GitHub Connect limits或missing workflow dispatch也不是 Python-unavailable evidence。**MISS ≠ unavailable**：必須先 resolve `runtime.draw.materialization_contract` 並 exhaust applicable admitted recovery。
 
 ## Cold-start Recovery Gate｜Free ChatGPT 首次不可過早判 unavailable
 

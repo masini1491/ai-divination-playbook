@@ -331,7 +331,7 @@ CONTRACTS: dict[str, list[tuple[str, tuple[str, ...]]]] = {
             "CHATGPT_LOAD_PACK.json",
             (
                 "Vercel / Web UI / HTTP `/api/cast` = NON-ROUTING",
-                "Execution-surface boundary",
+                "deployment state不影響 Runtime/Python capability判定",
                 "runtime.draw.materialization_contract",
             ),
         ),
