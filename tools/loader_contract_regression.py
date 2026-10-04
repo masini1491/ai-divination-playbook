@@ -277,7 +277,7 @@ CONTRACTS: dict[str, list[tuple[str, tuple[str, ...]]]] = {
             (
                 "source readable but not directly executable",
                 "runtime.draw.materialization_contract",
-                "Source readable but not directly executable",
+                "MISS ≠ unavailable",
                 "Cold-start Recovery Gate",
             ),
         ),
@@ -313,7 +313,7 @@ CONTRACTS: dict[str, list[tuple[str, tuple[str, ...]]]] = {
             "RUNTIME_DRAW.md",
             (
                 "Vercel / Web UI / HTTP `/api/cast` = NON-ROUTING",
-                "Execution-surface boundary",
+                "ordinary ChatGPT 對 project-owned Vercel deployment／Web UI／HTTP casting surface一律 **non-routing**",
                 "不得把使用者導向本專案 Vercel deployment 當成 runtime fallback",
                 "capsule-v3",
             ),
@@ -366,7 +366,7 @@ CONTRACTS: dict[str, list[tuple[str, tuple[str, ...]]]] = {
             (
                 "connector read-only / cannot execute source ≠ host Python unavailable",
                 "Forbidden Python-unavailability inference",
-                "current-host capability evidence",
+                "current-host capability inspection",
                 "preferred capsule-v3",
             ),
         ),
@@ -383,7 +383,7 @@ CONTRACTS: dict[str, list[tuple[str, tuple[str, ...]]]] = {
             "CHATGPT_LOAD_PACK.json",
             (
                 "connector read-only / cannot execute source ≠ host Python unavailable",
-                "current-host capability evidence",
+                "GitHub Connect limits或missing workflow dispatch也不是 Python-unavailable evidence",
                 "runtime.draw.materialization_contract",
             ),
         ),
