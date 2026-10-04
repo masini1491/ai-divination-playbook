@@ -277,7 +277,7 @@ CONTRACTS: dict[str, list[tuple[str, tuple[str, ...]]]] = {
             (
                 "source readable but not directly executable",
                 "runtime.draw.materialization_contract",
-                "Source readable but not directly executable",
+                "MISS ≠ unavailable",
                 "Cold-start Recovery Gate",
             ),
         ),
@@ -312,33 +312,34 @@ CONTRACTS: dict[str, list[tuple[str, tuple[str, ...]]]] = {
         (
             "RUNTIME_DRAW.md",
             (
-                "ordinary ChatGPT: /api/cast = unavailable-by-policy; DO NOT probe",
-                "unavailable-by-policy",
-                "DO NOT probe",
+                "Vercel / Web UI / HTTP `/api/cast` = NON-ROUTING",
+                "ordinary ChatGPT 對 project-owned Vercel deployment／Web UI／HTTP casting surface一律 **non-routing**",
+                "不得把使用者導向本專案 Vercel deployment 當成 runtime fallback",
                 "capsule-v3",
             ),
         ),
         (
             "PLAYBOOK_INDEX.json",
             (
-                '"ordinary_chat_project_http_api": "unavailable-by-policy"',
-                '"ordinary_chat_http_probe": "forbidden"',
-                '"natural_entry_product_scenario": "evals/FREE_CHATGPT_STOCHASTIC_NATURAL_ENTRY_PRODUCT_SCENARIO.md"',
+                '"id": "runtime.draw"',
+                '"owner": "RUNTIME_DRAW.md"',
+                '"materialization_contract": "RUNTIME_DRAW.md"',
+                '"preferred_free_chatgpt_transport": "runtime/casting/capsule-v3/MANIFEST.json"',
             ),
         ),
         (
             "CHATGPT_LOAD_PACK.json",
             (
-                "ordinary ChatGPT: /api/cast = unavailable-by-policy; DO NOT probe",
-                "unavailable-by-policy",
+                "Vercel / Web UI / HTTP `/api/cast` = NON-ROUTING",
+                "deployment state不影響 Runtime/Python capability判定",
                 "runtime.draw.materialization_contract",
             ),
         ),
         (
             "runtime/casting/API.md",
             (
-                "不是 ordinary ChatGPT 代抽／代起卦的 admitted execution route",
-                "ordinary ChatGPT MUST NOT probe",
+                "本檔只擁有 HTTP adapter／deployment contract",
+                "non-routing surfaces",
                 "RUNTIME_DRAW.md",
             ),
         ),
@@ -365,23 +366,24 @@ CONTRACTS: dict[str, list[tuple[str, tuple[str, ...]]]] = {
             (
                 "connector read-only / cannot execute source ≠ host Python unavailable",
                 "Forbidden Python-unavailability inference",
-                "current-host capability evidence",
+                "current-host capability inspection",
                 "preferred capsule-v3",
             ),
         ),
         (
             "PLAYBOOK_INDEX.json",
             (
-                '"connector_execution_miss_is_not_python_unavailable": true',
-                '"python_unavailability_evidence_policy": "current-host-capability-evidence-only"',
-                '"python_available_action": "same-turn-attempt-runtime.draw.materialization_contract-prefer-capsule-v3"',
+                '"id": "runtime.draw"',
+                '"owner": "RUNTIME_DRAW.md"',
+                '"cold_start_recovery_section": "Cold-start Recovery Gate"',
+                '"preferred_free_chatgpt_transport": "runtime/casting/capsule-v3/MANIFEST.json"',
             ),
         ),
         (
             "CHATGPT_LOAD_PACK.json",
             (
                 "connector read-only / cannot execute source ≠ host Python unavailable",
-                "current-host capability evidence",
+                "GitHub Connect limits或missing workflow dispatch也不是 Python-unavailable evidence",
                 "runtime.draw.materialization_contract",
             ),
         ),

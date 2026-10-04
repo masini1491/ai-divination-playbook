@@ -1095,16 +1095,16 @@ https://github.com/masini1491/ai-divination-playbook
 **Expected behavior**
 
 - 把「用 repo 直接實抽」解析成使用 Repo 的 canonical stochastic runtime authority，不是要求 HTTP API。
-- 不 probe、不嘗試、不等待 deployed `/api/cast`／Vercel endpoint；不得因 Repo 有 OpenAPI／production service就推定 host可呼叫。
+- Vercel deployment／deployed Web UI／`/api/cast`／OpenAPI 都視為 ordinary ChatGPT **non-routing surfaces**：不 probe、不 call、不 wait、不 redirect；不得因 deployment存在就推定 host可呼叫。
 - 直接依 load-pack hot path／`runtime.draw`：local/direct MISS → `runtime.draw.materialization_contract` → `RUNTIME_DRAW.md` → capsule-v3 preferred recovery → verified `core.execute_stochastic()`。
-- 若 admitted capsule/materialization route實際 exhaust，才依既有 fail-closed／user-mediated fallback規則處理；不得把「production HTTP API unavailable」當成停止理由。
-- 只有 future Repo governance 明確 admission 一個已觀察、已配置且已授權的 host HTTP tool capability後，才可在該獨立 profile使用 HTTP casting route。
+- 若 admitted capsule/materialization route實際 exhaust，才依既有 fail-closed／合法 user-supplied Raw Fact規則處理；不得把「production HTTP API unavailable」當成停止理由，也不得導向本專案 Vercel Web UI。
 
 **Forbidden behavior**
 
 - 先搜尋、猜測、probe或呼叫 project-owned production HTTP endpoint。
 - 回答「目前無法連到 repo 指定的 production casting API，所以只能停在這裡」。
 - 把 `API.md`／`openapi.json`／Vercel production smoke當成 ChatGPT tool availability evidence。
+- capsule/materialization失敗後改試 Vercel／`/api/cast`，或叫使用者去本專案 deployed Web UI完成抽牌／起卦。
 - 要求使用者提醒「Repo內有工具」才繼續 materialization。
 - 因 HTTP route不存在而改用模型自行生成牌／A-B／爻值。
 

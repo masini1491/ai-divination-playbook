@@ -30,6 +30,19 @@ INDEX_REQUIRED_LOCAL_LOCATORS = {
     "runtime.draw": {"implementation"},
     "method.liuyao": {"casting_implementation"},
 }
+INDEX_RUNTIME_DRAW_FORBIDDEN_POLICY_KEYS = {
+    "cold_start_policy",
+    "transport_policy",
+    "ordinary_chat_project_http_api",
+    "ordinary_chat_http_probe",
+    "ordinary_chat_http_reenable_gate",
+    "natural_entry_product_scenario",
+    "connector_execution_miss_is_not_python_unavailable",
+    "python_unavailability_evidence_policy",
+    "python_unavailability_forbidden_inference",
+    "python_available_action",
+    "same_session_verified_execution_policy",
+}
 MATRIX_SCHEMA_VERSION = 1
 MATRIX_AUTHORITY = "selection-only"
 TEXT_SUFFIXES = {".md", ".json", ".py"}
@@ -272,6 +285,13 @@ def check_index(root: Path) -> list[str]:
         if section is not None:
             if not isinstance(section, str) or section not in heading_names((root / owner).read_text(encoding="utf-8")):
                 errors.append(f"{prefix}.section missing in {owner}: {section}")
+        if cap_id == "runtime.draw":
+            policy_keys = sorted(set(item) & INDEX_RUNTIME_DRAW_FORBIDDEN_POLICY_KEYS)
+            if policy_keys:
+                errors.append(
+                    f"{prefix} is routing-only; stochastic runtime policy belongs in RUNTIME_DRAW.md, not PLAYBOOK_INDEX.json: "
+                    + ", ".join(policy_keys)
+                )
         required_local_keys = INDEX_REQUIRED_LOCAL_LOCATORS.get(cap_id, set())
         for key, value in item.items():
             if key in {"owner", "section"}:

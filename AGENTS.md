@@ -45,7 +45,7 @@ Repository topology、`tools/`／`data/`／`runtime/`／`third_party/`／`refere
 
 Implementation topology 由 direct owners 維護，`AGENTS.md` 只保留最低 routing boundary：
 
-- stochastic → `RUNTIME_DRAW.md`；`runtime/casting/core.py` 是 canonical core，`runtime/casting/randomizer.py` 是 full API / CLI adapter，正式 entrypoint 為 `core.execute_stochastic()`。
+- stochastic → `RUNTIME_DRAW.md`；`runtime/casting/core.py` 是 canonical core，`runtime/casting/randomizer.py` 是 full adapter，正式 entrypoint 為 `core.execute_stochastic()`；ordinary ChatGPT 的 execution-surface routing 只由 `RUNTIME_DRAW.md` 擁有。
 - Liuyao deterministic facts → `LIUYAO.md` + `tools/liuyao_calendar.py` / `tools/liuyao_engine.py` / `tools/liuyao_runtime.py`。
 - Astrology deterministic facts → `ASTROLOGY.md` + admitted resolver / provider / Fact Gate。
 - language model 不得把手算冒充 deterministic engine/provider fact；research probe、legacy adapter、external calculator 不因存在而取得 production authority；user-supplied Astrology facts 保留 `user_asserted` provenance。
