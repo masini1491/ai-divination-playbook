@@ -174,7 +174,11 @@
       "preferred_free_chatgpt_transport_contract": "streaming-model-mediated-opaque-handoff-v3",
       "compatibility_transport": "runtime/casting/CHATGPT_RUNTIME_CAPSULE.json",
       "compatibility_transport_contract": "chunked-model-mediated-opaque-handoff-v2",
-      "transport_policy": "prefer-v3-single-chunk-fetch-and-immediate-verification; use-v2-only-as-compatibility-fallback"
+      "transport_policy": "prefer-v3-single-chunk-fetch-and-immediate-verification; use-v2-only-as-compatibility-fallback",
+      "ordinary_chat_project_http_api": "unavailable-by-policy",
+      "ordinary_chat_http_probe": "forbidden",
+      "ordinary_chat_http_reenable_gate": "explicit-repository-governance-update-after-verified-configured-authorized-host-tool-capability",
+      "natural_entry_product_scenario": "evals/FREE_CHATGPT_STOCHASTIC_NATURAL_ENTRY_PRODUCT_SCENARIO.md"
     },
     {
       "id": "method.tarot",
