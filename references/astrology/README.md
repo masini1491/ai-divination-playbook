@@ -234,7 +234,7 @@ production admission                  bounded Astrology v1
 activation                            explicit request only
 ordinary auto-routing                 NO
 offline city/locality resolver        YES
-natal provider                        astronomy-engine-natal-v1
+natal provider                        ChatGPT known-time: swiss-host-natal-v1 if probe PASS; otherwise astronomy-engine-natal-v1
 raw birth data → natal bundle         YES, exact/approximate time
 transit event-search provider         astronomy-engine-transit-v1
 exact transit search                  YES, bounded ≤400 days

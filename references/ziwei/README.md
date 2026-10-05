@@ -33,7 +33,7 @@ research-only scaffold
 - star×palace research follow-up：`STAR_PALACE_CONTEXTUAL_RESEARCH_V2.md` 的 `貪狼×夫妻宮` historical bounded candidate 已 separately production-admitted；Nihai 配偶年齡 heuristic 仍為 practitioner-only defer，`紫微×官祿宮` 維持 non-material rejection，`破軍×遷移宮` 維持 borderline/defer
 - star×palace research v3：`STAR_PALACE_CONTEXTUAL_RESEARCH_V3.md` research-only admission candidates `破軍×遷移宮`、`武曲×田宅宮`、`天機×田宅宮`、`破軍×夫妻宮` 均已 separately production-admitted；`貪狼×遷移宮` 維持 borderline/defer，`紫微×遷移宮` 維持 redundant rejection
 
-- star×palace coverage architecture V1：168 identities 已 admission；目前 reviewed 154 / resolved 117 / unreviewed 14，dedicated L4 為 9。168/168 resolved 保留為長期 research horizon，不是近期 product KPI / release blocker；matrix continuation 改為 reading-gap-driven，不再 bulk sweep。
+- star×palace coverage architecture V1：168 identities 已 admission；目前 reviewed 154 / resolved 119 / unreviewed 14，dedicated L4 為 11。168/168 resolved 保留為長期 research horizon，不是近期 product KPI / release blocker；matrix continuation 改為 reading-gap-driven，不再 bulk sweep。
 - star×palace research v4：`STAR_PALACE_CONTEXTUAL_RESEARCH_V4.md` 已推進至 batch 13；所有 ordinary non-health palace rows 已 14/14 reviewed；只剩 14 個疾厄宮 identities 尚未 reviewed。疾厄宮維持 separate health-safe research path，但不阻擋 natal synthesis v1；research candidate 仍不等於 production claim。
 - star×palace targeted recheck v5：`STAR_PALACE_CONTEXTUAL_RESEARCH_V5.md` 依實際 reading specificity gap 只重查 `紫微×官祿宮`、`七殺×福德宮`、`天府×財帛宮`；前後兩格維持 `BOUNDED_L5_COMPOSITION`，`七殺×福德宮` 重新開為 `DEFERRED_EVIDENCE / ADMISSION-CANDIDATE-RECHECK`，尚未取得 production authority。
 - star×palace targeted recheck v6：`STAR_PALACE_CONTEXTUAL_RESEARCH_V6.md` 只重查 `太陽×父母宮`、`天梁×父母宮`、`天同×兄弟宮`、`巨門×兄弟宮`；太陽／天同維持 bounded-L5，天梁／巨門重新開為 `DEFERRED_EVIDENCE / ADMISSION-CANDIDATE-RECHECK`；`太陰×子女宮` 仍留給 separate high-risk gate。
@@ -49,7 +49,7 @@ research-only scaffold
 - monthly / 流月 interpretation：V9 只 admission 3 條 bounded methodology claims，要求斗君／effective-month 月層 identity、compatible 流年 parent 合參與 no-generic-monthly-filler；monthly Si Hua / flow stars仍未 admission；
 - daily / 流日 interpretation：V10 只 admission 3 條 bounded methodology claims，來源為 practitioner/tradition references；要求 explicit lunar-day identity、compatible 流月 parent 合參與 no-generic-daily-filler；day pillar / daily Si Hua / flow stars仍未 admission；
 - hourly / 流時 interpretation：V11 只 admission 3 條 profile-bounded methodology claims，要求 explicit hour-branch identity、compatible 流日 parent 合參與 no-generic-hourly-filler；來源亦顯示派法不唯一，故不宣稱唯一傳統；physical hour pillar / 五鼠遁時干 / hourly Si Hua / flow stars仍未 admission；
-- broader contextual star×palace / 未另 admission 的 auxiliary / Four-Transformation interpretation：仍未 production-admitted；star×palace 僅上述 9 條、same-palace pairs 僅上述 2 條、Body-Palace overlays 僅上述 5 條 source-explicit claims admitted
+- broader contextual star×palace / 未另 admission 的 auxiliary / Four-Transformation interpretation：仍未 production-admitted；star×palace 僅上述 11 條、same-palace pairs 僅上述 2 條、Body-Palace overlays 僅上述 5 條 source-explicit claims admitted
 - 科學／客觀預測有效性：未聲稱
 
 ## Production boundary
