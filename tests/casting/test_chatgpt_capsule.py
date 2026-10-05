@@ -38,6 +38,16 @@ class ChatGPTRuntimeCapsuleTests(unittest.TestCase):
         )
         self.assertEqual(manifest["streaming_fetch"], "one-chunk-file-at-a-time")
         self.assertTrue(manifest["verify_before_next_fetch"])
+        self.assertEqual(manifest["chunk_file_terminator"], "LF")
+        self.assertEqual(
+            manifest["verified_payload_extraction"],
+            "exclude-at-most-one-terminal-lf",
+        )
+        self.assertTrue(manifest["verified_payload_reuse_required"])
+        self.assertEqual(
+            manifest["chunk_reassembly"],
+            "index-ascending-concat-of-retained-verified-payloads",
+        )
         self.assertEqual(
             manifest["fallback_transport"],
             "runtime/casting/CHATGPT_RUNTIME_CAPSULE.json",
@@ -54,7 +64,9 @@ class ChatGPTRuntimeCapsuleTests(unittest.TestCase):
         for entry in manifest["chunks"]:
             path = ROOT / entry["path"]
             self.assertTrue(path.is_file(), entry["path"])
-            payload = path.read_text(encoding="utf-8").rstrip("\n")
+            raw = path.read_text(encoding="utf-8")
+            self.assertFalse(raw.endswith("\n\n"))
+            payload = raw[:-1] if raw.endswith("\n") else raw
             self.assertEqual(len(payload), entry["encoded_length"])
             self.assertEqual(
                 hashlib.sha256(payload.encode("ascii")).hexdigest(),
