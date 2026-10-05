@@ -240,7 +240,7 @@ CONTRACTS: dict[str, list[tuple[str, tuple[str, ...]]]] = {
                 "Free ChatGPT streaming capsule transport v3",
                 "streaming-model-mediated-opaque-handoff-v3",
                 "one fetch = one chunk",
-                "verify encoded_length + encoded_sha256 immediately",
+                "verify encoded_length + encoded_sha256 on verified_payload",
                 "v2 compatibility fallback",
             ),
         ),
