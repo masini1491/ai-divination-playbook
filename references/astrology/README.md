@@ -95,13 +95,17 @@ L0 input + provenance
 
 ## 3. Calculation / fact evidence
 
-### Production natal provider
+### Production natal providers
+
+Portable / fallback provider：
 
 ```text
 tools/astrology_provider.py
 provider_id = astronomy-engine-natal-v1
 astronomy-engine==2.1.19
 ```
+
+ChatGPT known-time natal routing additionally prefers `swiss-host-natal-v1` only when the host-native `pyswisseph` API probe passes and request scope is admitted; otherwise it falls back to `astronomy-engine-natal-v1`. Current routing authority is `ASTROLOGY_PROVIDER_ROUTING_V1.json` + `tools/astrology_provider_selector.py`; non-ChatGPT execution does not use the Swiss host provider.
 
 Admission/evidence：
 
@@ -234,7 +238,7 @@ production admission                  bounded Astrology v1
 activation                            explicit request only
 ordinary auto-routing                 NO
 offline city/locality resolver        YES
-natal provider                        astronomy-engine-natal-v1
+natal provider                        ChatGPT known-time: swiss-host-natal-v1 when probe PASS, else astronomy-engine-natal-v1; portable/unknown-time: astronomy-engine-natal-v1
 raw birth data → natal bundle         YES, exact/approximate time
 transit event-search provider         astronomy-engine-transit-v1
 exact transit search                  YES, bounded ≤400 days

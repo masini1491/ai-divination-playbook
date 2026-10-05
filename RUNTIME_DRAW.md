@@ -370,7 +370,7 @@ Capsule 路徑真正被執行的 stochastic implementation必須是 capsule exac
 Capsule core marker 最低（locator v4）：
 
 ```json
-{"verified":true,"cache_locator_version":4,"runtime_source_repository":"masini1491/ai-divination-playbook","runtime_source_path":"runtime/casting/core.py","capsule_path":"runtime/casting/CHATGPT_RUNTIME_CAPSULE.json","runtime_source_ref":"main","runtime_source_commit":"<SHA>","runtime_copy_sha256":"<decoded_sha256>","core_version":"1","algorithm_version":"2","supported_methods":["tarot","plum","liuyao"],"tarot_deck_size":78}
+{"verified":true,"cache_locator_version":4,"runtime_source_repository":"masini1491/ai-divination-playbook","runtime_source_path":"runtime/casting/core.py","capsule_path":"runtime/casting/CHATGPT_RUNTIME_CAPSULE.json","runtime_source_ref":"main","runtime_source_commit":"<SHA>","runtime_copy_sha256":"<decoded_sha256>","core_version":"2","algorithm_version":"2","supported_methods":["tarot","plum","liuyao"],"tarot_deck_size":78}
 ```
 
 `cache_locator_version = 3` 是 full-runtime repository/path authority locator；`cache_locator_version = 4` 是 verified capsule-core locator。兩者都不是 Randomizer algorithm/schema revision。
@@ -516,7 +516,7 @@ source: divination-casting-randomizer-python
 algorithm_version: 2
 schema_version: 4
 ai_schema_version: 1  # compact transport only
-core_version: 1      # stochastic core transport identity, not algorithm version
+core_version: 2      # stochastic core transport identity, not algorithm version
 ```
 
 `source` 是 logical runtime identity；repository consolidation 或 wrapper/core split 不改 logical identity 或 algorithm/schema versions。
