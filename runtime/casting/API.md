@@ -1,6 +1,6 @@
 # Casting API
 
-`/api/cast` 是 `randomizer.py` 的薄 HTTP transport adapter。它不實作第二份 RNG、不接收占卜題目，也不負責 routing 或 interpretation。
+`/api/cast` 是 `randomizer.py` 的薄 HTTP transport adapter。它不實作第二份 RNG、不接收占卜題目，也不負責 routing 或 interpretation。Deployed Web UI 只作同源 API client／presentation；browser 端不得實作 RNG、shuffle、投幣或 stochastic fallback。
 
 > **Authority boundary：** 本檔只擁有 HTTP adapter／deployment contract，不擁有 ChatGPT routing policy。ordinary ChatGPT 的 stochastic execution-surface policy只由 `RUNTIME_DRAW.md` 擁有；依 current owner，Vercel deployment、deployed Web UI、`openapi.json`、`/api/cast` 與 production smoke 都是 **non-routing surfaces**，不得被 ordinary ChatGPT probe／call／wait／redirect或當作 fallback。此處只保留 external-client／deployment implementation 說明。
 
