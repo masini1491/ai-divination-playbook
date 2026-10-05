@@ -174,10 +174,10 @@ ${display.map(x=>`${yaoLabel(x)}：${lineGlyph(x.yinYang)}｜${x.value} ${x.type
 function finish({tar=null,pl=null,liu=null,payloads=[]}={}){
   const times=[...new Set(payloads.map(apiTime).filter(Boolean))],t=times.join(" / "),q=$("question").value.trim()||"（未填題目）",h=[],x=["題目："+q];
   if(t)x.push("時間："+t);
-  if(tar){h.push('<div class="title" style="margin-top:12px">🃏 Tarot（'+tar.length+' 張）</div>'+tarotHTML(tar));x.push("Tarot（"+tar.length+" 張）\\\n"+tarotText(tar))}
+  if(tar){h.push('<div class="title" style="margin-top:12px">🃏 Tarot（'+tar.length+' 張）</div>'+tarotHTML(tar));x.push("Tarot（"+tar.length+" 張）\n"+tarotText(tar))}
   if(pl){h.push('<div class="title" style="margin-top:12px">☯ Meihua</div>'+plumHTML(pl));x.push(plumText(pl))}
   if(liu){h.push('<div class="title" style="margin-top:12px">☰ Liuyao｜三錢法</div>'+liuyaoHTML(liu));x.push(liuyaoText(liu))}
-  $("oneTime").textContent=t;$("oneResult").innerHTML=h.join("");oneText=x.join("\\n");$("onePreview").textContent=oneText;$("onePreview").hidden=false;$("notice").textContent="";
+  $("oneTime").textContent=t;$("oneResult").innerHTML=h.join("");oneText=x.join("\n");$("onePreview").textContent=oneText;$("onePreview").hidden=false;$("notice").textContent="";
 }
 async function drawOne(method){
   $("notice").textContent="抽取中…";
@@ -220,7 +220,7 @@ $("drawBatch").onclick=async()=>{
     }
     const times=[...new Set(res.map(x=>apiTime(x.payload)).filter(Boolean))];$("batchTime").textContent=times.length===1?times[0]:(times.length?(times[0]+" ～ "+times[times.length-1]):"");
     $("batchResult").innerHTML=res.map(x=>'<div class="batchResult"><div class="batchQuestion"><strong>第 '+x.i+' 題｜'+esc(x.q)+'</strong><span class="muted">'+x.n+' 張</span></div>'+tarotHTML(x.c)+'</div>').join("");
-    const out=[];res.forEach(x=>{out.push(x.q+"（"+x.n+" 張）");out.push("時間："+apiTime(x.payload));out.push(tarotText(x.c))});batchText=out.join("\\n");$("batchPreview").textContent=batchText;$("batchPreview").hidden=false;$("batchNotice").textContent="";
+    const out=[];res.forEach(x=>{out.push(x.q+"（"+x.n+" 張）");out.push("時間："+apiTime(x.payload));out.push(tarotText(x.c))});batchText=out.join("\n");$("batchPreview").textContent=batchText;$("batchPreview").hidden=false;$("batchNotice").textContent="";
   }catch(error){$("batchNotice").textContent="抽取失敗："+error.message}
 };
 async function copy(txt,msgEl){if(!txt){msgEl.textContent="請先抽取結果。";return}try{await navigator.clipboard.writeText(txt);msgEl.textContent="已複製結果。"}catch{msgEl.textContent="瀏覽器阻擋自動複製，請直接選取下方文字。"}}
