@@ -14,7 +14,7 @@ HTML = (CASTING_ROOT / "index.html").read_text(encoding="utf-8")
 
 
 def _extract_json_object(name: str) -> dict[str, str]:
-    match = re.search(rf"const {name}=(\\{{[^;]+\\}});", HTML)
+    match = re.search(rf"const {name}=(\{{[^;]+\}});", HTML)
     if not match:
         raise AssertionError(f"missing JS object: {name}")
     return json.loads(match.group(1))
@@ -39,7 +39,9 @@ class CrossRuntimeContractTests(unittest.TestCase):
         self.assertIn('fetch("/api/cast"', HTML)
         self.assertIn('body:JSON.stringify({method,count,repeat})', HTML)
         self.assertIn('cache:"no-store"', HTML)
-        self.assertNotIn("question", re.search(r"body:JSON\\.stringify\\(([^)]*)\\)", HTML).group(1))
+        body = re.search(r"body:JSON\.stringify\(([^)]*)\)", HTML)
+        self.assertIsNotNone(body)
+        self.assertNotIn("question", body.group(1))
         self.assertIn('apiCast("tarot"', HTML)
         self.assertIn('apiCast("plum"', HTML)
         self.assertIn('drawOne("liuyao")', HTML)
