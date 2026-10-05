@@ -95,34 +95,50 @@ button{border:0;border-radius:10px;padding:12px 15px;min-height:46px;font:inheri
 <script>
 (()=>{
 const $=id=>document.getElementById(id), $$=q=>[...document.querySelectorAll(q)];
-const majors=["愚者","魔術師","女祭司","女皇","皇帝","教皇","戀人","戰車","力量","隱者","命運之輪","正義","倒吊人","死神","節制","惡魔","高塔","星星","月亮","太陽","審判","世界"];
-const ranks=["一","二","三","四","五","六","七","八","九","十","侍者","騎士","皇后","國王"], suits=["杖","杯","劍","錢"];
-const deck=[...majors,...suits.flatMap(s=>ranks.map(r=>s+r))];
-const tri={1:"乾",2:"兌",3:"離",4:"震",5:"巽",6:"坎",7:"艮",0:"坤"};
+const suits=["杖","杯","劍","錢"];
 const trigramBits={"111":"乾","110":"兌","101":"離","100":"震","011":"巽","010":"坎","001":"艮","000":"坤"};
 const hex={"乾乾":"乾為天","坤坤":"坤為地","坎震":"水雷屯","艮坎":"山水蒙","坎乾":"水天需","乾坎":"天水訟","坤坎":"地水師","坎坤":"水地比","巽乾":"風天小畜","乾兌":"天澤履","坤乾":"地天泰","乾坤":"天地否","乾離":"天火同人","離乾":"火天大有","坤艮":"地山謙","震坤":"雷地豫","兌震":"澤雷隨","艮巽":"山風蠱","坤兌":"地澤臨","巽坤":"風地觀","離震":"火雷噬嗑","艮離":"山火賁","艮坤":"山地剝","坤震":"地雷復","乾震":"天雷無妄","艮乾":"山天大畜","艮震":"山雷頤","兌巽":"澤風大過","坎坎":"坎為水","離離":"離為火","兌艮":"澤山咸","震巽":"雷風恆","乾艮":"天山遯","震乾":"雷天大壯","離坤":"火地晉","坤離":"地火明夷","巽離":"風火家人","離兌":"火澤睽","坎艮":"水山蹇","震坎":"雷水解","艮兌":"山澤損","巽震":"風雷益","兌乾":"澤天夬","乾巽":"天風姤","兌坤":"澤地萃","坤巽":"地風升","兌坎":"澤水困","坎巽":"水風井","兌離":"澤火革","離巽":"火風鼎","震震":"震為雷","艮艮":"艮為山","巽艮":"風山漸","震兌":"雷澤歸妹","震離":"雷火豐","離艮":"火山旅","巽巽":"巽為風","兌兌":"兌為澤","巽坎":"風水渙","坎兌":"水澤節","巽兌":"風澤中孚","震艮":"雷山小過","坎離":"水火既濟","離坎":"火水未濟"};
 const yaoNames=["初爻","二爻","三爻","四爻","五爻","上爻"];
 const yaoPositionTokens={1:"初",2:"二",3:"三",4:"四",5:"五",6:"上"};
 let oneText="", batchText="", seq=0;
 
-function rnd(max){
-  if(max<=1)return 0;
-  if(globalThis.crypto?.getRandomValues){
-    const a=new Uint32Array(1), range=0x100000000, limit=range-(range%max);
-    do crypto.getRandomValues(a); while(a[0]>=limit);
-    return a[0]%max;
-  }
-  return Math.floor(Math.random()*max);
+async function apiCast(method,{count=3,repeat=1}={}){
+  const response=await fetch("/api/cast",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    cache:"no-store",
+    body:JSON.stringify({method,count,repeat})
+  });
+  let payload=null;
+  try{payload=await response.json()}catch{}
+  if(!response.ok)throw new Error(payload?.error?.message||("HTTP "+response.status));
+  if(!payload||!Array.isArray(payload.results)||payload.results.length<1)throw new Error("casting API returned no results");
+  return payload;
 }
-function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=rnd(i+1);[a[i],a[j]]=[a[j],a[i]]}return a}
-function time(){const d=new Date(),p=n=>String(n).padStart(2,"0");return `${d.getFullYear()}/${p(d.getMonth()+1)}/${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`}
-function esc(v){return String(v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-function options(sel=3){return Array.from({length:24},(_,i)=>i+1).map(n=>`<option value="${n}" ${n===sel?"selected":""}>${n} 張</option>`).join("")}
+function apiTime(payload){return payload?.generated_at_taipei?(payload.generated_at_taipei+"（"+(payload.timezone||"Asia/Taipei")+"）"):""}
+function esc(v){return String(v).replace(/[&<>"\']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","\'":"&#39;"}[c]))}
+function options(sel=3){return Array.from({length:24},(_,i)=>i+1).map(n=>'<option value="'+n+'" '+(n===sel?"selected":"")+'>'+n+' 張</option>').join("")}
 $("count").innerHTML=options(3);
 
-function tarot(n){return shuffle(deck).slice(0,n).map((name,i)=>({i:i+1,name,rev:rnd(2)===1}))}
-function plum(){const a=rnd(1000),b=rnd(1000),m=(a+b)%6,up=tri[a%8],low=tri[b%8];return{a:String(a).padStart(3,"0"),b:String(b).padStart(3,"0"),up,low,name:hex[up+low],move:m===0?6:m}}
-function liuyao(){return yaoNames.map((name,i)=>{const coins=Array.from({length:3},()=>rnd(2)===0?2:3),value=coins.reduce((a,b)=>a+b,0);const meta={6:["老陰","陰",true],7:["少陽","陽",false],8:["少陰","陰",false],9:["老陽","陽",true]}[value];return{position:i+1,name,coins,value,type:meta[0],yinYang:meta[1],changing:meta[2]}})}
+function tarotFromPayload(payload){
+  const tarot=payload.results[0]?.tarot;
+  if(!tarot||!Array.isArray(tarot.cards))throw new Error("invalid Tarot API payload");
+  return tarot.cards.map(([name,orientation],i)=>({i:i+1,name,rev:orientation==="reversed"}));
+}
+function plumFromPayload(payload){
+  const plum=payload.results[0]?.plum;
+  if(!plum)throw new Error("invalid Meihua API payload");
+  return{a:String(plum.a).padStart(3,"0"),b:String(plum.b).padStart(3,"0"),up:plum.upper,low:plum.lower,name:plum.hexagram,move:plum.moving_line};
+}
+function liuyaoFromPayload(payload){
+  const liuyao=payload.results[0]?.liuyao;
+  if(!liuyao||!Array.isArray(liuyao.values)||liuyao.values.length!==6||!Array.isArray(liuyao.coin_values)||liuyao.coin_values.length!==6)throw new Error("invalid Liuyao API payload");
+  return liuyao.values.map((value,i)=>{
+    const meta={6:["老陰","陰",true],7:["少陽","陽",false],8:["少陰","陰",false],9:["老陽","陽",true]}[value];
+    if(!meta)throw new Error("invalid Liuyao line value");
+    return{position:i+1,name:yaoNames[i],coins:liuyao.coin_values[i],value,type:meta[0],yinYang:meta[1],changing:meta[2]};
+  });
+}
 function liuyaoDisplay(lines){return [...lines].reverse()}
 function yaoLabel(x){const n=x.yinYang==="陽"?"九":"六";if(x.position===1)return `初${n}`;if(x.position===6)return `上${n}`;return `${n}${yaoPositionTokens[x.position]}`}
 function liuyaoBits(lines){return lines.map(x=>x.yinYang==="陽"?"1":"0").join("")}
@@ -155,19 +171,33 @@ ${display.map(x=>`${yaoLabel(x)}：${lineGlyph(x.yinYang)}｜${x.value} ${x.type
 ")}\
 顯示順序：上爻→初爻；起卦／原始資料順序：初爻→上爻；完整六獸／六親／世應／納甲／伏神由 Playbook deterministic runtime 補盤`}
 
-function finish({tar=null,pl=null,liu=null}={}){
-  const t=time(),q=$("question").value.trim()||"（未填題目）",h=[],x=[`題目：${q}`,t];
-  if(tar){h.push(`<div class="title" style="margin-top:12px">🃏 Tarot（${tar.length} 張）</div>${tarotHTML(tar)}`);x.push(`Tarot（${tar.length} 張）\
-${tarotText(tar)}`)}
-  if(pl){h.push(`<div class="title" style="margin-top:12px">☯ Meihua</div>${plumHTML(pl)}`);x.push(plumText(pl))}
-  if(liu){h.push(`<div class="title" style="margin-top:12px">☰ Liuyao｜三錢法</div>${liuyaoHTML(liu)}`);x.push(liuyaoText(liu))}
-  $("oneTime").textContent=t;$("oneResult").innerHTML=h.join("");oneText=x.join("\
-");$("onePreview").textContent=oneText;$("onePreview").hidden=false;$("notice").textContent="";
+function finish({tar=null,pl=null,liu=null,payloads=[]}={}){
+  const times=[...new Set(payloads.map(apiTime).filter(Boolean))],t=times.join(" / "),q=$("question").value.trim()||"（未填題目）",h=[],x=["題目："+q];
+  if(t)x.push("時間："+t);
+  if(tar){h.push('<div class="title" style="margin-top:12px">🃏 Tarot（'+tar.length+' 張）</div>'+tarotHTML(tar));x.push("Tarot（"+tar.length+" 張）\n"+tarotText(tar))}
+  if(pl){h.push('<div class="title" style="margin-top:12px">☯ Meihua</div>'+plumHTML(pl));x.push(plumText(pl))}
+  if(liu){h.push('<div class="title" style="margin-top:12px">☰ Liuyao｜三錢法</div>'+liuyaoHTML(liu));x.push(liuyaoText(liu))}
+  $("oneTime").textContent=t;$("oneResult").innerHTML=h.join("");oneText=x.join("\n");$("onePreview").textContent=oneText;$("onePreview").hidden=false;$("notice").textContent="";
 }
-$("drawTarot").onclick=()=>finish({tar:tarot(+$('count').value)});
-$("drawPlum").onclick=()=>finish({pl:plum()});
-$("drawLiuyao").onclick=()=>finish({liu:liuyao()});
-$("drawBoth").onclick=()=>finish({tar:tarot(+$('count').value),pl:plum()});
+async function drawOne(method){
+  $("notice").textContent="抽取中…";
+  try{
+    const payload=await apiCast(method,{count:+$("count").value});
+    if(method==="tarot")finish({tar:tarotFromPayload(payload),payloads:[payload]});
+    else if(method==="plum")finish({pl:plumFromPayload(payload),payloads:[payload]});
+    else finish({liu:liuyaoFromPayload(payload),payloads:[payload]});
+  }catch(error){$("notice").textContent="抽取失敗："+error.message}
+}
+$("drawTarot").onclick=()=>drawOne("tarot");
+$("drawPlum").onclick=()=>drawOne("plum");
+$("drawLiuyao").onclick=()=>drawOne("liuyao");
+$("drawBoth").onclick=async()=>{
+  $("notice").textContent="抽取中…";
+  try{
+    const [tarotPayload,plumPayload]=await Promise.all([apiCast("tarot",{count:+$("count").value}),apiCast("plum")]);
+    finish({tar:tarotFromPayload(tarotPayload),pl:plumFromPayload(plumPayload),payloads:[tarotPayload,plumPayload]});
+  }catch(error){$("notice").textContent="抽取失敗："+error.message}
+};
 
 function addQ(n=3){
   if($("batchList").children.length>=10){$("batchNotice").textContent="最多 10 個題目。";return}
@@ -178,13 +208,20 @@ function addQ(n=3){
 }
 $("addQ").onclick=()=>addQ();
 $("clearQs").onclick=()=>{$$(".bq").forEach(x=>x.value="");$("batchNotice").textContent="已清空所有題目。"};
-$("drawBatch").onclick=()=>{
+$("drawBatch").onclick=async()=>{
   const items=$$(".batchItem").map((d,i)=>({i:i+1,q:d.querySelector(".bq").value.trim(),n:+d.querySelector(".bc").value}));
-  const bad=items.find(x=>!x.q);if(bad){$("batchNotice").textContent=`第 ${bad.i} 題尚未輸入題目。`;return}
-  const t=time(),res=items.map(x=>({...x,c:tarot(x.n)}));$("batchTime").textContent=t;
-  $("batchResult").innerHTML=res.map(x=>`<div class="batchResult"><div class="batchQuestion"><strong>第 ${x.i} 題｜${esc(x.q)}</strong><span class="muted">${x.n} 張</span></div>${tarotHTML(x.c)}</div>`).join("");
-  const out=[];res.forEach((x,i)=>{out.push(`${x.q}（${x.n} 張）`);if(i===0)out.push(t);out.push(tarotText(x.c))});batchText=out.join("\
-");$("batchPreview").textContent=batchText;$("batchPreview").hidden=false;$("batchNotice").textContent="";
+  const bad=items.find(x=>!x.q);if(bad){$("batchNotice").textContent="第 "+bad.i+" 題尚未輸入題目。";return}
+  $("batchNotice").textContent="抽取中…";
+  try{
+    const res=[];
+    for(const item of items){
+      const payload=await apiCast("tarot",{count:item.n});
+      res.push({...item,c:tarotFromPayload(payload),payload});
+    }
+    const times=[...new Set(res.map(x=>apiTime(x.payload)).filter(Boolean))];$("batchTime").textContent=times.length===1?times[0]:(times.length?(times[0]+" ～ "+times[times.length-1]):"");
+    $("batchResult").innerHTML=res.map(x=>'<div class="batchResult"><div class="batchQuestion"><strong>第 '+x.i+' 題｜'+esc(x.q)+'</strong><span class="muted">'+x.n+' 張</span></div>'+tarotHTML(x.c)+'</div>').join("");
+    const out=[];res.forEach(x=>{out.push(x.q+"（"+x.n+" 張）");out.push("時間："+apiTime(x.payload));out.push(tarotText(x.c))});batchText=out.join("\n");$("batchPreview").textContent=batchText;$("batchPreview").hidden=false;$("batchNotice").textContent="";
+  }catch(error){$("batchNotice").textContent="抽取失敗："+error.message}
 };
 async function copy(txt,msgEl){if(!txt){msgEl.textContent="請先抽取結果。";return}try{await navigator.clipboard.writeText(txt);msgEl.textContent="已複製結果。"}catch{msgEl.textContent="瀏覽器阻擋自動複製，請直接選取下方文字。"}}
 $("copyOne").onclick=()=>copy(oneText,$("notice"));$("copyBatch").onclick=()=>copy(batchText,$("batchNotice"));
