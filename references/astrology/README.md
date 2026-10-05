@@ -103,8 +103,6 @@ provider_id = astronomy-engine-natal-v1
 astronomy-engine==2.1.19
 ```
 
-ChatGPT known-time natal：`swiss-host-natal-v1` probe PASS 優先，否則 fallback 此 provider；routing authority → `ASTROLOGY_PROVIDER_ROUTING_V1.json`。
-
 Admission/evidence：
 
 - [`../../admissions/astrology/ASTROLOGY_PROVIDER_ADMISSION_V1.json`](../../admissions/astrology/ASTROLOGY_PROVIDER_ADMISSION_V1.json)
@@ -236,7 +234,7 @@ production admission                  bounded Astrology v1
 activation                            explicit request only
 ordinary auto-routing                 NO
 offline city/locality resolver        YES
-natal provider                        ChatGPT known-time: Swiss probe PASS preferred; otherwise / portable / unknown-time: astronomy-engine-natal-v1
+natal provider                        ChatGPT known-time: swiss-host-natal-v1 if probe PASS; otherwise astronomy-engine-natal-v1
 raw birth data → natal bundle         YES, exact/approximate time
 transit event-search provider         astronomy-engine-transit-v1
 exact transit search                  YES, bounded ≤400 days
