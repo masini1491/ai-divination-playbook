@@ -28,13 +28,14 @@ This scenario is evidence for transport reliability only. It does not change sto
 2. Read v3 `MANIFEST.json` from that exact commit.
 3. Verify manifest schema, authority, source path, chunk count, encoded size, decoded size and final SHA metadata.
 4. Fetch **one chunk file at a time** in ascending index order.
-5. Immediately pass only that chunk payload to Python and verify encoded length + SHA-256.
-6. Do not fetch the next chunk until the current chunk passes.
-7. If one chunk mismatches, fresh-read only that same chunk path from the same exact commit and retry within the declared limit.
-8. Keep already-passed chunks in the Python verified accumulator; do not overwrite them on another chunk retry.
-9. After all chunks pass, concatenate in index order, decode/decompress, and verify final decoded size + SHA.
-10. Materialize the verified canonical `core.py`, probe `runtime_invariants()`, then call `core.execute_stochastic()`.
-11. Produce a valid Raw Draw / Cast Fact before interpretation.
+5. Derive one `verified_payload`: exclude at most one terminal LF from fetched file content; do not broad-trim any other character.
+6. Immediately pass that exact `verified_payload` to Python and verify encoded length + SHA-256; retain that same representation in the accumulator.
+7. Do not fetch the next chunk until the current chunk passes.
+8. If one chunk mismatches, fresh-read only that same chunk path from the same exact commit and retry within the declared limit.
+9. Keep already-passed verified payloads in the Python accumulator; do not overwrite them on another chunk retry.
+10. After all chunks pass, concatenate **only retained verified payloads** in index order; never switch back to raw fetched file text. Then decode/decompress and verify final decoded size + SHA.
+11. Materialize the verified canonical `core.py`, probe `runtime_invariants()`, then call `core.execute_stochastic()`.
+12. Produce a valid Raw Draw / Cast Fact before interpretation.
 
 ## PASS
 
@@ -47,6 +48,8 @@ This scenario is evidence for transport reliability only. It does not change sto
 - Agent treats the first chunk mismatch as overall runtime unavailable without required same-chunk retry.
 - Agent mixes chunks from different commits or memory.
 - Agent executes before final decoded SHA passes.
+- Agent broad-trims chunk text with `strip()`／`rstrip()` instead of excluding at most one terminal LF.
+- Agent verifies a normalized chunk but later concatenates raw fetched file content or otherwise switches representation between verification and reassembly.
 - Agent rewrites or substitutes stochastic code.
 - Agent claims transport success based only on repository-side deterministic round-trip tests.
 - Agent asks the user to draw manually while an applicable admitted transport path remains unexhausted.

@@ -243,14 +243,18 @@ GitHub Connect fetch same exact commit runtime/casting/capsule-v3/MANIFEST.json
 → verify source_path = runtime/casting/core.py
 → verify payload_encoding = base64+zlib
 → verify chunk_count / encoded_size / decoded_size admission bounds
-→ initialize empty verified-chunk accumulator in Python
+→ initialize empty verified-payload accumulator in Python
 → for manifest chunk index 0..N-1:
      GitHub Connect fetch ONLY that exact chunk path from the same exact commit
-     pass that one opaque ASCII payload into Python
-     verify encoded_length + encoded_sha256 immediately
+     derive verified_payload:
+       fetched content endswith one LF ? exclude exactly that one terminal LF : keep content unchanged
+       reject broad trim / any other normalization
+     pass that exact verified_payload into Python
+     verify encoded_length + encoded_sha256 on verified_payload
      mismatch ? fresh-read ONLY that same chunk path from same exact commit, up to chunk_retry_limit
-              : retain verified chunk in Python accumulator and continue
-→ after every index PASS, concatenate verified chunks in ascending index
+              : retain that exact verified_payload in Python accumulator and continue
+→ after every index PASS, concatenate ONLY retained verified_payloads in ascending index
+→ NEVER re-read or reuse raw fetched file text for final reassembly
 → verify concatenated encoded length == manifest encoded_size
 → base64 decode + zlib decompress
 → verify decoded_size + decoded_sha256
@@ -264,8 +268,11 @@ v3 rules：
 
 - **one fetch = one chunk**；不得先把全部 chunk payload載入 model-visible context再轉送；
 - manifest只帶 chunk path／length／SHA，不內嵌 opaque payload；
-- Python accumulator只接受已通過該 index length + SHA的 chunk；未驗證內容不得進 final reassembly；
-- retry只重抓失敗的 single chunk file，不重抓 manifest以外的其他已 PASS chunks；
+- chunk file是 text transport envelope；如果 fetched content最後有 LF，只排除**最多一個 terminal LF**。不得使用 `strip()`／`rstrip()` 或其他會移除更多字元的 normalization；
+- `encoded_length`／`encoded_sha256` 驗的是 extracted `verified_payload`，不是 raw file text；
+- PASS後必須保留**同一份已驗證 verified_payload**；Python accumulator與 final concat都只能使用這份 representation；
+- 禁止 per-chunk驗 normalized copy，final reassembly卻改用 raw fetched file text；這種 representation switch 必須視為 transport implementation failure，不得誤報 canonical artifact corruption；
+- retry只重抓失敗的 single chunk file，不重抓 manifest以外的其他已 PASS payload；
 - retry仍固定同一 resolved exact commit；不得換 ref、用 memory、舊聊天或另一 commit補資料；
 - manifest file set與 chunk paths由 generator deterministic產生；不得手工新增／省略 chunk；
 - v3 final decoded bytes與 v2 capsule都必須 exact round-trip回同一 canonical `core.py`；

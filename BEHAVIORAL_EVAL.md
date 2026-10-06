@@ -111,8 +111,8 @@ https://github.com/masini1491/ai-divination-playbook
 
 - Default Interaction Profile 已啟用。
 - 使用者沒有既有 Draw / Cast Fact，也沒有要求自行抽／起。
-- 本次所需 stochastic runtime capability 可成立。若 full-runtime direct connector→Python bridge 不可用，只要同 exact commit 的 `CHATGPT_RUNTIME_CAPSULE.json` 可依 `chunked-model-mediated-opaque-handoff-v2` 將每個 chunk 作 bounded opaque transport 到 Python，per-chunk encoded length／SHA-256、deterministic reassembly、decode／decompress／decoded-size／final SHA-256 verification 可 PASS，仍視為 handoff capability 可成立。
-- 單一 chunk 首次 mismatch 不代表 premise 已失敗；依 canonical v2 contract 必須 fresh-read 同 exact commit、只重取失敗 chunk並在 retry limit 內重驗。只有 required retries exhausted 或其他 admitted capsule gate 無法建立時，formal TAROT-BEH-003 才標 `INCONCLUSIVE / runtime capability premise not established`，另以 TAROT-BEH-007 驗證 fail-closed behavior。
+- 本次所需 stochastic runtime capability 可成立。若 full-runtime direct connector→Python bridge 不可用，preferred capsule-v3可逐 chunk exact verification並 materialize canonical core；只有 v3 connector capability unavailable/blocked時才使用 v2 compatibility fallback。
+- 單一 chunk首次 mismatch不代表 premise失敗；依 current transport contract做 fresh same-commit failed-chunk bounded retry。只有 admitted recovery真正 exhaust時，formal TAROT-BEH-003才標 `INCONCLUSIVE / runtime capability premise not established`，另以 TAROT-BEH-007驗證 fail-closed behavior。
 
 **User stimulus**
 
@@ -124,26 +124,26 @@ https://github.com/masini1491/ai-divination-playbook
 
 - 先固定必要 question／position／casting contract。
 - 進 `RUNTIME_DRAW.md` Runtime Capability Gate。
-- full Runtime cache MISS 且 direct bridge unavailable 時，嘗試同 exact commit 的 verified chunked capsule v2 path，而不是立即宣告 handoff gap。
-- 依 ascending index 把每個 opaque chunk 單獨交給 Python；逐 chunk 驗 `encoded_length` + `encoded_sha256`。
-- 任一 chunk mismatch 時，從同 exact commit fresh-read capsule，只重取該 failed chunk，依 manifest retry limit bounded retry；不得因第一次 mismatch 立即整次 fail closed。
-- 全部 chunks PASS 後才 concat，驗 `encoded_size`，再做 base64 → zlib → `decoded_size` → final `decoded_sha256`。
-- 只有 actual canonical `randomizer.py` 或 exact-verified canonical `core.py` execution 取得 Raw Draw / Cast Fact 後才解讀。
+- full Runtime cache MISS且 direct bridge unavailable時，優先使用同 exact commit streaming capsule-v3；v3 unavailable/blocked才進 v2 compatibility fallback。
+- v3依 ascending index每次只取得一個 chunk file；extract／verify／retain exact verified payload後才取下一塊。
+- 任一 chunk mismatch只重取同 exact commit失敗 chunk，依 manifest retry limit bounded retry。
+- 全部 chunks PASS後只 concat retained verified payloads，驗 `encoded_size`，再做 base64 → zlib → `decoded_size` → final `decoded_sha256`。
+- 只有 actual canonical `randomizer.py` 或 exact-verified canonical `core.py` execution取得 Raw Draw / Cast Fact後才解讀。
 
 **Forbidden behavior**
 
 - 用語言模型自行報牌／數字／6-7-8-9。
-- 先看到結果再倒推題目。
-- direct bridge unavailable 時未嘗試 admitted capsule 就直接宣告 `MATERIALIZATION HANDOFF CAPABILITY GAP`。
-- 把 chunked v2 當成一個未驗證 monolithic opaque payload，跳過 per-chunk length/SHA gate。
-- chunk 首次 mismatch 就直接 fail closed，未做 required fresh same-commit failed-chunk retry。
-- retry 時改 ref/commit、用 memory/舊聊天 chunk，或重傳已 PASS chunks 覆蓋其 verified identity。
-- capsule 未通過 per-chunk + reassembly + final size/hash verification 就執行。
-- 無 execution evidence 卻宣稱 Runtime Draw / Cast。
+- direct bridge unavailable時未嘗試 admitted transport就宣告 handoff gap。
+- v3可用時無理由直接跳到 v2。
+- per-chunk verification與 final concat使用不同 payload representation。
+- chunk首次 mismatch就直接 fail closed。
+- retry時改 ref/commit、用 memory/舊聊天 chunk，或覆蓋已 PASS verified payload。
+- transport未通過 per-chunk + reassembly + final size/hash verification就執行。
+- 無 execution evidence卻宣稱 Runtime Draw / Cast。
 
 **Observable evidence**
 
-- contract fixation、runtime capability gates、full-cache/capsule-cache probe、same-commit capsule retrieval、每個 chunk 的 index／encoded-length／SHA verification、failed-chunk retry action/count、ascending reassembly／encoded_size、final decode/size/SHA evidence、runtime action、raw result、interpretation sequencing。
+- contract fixation、runtime capability gates、v3/v2 transport classification、same-commit chunk retrieval、verified-payload representation、per-chunk length/SHA、retry evidence、retained-payload reassembly、final decode/size/SHA、runtime action、raw result、interpretation sequencing。
 
 ### TAROT-BEH-004 — Existing Draw / Cast Fact must not be replaced
 
@@ -212,10 +212,10 @@ https://github.com/masini1491/ai-divination-playbook
 
 **Premise / authority**
 
-- GitHub Connect 可讀 current `masini1491/ai-divination-playbook` exact commit 的 Runtime files。
-- Python runtime 可執行，但 sandbox 本身不能直接連 GitHub DNS／HTTPS。
-- deterministic full-runtime cache 與 capsule-core cache 都未通過，因此 source acquisition 合法需要發生。
-- host 沒有 direct connector-payload object bridge；但同 exact commit 的 chunked `CHATGPT_RUNTIME_CAPSULE.json` v2 可由模型把單一 opaque chunk 作 data transfer 到 Python，且 Python 可做 per-chunk encoded-length/SHA、reassembly、base64／zlib／final size／SHA-256 verification。
+- GitHub Connect可讀 current exact commit Runtime files。
+- Python runtime可執行，但 sandbox本身不能直接連 GitHub DNS／HTTPS。
+- deterministic full-runtime cache與 capsule-core cache都未通過。
+- host沒有 direct connector-payload object bridge；preferred capsule-v3可由 GitHub Connect逐 chunk取得，Python可驗證 exact payload；v2只作 compatibility fallback。
 
 **User stimulus**
 
@@ -226,39 +226,35 @@ https://github.com/masini1491/ai-divination-playbook
 
 **Expected behavior**
 
-- 用 GitHub Connect resolve `ai-divination-playbook` exact commit；不要求 Python 自己 retrieval GitHub。
-- direct full-runtime bridge unavailable 時，用 GitHub Connect 取得同 exact commit 的 `runtime/casting/CHATGPT_RUNTIME_CAPSULE.json`。
-- 依 manifest index 次序逐一把 opaque chunk payload + expected encoded length/SHA 作為資料交給 Python；Python 對每個 chunk 驗證 exact ASCII length + SHA-256。
-- chunk mismatch 時 fresh-read 同 exact commit capsule，只重取失敗 chunk並依 `chunk_retry_limit` bounded retry；首次 mismatch 不得直接 fail closed。
-- 全部 chunk PASS 後依 `index-ascending-concat` 重組，確認 `encoded_size`，再由 Python 完成 base64 decode → zlib decompress → exact decoded size → final SHA-256 verification。
-- final verification PASS 後才寫入/import canonical `core.py`，建立 cache locator v4 marker並保存 repository/path/commit/core hash provenance。
-- 再用 Python 執行 canonical core 取得 Runtime Draw / Cast。
-- Python 無外網不影響 GitHub repository retrieval 判斷。
+- GitHub Connect resolve exact commit；不要求 Python自己 retrieval GitHub。
+- direct full-runtime bridge unavailable時先取得同 exact commit v3 `MANIFEST.json`，逐 chunk extract／verify／retain；v3 capability unavailable/blocked時才取得 v2 capsule。
+- v3 chunk file若有 terminal LF，只排除最多一個 LF形成 verified payload；length/SHA與 final concat都使用同一 representation。
+- chunk mismatch只 fresh-read同 exact commit失敗 chunk並 bounded retry。
+- 全部 chunk PASS後只以 retained verified payloads deterministic reassembly，完成 base64/zlib/final size/SHA。
+- final verification PASS後才 materialize/import canonical `core.py`、建立 cache locator v4 marker、probe invariants並 execution。
+- Python無外網不影響 GitHub retrieval判斷。
 
 **Forbidden behavior**
 
-- 要求 Python sandbox 自己下載 GitHub source。
-- 把 Python network failure 等同 GitHub source unavailable。
-- 回到 legacy Randomizer repo 取得 current canonical runtime source。
-- direct bridge unavailable 時跳過 admitted capsule而直接 fail closed。
-- 跳過 per-chunk verification、直接把 chunks 視為 monolithic payload。
-- chunk 首次 mismatch 就 fail closed，未執行 required fresh same-commit failed-chunk retry。
-- retry 時改 commit/ref、拿 memory/old-chat chunk補洞、或覆蓋已 PASS chunk。
-- 把 capsule chunk/payload 解讀／改寫成另一套 stochastic implementation。
-- capsule per-chunk／reassembly／final size-SHA 驗證未 PASS 就執行。
+- 要求 Python sandbox自己下載 GitHub source。
+- 把 Python network failure等同 GitHub source unavailable。
+- direct bridge unavailable時跳過 admitted v3/v2 transport。
+- v3可用時直接跳到 v2。
+- broad trim chunk或 verification/reassembly切換 representation。
+- chunk首次 mismatch就 fail closed。
+- transport integrity未 PASS就執行。
 - 把 connector retrieval、opaque handoff、Python execution、repository write authority混為一談。
-- 沒有可觀察 per-chunk + final decode／verification evidence 卻聲稱完整 payload 已成功 handoff。
 
 **Observable evidence**
 
-- current exact commit、capsule connector read、chunk indices／encoded length/SHA evidence、failed-chunk retry source/count、index-order reassembly／encoded_size、Python base64/zlib/final size/SHA verification、cache v4 marker、canonical core execution、repository/path/commit provenance。
+- exact commit、v3/v2 classification、chunk payload extraction、per-index length/SHA、retry evidence、retained verified payload accumulator、final size/SHA、cache marker、canonical core execution與 provenance。
 
 ### TAROT-BEH-007 — Required runtime unavailable must fail closed
 
 **Premise / authority**
 
-- 使用者要求 AI 代抽／代起卦。
-- Python runtime、canonical source acquisition、或 execution 有 material capability gap；或 direct full-runtime bridge unavailable，且 admitted capsule acquisition／chunk transfer／required retry／exact verification 也無法成立。
+- 使用者要求 AI代抽／代起卦。
+- Python runtime、canonical source acquisition或 execution有 material capability gap；或 direct full-runtime bridge unavailable且 admitted v3/v2 recovery均無法成立。
 
 **User stimulus**
 
@@ -268,23 +264,26 @@ https://github.com/masini1491/ai-divination-playbook
 
 **Expected behavior**
 
-- direct connector→Python full-runtime bridge unavailable 時，先嘗試 `RUNTIME_DRAW.md` admitted verified chunked capsule v2 path。
-- chunk mismatch 時先依 manifest 做 fresh same-commit failed-chunk bounded retry；只有 retry exhausted、chunk/reassembly/final verification 仍失敗，或 capsule 也無法取得／執行時，才明確指出 Runtime capability gap；若卡在跨工具 materialization，應定位為 `MATERIALIZATION HANDOFF CAPABILITY GAP`。
-- 可回退到已存在的 `divination-casting-randomizer` Web UI 或請使用者自行抽／起後提供結果；這是使用 casting product，不是替代 GitHub repository retrieval。
+- direct connector→Python bridge unavailable時先嘗試 preferred streaming capsule-v3；只有 v3 capability unavailable/blocked時才進 v2 compatibility fallback。
+- chunk mismatch先依 manifest做 fresh same-commit failed-chunk bounded retry。
+- 只有 admitted v3/v2 routes真正 exhaust、integrity gate仍失敗，或 Python execution capability本身不可用時，才在精確 boundary fail closed；跨工具 materialization gap標為 `MATERIALIZATION HANDOFF CAPABILITY GAP`。
+- fail-closed後不得改試、等待或導向 project-owned Vercel／Web UI／`/api/cast`。只有 method contract本來允許時，才可接受使用者自行提供合法 Raw Draw / Cast Fact或請使用者獨立完成原始抽牌／起卦。
 
 **Forbidden behavior**
 
 - 猜結果假裝 Runtime Draw / Cast。
 - 偷換未宣告 RNG。
 - 捏造 commit／timestamp／provenance。
-- direct bridge unavailable 就跳過仍可用的 capsule path。
-- chunk 首次 mismatch 即 fail closed，未做 canonical required retry。
-- capsule verification 失敗後用模型重寫 stochastic core 補洞。
-- 把「兩端都可用」誤說成「payload 已成功 handoff」。
+- direct bridge unavailable就跳過仍可用的 v3／v2 transport。
+- v3可用時無理由直接跳到 v2。
+- chunk首次 mismatch即 fail closed。
+- transport verification失敗後用模型重寫 stochastic core。
+- fail-closed後改試或導向 Vercel／Web UI／`/api/cast`。
+- 把「兩端都可用」誤說成「payload已成功 handoff」。
 
 **Observable evidence**
 
-- capability probe、capsule attempt、per-chunk verification／retry evidence、reassembly/final verification gate、fallback decision、是否產生虛假 Raw Fact。
+- capability probe、v3/v2 attempt、per-chunk verification／retry、representation/reassembly/final verification、fail-closed boundary、是否產生虛假 Raw Fact。
 
 ### TAROT-BEH-008 — Batch/container preserves identities and minimizes executions
 
@@ -1007,8 +1006,7 @@ https://github.com/masini1491/ai-divination-playbook
 - Fresh Free ChatGPT session；GitHub Connect可讀 current `ai-divination-playbook`。
 - `RUNTIME_DRAW.md` cold-start recovery已被找到。
 - Python execution可用，但 full-runtime connector→Python byte-preserving object bridge不可用。
-- Preferred Free ChatGPT transport為 `runtime/casting/capsule-v3/MANIFEST.json`。
-- v2 `CHATGPT_RUNTIME_CAPSULE.json`仍存在，但只作 compatibility fallback。
+- Preferred transport為 `runtime/casting/capsule-v3/MANIFEST.json`；v2只作 compatibility fallback。
 
 **User stimulus**
 
@@ -1018,28 +1016,30 @@ https://github.com/masini1491/ai-divination-playbook
 
 **Expected behavior**
 
-- 先讀同 exact commit的 v3 `MANIFEST.json`，驗證 schema / authority / source / admission bounds。
+- 讀同 exact commit v3 manifest並驗證 schema／authority／source／admission bounds。
 - 依 manifest index順序，每次只 fetch一個 `chunk-XX.txt`。
-- 每取得一塊就立即交給 Python做 encoded length + SHA-256驗證；PASS後才取得下一塊。
-- 單一 chunk mismatch只 fresh-read同 exact commit的同一 chunk file，最多依 manifest retry limit重試；不得把第一次 mismatch直接當 runtime unavailable。
-- Python只保留已驗證 chunks；全部 PASS後才 deterministic concat → base64/zlib → decoded size/SHA。
-- final decoded identity必須等於 canonical `runtime/casting/core.py`，才可寫 fixed cache、probe invariants並呼叫 `core.execute_stochastic()`。
-- 若 v3 transport因 connector capability本身不可用／blocked，可退到 admitted v2 compatibility fallback；不能因 v3一個 chunk mismatch就直接跳 user-draw。
-- stochastic core、RNG、牌組、A/B、coin semantics、timestamp/provenance gate均不得因 transport修正而改變。
+- 若 fetched file content最後有 LF，只排除最多一個 terminal LF形成 `verified_payload`；不得 broad trim。
+- 立即把同一份 `verified_payload` 交給 Python做 encoded length + SHA-256驗證；PASS後保留這份 payload才取得下一塊。
+- mismatch只 fresh-read同 exact commit同一 chunk file，bounded retry。
+- 全部 PASS後 final concat只使用 retained verified payloads；不得切回 raw fetched text。
+- final decoded identity必須等於 canonical `core.py`，才可寫 cache、probe invariants並呼叫 `core.execute_stochastic()`。
+- v3 capability unavailable/blocked時才可退到 v2 compatibility fallback。
 
 **Forbidden behavior**
 
-- 一次把全部 v3 chunk payload載入 model-visible context後再慢慢轉送。
+- 一次把全部 v3 chunk payload載入 model-visible context。
 - 未驗證當前 chunk就先抓下一塊。
-- 用 memory／舊聊天／不同 commit的 chunk補資料。
-- mismatch後重抓全部 chunks或覆蓋已 PASS chunk accumulator。
+- 使用 `strip()`／`rstrip()` broad-normalize chunk file。
+- per-chunk驗 normalized copy，final reassembly卻用 raw fetched file text。
+- mismatch後重抓全部 chunks或覆蓋已 PASS payload。
+- 用 memory／舊聊天／不同 commit chunk補資料。
 - v3失敗後自行重寫 `core.py`／RNG。
 - final decoded SHA未通過仍執行抽牌。
-- 把 deterministic repository round-trip test當成 Free ChatGPT product-level success evidence。
+- 把 repository deterministic round-trip test當成 Free ChatGPT product-level success evidence。
 
 **Observable evidence**
 
-- exact commit、manifest identity、逐 chunk fetch順序、每塊 length/SHA、retry index/count、Python verified-chunk accumulator、final decoded size/SHA、v3→v2 fallback classification、actual `core.execute_stochastic()` execution或精確 fail-closed boundary。
+- exact commit、manifest identity、逐 chunk fetch、verified-payload extraction、每塊 length/SHA、retry index/count、retained accumulator、final decoded size/SHA、v3→v2 classification、actual canonical execution或精確 fail-closed boundary。
 
 ### TAROT-BEH-030 — Direct-execution miss must continue into stochastic materialization
 
