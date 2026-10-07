@@ -27,8 +27,8 @@ This scenario is evidence for transport reliability only. It does not change sto
 1. Resolve and freeze one exact repository commit.
 2. Read v3 `MANIFEST.json` from that exact commit.
 3. Verify manifest schema, authority, source path, chunk count, encoded size, decoded size and final SHA metadata.
-4. For each chunk, verify the connector-returned Git blob SHA against manifest `git_blob_sha1` **before** model→Python payload handoff. Treat this Git SHA-1 only as Git object identity, not as the payload security digest.
-5. Fetch **one chunk file at a time** in ascending index order.
+4. Fetch **one chunk file at a time** in ascending index order.
+5. For that fetched chunk, verify the connector-returned Git blob SHA against manifest `git_blob_sha1` **before** model→Python payload handoff. Treat this Git SHA-1 only as Git object identity, not as the payload security digest.
 6. Derive one `verified_payload`: exclude at most one terminal LF from fetched file content; do not broad-trim any other character.
 7. Immediately pass that exact `verified_payload` to Python and verify encoded length + SHA-256; retain that same representation in the accumulator.
 8. Do not fetch the next chunk until the current chunk passes.
