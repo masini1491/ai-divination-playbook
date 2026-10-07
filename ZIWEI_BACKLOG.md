@@ -118,6 +118,12 @@ This file is an active / deferred coordination surface, not a completed-work arc
   - **A — sufficiently distinctive:** keep matrix low priority and continue output / synthesis refinement only when a concrete UX issue appears;
   - **B — genericness is retrieval / ordering:** adjust synthesis selection / ranking; do not open new matrix research;
   - **C — the same star×palace gap recurs across readings:** open only those recurring cells as bounded research candidates under `ZW-P2-026`.
+- current_evaluation:
+  - **Outcome B observed** for brightness default consideration;
+  - canonical evidence: `reports/ziwei/ZIWEI_BRIGHTNESS_DEFAULT_EVALUATION_V1.md`;
+  - 48-case bounded A/B showed `brightness_v1` adds two dignity-availability meta-conditionals in every case and changes the `natal_synthesis_v1` focus set in 47/48 cases, usually displacing more chart-specific signals;
+  - keep `brightness_v1` explicit/profile-bound for now;
+  - any future default-on promotion must first fix synthesis ranking/selection and rerun the bounded A/B gate; this does not open matrix research.
 - boundaries:
   - no synthetic user-perceived-accuracy score;
   - no optimization that promotes semantics merely because a reading feels resonant;
