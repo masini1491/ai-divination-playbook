@@ -38,6 +38,8 @@ class ChatGPTRuntimeCapsuleTests(unittest.TestCase):
         )
         self.assertEqual(manifest["streaming_fetch"], "one-chunk-file-at-a-time")
         self.assertTrue(manifest["verify_before_next_fetch"])
+        self.assertEqual(manifest["chunk_source_identity"], "git-blob-sha1")
+        self.assertTrue(manifest["source_identity_before_payload_handoff"])
         self.assertEqual(manifest["chunk_file_terminator"], "LF")
         self.assertEqual(
             manifest["verified_payload_extraction"],
@@ -64,7 +66,13 @@ class ChatGPTRuntimeCapsuleTests(unittest.TestCase):
         for entry in manifest["chunks"]:
             path = ROOT / entry["path"]
             self.assertTrue(path.is_file(), entry["path"])
-            raw = path.read_text(encoding="utf-8")
+            raw_bytes = path.read_bytes()
+            self.assertEqual(len(raw_bytes), entry["raw_file_size"])
+            self.assertEqual(
+                build_runtime_capsule._git_blob_sha1(raw_bytes),
+                entry["git_blob_sha1"],
+            )
+            raw = raw_bytes.decode("ascii")
             self.assertFalse(raw.endswith("\n\n"))
             payload = raw[:-1] if raw.endswith("\n") else raw
             self.assertEqual(len(payload), entry["encoded_length"])
