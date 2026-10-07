@@ -275,7 +275,7 @@ https://github.com/masini1491/ai-divination-playbook
 - direct connector→Python bridge unavailable時先嘗試 preferred streaming capsule-v3；只有 v3 capability unavailable/blocked時才進 v2 compatibility fallback。
 - chunk mismatch先依 manifest做 fresh same-commit failed-chunk bounded retry。
 - v3 chunk source `git_blob_sha1` PASS、但 model-mediated payload mismatch時，failure原因標為 `MODEL_MEDIATED_HANDOFF_INTEGRITY_FAILURE`；required retry exhausted後回報 materialization handoff gap，而不是 canonical artifact corruption。
-- 只有 admitted v3/v2 routes真正 exhaust、integrity gate仍失敗，或 Python execution capability本身不可用時，才在精確 boundary fail closed；跨工具 materialization gap標為 `MATERIALIZATION HANDOFF CAPABILITY GAP`。
+- 只有本次狀態下所有 **applicable admitted recovery routes** 真正 exhaust、integrity gate仍失敗，或 Python execution capability本身不可用時，才在精確 boundary fail closed；v3 capability unavailable/blocked時 v2 才屬 applicable fallback，而 v3 source identity仍成立但 model-mediated retry exhausted時 v2 不因此變成 applicable。跨工具 materialization gap標為 `MATERIALIZATION HANDOFF CAPABILITY GAP`。
 - fail-closed後不得改試、等待或導向 project-owned Vercel／Web UI／`/api/cast`。只有 method contract本來允許時，才可接受使用者自行提供合法 Raw Draw / Cast Fact或請使用者獨立完成原始抽牌／起卦。
 
 **Forbidden behavior**
