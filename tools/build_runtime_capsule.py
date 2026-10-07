@@ -38,6 +38,14 @@ CACHE_REQUIRED_MARKER_FIELDS = [
     "tarot_deck_size",
 ]
 
+def _git_blob_sha1(data: bytes) -> str:
+    """Return the Git blob object id for exact file bytes.
+
+    This is repository object identity, not a cryptographic security digest.
+    """
+    header = f"blob {len(data)}\0".encode("ascii")
+    return hashlib.sha1(header + data).hexdigest()
+
 def _encode_core() -> tuple[bytes, str]:
     data = CORE.read_bytes()
     payload = base64.b64encode(zlib.compress(data, level=9)).decode("ascii")
@@ -123,15 +131,18 @@ def build_capsule_v3() -> tuple[dict, list[str]]:
     manifest_chunks = []
     payloads = []
     for chunk, filename in zip(chunks, chunk_files, strict=True):
+        raw_file = (str(chunk["payload"]) + "\n").encode("ascii")
         manifest_chunks.append(
             {
                 "index": chunk["index"],
                 "path": f"runtime/casting/capsule-v3/{filename}",
+                "git_blob_sha1": _git_blob_sha1(raw_file),
+                "raw_file_size": len(raw_file),
                 "encoded_length": chunk["encoded_length"],
                 "encoded_sha256": chunk["encoded_sha256"],
             }
         )
-        payloads.append(str(chunk["payload"]) + "\n")
+        payloads.append(raw_file.decode("ascii"))
     manifest = {
         "schema_version": 3,
         "authority": "derived-transport-cache-only",
@@ -143,6 +154,8 @@ def build_capsule_v3() -> tuple[dict, list[str]]:
         "same_turn_attempt_required": True,
         "streaming_fetch": "one-chunk-file-at-a-time",
         "verify_before_next_fetch": True,
+        "chunk_source_identity": "git-blob-sha1",
+        "source_identity_before_payload_handoff": True,
         "chunk_retry_required_on_mismatch": True,
         "chunk_retry_limit": CHUNK_RETRY_LIMIT,
         "chunk_retry_source": "fresh-same-commit-single-chunk-file-read",

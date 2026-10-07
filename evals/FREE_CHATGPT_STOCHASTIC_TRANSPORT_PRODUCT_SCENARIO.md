@@ -27,15 +27,17 @@ This scenario is evidence for transport reliability only. It does not change sto
 1. Resolve and freeze one exact repository commit.
 2. Read v3 `MANIFEST.json` from that exact commit.
 3. Verify manifest schema, authority, source path, chunk count, encoded size, decoded size and final SHA metadata.
-4. Fetch **one chunk file at a time** in ascending index order.
-5. Derive one `verified_payload`: exclude at most one terminal LF from fetched file content; do not broad-trim any other character.
-6. Immediately pass that exact `verified_payload` to Python and verify encoded length + SHA-256; retain that same representation in the accumulator.
-7. Do not fetch the next chunk until the current chunk passes.
-8. If one chunk mismatches, fresh-read only that same chunk path from the same exact commit and retry within the declared limit.
-9. Keep already-passed verified payloads in the Python accumulator; do not overwrite them on another chunk retry.
-10. After all chunks pass, concatenate **only retained verified payloads** in index order; never switch back to raw fetched file text. Then decode/decompress and verify final decoded size + SHA.
-11. Materialize the verified canonical `core.py`, probe `runtime_invariants()`, then call `core.execute_stochastic()`.
-12. Produce a valid Raw Draw / Cast Fact before interpretation.
+4. For each chunk, verify the connector-returned Git blob SHA against manifest `git_blob_sha1` **before** model→Python payload handoff. Treat this Git SHA-1 only as Git object identity, not as the payload security digest.
+5. Fetch **one chunk file at a time** in ascending index order.
+6. Derive one `verified_payload`: exclude at most one terminal LF from fetched file content; do not broad-trim any other character.
+7. Immediately pass that exact `verified_payload` to Python and verify encoded length + SHA-256; retain that same representation in the accumulator.
+8. Do not fetch the next chunk until the current chunk passes.
+9. If source blob identity PASSes but the Python payload mismatches, classify `MODEL_MEDIATED_HANDOFF_INTEGRITY_FAILURE`, fresh-read only that same chunk path from the same exact commit, re-check blob identity, and retry within the declared limit.
+10. If the declared retry limit is exhausted while source blob identity continues to PASS, fail closed as `MATERIALIZATION HANDOFF CAPABILITY GAP (MODEL_MEDIATED_HANDOFF_INTEGRITY_FAILURE)`; do not call the canonical Repo artifact corrupt and do not reclassify v3 as unavailable merely to enter v2.
+11. Keep already-passed verified payloads in the Python accumulator; do not overwrite them on another chunk retry.
+12. After all chunks pass, concatenate **only retained verified payloads** in index order; never switch back to raw fetched file text. Then decode/decompress and verify final decoded size + SHA.
+13. Materialize the verified canonical `core.py`, probe `runtime_invariants()`, then call `core.execute_stochastic()`.
+14. Produce a valid Raw Draw / Cast Fact before interpretation.
 
 ## PASS
 
@@ -46,6 +48,9 @@ This scenario is evidence for transport reliability only. It does not change sto
 
 - Agent loads all opaque chunks at once into model-visible context before transfer.
 - Agent treats the first chunk mismatch as overall runtime unavailable without required same-chunk retry.
+- Agent skips connector-returned `git_blob_sha1` verification before model→Python payload handoff.
+- Agent reports canonical Repo chunk／payload corruption when source blob identity PASSed and only Python-side payload integrity failed.
+- Agent treats v3 model-mediated retry exhaustion as v3 connector unavailability and switches to v2 without separate unavailable/blocked evidence.
 - Agent mixes chunks from different commits or memory.
 - Agent executes before final decoded SHA passes.
 - Agent broad-trims chunk text with `strip()`／`rstrip()` instead of excluding at most one terminal LF.
@@ -62,6 +67,8 @@ A formal product run should record only sanitized transport evidence:
 - transport contract/version;
 - chunk count and chunk size;
 - per-index PASS/RETRY/FAIL status;
+- per-index connector Git blob SHA identity PASS/FAIL;
+- handoff failure classification when any Python-side mismatch occurs;
 - retry count;
 - final decoded size/SHA PASS;
 - runtime invariant PASS;

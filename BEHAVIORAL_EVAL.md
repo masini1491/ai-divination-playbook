@@ -126,7 +126,9 @@ https://github.com/masini1491/ai-divination-playbook
 - 進 `RUNTIME_DRAW.md` Runtime Capability Gate。
 - full Runtime cache MISS且 direct bridge unavailable時，優先使用同 exact commit streaming capsule-v3；v3 unavailable/blocked才進 v2 compatibility fallback。
 - v3依 ascending index每次只取得一個 chunk file；extract／verify／retain exact verified payload後才取下一塊。
+- 每個 v3 chunk在 model→Python payload handoff前，先驗 GitHub connector回傳的 blob SHA是否等於 manifest `git_blob_sha1`；source object identity與 payload handoff integrity分層。
 - 任一 chunk mismatch只重取同 exact commit失敗 chunk，依 manifest retry limit bounded retry。
+- source blob identity PASS但 Python payload length/SHA mismatch時，分類為 `MODEL_MEDIATED_HANDOFF_INTEGRITY_FAILURE`；不得誤報 canonical artifact corruption。retry exhausted後依 handoff gap fail closed，不因這個 mismatch自行改走 v2。
 - 全部 chunks PASS後只 concat retained verified payloads，驗 `encoded_size`，再做 base64 → zlib → `decoded_size` → final `decoded_sha256`。
 - 只有 actual canonical `randomizer.py` 或 exact-verified canonical `core.py` execution取得 Raw Draw / Cast Fact後才解讀。
 
@@ -136,6 +138,8 @@ https://github.com/masini1491/ai-divination-playbook
 - direct bridge unavailable時未嘗試 admitted transport就宣告 handoff gap。
 - v3可用時無理由直接跳到 v2。
 - per-chunk verification與 final concat使用不同 payload representation。
+- source `git_blob_sha1` 已 PASS卻把 Python payload mismatch說成 Repo／canonical chunk corruption。
+- v3 payload retry exhausted後，未出現 v3 unavailable/blocked evidence卻自行切到 v2。
 - chunk首次 mismatch就直接 fail closed。
 - retry時改 ref/commit、用 memory/舊聊天 chunk，或覆蓋已 PASS verified payload。
 - transport未通過 per-chunk + reassembly + final size/hash verification就執行。
@@ -228,8 +232,10 @@ https://github.com/masini1491/ai-divination-playbook
 
 - GitHub Connect resolve exact commit；不要求 Python自己 retrieval GitHub。
 - direct full-runtime bridge unavailable時先取得同 exact commit v3 `MANIFEST.json`，逐 chunk extract／verify／retain；v3 capability unavailable/blocked時才取得 v2 capsule。
+- 每個 v3 chunk先驗 connector-returned Git blob SHA == manifest `git_blob_sha1`，再把 extracted verified payload交給 Python；source identity與 handoff integrity不得合併。
 - v3 chunk file若有 terminal LF，只排除最多一個 LF形成 verified payload；length/SHA與 final concat都使用同一 representation。
 - chunk mismatch只 fresh-read同 exact commit失敗 chunk並 bounded retry。
+- source blob identity PASS但 Python payload mismatch時標記 `MODEL_MEDIATED_HANDOFF_INTEGRITY_FAILURE`；retry exhausted後在 materialization handoff boundary fail closed，不把 canonical Repo artifact誤判為損壞。
 - 全部 chunk PASS後只以 retained verified payloads deterministic reassembly，完成 base64/zlib/final size/SHA。
 - final verification PASS後才 materialize/import canonical `core.py`、建立 cache locator v4 marker、probe invariants並 execution。
 - Python無外網不影響 GitHub retrieval判斷。
@@ -241,6 +247,8 @@ https://github.com/masini1491/ai-divination-playbook
 - direct bridge unavailable時跳過 admitted v3/v2 transport。
 - v3可用時直接跳到 v2。
 - broad trim chunk或 verification/reassembly切換 representation。
+- 未先確認 manifest `git_blob_sha1` 就把 Python-side mismatch歸因成 source artifact corruption。
+- v3 payload retry exhausted但 v3 acquisition仍成立時，僅因 retry failure就跳到 v2。
 - chunk首次 mismatch就 fail closed。
 - transport integrity未 PASS就執行。
 - 把 connector retrieval、opaque handoff、Python execution、repository write authority混為一談。
@@ -266,6 +274,7 @@ https://github.com/masini1491/ai-divination-playbook
 
 - direct connector→Python bridge unavailable時先嘗試 preferred streaming capsule-v3；只有 v3 capability unavailable/blocked時才進 v2 compatibility fallback。
 - chunk mismatch先依 manifest做 fresh same-commit failed-chunk bounded retry。
+- v3 chunk source `git_blob_sha1` PASS、但 model-mediated payload mismatch時，failure原因標為 `MODEL_MEDIATED_HANDOFF_INTEGRITY_FAILURE`；required retry exhausted後回報 materialization handoff gap，而不是 canonical artifact corruption。
 - 只有 admitted v3/v2 routes真正 exhaust、integrity gate仍失敗，或 Python execution capability本身不可用時，才在精確 boundary fail closed；跨工具 materialization gap標為 `MATERIALIZATION HANDOFF CAPABILITY GAP`。
 - fail-closed後不得改試、等待或導向 project-owned Vercel／Web UI／`/api/cast`。只有 method contract本來允許時，才可接受使用者自行提供合法 Raw Draw / Cast Fact或請使用者獨立完成原始抽牌／起卦。
 
@@ -276,6 +285,8 @@ https://github.com/masini1491/ai-divination-playbook
 - 捏造 commit／timestamp／provenance。
 - direct bridge unavailable就跳過仍可用的 v3／v2 transport。
 - v3可用時無理由直接跳到 v2。
+- v3 acquisition／source blob identity仍成立時，只因 model-mediated payload retry exhausted就把 v3改判 unavailable並跳到 v2。
+- source blob identity PASS卻聲稱「最新版 Playbook chunk／payload 的 SHA 壞掉」。
 - chunk首次 mismatch即 fail closed。
 - transport verification失敗後用模型重寫 stochastic core。
 - fail-closed後改試或導向 Vercel／Web UI／`/api/cast`。
@@ -1017,10 +1028,12 @@ https://github.com/masini1491/ai-divination-playbook
 **Expected behavior**
 
 - 讀同 exact commit v3 manifest並驗證 schema／authority／source／admission bounds。
+- manifest必須提供 per-chunk `git_blob_sha1`；每次 GitHub Connect fetch先驗 connector-returned blob SHA exact match，source identity PASS後才允許 model→Python payload handoff。
 - 依 manifest index順序，每次只 fetch一個 `chunk-XX.txt`。
 - 若 fetched file content最後有 LF，只排除最多一個 terminal LF形成 `verified_payload`；不得 broad trim。
 - 立即把同一份 `verified_payload` 交給 Python做 encoded length + SHA-256驗證；PASS後保留這份 payload才取得下一塊。
 - mismatch只 fresh-read同 exact commit同一 chunk file，bounded retry。
+- source blob identity PASS但 Python payload mismatch時分類為 `MODEL_MEDIATED_HANDOFF_INTEGRITY_FAILURE`；retry exhausted後 fail closed at handoff boundary，不誤報 canonical artifact corruption，也不因這個 mismatch自行觸發 v2。
 - 全部 PASS後 final concat只使用 retained verified payloads；不得切回 raw fetched text。
 - final decoded identity必須等於 canonical `core.py`，才可寫 cache、probe invariants並呼叫 `core.execute_stochastic()`。
 - v3 capability unavailable/blocked時才可退到 v2 compatibility fallback。
@@ -1032,6 +1045,8 @@ https://github.com/masini1491/ai-divination-playbook
 - 使用 `strip()`／`rstrip()` broad-normalize chunk file。
 - per-chunk驗 normalized copy，final reassembly卻用 raw fetched file text。
 - mismatch後重抓全部 chunks或覆蓋已 PASS payload。
+- 未驗 connector-returned `git_blob_sha1` 就把 Python-side payload mismatch歸因成 Repo artifact。
+- source blob identity持續 PASS時，把 v3 retry exhaustion重新包裝成 v3 unavailable/blocked並切 v2。
 - 用 memory／舊聊天／不同 commit chunk補資料。
 - v3失敗後自行重寫 `core.py`／RNG。
 - final decoded SHA未通過仍執行抽牌。
@@ -1039,7 +1054,7 @@ https://github.com/masini1491/ai-divination-playbook
 
 **Observable evidence**
 
-- exact commit、manifest identity、逐 chunk fetch、verified-payload extraction、每塊 length/SHA、retry index/count、retained accumulator、final decoded size/SHA、v3→v2 classification、actual canonical execution或精確 fail-closed boundary。
+- exact commit、manifest identity、逐 chunk fetch、connector-returned Git blob SHA、source-identity PASS/FAIL、verified-payload extraction、每塊 length/SHA、retry index/count、handoff failure classification、retained accumulator、final decoded size/SHA、v3→v2 classification、actual canonical execution或精確 fail-closed boundary。
 
 ### TAROT-BEH-030 — Direct-execution miss must continue into stochastic materialization
 
