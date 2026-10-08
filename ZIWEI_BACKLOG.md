@@ -126,6 +126,7 @@ This file is an active / deferred coordination surface, not a completed-work arc
   - **ranking correction DONE** in PR #403 / merge `97e0ea1625ff30953404270fa87c7de660d605e0`: `natal_synthesis_v1` v1.1.0 retains availability-only meta-conditionals in the full selected-claim trace but excludes them from scarce focus slots; exact-main CI `37709664845` PASS;
   - the same 48-case A/B now preserves baseline focus in 48/48 cases without dropping the extra two brightness conditional claims; next default-on promotion remains **NOT AUTHORIZED / NOT ADMITTED**, because this fixes focus displacement but does not establish value-specific interpretation gains;
   - any subsequent default-on decision requires a separate bounded promotion judgment; do not open bulk matrix research.
+  - **2026-10-08 source review:** pinned `iztro` and upstream `v2.6.1` brightness source file are byte-identical; 酉宮太陽平／太陰旺／七殺旺, despite differing public document table. Research-only Sun/Moon value-specific candidates remain `DEFERRED_EVIDENCE`; see `references/ziwei/BRIGHTNESS_VALUE_SPECIFIC_SOURCE_RECONCILIATION_V1.md`. No production default or new claim authorized.
 - boundaries:
   - no synthetic user-perceived-accuracy score;
   - no optimization that promotes semantics merely because a reading feels resonant;
