@@ -207,11 +207,28 @@ def retrieve_claims(
         "production_authority_granted": False,
     }
 
-NATAL_SYNTHESIS_VERSION = "1.0.0"
+NATAL_SYNTHESIS_VERSION = "1.1.0"
 NATAL_SYNTHESIS_FOCUS_MIN = 4
 NATAL_SYNTHESIS_FOCUS_MAX = 6
 NATAL_SYNTHESIS_EXACT_TYPES = frozenset({"same_palace_pair", "star_palace_context", "body_palace_overlay"})
 NATAL_SYNTHESIS_CONDITIONAL_TYPES = frozenset({"star_conditional", "palace_conditional"})
+
+
+def _is_availability_only_conditional(claim: dict[str, Any]) -> bool:
+    """Keep availability-only evidence in the trace, not in scarce focus slots."""
+    activation = claim.get("conditional_activation")
+    if not isinstance(activation, dict) or activation.get("mode") != "fact_gated":
+        return False
+    if not activation.get("availability_requires") or any(
+        activation.get(key) for key in ("satisfies_all", "satisfies_any", "forbids")
+    ):
+        return False
+    # Explicit placement/value requirements can provide case-specific evidence.
+    # Bare star/palace existence does not.
+    return all(
+        isinstance(fact, str) and fact.startswith(("star_present:", "palace_present:"))
+        for fact in claim.get("matched_requires", ())
+    )
 
 
 def select_natal_synthesis_focus(
@@ -269,7 +286,8 @@ def select_natal_synthesis_focus(
         if claim.get("claim_type") not in NATAL_SYNTHESIS_CONDITIONAL_TYPES:
             continue
         activation = claim.get("conditional_activation")
-        if isinstance(activation, dict) and activation.get("state") == "satisfied":
+        if (isinstance(activation, dict) and activation.get("state") == "satisfied"
+                and not _is_availability_only_conditional(claim)):
             add_claim_signal(claim, 2)
 
     occupancies: list[tuple[str, str]] = []

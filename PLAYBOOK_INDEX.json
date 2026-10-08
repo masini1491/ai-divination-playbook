@@ -597,7 +597,7 @@
       "natal_synthesis": {
         "status": "production-admitted-selection-only",
         "module_id": "natal_synthesis_v1",
-        "version": "1.0.0",
+        "version": "1.1.0",
         "scope": "default_70_base_natal_claims_only",
         "focus_target": {
           "min": 4,
