@@ -71,7 +71,7 @@
     ],
     "natal_synthesis": {
       "module_id": "natal_synthesis_v1",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "runtime_owner": "tools/ziwei_claim_retrieval.py",
       "scope": "default_70_base_natal_claims_only",
       "focus_target": {
@@ -80,14 +80,15 @@
       },
       "ranking": [
         "exact_same_palace_or_star_palace_or_body_palace",
-        "fact_gated_satisfied_conditional",
+        "fact_gated_satisfied_concrete_conditional",
         "generic_star_core_plus_palace_domain_bounded_l5"
       ],
       "full_selected_claim_trace_retained": true,
       "optional_module_claims_in_default_focus": false,
       "optional_module_defaults_changed": false,
       "new_doctrine": false,
-      "final_prose_authority": false
+      "final_prose_authority": false,
+      "availability_only_conditionals": "selected_claim_trace_only_not_focus"
     }
   },
   "admitted_research_registries": [
