@@ -105,3 +105,18 @@ Then rerun the same bounded A/B matrix and require evidence that:
 5. no new doctrine is created merely from brightness labels.
 
 This is a synthesis/retrieval follow-up. It does **not** justify reopening the 14×12 star×palace matrix.
+
+## Outcome B follow-up: synthesis ranking correction candidate
+
+A scoped change to `natal_synthesis_v1` (selection policy version 1.1.0) keeps availability-only fact-gated conditional claims in the **full selected-claim trace** but excludes them from the **limited focus slots** unless a concrete value or placement condition is actually matched. It does not affect admissibility, conditional activation, claim text, facts, conflict detection or brightness profile.
+
+Re-run of the same 48 synthetic cases against the canonical verified tool bundle with the selection correction applied locally:
+
+- **48/48** baseline-vs-brightness focus sets were identical, compared with **1/48** before;
+- 48/48 brightness-on cases retained all 14 major-star brightness facts and the two additional admitted dignity-availability conditional claims;
+- no conflicts changed and no baseline selected claims were removed;
+- concrete value-gated conditionals remained eligible for focus, and availability-only claims remained visible in the full trace.
+
+The evidence supports fixing the focus-displacement regression. **It does not show that the output gained value-specific chart interpretation**, because the existing two extra claims remain modifier-awareness meta-statements. A separate judgment is required before promoting brightness to default-on. Until then, keep the explicit/profile-bound production default unchanged.
+
+Regression owner: `tests/test_ziwei_natal_synthesis_brightness_focus.py`. This is candidate evidence pending GitHub CI and canonical promotion/read-back.
