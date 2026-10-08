@@ -32,7 +32,8 @@ jobs:
           python -m unittest discover -s tests -v
           python tools/playbook_check.py .
           rm .github/workflows/temporary-ziwei-synthesis-regeneration.yml
-          git add -A
+          git add runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json CHATGPT_LOAD_PACK.json
+          git add -u .github/workflows/temporary-ziwei-synthesis-regeneration.yml
           changed="$(git diff --cached --name-only)"
           echo "$changed"
           python -c 'import subprocess; allowed={"runtime/ziwei/CHATGPT_DETERMINISTIC_TOOL_BUNDLE.json","CHATGPT_LOAD_PACK.json",".github/workflows/temporary-ziwei-synthesis-regeneration.yml"}; changed=set(subprocess.check_output(["git","diff","--cached","--name-only"],text=True).splitlines()); assert changed.issubset(allowed) and ".github/workflows/temporary-ziwei-synthesis-regeneration.yml" in changed, changed'
