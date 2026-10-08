@@ -119,4 +119,4 @@ Re-run of the same 48 synthetic cases against the canonical verified tool bundle
 
 The evidence supports fixing the focus-displacement regression. **It does not show that the output gained value-specific chart interpretation**, because the existing two extra claims remain modifier-awareness meta-statements. A separate judgment is required before promoting brightness to default-on. Until then, keep the explicit/profile-bound production default unchanged.
 
-Regression owner: `tests/test_ziwei_natal_synthesis_brightness_focus.py`. This is candidate evidence pending GitHub CI and canonical promotion/read-back.
+Regression owner: `tests/test_ziwei_natal_synthesis_brightness_focus.py`. This focused correction was promoted in PR #403 (merge commit `97e0ea1625ff30953404270fa87c7de660d605e0`). Exact-main Validate Playbook run `37709664845`: `validate` and `casting-runtime` both SUCCESS, including unit tests, structural checker, canonical Zi Wei bundle and load-budget verification. This closes the ranking correction, not brightness default-on promotion.
