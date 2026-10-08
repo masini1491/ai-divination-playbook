@@ -123,7 +123,9 @@ This file is an active / deferred coordination surface, not a completed-work arc
   - canonical evidence: `reports/ziwei/ZIWEI_BRIGHTNESS_DEFAULT_EVALUATION_V1.md`;
   - 48-case bounded A/B showed `brightness_v1` adds two dignity-availability meta-conditionals in every case and changes the `natal_synthesis_v1` focus set in 47/48 cases, usually displacing more chart-specific signals;
   - keep `brightness_v1` explicit/profile-bound for now;
-  - any future default-on promotion must first fix synthesis ranking/selection and rerun the bounded A/B gate; this does not open matrix research.
+  - **ranking correction DONE** in PR #403 / merge `97e0ea1625ff30953404270fa87c7de660d605e0`: `natal_synthesis_v1` v1.1.0 retains availability-only meta-conditionals in the full selected-claim trace but excludes them from scarce focus slots; exact-main CI `37709664845` PASS;
+  - the same 48-case A/B now preserves baseline focus in 48/48 cases without dropping the extra two brightness conditional claims; next default-on promotion remains **NOT AUTHORIZED / NOT ADMITTED**, because this fixes focus displacement but does not establish value-specific interpretation gains;
+  - any subsequent default-on decision requires a separate bounded promotion judgment; do not open bulk matrix research.
 - boundaries:
   - no synthetic user-perceived-accuracy score;
   - no optimization that promotes semantics merely because a reading feels resonant;
