@@ -2,6 +2,7 @@
   "schema_name": "host_native_pyswisseph_transit_parity_research_result",
   "schema_version": "1.0.0",
   "authority": "reference-only-research-evidence",
+  "result_scope": "condensed-machine-summary-of-reproducible-probe-output",
   "production_authority": false,
   "runtime": {
     "python": "3.13.5",
