@@ -1,0 +1,82 @@
+{
+  "schema_name": "jpl_de440s_transit_oracle_adjudication",
+  "schema_version": "1.0.0",
+  "authority": "reference-only-research-evidence",
+  "production_authority": false,
+  "tested_repo_revision": "f5d540ec50ad4923a2841bcad15449e61bf3c59b",
+  "oracle": {
+    "kind": "JPL_DE440S_binary_kernel_via_independently_validated_apparent_reduction",
+    "external_repository": "ffalcinelli/astroceleste-engine",
+    "external_commit": "622693a0e49a622f955c3a298d7f09ed650e1382",
+    "pages_workflow_run": 37898071384,
+    "pages_artifact_id": 11601197376,
+    "pages_artifact_digest": "sha256:0c95147d5fa44c977f7aa0c435db6c2468ac9b5fff92f1998dfc7c1d31d557cc",
+    "kernel_file": "de440s-1950-2050.bsp",
+    "kernel_size_bytes": 10890240,
+    "kernel_sha256": "06524f5fc8c3ff2f91b841936c80363d54cfd6d261e8cd7642e25d521ab88165",
+    "wasm_sha256": "7c6ca647b6853bb6c40657ad09a15812a09282d66400979e61f0cfe07dbae0a5",
+    "coordinate_contract": "apparent geocentric true ecliptic of date; light-time + Sun/Jupiter/Saturn deflection + aberration; IAU 2000A nutation + IAU 2006 precession",
+    "upstream_kernel_source": "https://ssd.jpl.nasa.gov/ftp/eph/planets/bsp/de440s.bsp"
+  },
+  "mercury_station": {
+    "de440s": {
+      "time_utc": "2026-06-29T17:35:55.146Z",
+      "longitude_deg": 116.25735909103152,
+      "root_method": "symmetric longitude derivative zero",
+      "half_window_convergence_seconds": {
+        "1": "2026-06-29T17:35:55.146Z",
+        "10": "2026-06-29T17:35:55.148Z",
+        "60": "2026-06-29T17:35:55.148Z",
+        "600": "2026-06-29T17:35:55.152Z",
+        "3600": "2026-06-29T17:35:55.277Z"
+      }
+    },
+    "astronomy_engine": {
+      "time_utc": "2026-06-29T17:37:07.786615Z",
+      "longitude_deg": 116.25786832645512,
+      "abs_time_delta_to_de440s_seconds": 72.640615,
+      "longitude_delta_to_de440s_arcsec": 1.833248
+    },
+    "pyswisseph_moseph": {
+      "time_utc": "2026-06-29T17:35:59.362552Z",
+      "longitude_deg": 116.25735302991127,
+      "retflag": 260,
+      "abs_time_delta_to_de440s_seconds": 4.216552,
+      "longitude_delta_to_de440s_arcsec": 0.021820
+    },
+    "adjudication": "pyswisseph_moseph_closer_to_de440s"
+  },
+  "venus_210_retrograde_return": {
+    "de440s": {
+      "time_utc": "2026-10-25T09:09:47.792Z",
+      "longitude_deg": 209.99999999413745
+    },
+    "astronomy_engine": {
+      "time_utc": "2026-10-25T08:56:57.679980Z",
+      "abs_time_delta_to_de440s_seconds": 770.112020,
+      "longitude_residual_at_de440s_event_arcsec": -19.592633
+    },
+    "pyswisseph_moseph": {
+      "time_utc": "2026-10-25T09:09:47.887135Z",
+      "retflag": 260,
+      "abs_time_delta_to_de440s_seconds": 0.095135,
+      "longitude_residual_at_de440s_event_arcsec": 0.002422
+    },
+    "adjudication": "pyswisseph_moseph_closer_to_de440s"
+  },
+  "tangential_station_implication": {
+    "production_tolerance_deg": 0.0001,
+    "production_tolerance_arcsec": 0.36,
+    "astronomy_engine_station_target_deg": 116.25786832645512,
+    "de440s_station_longitude_deg": 116.25735909103152,
+    "target_minus_de440s_station_arcsec": 1.833248,
+    "oracle_classification": "no_exact_tangential_hit_to_astronomy_engine_defined_target"
+  },
+  "conclusion": {
+    "case_specific_winner": "pyswisseph_moseph",
+    "scope": "Mercury 2026-06-29 station and Venus 2026-10-25 210-degree retrograde return only",
+    "global_provider_superiority_established": false,
+    "production_change_authorized": false,
+    "production_correctness_followup_required": true
+  }
+}
