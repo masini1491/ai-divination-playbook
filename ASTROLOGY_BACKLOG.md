@@ -37,9 +37,7 @@ This SHA is review evidence only, not a pin. Every maintenance or implementation
 
 ## Recommended execution order
 
-There is currently one active one-shot Astrology P1 research item:
-
-- **AST-P1-270 — Host-native PySwissEph transit parity feasibility** — research-only; current production transit routing remains unchanged, and this item does not authorize production admission.
+There is currently no active one-shot Astrology P1 implementation / research item after AST-P1-270 closure.
 
 Standing guard:
 
@@ -92,42 +90,6 @@ This file is an active / deferred coordination surface, not a completed-work arc
   - no regression reopens already-closed current-stack gaps.
 
 This item is a standing reconciliation guard. It is not a request to change current behavior immediately.
-
-## P1 — near-term research / architecture
-
-### AST-P1-270 — Host-native PySwissEph transit parity feasibility
-
-- type: RESEARCH / PROVIDER FEASIBILITY
-- status: OPEN
-- priority: P1
-- owner: Astrology provider research
-- blocked_by: none
-- trigger:
-  - explicit scope-expansion request to determine whether ChatGPT host-native PySwissEph can support deterministic transit calculation without prematurely changing the admitted production route.
-- current_state:
-  - production transit remains `astronomy-engine-transit-v1`;
-  - `swiss-host-natal-v1` remains admitted only for known-time natal; Swiss/PySwissEph transit search is not production-admitted;
-  - current-session capability observation: Python 3.13.5 + PySwissEph 2.10.03 can return longitude + longitude speed through `calc_ut(..., FLG_SWIEPH | FLG_SPEED)`; sampled Sun / Mercury / Saturn returned `retflag = 260`, i.e. MOSEPH rather than SWIEPH. This is coordination evidence only and must be re-probed and preserved in a research-evidence owner before any production judgment.
-- research_scope:
-  - benchmark host-native PySwissEph against the current Astronomy Engine transit provider for admitted event families: transit-to-natal exact roots, stations, tropical ingresses / retrograde returns, repeated passages, and moving-body geometry used by admitted transit-house calculations;
-  - include representative existing validation topologies, including Mercury multi-pass contacts, Mercury / Saturn stations, Venus ingress / retrograde-return / direct-reingress, and existing transit-house cases where applicable;
-  - define evidence-backed tolerances for longitude, longitude speed and exact event time instead of reusing natal tolerances by assumption;
-  - preserve per-calculation `retflag` provenance and terminology: only `SWIEPH_ONLY` may be called Swiss Ephemeris data; MOSEPH or mixed results remain host-native PySwissEph with the effective backend stated explicitly;
-  - keep architecture decision-neutral until parity evidence exists; do not pre-commit to a separate transit provider or a shared ephemeris-backend seam.
-- non_goals:
-  - no production routing change;
-  - no production admission mutation;
-  - no change to `tools/astrology_transit_provider.py` or other production runtime in this item;
-  - no repository/runtime installation or vendoring of PySwissEph / Swiss Ephemeris data;
-  - no transit interpretation-semantic expansion.
-- completion_gate:
-  - re-probe host capability and effective backend during the bounded research task;
-  - create durable research evidence for method, fixtures, tolerances, results and material discrepancies;
-  - cover enough admitted event families to support a provider-level judgment, not only point-in-time longitude samples;
-  - conclude one of: recommend a separate future production-admission task, retain Astronomy Engine-only production transit, or evidence insufficient;
-  - any future production admission must be a separately admitted work item; AST-P1-270 itself never authorizes production mutation.
-
-Relationship to AST-P2-030: this is a new explicit research scope expansion, not a reopening of its current production boundary. Until a later production-admission task is separately completed, transit continues to use Astronomy Engine.
 
 ## P2 — deferred compatibility / provider expansion
 
@@ -208,6 +170,7 @@ The items below are **DONE**. They are retained only as compact identity pointer
 - **AST-P1-240 — Sparse emergent exact-claim admission policy** — DONE; `references/astrology/EXACT_CLAIM_ADMISSION_POLICY_V1.*` formalizes `composition_adequate / research_candidate / exact_claim_admitted / unsupported`, rejects Cartesian or feedback-driven expansion, and requires explicit production admission after bounded research.
 - **AST-P1-250 — Post-Reading Natal Gap Escalation Gate** — DONE; `ASTROLOGY_NATAL_SYNTHESIS.md` now gates concrete passage-level `too_generic / repetitive / tension_not_integrated / unsupported_leakage` findings: reproducible output gaps may create bounded synthesis/guard fixes, semantic-resolution gaps must pass AST-P1-240, vague accuracy feedback creates no Repo work, and public persistence is synthetic/abstract only.
 - **AST-P1-260 — Astrology root-surface / domain-path normalization** — DONE; six Astrology admission manifests now live under `admissions/astrology/**`, provider requirements under `requirements/astrology-provider.txt`; exact-path consumers and Astrology/Zi Wei deterministic bundles were reconciled. Root method/materialization/Natal/Transit/provider-routing support owners were intentionally retained because moving them did not establish a net retrieval benefit.
+- **AST-P1-270 — Host-native PySwissEph transit parity feasibility** — DONE; bounded parity research found host-native PySwissEph/MOSeph numerically feasible for ordinary transit geometry but not established as a drop-in production-equivalent backend. 370 pointwise samples stayed within the research geometry/speed bands and major event topology matched, but one Venus retrograde-return timing delta reached 770.251 s and a Mercury tangential-station exact contact changed event identity under the current 0.0001° detector tolerance. Production remains `astronomy-engine-transit-v1`. Evidence: `references/astrology/HOST_NATIVE_PYSWISSEPH_TRANSIT_PARITY_RESULTS.md` + companion JSON/probe.
 - **AST-P2-010 — Interpolated Black Moon Lilith** — DONE.
 - **AST-P2-041 — Piecewise Chebyshev five-body ephemeris feasibility** — DONE.
 - **AST-P2-042 — Continuity-constrained / overlap Chebyshev five-body feasibility** — DONE.
@@ -246,8 +209,8 @@ Unless the user explicitly asks for a different bounded task, a fresh Astrology 
 2. read ASTROLOGY_BACKLOG.md
 3. reconcile any changed item status against canonical owners
 4. enforce AST-P0-002 alongside any affected interpretation change
-5. AST-P1-270 is the current one-shot P1 research item; execute it only under explicit bounded research authorization, and do not treat its existence as provider-routing or production-admission authority
-6. keep AST-P2-020 deferred unless its explicit trigger appears; AST-P2-030 remains the current production boundary while AST-P1-270 is research-only
+5. no one-shot Astrology P1 item is currently active; AST-P1-270 is closed and its research result keeps Astronomy Engine-only production transit
+6. keep AST-P2-020 deferred unless its explicit trigger appears; AST-P2-030 remains the current production boundary unless a new independently admitted scope expansion is created
 7. concrete post-reading broad-natal gaps follow `ASTROLOGY_NATAL_SYNTHESIS.md` §4.1; semantic-resolution gaps then pass `references/astrology/EXACT_CLAIM_ADMISSION_POLICY_V1.md` before exact-claim research
 ```
 
