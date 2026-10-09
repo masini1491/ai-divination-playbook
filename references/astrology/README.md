@@ -164,7 +164,13 @@ REFERENCE-ONLY; not production.
 - [`TRANSIT_NATAL_INGRESS_TIMEZONE_RESULTS.md`](TRANSIT_NATAL_INGRESS_TIMEZONE_RESULTS.md)
 - [`TIMEZONE_DST_CONTRACT_DRAFT.md`](TIMEZONE_DST_CONTRACT_DRAFT.md)
 
-這些歷史 probes 本身仍是 research evidence。Current production provider authority 來自獨立 admission manifests、runtime owners 與 production regressions，不是舊 probe 自動升格。
+Current bounded provider-feasibility follow-up:
+
+- [`HOST_NATIVE_PYSWISSEPH_TRANSIT_PARITY_RESULTS.md`](HOST_NATIVE_PYSWISSEPH_TRANSIT_PARITY_RESULTS.md) — AST-P1-270 report; current conclusion keeps Astronomy Engine-only production transit.
+- [`host_native_pyswisseph_transit_parity_results.json`](host_native_pyswisseph_transit_parity_results.json) — machine-readable parity result.
+- [`host_native_pyswisseph_transit_parity_probe.py`](host_native_pyswisseph_transit_parity_probe.py) — reference-only reproducible probe; requires host-preinstalled `swisseph` and the project Astronomy core runtime.
+
+這些 probes 本身仍是 research evidence。Current production provider authority 來自獨立 admission manifests、runtime owners 與 production regressions，不是 research evidence 自動升格。
 
 ### Unknown birth-time sensitivity
 
