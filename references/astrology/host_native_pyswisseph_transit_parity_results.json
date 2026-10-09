@@ -1,0 +1,120 @@
+{
+  "schema_name": "host_native_pyswisseph_transit_parity_research_result",
+  "schema_version": "1.0.0",
+  "authority": "reference-only-research-evidence",
+  "production_authority": false,
+  "runtime": {
+    "python": "3.13.5",
+    "pyswisseph_version": "2.10.03",
+    "requested_flags": 258,
+    "requested_backend": "SWIEPH|SPEED",
+    "observed_effective_backends": ["MOSEPH"],
+    "astronomy_engine_package": "astronomy-engine==2.1.19",
+    "astronomy_engine_source_revision": "865d3da7d8112bbc7911238052c6af4aaf877181"
+  },
+  "comparison_policy": {
+    "longitude_reference_ceiling_deg": 0.0167,
+    "longitude_reference_ceiling_role": "existing swiss-natal production geometry reference only; not promoted to a transit production tolerance",
+    "speed_diagnostic_band_deg_per_day": 0.001,
+    "speed_diagnostic_band_role": "research discrepancy screen away from speed-zero roots; stations are judged by zero-crossing topology and event time",
+    "event_time_reference_bands_seconds": {"tight": 90.0, "existing_mercury_transit_ceiling": 600.0},
+    "event_time_reference_role": "historical/reference bands only; no global transit production tolerance is selected"
+  },
+  "pointwise": {
+    "timestamp_count": 37,
+    "sample_count": 370,
+    "summary": {
+      "longitude_max_deg": 0.0056593587360112,
+      "longitude_max_arcsec": 20.37369144964032,
+      "longitude_p95_deg": 0.003430558020653507,
+      "longitude_p99_deg": 0.004577491423077618,
+      "speed_max_deg_per_day": 0.0003802374514167983,
+      "speed_p95_deg_per_day": 0.00019403041586793512,
+      "speed_p99_deg_per_day": 0.00028553624273219835,
+      "effective_backends": ["MOSEPH"],
+      "retflags": [260]
+    },
+    "worst_longitude": {
+      "time_utc": "2026-10-15T12:00:00Z",
+      "body": "Venus",
+      "longitude_difference_deg": 0.0056593587360112,
+      "speed_difference_deg_per_day": 2.642518416878792e-05,
+      "pyswisseph_retflag": 260,
+      "pyswisseph_effective_backend": "MOSEPH"
+    },
+    "worst_speed": {
+      "time_utc": "2026-07-15T12:00:00Z",
+      "body": "Mercury",
+      "longitude_difference_deg": 0.00031427351410684423,
+      "speed_difference_deg_per_day": 0.0003802374514167983,
+      "pyswisseph_retflag": 260,
+      "pyswisseph_effective_backend": "MOSEPH"
+    }
+  },
+  "event_families": {
+    "mercury_three_pass": {
+      "astronomy_engine_count": 3,
+      "pyswisseph_count": 3,
+      "rows": [
+        {"index":1,"astronomy_engine_time_utc":"2026-06-16T15:43:55.565186Z","pyswisseph_time_utc":"2026-06-16T15:44:16.988526Z","absolute_time_delta_seconds":21.42334,"motion_direction_astronomy_engine":"direct","motion_direction_pyswisseph":"direct","root_kind_astronomy_engine":"crossing","root_kind_pyswisseph":"crossing"},
+        {"index":2,"astronomy_engine_time_utc":"2026-07-14T03:53:53.111573Z","pyswisseph_time_utc":"2026-07-14T03:53:27.073975Z","absolute_time_delta_seconds":26.037598,"motion_direction_astronomy_engine":"retrograde","motion_direction_pyswisseph":"retrograde","root_kind_astronomy_engine":"crossing","root_kind_pyswisseph":"crossing"},
+        {"index":3,"astronomy_engine_time_utc":"2026-08-01T13:52:55.213624Z","pyswisseph_time_utc":"2026-08-01T13:51:40.726319Z","absolute_time_delta_seconds":74.487305,"motion_direction_astronomy_engine":"direct","motion_direction_pyswisseph":"direct","root_kind_astronomy_engine":"crossing","root_kind_pyswisseph":"crossing"}
+      ]
+    },
+    "stations_2026": {
+      "Mercury": {
+        "astronomy_engine_count": 6,
+        "pyswisseph_count": 6,
+        "max_absolute_time_delta_seconds": 151.611328,
+        "transition_sequence_match": true
+      },
+      "Saturn": {
+        "astronomy_engine_count": 2,
+        "pyswisseph_count": 2,
+        "max_absolute_time_delta_seconds": 460.437012,
+        "transition_sequence_match": true
+      }
+    },
+    "venus_210_boundary": {
+      "astronomy_engine_count": 3,
+      "pyswisseph_count": 3,
+      "topology_match": true,
+      "absolute_time_delta_seconds": [354.968261,770.251464,112.060547]
+    },
+    "sun_whole_sign_house_1_ingress": {
+      "astronomy_engine_count": 1,
+      "pyswisseph_count": 1,
+      "from_house_match": true,
+      "to_house_match": true,
+      "absolute_time_delta_seconds": 24.389649
+    },
+    "sun_house_context": {
+      "astronomy_engine_house": 12,
+      "pyswisseph_house": 12,
+      "longitude_difference_deg": 0.0002824994764409894
+    },
+    "tangential_station_fixed_target": {
+      "fixed_target_source": "Astronomy Engine Mercury station longitude",
+      "fixed_target_longitude_deg": 116.25786832645738,
+      "station_longitude_difference_deg": 0.0005152965425452294,
+      "station_longitude_difference_arcsec": 1.8550675531628258,
+      "admitted_tangential_detection_tolerance_deg": 0.0001,
+      "admitted_tangential_detection_tolerance_arcsec": 0.36,
+      "astronomy_engine_exact_event_count": 1,
+      "pyswisseph_exact_event_count": 0
+    }
+  },
+  "event_time_summary": {
+    "compared_event_count": 15,
+    "max_absolute_delta_seconds": 770.251464,
+    "within_90_seconds": 9,
+    "within_600_seconds": 14,
+    "over_600_seconds": 1
+  },
+  "conclusion": {
+    "decision": "retain_astronomy_engine_only_production_transit",
+    "pyswisseph_ordinary_geometry_feasible": true,
+    "drop_in_production_equivalence_established": false,
+    "production_routing_change_authorized": false
+  }
+}
