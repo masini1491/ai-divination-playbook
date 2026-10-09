@@ -164,11 +164,7 @@ REFERENCE-ONLY; not production.
 - [`TRANSIT_NATAL_INGRESS_TIMEZONE_RESULTS.md`](TRANSIT_NATAL_INGRESS_TIMEZONE_RESULTS.md)
 - [`TIMEZONE_DST_CONTRACT_DRAFT.md`](TIMEZONE_DST_CONTRACT_DRAFT.md)
 
-Current bounded provider-feasibility follow-up:
-
-- [`HOST_NATIVE_PYSWISSEPH_TRANSIT_PARITY_RESULTS.md`](HOST_NATIVE_PYSWISSEPH_TRANSIT_PARITY_RESULTS.md) — AST-P1-270 report; current conclusion keeps Astronomy Engine-only production transit.
-- [`host_native_pyswisseph_transit_parity_results.json`](host_native_pyswisseph_transit_parity_results.json) — machine-readable parity result.
-- [`host_native_pyswisseph_transit_parity_probe.py`](host_native_pyswisseph_transit_parity_probe.py) — reference-only reproducible probe; requires host-preinstalled `swisseph` and the project Astronomy core runtime.
+AST-P1-270 PySwissEph transit parity → [report](HOST_NATIVE_PYSWISSEPH_TRANSIT_PARITY_RESULTS.md) / [JSON](host_native_pyswisseph_transit_parity_results.json) / [probe](host_native_pyswisseph_transit_parity_probe.py)；結論維持 Astronomy Engine-only production transit。
 
 這些 probes 本身仍是 research evidence。Current production provider authority 來自獨立 admission manifests、runtime owners 與 production regressions，不是 research evidence 自動升格。
 
