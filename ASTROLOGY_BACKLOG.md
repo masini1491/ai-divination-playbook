@@ -39,9 +39,10 @@ This SHA is review evidence only, not a pin. Every maintenance or implementation
 
 There is currently no active one-shot Astrology P1 implementation / research item after AST-P1-270 closure.
 
-Standing guard:
+Standing guards / correctness work:
 
 - **AST-P0-002** remains OPEN and is enforced alongside affected interpretation changes.
+- **AST-P0-003 — Transit exact-event correctness remediation** — OPEN; JPL DE440S adjudication confirmed that the current Astronomy Engine transit path is materially farther from the independent oracle than PySwissEph/MOSeph in two disputed admitted/validated 2026 cases. This item owns the minimum safe production remedy and must not assume the remedy is a provider swap.
 
 No active one-shot Astrology P2 provider task remains after AST-P2-030 closure.
 
@@ -90,6 +91,36 @@ This file is an active / deferred coordination surface, not a completed-work arc
   - no regression reopens already-closed current-stack gaps.
 
 This item is a standing reconciliation guard. It is not a request to change current behavior immediately.
+
+### AST-P0-003 — Transit exact-event correctness remediation
+
+- type: CORRECTNESS / PROVIDER ADMISSION REVIEW
+- status: OPEN
+- priority: P0
+- owner: Astrology transit production maintenance
+- blocked_by: none
+- trigger:
+  - AST-P1-280 independent JPL DE440S adjudication.
+- current_evidence:
+  - `references/astrology/JPL_DE440S_TRANSIT_ORACLE_ADJUDICATION.md`;
+  - Mercury 2026-06-29 station: PySwissEph/MOSeph ≈4.22 s from DE440S, Astronomy Engine ≈72.64 s;
+  - Venus 2026-10-25 tropical 210° retrograde return: PySwissEph/MOSeph ≈0.095 s from DE440S, Astronomy Engine ≈770.11 s;
+  - the Astronomy-Engine-defined Mercury tangential station target differs from the DE440S station longitude by ≈1.833″, exceeding the current 0.36″ tangential exact-hit tolerance.
+- problem:
+  - current production exact-event evidence includes at least one timing case and one tangential event-identity case where the admitted Astronomy Engine path is not the closest of the tested engines to the independent DE440S oracle;
+  - this is now a production correctness question, not merely a research/provider-comparison question.
+- required_decision:
+  - identify the actual source of the Astronomy Engine discrepancy before choosing a remedy;
+  - determine whether the minimum safe action is to correct the current coordinate/event model, narrow affected admission, or separately admit a different deterministic ephemeris backend;
+  - preserve natal-target provenance/backend compatibility and explicit effective-backend provenance;
+  - do not globally promote PySwissEph from two adjudicated cases.
+- completion_gate:
+  - reproduce the disputed cases from current exact-main production code;
+  - localize discrepancy origin at the calculation/coordinate/search layer;
+  - add independent-oracle regressions for the affected cases;
+  - implement the minimum safe correction or bounded admission change;
+  - reconcile `ASTROLOGY_TRANSIT.md`, admission manifest(s), tests and user-facing provenance in the same bounded Stage;
+  - merge, canonical read-back and required CI PASS.
 
 ## P2 — deferred compatibility / provider expansion
 
@@ -171,6 +202,7 @@ The items below are **DONE**. They are retained only as compact identity pointer
 - **AST-P1-250 — Post-Reading Natal Gap Escalation Gate** — DONE; `ASTROLOGY_NATAL_SYNTHESIS.md` now gates concrete passage-level `too_generic / repetitive / tension_not_integrated / unsupported_leakage` findings: reproducible output gaps may create bounded synthesis/guard fixes, semantic-resolution gaps must pass AST-P1-240, vague accuracy feedback creates no Repo work, and public persistence is synthetic/abstract only.
 - **AST-P1-260 — Astrology root-surface / domain-path normalization** — DONE; six Astrology admission manifests now live under `admissions/astrology/**`, provider requirements under `requirements/astrology-provider.txt`; exact-path consumers and Astrology/Zi Wei deterministic bundles were reconciled. Root method/materialization/Natal/Transit/provider-routing support owners were intentionally retained because moving them did not establish a net retrieval benefit.
 - **AST-P1-270 — Host-native PySwissEph transit parity feasibility** — DONE; bounded parity research found host-native PySwissEph/MOSeph numerically feasible for ordinary transit geometry but not established as a drop-in production-equivalent backend. 370 pointwise samples stayed within the research geometry/speed bands and major event topology matched, but one Venus retrograde-return timing delta reached 770.251 s and a Mercury tangential-station exact contact changed event identity under the current 0.0001° detector tolerance. Production remains `astronomy-engine-transit-v1`. Evidence: `references/astrology/HOST_NATIVE_PYSWISSEPH_TRANSIT_PARITY_RESULTS.md` + companion JSON/probe.
+- **AST-P1-280 — JPL DE440S transit oracle adjudication** — DONE; independent DE440S binary-kernel adjudication resolved both disputed AST-P1-270 cases in favor of PySwissEph/MOSeph as closer to the oracle. This does not admit PySwissEph globally; it opens AST-P0-003 correctness remediation. Evidence: `references/astrology/JPL_DE440S_TRANSIT_ORACLE_ADJUDICATION.md` + companion JSON.
 - **AST-P2-010 — Interpolated Black Moon Lilith** — DONE.
 - **AST-P2-041 — Piecewise Chebyshev five-body ephemeris feasibility** — DONE.
 - **AST-P2-042 — Continuity-constrained / overlap Chebyshev five-body feasibility** — DONE.
@@ -209,8 +241,9 @@ Unless the user explicitly asks for a different bounded task, a fresh Astrology 
 2. read ASTROLOGY_BACKLOG.md
 3. reconcile any changed item status against canonical owners
 4. enforce AST-P0-002 alongside any affected interpretation change
-5. no one-shot Astrology P1 item is currently active; AST-P1-270 is closed and its research result keeps Astronomy Engine-only production transit
-6. keep AST-P2-020 deferred unless its explicit trigger appears; AST-P2-030 remains the current production boundary unless a new independently admitted scope expansion is created
+5. AST-P0-003 is the current transit correctness priority; resolve it before any new transit provider expansion
+6. no one-shot Astrology P1 item is currently active; AST-P1-270 and AST-P1-280 are closed research items
+7. keep AST-P2-020 deferred unless its explicit trigger appears; AST-P2-030 remains the current production boundary unless a new independently admitted scope expansion is created
 7. concrete post-reading broad-natal gaps follow `ASTROLOGY_NATAL_SYNTHESIS.md` §4.1; semantic-resolution gaps then pass `references/astrology/EXACT_CLAIM_ADMISSION_POLICY_V1.md` before exact-claim research
 ```
 
