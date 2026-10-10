@@ -409,7 +409,7 @@ def search_house_ingresses(
                 roots.append((root, house, cusp))
         roots.sort(key=lambda item: item[0])
         for index, (root, cusp_house, cusp) in enumerate(roots, start=1):
-            longitude, speed = _longitude_and_speed(body, root)
+            longitude, speed = backend(body, root)
             before_lon = backend(body, root - dt.timedelta(minutes=5))[0]
             after_lon = backend(body, root + dt.timedelta(minutes=5))[0]
             from_house = _house_of_longitude(before_lon, cusps)
@@ -459,9 +459,9 @@ def search_ingresses(
         roots.sort(key=lambda item: item[0])
         retrograde_returned_boundaries: set[float] = set()
         for index, (root, boundary) in enumerate(roots, start=1):
-            longitude, speed = _longitude_and_speed(body, root)
-            before_lon = _longitude_and_speed(body, root - dt.timedelta(minutes=5))[0]
-            after_lon = _longitude_and_speed(body, root + dt.timedelta(minutes=5))[0]
+            longitude, speed = backend(body, root)
+            before_lon = backend(body, root - dt.timedelta(minutes=5))[0]
+            after_lon = backend(body, root + dt.timedelta(minutes=5))[0]
             before_sign = int(before_lon // 30.0)
             after_sign = int(after_lon // 30.0)
             if before_sign == after_sign:
