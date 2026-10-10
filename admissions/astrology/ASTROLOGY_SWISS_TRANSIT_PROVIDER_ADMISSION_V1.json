@@ -1,0 +1,114 @@
+{
+  "schema_name": "astrology_swiss_transit_provider_admission",
+  "schema_version": "1.0.0",
+  "provider_id": "pyswisseph-host-transit-v1",
+  "provider_version": "1.0.0",
+  "status": "PRODUCTION_ADMITTED_HOST_CONDITIONAL",
+  "activation": "chatgpt_host_native_runtime_only",
+  "runtime_owner": "tools/astrology_swiss_transit_provider.py",
+  "shared_search_kernel": "tools/astrology_transit_provider.py",
+  "output_schema": "astrology_fact_bundle@1.0.0",
+  "scope": [
+    "transit_to_natal_exact_aspects",
+    "stations",
+    "tropical_ingresses",
+    "transit_house_ingress_exact_roots",
+    "transit_house_point_in_time_context"
+  ],
+  "dependency_boundary": {
+    "import_name": "swisseph",
+    "runtime_source": "host_preinstalled_only",
+    "repository_dependency_added": false,
+    "repository_install_forbidden": true,
+    "runtime_install_forbidden": true,
+    "vendored_source": false,
+    "vendored_ephemeris_data": false,
+    "non_chatgpt_use": "forbidden",
+    "platform_runtime_license_assertion": "none"
+  },
+  "input_contract": {
+    "paired_natal_provider_id": "swiss-host-natal-v1",
+    "search_time_basis": "UTC",
+    "max_search_days": 400,
+    "admitted_search_range_utc": {
+      "start_inclusive": "1950-01-01T00:00:00Z",
+      "end_window_must_be_lte": "2050-01-01T00:00:00Z"
+    },
+    "moving_bodies": [
+      "Sun", "Moon", "Mercury", "Venus", "Mars",
+      "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto"
+    ],
+    "natal_targets": "supported natal planet/point longitudes present in paired admitted natal bundle",
+    "major_aspects": ["conjunction", "opposition", "trine", "square", "sextile"],
+    "transit_house_search": "same exact-birth-time / admitted-house-cusp contract as astronomy-engine-transit-v1"
+  },
+  "calculation_policy": {
+    "zodiac_system": "tropical",
+    "center": "geocentric",
+    "canonical_event_time": "UTC",
+    "provider_api_family": "PySwissEph",
+    "requested_ephemeris": "SWIEPH|SPEED",
+    "effective_backend": "actual_retflag_per_moving_body_is_authoritative",
+    "admitted_effective_backends": ["SWIEPH", "MOSEPH"],
+    "admitted_backend_summaries": [
+      "SWIEPH_ONLY",
+      "MOSEPH_ONLY",
+      "MIXED_SWIEPH_MOSEPH"
+    ],
+    "root_tolerance_seconds": 0.5,
+    "root_tolerance_semantics": "numerical_search_tolerance_inside_selected_ephemeris_model_not_independent_oracle_accuracy",
+    "shared_search_semantics": "owned_by_astrology_transit_provider",
+    "tangential_station_angle_tolerance_deg": 0.0001,
+    "terminology_contract": {
+      "provider_generic_label": "host-native PySwissEph transit provider",
+      "SWIEPH_ONLY": "may describe as Swiss Ephemeris data backend",
+      "MOSEPH_ONLY": "must describe as PySwissEph host provider with Moshier backend; must not call it Swiss Ephemeris data",
+      "MIXED_SWIEPH_MOSEPH": "must describe as PySwissEph host provider with mixed SWIEPH/MOSEPH backends"
+    }
+  },
+  "validation": {
+    "independent_oracle": "NASA/JPL DE440S binary SPK through independently Skyfield/jplephem-validated reduction",
+    "oracle_evidence": [
+      "references/astrology/JPL_DE440S_TRANSIT_ORACLE_ADJUDICATION.md",
+      "references/astrology/jpl_de440s_transit_oracle_adjudication.json"
+    ],
+    "modern_range_pointwise_samples": 4000,
+    "modern_range_pointwise_years": "1950-2049",
+    "modern_range_pointwise_pyswisseph_closer_count": 3702,
+    "modern_range_pointwise_astronomy_engine_closer_count": 298,
+    "pyswisseph_max_longitude_error_arcsec": 2.84462941460788,
+    "astronomy_engine_max_longitude_error_arcsec": 20.46238257051982,
+    "cross_era_event_root_samples": 15,
+    "cross_era_event_root_pyswisseph_closer_count": 15,
+    "mercury_2026_station_de440s_delta_seconds": 4.216552,
+    "venus_2026_210_retrograde_return_de440s_delta_seconds": 0.095135,
+    "current_chatgpt_runtime_observation": {
+      "python": "3.13.5",
+      "pyswisseph": "2.10.03",
+      "observed_core_planet_backend": "MOSEPH",
+      "observed_retflag": 260
+    },
+    "runtime_gate_required": true,
+    "production_tests": "tests/test_astrology_swiss_transit_provider.py"
+  },
+  "fallback": {
+    "provider_id": "astronomy-engine-transit-v1",
+    "admission_manifest": "admissions/astrology/ASTROLOGY_TRANSIT_PROVIDER_ADMISSION_V1.json",
+    "precision_semantics": "portable_provider_model_root; numerical root tolerance is not external ephemeris accuracy"
+  },
+  "not_admitted": [
+    "non_chatgpt pyswisseph transit execution",
+    "repository-installed pyswisseph",
+    "vendored swiss ephemeris data",
+    "search windows extending before 1950-01-01T00:00:00Z",
+    "search windows extending after 2050-01-01T00:00:00Z",
+    "mixed-backend natal target with PySwissEph moving transit",
+    "JPLEPH effective backend without separate admission",
+    "UNKNOWN effective backend",
+    "sidereal ingress",
+    "topocentric transit geometry",
+    "unbounded search windows",
+    "global provider superiority claim"
+  ],
+  "scientific_predictive_validity_claimed": false
+}
