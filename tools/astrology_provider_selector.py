@@ -180,8 +180,6 @@ def select_transit_provider(
     routing_manifest=None,
     swiss_transit_admission=None,
 ):
-    routing = routing_manifest or _load_json(ROUTING_MANIFEST_PATH)
-    swiss = swiss_transit_admission or _load_json(SWISS_TRANSIT_ADMISSION_PATH)
     host = host_family.strip().lower()
     if host not in {CHATGPT_HOST, PORTABLE_HOST}:
         raise ProviderSelectionError(f"unsupported host_family: {host_family}")
@@ -197,6 +195,8 @@ def select_transit_provider(
             fallback_provider_id=ASTRONOMY_TRANSIT_PROVIDER_ID,
         )
 
+    routing = routing_manifest or _load_json(ROUTING_MANIFEST_PATH)
+    swiss = swiss_transit_admission or _load_json(SWISS_TRANSIT_ADMISSION_PATH)
     route = routing.get("routes", {}).get("chatgpt", {}).get("transit", {})
     preferred = route.get("preferred_provider_id")
     fallback = route.get("fallback_provider_id")
