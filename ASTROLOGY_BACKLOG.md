@@ -37,7 +37,7 @@ This SHA is review evidence only, not a pin. Every maintenance or implementation
 
 ## Recommended execution order
 
-There is currently no active one-shot Astrology P1 implementation / research item after AST-P1-270 closure.
+There is currently no active one-shot Astrology P1 implementation / research item after AST-P1-280 closure.
 
 Standing guards / correctness work:
 
@@ -48,7 +48,7 @@ No active one-shot Astrology P2 provider task remains after AST-P2-030 closure.
 
 Closed anti-rediscovery boundary:
 
-- **AST-P2-030** — ChatGPT exact/approximate known-time natal may use only host-preinstalled `swisseph`; non-ChatGPT, unknown-time, transit, runtime-probe failure, or any route requiring install/vendor falls back to Astronomy Engine. Repo never installs or distributes Swiss.
+- **AST-P2-030** — ChatGPT exact/approximate known-time natal may use only host-preinstalled `swisseph`; non-ChatGPT, unknown-time, runtime-probe failure, or any route requiring install/vendor falls back to Astronomy Engine. The natal provider itself does not own transit event search; transit provider routing is independently bounded by `ASTROLOGY_PROVIDER_ROUTING_V1.json`. Repo never installs or distributes Swiss.
 - **PySwissEph/API vs effective backend semantics** — CLOSED: provider identity does not imply SWIEPH data; retflag-derived `SWIEPH_ONLY` / `MOSEPH_ONLY` / `MIXED_SWIEPH_MOSEPH` provenance is authoritative, and only `SWIEPH_ONLY` may be described as Swiss Ephemeris data.
 - **Place-resolver materialization ownership** — CLOSED: named-place/country recovery is provider-independent and owned by `ASTROLOGY_PLACE_RESOLVER_MATERIALIZATION.md`; Swiss PASS never authorizes generic-web coordinate substitution.
 
