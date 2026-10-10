@@ -19,15 +19,31 @@ import datetime as dt
 import json
 from typing import Any, Callable, Iterable
 
-from tools.astrology_provider import (
-    ASTRONOMY_ENGINE_PACKAGE_VERSION,
-    ASTRONOMY_ENGINE_SOURCE_REVISION,
-    BODY_NAMES,
-    _longitude_and_speed,
-    _normalize_degrees,
-    _signed_delta_degrees,
-)
 from tools.astrology_runtime import MAJOR_ASPECT_ORBS, gate_bundle
+
+ASTRONOMY_ENGINE_PACKAGE_VERSION = "2.1.19"
+ASTRONOMY_ENGINE_SOURCE_REVISION = "865d3da7d8112bbc7911238052c6af4aaf877181"
+BODY_NAMES = (
+    "Sun", "Moon", "Mercury", "Venus", "Mars", "Jupiter",
+    "Saturn", "Uranus", "Neptune", "Pluto", "NorthNode",
+)
+
+
+def _normalize_degrees(value: float) -> float:
+    return value % 360.0
+
+
+def _signed_delta_degrees(a: float, b: float) -> float:
+    return ((b - a + 180.0) % 360.0) - 180.0
+
+
+def _longitude_and_speed(body: str, when: dt.datetime) -> tuple[float, float]:
+    # Keep Astronomy Engine as the portable default without making it a
+    # module-import prerequisite for host-native alternate backends.
+    from tools.astrology_provider import _longitude_and_speed as astronomy_backend
+
+    return astronomy_backend(body, when)
+
 
 PROVIDER_ID = "astronomy-engine-transit-v1"
 PROVIDER_VERSION = "1.2.0"
