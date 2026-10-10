@@ -35,11 +35,25 @@
       "end_window_must_be_lte": "2050-01-01T00:00:00Z"
     },
     "moving_bodies": [
-      "Sun", "Moon", "Mercury", "Venus", "Mars",
-      "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto"
+      "Sun",
+      "Moon",
+      "Mercury",
+      "Venus",
+      "Mars",
+      "Jupiter",
+      "Saturn",
+      "Uranus",
+      "Neptune",
+      "Pluto"
     ],
     "natal_targets": "supported natal planet/point longitudes present in paired admitted natal bundle",
-    "major_aspects": ["conjunction", "opposition", "trine", "square", "sextile"],
+    "major_aspects": [
+      "conjunction",
+      "opposition",
+      "trine",
+      "square",
+      "sextile"
+    ],
     "transit_house_search": "same exact-birth-time / admitted-house-cusp contract as astronomy-engine-transit-v1"
   },
   "calculation_policy": {
@@ -49,7 +63,10 @@
     "provider_api_family": "PySwissEph",
     "requested_ephemeris": "SWIEPH|SPEED",
     "effective_backend": "actual_retflag_per_moving_body_is_authoritative",
-    "admitted_effective_backends": ["SWIEPH", "MOSEPH"],
+    "admitted_effective_backends": [
+      "SWIEPH",
+      "MOSEPH"
+    ],
     "admitted_backend_summaries": [
       "SWIEPH_ONLY",
       "MOSEPH_ONLY",
@@ -70,7 +87,9 @@
     "independent_oracle": "NASA/JPL DE440S binary SPK through independently Skyfield/jplephem-validated reduction",
     "oracle_evidence": [
       "references/astrology/JPL_DE440S_TRANSIT_ORACLE_ADJUDICATION.md",
-      "references/astrology/jpl_de440s_transit_oracle_adjudication.json"
+      "references/astrology/jpl_de440s_transit_oracle_adjudication.json",
+      "references/astrology/MODERN_TRANSIT_PROVIDER_PRECISION_EVIDENCE.md",
+      "references/astrology/modern_transit_provider_precision_evidence.json"
     ],
     "modern_range_pointwise_samples": 4000,
     "modern_range_pointwise_years": "1950-2049",
