@@ -1,0 +1,25 @@
+name: TEMP Generate Astrology Bundle
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  generate:
+    if: github.head_ref == 'fix/ast-p0-003-transit-precision'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --disable-pip-version-check -r requirements/astrology-provider.txt
+      - run: python tools/build_astrology_core_bundle.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: temp-astrology-core-bundle-${{ github.sha }}
+          path: runtime/astrology/CHATGPT_DETERMINISTIC_CORE_BUNDLE.json
+          if-no-files-found: error
+          retention-days: 1
