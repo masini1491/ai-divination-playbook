@@ -1,0 +1,55 @@
+{
+  "schema_name": "modern_range_transit_provider_precision_evidence",
+  "schema_version": "1.0.0",
+  "authority": "reference-only-correctness-evidence",
+  "tested_playbook_revision": "be92edac39675ec76213697a22670bc370395063",
+  "oracle": {
+    "kernel": "JPL_DE440S",
+    "external_repository": "ffalcinelli/astroceleste-engine",
+    "external_commit": "622693a0e49a622f955c3a298d7f09ed650e1382",
+    "workflow_run": 37898071384,
+    "artifact_id": 11601197376,
+    "artifact_digest": "sha256:0c95147d5fa44c977f7aa0c435db6c2468ac9b5fff92f1998dfc7c1d31d557cc",
+    "kernel_sha256": "06524f5fc8c3ff2f91b841936c80363d54cfd6d261e8cd7642e25d521ab88165",
+    "kernel_size_bytes": 10890240
+  },
+  "root_cause": {
+    "primary_layer": "underlying_astronomy_engine_planetary_geocentric_model_accuracy_boundary",
+    "root_search_bug_supported": false,
+    "aberration_bug_supported": false,
+    "ecliptic_conversion_bug_supported": false,
+    "astronomy_engine_design_accuracy": "within_1_arcminute",
+    "root_tolerance_interpretation": "numerical_convergence_inside_provider_model_not_external_ephemeris_accuracy"
+  },
+  "pointwise_2026": {
+    "sample_count": 370,
+    "pyswisseph_effective_backend": "MOSEPH",
+    "astronomy_engine": {"max_arcsec": 20.462, "p95_arcsec": 11.968, "p99_arcsec": 16.433, "median_arcsec": 1.710, "closer_count": 2},
+    "pyswisseph_moseph": {"max_arcsec": 1.328, "p95_arcsec": 0.459, "p99_arcsec": 0.906, "median_arcsec": 0.052, "closer_count": 368}
+  },
+  "pointwise_1950_2049": {
+    "sample_count": 4000,
+    "sampling": "four seasonal UTC instants per year times Sun through Pluto",
+    "observed_retflag": 260,
+    "pyswisseph_effective_backend": "MOSEPH",
+    "astronomy_engine": {"max_arcsec": 20.462, "p95_arcsec": 11.482, "p99_arcsec": 16.595, "median_arcsec": 1.576, "closer_count": 298},
+    "pyswisseph_moseph": {"max_arcsec": 2.845, "p95_arcsec": 0.794, "p99_arcsec": 1.446, "median_arcsec": 0.087, "closer_count": 3702}
+  },
+  "event_roots": {
+    "sample_count": 15,
+    "years": [1950, 1975, 2000, 2025, 2049],
+    "families_per_year": ["Mercury station", "Saturn station", "Venus tropical ingress"],
+    "pyswisseph_closer_count": 15,
+    "astronomy_engine_closer_count": 0
+  },
+  "production_judgment": {
+    "chatgpt_modern_range_preferred_provider": "pyswisseph-host-transit-v1",
+    "paired_natal_provider": "swiss-host-natal-v1",
+    "validated_start_inclusive": "1950-01-01T00:00:00Z",
+    "validated_end_window_must_be_lte": "2050-01-01T00:00:00Z",
+    "portable_fallback": "astronomy-engine-transit-v1",
+    "fallback_pairing": "astronomy-engine-natal-v1 + astronomy-engine-transit-v1",
+    "global_provider_superiority_claimed": false,
+    "repository_install_or_vendoring_authorized": false
+  }
+}
