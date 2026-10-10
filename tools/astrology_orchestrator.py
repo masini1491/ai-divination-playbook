@@ -33,6 +33,8 @@ HOUSE_SYSTEM_SELECTION_DEFAULT = "project_default"
 HOUSE_SYSTEM_SELECTION_EXPLICIT = "explicit_user_choice"
 ASTRONOMY_PROVIDER_ID = "astronomy-engine-natal-v1"
 SWISS_PROVIDER_ID = "swiss-host-natal-v1"
+ASTRONOMY_TRANSIT_PROVIDER_ID = "astronomy-engine-transit-v1"
+SWISS_TRANSIT_PROVIDER_ID = "pyswisseph-host-transit-v1"
 BODY_NAMES = (
     "Sun", "Moon", "Mercury", "Venus", "Mars", "Jupiter",
     "Saturn", "Uranus", "Neptune", "Pluto", "NorthNode",
@@ -67,6 +69,21 @@ def _select_natal_provider(
     )
 
 
+def _select_transit_provider(
+    *,
+    host_family: str,
+    start_utc: str,
+    end_utc: str,
+):
+    from tools.astrology_provider_selector import select_transit_provider
+
+    return select_transit_provider(
+        host_family=host_family,
+        start_utc=start_utc,
+        end_utc=end_utc,
+    )
+
+
 def _load_astronomy_natal_provider():
     try:
         from tools.astrology_provider import (
@@ -86,6 +103,11 @@ def _load_astronomy_natal_provider():
 def _load_swiss_natal_provider():
     from tools import astrology_swiss_provider
     return astrology_swiss_provider
+
+
+def _load_swiss_transit_provider():
+    from tools import astrology_swiss_transit_provider
+    return astrology_swiss_transit_provider
 
 
 def _load_transit_provider():
@@ -532,53 +554,62 @@ def run_request(
     normalized = normalize_request(data)
     resolved, input_resolution = _resolve_location(normalized)
     birth = normalized["birth"]
+    is_transit = normalized["reading_mode"] == "transit"
 
-    provider_selection = _select_natal_provider(
-        host_family=host_family,
-        reading_mode=normalized["reading_mode"],
-        birth_time_certainty=birth["birth_time_certainty"],
-    )
-
-    if birth["birth_time_certainty"] == "unknown":
-        _, build_unknown_time_natal_bundle = _load_astronomy_natal_provider()
-        natal_bundle = build_unknown_time_natal_bundle(
-            local_date=birth["local_date"],
-            timezone_name=resolved["timezone_name"],
-            subject_ref=normalized["subject_ref"],
+    transit_selection: dict[str, Any] | None = None
+    if is_transit:
+        transit = normalized["transit"]
+        transit_selection = _select_transit_provider(
+            host_family=host_family,
+            start_utc=transit["start_utc"],
+            end_utc=transit["end_utc"],
         )
-    elif provider_selection["selected_provider_id"] == SWISS_PROVIDER_ID:
-        swiss_provider = _load_swiss_natal_provider()
-        try:
-            natal_bundle = swiss_provider.build_natal_bundle(
-                local_datetime=birth["local_datetime"],
-                timezone_name=resolved["timezone_name"],
-                latitude=resolved["latitude"],
-                longitude=resolved["longitude"],
-                house_system=birth["house_system"],
-                subject_ref=normalized["subject_ref"],
+        if transit_selection["selected_provider_id"] == SWISS_TRANSIT_PROVIDER_ID:
+            provider_selection = _select_natal_provider(
+                host_family=host_family,
+                reading_mode="natal",
                 birth_time_certainty=birth["birth_time_certainty"],
             )
-        except swiss_provider.SwissProviderUnavailable:
-            build_natal_bundle, _ = _load_astronomy_natal_provider()
-            natal_bundle = build_natal_bundle(
-                local_datetime=birth["local_datetime"],
-                timezone_name=resolved["timezone_name"],
-                latitude=resolved["latitude"],
-                longitude=resolved["longitude"],
-                house_system=birth["house_system"],
-                subject_ref=normalized["subject_ref"],
-                birth_time_certainty=birth["birth_time_certainty"],
-            )
+            if provider_selection["selected_provider_id"] != SWISS_PROVIDER_ID:
+                transit_selection = {
+                    **transit_selection,
+                    "selected_provider_id": ASTRONOMY_TRANSIT_PROVIDER_ID,
+                    "fallback_used": True,
+                    "reason_codes": transit_selection.get("reason_codes", [])
+                    + ["PAIRED_SWISS_NATAL_PROVIDER_UNAVAILABLE"],
+                }
+                provider_selection = {
+                    "selected_provider_id": ASTRONOMY_PROVIDER_ID,
+                    "preferred_provider_id": SWISS_PROVIDER_ID,
+                    "fallback_used": True,
+                    "reason_codes": ["TRANSIT_PAIR_FALLBACK_TO_PORTABLE"],
+                    "runtime_probe": provider_selection.get("runtime_probe"),
+                }
+        else:
             provider_selection = {
-                **provider_selection,
                 "selected_provider_id": ASTRONOMY_PROVIDER_ID,
-                "fallback_used": True,
-                "reason_codes": provider_selection.get("reason_codes", [])
-                + ["SWISS_RUNTIME_LOST_AFTER_PROBE"],
+                "preferred_provider_id": None,
+                "fallback_used": False,
+                "reason_codes": ["TRANSIT_PAIRED_PORTABLE_NATAL"],
+                "runtime_probe": transit_selection.get("runtime_probe"),
             }
     else:
+        provider_selection = _select_natal_provider(
+            host_family=host_family,
+            reading_mode="natal",
+            birth_time_certainty=birth["birth_time_certainty"],
+        )
+
+    def build_astronomy_natal() -> dict[str, Any]:
+        if birth["birth_time_certainty"] == "unknown":
+            _, build_unknown_time_natal_bundle = _load_astronomy_natal_provider()
+            return build_unknown_time_natal_bundle(
+                local_date=birth["local_date"],
+                timezone_name=resolved["timezone_name"],
+                subject_ref=normalized["subject_ref"],
+            )
         build_natal_bundle, _ = _load_astronomy_natal_provider()
-        natal_bundle = build_natal_bundle(
+        return build_natal_bundle(
             local_datetime=birth["local_datetime"],
             timezone_name=resolved["timezone_name"],
             latitude=resolved["latitude"],
@@ -587,6 +618,43 @@ def run_request(
             subject_ref=normalized["subject_ref"],
             birth_time_certainty=birth["birth_time_certainty"],
         )
+
+    def build_swiss_natal() -> dict[str, Any]:
+        swiss_provider = _load_swiss_natal_provider()
+        return swiss_provider.build_natal_bundle(
+            local_datetime=birth["local_datetime"],
+            timezone_name=resolved["timezone_name"],
+            latitude=resolved["latitude"],
+            longitude=resolved["longitude"],
+            house_system=birth["house_system"],
+            subject_ref=normalized["subject_ref"],
+            birth_time_certainty=birth["birth_time_certainty"],
+        )
+
+    if provider_selection["selected_provider_id"] == SWISS_PROVIDER_ID:
+        swiss_provider = _load_swiss_natal_provider()
+        try:
+            natal_bundle = build_swiss_natal()
+        except swiss_provider.SwissProviderUnavailable:
+            natal_bundle = build_astronomy_natal()
+            provider_selection = {
+                **provider_selection,
+                "selected_provider_id": ASTRONOMY_PROVIDER_ID,
+                "fallback_used": True,
+                "reason_codes": provider_selection.get("reason_codes", [])
+                + ["SWISS_RUNTIME_LOST_AFTER_PROBE"],
+            }
+            if transit_selection is not None:
+                transit_selection = {
+                    **transit_selection,
+                    "selected_provider_id": ASTRONOMY_TRANSIT_PROVIDER_ID,
+                    "fallback_used": True,
+                    "reason_codes": transit_selection.get("reason_codes", [])
+                    + ["PAIRED_SWISS_RUNTIME_LOST_AFTER_PROBE"],
+                }
+    else:
+        natal_bundle = build_astronomy_natal()
+
     if normalized.get("extended_objects"):
         extended_rows, extended_provider = build_extended_object_rows(
             normalized["extended_objects"],
@@ -599,11 +667,10 @@ def run_request(
 
     transit_bundle: dict[str, Any] | None = None
     transit_gate: dict[str, Any] | None = None
-    if normalized["reading_mode"] == "transit":
+    if is_transit:
         transit = normalized["transit"]
-        build_transit_bundle = _load_transit_provider()
-        transit_bundle = build_transit_bundle(
-            natal_bundle,
+        assert transit_selection is not None
+        transit_kwargs = dict(
             start_utc=transit["start_utc"],
             end_utc=transit["end_utc"],
             subject_ref=normalized["subject_ref"],
@@ -617,6 +684,32 @@ def run_request(
             include_house_context=transit["include_house_context"],
             house_context_utc=transit["house_context_utc"],
         )
+
+        if transit_selection["selected_provider_id"] == SWISS_TRANSIT_PROVIDER_ID:
+            swiss_transit = _load_swiss_transit_provider()
+            try:
+                transit_bundle = swiss_transit.build_transit_bundle(
+                    natal_bundle,
+                    **transit_kwargs,
+                )
+            except swiss_transit.SwissTransitProviderUnavailable:
+                # Pair-atomic fallback: recompute the natal baseline with Astronomy
+                # before running the portable transit provider.
+                natal_bundle = build_astronomy_natal()
+                natal_gate = _admit_bundle(natal_bundle, "natal")
+                transit_selection = {
+                    **transit_selection,
+                    "selected_provider_id": ASTRONOMY_TRANSIT_PROVIDER_ID,
+                    "fallback_used": True,
+                    "reason_codes": transit_selection.get("reason_codes", [])
+                    + ["SWISS_TRANSIT_RUNTIME_LOST_AFTER_PROBE"],
+                }
+                build_transit_bundle = _load_transit_provider()
+                transit_bundle = build_transit_bundle(natal_bundle, **transit_kwargs)
+        else:
+            build_transit_bundle = _load_transit_provider()
+            transit_bundle = build_transit_bundle(natal_bundle, **transit_kwargs)
+
         transit_gate = _admit_bundle(transit_bundle, "transit")
 
     bundles: dict[str, Any] = {"natal": natal_bundle}
