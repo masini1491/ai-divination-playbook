@@ -75,6 +75,16 @@ def _select_transit_provider(
     start_utc: str,
     end_utc: str,
 ):
+    if host_family == "portable":
+        return {
+            "selected_provider_id": ASTRONOMY_TRANSIT_PROVIDER_ID,
+            "preferred_provider_id": None,
+            "fallback_used": False,
+            "reason_codes": ["PORTABLE_TRANSIT_DEFAULT"],
+            "runtime_probe": None,
+        }
+    if host_family != "chatgpt":
+        raise OrchestrationInputError(f"unsupported host_family: {host_family}")
     from tools.astrology_provider_selector import select_transit_provider
 
     return select_transit_provider(
