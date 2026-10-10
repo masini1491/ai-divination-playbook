@@ -37,18 +37,18 @@ This SHA is review evidence only, not a pin. Every maintenance or implementation
 
 ## Recommended execution order
 
-There is currently no active one-shot Astrology P1 implementation / research item after AST-P1-270 closure.
+There is currently no active one-shot Astrology P1 implementation / research item after AST-P1-280 closure.
 
 Standing guards / correctness work:
 
 - **AST-P0-002** remains OPEN and is enforced alongside affected interpretation changes.
-- **AST-P0-003 — Transit exact-event correctness remediation** — IN_PROGRESS; root cause is the Astronomy Engine model-accuracy boundary rather than root-search/aberration/ecliptic-conversion logic. Candidate remediation adds a bounded 1950–2050 ChatGPT host-native PySwissEph preferred route with pair-atomic natal/transit fallback, while retaining Astronomy Engine as the portable fallback with explicit model-root precision semantics.
+- **AST-P0-003 — Transit exact-event correctness remediation** — DONE; ChatGPT modern-range transit now prefers the bounded host-native PySwissEph route with paired Swiss natal baseline, while portable/out-of-range/runtime-miss execution falls back atomically to Astronomy Engine natal + transit with explicit provider-model precision semantics.
 
 No active one-shot Astrology P2 provider task remains after AST-P2-030 closure.
 
 Closed anti-rediscovery boundary:
 
-- **AST-P2-030** — ChatGPT exact/approximate known-time natal may use only host-preinstalled `swisseph`; non-ChatGPT, unknown-time, transit, runtime-probe failure, or any route requiring install/vendor falls back to Astronomy Engine. Repo never installs or distributes Swiss.
+- **AST-P2-030** — ChatGPT exact/approximate known-time natal may use only host-preinstalled `swisseph`; non-ChatGPT, unknown-time, runtime-probe failure, or any route requiring install/vendor falls back to Astronomy Engine. The natal provider itself does not own transit event search; transit provider routing is independently bounded by `ASTROLOGY_PROVIDER_ROUTING_V1.json`. Repo never installs or distributes Swiss.
 - **PySwissEph/API vs effective backend semantics** — CLOSED: provider identity does not imply SWIEPH data; retflag-derived `SWIEPH_ONLY` / `MOSEPH_ONLY` / `MIXED_SWIEPH_MOSEPH` provenance is authoritative, and only `SWIEPH_ONLY` may be described as Swiss Ephemeris data.
 - **Place-resolver materialization ownership** — CLOSED: named-place/country recovery is provider-independent and owned by `ASTROLOGY_PLACE_RESOLVER_MATERIALIZATION.md`; Swiss PASS never authorizes generic-web coordinate substitution.
 
@@ -91,37 +91,6 @@ This file is an active / deferred coordination surface, not a completed-work arc
   - no regression reopens already-closed current-stack gaps.
 
 This item is a standing reconciliation guard. It is not a request to change current behavior immediately.
-
-### AST-P0-003 — Transit exact-event correctness remediation
-
-- type: CORRECTNESS / PROVIDER ADMISSION REVIEW
-- status: IN_PROGRESS
-- priority: P0
-- owner: Astrology transit production maintenance
-- blocked_by: none
-- trigger:
-  - AST-P1-280 independent JPL DE440S adjudication.
-- current_evidence:
-  - `references/astrology/JPL_DE440S_TRANSIT_ORACLE_ADJUDICATION.md`;
-  - Mercury 2026-06-29 station: PySwissEph/MOSeph ≈4.22 s from DE440S, Astronomy Engine ≈72.64 s;
-  - Venus 2026-10-25 tropical 210° retrograde return: PySwissEph/MOSeph ≈0.095 s from DE440S, Astronomy Engine ≈770.11 s;
-  - the Astronomy-Engine-defined Mercury tangential station target differs from the DE440S station longitude by ≈1.833″, exceeding the current 0.36″ tangential exact-hit tolerance.
-- problem:
-  - current production exact-event evidence includes at least one timing case and one tangential event-identity case where the admitted Astronomy Engine path is not the closest of the tested engines to the independent DE440S oracle;
-  - this is now a production correctness question, not merely a research/provider-comparison question.
-- resolved_decision:
-  - discrepancy localizes to the underlying Astronomy Engine planetary/geocentric model accuracy boundary; aberration/ecliptic conversion and root-search mechanics are not the material source;
-  - independent DE440S validation was expanded to 4,000 pointwise samples across 1950–2049 and 15 cross-era event roots; host PySwissEph/MOSeph was closer on 3,702/4,000 positions and 15/15 sampled event roots;
-  - minimum safe candidate: prefer host-native PySwissEph only for ChatGPT search windows fully inside 1950–2050, pair it with `swiss-host-natal-v1`, and keep Astronomy Engine as portable/out-of-range/runtime-miss fallback;
-  - provider fallback is pair-atomic and actual PySwissEph retflag/effective backend provenance remains authoritative;
-  - this bounded admission does not claim global PySwissEph superiority.
-- completion_gate:
-  - reproduce the disputed cases from current exact-main production code;
-  - localize discrepancy origin at the calculation/coordinate/search layer;
-  - add independent-oracle regressions for the affected cases;
-  - implement the minimum safe correction or bounded admission change;
-  - reconcile `ASTROLOGY_TRANSIT.md`, admission manifest(s), tests and user-facing provenance in the same bounded Stage;
-  - merge, canonical read-back and required CI PASS.
 
 ## P2 — deferred compatibility / provider expansion
 
@@ -179,6 +148,7 @@ These headings are retained because current repository surfaces use their semant
 The items below are **DONE**. They are retained only as compact identity pointers; do not reopen them unless a new regression, explicit scope expansion, or canonical-owner change creates a new judgment node.
 
 - **AST-P0-001 — Reconcile E8 extended-object readiness after ChatGPT-only feasibility research** — DONE.
+- **AST-P0-003 — Transit exact-event correctness remediation** — DONE; root cause localized to Astronomy Engine model accuracy rather than search/correction logic. Production now uses `pyswisseph-host-transit-v1` only for ChatGPT host windows fully within 1950–2050 when probe PASS, paired with `swiss-host-natal-v1`; fallback is pair-atomic Astronomy Engine natal + transit. Precision evidence: `references/astrology/MODERN_TRANSIT_PROVIDER_PRECISION_EVIDENCE.md`.
 - **AST-P1-005 — Query-bounded place-resolver shard transport admission** — DONE.
   - anti-rediscovery contract: generated same-repo shards remain under `data/astrology/place/v1/**`; retrieval uses same-commit GitHub Connect bounded shard retrieval.
 - **AST-P1-010 — EXP-1 five-body compact ephemeris feasibility** — DONE.
@@ -242,10 +212,10 @@ Unless the user explicitly asks for a different bounded task, a fresh Astrology 
 2. read ASTROLOGY_BACKLOG.md
 3. reconcile any changed item status against canonical owners
 4. enforce AST-P0-002 alongside any affected interpretation change
-5. AST-P0-003 is the current transit correctness priority; resolve it before any new transit provider expansion
+5. no one-shot Astrology transit P0 correctness item is currently active; AST-P0-003 is closed under the bounded paired-provider routing contract
 6. no one-shot Astrology P1 item is currently active; AST-P1-270 and AST-P1-280 are closed research items
-7. keep AST-P2-020 deferred unless its explicit trigger appears; AST-P2-030 remains the current production boundary unless a new independently admitted scope expansion is created
-7. concrete post-reading broad-natal gaps follow `ASTROLOGY_NATAL_SYNTHESIS.md` §4.1; semantic-resolution gaps then pass `references/astrology/EXACT_CLAIM_ADMISSION_POLICY_V1.md` before exact-claim research
+7. keep AST-P2-020 deferred unless its explicit trigger appears; current provider routing remains bounded by the admitted host/portable contracts
+8. concrete post-reading broad-natal gaps follow `ASTROLOGY_NATAL_SYNTHESIS.md` §4.1; semantic-resolution gaps then pass `references/astrology/EXACT_CLAIM_ADMISSION_POLICY_V1.md` before exact-claim research
 ```
 
 Do not infer from this ordering that every item is automatically authorized for production mutation. Research, calculation admission, semantic admission, UX defaulting and routing remain separate gates.
