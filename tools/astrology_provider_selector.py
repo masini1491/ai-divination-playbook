@@ -9,6 +9,7 @@ provider.
 from __future__ import annotations
 
 import argparse
+import datetime as dt
 import importlib
 import json
 from pathlib import Path
@@ -17,11 +18,15 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 ROUTING_MANIFEST_PATH = ROOT / "ASTROLOGY_PROVIDER_ROUTING_V1.json"
 SWISS_ADMISSION_PATH = ROOT / "admissions/astrology/ASTROLOGY_SWISS_PROVIDER_ADMISSION_V1.json"
+SWISS_TRANSIT_ADMISSION_PATH = ROOT / "admissions/astrology/ASTROLOGY_SWISS_TRANSIT_PROVIDER_ADMISSION_V1.json"
 
 CHATGPT_HOST = "chatgpt"
 PORTABLE_HOST = "portable"
 SWISS_PROVIDER_ID = "swiss-host-natal-v1"
 ASTRONOMY_PROVIDER_ID = "astronomy-engine-natal-v1"
+SWISS_TRANSIT_PROVIDER_ID = "pyswisseph-host-transit-v1"
+ASTRONOMY_TRANSIT_PROVIDER_ID = "astronomy-engine-transit-v1"
+UTC = dt.timezone.utc
 
 
 class ProviderSelectionError(ValueError):
@@ -72,11 +77,17 @@ def probe_host_swisseph() -> dict[str, Any]:
     }
 
 
-def _fallback(reason_codes, *, preferred=None, runtime_probe=None):
+def _fallback(
+    reason_codes,
+    *,
+    preferred=None,
+    runtime_probe=None,
+    fallback_provider_id=ASTRONOMY_PROVIDER_ID,
+):
     return {
-        "selected_provider_id": ASTRONOMY_PROVIDER_ID,
+        "selected_provider_id": fallback_provider_id,
         "preferred_provider_id": preferred,
-        "fallback_used": preferred not in (None, ASTRONOMY_PROVIDER_ID),
+        "fallback_used": preferred not in (None, fallback_provider_id),
         "reason_codes": reason_codes,
         "runtime_probe": runtime_probe,
     }
@@ -146,6 +157,94 @@ def select_natal_provider(
         "runtime_probe": probe,
         "provider_version": swiss.get("provider_version"),
         "runtime_source": "host_preinstalled_only",
+    }
+
+
+
+def _parse_utc(value: str) -> dt.datetime:
+    try:
+        parsed = dt.datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError as exc:
+        raise ProviderSelectionError("transit UTC timestamp must be ISO-8601") from exc
+    if parsed.tzinfo is None:
+        raise ProviderSelectionError("transit UTC timestamp must include timezone")
+    return parsed.astimezone(UTC)
+
+
+def select_transit_provider(
+    *,
+    host_family: str,
+    start_utc: str,
+    end_utc: str,
+    runtime_probe=None,
+    routing_manifest=None,
+    swiss_transit_admission=None,
+):
+    host = host_family.strip().lower()
+    if host not in {CHATGPT_HOST, PORTABLE_HOST}:
+        raise ProviderSelectionError(f"unsupported host_family: {host_family}")
+
+    start = _parse_utc(start_utc)
+    end = _parse_utc(end_utc)
+    if end <= start:
+        raise ProviderSelectionError("transit end_utc must be later than start_utc")
+
+    if host != CHATGPT_HOST:
+        return _fallback(
+            ["PORTABLE_TRANSIT_DEFAULT"],
+            fallback_provider_id=ASTRONOMY_TRANSIT_PROVIDER_ID,
+        )
+
+    routing = routing_manifest or _load_json(ROUTING_MANIFEST_PATH)
+    swiss = swiss_transit_admission or _load_json(SWISS_TRANSIT_ADMISSION_PATH)
+    route = routing.get("routes", {}).get("chatgpt", {}).get("transit", {})
+    preferred = route.get("preferred_provider_id")
+    fallback = route.get("fallback_provider_id")
+    if (
+        preferred != SWISS_TRANSIT_PROVIDER_ID
+        or fallback != ASTRONOMY_TRANSIT_PROVIDER_ID
+    ):
+        raise ProviderSelectionError("ChatGPT transit routing manifest is inconsistent")
+
+    reasons = []
+    if swiss.get("status") != "PRODUCTION_ADMITTED_HOST_CONDITIONAL":
+        reasons.append("SWISS_TRANSIT_PROVIDER_NOT_ADMITTED")
+    boundary = swiss.get("dependency_boundary", {})
+    if (
+        boundary.get("runtime_source") != "host_preinstalled_only"
+        or boundary.get("non_chatgpt_use") != "forbidden"
+    ):
+        reasons.append("SWISS_TRANSIT_HOST_BOUNDARY_INVALID")
+    if swiss.get("runtime_owner") != "tools/astrology_swiss_transit_provider.py":
+        reasons.append("SWISS_TRANSIT_IMPLEMENTATION_NOT_ADMITTED")
+
+    window = swiss.get("input_contract", {}).get("admitted_search_range_utc", {})
+    admitted_start = _parse_utc(window.get("start_inclusive", ""))
+    admitted_end = _parse_utc(window.get("end_window_must_be_lte", ""))
+    if start < admitted_start or end > admitted_end:
+        reasons.append("SWISS_TRANSIT_WINDOW_OUTSIDE_ADMISSION")
+
+    probe = runtime_probe if runtime_probe is not None else probe_host_swisseph()
+    if not probe.get("available"):
+        reasons.append("SWISS_RUNTIME_UNAVAILABLE")
+
+    if reasons:
+        return _fallback(
+            reasons,
+            preferred=preferred,
+            runtime_probe=probe,
+            fallback_provider_id=ASTRONOMY_TRANSIT_PROVIDER_ID,
+        )
+
+    return {
+        "selected_provider_id": SWISS_TRANSIT_PROVIDER_ID,
+        "preferred_provider_id": SWISS_TRANSIT_PROVIDER_ID,
+        "fallback_used": False,
+        "reason_codes": ["CHATGPT_HOST_PYSWISSEPH_TRANSIT_PREFERRED"],
+        "runtime_probe": probe,
+        "provider_version": swiss.get("provider_version"),
+        "runtime_source": "host_preinstalled_only",
+        "paired_natal_provider_id": SWISS_PROVIDER_ID,
     }
 
 

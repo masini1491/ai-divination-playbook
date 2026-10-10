@@ -676,7 +676,12 @@
       "swiss_host_native_admission_manifest": "admissions/astrology/ASTROLOGY_SWISS_PROVIDER_ADMISSION_V1.json",
       "swiss_host_native_provider": "tools/astrology_swiss_provider.py",
       "non_chatgpt_swiss_use": "forbidden",
-      "place_resolver_materialization_contract": "ASTROLOGY_PLACE_RESOLVER_MATERIALIZATION.md"
+      "place_resolver_materialization_contract": "ASTROLOGY_PLACE_RESOLVER_MATERIALIZATION.md",
+      "portable_transit_provider": "tools/astrology_transit_provider.py",
+      "chatgpt_modern_transit_provider": "tools/astrology_swiss_transit_provider.py",
+      "chatgpt_modern_transit_preference": "host-preinstalled pyswisseph-host-transit-v1 for entire search windows within 1950-2050 when runtime probe passes; otherwise astronomy-engine-transit-v1",
+      "swiss_host_native_transit_admission_manifest": "admissions/astrology/ASTROLOGY_SWISS_TRANSIT_PROVIDER_ADMISSION_V1.json",
+      "transit_provider_routing_contract": "ASTROLOGY_PROVIDER_ROUTING_V1.json"
     },
     {
       "id": "method.astrology.natal",
@@ -802,7 +807,7 @@
         "owner": "ASTROLOGY_TRANSIT.md",
         "heading": "## 1. Entry / Baseline",
         "start_line": 7,
-        "end_line": 20,
+        "end_line": 22,
         "next_heading": "## 2. Transit Interpretation Scope"
       }
     },

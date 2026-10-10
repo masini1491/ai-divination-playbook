@@ -42,7 +42,7 @@ There is currently no active one-shot Astrology P1 implementation / research ite
 Standing guards / correctness work:
 
 - **AST-P0-002** remains OPEN and is enforced alongside affected interpretation changes.
-- **AST-P0-003 — Transit exact-event correctness remediation** — OPEN; JPL DE440S adjudication confirmed that the current Astronomy Engine transit path is materially farther from the independent oracle than PySwissEph/MOSeph in two disputed admitted/validated 2026 cases. This item owns the minimum safe production remedy and must not assume the remedy is a provider swap.
+- **AST-P0-003 — Transit exact-event correctness remediation** — IN_PROGRESS; root cause is the Astronomy Engine model-accuracy boundary rather than root-search/aberration/ecliptic-conversion logic. Candidate remediation adds a bounded 1950–2050 ChatGPT host-native PySwissEph preferred route with pair-atomic natal/transit fallback, while retaining Astronomy Engine as the portable fallback with explicit model-root precision semantics.
 
 No active one-shot Astrology P2 provider task remains after AST-P2-030 closure.
 
@@ -95,7 +95,7 @@ This item is a standing reconciliation guard. It is not a request to change curr
 ### AST-P0-003 — Transit exact-event correctness remediation
 
 - type: CORRECTNESS / PROVIDER ADMISSION REVIEW
-- status: OPEN
+- status: IN_PROGRESS
 - priority: P0
 - owner: Astrology transit production maintenance
 - blocked_by: none
@@ -109,11 +109,12 @@ This item is a standing reconciliation guard. It is not a request to change curr
 - problem:
   - current production exact-event evidence includes at least one timing case and one tangential event-identity case where the admitted Astronomy Engine path is not the closest of the tested engines to the independent DE440S oracle;
   - this is now a production correctness question, not merely a research/provider-comparison question.
-- required_decision:
-  - identify the actual source of the Astronomy Engine discrepancy before choosing a remedy;
-  - determine whether the minimum safe action is to correct the current coordinate/event model, narrow affected admission, or separately admit a different deterministic ephemeris backend;
-  - preserve natal-target provenance/backend compatibility and explicit effective-backend provenance;
-  - do not globally promote PySwissEph from two adjudicated cases.
+- resolved_decision:
+  - discrepancy localizes to the underlying Astronomy Engine planetary/geocentric model accuracy boundary; aberration/ecliptic conversion and root-search mechanics are not the material source;
+  - independent DE440S validation was expanded to 4,000 pointwise samples across 1950–2049 and 15 cross-era event roots; host PySwissEph/MOSeph was closer on 3,702/4,000 positions and 15/15 sampled event roots;
+  - minimum safe candidate: prefer host-native PySwissEph only for ChatGPT search windows fully inside 1950–2050, pair it with `swiss-host-natal-v1`, and keep Astronomy Engine as portable/out-of-range/runtime-miss fallback;
+  - provider fallback is pair-atomic and actual PySwissEph retflag/effective backend provenance remains authoritative;
+  - this bounded admission does not claim global PySwissEph superiority.
 - completion_gate:
   - reproduce the disputed cases from current exact-main production code;
   - localize discrepancy origin at the calculation/coordinate/search layer;

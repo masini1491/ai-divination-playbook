@@ -353,7 +353,7 @@
     ],
     "max_search_days": 400,
     "canonical_event_time": "UTC",
-    "provider_version": "1.2.0",
+    "provider_version": "1.3.0",
     "transit_house_policy": {
       "calculation": "admitted_for_exact_birth_time_only",
       "admitted_house_systems": [
@@ -364,7 +364,20 @@
       "approximate_birth_time": "fail_closed",
       "unknown_birth_time": "fail_closed",
       "point_in_time_context": "admitted_with_explicit_utc_timestamp_inside_bounded_request_window"
-    }
+    },
+    "routing_manifest": "ASTROLOGY_PROVIDER_ROUTING_V1.json",
+    "chatgpt_modern_preferred_provider": {
+      "provider_id": "pyswisseph-host-transit-v1",
+      "admission_manifest": "admissions/astrology/ASTROLOGY_SWISS_TRANSIT_PROVIDER_ADMISSION_V1.json",
+      "activation": "chatgpt_host_preinstalled_pyswisseph_probe_pass_and_entire_search_window_within_1950_2050",
+      "paired_natal_provider_id": "swiss-host-natal-v1"
+    },
+    "portable_default_provider": {
+      "provider_id": "astronomy-engine-transit-v1",
+      "admission_manifest": "admissions/astrology/ASTROLOGY_TRANSIT_PROVIDER_ADMISSION_V1.json",
+      "precision_semantics": "provider_model_root; 0.5-second root tolerance is not external ephemeris accuracy"
+    },
+    "provider_pairing": "transit provider and natal baseline must use the same admitted ephemeris family on the host-preferred route; fallback is pair-atomic"
   },
   "fact_bundle_schema": "astrology_fact_bundle@1.0.0",
   "fact_bundle_schema_path": "schemas/astrology/ASTROLOGY_FACT_BUNDLE_V1.schema.json",
@@ -766,6 +779,9 @@
       "runtime_owner": "tools/astrology_provider.py"
     },
     "unknown_time_provider": "astronomy-engine-natal-v1",
-    "transit_natal_baseline_provider": "astronomy-engine-natal-v1"
+    "transit_natal_baseline_provider": "astronomy-engine-natal-v1",
+    "chatgpt_modern_transit_paired_natal_provider": "swiss-host-natal-v1",
+    "chatgpt_modern_transit_provider": "pyswisseph-host-transit-v1",
+    "transit_pair_fallback": "astronomy-engine-natal-v1 + astronomy-engine-transit-v1"
   }
 }

@@ -34,7 +34,7 @@ class AstrologyProductionContractTests(unittest.TestCase):
         self.assertEqual("not_emitted", natal["known_time_derived_axes"]["unknown_time"])
         self.assertEqual("explicit_projection_policy_only", natal["known_time_derived_axes"]["aspect_participation"])
         self.assertEqual("astronomy-engine-transit-v1", transit["provider_id"])
-        self.assertEqual("1.2.0", transit["provider_version"])
+        self.assertEqual("1.3.0", transit["provider_version"])
         self.assertIn("transit_house_point_in_time_context", transit["scope"])
         self.assertEqual(
             "admitted_with_explicit_utc_timestamp_inside_bounded_request_window",
@@ -92,6 +92,37 @@ class AstrologyProductionContractTests(unittest.TestCase):
         self.assertEqual("2.1.19", data["dependency"]["version"])
         self.assertEqual(400, data["input_contract"]["max_search_days"])
         self.assertEqual("UTC", data["calculation_policy"]["canonical_event_time"])
+
+    def test_host_pyswisseph_transit_admission_is_bounded_and_paired(self):
+        data = json.loads(
+            (ROOT / "admissions/astrology/ASTROLOGY_SWISS_TRANSIT_PROVIDER_ADMISSION_V1.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertEqual("astrology_swiss_transit_provider_admission", data["schema_name"])
+        self.assertEqual("PRODUCTION_ADMITTED_HOST_CONDITIONAL", data["status"])
+        self.assertEqual("pyswisseph-host-transit-v1", data["provider_id"])
+        self.assertEqual("swiss-host-natal-v1", data["input_contract"]["paired_natal_provider_id"])
+        window = data["input_contract"]["admitted_search_range_utc"]
+        self.assertEqual("1950-01-01T00:00:00Z", window["start_inclusive"])
+        self.assertEqual("2050-01-01T00:00:00Z", window["end_window_must_be_lte"])
+        self.assertEqual("host_preinstalled_only", data["dependency_boundary"]["runtime_source"])
+        self.assertTrue(data["dependency_boundary"]["repository_install_forbidden"])
+        self.assertEqual(4000, data["validation"]["modern_range_pointwise_samples"])
+        self.assertEqual(15, data["validation"]["cross_era_event_root_samples"])
+        self.assertIn("MOSEPH", data["calculation_policy"]["admitted_effective_backends"])
+
+    def test_transit_routing_pairs_provider_families_atomically(self):
+        data = json.loads(
+            (ROOT / "ASTROLOGY_PROVIDER_ROUTING_V1.json").read_text(encoding="utf-8")
+        )
+        chatgpt = data["routes"]["chatgpt"]["transit"]
+        portable = data["routes"]["portable"]["transit"]
+        self.assertEqual("pyswisseph-host-transit-v1", chatgpt["preferred_provider_id"])
+        self.assertEqual("astronomy-engine-transit-v1", chatgpt["fallback_provider_id"])
+        self.assertEqual("swiss-host-natal-v1", chatgpt["paired_natal_provider_id"])
+        self.assertEqual("astronomy-engine-transit-v1", portable["provider_id"])
+        self.assertEqual("astronomy-engine-natal-v1", portable["paired_natal_provider_id"])
 
     def test_place_resolver_admission_manifest_is_offline_and_attributed(self):
         data = json.loads((ROOT / "admissions/astrology/ASTROLOGY_PLACE_RESOLVER_ADMISSION_V1.json").read_text(encoding="utf-8"))

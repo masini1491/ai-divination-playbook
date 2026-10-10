@@ -1,6 +1,6 @@
 {
   "schema_name": "astrology_provider_routing",
-  "schema_version": "1.2.0",
+  "schema_version": "1.3.0",
   "status": "PRODUCTION_ROUTING_POLICY",
   "selector_owner": "tools/astrology_provider_selector.py",
   "fact_bundle_schema": "astrology_fact_bundle@1.0.0",
@@ -19,6 +19,21 @@
       ],
       "admission_manifest": "admissions/astrology/ASTROLOGY_SWISS_PROVIDER_ADMISSION_V1.json",
       "status": "PRODUCTION_ADMITTED_HOST_CONDITIONAL"
+    },
+    "pyswisseph-host-transit-v1": {
+      "role": [
+        "chatgpt_host_native_transit_preferred"
+      ],
+      "admission_manifest": "admissions/astrology/ASTROLOGY_SWISS_TRANSIT_PROVIDER_ADMISSION_V1.json",
+      "status": "PRODUCTION_ADMITTED_HOST_CONDITIONAL"
+    },
+    "astronomy-engine-transit-v1": {
+      "role": [
+        "portable_transit_default",
+        "fallback"
+      ],
+      "admission_manifest": "admissions/astrology/ASTROLOGY_TRANSIT_PROVIDER_ADMISSION_V1.json",
+      "status": "PRODUCTION_ADMITTED"
     }
   },
   "routes": {
@@ -36,7 +51,14 @@
         "provider_id": "astronomy-engine-natal-v1"
       },
       "transit": {
-        "provider_id": "astronomy-engine-natal-v1"
+        "preferred_provider_id": "pyswisseph-host-transit-v1",
+        "fallback_provider_id": "astronomy-engine-transit-v1",
+        "paired_natal_provider_id": "swiss-host-natal-v1",
+        "preference_requires": [
+          "host_family=chatgpt",
+          "host_pyswisseph_api_probe=PASS",
+          "entire_search_window_within_1950-01-01T00:00:00Z..2050-01-01T00:00:00Z"
+        ]
       }
     },
     "portable": {
@@ -47,7 +69,8 @@
         "provider_id": "astronomy-engine-natal-v1"
       },
       "transit": {
-        "provider_id": "astronomy-engine-natal-v1"
+        "provider_id": "astronomy-engine-transit-v1",
+        "paired_natal_provider_id": "astronomy-engine-natal-v1"
       }
     }
   },
@@ -56,7 +79,9 @@
     "preserve_fact_bundle_schema": true,
     "preserve_runtime_gate": true,
     "swiss_probe_failure_does_not_block_astrology": true,
-    "non_chatgpt_never_uses_swiss": true
+    "non_chatgpt_never_uses_swiss": true,
+    "transit_fallback_preserves_search_semantics": true,
+    "transit_fallback_precision": "provider_model_root_not_external_ephemeris_accuracy"
   },
   "host_identity": {
     "chatgpt_must_be_asserted_by_execution_surface": true,

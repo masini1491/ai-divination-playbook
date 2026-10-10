@@ -44,7 +44,7 @@
       "approximate"
     ],
     "unknown_time": "not_admitted",
-    "transit": "not_admitted",
+    "transit": "event_search_not_owned_by_this_provider; may serve as paired natal baseline for separately admitted pyswisseph-host-transit-v1",
     "requested_ephemeris": "SWIEPH|SPEED",
     "effective_backend": "actual_retflag_per_object_is_authoritative",
     "required_provenance": [
@@ -100,11 +100,14 @@
     "repository-installed pyswisseph",
     "vendored swiss ephemeris data",
     "unknown-time swiss natal",
-    "swiss transit search",
+    "transit event search inside swiss-host-natal-v1",
     "sidereal zodiac",
     "topocentric planet positions",
     "JPLEPH effective backend without separate admission",
     "UNKNOWN effective backend"
   ],
-  "scientific_predictive_validity_claimed": false
+  "scientific_predictive_validity_claimed": false,
+  "paired_consumers": [
+    "pyswisseph-host-transit-v1"
+  ]
 }

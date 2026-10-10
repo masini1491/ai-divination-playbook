@@ -19,15 +19,31 @@ import datetime as dt
 import json
 from typing import Any, Callable, Iterable
 
-from tools.astrology_provider import (
-    ASTRONOMY_ENGINE_PACKAGE_VERSION,
-    ASTRONOMY_ENGINE_SOURCE_REVISION,
-    BODY_NAMES,
-    _longitude_and_speed,
-    _normalize_degrees,
-    _signed_delta_degrees,
-)
 from tools.astrology_runtime import MAJOR_ASPECT_ORBS, gate_bundle
+
+ASTRONOMY_ENGINE_PACKAGE_VERSION = "2.1.19"
+ASTRONOMY_ENGINE_SOURCE_REVISION = "865d3da7d8112bbc7911238052c6af4aaf877181"
+BODY_NAMES = (
+    "Sun", "Moon", "Mercury", "Venus", "Mars", "Jupiter",
+    "Saturn", "Uranus", "Neptune", "Pluto", "NorthNode",
+)
+
+
+def _normalize_degrees(value: float) -> float:
+    return value % 360.0
+
+
+def _signed_delta_degrees(a: float, b: float) -> float:
+    return ((b - a + 180.0) % 360.0) - 180.0
+
+
+def _longitude_and_speed(body: str, when: dt.datetime) -> tuple[float, float]:
+    # Keep Astronomy Engine as the portable default without making it a
+    # module-import prerequisite for host-native alternate backends.
+    from tools.astrology_provider import _longitude_and_speed as astronomy_backend
+
+    return astronomy_backend(body, when)
+
 
 PROVIDER_ID = "astronomy-engine-transit-v1"
 PROVIDER_VERSION = "1.2.0"
@@ -99,8 +115,14 @@ def _bisect_root(
     return left + (right - left) / 2
 
 
-def _longitude_error(body: str, target_deg: float, when: dt.datetime) -> float:
-    longitude, _ = _longitude_and_speed(body, when)
+def _longitude_error(
+    body: str,
+    target_deg: float,
+    when: dt.datetime,
+    longitude_and_speed: Callable[[str, dt.datetime], tuple[float, float]] | None = None,
+) -> float:
+    backend = longitude_and_speed or _longitude_and_speed
+    longitude, _ = backend(body, when)
     return _signed_delta_degrees(target_deg, longitude)
 
 
@@ -120,20 +142,22 @@ def _find_longitude_crossings(
     end: dt.datetime,
     *,
     step_hours: float = DEFAULT_STEP_HOURS,
+    longitude_and_speed: Callable[[str, dt.datetime], tuple[float, float]] | None = None,
 ) -> list[dt.datetime]:
+    backend = longitude_and_speed or _longitude_and_speed
     step = dt.timedelta(hours=step_hours)
     roots: list[dt.datetime] = []
     current = start
-    current_error = _longitude_error(body, target_deg, current)
+    current_error = _longitude_error(body, target_deg, current, backend)
     while current < end:
         nxt = min(current + step, end)
-        next_error = _longitude_error(body, target_deg, nxt)
+        next_error = _longitude_error(body, target_deg, nxt, backend)
         if current_error == 0 or next_error == 0 or (
             current_error * next_error < 0 and abs(current_error - next_error) < 180.0
         ):
             roots.append(
                 _bisect_root(
-                    lambda when: _longitude_error(body, target_deg, when),
+                    lambda when: _longitude_error(body, target_deg, when, backend),
                     current,
                     nxt,
                 )
@@ -149,18 +173,20 @@ def _find_station_roots(
     end: dt.datetime,
     *,
     step_hours: float = 6.0,
+    longitude_and_speed: Callable[[str, dt.datetime], tuple[float, float]] | None = None,
 ) -> list[dt.datetime]:
+    backend = longitude_and_speed or _longitude_and_speed
     step = dt.timedelta(hours=step_hours)
     roots: list[dt.datetime] = []
     current = start
-    current_speed = _longitude_and_speed(body, current)[1]
+    current_speed = backend(body, current)[1]
     while current < end:
         nxt = min(current + step, end)
-        next_speed = _longitude_and_speed(body, nxt)[1]
+        next_speed = backend(body, nxt)[1]
         if current_speed == 0 or next_speed == 0 or current_speed * next_speed < 0:
             roots.append(
                 _bisect_root(
-                    lambda when: _longitude_and_speed(body, when)[1],
+                    lambda when: backend(body, when)[1],
                     current,
                     nxt,
                 )
@@ -205,7 +231,9 @@ def search_transit_to_natal(
     moving_bodies: Iterable[str],
     natal_targets: Iterable[str],
     aspects: Iterable[str],
+    longitude_and_speed: Callable[[str, dt.datetime], tuple[float, float]] | None = None,
 ) -> list[dict[str, Any]]:
+    backend = longitude_and_speed or _longitude_and_speed
     start, end = _validate_window(start_utc, end_utc)
     natal = _natal_planet_longitudes(natal_bundle)
     events: list[dict[str, Any]] = []
@@ -213,7 +241,7 @@ def search_transit_to_natal(
     for body in moving_bodies:
         if body not in BODY_NAMES or body == "NorthNode":
             raise TransitProviderInputError(f"unsupported moving body: {body}")
-        station_roots = [] if body in {"Sun", "Moon"} else _find_station_roots(body, start, end)
+        station_roots = [] if body in {"Sun", "Moon"} else _find_station_roots(body, start, end, longitude_and_speed=backend)
         for target_id in natal_targets:
             if target_id not in natal:
                 raise TransitProviderInputError(f"natal target unavailable: {target_id}")
@@ -224,10 +252,10 @@ def search_transit_to_natal(
                 roots: list[tuple[dt.datetime, float, str]] = []
                 for delta in ASPECT_ANGLES[aspect]:
                     target_lon = _normalize_degrees(natal_lon + delta)
-                    for root in _find_longitude_crossings(body, target_lon, start, end):
+                    for root in _find_longitude_crossings(body, target_lon, start, end, longitude_and_speed=backend):
                         roots.append((root, target_lon, "crossing"))
                     for station in station_roots:
-                        if abs(_longitude_error(body, target_lon, station)) <= TANGENTIAL_STATION_ANGLE_TOLERANCE_DEG:
+                        if abs(_longitude_error(body, target_lon, station, backend)) <= TANGENTIAL_STATION_ANGLE_TOLERANCE_DEG:
                             roots.append((station, target_lon, "tangential_station"))
 
                 roots.sort(key=lambda item: item[0])
@@ -241,7 +269,7 @@ def search_transit_to_natal(
                     deduped.append((root, target_lon, root_kind))
 
                 for passage_index, (root, target_lon, root_kind) in enumerate(deduped, start=1):
-                    transit_lon, speed = _longitude_and_speed(body, root)
+                    transit_lon, speed = backend(body, root)
                     events.append(
                         {
                             "fact_id": f"fact:event:transit:{body.lower()}:{aspect}:{target_id.lower()}:{passage_index}:{int(root.timestamp())}",
@@ -265,17 +293,24 @@ def search_transit_to_natal(
     return sorted(events, key=lambda row: (row["exact_time_utc"], row["fact_id"]))
 
 
-def search_stations(*, start_utc: str, end_utc: str, moving_bodies: Iterable[str]) -> list[dict[str, Any]]:
+def search_stations(
+    *,
+    start_utc: str,
+    end_utc: str,
+    moving_bodies: Iterable[str],
+    longitude_and_speed: Callable[[str, dt.datetime], tuple[float, float]] | None = None,
+) -> list[dict[str, Any]]:
+    backend = longitude_and_speed or _longitude_and_speed
     start, end = _validate_window(start_utc, end_utc)
     events: list[dict[str, Any]] = []
     for body in moving_bodies:
         if body not in BODY_NAMES or body in {"Sun", "Moon", "NorthNode"}:
             raise TransitProviderInputError(f"station search unsupported for body: {body}")
-        roots = _find_station_roots(body, start, end)
+        roots = _find_station_roots(body, start, end, longitude_and_speed=backend)
         for index, root in enumerate(roots, start=1):
-            longitude, speed = _longitude_and_speed(body, root)
-            before = _longitude_and_speed(body, root - dt.timedelta(hours=12))[1]
-            after = _longitude_and_speed(body, root + dt.timedelta(hours=12))[1]
+            longitude, speed = backend(body, root)
+            before = backend(body, root - dt.timedelta(hours=12))[1]
+            after = backend(body, root + dt.timedelta(hours=12))[1]
             if before > 0 and after < 0:
                 transition = "direct_to_retrograde"
             elif before < 0 and after > 0:
@@ -341,7 +376,9 @@ def transit_house_context(
     *,
     at_utc: str,
     moving_bodies: Iterable[str],
+    longitude_and_speed: Callable[[str, dt.datetime], tuple[float, float]] | None = None,
 ) -> list[dict[str, Any]]:
+    backend = longitude_and_speed or _longitude_and_speed
     when = _parse_utc(at_utc)
     cusps = _natal_house_cusps(natal_bundle)
     house_system = natal_bundle.get("configuration", {}).get("house_system")
@@ -349,7 +386,7 @@ def transit_house_context(
     for body in dict.fromkeys(moving_bodies):
         if body not in BODY_NAMES or body == "NorthNode":
             raise TransitProviderInputError(f"transit house context unsupported for body: {body}")
-        longitude, speed = _longitude_and_speed(body, when)
+        longitude, speed = backend(body, when)
         house_number = _house_of_longitude(longitude, cusps)
         rows.append({
             "fact_id": f"fact:event:house_context:{body.lower()}:{house_number}:{int(when.timestamp())}",
@@ -371,7 +408,9 @@ def search_house_ingresses(
     start_utc: str,
     end_utc: str,
     moving_bodies: Iterable[str],
+    longitude_and_speed: Callable[[str, dt.datetime], tuple[float, float]] | None = None,
 ) -> list[dict[str, Any]]:
+    backend = longitude_and_speed or _longitude_and_speed
     start, end = _validate_window(start_utc, end_utc)
     cusps = _natal_house_cusps(natal_bundle)
     house_system = natal_bundle.get("configuration", {}).get("house_system")
@@ -382,13 +421,13 @@ def search_house_ingresses(
         roots: list[tuple[dt.datetime, int, float]] = []
         for house in range(1, 13):
             cusp = float(cusps[house])
-            for root in _find_longitude_crossings(body, cusp, start, end):
+            for root in _find_longitude_crossings(body, cusp, start, end, longitude_and_speed=backend):
                 roots.append((root, house, cusp))
         roots.sort(key=lambda item: item[0])
         for index, (root, cusp_house, cusp) in enumerate(roots, start=1):
-            longitude, speed = _longitude_and_speed(body, root)
-            before_lon = _longitude_and_speed(body, root - dt.timedelta(minutes=5))[0]
-            after_lon = _longitude_and_speed(body, root + dt.timedelta(minutes=5))[0]
+            longitude, speed = backend(body, root)
+            before_lon = backend(body, root - dt.timedelta(minutes=5))[0]
+            after_lon = backend(body, root + dt.timedelta(minutes=5))[0]
             from_house = _house_of_longitude(before_lon, cusps)
             to_house = _house_of_longitude(after_lon, cusps)
             if from_house == to_house:
@@ -412,7 +451,14 @@ def search_house_ingresses(
     return sorted(events, key=lambda row: (row["exact_time_utc"], row["fact_id"]))
 
 
-def search_ingresses(*, start_utc: str, end_utc: str, moving_bodies: Iterable[str]) -> list[dict[str, Any]]:
+def search_ingresses(
+    *,
+    start_utc: str,
+    end_utc: str,
+    moving_bodies: Iterable[str],
+    longitude_and_speed: Callable[[str, dt.datetime], tuple[float, float]] | None = None,
+) -> list[dict[str, Any]]:
+    backend = longitude_and_speed or _longitude_and_speed
     start, end = _validate_window(start_utc, end_utc)
     sign_names = (
         "Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo",
@@ -424,14 +470,14 @@ def search_ingresses(*, start_utc: str, end_utc: str, moving_bodies: Iterable[st
             raise TransitProviderInputError(f"ingress search unsupported for body: {body}")
         roots: list[tuple[dt.datetime, float]] = []
         for boundary in range(0, 360, 30):
-            for root in _find_longitude_crossings(body, float(boundary), start, end):
+            for root in _find_longitude_crossings(body, float(boundary), start, end, longitude_and_speed=backend):
                 roots.append((root, float(boundary)))
         roots.sort(key=lambda item: item[0])
         retrograde_returned_boundaries: set[float] = set()
         for index, (root, boundary) in enumerate(roots, start=1):
-            longitude, speed = _longitude_and_speed(body, root)
-            before_lon = _longitude_and_speed(body, root - dt.timedelta(minutes=5))[0]
-            after_lon = _longitude_and_speed(body, root + dt.timedelta(minutes=5))[0]
+            longitude, speed = backend(body, root)
+            before_lon = backend(body, root - dt.timedelta(minutes=5))[0]
+            after_lon = backend(body, root + dt.timedelta(minutes=5))[0]
             before_sign = int(before_lon // 30.0)
             after_sign = int(after_lon // 30.0)
             if before_sign == after_sign:
@@ -478,7 +524,10 @@ def build_transit_bundle(
     include_house_ingresses: bool = False,
     include_house_context: bool = False,
     house_context_utc: str | None = None,
+    longitude_and_speed: Callable[[str, dt.datetime], tuple[float, float]] | None = None,
+    provider_metadata: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
+    backend = longitude_and_speed or _longitude_and_speed
     start, end = _validate_window(start_utc, end_utc)
     moving = tuple(dict.fromkeys(moving_bodies))
     targets = tuple(dict.fromkeys(natal_targets))
@@ -510,16 +559,17 @@ def build_transit_bundle(
                 moving_bodies=moving,
                 natal_targets=targets,
                 aspects=aspect_names,
+                longitude_and_speed=backend,
             )
         )
     if include_stations:
         station_bodies = [body for body in moving if body not in {"Sun", "Moon", "NorthNode"}]
         if station_bodies:
-            events.extend(search_stations(start_utc=start_utc, end_utc=end_utc, moving_bodies=station_bodies))
+            events.extend(search_stations(start_utc=start_utc, end_utc=end_utc, moving_bodies=station_bodies, longitude_and_speed=backend))
     if include_ingresses:
         ingress_bodies = [body for body in moving if body != "NorthNode"]
         if ingress_bodies:
-            events.extend(search_ingresses(start_utc=start_utc, end_utc=end_utc, moving_bodies=ingress_bodies))
+            events.extend(search_ingresses(start_utc=start_utc, end_utc=end_utc, moving_bodies=ingress_bodies, longitude_and_speed=backend))
     if include_house_ingresses:
         events.extend(
             search_house_ingresses(
@@ -527,10 +577,11 @@ def build_transit_bundle(
                 start_utc=start_utc,
                 end_utc=end_utc,
                 moving_bodies=moving,
+                longitude_and_speed=backend,
             )
         )
     if include_house_context:
-        events.extend(transit_house_context(natal_bundle, at_utc=house_context_utc or "", moving_bodies=moving))
+        events.extend(transit_house_context(natal_bundle, at_utc=house_context_utc or "", moving_bodies=moving, longitude_and_speed=backend))
     events.sort(key=lambda row: (row["exact_time_utc"], row["fact_id"]))
 
     bundle = {
@@ -548,10 +599,17 @@ def build_transit_bundle(
             "house_system": natal_bundle.get("configuration", {}).get("house_system"),
         },
         "provider": {
-            "provider_id": PROVIDER_ID,
-            "provider_version": PROVIDER_VERSION,
-            "astronomy_engine_package": f"astronomy-engine=={ASTRONOMY_ENGINE_PACKAGE_VERSION}",
-            "astronomy_engine_source_revision": ASTRONOMY_ENGINE_SOURCE_REVISION,
+            **(
+                provider_metadata
+                or {
+                    "provider_id": PROVIDER_ID,
+                    "provider_version": PROVIDER_VERSION,
+                    "astronomy_engine_package": f"astronomy-engine=={ASTRONOMY_ENGINE_PACKAGE_VERSION}",
+                    "astronomy_engine_source_revision": ASTRONOMY_ENGINE_SOURCE_REVISION,
+                    "event_time_semantics": "provider_model_root_with_numerical_tolerance_not_external_ephemeris_accuracy",
+                    "astronomy_engine_design_accuracy": "within_1_arcminute",
+                }
+            ),
             "search_start_utc": _iso_utc(start),
             "search_end_utc": _iso_utc(end),
             "root_tolerance_seconds": ROOT_TOLERANCE_SECONDS,

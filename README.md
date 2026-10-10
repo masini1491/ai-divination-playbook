@@ -124,8 +124,12 @@ explicit Astrology request
    → probe host-preinstalled PySwissEph API
       PASS → swiss-host-natal-v1
       FAIL → astronomy-engine-natal-v1
-   non-ChatGPT / unknown-time / transit
+   non-ChatGPT / unknown-time
    → Astronomy Engine portable path
+   ChatGPT transit
+   → host PySwissEph probe + entire window within 1950–2050
+      PASS → paired swiss-host-natal-v1 + pyswisseph-host-transit-v1
+      FAIL / out-of-range → paired Astronomy Engine natal + transit portable fallback
 → Astrology Fact Gate
 → admitted evidence selection / interpretation handoff
 → bounded synthesis

@@ -452,5 +452,98 @@ class AstrologyOrchestratorTests(unittest.TestCase):
             result["fact_bundles"]["natal"]["provider"]["provider_id"],
         )
 
+
+    def test_chatgpt_modern_transit_uses_paired_swiss_natal_and_transit(self):
+        from unittest.mock import patch
+        request = json.loads(FIXTURE.read_text(encoding="utf-8"))
+        swiss_natal = {
+            "schema_name": "astrology_fact_bundle", "schema_version": "1.0.0",
+            "method": "Astrology", "reading_mode": "natal",
+            "fact_source": "approved_provider", "calculation_verification": "verified_provider",
+            "subject_ref": request["subject_ref"], "birth_time_certainty": "exact",
+            "configuration": {"zodiac_system": "tropical", "center": "geocentric", "house_system": "Placidus"},
+            "provider": {"provider_id": "swiss-host-natal-v1", "provider_version": "1.0.0", "resolved_utc_iso": "1990-06-15T00:00:00+00:00"},
+            "facts": {"objects": [], "houses": [], "aspects": [], "events": []},
+        }
+        swiss_transit = {
+            "schema_name": "astrology_fact_bundle", "schema_version": "1.0.0",
+            "method": "Astrology", "reading_mode": "transit",
+            "fact_source": "approved_provider", "calculation_verification": "verified_provider",
+            "subject_ref": request["subject_ref"], "birth_time_certainty": "exact",
+            "configuration": {"zodiac_system": "tropical", "center": "geocentric", "house_system": "Placidus"},
+            "provider": {"provider_id": "pyswisseph-host-transit-v1", "provider_version": "1.0.0"},
+            "facts": {"objects": [], "houses": [], "aspects": [], "events": []},
+        }
+        fake_natal = type("FakeSwissNatal", (), {
+            "SwissProviderUnavailable": RuntimeError,
+            "build_natal_bundle": staticmethod(lambda **_: swiss_natal),
+        })
+        fake_transit = type("FakeSwissTransit", (), {
+            "SwissTransitProviderUnavailable": RuntimeError,
+            "build_transit_bundle": staticmethod(lambda *_, **__: swiss_transit),
+        })
+        with patch("tools.astrology_orchestrator._select_transit_provider", return_value={
+            "selected_provider_id": "pyswisseph-host-transit-v1",
+            "preferred_provider_id": "pyswisseph-host-transit-v1",
+            "fallback_used": False,
+            "reason_codes": ["CHATGPT_HOST_PYSWISSEPH_TRANSIT_PREFERRED"],
+        }), patch("tools.astrology_orchestrator._select_natal_provider", return_value={
+            "selected_provider_id": "swiss-host-natal-v1",
+            "preferred_provider_id": "swiss-host-natal-v1",
+            "fallback_used": False,
+            "reason_codes": ["CHATGPT_HOST_SWISS_PREFERRED"],
+        }), patch("tools.astrology_orchestrator._load_swiss_natal_provider", return_value=fake_natal), patch(
+            "tools.astrology_orchestrator._load_swiss_transit_provider", return_value=fake_transit
+        ), patch("tools.astrology_orchestrator._admit_bundle", return_value={
+            "status": "admitted", "interpretation_allowed": True, "errors": []
+        }):
+            result = run_request(request, host_family="chatgpt")
+        self.assertEqual("swiss-host-natal-v1", result["fact_bundles"]["natal"]["provider"]["provider_id"])
+        self.assertEqual("pyswisseph-host-transit-v1", result["fact_bundles"]["transit"]["provider"]["provider_id"])
+
+    def test_swiss_transit_runtime_loss_falls_back_as_an_atomic_pair(self):
+        from unittest.mock import patch
+        request = json.loads(FIXTURE.read_text(encoding="utf-8"))
+        swiss_natal = {
+            "provider": {"provider_id": "swiss-host-natal-v1", "resolved_utc_iso": "1990-06-15T00:00:00+00:00"},
+            "configuration": {"house_system": "Placidus"}, "facts": {"objects": [], "houses": [], "aspects": [], "events": []},
+        }
+        ae_natal = {
+            "provider": {"provider_id": "astronomy-engine-natal-v1", "resolved_utc_iso": "1990-06-15T00:00:00+00:00"},
+            "configuration": {"house_system": "Placidus"}, "facts": {"objects": [], "houses": [], "aspects": [], "events": []},
+        }
+        ae_transit = {
+            "provider": {"provider_id": "astronomy-engine-transit-v1", "provider_version": "1.2.0"},
+            "facts": {"objects": [], "houses": [], "aspects": [], "events": []},
+        }
+        fake_swiss_natal = type("FakeSwissNatal", (), {
+            "SwissProviderUnavailable": RuntimeError,
+            "build_natal_bundle": staticmethod(lambda **_: swiss_natal),
+        })
+        class Lost(RuntimeError):
+            pass
+        fake_swiss_transit = type("FakeSwissTransit", (), {
+            "SwissTransitProviderUnavailable": Lost,
+            "build_transit_bundle": staticmethod(lambda *_, **__: (_ for _ in ()).throw(Lost("lost"))),
+        })
+        fake_ae_transit_builder = lambda *_, **__: ae_transit
+        fake_ae_natal_builder = lambda **_: ae_natal
+        with patch("tools.astrology_orchestrator._select_transit_provider", return_value={
+            "selected_provider_id": "pyswisseph-host-transit-v1", "preferred_provider_id": "pyswisseph-host-transit-v1",
+            "fallback_used": False, "reason_codes": []
+        }), patch("tools.astrology_orchestrator._select_natal_provider", return_value={
+            "selected_provider_id": "swiss-host-natal-v1", "preferred_provider_id": "swiss-host-natal-v1",
+            "fallback_used": False, "reason_codes": []
+        }), patch("tools.astrology_orchestrator._load_swiss_natal_provider", return_value=fake_swiss_natal), patch(
+            "tools.astrology_orchestrator._load_swiss_transit_provider", return_value=fake_swiss_transit
+        ), patch("tools.astrology_orchestrator._load_astronomy_natal_provider", return_value=(fake_ae_natal_builder, None)), patch(
+            "tools.astrology_orchestrator._load_transit_provider", return_value=fake_ae_transit_builder
+        ), patch("tools.astrology_orchestrator._admit_bundle", return_value={
+            "status": "admitted", "interpretation_allowed": True, "errors": []
+        }):
+            result = run_request(request, host_family="chatgpt")
+        self.assertEqual("astronomy-engine-natal-v1", result["fact_bundles"]["natal"]["provider"]["provider_id"])
+        self.assertEqual("astronomy-engine-transit-v1", result["fact_bundles"]["transit"]["provider"]["provider_id"])
+
 if __name__ == "__main__":
     unittest.main()

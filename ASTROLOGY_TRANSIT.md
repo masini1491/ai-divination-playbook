@@ -14,7 +14,9 @@ ASTROLOGY.md
 → ASTROLOGY_TRANSIT.md
 ```
 
-Transit calculation由 `tools/astrology_transit_provider.py` 執行；exact search span、root tolerance、scan steps、station/ingress algorithms、supported scopes與not-admitted boundary以 `admissions/astrology/ASTROLOGY_TRANSIT_PROVIDER_ADMISSION_V1.json` 為 machine truth。
+Transit event-search semantics由 `tools/astrology_transit_provider.py` 共用；provider preference / fallback 由 `ASTROLOGY_PROVIDER_ROUTING_V1.json` 擁有。ChatGPT host 在已 admission 的 modern search window 且 host-preinstalled PySwissEph probe PASS 時，優先使用 `pyswisseph-host-transit-v1`；其餘情況使用 portable `astronomy-engine-transit-v1`。兩條 provider 的 scope、precision / provenance 與 not-admitted boundary分別以 `admissions/astrology/ASTROLOGY_SWISS_TRANSIT_PROVIDER_ADMISSION_V1.json`、`admissions/astrology/ASTROLOGY_TRANSIT_PROVIDER_ADMISSION_V1.json` 為 machine truth。
+
+`root_tolerance_seconds` 只描述選定 ephemeris model 內的數值求根容差，**不等於**對 JPL / 外部天文真值的秒級準確度。Interpretation 必須保留實際 transit provider / effective backend provenance；host PySwiss route 必須與 `swiss-host-natal-v1` baseline 配對，fallback 則整組回到 Astronomy Engine natal + transit，不得 silent mixed-backend。
 
 若 request提供 admitted raw birth input但尚無 natal baseline，先由 production orchestrator / admitted natal provider建立 natal bundle並通過 natal runtime Fact Gate，再進 transit provider；不得從零用模型心算 transit-to-natal geometry。
 
