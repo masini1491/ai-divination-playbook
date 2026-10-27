@@ -64,18 +64,13 @@ class SelectiveReleaseTests(unittest.TestCase):
         self.assertIn('git push origin "HEAD:refs/heads/', workflow)
         self.assertIn('--draft', workflow)
 
-    def test_vercel_only_releases_generated_changes(self):
+    def test_vercel_deploys_mcp_service_and_generated_changes(self):
         config = json.loads((REPO / 'integrations/chatgpt-mcp/vercel.json').read_text(encoding='utf-8'))
         command = config['ignoreCommand']
-        for owner in ('./canonical-repo', './source_manifest.json',
-                      './source_integrity.json', './policy_pack.json'):
-            self.assertIn(owner, command)
-        for service in ('./app.py', './auto_routing.py', './bridge.py',
-                        './public_guard.py', './policy_adapter.py',
-                        './response_format.py', './requirements.txt',
-                        './release_profile.json', './vercel.json'):
-            self.assertIn(service, command)
-        self.assertNotIn('HEAD^ HEAD ./', command)
+        self.assertLessEqual(len(command), 256)
+        self.assertIn('git diff --quiet HEAD^ HEAD -- .', command)
+        self.assertIn("':!README.md'", command)
+        self.assertNotIn('git push origin HEAD:main', (REPO / '.github/workflows/chatgpt-mcp-selective-sync.yml').read_text(encoding='utf-8'))
 
     def test_only_exact_allowed_methods(self):
         files=builder.generate(self.repo)
