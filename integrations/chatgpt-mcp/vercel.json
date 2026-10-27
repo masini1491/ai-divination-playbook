@@ -1,1 +1,1 @@
-{"$schema":"https://openapi.vercel.sh/vercel.json","framework":"fastapi","regions":["icn1"],"ignoreCommand":"git diff --quiet HEAD^ HEAD -- ./canonical-repo ./source_manifest.json ./source_integrity.json ./policy_pack.json ./app.py ./auto_routing.py ./bridge.py ./public_guard.py ./policy_adapter.py ./response_format.py ./requirements.txt ./release_profile.json ./vercel.json"}
+{"$schema":"https://openapi.vercel.sh/vercel.json","framework":"fastapi","regions":["icn1"],"ignoreCommand":"git diff --quiet HEAD^ HEAD -- . ':!README.md'"}
