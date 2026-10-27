@@ -48,6 +48,10 @@ class SelectiveReleaseTests(unittest.TestCase):
         git(self.repo, 'add', '.')
         git(self.repo, 'commit', '-qm', 'fixture')
 
+    def test_response_format_is_selective_sync_trigger(self):
+        workflow = (REPO / '.github/workflows/chatgpt-mcp-selective-sync.yml').read_text(encoding='utf-8')
+        self.assertIn("      - 'integrations/chatgpt-mcp/response_format.py'", workflow)
+
     def test_only_exact_allowed_methods(self):
         files=builder.generate(self.repo)
         self.assertEqual(len(files), 8)

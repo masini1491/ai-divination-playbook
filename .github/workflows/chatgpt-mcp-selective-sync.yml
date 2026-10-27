@@ -26,6 +26,7 @@ on:
       - 'integrations/chatgpt-mcp/bridge.py'
       - 'integrations/chatgpt-mcp/public_guard.py'
       - 'integrations/chatgpt-mcp/policy_adapter.py'
+      - 'integrations/chatgpt-mcp/response_format.py'
       - 'integrations/chatgpt-mcp/release_profile.json'
       - 'integrations/chatgpt-mcp/requirements.txt'
       - 'integrations/chatgpt-mcp/vercel.json'

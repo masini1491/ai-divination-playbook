@@ -92,8 +92,8 @@ jobs:
       - name: Run unit tests
         run: python -m unittest discover -s tests -v
 
-      - name: Install MCP transport test dependency
-        run: python -m pip install --disable-pip-version-check 'starlette>=0.40,<1'
+      - name: Install MCP server test dependencies
+        run: python -m pip install --disable-pip-version-check -r integrations/chatgpt-mcp/requirements.txt
 
       - name: Run MCP-specific regression tests
         run: python -m unittest discover -s tests/chatgpt_mcp -v
