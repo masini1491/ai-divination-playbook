@@ -72,10 +72,12 @@ class MCPTransportSmokeTests(unittest.TestCase):
                 except ValueError:
                     continue
             if isinstance(candidate, dict):
-                if 'selected_method' in candidate:
+                if 'selected_method' in candidate or candidate.get('status') == 'existing_cast_preserved':
                     return candidate
-                if isinstance(candidate.get('result'), dict) and 'selected_method' in candidate['result']:
-                    return candidate['result']
+                if isinstance(candidate.get('result'), dict):
+                    nested = candidate['result']
+                    if 'selected_method' in nested or nested.get('status') == 'existing_cast_preserved':
+                        return nested
         self.fail('Missing structured cast result in MCP response')
 
     def test_catalog_exposes_compact_option(self):
