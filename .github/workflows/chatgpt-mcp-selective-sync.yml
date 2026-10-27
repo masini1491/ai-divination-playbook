@@ -35,6 +35,8 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
+  actions: write
 
 concurrency:
   group: selective-chatgpt-mcp-main
@@ -65,7 +67,9 @@ jobs:
         run: python tools/build_chatgpt_mcp_release.py
       - name: Verify deterministic release (no untracked methods)
         run: python tools/build_chatgpt_mcp_release.py --check
-      - name: Publish only validated generated runtime and policy files
+      - name: Stage generated release in isolated Draft PR, never push main
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           git add -- integrations/chatgpt-mcp/canonical-repo \
@@ -73,10 +77,23 @@ jobs:
             integrations/chatgpt-mcp/source_integrity.json \
             integrations/chatgpt-mcp/policy_pack.json
           if git diff --cached --quiet; then
-            echo 'No approved runtime/policy changes; no release commit.'
+            echo 'Generated release already matches the source; nothing to stage.'
             exit 0
           fi
+          source_commit="$(git rev-parse HEAD)"
+          branch="automation/mcp-release-${source_commit}"
+          if git ls-remote --exit-code --heads origin "refs/heads/${branch}" >/dev/null; then
+            echo "::error::Candidate ref already exists; inspect it rather than overwrite or force-push."
+            exit 1
+          fi
+          git switch -c "${branch}"
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git commit -m 'chore(mcp): refresh allowlisted verified release from canonical main'
-          git push origin HEAD:main
+          git commit -m "chore(mcp): stage verified release for ${source_commit}"
+          git push origin "HEAD:refs/heads/${branch}"
+          gh pr create --base main --head "${branch}" --draft \
+            --title "chore(mcp): review selective release for ${source_commit:0:12}" \
+            --body "Generated release candidate based on canonical source ${source_commit}. Review the generated-only diff and CI results before merging. No automatic merge or Production promotion."
+          # GITHUB_TOKEN-created PRs do not automatically trigger pull_request workflows.
+          # workflow_dispatch does trigger an independent validation run for this exact ref.
+          gh workflow run validation.yml --ref "${branch}"
