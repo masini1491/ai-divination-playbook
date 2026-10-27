@@ -207,6 +207,28 @@ class CompactEvidenceTests(unittest.TestCase):
             self.assertEqual(reference[key], value)
         self.assertNotIn("content", str(reference))
 
+
+    def test_compact_payload_preserves_cast_and_drops_excerpts(self):
+        # Isolated service-level formatter; fake cast evidence, no RNG call.
+        from response_format import method_policy_output
+        from policy_adapter import selected_policy, selected_policy_reference
+        cast = {"cards": [{"name": "fixture", "orientation": "upright"}]}
+        base = {"selected_method": "tarot", "status": "cast_completed", "cast_result": cast}
+        full = method_policy_output(base, include_policy_excerpts=True)
+        compact = method_policy_output(base, include_policy_excerpts=False)
+        self.assertEqual(full["cast_result"], compact["cast_result"])
+        self.assertEqual(compact["cast_result"], cast)
+        self.assertEqual(full["method_policy"], selected_policy("tarot"))
+        self.assertEqual(compact["method_policy"], selected_policy_reference("tarot"))
+        self.assertEqual(compact["method_policy"]["excerpts"], [])
+        self.assertTrue(full["method_policy"]["excerpts"])
+        self.assertEqual(base, {"selected_method": "tarot", "status": "cast_completed", "cast_result": cast})
+
+    def test_no_cast_response_remains_without_policy(self):
+        from response_format import method_policy_output
+        original = {"status": "needs_clarification", "reason_code": "question_identity_missing"}
+        self.assertEqual(method_policy_output(original, False), original)
+
     def test_compact_reference_rejects_unsupported_method(self):
         from policy_adapter import selected_policy_reference
         with self.assertRaises(ValueError):
