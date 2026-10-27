@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "profile_id": "chatgpt-mcp-tarot-meihua-liuyao-v1",
+  "enabled_methods": ["tarot", "meihua", "liuyao"],
+  "canonical_engines": [
+    "runtime/casting/core.py",
+    "tools/meihua_engine.py",
+    "tools/liuyao_engine.py",
+    "tools/liuyao_calendar.py",
+    "tools/liuyao_runtime.py"
+  ],
+  "canonical_policy_owners": [
+    "METHOD_ROUTING.md",
+    "INPUT_CONTRACT.md",
+    "QUESTION_DESIGN.md",
+    "TAROT.md",
+    "MEIHUA.md",
+    "LIUYAO.md",
+    "READING_LIFECYCLE.md",
+    "READING_RECORD.md",
+    "CROSS_VALIDATION.md",
+    "CHATGPT_OUTPUT.md",
+    "RUNTIME_DRAW.md"
+  ],
+  "excluded_method_prefixes": ["PALMISTRY", "ASTROLOGY", "ZIWEI"],
+  "release_policy": "Exact allowlist only. New methods require an explicit profile and reviewed code change. Reject dirty canonical source, changed engine semantics, or failed validation."
+}
