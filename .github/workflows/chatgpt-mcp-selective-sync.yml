@@ -94,8 +94,13 @@ jobs:
           gh pr create --base main --head "${branch}" --draft \
             --title "chore(mcp): review selective release for ${source_commit:0:12}" \
             --body "Generated release candidate based on canonical source ${source_commit}. Review the generated-only diff and CI results before merging. No automatic merge or Production promotion."
-          # GITHUB_TOKEN-created PRs do not automatically trigger pull_request workflows.
-          # workflow_dispatch does trigger an independent validation run for this exact ref.
-          gh workflow run validation.yml --ref "${branch}"
-          echo "::notice::Dispatched validation for ${branch}; release PR remains Draft."
-          echo "::notice::Required status checks must be attached to the candidate PR before merge."
+          # GITHUB_TOKEN-created PRs do not trigger pull_request workflows.
+          # Explicit dispatch is advisory only: it is not proof of a required PR check.
+          # Keep the PR Draft until a reviewer verifies checks on its exact head SHA.
+          if gh workflow view validation.yml --ref main >/dev/null 2>&1; then
+            gh workflow run validation.yml --ref "${branch}"
+            echo "::notice::Dispatched advisory validation for ${branch}."
+          else
+            echo "::warning::Validation workflow not yet on default branch; no dispatch attempted."
+          fi
+          echo "::warning::Draft release PR requires independent check verification and enforced branch protection before merge."
