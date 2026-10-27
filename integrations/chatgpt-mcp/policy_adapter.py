@@ -54,3 +54,11 @@ def selected_policy(method: str | None) -> dict:
     return {'source_commit': pack['source_commit'], 'profile_id': pack['profile_id'],
             'method': method, 'excerpts': excerpts,
             'note': 'Exact canonical excerpts, not full owner contents. Do not infer omitted sections.'}
+
+
+def selected_policy_reference(method: str | None) -> dict:
+    """Compact, hash-pinned policy identity without owner text excerpts."""
+    if method not in METHOD_OWNERS:
+        raise ValueError('unsupported method for policy reference')
+    return {**policy_identity(), 'method': method, 'excerpts': [],
+            'note': 'Compact reference only; no policy excerpts. Obtain canonical policy before interpretation.'}

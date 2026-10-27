@@ -6,7 +6,7 @@ from pathlib import Path
 
 BASE = Path(__file__).resolve().parents[2] / 'integrations' / 'chatgpt-mcp'
 sys.path.insert(0, str(BASE))
-from auto_routing import route_plan, execute_auto_route, ROUTER_VERSION  # noqa: E402
+from auto_routing import route_plan, route_from_summary, execute_auto_route, ROUTER_VERSION  # noqa: E402
 from public_guard import decorate_tools_list  # noqa: E402
 
 
@@ -175,6 +175,64 @@ class ToolListTests(unittest.TestCase):
         raw=json.dumps({'jsonrpc':'2.0','id':2,'error':{'code':-1,'message':'error'}}).encode()
         self.assertEqual(decorate_tools_list(raw),raw)
 
+
+
+
+class CompactEvidenceTests(unittest.TestCase):
+    """No random cast: verify real question-summary routing and compact policy references."""
+
+    def test_three_intents_without_cast(self):
+        cases = (
+            ("某人目前對合作關係的主觀看法與動機", {}, "tarot", "draw_tarot"),
+            ("某項長期合作未來半年的發展方向與轉折", {}, "meihua", "cast_meihua"),
+            ("某項申請是否於2026年11月15日前收到正式核准通知",
+             {"has_completion_rule": True, "has_horizon": True}, "liuyao", "cast_liuyao"),
+        )
+        for summary, flags, method, tool in cases:
+            with self.subTest(method=method):
+                plan = route_from_summary(summary, method_override="auto", **flags)
+                self.assertEqual(plan["status"], "ready")
+                self.assertEqual(plan["selected_method"], method)
+                self.assertEqual(plan["selected_tool"], tool)
+                self.assertEqual(plan["routing_source"], "server_question_summary")
+                self.assertNotIn("cast_result", plan)
+
+    def test_compact_policy_reference_no_owner_text(self):
+        from policy_adapter import selected_policy_reference, policy_identity
+        reference = selected_policy_reference("meihua")
+        identity = policy_identity()
+        self.assertEqual(reference["method"], "meihua")
+        self.assertEqual(reference["excerpts"], [])
+        for key, value in identity.items():
+            self.assertEqual(reference[key], value)
+        self.assertNotIn("content", str(reference))
+
+
+    def test_compact_payload_preserves_cast_and_drops_excerpts(self):
+        # Isolated service-level formatter; fake cast evidence, no RNG call.
+        from response_format import method_policy_output
+        from policy_adapter import selected_policy, selected_policy_reference
+        cast = {"cards": [{"name": "fixture", "orientation": "upright"}]}
+        base = {"selected_method": "tarot", "status": "cast_completed", "cast_result": cast}
+        full = method_policy_output(base, include_policy_excerpts=True)
+        compact = method_policy_output(base, include_policy_excerpts=False)
+        self.assertEqual(full["cast_result"], compact["cast_result"])
+        self.assertEqual(compact["cast_result"], cast)
+        self.assertEqual(full["method_policy"], selected_policy("tarot"))
+        self.assertEqual(compact["method_policy"], selected_policy_reference("tarot"))
+        self.assertEqual(compact["method_policy"]["excerpts"], [])
+        self.assertTrue(full["method_policy"]["excerpts"])
+        self.assertEqual(base, {"selected_method": "tarot", "status": "cast_completed", "cast_result": cast})
+
+    def test_no_cast_response_remains_without_policy(self):
+        from response_format import method_policy_output
+        original = {"status": "needs_clarification", "reason_code": "question_identity_missing"}
+        self.assertEqual(method_policy_output(original, False), original)
+
+    def test_compact_reference_rejects_unsupported_method(self):
+        from policy_adapter import selected_policy_reference
+        with self.assertRaises(ValueError):
+            selected_policy_reference("palmistry")
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

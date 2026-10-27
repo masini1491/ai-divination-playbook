@@ -13,7 +13,8 @@ from auto_routing import route_from_summary, execute_auto_route, ROUTER_VERSION
 from mcp.server import MCPServer
 from mcp.server.transport_security import TransportSecuritySettings
 from bridge import DivinationBridge, SOURCE_COMMIT
-from policy_adapter import policy_identity, selected_policy
+from policy_adapter import policy_identity
+from response_format import method_policy_output
 
 BASE = Path(__file__).resolve().parent
 ENGINE = DivinationBridge(BASE / "canonical-repo")
@@ -54,6 +55,7 @@ def auto_divination(
     has_completion_rule: bool = False,
     has_horizon: bool = False,
     tarot_count: int = 3,
+    include_policy_excerpts: bool = True,
 ) -> dict:
     """PREFERRED single entry for new readings. Server routes the question.
 
@@ -63,6 +65,8 @@ def auto_divination(
     - motives, feelings, choices, comparisons -> Tarot
     - evolution, longer-term direction, turning points -> Meihua
     - ONE concrete verifiable event with outcome criterion and deadline -> Liuyao
+    Set include_policy_excerpts=false for a compact evidence response: identical
+    cast_result with policy identity and no long excerpt text.
     A time window alone never implies Liuyao. Respect method_override when user
     explicitly requests tarot/meihua/liuyao. Flags has_completion_rule and
     has_horizon supplement the de-identified summary; if missing for Liuyao,
@@ -80,10 +84,7 @@ def auto_divination(
     outcome = execute_auto_route(plan, _bridge)
     # Ship bounded verbatim canonical owner excerpts with the reading. This is
     # the same repo authority as manual Playbook reads, not a second policy.
-    method = outcome.get("selected_method")
-    if method in {"tarot", "meihua", "liuyao"}:
-        outcome["method_policy"] = selected_policy(method)
-    return outcome
+    return method_policy_output(outcome, include_policy_excerpts)
 
 
 @mcp.tool()

@@ -48,6 +48,40 @@ class SelectiveReleaseTests(unittest.TestCase):
         git(self.repo, 'add', '.')
         git(self.repo, 'commit', '-qm', 'fixture')
 
+    def test_response_format_is_selective_sync_trigger(self):
+        workflow = (REPO / '.github/workflows/chatgpt-mcp-selective-sync.yml').read_text(encoding='utf-8')
+        self.assertIn("      - 'integrations/chatgpt-mcp/response_format.py'", workflow)
+
+    def test_selective_release_is_pr_gated_and_dispatches_validation(self):
+        workflow = (REPO / '.github/workflows/chatgpt-mcp-selective-sync.yml').read_text(encoding='utf-8')
+        validation = (REPO / '.github/workflows/validation.yml').read_text(encoding='utf-8')
+        self.assertIn('pull-requests: write', workflow)
+        self.assertIn('actions: write', workflow)
+        self.assertIn('gh pr create --base main', workflow)
+        self.assertIn('gh workflow run validation.yml --ref', workflow)
+        self.assertIn('  workflow_dispatch:', validation)
+        self.assertNotIn('git push origin HEAD:main', workflow)
+        self.assertIn('git push origin "HEAD:refs/heads/', workflow)
+        self.assertIn('--draft', workflow)
+
+    def test_dispatched_release_validation_has_both_required_job_contexts(self):
+        workflow = (REPO / '.github/workflows/validation.yml').read_text(encoding='utf-8')
+        release = (REPO / '.github/workflows/chatgpt-mcp-selective-sync.yml').read_text(encoding='utf-8')
+        self.assertIn('  workflow_dispatch:', workflow)
+        self.assertIn('  validate:', workflow)
+        self.assertIn('  casting-runtime:', workflow)
+        self.assertIn('gh workflow run validation.yml --ref "${branch}"', release)
+        self.assertIn('gh pr create --base main --head "${branch}" --draft', release)
+        self.assertNotIn('git push origin HEAD:main', release)
+
+    def test_vercel_deploys_mcp_service_and_generated_changes(self):
+        config = json.loads((REPO / 'integrations/chatgpt-mcp/vercel.json').read_text(encoding='utf-8'))
+        command = config['ignoreCommand']
+        self.assertLessEqual(len(command), 256)
+        self.assertIn('git diff --quiet HEAD^ HEAD -- .', command)
+        self.assertIn("':!README.md'", command)
+        self.assertNotIn('git push origin HEAD:main', (REPO / '.github/workflows/chatgpt-mcp-selective-sync.yml').read_text(encoding='utf-8'))
+
     def test_only_exact_allowed_methods(self):
         files=builder.generate(self.repo)
         self.assertEqual(len(files), 8)

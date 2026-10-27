@@ -12,14 +12,25 @@ Palmistry, Astrology, Zi Wei or new methods simply because they appear on main.
 - Generator: `python tools/build_chatgpt_mcp_release.py` (repo root).
 - Output: hash-pinned files inside this directory. `source_manifest.json`,
   `source_integrity.json`, `policy_pack.json` are generated, never hand-edited.
-- The GitHub Action `chatgpt-mcp-selective-sync.yml` triggers **only** for the
-  source and policy allowlist, the release script, and relevant integration tests.
-  It verifies contracts, generates the release, and commits only generated files
-  using the built-in GitHub Actions token. No third-party API key is required.
+- The GitHub Action `chatgpt-mcp-selective-sync.yml` runs on the narrow
+  source, policy, and integration allowlist. It validates the candidate and
+  generates exact-commit runtime/policy files, but **never pushes main**.
+  Instead it creates an isolated `automation/mcp-release-<source-sha>` branch
+  and Draft PR with only generated files.
+- PRs created using the built-in `GITHUB_TOKEN` do not automatically trigger
+  `pull_request` Actions. The release job explicitly dispatches
+  `validation.yml` for the candidate branch. This requires `actions: write`,
+  `pull-requests: write`, and repository permission for Actions to create PRs.
+  No third-party token is needed; inability to create or validate the PR
+  is a **release blocker**, not authorization to push main.
 - A Git-linked Vercel project with **Root Directory** `integrations/chatgpt-mcp`
-  automatically deploys the generated release commit. The `ignoreCommand`
-  skips non-release changes. An unrelated palmistry change does not update
-  this directory or pass the workflow's path filter.
+  deploys Production when generated release paths or MCP service code change;
+  unrelated files outside the MCP deployment allowlist are skipped by `ignoreCommand`. The generated-only Draft PR
+  must receive the intended CI checks and be deliberately approved/merged
+  before Production is eligible. Enforce Required Status Checks and PR reviews
+  in GitHub before promoting this process to routine use. Vercel READY alone
+  is not a functional MCP smoke-test result.
+- Palmistry, Astrology and Zi Wei remain outside the allowlist.
 
 ## Safety and guarantees
 
