@@ -70,6 +70,11 @@ class SelectiveReleaseTests(unittest.TestCase):
         for owner in ('./canonical-repo', './source_manifest.json',
                       './source_integrity.json', './policy_pack.json'):
             self.assertIn(owner, command)
+        for service in ('./app.py', './auto_routing.py', './bridge.py',
+                        './public_guard.py', './policy_adapter.py',
+                        './response_format.py', './requirements.txt',
+                        './release_profile.json', './vercel.json'):
+            self.assertIn(service, command)
         self.assertNotIn('HEAD^ HEAD ./', command)
 
     def test_only_exact_allowed_methods(self):

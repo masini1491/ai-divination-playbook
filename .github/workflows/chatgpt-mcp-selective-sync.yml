@@ -97,3 +97,5 @@ jobs:
           # GITHUB_TOKEN-created PRs do not automatically trigger pull_request workflows.
           # workflow_dispatch does trigger an independent validation run for this exact ref.
           gh workflow run validation.yml --ref "${branch}"
+          echo "::notice::Dispatched validation for ${branch}; release PR remains Draft."
+          echo "::notice::Required status checks must be attached to the candidate PR before merge."

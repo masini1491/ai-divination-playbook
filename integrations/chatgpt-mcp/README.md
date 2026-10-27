@@ -24,8 +24,8 @@ Palmistry, Astrology, Zi Wei or new methods simply because they appear on main.
   No third-party token is needed; inability to create or validate the PR
   is a **release blocker**, not authorization to push main.
 - A Git-linked Vercel project with **Root Directory** `integrations/chatgpt-mcp`
-  deploys Production only when generated release paths change; ordinary
-  adapter edits are skipped by `ignoreCommand`. The generated-only Draft PR
+  deploys Production when generated release paths or MCP service code change;
+  unrelated files outside the MCP deployment allowlist are skipped by `ignoreCommand`. The generated-only Draft PR
   must receive the intended CI checks and be deliberately approved/merged
   before Production is eligible. Enforce Required Status Checks and PR reviews
   in GitHub before promoting this process to routine use. Vercel READY alone
