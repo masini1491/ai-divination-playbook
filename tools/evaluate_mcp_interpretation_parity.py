@@ -30,6 +30,12 @@ def load_cases(path: Path):
     ids = [c["id"] for c in cases]
     if len(ids) != len(set(ids)):
         raise ValueError("duplicate fixture ids")
+    digests = data.get("policy_owner_digests")
+    if not isinstance(digests, dict) or set(digests) != {"TAROT.md", "MEIHUA.md", "LIUYAO.md", "CHATGPT_OUTPUT.md"}:
+        raise ValueError("missing or unexpected canonical owner digests")
+    if any(not isinstance(value, str) or len(value) != 64 or any(c not in "0123456789abcdef" for c in value)
+           for value in digests.values()):
+        raise ValueError("invalid owner digest")
     for case in cases:
         if case.get("method") not in ("tarot", "meihua", "liuyao"):
             raise ValueError("unexpected method")
@@ -72,6 +78,7 @@ def evaluate(casebook: dict, records: dict) -> dict:
             errors.append("BOTH_ROUTES_REQUIRED")
             outputs = {}
         verdicts = {}
+        capture_ids = {}
         for route in ROUTES:
             out = outputs.get(route, {})
             response = out.get("response") if isinstance(out, dict) else None
@@ -86,30 +93,62 @@ def evaluate(casebook: dict, records: dict) -> dict:
             if set(flags) != expected:
                 errors.append(f"{route}:INCOMPLETE_RUBRIC")
                 continue
-            # Every rubric point requires a human review decision with a quote
-            # drawn from the actual response, not a self-asserted PASS.
+            valid = True
+            # Every check is reviewed against a literal snippet of the actual
+            # response. The reviewer, not this code, judges semantic correctness.
             for item in expected:
                 check = flags[item]
                 if not isinstance(check, dict) or type(check.get("satisfied")) is not bool:
                     errors.append(f"{route}:{item}:UNREVIEWED")
+                    valid = False
                     continue
                 if not _valid_evidence(response, check.get("evidence_quote")):
                     errors.append(f"{route}:{item}:EVIDENCE_NOT_IN_RESPONSE")
-            verdicts[route] = out
+                    valid = False
+            capture = out.get("capture")
+            if not isinstance(capture, dict):
+                errors.append(f"{route}:CAPTURE_METADATA_MISSING")
+                valid = False
+            else:
+                session_id = capture.get("session_id")
+                if not isinstance(session_id, str) or not session_id.strip():
+                    errors.append(f"{route}:SESSION_ID_MISSING")
+                    valid = False
+                else:
+                    capture_ids[route] = session_id.strip()
+                transport = "github_connector" if route == "repo" else "mcp"
+                if capture.get("transport") != transport:
+                    errors.append(f"{route}:TRANSPORT_NOT_MATCHED")
+                    valid = False
+                if capture.get("response_sha256") != hashlib.sha256(response.encode("utf-8")).hexdigest():
+                    errors.append(f"{route}:RESPONSE_DIGEST_MISMATCH")
+                    valid = False
+                method_name = {"tarot": "TAROT.md", "meihua": "MEIHUA.md",
+                               "liuyao": "LIUYAO.md"}[fixture["method"]]
+                expected_owners = {owner: casebook["policy_owner_digests"][owner]
+                                   for owner in (method_name, "CHATGPT_OUTPUT.md")}
+                if capture.get("owner_sha256") != expected_owners:
+                    errors.append(f"{route}:CANONICAL_OWNER_DIGEST_MISMATCH")
+                    valid = False
+            if valid:
+                verdicts[route] = out
+        if len(capture_ids) == 2 and capture_ids["repo"] == capture_ids["mcp"]:
+            errors.append("PAIRED_SESSION_NOT_DISTINCT")
         # Requiring matching IDs/config is necessary but not proof of LLM settings.
         for key in ("model_id", "model_config_id", "policy_source_commit", "fixture_sha256"):
-            values = [outputs.get(route, {}).get(key) for route in ROUTES
+            values = [outputs[route].get(key) for route in ROUTES
                       if isinstance(outputs.get(route), dict)]
             if len(values) != 2 or not values[0] or values[0] != values[1]:
                 errors.append(f"PAIRED_{key.upper()}_MISMATCH")
         expected_fixture_hash = hashlib.sha256(
             json.dumps(fixture, sort_keys=True, ensure_ascii=False).encode("utf-8")).hexdigest()
+        repo_output = outputs.get("repo") if isinstance(outputs.get("repo"), dict) else {}
         if (record.get("fixture_sha256") != expected_fixture_hash
-                or outputs.get("repo", {}).get("fixture_sha256") != expected_fixture_hash):
+                or repo_output.get("fixture_sha256") != expected_fixture_hash):
             errors.append("FIXTURE_DIGEST_NOT_PINNED")
-        if outputs.get("repo", {}).get("policy_source_commit") != casebook.get("policy_source_commit"):
+        if repo_output.get("policy_source_commit") != casebook.get("policy_source_commit"):
             errors.append("POLICY_REVISION_MISMATCH")
-        if record.get("reviewed_by") in (None, ""):
+        if not isinstance(record.get("reviewed_by"), str) or not record["reviewed_by"].strip():
             errors.append("REVIEWER_NOT_RECORDED")
 
         violation = []

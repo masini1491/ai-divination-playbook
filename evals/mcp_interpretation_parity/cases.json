@@ -311,5 +311,11 @@
         "guaranteed_outcome"
       ]
     }
-  ]
+  ],
+  "policy_owner_digests": {
+    "TAROT.md": "0a674d2a44899b7f05a1bb809066e3d994b9b4b007c447080458d8d6d794adff",
+    "MEIHUA.md": "ec3add71760999a7127d6e13db52883f5d4702d53a873a0d3bd3e15ab473911a",
+    "LIUYAO.md": "41ff010e5b8f6bf59818368b17a5890e802742b9ca3983ade66fcb2841605cc3",
+    "CHATGPT_OUTPUT.md": "eb7447adcdf7581fa7c27c279afb47334f0269ce8f6714339d203adf25473f2d"
+  }
 }

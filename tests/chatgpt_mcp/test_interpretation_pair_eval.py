@@ -25,15 +25,24 @@ def baseline():
         checks.update({x: {"satisfied": False, "evidence_quote": "No violation"}
                        for x in case["forbidden"]})
         # This is a synthetic evaluator fixture, not a real model test result.
+        owners = {owner: CASEBOOK['policy_owner_digests'][owner] for owner in (
+            {'tarot': 'TAROT.md', 'meihua': 'MEIHUA.md', 'liuyao': 'LIUYAO.md'}[case['method']],
+            'CHATGPT_OUTPUT.md')}
         output = {"response": body, "checks": checks, "model_id": "fixture-model",
                   "model_config_id": "identical-config",
                   "policy_source_commit": CASEBOOK["policy_source_commit"],
                   "fixture_sha256": hashlib.sha256(
                       json.dumps(case, sort_keys=True, ensure_ascii=False).encode()).hexdigest()}
+        output["capture"] = {"session_id": "fixture-session-repo",
+                             "transport": "github_connector",
+                             "owner_sha256": owners,
+                             "response_sha256": hashlib.sha256(body.encode("utf-8")).hexdigest()}
+        mcp = copy.deepcopy(output)
+        mcp["capture"]["session_id"] = "fixture-session-mcp"
+        mcp["capture"]["transport"] = "mcp"
         records["cases"].append({"id": case["id"], "reviewed_by": "synthetic-unit-test",
                                  "fixture_sha256": output["fixture_sha256"],
-                                 "outputs": {"repo": copy.deepcopy(output),
-                                             "mcp": copy.deepcopy(output)}})
+                                 "outputs": {"repo": copy.deepcopy(output), "mcp": mcp}})
     return records
 
 
@@ -82,6 +91,33 @@ class PairedInterpretationEvalTests(unittest.TestCase):
         rec = baseline()
         rec["cases"][0]["outputs"].pop("mcp")
         self.assertEqual(mod.evaluate(CASEBOOK, rec)["status"], "INCONCLUSIVE")
+
+    def test_response_and_source_provenance_mismatches_fail_closed(self):
+        cases = (
+            ("response_digest", lambda x: x["capture"].update(response_sha256="0"*64)),
+            ("source_owner", lambda x: x["capture"]["owner_sha256"].update({"TAROT.md": "0"*64})),
+            ("wrong_transport", lambda x: x["capture"].update(transport="github_connector")),
+            ("copied_session", lambda x: x["capture"].update(session_id="fixture-session-repo")),
+        )
+        for label, mutation in cases:
+            with self.subTest(case=label):
+                rec = baseline()
+                mutation(rec["cases"][0]["outputs"]["mcp"])
+                self.assertEqual(mod.evaluate(CASEBOOK, rec)["status"], "INCONCLUSIVE")
+
+    def test_invalid_check_shape_is_inconclusive_not_exception(self):
+        for bad in (None, True, [], {"satisfied": True}, {"satisfied": "yes", "evidence_quote": "Rule checked"}):
+            with self.subTest(value=bad):
+                rec = baseline()
+                rec["cases"][0]["outputs"]["mcp"]["checks"]["same_fixed_cards"] = bad
+                self.assertEqual(mod.evaluate(CASEBOOK, rec)["status"], "INCONCLUSIVE")
+
+    def test_non_object_route_is_inconclusive_not_exception(self):
+        for bad in (None, [], 1, "wrong"):
+            with self.subTest(value=bad):
+                rec = baseline()
+                rec["cases"][0]["outputs"]["mcp"] = bad
+                self.assertEqual(mod.evaluate(CASEBOOK, rec)["status"], "INCONCLUSIVE")
 
     def test_unknown_case_and_duplicate_rejected(self):
         for value in ("TAROT-LIKELIHOOD", "UNRECOGNIZED"):
