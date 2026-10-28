@@ -157,7 +157,7 @@ class BatchCastTests(unittest.TestCase):
 
     def test_preflight_invalid_item_blocks_all_casts(self):
         for mutate in (
-            lambda a:a[-1].pop("has_horizon"),
+            lambda a:a[5].pop("has_horizon"),
             lambda a:a.append(labeled("tarot",12)),
             lambda a:a[1].update(label=a[0]["label"]),
             lambda a:a[1].update(label="../../unsafe"),
