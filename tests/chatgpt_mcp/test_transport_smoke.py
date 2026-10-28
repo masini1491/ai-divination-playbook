@@ -114,5 +114,112 @@ class MCPTransportSmokeTests(unittest.TestCase):
         self.assertEqual(fake.calls, [])
 
 
+    def extract_policy(self, result):
+        """Read canonical owner response from MCP structured/text content."""
+        candidates = [result.get('structuredContent')]
+        candidates.extend(part.get('text') for part in result.get('content', [])
+                          if isinstance(part, dict))
+        for value in candidates:
+            if isinstance(value, str):
+                try:
+                    value = json.loads(value)
+                except ValueError:
+                    continue
+            if isinstance(value, dict):
+                if 'owner' in value and 'text' in value:
+                    return value
+                if isinstance(value.get('result'), dict):
+                    nested = value['result']
+                    if 'owner' in nested and 'text' in nested:
+                        return nested
+        self.fail('Missing canonical interpretation policy in MCP response')
+
+    def test_full_canonical_policy_reaches_chatgpt_for_all_three_methods(self):
+        from policy_adapter import _bundle, METHOD_OWNERS
+        pack = _bundle()
+        cases = (
+            ('tarot', '某人對合作的想法與動機', {}),
+            ('meihua', '某項合作接下來怎麼發展', {}),
+            ('liuyao', '某項申請是否於2026年11月15日前取得正式核准',
+             {'has_completion_rule': True, 'has_horizon': True}),
+        )
+        fake = FakeBridge()
+        with patch.object(service, 'ENGINE', fake):
+            for method, summary, flags in cases:
+                with self.subTest(method=method):
+                    response = self.rpc('tools/call', {'name': 'auto_divination', 'arguments': {
+                        'question_summary': summary, 'method_override': method,
+                        **flags}})
+                    result = self.extract_cast(response)
+                    self.assertEqual(result['status'], 'cast_completed')
+                    self.assertEqual(result['selected_method'], method)
+                    policy = result['method_policy']
+                    self.assertEqual(policy['source_commit'], pack['source_commit'])
+                    self.assertEqual(set(policy['required_full_owners']),
+                                     {METHOD_OWNERS[method], 'CHATGPT_OUTPUT.md'})
+                    excerpts = {x['owner']: x for x in policy['excerpts']}
+                    for owner in (METHOD_OWNERS[method], 'CHATGPT_OUTPUT.md'):
+                        self.assertEqual(excerpts[owner]['excerpt'], pack['owners'][owner]['content'])
+                        self.assertFalse(excerpts[owner]['is_excerpt'])
+        self.assertEqual([call[0] for call in fake.calls], ['tarot', 'meihua', 'liuyao'])
+
+    def test_paginated_policy_over_transport_preserves_exact_hash_and_no_cast(self):
+        import hashlib
+        from policy_adapter import _bundle
+        pack = _bundle()
+        target = pack['owners']['LIUYAO.md']
+        fake = FakeBridge()
+        offset = 0
+        chunks = []
+        with patch.object(service, 'ENGINE', fake):
+            for _ in range(12):
+                response = self.rpc('tools/call', {
+                    'name': 'get_interpretation_policy',
+                    'arguments': {'method': 'liuyao', 'owner': 'LIUYAO.md',
+                                  'offset': offset, 'max_chars': 1357}})
+                self.assertFalse(response.get('isError', False))
+                page = self.extract_policy(response)
+                self.assertEqual(page['source_commit'], pack['source_commit'])
+                self.assertEqual(page['sha256'], target['sha256'])
+                self.assertEqual(page['offset'], offset)
+                chunks.append(page['text'])
+                if page['next_offset'] is None:
+                    self.assertEqual(page['total_chars'], offset + len(page['text']))
+                    break
+                offset = page['next_offset']
+            else:
+                self.fail('Policy pagination did not terminate')
+        self.assertEqual(''.join(chunks), target['content'])
+        self.assertEqual(hashlib.sha256(''.join(chunks).encode('utf-8')).hexdigest(),
+                         target['sha256'])
+        self.assertEqual(fake.calls, [])
+
+    def test_invalid_policy_owner_fails_at_mcp_boundary_without_cast(self):
+        fake = FakeBridge()
+        with patch.object(service, 'ENGINE', fake):
+            for method, owner in (('tarot', 'ASTROLOGY.md'),
+                                  ('liuyao', '../../README.md'),
+                                  ('ziwei', 'LIUYAO.md')):
+                with self.subTest(method=method, owner=owner):
+                    response = self.rpc('tools/call', {
+                        'name': 'get_interpretation_policy',
+                        'arguments': {'method': method, 'owner': owner}})
+                    self.assertTrue(response.get('isError'), response)
+        self.assertEqual(fake.calls, [])
+
+    def test_policy_validation_failure_prevents_rng(self):
+        from unittest.mock import patch as mock_patch
+        import policy_adapter
+        fake = FakeBridge()
+        with mock_patch.object(service, 'ENGINE', fake), \
+             mock_patch.object(policy_adapter, '_bundle',
+                               side_effect=RuntimeError('POLICY_DIGEST_MISMATCH')):
+            response = self.rpc('tools/call', {'name': 'auto_divination',
+                'arguments': {'question_summary': '某人對合作的想法與動機',
+                              'method_override': 'tarot'}})
+        self.assertTrue(response.get('isError'), response)
+        self.assertEqual(fake.calls, [])
+
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)

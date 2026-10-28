@@ -38,6 +38,8 @@ Palmistry, Astrology, Zi Wei or new methods simply because they appear on main.
 - The advertised `get_interpretation_policy(method, owner, offset, max_chars)` retrieves exact original text for any of the eleven pinned allowlisted owners in bounded contiguous chunks. Follow `next_offset` to exhaustion and verify stable `source_commit`, `owner` and `sha256` across chunks before claiming full coverage.
 - Apply `QUESTION_DESIGN.md` and `INPUT_CONTRACT.md` when contract/position/horizon design materially matters; `READING_LIFECYCLE.md` for follow-ups/recasts; `READING_RECORD.md` for user-managed records; `CROSS_VALIDATION.md` for admitted cross-method reconciliation. Do not imply those owners were read solely because the MCP bundled them.
 - `include_policy_excerpts=false` is compact evidence mode, **not** permission to interpret without loading required canonical rules.
+- Policy integrity is checked **before** invoking a new stochastic draw: a missing/tampered owner pack blocks casting instead of creating a partial reading.
+- Transport smoke tests verify that complete method/output owners and exact SHA-pinned paginated rules reach the MCP caller, and that invalid owner requests or failed policy integrity do not yield a new cast.
 - This service still produces method facts, not deterministic natural-language interpretations. Rule-access parity does not imply identical prose, validity of predictions, or reading-record persistence.
 
 ## Safety and guarantees

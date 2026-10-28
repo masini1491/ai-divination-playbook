@@ -88,10 +88,10 @@ def auto_divination(
         existing_cast=existing_cast, has_completion_rule=has_completion_rule,
         has_horizon=has_horizon, tarot_count=tarot_count,
     )
-    outcome = execute_auto_route(plan, _bridge)
-    # Ship bounded verbatim canonical owner excerpts with the reading. This is
-    # the same repo authority as manual Playbook reads, not a second policy.
-    return method_policy_output(outcome, include_policy_excerpts)
+    # Resolve and verify applicable pinned policy BEFORE any stochastic cast.
+    # Missing/tampered policy must not consume RNG or create a partial reading.
+    prepared = method_policy_output(plan, include_policy_excerpts)
+    return execute_auto_route(prepared, _bridge)
 
 
 @mcp.tool()
