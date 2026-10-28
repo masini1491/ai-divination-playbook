@@ -13,21 +13,32 @@ from auto_routing import route_from_summary, execute_auto_route, ROUTER_VERSION
 from mcp.server import MCPServer
 from mcp.server.transport_security import TransportSecuritySettings
 from bridge import DivinationBridge, SOURCE_COMMIT
-from policy_adapter import policy_identity
+from policy_adapter import policy_identity, get_policy_owner
 from response_format import method_policy_output
 
 BASE = Path(__file__).resolve().parent
 ENGINE = DivinationBridge(BASE / "canonical-repo")
+MCP_RUNTIME_VERSION = "1.3.0-private-policy-parity"
+INTERPRETATION_POLICY_VERSION = "canonical-owner-parity-v1"
 
 mcp = MCPServer(
     "AI Divination Facts",
-    version="1.2.0-private-auto-route",
+    version=MCP_RUNTIME_VERSION,
     instructions=(
         "Fact tools only: Tarot, Meihua and Liuyao. Preserve original raw cast "
         "and provenance. Results are symbolic, not certain predictions. "
         "When method is not specified, call auto_divination with a short anonymized question_summary, and let the SERVER choose the method. "
         "Avoid sending user question text, identity, or sensitive data as tool args. "
-        "Do not redraw existing facts or invent failed casts."
+        "Do not redraw existing facts or invent failed casts. "
+        "For existing fixed cards or hexagrams, set existing_cast=true with the known method_override "
+        "to obtain pinned interpretation rules without any new draw/cast. "
+        "For interpretation, use the full pinned method owner plus CHATGPT_OUTPUT.md from method_policy. "
+        "If excerpts are omitted or an applicable conditional owner is truncated, "
+        "call get_interpretation_policy to retrieve exact text before making claims. "
+        "Only facts are calculated by this MCP; natural-language synthesis is done by ChatGPT. "
+        "To verify that the web-connected plugin has the updated interpretation rules, "
+        "check runtime_status.interpretation_policy_version and the get_interpretation_policy tool. "
+        "A source commit alone cannot distinguish old and new interpretation-policy releases."
     ),
 )
 
@@ -42,6 +53,15 @@ def runtime_status() -> dict:
     """Verified canonical engine source and supported divination methods."""
     _bridge()
     return {"runtime_source_commit": SOURCE_COMMIT, "verified": True,
+            "mcp_runtime_version": MCP_RUNTIME_VERSION,
+            "interpretation_policy_version": INTERPRETATION_POLICY_VERSION,
+            "interpretation_policy_capabilities": {
+                "complete_method_owner_by_default": True,
+                "complete_output_contract_by_default": True,
+                "policy_read_tool": "get_interpretation_policy",
+                "existing_cast_preserves_facts_and_method_policy": True,
+                "enabled_methods": ["tarot", "meihua", "liuyao"],
+            },
             "methods": ["tarot", "plum", "liuyao"], "routing": ROUTER_VERSION,
             "routing_authority": "server_question_summary", "advertised_auto_tool": "auto_divination",
             "policy_pack": policy_identity(), "storage": "none"}
@@ -65,8 +85,13 @@ def auto_divination(
     - motives, feelings, choices, comparisons -> Tarot
     - evolution, longer-term direction, turning points -> Meihua
     - ONE concrete verifiable event with outcome criterion and deadline -> Liuyao
+    Default policy includes full canonical method and output owners. Other
+    conditional owners may be truncated. To apply omitted sections, call
+    get_interpretation_policy with exact owner and sequential offsets.
+    When reinterpreting a fixed existing cast, set existing_cast=true and
+    method_override to its known method; this returns policy without recasting.
     Set include_policy_excerpts=false for a compact evidence response: identical
-    cast_result with policy identity and no long excerpt text.
+    cast_result with policy identity only; fetch full policy before interpreting.
     A time window alone never implies Liuyao. Respect method_override when user
     explicitly requests tarot/meihua/liuyao. Flags has_completion_rule and
     has_horizon supplement the de-identified summary; if missing for Liuyao,
@@ -81,10 +106,26 @@ def auto_divination(
         existing_cast=existing_cast, has_completion_rule=has_completion_rule,
         has_horizon=has_horizon, tarot_count=tarot_count,
     )
-    outcome = execute_auto_route(plan, _bridge)
-    # Ship bounded verbatim canonical owner excerpts with the reading. This is
-    # the same repo authority as manual Playbook reads, not a second policy.
-    return method_policy_output(outcome, include_policy_excerpts)
+    # Resolve and verify applicable pinned policy BEFORE any stochastic cast.
+    # Missing/tampered policy must not consume RNG or create a partial reading.
+    prepared = method_policy_output(plan, include_policy_excerpts)
+    return execute_auto_route(prepared, _bridge)
+
+
+@mcp.tool()
+def get_interpretation_policy(method: str, owner: str, offset: int = 0,
+                              max_chars: int = 12000) -> dict:
+    """Read complete exact-commit interpretation rules, with bounded pagination.
+
+    Required core: method's TAROT/MEIHUA/LIUYAO.md and CHATGPT_OUTPUT.md.
+    Conditional owners include QUESTION_DESIGN, INPUT_CONTRACT, LIFECYCLE,
+    READING_RECORD, CROSS_VALIDATION and other eleven allowlisted documents.
+    Read sequential chunks until next_offset is None; do not infer omitted text.
+    A method-specific owner can be read only under that same method, preventing
+    accidental cross-method interpretations; shared owners remain available.
+    """
+    _bridge()
+    return get_policy_owner(method, owner, offset, max_chars)
 
 
 @mcp.tool()

@@ -87,6 +87,19 @@ class RouterTests(unittest.TestCase):
         p=route_plan('unclear',method_override='astrology',existing_cast=True)
         self.assertEqual(p['reason_code'],'do_not_redraw')
 
+    def test_existing_cast_explicit_method_pins_rules_without_redraw(self):
+        for method in ('tarot', 'meihua', 'liuyao'):
+            with self.subTest(method=method):
+                plan = route_from_summary('', method_override=method, existing_cast=True)
+                self.assertEqual(plan['selected_method'], method)
+                self.assertEqual(plan['status'], 'existing_cast_preserved')
+                fake = FakeBridge()
+                self.assertEqual(execute_auto_route(plan, lambda: fake), plan)
+                self.assertEqual(fake.calls, [])
+        anonymous = route_from_summary('', existing_cast=True)
+        self.assertNotIn('selected_method', anonymous)
+        self.assertEqual(anonymous['status'], 'existing_cast_preserved')
+
     def test_astrology_fails_closed(self):
         self.assertEqual(route_plan('psychology_comparison',method_override='astrology')['status'], 'unsupported_method')
 
@@ -145,17 +158,17 @@ class RouterTests(unittest.TestCase):
 
 class ToolListTests(unittest.TestCase):
     NAMES=('runtime_status','draw_tarot','cast_meihua','cast_liuyao',
-           'derive_meihua','derive_liuyao','auto_divination')
+           'derive_meihua','derive_liuyao','auto_divination','get_interpretation_policy')
 
     def payload(self,names=NAMES):
         return json.dumps({'jsonrpc':'2.0','id':2,
                            'result':{'tools':[{'name':name,'inputSchema':{'type':'object'}} for name in names]}}).encode()
 
-    def test_seven_registered_four_advertised(self):
+    def test_eight_registered_five_advertised(self):
         data=json.loads(decorate_tools_list(self.payload()))
         tools=data['result']['tools']
-        self.assertEqual(len(tools),4)
-        self.assertEqual({t["name"] for t in tools},{"runtime_status","auto_divination","derive_meihua","derive_liuyao"})
+        self.assertEqual(len(tools),5)
+        self.assertEqual({t["name"] for t in tools},{"runtime_status","auto_divination","derive_meihua","derive_liuyao","get_interpretation_policy"})
         for tool in tools:
             self.assertEqual(tool['securitySchemes'],[{'type':'noauth'}])
             self.assertEqual(tool['_meta']['securitySchemes'],[{'type':'noauth'}])
@@ -236,3 +249,52 @@ class CompactEvidenceTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
+
+
+class InterpretationPolicyParityTests(unittest.TestCase):
+    """Exact method+output owner coverage, bounded full-owner retrieval, fail closed."""
+
+    def test_default_policy_includes_full_method_and_output(self):
+        from policy_adapter import selected_policy, _bundle, METHOD_OWNERS
+        pack=_bundle()
+        for method, method_owner in METHOD_OWNERS.items():
+            with self.subTest(method=method):
+                payload=selected_policy(method)
+                by_owner={x['owner']:x for x in payload['excerpts']}
+                for owner in (method_owner, 'CHATGPT_OUTPUT.md'):
+                    evidence=by_owner[owner]
+                    self.assertEqual(evidence['excerpt'], pack['owners'][owner]['content'])
+                    self.assertFalse(evidence['is_excerpt'])
+                self.assertEqual(set(payload['required_full_owners']), {method_owner, 'CHATGPT_OUTPUT.md'})
+
+    def test_all_allowlisted_owners_reconstruct_exact_text_and_digest(self):
+        import hashlib
+        from policy_adapter import _bundle, get_policy_owner, METHOD_OWNERS
+        pack=_bundle()
+        for method in ('tarot','meihua','liuyao'):
+            for owner, entry in pack['owners'].items():
+                if owner in METHOD_OWNERS.values() and owner != METHOD_OWNERS[method]:
+                    continue
+                with self.subTest(method=method, owner=owner):
+                    at=0; chunks=[]; identities=set()
+                    while True:
+                        page=get_policy_owner(method,owner,offset=at,max_chars=257)
+                        chunks.append(page['text'])
+                        identities.add((page['source_commit'],page['sha256']))
+                        if page['next_offset'] is None: break
+                        self.assertGreater(page['next_offset'],at)
+                        at=page['next_offset']
+                    content=''.join(chunks)
+                    self.assertEqual(content,entry['content'])
+                    self.assertEqual(hashlib.sha256(content.encode('utf-8')).hexdigest(),entry['sha256'])
+                    self.assertEqual(len(identities),1)
+
+    def test_reject_unapproved_method_owner_or_bad_paging(self):
+        from policy_adapter import get_policy_owner
+        for args in (('astrology','TAROT.md'),('tarot','ASTROLOGY.md'),('tarot','../../README.md'),
+                     ('tarot','LIUYAO.md'),('liuyao','MEIHUA.md'),('meihua','TAROT.md')):
+            with self.subTest(args=args), self.assertRaises(ValueError):
+                get_policy_owner(*args)
+        for kw in ({'offset':-1},{'offset':True},{'offset':9999999},{'max_chars':0},{'max_chars':16001},{'max_chars':True}):
+            with self.subTest(kw=kw), self.assertRaises(ValueError):
+                get_policy_owner('tarot','TAROT.md',**kw)

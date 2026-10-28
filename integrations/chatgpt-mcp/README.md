@@ -32,6 +32,28 @@ Palmistry, Astrology, Zi Wei or new methods simply because they appear on main.
   is not a functional MCP smoke-test result.
 - Palmistry, Astrology and Zi Wei remain outside the allowlist.
 
+## ChatGPT web plugin release acceptance
+
+After a reviewed squash merge and **explicit authorization** for normal Production deployment, verify the existing connected **AI Divination Private – Git Sync** plugin from a fresh ChatGPT web conversation. Do not update or replace the legacy plugin. Do not mistake a READY Preview for a Production release.
+
+1. Call `runtime_status` on **Git Sync**, not the legacy plugin. Expect `mcp_runtime_version=1.3.0-private-policy-parity`, `interpretation_policy_version=canonical-owner-parity-v1`, `verified=true`, and the pinned canonical `runtime_source_commit`. The old runtime can report the SAME `source_commit` and policy hash but has no interpretation version; these fields distinguish the code release.
+2. Confirm that `get_interpretation_policy` is available in the ChatGPT web tool catalogue. If missing after Production is READY, refresh/reconnect **only this Git Sync plugin** through ChatGPT's plugin settings, then recheck. Do not assume the tool manifest refreshes instantly.
+3. With a fixed existing cast and `existing_cast=true` plus a known `method_override`, confirm a no-draw result includes both the full method owner and full `CHATGPT_OUTPUT.md`, with source identity. Never generate new random cards solely for a smoke test.
+4. For the three methods, read the full canonical owners via `get_interpretation_policy`, verify hashes and excluded methods, and separately carry out the paired model interpretation review. Report factual/policy availability separately from human-language interpretation equivalence.
+
+The service only provides verified method facts and canonical interpretation source material. ChatGPT still synthesizes natural language; consistency depends on following the returned rules and the model's behavior.
+
+## Interpretation policy parity (Tarot / Meihua / Liuyao)
+
+- `auto_divination` default policy output contains the **complete pinned method owner** (`TAROT.md`, `MEIHUA.md` or `LIUYAO.md`) and **complete `CHATGPT_OUTPUT.md`**. Other shared policy excerpts remain bounded to reduce token cost; partial text is always labeled.
+- The advertised `get_interpretation_policy(method, owner, offset, max_chars)` retrieves exact original text for shared allowlisted owners or that method's own owner (eleven approved files in total) in bounded contiguous chunks. Cross-method document requests are rejected; for legitimate two-method reconciliation, fetch each method's owner under its correct method and consult the shared `CROSS_VALIDATION.md`. Follow `next_offset` to exhaustion and verify stable `source_commit`, `owner` and `sha256` across chunks before claiming full coverage.
+- Apply `QUESTION_DESIGN.md` and `INPUT_CONTRACT.md` when contract/position/horizon design materially matters; `READING_LIFECYCLE.md` for follow-ups/recasts; `READING_RECORD.md` for user-managed records; `CROSS_VALIDATION.md` for admitted cross-method reconciliation. Do not imply those owners were read solely because the MCP bundled them.
+- Existing fixed Tarot cards / Meihua / Liuyao facts: call `auto_divination(existing_cast=true, method_override=<known method>)` to obtain full pinned method and output rules **without any new draw/cast**. Unknown methods preserve the no-redraw guard but cannot claim that a matching method rule was loaded.
+- `include_policy_excerpts=false` is compact evidence mode, **not** permission to interpret without loading required canonical rules.
+- Policy integrity is checked **before** invoking a new stochastic draw: a missing/tampered owner pack blocks casting instead of creating a partial reading. The loaded policy pack must contain **exactly the approved eleven owners**, match the engine source manifest's repository/commit, and retain valid SHA-256 **and Git blob SHA-1** for each owner.
+- Transport smoke tests verify that complete method/output owners and exact SHA-pinned paginated rules reach the MCP caller, and that invalid owner requests or failed policy integrity do not yield a new cast.
+- This service still produces method facts, not deterministic natural-language interpretations. Rule-access parity does not imply identical prose, validity of predictions, or reading-record persistence.
+
 ## Safety and guarantees
 
 Canonical sources are read from an *exact Git commit* (not a moving HTTP URL)
