@@ -180,6 +180,39 @@ class MCPTransportSmokeTests(unittest.TestCase):
                         return nested
         self.fail('Missing canonical interpretation policy in MCP response')
 
+    def test_twelve_mixed_interleaved_receipts_over_mcp_transport(self):
+        # The exact ChatGPT-facing tools/call interface, not just pure helpers.
+        from test_batch_cast import FakeBridge, mixed_twelve
+        spy = FakeBridge()
+        with patch.object(service, 'ENGINE', spy):
+            result = self.rpc('tools/call', {
+                'name': 'batch_divination',
+                'arguments': {'items': mixed_twelve()}}, 17)
+        candidates = [result.get('structuredContent')]
+        candidates.extend(part.get('text') for part in result.get('content', [])
+                          if isinstance(part, dict))
+        payload = None
+        for value in candidates:
+            if isinstance(value, str):
+                try:
+                    value = json.loads(value)
+                except ValueError:
+                    continue
+            if isinstance(value, dict):
+                value = value.get('result', value)
+                if isinstance(value, dict) and value.get('status') == 'batch_completed':
+                    payload = value
+                    break
+        self.assertIsNotNone(payload, result)
+        self.assertEqual(payload['completed_count'], 12)
+        self.assertEqual(payload['total_count'], 12)
+        self.assertEqual(len(payload['receipts']), 12)
+        self.assertEqual(len({item['receipt_id'] for item in payload['receipts']}), 12)
+        self.assertEqual([r['selected_method'] for r in payload['receipts']],
+                         [item['method_override'] for item in mixed_twelve()])
+        self.assertNotIn('excerpts', str(payload))
+        self.assertEqual(len(spy.calls), 12)
+
     def test_full_canonical_policy_reaches_chatgpt_for_all_three_methods(self):
         from policy_adapter import _bundle, METHOD_OWNERS
         pack = _bundle()
