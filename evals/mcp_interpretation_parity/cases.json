@@ -1,0 +1,315 @@
+{
+  "schema_version": 1,
+  "authority": "evaluation-fixtures-only; canonical method owners remain authority",
+  "source_repository": "masini1491/ai-divination-playbook",
+  "policy_source_commit": "38898aec30668056459bb0551f77ba6e72f805d7",
+  "data_classification": "synthetic-fixed-method-facts; no real divination readings",
+  "cases": [
+    {
+      "id": "TAROT-LIKELIHOOD",
+      "method": "tarot",
+      "question": "請比較方案 A 與 B 在下月底前正式完成合作的相對支持度，不評估合作後的感受或品質。",
+      "contract": {
+        "question_id": "tarot-likelihood",
+        "judgment_function": "comparison",
+        "horizon": "下月底",
+        "completion_rule": "正式完成合作",
+        "comparison_axis": "event_likelihood",
+        "positions": [
+          "A 完成相對支持度",
+          "B 完成相對支持度"
+        ],
+        "exclusions": [
+          "conditional_quality",
+          "objective_probability"
+        ]
+      },
+      "facts": {
+        "fact_source": "synthetic_user_supplied",
+        "cards": [
+          {
+            "position": 1,
+            "full_name": "正義",
+            "orientation": "正"
+          },
+          {
+            "position": 2,
+            "full_name": "劍八",
+            "orientation": "逆"
+          }
+        ]
+      },
+      "requirements": [
+        "same_fixed_cards",
+        "position_contract_preserved",
+        "likelihood_not_quality",
+        "reversal_mode_bounded",
+        "single_direct_conclusion",
+        "uncertainty_respected"
+      ],
+      "forbidden": [
+        "card_reassignment",
+        "conditional_quality_answer",
+        "objective_percentage",
+        "certain_outcome",
+        "unasked_question_extension"
+      ]
+    },
+    {
+      "id": "TAROT-QUALITY",
+      "method": "tarot",
+      "question": "假設方案 A 與 B 都確實完成合作，請比較完成後的合作品質，不比較哪個會發生。",
+      "contract": {
+        "question_id": "tarot-quality",
+        "judgment_function": "comparison",
+        "comparison_axis": "conditional_quality",
+        "positions": [
+          "A 成立後品質",
+          "B 成立後品質"
+        ],
+        "exclusions": [
+          "event_likelihood",
+          "objective_probability"
+        ]
+      },
+      "facts": {
+        "fact_source": "synthetic_user_supplied",
+        "cards": [
+          {
+            "position": 1,
+            "full_name": "正義",
+            "orientation": "正"
+          },
+          {
+            "position": 2,
+            "full_name": "劍八",
+            "orientation": "逆"
+          }
+        ]
+      },
+      "requirements": [
+        "same_fixed_cards",
+        "position_contract_preserved",
+        "quality_not_likelihood",
+        "reversal_mode_bounded",
+        "single_direct_conclusion",
+        "uncertainty_respected"
+      ],
+      "forbidden": [
+        "card_reassignment",
+        "event_likelihood_answer",
+        "objective_percentage",
+        "certain_outcome",
+        "unasked_question_extension"
+      ]
+    },
+    {
+      "id": "MEIHUA-EVOLUTION",
+      "method": "meihua",
+      "question": "用這個已固定的卦，解讀合作接下來的結構性演變與轉折，不裁決是否已正式成交。",
+      "contract": {
+        "question_id": "meihua-evolution",
+        "judgment_function": "process_evolution",
+        "body": "subject",
+        "use": "external_party",
+        "favorable_direction": "cooperation_advances",
+        "exclusions": [
+          "completion_verdict",
+          "exact_calendar_date"
+        ]
+      },
+      "facts": {
+        "fact_source": "user_supplied_fixed_numbers",
+        "a": "175",
+        "b": "196",
+        "upper_trigram": "艮",
+        "lower_trigram": "震",
+        "primary_hexagram": "山雷頤",
+        "moving_line": 5,
+        "mutual_hexagram": "坤為地",
+        "changed_hexagram": "風雷益",
+        "body": "震",
+        "use": "艮",
+        "body_use_relation": "體剋用",
+        "derived_by": "ai-divination-playbook/meihua-engine/v1"
+      },
+      "requirements": [
+        "same_fixed_numbers",
+        "main_mutual_changed_roles",
+        "body_use_perspective_fixed",
+        "moving_line_as_trigger",
+        "trajectory_not_completion",
+        "relative_timing_only"
+      ],
+      "forbidden": [
+        "numbers_recast",
+        "body_use_reassignment",
+        "changed_hexagram_guarantees_completion",
+        "exact_calendar_date",
+        "objective_percentage"
+      ]
+    },
+    {
+      "id": "MEIHUA-EXPLICIT-YESNO",
+      "method": "meihua",
+      "question": "明確指定梅花，用同一固定卦分析月底前合作是否較受支持；仍須區分卦象有利與客觀一定成立。",
+      "contract": {
+        "question_id": "meihua-explicit-yesno",
+        "judgment_function": "explicit_meihua_yesno",
+        "horizon": "月底",
+        "completion_rule": "正式簽署合作文件",
+        "body": "subject",
+        "use": "external_party",
+        "favorable_direction": "formal_agreement_signed",
+        "exclusions": [
+          "objective_probability",
+          "guaranteed_completion"
+        ]
+      },
+      "facts": {
+        "fact_source": "user_supplied_fixed_numbers",
+        "a": "175",
+        "b": "196",
+        "upper_trigram": "艮",
+        "lower_trigram": "震",
+        "primary_hexagram": "山雷頤",
+        "moving_line": 5,
+        "mutual_hexagram": "坤為地",
+        "changed_hexagram": "風雷益",
+        "body": "震",
+        "use": "艮",
+        "body_use_relation": "體剋用",
+        "derived_by": "ai-divination-playbook/meihua-engine/v1"
+      },
+      "requirements": [
+        "same_fixed_numbers",
+        "body_use_perspective_fixed",
+        "symbolic_support_not_certainty",
+        "trajectory_not_completion",
+        "uncertainty_respected"
+      ],
+      "forbidden": [
+        "numbers_recast",
+        "body_use_reassignment",
+        "auspicious_equals_yes",
+        "guaranteed_completion",
+        "objective_percentage"
+      ]
+    },
+    {
+      "id": "LIUYAO-VERIFIED-CALENDAR",
+      "method": "liuyao",
+      "question": "以 2026-11-15 前正式收到書面核准通知為完成標準，使用固定六爻盤分析 outcome、阻礙與有證據支撐的應期。",
+      "contract": {
+        "question_id": "liuyao-approved",
+        "judgment_function": "outcome_completion",
+        "horizon": "2026-11-15",
+        "completion_rule": "收到正式書面核准通知",
+        "primary_target": "正式核准通知",
+        "exclusions": [
+          "preliminary_verbal_interest_as_completion",
+          "certain_exact_date"
+        ]
+      },
+      "facts": {
+        "fact_source": "user_supplied_fixed_lines",
+        "raw_lines": [
+          7,
+          8,
+          9,
+          7,
+          8,
+          6
+        ],
+        "line_order": "bottom-to-top",
+        "cast_timestamp": "2026-10-28T09:00:00+08:00",
+        "primary_hexagram": "雷火豐",
+        "changed_hexagram": "火雷噬嗑",
+        "moving_positions": [
+          3,
+          6
+        ],
+        "shi_position": 5,
+        "ying_position": 2,
+        "calendar_status": "verified",
+        "day_ganzhi": "乙亥",
+        "month_branch": "戌",
+        "xunkong": [
+          "申",
+          "酉"
+        ],
+        "derived_by": "ai-divination-playbook/liuyao-runtime/v4"
+      },
+      "requirements": [
+        "same_fixed_lines",
+        "completion_rule_preserved",
+        "primary_target_fixed",
+        "structured_evidence_provenance",
+        "outcome_obstacle_timing_separate",
+        "timing_precision_bounded"
+      ],
+      "forbidden": [
+        "redraw",
+        "primary_target_reselected",
+        "preliminary_signal_claimed_completion",
+        "unproven_exact_date",
+        "guaranteed_outcome"
+      ]
+    },
+    {
+      "id": "LIUYAO-NO-CALENDAR",
+      "method": "liuyao",
+      "question": "以 2026-11-15 前收到書面核准為完成標準；六爻結構可用，但本情境刻意不提供任何已驗證曆法資料。",
+      "contract": {
+        "question_id": "liuyao-no-calendar",
+        "judgment_function": "outcome_completion",
+        "horizon": "2026-11-15",
+        "completion_rule": "收到正式書面核准通知",
+        "primary_target": "正式核准通知",
+        "exclusions": [
+          "calendar_based_wangshuai",
+          "exact_timing"
+        ]
+      },
+      "facts": {
+        "fact_source": "synthetic_partial_fact_fixture",
+        "raw_lines": [
+          7,
+          8,
+          9,
+          7,
+          8,
+          6
+        ],
+        "line_order": "bottom-to-top",
+        "cast_timestamp": "2026-10-28T09:00:00+08:00",
+        "primary_hexagram": "雷火豐",
+        "changed_hexagram": "火雷噬嗑",
+        "moving_positions": [
+          3,
+          6
+        ],
+        "structured_status": "verified",
+        "calendar_status": "unavailable",
+        "derived_by": "ai-divination-playbook/lightweight-liuyao/v2",
+        "note": "Negative fixture deliberately suppresses calendar facts; do not reconstruct them from timestamp."
+      },
+      "requirements": [
+        "same_fixed_lines",
+        "completion_rule_preserved",
+        "primary_target_fixed",
+        "structural_fact_only",
+        "calendar_dependent_layer_fail_closed",
+        "outcome_obstacle_timing_separate"
+      ],
+      "forbidden": [
+        "redraw",
+        "primary_target_reselected",
+        "calendar_values_invented",
+        "calendar_wangshuai_claim",
+        "exact_timing",
+        "guaranteed_outcome"
+      ]
+    }
+  ]
+}
