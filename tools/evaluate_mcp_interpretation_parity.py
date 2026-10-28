@@ -11,6 +11,7 @@ fixture and model/config, with reviewed rule IDs and source-tied evidence.
 """
 from __future__ import annotations
 import argparse
+import hashlib
 import json
 from pathlib import Path
 
@@ -101,7 +102,10 @@ def evaluate(casebook: dict, records: dict) -> dict:
                       if isinstance(outputs.get(route), dict)]
             if len(values) != 2 or not values[0] or values[0] != values[1]:
                 errors.append(f"PAIRED_{key.upper()}_MISMATCH")
-        if outputs.get("repo", {}).get("fixture_sha256") != record.get("fixture_sha256"):
+        expected_fixture_hash = hashlib.sha256(
+            json.dumps(fixture, sort_keys=True, ensure_ascii=False).encode("utf-8")).hexdigest()
+        if (record.get("fixture_sha256") != expected_fixture_hash
+                or outputs.get("repo", {}).get("fixture_sha256") != expected_fixture_hash):
             errors.append("FIXTURE_DIGEST_NOT_PINNED")
         if outputs.get("repo", {}).get("policy_source_commit") != casebook.get("policy_source_commit"):
             errors.append("POLICY_REVISION_MISMATCH")
