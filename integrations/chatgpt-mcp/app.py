@@ -15,6 +15,7 @@ from mcp.server.transport_security import TransportSecuritySettings
 from bridge import DivinationBridge, SOURCE_COMMIT
 from policy_adapter import policy_identity, get_policy_owner
 from response_format import method_policy_output
+from batch_cast import execute_batch
 
 BASE = Path(__file__).resolve().parent
 ENGINE = DivinationBridge(BASE / "canonical-repo")
@@ -35,6 +36,10 @@ mcp = MCPServer(
         "For interpretation, use the full pinned method owner plus CHATGPT_OUTPUT.md from method_policy. "
         "If excerpts are omitted or an applicable conditional owner is truncated, "
         "call get_interpretation_policy to retrieve exact text before making claims. "
+        "When the user requests more than one independent cast, prefer batch_divination "
+        "and preserve all labeled original receipts BEFORE prose interpretation; "
+        "never redraw completed labels if interpretation context is truncated. "
+        "Load complete method/output policy only once per distinct method for the batch. "
         "Only facts are calculated by this MCP; natural-language synthesis is done by ChatGPT. "
         "To verify that the web-connected plugin has the updated interpretation rules, "
         "check runtime_status.interpretation_policy_version and the get_interpretation_policy tool. "
@@ -55,6 +60,7 @@ def runtime_status() -> dict:
     return {"runtime_source_commit": SOURCE_COMMIT, "verified": True,
             "mcp_runtime_version": MCP_RUNTIME_VERSION,
             "interpretation_policy_version": INTERPRETATION_POLICY_VERSION,
+            "batch_cast_capabilities": {"tool": "batch_divination", "receipt_format": "compact-original-cast-v1", "max_items": 5, "storage": "none"},
             "interpretation_policy_capabilities": {
                 "complete_method_owner_by_default": True,
                 "complete_output_contract_by_default": True,
@@ -110,6 +116,23 @@ def auto_divination(
     # Missing/tampered policy must not consume RNG or create a partial reading.
     prepared = method_policy_output(plan, include_policy_excerpts)
     return execute_auto_route(prepared, _bridge)
+
+
+@mcp.tool()
+def batch_divination(items: list[dict]) -> dict:
+    """PREFERRED when requesting 2–5 independent readings in one turn.
+
+    Supply [{label, question_summary, method_override?, has_completion_rule?,
+    has_horizon?, tarot_count?}]. Every label is unique, anonymized and stable.
+    Validates ALL items before drawing; one independent canonical cast per item.
+    Returns a compact, labeled immutable original-cast receipt for EACH item
+    including cards, A/B numbers, or six raw lines + coin triples, timestamps,
+    provenance and SHA-256. No repeated rule excerpts. Preserve every receipt
+    immediately before interpreting; receipts are NOT server-persisted.
+    A partial failure returns completed receipts; NEVER retry completed labels.
+    Get full method/output rules separately once per distinct method.
+    """
+    return execute_batch(items, _bridge)
 
 
 @mcp.tool()

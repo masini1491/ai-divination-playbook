@@ -83,9 +83,10 @@ class MCPTransportSmokeTests(unittest.TestCase):
     def test_catalog_exposes_compact_option(self):
         result = self.rpc('tools/list')
         tools = {t['name']: t for t in result['tools']}
-        self.assertEqual(set(tools), {'runtime_status', 'auto_divination', 'derive_meihua', 'derive_liuyao', 'get_interpretation_policy'})
+        self.assertEqual(set(tools), {'runtime_status', 'auto_divination', 'derive_meihua', 'derive_liuyao', 'get_interpretation_policy', 'batch_divination'})
         self.assertIn('include_policy_excerpts', tools['auto_divination']['inputSchema']['properties'])
         self.assertIn('owner', tools['get_interpretation_policy']['inputSchema']['properties'])
+        self.assertIn('items', tools['batch_divination']['inputSchema']['properties'])
 
     def test_runtime_status_advertises_web_plugin_policy_parity_version(self):
         response = self.rpc('tools/call', {
