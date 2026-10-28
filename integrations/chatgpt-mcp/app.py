@@ -18,10 +18,12 @@ from response_format import method_policy_output
 
 BASE = Path(__file__).resolve().parent
 ENGINE = DivinationBridge(BASE / "canonical-repo")
+MCP_RUNTIME_VERSION = "1.3.0-private-policy-parity"
+INTERPRETATION_POLICY_VERSION = "canonical-owner-parity-v1"
 
 mcp = MCPServer(
     "AI Divination Facts",
-    version="1.2.0-private-auto-route",
+    version=MCP_RUNTIME_VERSION,
     instructions=(
         "Fact tools only: Tarot, Meihua and Liuyao. Preserve original raw cast "
         "and provenance. Results are symbolic, not certain predictions. "
@@ -33,7 +35,10 @@ mcp = MCPServer(
         "For interpretation, use the full pinned method owner plus CHATGPT_OUTPUT.md from method_policy. "
         "If excerpts are omitted or an applicable conditional owner is truncated, "
         "call get_interpretation_policy to retrieve exact text before making claims. "
-        "Only facts are calculated by this MCP; natural-language synthesis is done by ChatGPT."
+        "Only facts are calculated by this MCP; natural-language synthesis is done by ChatGPT. "
+        "To verify that the web-connected plugin has the updated interpretation rules, "
+        "check runtime_status.interpretation_policy_version and the get_interpretation_policy tool. "
+        "A source commit alone cannot distinguish old and new interpretation-policy releases."
     ),
 )
 
@@ -48,6 +53,15 @@ def runtime_status() -> dict:
     """Verified canonical engine source and supported divination methods."""
     _bridge()
     return {"runtime_source_commit": SOURCE_COMMIT, "verified": True,
+            "mcp_runtime_version": MCP_RUNTIME_VERSION,
+            "interpretation_policy_version": INTERPRETATION_POLICY_VERSION,
+            "interpretation_policy_capabilities": {
+                "complete_method_owner_by_default": True,
+                "complete_output_contract_by_default": True,
+                "policy_read_tool": "get_interpretation_policy",
+                "existing_cast_preserves_facts_and_method_policy": True,
+                "enabled_methods": ["tarot", "meihua", "liuyao"],
+            },
             "methods": ["tarot", "plum", "liuyao"], "routing": ROUTER_VERSION,
             "routing_authority": "server_question_summary", "advertised_auto_tool": "auto_divination",
             "policy_pack": policy_identity(), "storage": "none"}

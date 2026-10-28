@@ -87,6 +87,25 @@ class MCPTransportSmokeTests(unittest.TestCase):
         self.assertIn('include_policy_excerpts', tools['auto_divination']['inputSchema']['properties'])
         self.assertIn('owner', tools['get_interpretation_policy']['inputSchema']['properties'])
 
+    def test_runtime_status_advertises_web_plugin_policy_parity_version(self):
+        response = self.rpc('tools/call', {
+            'name': 'runtime_status', 'arguments': {}}, 11)
+        candidates = [response.get('structuredContent')]
+        candidates.extend(item.get('text') for item in response.get('content', [])
+                          if isinstance(item, dict))
+        status = next((obj for candidate in candidates
+                       if (obj := json.loads(candidate) if isinstance(candidate, str) else candidate)
+                       and isinstance(obj, dict) and 'interpretation_policy_version' in obj), None)
+        self.assertIsNotNone(status)
+        self.assertEqual(status['interpretation_policy_version'], 'canonical-owner-parity-v1')
+        self.assertEqual(status['mcp_runtime_version'], service.MCP_RUNTIME_VERSION)
+        capabilities = status['interpretation_policy_capabilities']
+        self.assertEqual(capabilities['policy_read_tool'], 'get_interpretation_policy')
+        self.assertTrue(capabilities['complete_method_owner_by_default'])
+        self.assertTrue(capabilities['complete_output_contract_by_default'])
+        self.assertTrue(capabilities['existing_cast_preserves_facts_and_method_policy'])
+        self.assertEqual(capabilities['enabled_methods'], ['tarot', 'meihua', 'liuyao'])
+
     def test_compact_transport_preserves_fixture_cast_and_source(self):
         fake = FakeBridge()
         args = {'question_summary': '某人對合作關係的看法與動機', 'method_override': 'auto'}
