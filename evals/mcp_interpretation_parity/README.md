@@ -14,3 +14,17 @@ This is a **paired model-output review protocol**, not a new divination engine o
 `PASS` requires all six cases reviewed, two matching pinned execution contexts per case, distinct declared sessions and route transports, verified response / owner digests, source-tied quotes, no unmet requirement and no violated prohibition. `FAIL` reports a concrete reviewed violation. `INCONCLUSIVE` means missing/mismatched material evidence; never report it as PASS.
 
 **Limitations:** distinct session metadata and a response SHA-256 are independently checkable consistency evidence, not authentication that the model really ran independently or that a GitHub/MCP action occurred. A check's quote alone does not mechanically prove human semantic judgments are correct; evaluator tests use synthetic controls and do not constitute a completed paired LLM run. Differences in wording are not automatically failures. Actual model-output comparison requires the independently captured responses and a reviewer.
+
+## Prepare fixed-input ChatGPT prompt pairs without a model call
+
+Once the working branch CI is green, run:
+
+```sh
+python tools/build_mcp_interpretation_pair_packets.py --output-dir /private/temp/mcp-parity-prompts
+```
+
+This produces a `prompt_manifest.json` and **12 ready-to-paste prompts** (six cases × two routes), including pinned owner digests, exact source SHA, immutable case facts and explicit refusal instructions for unavailable tools. Both routes contain the same frozen task input, while the retrieval instructions explicitly differ. **PROMPTS_GENERATED_NOT_EXECUTED is not PASS or evidence of model equivalence.**
+
+For each case, copy its `.repo.txt` into one fresh ChatGPT conversation with GitHub Connector and its `.mcp.txt` into a separate fresh conversation with the updated Git Sync MCP installed. Record both real responses and tool evidence; use the independent reviewer process above. The PR's new `get_interpretation_policy` tool is **not available on the current Production MCP before a reviewed release**; a failed/missing Preview or old installed connector must be marked **INCONCLUSIVE**, never silently substituted.
+
+Prompt packet generation does not call OpenAI, GitHub, MCP or Vercel; it uses only verified local pinned policy-pack text. The prompts themselves do not prove a connector call occurred.
