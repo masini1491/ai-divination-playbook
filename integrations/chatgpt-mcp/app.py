@@ -28,6 +28,8 @@ mcp = MCPServer(
         "When method is not specified, call auto_divination with a short anonymized question_summary, and let the SERVER choose the method. "
         "Avoid sending user question text, identity, or sensitive data as tool args. "
         "Do not redraw existing facts or invent failed casts. "
+        "For existing fixed cards or hexagrams, set existing_cast=true with the known method_override "
+        "to obtain pinned interpretation rules without any new draw/cast. "
         "For interpretation, use the full pinned method owner plus CHATGPT_OUTPUT.md from method_policy. "
         "If excerpts are omitted or an applicable conditional owner is truncated, "
         "call get_interpretation_policy to retrieve exact text before making claims. "
@@ -72,6 +74,8 @@ def auto_divination(
     Default policy includes full canonical method and output owners. Other
     conditional owners may be truncated. To apply omitted sections, call
     get_interpretation_policy with exact owner and sequential offsets.
+    When reinterpreting a fixed existing cast, set existing_cast=true and
+    method_override to its known method; this returns policy without recasting.
     Set include_policy_excerpts=false for a compact evidence response: identical
     cast_result with policy identity only; fetch full policy before interpreting.
     A time window alone never implies Liuyao. Respect method_override when user
@@ -103,6 +107,8 @@ def get_interpretation_policy(method: str, owner: str, offset: int = 0,
     Conditional owners include QUESTION_DESIGN, INPUT_CONTRACT, LIFECYCLE,
     READING_RECORD, CROSS_VALIDATION and other eleven allowlisted documents.
     Read sequential chunks until next_offset is None; do not infer omitted text.
+    A method-specific owner can be read only under that same method, preventing
+    accidental cross-method interpretations; shared owners remain available.
     """
     _bridge()
     return get_policy_owner(method, owner, offset, max_chars)

@@ -75,7 +75,8 @@ def selected_policy(method: str | None) -> dict:
     return {'source_commit': pack['source_commit'], 'profile_id': pack['profile_id'],
             'method': method, 'excerpts': excerpts,
             'required_full_owners': [METHOD_OWNERS[method], 'CHATGPT_OUTPUT.md'],
-            'conditional_owners': [name for name in pack['owners'] if name not in (METHOD_OWNERS[method], 'CHATGPT_OUTPUT.md')],
+            'conditional_owners': [name for name in pack['owners']
+                                   if name not in set(METHOD_OWNERS.values()) | {'CHATGPT_OUTPUT.md'}],
             'note': 'Full method owner and ChatGPT output contract; other excerpts may be partial. Fetch relevant full conditional owners before interpretations that depend on omitted sections.'}
 
 
@@ -89,6 +90,8 @@ def get_policy_owner(method: str, owner: str, offset: int = 0, max_chars: int = 
         raise ValueError('unsupported method')
     if owner not in _bundle()['owners']:
         raise ValueError('owner not allowlisted')
+    if owner in METHOD_OWNERS.values() and owner != METHOD_OWNERS[method]:
+        raise ValueError('method owner mismatch')
     if type(offset) is not int or offset < 0:
         raise ValueError('offset must be nonnegative integer')
     if type(max_chars) is not int or max_chars < 1 or max_chars > 16000:

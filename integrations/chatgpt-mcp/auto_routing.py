@@ -55,10 +55,17 @@ def route_plan(
 
     # Existing cards/hexagram facts are immutable. Never reinterpret as new cast.
     if existing_cast:
+        # Keep explicit known method identity for the interpretation policy;
+        # no facts are sent to the server and NO stochastic operation is allowed.
         return {
-            **base, "status": "existing_cast_preserved",
+            **base,
+            **({"selected_method": method_override, "routing_source": "explicit_method_override"}
+               if method_override in TOOLS else {}),
+            "status": "existing_cast_preserved",
             "reason_code": "do_not_redraw",
-            "next_step": "Use the supplied cards/hexagram; fixed Meihua/Liuyao facts go to derive_meihua/derive_liuyao.",
+            "next_step": ("Interpret the already fixed method facts using pinned policy. "
+                          "For fixed Meihua/Liuyao facts, use derive_meihua/derive_liuyao only if needed. "
+                          "Never redraw or recast."),
         }
     if method_override in EXPLICIT_ONLY_UNAVAILABLE:
         return {

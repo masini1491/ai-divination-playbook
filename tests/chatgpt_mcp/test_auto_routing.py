@@ -87,6 +87,19 @@ class RouterTests(unittest.TestCase):
         p=route_plan('unclear',method_override='astrology',existing_cast=True)
         self.assertEqual(p['reason_code'],'do_not_redraw')
 
+    def test_existing_cast_explicit_method_pins_rules_without_redraw(self):
+        for method in ('tarot', 'meihua', 'liuyao'):
+            with self.subTest(method=method):
+                plan = route_from_summary('', method_override=method, existing_cast=True)
+                self.assertEqual(plan['selected_method'], method)
+                self.assertEqual(plan['status'], 'existing_cast_preserved')
+                fake = FakeBridge()
+                self.assertEqual(execute_auto_route(plan, lambda: fake), plan)
+                self.assertEqual(fake.calls, [])
+        anonymous = route_from_summary('', existing_cast=True)
+        self.assertNotIn('selected_method', anonymous)
+        self.assertEqual(anonymous['status'], 'existing_cast_preserved')
+
     def test_astrology_fails_closed(self):
         self.assertEqual(route_plan('psychology_comparison',method_override='astrology')['status'], 'unsupported_method')
 
@@ -256,10 +269,12 @@ class InterpretationPolicyParityTests(unittest.TestCase):
 
     def test_all_allowlisted_owners_reconstruct_exact_text_and_digest(self):
         import hashlib
-        from policy_adapter import _bundle, get_policy_owner
+        from policy_adapter import _bundle, get_policy_owner, METHOD_OWNERS
         pack=_bundle()
         for method in ('tarot','meihua','liuyao'):
             for owner, entry in pack['owners'].items():
+                if owner in METHOD_OWNERS.values() and owner != METHOD_OWNERS[method]:
+                    continue
                 with self.subTest(method=method, owner=owner):
                     at=0; chunks=[]; identities=set()
                     while True:
@@ -276,7 +291,8 @@ class InterpretationPolicyParityTests(unittest.TestCase):
 
     def test_reject_unapproved_method_owner_or_bad_paging(self):
         from policy_adapter import get_policy_owner
-        for args in (('astrology','TAROT.md'),('tarot','ASTROLOGY.md'),('tarot','../../README.md')):
+        for args in (('astrology','TAROT.md'),('tarot','ASTROLOGY.md'),('tarot','../../README.md'),
+                     ('tarot','LIUYAO.md'),('liuyao','MEIHUA.md'),('meihua','TAROT.md')):
             with self.subTest(args=args), self.assertRaises(ValueError):
                 get_policy_owner(*args)
         for kw in ({'offset':-1},{'offset':True},{'offset':9999999},{'max_chars':0},{'max_chars':16001},{'max_chars':True}):

@@ -103,6 +103,32 @@ class MCPTransportSmokeTests(unittest.TestCase):
         self.assertEqual(compact['method_policy']['excerpts'], [])
         self.assertEqual(default['method_policy']['source_commit'], compact['method_policy']['source_commit'])
 
+    def test_existing_cast_keeps_full_rules_without_recasing(self):
+        from policy_adapter import _bundle, METHOD_OWNERS
+        fake = FakeBridge()
+        pack = _bundle()
+        with patch.object(service, 'ENGINE', fake):
+            for method in ('tarot', 'meihua', 'liuyao'):
+                with self.subTest(method=method):
+                    response = self.rpc('tools/call', {
+                        'name': 'auto_divination',
+                        'arguments': {'question_summary': '',
+                                      'method_override': method,
+                                      'existing_cast': True}})
+                    result = self.extract_cast(response)
+                    self.assertEqual(result['status'], 'existing_cast_preserved')
+                    self.assertNotIn('cast_result', result)
+                    self.assertEqual(result['selected_method'], method)
+                    policy = result['method_policy']
+                    owners = {x['owner']: x for x in policy['excerpts']}
+                    self.assertEqual(owners[METHOD_OWNERS[method]]['excerpt'],
+                                     pack['owners'][METHOD_OWNERS[method]]['content'])
+                    self.assertEqual(owners['CHATGPT_OUTPUT.md']['excerpt'],
+                                     pack['owners']['CHATGPT_OUTPUT.md']['content'])
+                    self.assertNotIn('LIUYAO.md' if method=='tarot' else
+                                     'TAROT.md', owners)
+        self.assertEqual(fake.calls, [])
+
     def test_existing_cast_does_not_invoke_bridge(self):
         fake = FakeBridge()
         with patch.object(service, 'ENGINE', fake):
@@ -199,7 +225,10 @@ class MCPTransportSmokeTests(unittest.TestCase):
         with patch.object(service, 'ENGINE', fake):
             for method, owner in (('tarot', 'ASTROLOGY.md'),
                                   ('liuyao', '../../README.md'),
-                                  ('ziwei', 'LIUYAO.md')):
+                                  ('ziwei', 'LIUYAO.md'),
+                                  ('tarot', 'LIUYAO.md'),
+                                  ('meihua', 'TAROT.md'),
+                                  ('liuyao', 'MEIHUA.md')):
                 with self.subTest(method=method, owner=owner):
                     response = self.rpc('tools/call', {
                         'name': 'get_interpretation_policy',
