@@ -182,6 +182,7 @@ class MCPTransportSmokeTests(unittest.TestCase):
 
     def test_twelve_mixed_interleaved_receipts_over_mcp_transport(self):
         # The exact ChatGPT-facing tools/call interface, not just pure helpers.
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
         from test_batch_cast import FakeBridge, mixed_twelve
         spy = FakeBridge()
         with patch.object(service, 'ENGINE', spy):
