@@ -13,7 +13,7 @@ from auto_routing import route_from_summary, execute_auto_route, ROUTER_VERSION
 from mcp.server import MCPServer
 from mcp.server.transport_security import TransportSecuritySettings
 from bridge import DivinationBridge, SOURCE_COMMIT
-from policy_adapter import policy_identity
+from policy_adapter import policy_identity, get_policy_owner
 from response_format import method_policy_output
 
 BASE = Path(__file__).resolve().parent
@@ -27,7 +27,11 @@ mcp = MCPServer(
         "and provenance. Results are symbolic, not certain predictions. "
         "When method is not specified, call auto_divination with a short anonymized question_summary, and let the SERVER choose the method. "
         "Avoid sending user question text, identity, or sensitive data as tool args. "
-        "Do not redraw existing facts or invent failed casts."
+        "Do not redraw existing facts or invent failed casts. "
+        "For interpretation, use the full pinned method owner plus CHATGPT_OUTPUT.md from method_policy. "
+        "If excerpts are omitted or an applicable conditional owner is truncated, "
+        "call get_interpretation_policy to retrieve exact text before making claims. "
+        "Only facts are calculated by this MCP; natural-language synthesis is done by ChatGPT."
     ),
 )
 
@@ -65,8 +69,11 @@ def auto_divination(
     - motives, feelings, choices, comparisons -> Tarot
     - evolution, longer-term direction, turning points -> Meihua
     - ONE concrete verifiable event with outcome criterion and deadline -> Liuyao
+    Default policy includes full canonical method and output owners. Other
+    conditional owners may be truncated. To apply omitted sections, call
+    get_interpretation_policy with exact owner and sequential offsets.
     Set include_policy_excerpts=false for a compact evidence response: identical
-    cast_result with policy identity and no long excerpt text.
+    cast_result with policy identity only; fetch full policy before interpreting.
     A time window alone never implies Liuyao. Respect method_override when user
     explicitly requests tarot/meihua/liuyao. Flags has_completion_rule and
     has_horizon supplement the de-identified summary; if missing for Liuyao,
@@ -85,6 +92,20 @@ def auto_divination(
     # Ship bounded verbatim canonical owner excerpts with the reading. This is
     # the same repo authority as manual Playbook reads, not a second policy.
     return method_policy_output(outcome, include_policy_excerpts)
+
+
+@mcp.tool()
+def get_interpretation_policy(method: str, owner: str, offset: int = 0,
+                              max_chars: int = 12000) -> dict:
+    """Read complete exact-commit interpretation rules, with bounded pagination.
+
+    Required core: method's TAROT/MEIHUA/LIUYAO.md and CHATGPT_OUTPUT.md.
+    Conditional owners include QUESTION_DESIGN, INPUT_CONTRACT, LIFECYCLE,
+    READING_RECORD, CROSS_VALIDATION and other eleven allowlisted documents.
+    Read sequential chunks until next_offset is None; do not infer omitted text.
+    """
+    _bridge()
+    return get_policy_owner(method, owner, offset, max_chars)
 
 
 @mcp.tool()

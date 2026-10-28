@@ -32,6 +32,14 @@ Palmistry, Astrology, Zi Wei or new methods simply because they appear on main.
   is not a functional MCP smoke-test result.
 - Palmistry, Astrology and Zi Wei remain outside the allowlist.
 
+## Interpretation policy parity (Tarot / Meihua / Liuyao)
+
+- `auto_divination` default policy output contains the **complete pinned method owner** (`TAROT.md`, `MEIHUA.md` or `LIUYAO.md`) and **complete `CHATGPT_OUTPUT.md`**. Other shared policy excerpts remain bounded to reduce token cost; partial text is always labeled.
+- The advertised `get_interpretation_policy(method, owner, offset, max_chars)` retrieves exact original text for any of the eleven pinned allowlisted owners in bounded contiguous chunks. Follow `next_offset` to exhaustion and verify stable `source_commit`, `owner` and `sha256` across chunks before claiming full coverage.
+- Apply `QUESTION_DESIGN.md` and `INPUT_CONTRACT.md` when contract/position/horizon design materially matters; `READING_LIFECYCLE.md` for follow-ups/recasts; `READING_RECORD.md` for user-managed records; `CROSS_VALIDATION.md` for admitted cross-method reconciliation. Do not imply those owners were read solely because the MCP bundled them.
+- `include_policy_excerpts=false` is compact evidence mode, **not** permission to interpret without loading required canonical rules.
+- This service still produces method facts, not deterministic natural-language interpretations. Rule-access parity does not imply identical prose, validity of predictions, or reading-record persistence.
+
 ## Safety and guarantees
 
 Canonical sources are read from an *exact Git commit* (not a moving HTTP URL)

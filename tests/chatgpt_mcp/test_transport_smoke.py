@@ -83,8 +83,9 @@ class MCPTransportSmokeTests(unittest.TestCase):
     def test_catalog_exposes_compact_option(self):
         result = self.rpc('tools/list')
         tools = {t['name']: t for t in result['tools']}
-        self.assertEqual(set(tools), {'runtime_status', 'auto_divination', 'derive_meihua', 'derive_liuyao'})
+        self.assertEqual(set(tools), {'runtime_status', 'auto_divination', 'derive_meihua', 'derive_liuyao', 'get_interpretation_policy'})
         self.assertIn('include_policy_excerpts', tools['auto_divination']['inputSchema']['properties'])
+        self.assertIn('owner', tools['get_interpretation_policy']['inputSchema']['properties'])
 
     def test_compact_transport_preserves_fixture_cast_and_source(self):
         fake = FakeBridge()
