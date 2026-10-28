@@ -13,11 +13,107 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import sys
 from pathlib import Path
+
+# Keep this standalone CLI importable when invoked as python tools/<script>.py
+# and when imported by unittest from the repository root.
+_REPO = Path(__file__).resolve().parents[1]
+if str(_REPO) not in sys.path:
+    sys.path.insert(0, str(_REPO))
+from runtime.casting.core import DECK
+from tools.meihua_engine import derive as derive_meihua
+from tools.liuyao_engine import build_structured_fact
+from tools.liuyao_calendar import calendar_facts
 
 ROUTES = ("repo", "mcp")
 LABELS = ("PASS", "FAIL", "INCONCLUSIVE")
 MAX_LEN = 20000
+
+
+def verify_fixture_facts(case: dict) -> None:
+    """Recompute every fixed method fact from the actual canonical engines.
+
+    Reject manual fixture drift BEFORE paired LLM responses are compared.
+    This creates no stochastic draw; missing calendar evidence stays absent.
+    """
+    method, facts, contract = case["method"], case["facts"], case["contract"]
+    cid = case["id"]
+    def require(condition: bool, field: str):
+        if not condition:
+            raise ValueError(f"FIXTURE_METHOD_FACT_MISMATCH:{cid}:{field}")
+    if method == "tarot":
+        cards = facts.get("cards")
+        require(isinstance(cards, list) and len(cards) == len(contract.get("positions", [])),
+                "cards_positions")
+        require(all(isinstance(card, dict) for card in cards), "cards_objects")
+        require([card.get("position") for card in cards] == list(range(1, len(cards)+1)),
+                "position_sequence")
+        names = [card.get("full_name") for card in cards]
+        require(all(name in DECK for name in names) and len(set(names)) == len(names),
+                "canonical_78_card_deck")
+        require(all(card.get("orientation") in ("正", "逆") for card in cards),
+                "orientation")
+    elif method == "meihua":
+        actual = derive_meihua(a=facts.get("a"), b=facts.get("b"))
+        cast, derived = actual["cast_fact"], actual["derived"]
+        wanted = {
+            "upper_trigram": cast["upper_trigram"], "lower_trigram": cast["lower_trigram"],
+            "primary_hexagram": cast["hexagram"], "moving_line": cast["moving_line"],
+            "mutual_hexagram": derived["mutual_hexagram"]["name"],
+            "changed_hexagram": derived["changed_hexagram"]["name"],
+            "body": derived["body"]["trigram"], "use": derived["use"]["trigram"],
+            "body_use_relation": derived["body_use_relation"],
+            "derived_by": actual["engine"] + "/v" + actual["engine_version"],
+        }
+        for key, value in wanted.items():
+            require(facts.get(key) == value, key)
+    elif method == "liuyao":
+        lines = facts.get("raw_lines")
+        require(isinstance(lines, list) and len(lines) == 6
+                and all(type(v) is int and v in (6, 7, 8, 9) for v in lines),
+                "raw_lines")
+        require(facts.get("line_order") == "bottom-to-top", "line_order")
+        calendar_status = facts.get("calendar_status")
+        require(calendar_status in ("verified", "unavailable"), "calendar_status")
+        if calendar_status == "verified":
+            calendar = calendar_facts(facts["cast_timestamp"])
+            for key in ("day_ganzhi", "month_branch", "xunkong"):
+                require(facts.get(key) == calendar[key], "verified_" + key)
+            structure = build_structured_fact(
+                lines, day_gan=calendar["day_gan"],
+                month_branch=calendar["month_branch"],
+                day_branch=calendar["day_branch"],
+                xunkong=tuple(calendar["xunkong"]))
+            require(facts.get("derived_by") == "ai-divination-playbook/liuyao-runtime/v4",
+                    "runtime_version")
+            require(structure["calendar_context"]["status"] == "provided",
+                    "verified_calendar_applied")
+        else:
+            # The negative fixture is intentionally missing calendar evidence.
+            # DO NOT recompute a calendar from the timestamp in this branch.
+            require(all(key not in facts for key in ("day_ganzhi", "month_branch",
+                                                       "xunkong", "day_gan", "day_branch")),
+                    "unavailable_calendar_not_injected")
+            structure = build_structured_fact(lines)
+            require(structure["calendar_context"]["status"] == "unavailable",
+                    "calendar_fail_closed")
+            require(facts.get("derived_by") == structure["engine"] + "/v" + structure["engine_version"],
+                    "structural_engine_version")
+        wanted = {
+            "primary_hexagram": structure["ben_gua"]["name"],
+            "changed_hexagram": structure["zhi_gua"]["name"] if structure["zhi_gua"] else None,
+            "moving_positions": structure["moving_positions"],
+        }
+        for key, value in wanted.items():
+            require(facts.get(key) == value, key)
+        if calendar_status == "verified":
+            require(facts.get("shi_position") == structure["ben_gua"]["shi_position"],
+                    "shi_position")
+            require(facts.get("ying_position") == structure["ben_gua"]["ying_position"],
+                    "ying_position")
+    else:
+        raise ValueError(f"unsupported method: {method}")
 
 
 def load_cases(path: Path):
@@ -45,6 +141,7 @@ def load_cases(path: Path):
             raise ValueError("missing rubric")
         if set(case["requirements"]) & set(case["forbidden"]):
             raise ValueError("rubric collision")
+        verify_fixture_facts(case)
     return data, {c["id"]: c for c in cases}
 
 
@@ -54,6 +151,8 @@ def _valid_evidence(response, quote):
 
 def evaluate(casebook: dict, records: dict) -> dict:
     cases = {c["id"]: c for c in casebook["cases"]}
+    for case in cases.values():
+        verify_fixture_facts(case)
     if records.get("schema_version") != 1:
         raise ValueError("unsupported records schema")
     known = records.get("cases")

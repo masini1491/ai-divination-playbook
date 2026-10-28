@@ -52,6 +52,29 @@ class PairedInterpretationEvalTests(unittest.TestCase):
         self.assertEqual({x["method"] for x in CASES.values()},
                          {"tarot", "meihua", "liuyao"})
 
+    def test_all_fixture_facts_match_real_deterministic_engines(self):
+        for case in CASEBOOK["cases"]:
+            with self.subTest(id=case["id"]):
+                self.assertIsNone(mod.verify_fixture_facts(case))
+
+    def test_misreported_fixed_method_facts_are_rejected(self):
+        mutations = (
+            ("TAROT-LIKELIHOOD", "cards", lambda f: f["cards"][0].update(full_name="not-a-real-card")),
+            ("TAROT-QUALITY", "cards", lambda f: f["cards"][1].update(position=1)),
+            ("MEIHUA-EVOLUTION", "mutual", lambda f: f.update(mutual_hexagram="乾為天")),
+            ("MEIHUA-EXPLICIT-YESNO", "body_use", lambda f: f.update(body_use_relation="體生用")),
+            ("LIUYAO-VERIFIED-CALENDAR", "month", lambda f: f.update(month_branch="辰")),
+            ("LIUYAO-VERIFIED-CALENDAR", "moving", lambda f: f.update(moving_positions=[2])),
+            ("LIUYAO-NO-CALENDAR", "calendar", lambda f: f.update(day_ganzhi="乙亥")),
+            ("LIUYAO-NO-CALENDAR", "hexagram", lambda f: f.update(changed_hexagram="乾為天")),
+        )
+        for cid, label, mutation in mutations:
+            with self.subTest(id=cid, mutation=label):
+                wrong = copy.deepcopy(CASES[cid])
+                mutation(wrong["facts"])
+                with self.assertRaisesRegex(ValueError, "FIXTURE_METHOD_FACT_MISMATCH"):
+                    mod.verify_fixture_facts(wrong)
+
     def test_synthetic_positive_control(self):
         report = mod.evaluate(CASEBOOK, baseline())
         self.assertEqual(report["status"], "PASS")

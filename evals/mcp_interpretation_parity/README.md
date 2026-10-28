@@ -1,6 +1,6 @@
 # MCP vs. direct Repo interpretation parity evaluation
 
-This is a **paired model-output review protocol**, not a new divination engine or a claim that tests ran two LLM paths. All six cases in `cases.json` are synthetic/fixed, with no personal data, live random drawing or private readings. Policy source is the pinned `38898aec...` canonical snapshot; update the fixture source only after separately reviewing the canonical release.
+This is a **paired model-output review protocol**, not a new divination engine or a claim that tests ran two LLM paths. All fixed Tarot cards, Meihua derived facts and Liuyao structural facts are revalidated using the canonical deterministic sources (and verified calendar provider when that fixture explicitly includes one). Incorrect fixtures fail before an LLM comparison. The calendar-unavailable fixture deliberately refuses to manufacture missing calendar evidence. All six cases in `cases.json` are synthetic/fixed, with no personal data, live random drawing or private readings. Policy source is the pinned `38898aec...` canonical snapshot; update the fixture source only after separately reviewing the canonical release.
 
 ## Recording one real paired run
 
