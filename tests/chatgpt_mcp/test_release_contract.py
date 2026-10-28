@@ -146,4 +146,44 @@ class SelectiveReleaseTests(unittest.TestCase):
                 policy_adapter.selected_policy('meihua')
         policy_adapter._bundle.cache_clear()
 
+    def test_policy_allowlist_and_source_identity_enforced_at_runtime(self):
+        builder.sync(self.repo, check=False)
+        root = self.repo/'integrations/chatgpt-mcp'
+        pack_file = root/'policy_pack.json'
+        baseline = json.loads(pack_file.read_text(encoding='utf-8'))
+        with patch.object(policy_adapter, 'BASE', root):
+            try:
+                policy_adapter._bundle.cache_clear()
+                self.assertEqual(set(policy_adapter._bundle()['owners']),
+                                 set(builder._ALLOWED_POLICY_FILES))
+                mutations = (
+                    ('unexpected_extra_method',
+                     lambda pack: pack['owners'].update({'ASTROLOGY.md': {
+                         'content': '# unrelated', 'bytes': len('# unrelated'),
+                         'sha256': 'irrelevant', 'git_blob_sha1': 'irrelevant'}}),
+                     'POLICY_OWNER_SET_MISMATCH'),
+                    ('missing_owner',
+                     lambda pack: pack['owners'].pop('LIUYAO.md'),
+                     'POLICY_OWNER_SET_MISMATCH'),
+                    ('source_revision_mismatch',
+                     lambda pack: pack.update(source_commit='0'*40),
+                     'POLICY_SOURCE_COMMIT_MISMATCH'),
+                    ('owner_blob_mismatch',
+                     lambda pack: pack['owners']['TAROT.md'].update(git_blob_sha1='0'*40),
+                     'POLICY_BLOB_MISMATCH'),
+                )
+                for name, mutate, expected_error in mutations:
+                    with self.subTest(case=name):
+                        altered = json.loads(json.dumps(baseline))
+                        mutate(altered)
+                        pack_file.write_text(json.dumps(altered, ensure_ascii=False),
+                                             encoding='utf-8')
+                        policy_adapter._bundle.cache_clear()
+                        with self.assertRaisesRegex(RuntimeError, expected_error):
+                            policy_adapter.selected_policy('tarot')
+            finally:
+                pack_file.write_text(json.dumps(baseline, ensure_ascii=False),
+                                     encoding='utf-8')
+                policy_adapter._bundle.cache_clear()
+
 if __name__=='__main__':unittest.main()

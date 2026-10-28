@@ -11,6 +11,15 @@ from pathlib import Path
 
 BASE = Path(__file__).resolve().parent
 METHOD_OWNERS = {'tarot': 'TAROT.md', 'meihua': 'MEIHUA.md', 'liuyao': 'LIUYAO.md'}
+# This is an approved distribution boundary, not a second policy authority.
+# Owner text remains verbatim and comes only from the generated canonical pack.
+APPROVED_OWNERS = frozenset({
+    'METHOD_ROUTING.md', 'INPUT_CONTRACT.md', 'QUESTION_DESIGN.md',
+    'TAROT.md', 'MEIHUA.md', 'LIUYAO.md', 'READING_LIFECYCLE.md',
+    'READING_RECORD.md', 'CROSS_VALIDATION.md', 'CHATGPT_OUTPUT.md',
+    'RUNTIME_DRAW.md',
+})
+EXPECTED_REPOSITORY = 'masini1491/ai-divination-playbook'
 COMMON = (
     ('METHOD_ROUTING.md', 3800),
     ('QUESTION_DESIGN.md', 2500),
@@ -25,11 +34,21 @@ def _bundle() -> dict:
         raise RuntimeError('POLICY_PROFILE_MISMATCH')
     if not isinstance(payload.get('owners'), dict):
         raise RuntimeError('POLICY_PACK_INVALID')
+    if set(payload['owners']) != APPROVED_OWNERS:
+        raise RuntimeError('POLICY_OWNER_SET_MISMATCH')
+    manifest = json.loads((BASE / 'source_manifest.json').read_text(encoding='utf-8'))
+    if (payload.get('source_commit') != manifest.get('commit')
+            or manifest.get('repository') != EXPECTED_REPOSITORY):
+        raise RuntimeError('POLICY_SOURCE_COMMIT_MISMATCH')
     for owner, entry in payload['owners'].items():
-        text = entry['content']
-        data = text.encode('utf-8')
-        if entry['sha256'] != hashlib.sha256(data).hexdigest() or entry['bytes'] != len(data):
+        if not isinstance(entry, dict) or not isinstance(entry.get('content'), str):
+            raise RuntimeError(f'POLICY_OWNER_INVALID: {owner}')
+        data = entry['content'].encode('utf-8')
+        if entry.get('sha256') != hashlib.sha256(data).hexdigest() or entry.get('bytes') != len(data):
             raise RuntimeError(f'POLICY_DIGEST_MISMATCH: {owner}')
+        blob = hashlib.sha1(b'blob ' + str(len(data)).encode('ascii') + b'\0' + data).hexdigest()
+        if entry.get('git_blob_sha1') != blob:
+            raise RuntimeError(f'POLICY_BLOB_MISMATCH: {owner}')
     return payload
 
 def policy_identity() -> dict:
