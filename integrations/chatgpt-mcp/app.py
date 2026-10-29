@@ -145,7 +145,7 @@ def plan_batch_chunks(items: list[dict], chunk_size: int = DEFAULT_CHUNK_SIZE) -
 
 
 @mcp.tool()
-def batch_divination(items: list[dict]) -> dict:
+def batch_divination(items: list[dict], expected_request_sha256: str | None = None) -> dict:
     """PREFERRED for 2–12 independent readings; all three methods may alternate.
 
     Each item selects its own method (auto/tarot/meihua/liuyao) and receives
@@ -163,10 +163,13 @@ def batch_divination(items: list[dict]) -> dict:
     details are deliberately omitted; use derive_meihua/derive_liuyao after
     preserving receipts. No repeated rule excerpts. Preserve every receipt
     immediately before interpreting; receipts are NOT server-persisted.
+    For a plan_batch_chunks request, pass its request_sha256 as
+    expected_request_sha256 to fail BEFORE any random cast if the exact
+    planned items changed. This is an integrity check, NOT idempotency.
     A partial failure returns completed receipts; NEVER retry completed labels.
     Get full method/output rules separately once per distinct method.
     """
-    return execute_batch(items, _bridge)
+    return execute_batch(items, _bridge, expected_request_sha256)
 
 
 @mcp.tool()

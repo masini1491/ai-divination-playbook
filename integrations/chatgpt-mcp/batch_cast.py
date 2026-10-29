@@ -150,7 +150,7 @@ def _receipt(batch_id: str, index: int, label: str, plan: dict, payload: dict) -
     return {**receipt, "receipt_sha256": _stable_hash(receipt)}
 
 
-def execute_batch(items: Any, bridge_factory) -> dict:
+def execute_batch(items: Any, bridge_factory, expected_request_sha256: str | None = None) -> dict:
     """One mixed batch; separate invocations are independent and stateless.
 
     Preflight ALL questions, then policy integrity; only then allocate a batch
@@ -158,6 +158,12 @@ def execute_batch(items: Any, bridge_factory) -> dict:
     receipts remain available and MUST NOT be redrawn automatically.
     """
     approved = validate_batch(items)
+    request_sha256 = _stable_hash(items)
+    if expected_request_sha256 is not None:
+        if (not isinstance(expected_request_sha256, str)
+                or not re.fullmatch(r"[0-9a-f]{64}", expected_request_sha256)
+                or expected_request_sha256 != request_sha256):
+            raise ValueError("CHUNK_REQUEST_DIGEST_MISMATCH")
     pinned = policy_identity()  # fail closed before any stochastic cast
     batch_id = secrets.token_hex(12)
     completed = []
@@ -170,6 +176,7 @@ def execute_batch(items: Any, bridge_factory) -> dict:
         except Exception as error:
             return {
                 "status": "partial_failure", "batch_id": batch_id,
+                "request_sha256": request_sha256,
                 "receipt_format": RECEIPT_FORMAT,
                 "completed_count": len(completed), "total_count": len(approved),
                 "receipts": completed, "failed_label": item["label"],
@@ -183,6 +190,7 @@ def execute_batch(items: Any, bridge_factory) -> dict:
             }
     return {
         "status": "batch_completed", "batch_id": batch_id,
+        "request_sha256": request_sha256,
         "receipt_format": RECEIPT_FORMAT,
         "completed_count": len(completed), "total_count": len(approved),
         "receipts": completed, "policy_identity": pinned,

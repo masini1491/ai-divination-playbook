@@ -87,6 +87,8 @@ class MCPTransportSmokeTests(unittest.TestCase):
         self.assertIn('include_policy_excerpts', tools['auto_divination']['inputSchema']['properties'])
         self.assertIn('owner', tools['get_interpretation_policy']['inputSchema']['properties'])
         self.assertIn('items', tools['batch_divination']['inputSchema']['properties'])
+        self.assertIn('expected_request_sha256',
+                      tools['batch_divination']['inputSchema']['properties'])
         self.assertIn('chunk_size', tools['plan_batch_chunks']['inputSchema']['properties'])
 
     def test_runtime_status_advertises_web_plugin_policy_parity_version(self):
@@ -199,6 +201,32 @@ class MCPTransportSmokeTests(unittest.TestCase):
         self.assertEqual(value['chunk_count'],4)
         self.assertEqual([len(x['items']) for x in value['chunks']],[3,3,3,3])
         self.assertEqual(fake.calls,[])
+
+    def test_hash_gated_chunks_over_mcp_transport(self):
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        from test_batch_cast import mixed_twelve, FakeBridge
+        spy=FakeBridge()
+        with patch.object(service,'ENGINE',spy):
+            plan_result=self.rpc('tools/call',{'name':'plan_batch_chunks',
+                                   'arguments':{'items':mixed_twelve(),'chunk_size':3}},35)
+            plan=plan_result.get('structuredContent')
+            if plan is None:
+                plan=next(x['text'] for x in plan_result.get('content',[]) if 'text' in x)
+            if isinstance(plan,str): plan=json.loads(plan)
+            plan=plan.get('result',plan)
+            first=plan['chunks'][0]
+            result=self.rpc('tools/call',{'name':'batch_divination',
+                'arguments':{'items':first['items'],
+                             'expected_request_sha256':first['request_sha256']}},36)
+            payload=result.get('structuredContent')
+            if payload is None:
+                payload=next(x['text'] for x in result.get('content',[]) if 'text' in x)
+            if isinstance(payload,str): payload=json.loads(payload)
+            payload=payload.get('result',payload)
+        self.assertEqual(payload['status'],'batch_completed')
+        self.assertEqual(payload['completed_count'],3)
+        self.assertEqual(payload['request_sha256'],first['request_sha256'])
+        self.assertEqual(spy.calls,['tarot','liuyao','meihua'])
 
     def test_twelve_mixed_interleaved_receipts_over_mcp_transport(self):
         # The exact ChatGPT-facing tools/call interface, not just pure helpers.

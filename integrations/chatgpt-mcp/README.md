@@ -42,13 +42,20 @@ different randomization protocol. Do not claim otherwise.
 Use `plan_batch_chunks(items, chunk_size=3)` when reliability matters. The
 plan validates all questions and fixes method routing **without drawing**. It
 returns ordered small groups with input SHA-256. Call `batch_divination` for
-one group, capture its complete receipts and verify the labels/count/IDs,
+one group with `expected_request_sha256` set to its planned
+`request_sha256`. A mismatch is rejected before a random cast.
+Capture the complete receipts, compare the echoed `request_sha256` and
+verify the labels/count/IDs,
 then acknowledge locally by preserving the JSON before submitting the next.
 A 12-question plan defaults to four groups of three. This can limit the
 maximum ambiguous/lost group to three questions instead of twelve, but it
 **does not** restore any lost output and it does not turn a failed call into a
 safe automatic retry. Use a smaller group size (1–2) for especially important
 questions.
+
+This request digest checks only that the *submitted items* equal the planned
+items. It is **not** an idempotency key, receipt recovery handle, authentication,
+or durable server acknowledgement.
 
 If any response is lost, stop. Previously acknowledged receipts remain
 valid, and an unacknowledged group's result is **unknown**. Recasting is a

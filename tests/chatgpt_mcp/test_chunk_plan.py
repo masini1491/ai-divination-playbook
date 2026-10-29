@@ -30,6 +30,51 @@ class ChunkPlanTests(unittest.TestCase):
         self.assertIn("STOP",plan["instructions"])
         self.assertIn("do NOT automatically retry",plan["instructions"])
 
+    def test_planned_request_hash_matches_exact_execution_and_response(self):
+        plan=plan_chunks(mixed_twelve())
+        spy=FakeBridge()
+        groups=[]
+        for chunk in plan["chunks"]:
+            result=execute_batch(chunk["items"],lambda:spy,
+                                 expected_request_sha256=chunk["request_sha256"])
+            self.assertEqual(result["status"],"batch_completed")
+            self.assertEqual(result["request_sha256"],chunk["request_sha256"])
+            groups.append(result)
+        self.assertEqual(len(groups),4)
+        self.assertEqual(len(spy.calls),12)
+
+    def test_changed_method_question_order_and_flags_fail_before_rng(self):
+        plan=plan_chunks(mixed_twelve())
+        chunk=plan["chunks"][0]
+        modifications=(
+            lambda x:x[0].update(question_summary="其他問題後續發展"),
+            lambda x:x[0].update(method_override="meihua"),
+            lambda x:x.reverse(),
+            lambda x:x[1].update(has_horizon=False),
+        )
+        for alter in modifications:
+            with self.subTest(modification=str(alter)):
+                items=copy.deepcopy(chunk["items"])
+                alter(items)
+                spy=FakeBridge()
+                with self.assertRaises((ValueError,)):
+                    execute_batch(items,lambda:spy,
+                                  expected_request_sha256=chunk["request_sha256"])
+                self.assertEqual(spy.calls,[])
+
+    def test_inferred_liuyao_contract_remains_valid_when_planned(self):
+        question=[{"label":"Outcome01","question_summary":"一個月內是否正式見面"}]
+        planned=plan_chunks(question,chunk_size=1)
+        item=planned["chunks"][0]["items"][0]
+        self.assertEqual(item["method_override"],"liuyao")
+        self.assertTrue(item["has_completion_rule"])
+        self.assertTrue(item["has_horizon"])
+        spy=FakeBridge()
+        result=execute_batch(planned["chunks"][0]["items"],lambda:spy,
+                             expected_request_sha256=planned["chunks"][0]["request_sha256"])
+        self.assertEqual(result["status"],"batch_completed")
+        self.assertEqual(spy.calls,["liuyao"])
+
     def test_chunked_execution_yields_all_twelve_without_duplication(self):
         plan=plan_chunks(mixed_twelve(),chunk_size=2)
         engine=FakeBridge()
