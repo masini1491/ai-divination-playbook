@@ -32,6 +32,26 @@ Palmistry, Astrology, Zi Wei or new methods simply because they appear on main.
   is not a functional MCP smoke-test result.
 - Palmistry, Astrology and Zi Wei remain outside the allowlist.
 
+## Git Sync MCP stable runtime record (2026-10-29)
+
+**Stable runtime:** `1.4.1-private-acknowledged-chunks` for **AI Divination Private – Git Sync only**. This is a product-specific runtime status record; it is **not** a whole-Playbook `v1.4.1` tag/release and does not replace the repository's `v0.x` version series.
+
+| Identity / evidence | Verified stable baseline |
+| --- | --- |
+| GitHub merged deployment commit | `c93bcc1bfa6855d71a298e93cf244ff23a88a67b` (PR #418; prior PR #416 merge: `8604ca2ee222ea96cccce5db3c72d9c5acea46fe`) |
+| Exact pinned engine/policy source | `38898aec30668056459bb0551f77ba6e72f805d7` (intentionally different from the deployment commit) |
+| Interpretation policy | `canonical-owner-parity-v1`; `runtime_status.verified=true` |
+| Production | `https://ai-divination-mcp-git-sync.vercel.app` — Vercel deployment `dpl_G7cQgKGFRbV93bAr2nJdAvwvn7xC` READY, aliased to this URL |
+| Main CI | [Validate Playbook](https://github.com/masini1491/ai-divination-playbook/actions/runs/40822874022) and [Selective ChatGPT MCP Release](https://github.com/masini1491/ai-divination-playbook/actions/runs/40822874006) both succeeded for `c93bcc1b` |
+
+**Supported scope:** Tarot, Meihua and Liuyao only. `batch_divination` supports 1–12 independent mixed-method items per invocation with `compact-original-cast-v2` receipts, unique receipt IDs, and SHA-256. `plan_batch_chunks` performs **no casting**, with default `chunk_size=3`, producing four ordered groups for 12 items. Its `request_sha256` can be required by `batch_divination(expected_request_sha256=...)`; a mismatch rejects the request with `INVALID_ARGUMENT` **before** drawing. Completed receipts are retained in partial-failure responses, and clients must acknowledge/save each group's response before the next group.
+
+**Acceptance provenance:** The 2026-10-29 ChatGPT web acceptance handoff reported 12/12 real readings across four acknowledged chunks, expected request hashes matched, four distinct batch IDs, unique receipt IDs, independently recalculated receipt SHA-256 values, complete Liuyao three-coin source data, and an intentional bad request hash rejected without a new receipt. These stochastic acceptance casts were **not rerun** for this documentation-only stable marking. Current independent checks confirmed the live MCP runtime identity, GitHub PR/CI state and Vercel Production deployment.
+
+**Known limits:** `storage=none`. A completely lost response cannot be retrieved; **exactly-once**, server-side acknowledgement, idempotency and automatic safe retry after an ambiguous failure are **not supported**. A request hash is an input-consistency guard, not an idempotency/recovery token. Palmistry, Astrology, Zi Wei and any newly added repository methods are outside this Production allowlist. Runtime rule availability does not guarantee identical LLM prose or prediction accuracy.
+
+**Tag/Release boundary:** This document records the **Git Sync MCP runtime's stable acceptance**, not a published Git tag or GitHub Release. At the time of this record, the repository's published tags/releases were `v0.1.0`–`v0.3.0`; there was no separate Git Sync 1.4.1 tag/release. Any future dedicated Git Sync MCP tag/release must explicitly target the verified deployment commit above and be separately published and read back.
+
 ## Failure-safe handling of lost batch responses (no persistence)
 
 The MCP still has **no server-side reading storage**. A fully lost HTTP response
