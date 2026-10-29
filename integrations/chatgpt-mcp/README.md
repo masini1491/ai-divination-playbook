@@ -50,7 +50,7 @@ Palmistry, Astrology, Zi Wei or new methods simply because they appear on main.
 
 **Known limits:** `storage=none`. A completely lost response cannot be retrieved; **exactly-once**, server-side acknowledgement, idempotency and automatic safe retry after an ambiguous failure are **not supported**. A request hash is an input-consistency guard, not an idempotency/recovery token. Palmistry, Astrology, Zi Wei and any newly added repository methods are outside this Production allowlist. Runtime rule availability does not guarantee identical LLM prose or prediction accuracy.
 
-**Tag/Release boundary:** This document records the **Git Sync MCP runtime's stable acceptance**, not a published Git tag or GitHub Release. At the time of this record, the repository's published tags/releases were `v0.1.0`–`v0.3.0`; there was no separate Git Sync 1.4.1 tag/release. Any future dedicated Git Sync MCP tag/release must explicitly target the verified deployment commit above and be separately published and read back.
+**Tag/Release publication:** The dedicated [Git Sync MCP 1.4.1 — Stable](https://github.com/masini1491/ai-divination-playbook/releases/tag/git-sync-mcp-v1.4.1) GitHub Release is published with tag `git-sync-mcp-v1.4.1` pointing to verified deployment commit `c93bcc1bfa6855d71a298e93cf244ff23a88a67b` (not the pinned runtime source commit). This is specific to Git Sync MCP, not a whole-Playbook `v1.4.1` version; the repository `v0.x` releases remain independent.
 
 ## Failure-safe handling of lost batch responses (no persistence)
 
