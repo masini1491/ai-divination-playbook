@@ -55,7 +55,9 @@ questions.
 
 This request digest checks only that the *submitted items* equal the planned
 items. It is **not** an idempotency key, receipt recovery handle, authentication,
-or durable server acknowledgement.
+or durable server acknowledgement. Chunk acknowledgement is a CLIENT procedure:
+the MCP service cannot verify that ChatGPT preserved a result or prevent an
+unacknowledged next-chunk call because it intentionally stores no progress.
 
 If any response is lost, stop. Previously acknowledged receipts remain
 valid, and an unacknowledged group's result is **unknown**. Recasting is a
@@ -76,7 +78,7 @@ casts as skipped, not executed, or successfully recovered.
 
 After a reviewed squash merge and **explicit authorization** for normal Production deployment, verify the existing connected **AI Divination Private – Git Sync** plugin from a fresh ChatGPT web conversation. Do not update or replace the legacy plugin. Do not mistake a READY Preview for a Production release.
 
-1. Call `runtime_status` on **Git Sync**, not the legacy plugin. Expect `mcp_runtime_version=1.3.0-private-policy-parity`, `interpretation_policy_version=canonical-owner-parity-v1`, `verified=true`, and the pinned canonical `runtime_source_commit`. The old runtime can report the SAME `source_commit` and policy hash but has no interpretation version; these fields distinguish the code release.
+1. Call `runtime_status` on **Git Sync**, not the legacy plugin. Expect `mcp_runtime_version=1.4.1-private-acknowledged-chunks`, `interpretation_policy_version=canonical-owner-parity-v1`, `verified=true`, and the pinned canonical `runtime_source_commit`. The old runtime can report the SAME `source_commit` and policy hash but has no interpretation version; these fields distinguish the code release.
 2. Confirm that `get_interpretation_policy` is available in the ChatGPT web tool catalogue. If missing after Production is READY, refresh/reconnect **only this Git Sync plugin** through ChatGPT's plugin settings, then recheck. Do not assume the tool manifest refreshes instantly.
 3. With a fixed existing cast and `existing_cast=true` plus a known `method_override`, confirm a no-draw result includes both the full method owner and full `CHATGPT_OUTPUT.md`, with source identity. Never generate new random cards solely for a smoke test.
 4. For the three methods, read the full canonical owners via `get_interpretation_policy`, verify hashes and excluded methods, and separately carry out the paired model interpretation review. Report factual/policy availability separately from human-language interpretation equivalence.

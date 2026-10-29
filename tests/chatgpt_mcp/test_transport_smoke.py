@@ -228,6 +228,75 @@ class MCPTransportSmokeTests(unittest.TestCase):
         self.assertEqual(payload['request_sha256'],first['request_sha256'])
         self.assertEqual(spy.calls,['tarot','liuyao','meihua'])
 
+    def test_tampered_planned_chunk_fails_at_mcp_boundary_without_rng(self):
+        # A planned request is bound to exact content and order before the
+        # stochastic engine. MCP exposes an error; no cards or coins are drawn.
+        import copy
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        from test_batch_cast import mixed_twelve, FakeBridge
+        spy=FakeBridge()
+        with patch.object(service,'ENGINE',spy):
+            response=self.rpc('tools/call',{'name':'plan_batch_chunks',
+                                  'arguments':{'items':mixed_twelve(),'chunk_size':3}},51)
+            plan=response.get('structuredContent')
+            if plan is None:
+                plan=next(x['text'] for x in response.get('content',[])
+                          if isinstance(x,dict) and 'text' in x)
+            if isinstance(plan,str): plan=json.loads(plan)
+            plan=plan.get('result',plan)
+            first=plan['chunks'][0]
+            altered=copy.deepcopy(first['items'])
+            altered[0]['question_summary']='其他匿名選項比較'
+            result=self.rpc('tools/call',{'name':'batch_divination',
+                   'arguments':{'items':altered,
+                                'expected_request_sha256':first['request_sha256']}},52)
+        self.assertTrue(result.get('isError',False),result)
+        self.assertEqual(spy.calls,[])
+        self.assertNotIn('batch_completed',str(result))
+
+    def test_mcp_chunk_hash_completeness_with_actual_pinned_engine(self):
+        # Test all 12 mixed casts as four *separate* authenticated-by-input
+        # chunk requests through MCP transport. Replace only RNG, not engine.
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        from test_batch_cast import mixed_twelve
+        with patch.object(service.ENGINE.core,'randbelow',side_effect=lambda n:0):
+            plan_response=self.rpc('tools/call',{'name':'plan_batch_chunks',
+                                    'arguments':{'items':mixed_twelve()}},53)
+            plan=plan_response.get('structuredContent')
+            if plan is None:
+                plan=next(x['text'] for x in plan_response.get('content',[])
+                          if isinstance(x,dict) and 'text' in x)
+            if isinstance(plan,str): plan=json.loads(plan)
+            plan=plan.get('result',plan)
+            self.assertEqual(plan['status'],'planned_no_cast')
+            batches=[]
+            for index,chunk in enumerate(plan['chunks']):
+                r=self.rpc('tools/call',{'name':'batch_divination',
+                    'arguments':{'items':chunk['items'],
+                                 'expected_request_sha256':chunk['request_sha256']}},
+                    54+index)
+                self.assertFalse(r.get('isError'),r)
+                payload=r.get('structuredContent')
+                if payload is None:
+                    payload=next(x['text'] for x in r.get('content',[])
+                                 if isinstance(x,dict) and 'text' in x)
+                if isinstance(payload,str): payload=json.loads(payload)
+                payload=payload.get('result',payload)
+                self.assertEqual(payload['status'],'batch_completed')
+                self.assertEqual(payload['request_sha256'],chunk['request_sha256'])
+                self.assertEqual([x['label'] for x in payload['receipts']],chunk['labels'])
+                self.assertEqual(len(payload['receipts']),len(chunk['items']))
+                self.assertTrue(all(x['batch_id']==payload['batch_id']
+                                    for x in payload['receipts']))
+                batches.append(payload)
+        self.assertEqual(len(batches),4)
+        self.assertEqual(len({x['batch_id'] for x in batches}),4)
+        receipts=[x for b in batches for x in b['receipts']]
+        self.assertEqual(len(receipts),12)
+        self.assertEqual(len({x['receipt_id'] for x in receipts}),12)
+        self.assertEqual([x['selected_method'] for x in receipts],
+                         [i['method_override'] for i in mixed_twelve()])
+
     def test_twelve_mixed_interleaved_receipts_over_mcp_transport(self):
         # The exact ChatGPT-facing tools/call interface, not just pure helpers.
         sys.path.insert(0, str(Path(__file__).resolve().parent))

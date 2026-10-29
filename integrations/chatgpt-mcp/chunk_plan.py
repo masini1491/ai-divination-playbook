@@ -6,8 +6,6 @@ receipt group before starting the next. Every item in a chunk remains a normal
 batch_divination item and is validated by the existing canonical router.
 """
 from __future__ import annotations
-import hashlib
-import json
 from typing import Any
 from batch_cast import validate_batch, MAX_BATCH, _stable_hash
 from auto_routing import classify_summary

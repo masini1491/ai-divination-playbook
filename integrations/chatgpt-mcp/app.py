@@ -20,7 +20,7 @@ from chunk_plan import plan_chunks, PROTOCOL, DEFAULT_CHUNK_SIZE
 
 BASE = Path(__file__).resolve().parent
 ENGINE = DivinationBridge(BASE / "canonical-repo")
-MCP_RUNTIME_VERSION = "1.4.0-private-batch-interleaving"
+MCP_RUNTIME_VERSION = "1.4.1-private-acknowledged-chunks"
 INTERPRETATION_POLICY_VERSION = "canonical-owner-parity-v1"
 
 mcp = MCPServer(
