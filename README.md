@@ -57,6 +57,19 @@ ai-divination-playbook
 
 本 Repo 的 project-specific governance 與 technical source of truth 仍優先；尤其 **GitHub Connect-only** repository authority、公開 Repo privacy、Reading Record storage boundary 與各 divination method/runtime owner 都是 local rules／overrides，不因 shared baseline 的 generic default 而放寬。採用與 override 紀錄見 [`references/ai-development-playbook.md`](references/ai-development-playbook.md)。
 
+## ChatGPT Git Sync MCP｜獨立雲端介面
+
+**AI Divination Private – Git Sync** 是本專案的獨立 MCP 服務，已發布 [Git Sync MCP 1.4.1 — Stable](https://github.com/masini1491/ai-divination-playbook/releases/tag/git-sync-mcp-v1.4.1)。它只提供 **Tarot／塔羅、Meihua／梅花易數、Liuyao／六爻** 的真實抽牌／起卦事實與固定規則來源；**不等於整個 Playbook 的功能範圍**。本 Repo 的占星、紫微等正式方法，不會因此自動加入 MCP。
+
+- **自動方法路由**：`auto_divination` 依匿名化的問題摘要選擇可用方法；使用者也可明確指定方法。
+- **多筆混合占問**：`batch_divination` 每次支援最多 12 筆獨立占卜，並保留原始選取資料、來源、收據識別碼與 SHA-256。
+- **較可靠的分段執行**：`plan_batch_chunks` 只規劃、不抽牌；預設每組 3 筆。呼叫端應核對每組 `request_sha256` 並妥善保存已完成收據，再執行下一組。
+- **規則來源核對**：`get_interpretation_policy` 可依允許清單取得固定版本的解讀規則。MCP 提供方法事實與原始規則，ChatGPT 負責自然語言詮釋。
+
+**重要限制**：服務不保存占卜紀錄（`storage=none`），回應完全遺失後無法復原，沒有 Exactly-Once、idempotency 或失敗後安全自動重抽保證。結果是象徵性內容，不代表未來事件一定發生。
+
+**公開與使用界線**：本節提供專案功能及正式版本資訊，**不是無限制開放的託管 API 使用承諾**。目前 Hosted MCP 使用無帳號驗證的傳輸方式，程序內限流也不構成全域流量配額；公開大量使用前仍需正式的存取與用量治理。若要檢視架構、驗證紀錄與本機執行方式，參閱 [MCP 技術文件](integrations/chatgpt-mcp/README.md)。此專屬 `1.4.1` Runtime 版本與整個 Repository 的 `v0.x` Release 系列分開管理。
+
 ## 快速安裝／第一次使用
 
 第一次使用時，不需要下載整個 Repository、複製大段 Prompt 或先學會選方法。
