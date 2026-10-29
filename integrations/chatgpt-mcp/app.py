@@ -16,10 +16,11 @@ from bridge import DivinationBridge, SOURCE_COMMIT
 from policy_adapter import policy_identity, get_policy_owner
 from response_format import method_policy_output
 from batch_cast import execute_batch, MAX_BATCH, RECEIPT_FORMAT
+from chunk_plan import plan_chunks, PROTOCOL, DEFAULT_CHUNK_SIZE
 
 BASE = Path(__file__).resolve().parent
 ENGINE = DivinationBridge(BASE / "canonical-repo")
-MCP_RUNTIME_VERSION = "1.4.0-private-batch-interleaving"
+MCP_RUNTIME_VERSION = "1.4.1-private-acknowledged-chunks"
 INTERPRETATION_POLICY_VERSION = "canonical-owner-parity-v1"
 
 mcp = MCPServer(
@@ -36,6 +37,10 @@ mcp = MCPServer(
         "For interpretation, use the full pinned method owner plus CHATGPT_OUTPUT.md from method_policy. "
         "If excerpts are omitted or an applicable conditional owner is truncated, "
         "call get_interpretation_policy to retrieve exact text before making claims. "
+        "For reliability-sensitive batches, use plan_batch_chunks first, "
+        "execute one small batch_divination chunk per confirmed response, "
+        "save its receipts, and STOP if a response is lost rather than "
+        "automatically re-casting. "
         "When the user requests multiple independent readings of any Tarot, Meihua, "
         "or Liuyao methods, including interleaved mixed-method sequences, "
         "prefer batch_divination (up to 12 each call) and preserve all labeled "
@@ -65,7 +70,10 @@ def runtime_status() -> dict:
             "batch_cast_capabilities": {"tool": "batch_divination", "receipt_format": RECEIPT_FORMAT,
                                         "max_items": MAX_BATCH,
                                         "mixed_methods": True, "interleaved_calls": True,
-                                        "per_invocation_batch_id": True, "storage": "none"},
+                                        "per_invocation_batch_id": True, "storage": "none",
+                                        "chunk_planning_tool": "plan_batch_chunks",
+                                        "chunk_protocol": PROTOCOL,
+                                        "default_chunk_size": DEFAULT_CHUNK_SIZE},
             "interpretation_policy_capabilities": {
                 "complete_method_owner_by_default": True,
                 "complete_output_contract_by_default": True,
@@ -124,7 +132,20 @@ def auto_divination(
 
 
 @mcp.tool()
-def batch_divination(items: list[dict]) -> dict:
+def plan_batch_chunks(items: list[dict], chunk_size: int = DEFAULT_CHUNK_SIZE) -> dict:
+    """Nonrandom preflight plan for 1–12 independent Tarot/Meihua/Liuyao casts.
+
+    Returns up to four-item independently acknowledged batch_divination chunks
+    and SHA-256 digests of normalized requests. This is NOT a reservation,
+    persisted job, execution, exactly-once guarantee, or lost-result recovery.
+    Wait for each complete receipt group before starting the next; if a response
+    is lost, STOP and report ambiguity instead of re-casting automatically.
+    """
+    return plan_chunks(items, chunk_size)
+
+
+@mcp.tool()
+def batch_divination(items: list[dict], expected_request_sha256: str | None = None) -> dict:
     """PREFERRED for 2–12 independent readings; all three methods may alternate.
 
     Each item selects its own method (auto/tarot/meihua/liuyao) and receives
@@ -142,10 +163,13 @@ def batch_divination(items: list[dict]) -> dict:
     details are deliberately omitted; use derive_meihua/derive_liuyao after
     preserving receipts. No repeated rule excerpts. Preserve every receipt
     immediately before interpreting; receipts are NOT server-persisted.
+    For a plan_batch_chunks request, pass its request_sha256 as
+    expected_request_sha256 to fail BEFORE any random cast if the exact
+    planned items changed. This is an integrity check, NOT idempotency.
     A partial failure returns completed receipts; NEVER retry completed labels.
     Get full method/output rules separately once per distinct method.
     """
-    return execute_batch(items, _bridge)
+    return execute_batch(items, _bridge, expected_request_sha256)
 
 
 @mcp.tool()

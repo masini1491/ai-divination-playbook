@@ -240,6 +240,17 @@ class BatchCastTests(unittest.TestCase):
         self.assertLess(len(json.dumps(result, ensure_ascii=False).encode('utf-8')),
                         40000)
 
+    def test_request_sha256_is_optional_but_wrong_hash_never_casts(self):
+        items=mixed_twelve()
+        spy=FakeBridge()
+        with self.assertRaisesRegex(ValueError,"CHUNK_REQUEST_DIGEST_MISMATCH"):
+            execute_batch(items,lambda:spy,expected_request_sha256="0"*64)
+        self.assertEqual(spy.calls,[])
+        # Direct, nonplanned 12-item clients retain existing compatibility.
+        out=execute_batch(items,lambda:spy)
+        self.assertEqual(out["status"],"batch_completed")
+        self.assertEqual(out["request_sha256"],_stable_hash(items))
+
     def test_policy_failure_means_zero_random_draws(self):
         spy=FakeBridge()
         with patch("batch_cast.policy_identity",side_effect=RuntimeError("bad policy")):

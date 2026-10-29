@@ -32,6 +32,38 @@ Palmistry, Astrology, Zi Wei or new methods simply because they appear on main.
   is not a functional MCP smoke-test result.
 - Palmistry, Astrology and Zi Wei remain outside the allowlist.
 
+## Failure-safe handling of lost batch responses (no persistence)
+
+The MCP still has **no server-side reading storage**. A fully lost HTTP response
+cannot be recovered, and no mechanism can guarantee exactly-once random casting
+across an ambiguous network failure without additional durable state or a
+different randomization protocol. Do not claim otherwise.
+
+Use `plan_batch_chunks(items, chunk_size=3)` when reliability matters. The
+plan validates all questions and fixes method routing **without drawing**. It
+returns ordered small groups with input SHA-256. Call `batch_divination` for
+one group with `expected_request_sha256` set to its planned
+`request_sha256`. A mismatch is rejected before a random cast.
+Capture the complete receipts, compare the echoed `request_sha256` and
+verify the labels/count/IDs,
+then acknowledge locally by preserving the JSON before submitting the next.
+A 12-question plan defaults to four groups of three. This can limit the
+maximum ambiguous/lost group to three questions instead of twelve, but it
+**does not** restore any lost output and it does not turn a failed call into a
+safe automatic retry. Use a smaller group size (1–2) for especially important
+questions.
+
+This request digest checks only that the *submitted items* equal the planned
+items. It is **not** an idempotency key, receipt recovery handle, authentication,
+or durable server acknowledgement. Chunk acknowledgement is a CLIENT procedure:
+the MCP service cannot verify that ChatGPT preserved a result or prevent an
+unacknowledged next-chunk call because it intentionally stores no progress.
+
+If any response is lost, stop. Previously acknowledged receipts remain
+valid, and an unacknowledged group's result is **unknown**. Recasting is a
+new reading and requires the user's explicit decision. Never mark unknown
+casts as skipped, not executed, or successfully recovered.
+
 ## Repeated casts / multiple independent questions
 
 - For two to **twelve** independent user-requested readings, call `batch_divination` with stable anonymized labels. Each item independently selects Tarot, Meihua or Liuyao (or server auto-routing), so interleaved order such as Tarot → Liuyao → Meihua → Tarot is supported. For more than 12, use successive batches without reusing old receipts. The server pre-validates all labels and completion rules before any random cast.
@@ -46,7 +78,7 @@ Palmistry, Astrology, Zi Wei or new methods simply because they appear on main.
 
 After a reviewed squash merge and **explicit authorization** for normal Production deployment, verify the existing connected **AI Divination Private – Git Sync** plugin from a fresh ChatGPT web conversation. Do not update or replace the legacy plugin. Do not mistake a READY Preview for a Production release.
 
-1. Call `runtime_status` on **Git Sync**, not the legacy plugin. Expect `mcp_runtime_version=1.3.0-private-policy-parity`, `interpretation_policy_version=canonical-owner-parity-v1`, `verified=true`, and the pinned canonical `runtime_source_commit`. The old runtime can report the SAME `source_commit` and policy hash but has no interpretation version; these fields distinguish the code release.
+1. Call `runtime_status` on **Git Sync**, not the legacy plugin. Expect `mcp_runtime_version=1.4.1-private-acknowledged-chunks`, `interpretation_policy_version=canonical-owner-parity-v1`, `verified=true`, and the pinned canonical `runtime_source_commit`. The old runtime can report the SAME `source_commit` and policy hash but has no interpretation version; these fields distinguish the code release.
 2. Confirm that `get_interpretation_policy` is available in the ChatGPT web tool catalogue. If missing after Production is READY, refresh/reconnect **only this Git Sync plugin** through ChatGPT's plugin settings, then recheck. Do not assume the tool manifest refreshes instantly.
 3. With a fixed existing cast and `existing_cast=true` plus a known `method_override`, confirm a no-draw result includes both the full method owner and full `CHATGPT_OUTPUT.md`, with source identity. Never generate new random cards solely for a smoke test.
 4. For the three methods, read the full canonical owners via `get_interpretation_policy`, verify hashes and excluded methods, and separately carry out the paired model interpretation review. Report factual/policy availability separately from human-language interpretation equivalence.
