@@ -83,9 +83,10 @@ class MCPTransportSmokeTests(unittest.TestCase):
     def test_catalog_exposes_compact_option(self):
         result = self.rpc('tools/list')
         tools = {t['name']: t for t in result['tools']}
-        self.assertEqual(set(tools), {'runtime_status', 'auto_divination', 'derive_meihua', 'derive_liuyao', 'get_interpretation_policy'})
+        self.assertEqual(set(tools), {'runtime_status', 'auto_divination', 'derive_meihua', 'derive_liuyao', 'get_interpretation_policy', 'batch_divination'})
         self.assertIn('include_policy_excerpts', tools['auto_divination']['inputSchema']['properties'])
         self.assertIn('owner', tools['get_interpretation_policy']['inputSchema']['properties'])
+        self.assertIn('items', tools['batch_divination']['inputSchema']['properties'])
 
     def test_runtime_status_advertises_web_plugin_policy_parity_version(self):
         response = self.rpc('tools/call', {
@@ -178,6 +179,159 @@ class MCPTransportSmokeTests(unittest.TestCase):
                     if 'owner' in nested and 'text' in nested:
                         return nested
         self.fail('Missing canonical interpretation policy in MCP response')
+
+    def test_twelve_mixed_interleaved_receipts_over_mcp_transport(self):
+        # The exact ChatGPT-facing tools/call interface, not just pure helpers.
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        from test_batch_cast import FakeBridge, mixed_twelve
+        spy = FakeBridge()
+        with patch.object(service, 'ENGINE', spy):
+            result = self.rpc('tools/call', {
+                'name': 'batch_divination',
+                'arguments': {'items': mixed_twelve()}}, 17)
+        candidates = [result.get('structuredContent')]
+        candidates.extend(part.get('text') for part in result.get('content', [])
+                          if isinstance(part, dict))
+        payload = None
+        for value in candidates:
+            if isinstance(value, str):
+                try:
+                    value = json.loads(value)
+                except ValueError:
+                    continue
+            if isinstance(value, dict):
+                value = value.get('result', value)
+                if isinstance(value, dict) and value.get('status') == 'batch_completed':
+                    payload = value
+                    break
+        self.assertIsNotNone(payload, result)
+        self.assertEqual(payload['completed_count'], 12)
+        self.assertEqual(payload['total_count'], 12)
+        self.assertEqual(len(payload['receipts']), 12)
+        self.assertEqual(len({item['receipt_id'] for item in payload['receipts']}), 12)
+        self.assertEqual([r['selected_method'] for r in payload['receipts']],
+                         [item['method_override'] for item in mixed_twelve()])
+        self.assertNotIn('excerpts', str(payload))
+        self.assertEqual(len(spy.calls), 12)
+
+    def test_actual_pinned_bridge_twelve_receipts_through_mcp_transport(self):
+        # This is the actual MCP HTTP transport plus actual pinned engines;
+        # ONLY randomness is replaced with a deterministic zero fixture.
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        from test_batch_cast import mixed_twelve
+        with patch.object(service.ENGINE.core, 'randbelow', side_effect=lambda limit: 0):
+            result = self.rpc('tools/call', {
+                'name': 'batch_divination',
+                'arguments': {'items': mixed_twelve()}}, 18)
+        payload = self.extract_cast(result) if 'selected_method' in result else None
+        if payload is None:
+            candidates = [result.get('structuredContent')]
+            candidates.extend(part.get('text') for part in result.get('content', [])
+                              if isinstance(part, dict))
+            for candidate in candidates:
+                if isinstance(candidate, str):
+                    try:
+                        candidate = json.loads(candidate)
+                    except ValueError:
+                        continue
+                if isinstance(candidate, dict):
+                    candidate = candidate.get('result', candidate)
+                    if isinstance(candidate, dict) and candidate.get('status') == 'batch_completed':
+                        payload = candidate
+                        break
+        self.assertIsNotNone(payload, result)
+        self.assertEqual(payload['completed_count'], 12)
+        self.assertEqual(len(payload['receipts']), 12)
+        from bridge import SOURCE_COMMIT
+        self.assertTrue(all(x['source']['runtime_source_commit'] == SOURCE_COMMIT
+                            for x in payload['receipts']))
+        self.assertTrue(all(x['receipt_sha256']
+                            for x in payload['receipts']))
+        # Structural receipts are intentionally much smaller than a full
+        # twelve-chart result with the repeated interpretation rule text.
+        self.assertLess(len(json.dumps(result,ensure_ascii=False).encode('utf-8')),
+                        80000)
+
+    def test_ten_interleaved_mcp_calls_preserve_each_original_cast(self):
+        """Ten sequential HTTP MCP tool calls, >=10 new casts, mixed tool types.
+
+        Uses exact bundled engines and fixed test-only randomness; no real
+        person or live prediction. Keep every receipt before the next call.
+        """
+        import hashlib
+        from test_batch_cast import labeled
+        timestamp = "2026-10-28T20:20:31+08:00"
+        saved = []
+        single_casts = []
+        sequence = (
+            ("batch_divination", {"items": [labeled("tarot", 0), labeled("liuyao", 1)]}),
+            ("auto_divination", {"question_summary": "某項合作後續發展",
+                                "method_override": "meihua", "include_policy_excerpts": False}),
+            ("derive_liuyao", {"raw_lines": [7, 8, 9, 7, 8, 6], "cast_timestamp": timestamp}),
+            ("batch_divination", {"items": [labeled("meihua", 2), labeled("tarot", 3)]}),
+            ("auto_divination", {"question_summary": "比較兩個方案",
+                                "method_override": "tarot", "include_policy_excerpts": False}),
+            ("get_interpretation_policy", {"method": "tarot", "owner": "CHATGPT_OUTPUT.md",
+                                           "offset": 0, "max_chars": 16000}),
+            ("batch_divination", {"items": [labeled("liuyao", 4), labeled("meihua", 5)]}),
+            ("auto_divination", {"question_summary": "一個月內是否正式見面",
+                                "method_override": "liuyao", "has_completion_rule": True,
+                                "has_horizon": True, "include_policy_excerpts": False}),
+            ("derive_meihua", {"a": "175", "b": "196"}),
+            ("batch_divination", {"items": [labeled("tarot", 6), labeled("liuyao", 7)]}),
+        )
+        def unpack(result):
+            for candidate in [result.get("structuredContent"), *(
+                    x.get("text") for x in result.get("content", []) if isinstance(x, dict))]:
+                if isinstance(candidate, str):
+                    try: candidate = json.loads(candidate)
+                    except ValueError: continue
+                if isinstance(candidate, dict):
+                    return candidate.get("result", candidate)
+            self.fail("Missing MCP tool result")
+        with patch.object(service.ENGINE.core, "randbelow", side_effect=lambda n: 0):
+            for index, (tool, arguments) in enumerate(sequence, 1):
+                result = self.rpc("tools/call", {"name": tool, "arguments": arguments},
+                                  100 + index)
+                self.assertFalse(result.get("isError"), (tool, result))
+                payload = unpack(result)
+                if tool == "batch_divination":
+                    self.assertEqual(payload["status"], "batch_completed")
+                    self.assertEqual(payload["completed_count"], 2)
+                    for receipt in payload["receipts"]:
+                        self.assertEqual(receipt["batch_id"], payload["batch_id"])
+                        self.assertEqual(receipt["receipt_format"] if "receipt_format" in receipt
+                                         else payload["receipt_format"],
+                                         "compact-original-cast-v2")
+                        self.assertNotIn("excerpts", receipt)
+                        saved.append(receipt)
+                elif tool == "auto_divination":
+                    self.assertEqual(payload["status"], "cast_completed")
+                    self.assertEqual(payload["method_policy"]["excerpts"], [])
+                    single_casts.append(payload)
+                elif tool == "get_interpretation_policy":
+                    self.assertEqual(payload["owner"], "CHATGPT_OUTPUT.md")
+                    self.assertTrue(payload["complete"])
+                else:
+                    self.assertEqual(payload["fact_source"], "user_supplied")
+                # Prior receipts must remain unchanged across every subsequent
+                # call and must not be mutated by later deterministic derivation.
+                for receipt in saved:
+                    self.assertEqual(receipt["receipt_sha256"],
+                                     __import__("batch_cast")._stable_hash({
+                                         k: v for k, v in receipt.items()
+                                         if k != "receipt_sha256"}))
+        self.assertEqual(len(sequence), 10)
+        self.assertEqual(len(saved), 8)
+        self.assertEqual(len(single_casts), 3)
+        self.assertEqual(len(saved) + len(single_casts), 11)
+        self.assertEqual(len({r["receipt_id"] for r in saved}), 8)
+        self.assertEqual(len({r["batch_id"] for r in saved}), 4)
+        self.assertEqual([r["selected_method"] for r in saved],
+                         ["tarot", "liuyao", "meihua", "tarot",
+                          "liuyao", "meihua", "tarot", "liuyao"])
+        self.assertEqual([r["selected_method"] for r in single_casts],
+                         ["meihua", "tarot", "liuyao"])
 
     def test_full_canonical_policy_reaches_chatgpt_for_all_three_methods(self):
         from policy_adapter import _bundle, METHOD_OWNERS

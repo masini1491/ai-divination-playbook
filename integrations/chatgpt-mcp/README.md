@@ -32,6 +32,16 @@ Palmistry, Astrology, Zi Wei or new methods simply because they appear on main.
   is not a functional MCP smoke-test result.
 - Palmistry, Astrology and Zi Wei remain outside the allowlist.
 
+## Repeated casts / multiple independent questions
+
+- For two to **twelve** independent user-requested readings, call `batch_divination` with stable anonymized labels. Each item independently selects Tarot, Meihua or Liuyao (or server auto-routing), so interleaved order such as Tarot → Liuyao → Meihua → Tarot is supported. For more than 12, use successive batches without reusing old receipts. The server pre-validates all labels and completion rules before any random cast.
+- Every successful label receives its own **compact original stochastic-choice receipt**, timestamp and SHA-256, with an invocation-unique `batch_id`, per-receipt `receipt_id`, index and source identity. The original random choices are kept; redundant derivable line metadata is intentionally omitted to reduce ChatGPT transport/context pressure. For Liuyao, all six 6/7/8/9 raw lines **and the original three-coin values for each line** are retained, along with the cast timestamp. Meihua keeps original A/B, Tarot keeps all actual cards. These are sufficient to reconstruct deterministic method facts later without random recasting.
+- Policy text is NOT repeated with each item: after storing receipts, read the pinned method owner and `CHATGPT_OUTPUT.md` once per distinct method using `get_interpretation_policy`.
+- Multiple batch calls can be interleaved with single `auto_divination` or deterministic `derive_meihua`/`derive_liuyao` calls. Tests additionally run the *actual bundled hash-verified engines* and the local MCP HTTP transport with a fixed, nonrandom test source, checking that 12 receipts remain independently reconstructible. Preserve the per-batch IDs and the receipt hashes across those calls. An unchanged label in a later batch is NOT the same reading.
+- The interleaving regression sends **ten distinct MCP HTTP tools/call invocations** (four two-item batches, three compact independent auto casts, two deterministic derivations, one owner read). That gives **eleven new casts across all three methods** and rechecks each saved receipt after every later tool invocation; this complements the separate 12-casts-in-one-batch regression. These are fixed-test-source engine calls, not personal divinations.
+- The service remains `storage=none`: if an original receipt is lost or truncated by the ChatGPT client, **it cannot be restored**. A partial failure returns all prior receipts; never rerun completed labels. Never claim a batch is complete unless all expected labeled receipts are present.
+- This new tool does not make calls transactional across RNG failures: a failed current label may have consumed randomness. Do not automatically retry it without explicit user authorization.
+
 ## ChatGPT web plugin release acceptance
 
 After a reviewed squash merge and **explicit authorization** for normal Production deployment, verify the existing connected **AI Divination Private – Git Sync** plugin from a fresh ChatGPT web conversation. Do not update or replace the legacy plugin. Do not mistake a READY Preview for a Production release.

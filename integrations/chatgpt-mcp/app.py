@@ -15,10 +15,11 @@ from mcp.server.transport_security import TransportSecuritySettings
 from bridge import DivinationBridge, SOURCE_COMMIT
 from policy_adapter import policy_identity, get_policy_owner
 from response_format import method_policy_output
+from batch_cast import execute_batch, MAX_BATCH, RECEIPT_FORMAT
 
 BASE = Path(__file__).resolve().parent
 ENGINE = DivinationBridge(BASE / "canonical-repo")
-MCP_RUNTIME_VERSION = "1.3.0-private-policy-parity"
+MCP_RUNTIME_VERSION = "1.4.0-private-batch-interleaving"
 INTERPRETATION_POLICY_VERSION = "canonical-owner-parity-v1"
 
 mcp = MCPServer(
@@ -35,6 +36,12 @@ mcp = MCPServer(
         "For interpretation, use the full pinned method owner plus CHATGPT_OUTPUT.md from method_policy. "
         "If excerpts are omitted or an applicable conditional owner is truncated, "
         "call get_interpretation_policy to retrieve exact text before making claims. "
+        "When the user requests multiple independent readings of any Tarot, Meihua, "
+        "or Liuyao methods, including interleaved mixed-method sequences, "
+        "prefer batch_divination (up to 12 each call) and preserve all labeled "
+        "original receipts BEFORE prose interpretation; "
+        "never redraw completed labels if interpretation context is truncated. "
+        "Load complete method/output policy only once per distinct method for the batch. "
         "Only facts are calculated by this MCP; natural-language synthesis is done by ChatGPT. "
         "To verify that the web-connected plugin has the updated interpretation rules, "
         "check runtime_status.interpretation_policy_version and the get_interpretation_policy tool. "
@@ -55,6 +62,10 @@ def runtime_status() -> dict:
     return {"runtime_source_commit": SOURCE_COMMIT, "verified": True,
             "mcp_runtime_version": MCP_RUNTIME_VERSION,
             "interpretation_policy_version": INTERPRETATION_POLICY_VERSION,
+            "batch_cast_capabilities": {"tool": "batch_divination", "receipt_format": RECEIPT_FORMAT,
+                                        "max_items": MAX_BATCH,
+                                        "mixed_methods": True, "interleaved_calls": True,
+                                        "per_invocation_batch_id": True, "storage": "none"},
             "interpretation_policy_capabilities": {
                 "complete_method_owner_by_default": True,
                 "complete_output_contract_by_default": True,
@@ -110,6 +121,31 @@ def auto_divination(
     # Missing/tampered policy must not consume RNG or create a partial reading.
     prepared = method_policy_output(plan, include_policy_excerpts)
     return execute_auto_route(prepared, _bridge)
+
+
+@mcp.tool()
+def batch_divination(items: list[dict]) -> dict:
+    """PREFERRED for 2–12 independent readings; all three methods may alternate.
+
+    Each item selects its own method (auto/tarot/meihua/liuyao) and receives
+    one independent cast in its supplied order. Separate batch_divination and
+    auto_divination calls may be interleaved freely: unique batch_id and
+    receipt_id distinguish repeated labels across calls. The caller must
+    preserve receipt records before subsequent calls or interpretation.
+
+    Supply [{label, question_summary, method_override?, has_completion_rule?,
+    has_horizon?, tarot_count?}]. Every label is unique, anonymized and stable.
+    Validates ALL items before drawing; one independent canonical cast per item.
+    Returns a compact, labeled original stochastic-fact receipt for EACH item
+    including cards, A/B numbers, or six raw lines + coin triples, timestamps,
+    provenance and SHA-256 bound to batch identity. Other deterministic chart
+    details are deliberately omitted; use derive_meihua/derive_liuyao after
+    preserving receipts. No repeated rule excerpts. Preserve every receipt
+    immediately before interpreting; receipts are NOT server-persisted.
+    A partial failure returns completed receipts; NEVER retry completed labels.
+    Get full method/output rules separately once per distinct method.
+    """
+    return execute_batch(items, _bridge)
 
 
 @mcp.tool()

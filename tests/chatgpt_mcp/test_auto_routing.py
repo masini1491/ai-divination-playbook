@@ -158,17 +158,17 @@ class RouterTests(unittest.TestCase):
 
 class ToolListTests(unittest.TestCase):
     NAMES=('runtime_status','draw_tarot','cast_meihua','cast_liuyao',
-           'derive_meihua','derive_liuyao','auto_divination','get_interpretation_policy')
+           'derive_meihua','derive_liuyao','auto_divination','get_interpretation_policy','batch_divination')
 
     def payload(self,names=NAMES):
         return json.dumps({'jsonrpc':'2.0','id':2,
                            'result':{'tools':[{'name':name,'inputSchema':{'type':'object'}} for name in names]}}).encode()
 
-    def test_eight_registered_five_advertised(self):
+    def test_nine_registered_six_advertised(self):
         data=json.loads(decorate_tools_list(self.payload()))
         tools=data['result']['tools']
-        self.assertEqual(len(tools),5)
-        self.assertEqual({t["name"] for t in tools},{"runtime_status","auto_divination","derive_meihua","derive_liuyao","get_interpretation_policy"})
+        self.assertEqual(len(tools),6)
+        self.assertEqual({t["name"] for t in tools},{"runtime_status","auto_divination","derive_meihua","derive_liuyao","get_interpretation_policy","batch_divination"})
         for tool in tools:
             self.assertEqual(tool['securitySchemes'],[{'type':'noauth'}])
             self.assertEqual(tool['_meta']['securitySchemes'],[{'type':'noauth'}])
