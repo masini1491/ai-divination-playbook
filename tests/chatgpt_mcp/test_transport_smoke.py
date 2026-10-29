@@ -297,6 +297,62 @@ class MCPTransportSmokeTests(unittest.TestCase):
         self.assertEqual([x['selected_method'] for x in receipts],
                          [i['method_override'] for i in mixed_twelve()])
 
+    def test_partial_failure_over_mcp_preserves_completed_receipts_without_retry(self):
+        # First chunk is acknowledged; second chunk fails during its second
+        # simulated draw. No further chunk may be automatically attempted.
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        from test_batch_cast import FakeBridge as BatchBridge, mixed_twelve
+        from batch_cast import _stable_hash
+        items=mixed_twelve()
+        engine=BatchBridge()
+        def unpack(response):
+            value=response.get('structuredContent')
+            if value is None:
+                value=next(x['text'] for x in response.get('content',[])
+                           if isinstance(x,dict) and 'text' in x)
+            if isinstance(value,str): value=json.loads(value)
+            return value.get('result',value)
+        with patch.object(service,'ENGINE',engine):
+            plan=unpack(self.rpc('tools/call',{'name':'plan_batch_chunks',
+                            'arguments':{'items':items,'chunk_size':3}},67))
+            self.assertEqual(plan['status'],'planned_no_cast')
+            first=plan['chunks'][0]
+            acknowledged=unpack(self.rpc('tools/call',{'name':'batch_divination',
+               'arguments':{'items':first['items'],
+                            'expected_request_sha256':first['request_sha256']}},68))
+        self.assertEqual(acknowledged['status'],'batch_completed')
+        self.assertEqual(acknowledged['completed_count'],3)
+        self.assertEqual(len(engine.calls),3)
+        accepted=[(r['receipt_id'],r['receipt_sha256']) for r in acknowledged['receipts']]
+        failed=BatchBridge(fail_on=2)
+        second=plan['chunks'][1]
+        with patch.object(service,'ENGINE',failed):
+            response=self.rpc('tools/call',{'name':'batch_divination',
+                'arguments':{'items':second['items'],
+                             'expected_request_sha256':second['request_sha256']}},69)
+        self.assertFalse(response.get('isError',False),response)
+        partial=unpack(response)
+        self.assertEqual(partial['status'],'partial_failure')
+        self.assertEqual(partial['completed_count'],1)
+        self.assertEqual(partial['total_count'],3)
+        self.assertEqual(partial['request_sha256'],second['request_sha256'])
+        self.assertEqual(partial['failed_index'],1)
+        self.assertEqual(partial['failed_label'],second['labels'][1])
+        self.assertEqual(partial['unattempted_labels'],second['labels'][2:])
+        self.assertEqual(failed.calls,[second['items'][0]['method_override'],
+                                      second['items'][1]['method_override']])
+        self.assertEqual(len(partial['receipts']),1)
+        self.assertEqual(partial['receipts'][0]['label'],second['labels'][0])
+        self.assertEqual([r['receipt_id'] for r in acknowledged['receipts']],
+                         [x[0] for x in accepted])
+        self.assertEqual([(r['receipt_id'],r['receipt_sha256'])
+                          for r in acknowledged['receipts']],accepted)
+        for receipt in [*acknowledged['receipts'],*partial['receipts']]:
+            self.assertEqual(receipt['receipt_sha256'],
+                _stable_hash({k:v for k,v in receipt.items() if k!='receipt_sha256'}))
+        self.assertIn('never retry',partial['next_step'])
+        # Nothing touched the unattempted third/fourth chunks.
+
     def test_twelve_mixed_interleaved_receipts_over_mcp_transport(self):
         # The exact ChatGPT-facing tools/call interface, not just pure helpers.
         sys.path.insert(0, str(Path(__file__).resolve().parent))
