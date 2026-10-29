@@ -36,31 +36,31 @@ jobs:
         run: |
           set -euo pipefail
           cat > /tmp/release-notes.md <<'RELEASE_NOTES_EOF'
-## 第四個公開里程碑
-`v0.4.0` 固定自 `v0.3.0` 以來完成的 Git Sync MCP 整合、Free ChatGPT Runtime 傳輸改善、占星精度驗證、紫微解讀證據與治理測試更新。本版仍為 pre-1.0，不宣稱所有研究線已完成。
-
-### 重點更新
-- **Git Sync MCP**：獨立的 selective GitHub→Vercel 發布流程、Tarot／Meihua／Liuyao 自動方法路由、最多 12 筆混合批次、compact receipts 和 SHA-256、預設三筆分段且不抽牌的 `plan_batch_chunks`。獨立 [MCP 1.4.1 Stable](https://github.com/masini1491/ai-divination-playbook/releases/tag/git-sync-mcp-v1.4.1) 保持原狀。
-- **ChatGPT Runtime**：Streaming capsule v3 與精確來源驗證、cold-start recovery 及 fail-closed 處理；隨機核心仍為 Algorithm v2 / Schema v4。
-- **Astrology**：受 admission 限制的 host-native PySwissEph 行運 Provider，區分實際 SWIEPH／MOSEPH backend，增加 JPL DE440S 對照與 portable fallback。
-- **Zi Wei**：Natal synthesis、star×palace contextual claims 與 brightness 評估；48 組合成測試不支持將 brightness 設為預設，故仍屬選用模組。
-- **治理與驗證**：MCP interpretation parity、regression、materialization/loader 檢核及 README 功能邊界說明。
-
-### 相容性與限制
-- 整體 Playbook 包含 Tarot、Meihua、Liuyao，以及**明確要求、且通過適用 admission / deterministic Fact Gate** 的 Astrology 與 Zi Wei；手相仍為研究線，並非 production。
-- **Git Sync MCP 1.4.1 只支援前三者**，不因本次 Release 自動增加其他方法。
-- MCP `storage=none`，沒有完全遺失回應的恢復、exactly-once、持久化 idempotency 或安全自動重抽保證；其 `noauth` 與程序內限流不構成公共 API 無限制使用承諾。
-- 公開 Repository 不保存私人 Reading Record 或可識別個人資料。象徵解讀不構成科學預測或保證。
-
-### 驗收證據
-- Canonical whole-Playbook snapshot: `f5d7ee263d201c60655b3909dd5970f84a1262d1`
-- Previous `v0.3.0`: `a07343d535eaf681b8045fc98eaac130fad012cc`
-- GitHub compare: **77 commits ahead、0 behind、108 changed paths**。
-- [Exact-main Validate Playbook #40845897801](https://github.com/masini1491/ai-divination-playbook/actions/runs/40845897801): SUCCESS；`validate` 和 `casting-runtime` 均 PASS。
-- 尚開啟的 Draft PR #415、#417、#419 未合併，不屬本版。
-- [發布準備與範圍核對](https://github.com/masini1491/ai-divination-playbook/blob/f5d7ee263d201c60655b3909dd5970f84a1262d1/reports/shared/PLAYBOOK_RELEASE_PREPARATION_2026-10-29.md)（該文件記錄更早的比較快照；本次以上述 exact-main 77/108 數據為準）。
-- 此 Tag/Release 僅固定已驗證的主儲存庫版本，不改動現有 MCP Production。
-RELEASE_NOTES_EOF
+          ## 第四個公開里程碑
+          `v0.4.0` 固定自 `v0.3.0` 以來完成的 Git Sync MCP 整合、Free ChatGPT Runtime 傳輸改善、占星精度驗證、紫微解讀證據與治理測試更新。本版仍為 pre-1.0，不宣稱所有研究線已完成。
+          
+          ### 重點更新
+          - **Git Sync MCP**：獨立的 selective GitHub→Vercel 發布流程、Tarot／Meihua／Liuyao 自動方法路由、最多 12 筆混合批次、compact receipts 和 SHA-256、預設三筆分段且不抽牌的 `plan_batch_chunks`。獨立 [MCP 1.4.1 Stable](https://github.com/masini1491/ai-divination-playbook/releases/tag/git-sync-mcp-v1.4.1) 保持原狀。
+          - **ChatGPT Runtime**：Streaming capsule v3 與精確來源驗證、cold-start recovery 及 fail-closed 處理；隨機核心仍為 Algorithm v2 / Schema v4。
+          - **Astrology**：受 admission 限制的 host-native PySwissEph 行運 Provider，區分實際 SWIEPH／MOSEPH backend，增加 JPL DE440S 對照與 portable fallback。
+          - **Zi Wei**：Natal synthesis、star×palace contextual claims 與 brightness 評估；48 組合成測試不支持將 brightness 設為預設，故仍屬選用模組。
+          - **治理與驗證**：MCP interpretation parity、regression、materialization/loader 檢核及 README 功能邊界說明。
+          
+          ### 相容性與限制
+          - 整體 Playbook 包含 Tarot、Meihua、Liuyao，以及**明確要求、且通過適用 admission / deterministic Fact Gate** 的 Astrology 與 Zi Wei；手相仍為研究線，並非 production。
+          - **Git Sync MCP 1.4.1 只支援前三者**，不因本次 Release 自動增加其他方法。
+          - MCP `storage=none`，沒有完全遺失回應的恢復、exactly-once、持久化 idempotency 或安全自動重抽保證；其 `noauth` 與程序內限流不構成公共 API 無限制使用承諾。
+          - 公開 Repository 不保存私人 Reading Record 或可識別個人資料。象徵解讀不構成科學預測或保證。
+          
+          ### 驗收證據
+          - Canonical whole-Playbook snapshot: `f5d7ee263d201c60655b3909dd5970f84a1262d1`
+          - Previous `v0.3.0`: `a07343d535eaf681b8045fc98eaac130fad012cc`
+          - GitHub compare: **77 commits ahead、0 behind、108 changed paths**。
+          - [Exact-main Validate Playbook #40845897801](https://github.com/masini1491/ai-divination-playbook/actions/runs/40845897801): SUCCESS；`validate` 和 `casting-runtime` 均 PASS。
+          - 尚開啟的 Draft PR #415、#417、#419 未合併，不屬本版。
+          - [發布準備與範圍核對](https://github.com/masini1491/ai-divination-playbook/blob/f5d7ee263d201c60655b3909dd5970f84a1262d1/reports/shared/PLAYBOOK_RELEASE_PREPARATION_2026-10-29.md)（該文件記錄更早的比較快照；本次以上述 exact-main 77/108 數據為準）。
+          - 此 Tag/Release 僅固定已驗證的主儲存庫版本，不改動現有 MCP Production。
+          RELEASE_NOTES_EOF
           gh release create v0.4.0 --repo "$REPO" --target "$TARGET" --title "v0.4.0 — Git Sync MCP, Runtime Reliability & Evidence-Gated Methods" --notes-file /tmp/release-notes.md --latest
       - name: Verify published tag, release and latest
         env:
