@@ -214,6 +214,44 @@ class MCPTransportSmokeTests(unittest.TestCase):
         self.assertNotIn('excerpts', str(payload))
         self.assertEqual(len(spy.calls), 12)
 
+    def test_actual_pinned_bridge_twelve_receipts_through_mcp_transport(self):
+        # This is the actual MCP HTTP transport plus actual pinned engines;
+        # ONLY randomness is replaced with a deterministic zero fixture.
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        from test_batch_cast import mixed_twelve
+        with patch.object(service.ENGINE.core, 'randbelow', side_effect=lambda limit: 0):
+            result = self.rpc('tools/call', {
+                'name': 'batch_divination',
+                'arguments': {'items': mixed_twelve()}}, 18)
+        payload = self.extract_cast(result) if 'selected_method' in result else None
+        if payload is None:
+            candidates = [result.get('structuredContent')]
+            candidates.extend(part.get('text') for part in result.get('content', [])
+                              if isinstance(part, dict))
+            for candidate in candidates:
+                if isinstance(candidate, str):
+                    try:
+                        candidate = json.loads(candidate)
+                    except ValueError:
+                        continue
+                if isinstance(candidate, dict):
+                    candidate = candidate.get('result', candidate)
+                    if isinstance(candidate, dict) and candidate.get('status') == 'batch_completed':
+                        payload = candidate
+                        break
+        self.assertIsNotNone(payload, result)
+        self.assertEqual(payload['completed_count'], 12)
+        self.assertEqual(len(payload['receipts']), 12)
+        from bridge import SOURCE_COMMIT
+        self.assertTrue(all(x['source']['runtime_source_commit'] == SOURCE_COMMIT
+                            for x in payload['receipts']))
+        self.assertTrue(all(x['receipt_sha256']
+                            for x in payload['receipts']))
+        # Structural receipts are intentionally much smaller than a full
+        # twelve-chart result with the repeated interpretation rule text.
+        self.assertLess(len(json.dumps(result,ensure_ascii=False).encode('utf-8')),
+                        80000)
+
     def test_full_canonical_policy_reaches_chatgpt_for_all_three_methods(self):
         from policy_adapter import _bundle, METHOD_OWNERS
         pack = _bundle()

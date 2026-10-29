@@ -187,6 +187,59 @@ class BatchCastTests(unittest.TestCase):
         self.assertEqual(len(spy.calls),6)
         self.assertTrue(all(r["batch_id"]==out["batch_id"] for r in out["receipts"]))
 
+    def test_actual_pinned_bridge_twelve_mixed_without_randomness(self):
+        # Run the REAL source-verified canonical engines, not a FakeBridge.
+        # A constant randbelow fixture prevents consuming actual randomness.
+        # Therefore the test is reproducible and is NOT a user divination.
+        with patch.object(service.ENGINE.core, 'randbelow', side_effect=lambda limit: 0):
+            result = execute_batch(mixed_twelve(), service._bridge)
+        self.assertEqual(result['status'], 'batch_completed')
+        self.assertEqual(result['completed_count'], 12)
+        from bridge import SOURCE_COMMIT
+        for item in result['receipts']:
+            with self.subTest(label=item['label'], method=item['selected_method']):
+                self.assertEqual(item['source']['runtime_source_commit'], SOURCE_COMMIT)
+                self.assertEqual(item['source']['source'],
+                                 'divination-casting-randomizer-python')
+                self.assertEqual(item['source']['algorithm_version'], '2')
+                self.assertEqual(item['source']['schema_version'], '4')
+                self.assertEqual(item['source']['timezone'], 'Asia/Taipei')
+                if item['selected_method'] == 'tarot':
+                    self.assertEqual(item['raw_cast']['count'], 2)
+                    self.assertEqual(len(item['raw_cast']['cards']), 2)
+                    self.assertTrue(all(x['orientation']=='正'
+                                        for x in item['raw_cast']['cards']))
+                elif item['selected_method'] == 'meihua':
+                    cast = item['raw_cast']
+                    derived = service.ENGINE.derive_meihua(
+                        cast['a'], cast['b'],
+                        upper_trigram=cast['upper_trigram'],
+                        lower_trigram=cast['lower_trigram'],
+                        hexagram=cast['hexagram'],
+                        moving_line=cast['moving_line'])
+                    self.assertEqual(derived['structured_method_fact']['cast_fact']['hexagram'],
+                                     item['summary']['primary_hexagram'])
+                    self.assertEqual(derived['structured_method_fact']['derived']
+                                     ['changed_hexagram']['name'],
+                                     item['summary']['changed_hexagram'])
+                else:
+                    cast = item['raw_cast']
+                    self.assertEqual(cast['line_order'], 'bottom-to-top')
+                    self.assertEqual([x['value'] for x in cast['lines']],
+                                     item['summary']['raw_lines'])
+                    deterministic = service.ENGINE.derive_liuyao(
+                        item['summary']['raw_lines'],
+                        item['summary']['cast_timestamp'])
+                    fact = deterministic['structured_method_fact']['structured_method_fact']
+                    self.assertEqual(fact['ben_gua']['name'],
+                                     item['summary']['primary_hexagram'])
+                    self.assertEqual(fact['zhi_gua']['name'],
+                                     item['summary']['changed_hexagram'])
+                    self.assertTrue(all(sum(x['coin_values'])==x['value']
+                                        for x in cast['lines']))
+        self.assertLess(len(json.dumps(result, ensure_ascii=False).encode('utf-8')),
+                        40000)
+
     def test_policy_failure_means_zero_random_draws(self):
         spy=FakeBridge()
         with patch("batch_cast.policy_identity",side_effect=RuntimeError("bad policy")):
