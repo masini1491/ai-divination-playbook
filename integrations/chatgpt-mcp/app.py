@@ -16,6 +16,7 @@ from bridge import DivinationBridge, SOURCE_COMMIT
 from policy_adapter import policy_identity, get_policy_owner
 from response_format import method_policy_output
 from batch_cast import execute_batch, MAX_BATCH, RECEIPT_FORMAT
+from chunk_plan import plan_chunks, PROTOCOL, DEFAULT_CHUNK_SIZE
 
 BASE = Path(__file__).resolve().parent
 ENGINE = DivinationBridge(BASE / "canonical-repo")
@@ -36,6 +37,10 @@ mcp = MCPServer(
         "For interpretation, use the full pinned method owner plus CHATGPT_OUTPUT.md from method_policy. "
         "If excerpts are omitted or an applicable conditional owner is truncated, "
         "call get_interpretation_policy to retrieve exact text before making claims. "
+        "For reliability-sensitive batches, use plan_batch_chunks first, "
+        "execute one small batch_divination chunk per confirmed response, "
+        "save its receipts, and STOP if a response is lost rather than "
+        "automatically re-casting. "
         "When the user requests multiple independent readings of any Tarot, Meihua, "
         "or Liuyao methods, including interleaved mixed-method sequences, "
         "prefer batch_divination (up to 12 each call) and preserve all labeled "
@@ -65,7 +70,10 @@ def runtime_status() -> dict:
             "batch_cast_capabilities": {"tool": "batch_divination", "receipt_format": RECEIPT_FORMAT,
                                         "max_items": MAX_BATCH,
                                         "mixed_methods": True, "interleaved_calls": True,
-                                        "per_invocation_batch_id": True, "storage": "none"},
+                                        "per_invocation_batch_id": True, "storage": "none",
+                                        "chunk_planning_tool": "plan_batch_chunks",
+                                        "chunk_protocol": PROTOCOL,
+                                        "default_chunk_size": DEFAULT_CHUNK_SIZE},
             "interpretation_policy_capabilities": {
                 "complete_method_owner_by_default": True,
                 "complete_output_contract_by_default": True,
@@ -121,6 +129,19 @@ def auto_divination(
     # Missing/tampered policy must not consume RNG or create a partial reading.
     prepared = method_policy_output(plan, include_policy_excerpts)
     return execute_auto_route(prepared, _bridge)
+
+
+@mcp.tool()
+def plan_batch_chunks(items: list[dict], chunk_size: int = DEFAULT_CHUNK_SIZE) -> dict:
+    """Nonrandom preflight plan for 1–12 independent Tarot/Meihua/Liuyao casts.
+
+    Returns up to four-item independently acknowledged batch_divination chunks
+    and SHA-256 digests of normalized requests. This is NOT a reservation,
+    persisted job, execution, exactly-once guarantee, or lost-result recovery.
+    Wait for each complete receipt group before starting the next; if a response
+    is lost, STOP and report ambiguity instead of re-casting automatically.
+    """
+    return plan_chunks(items, chunk_size)
 
 
 @mcp.tool()

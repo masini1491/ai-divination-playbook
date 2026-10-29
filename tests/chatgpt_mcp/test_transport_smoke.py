@@ -83,10 +83,11 @@ class MCPTransportSmokeTests(unittest.TestCase):
     def test_catalog_exposes_compact_option(self):
         result = self.rpc('tools/list')
         tools = {t['name']: t for t in result['tools']}
-        self.assertEqual(set(tools), {'runtime_status', 'auto_divination', 'derive_meihua', 'derive_liuyao', 'get_interpretation_policy', 'batch_divination'})
+        self.assertEqual(set(tools), {'runtime_status', 'auto_divination', 'derive_meihua', 'derive_liuyao', 'get_interpretation_policy', 'batch_divination', 'plan_batch_chunks'})
         self.assertIn('include_policy_excerpts', tools['auto_divination']['inputSchema']['properties'])
         self.assertIn('owner', tools['get_interpretation_policy']['inputSchema']['properties'])
         self.assertIn('items', tools['batch_divination']['inputSchema']['properties'])
+        self.assertIn('chunk_size', tools['plan_batch_chunks']['inputSchema']['properties'])
 
     def test_runtime_status_advertises_web_plugin_policy_parity_version(self):
         response = self.rpc('tools/call', {
@@ -179,6 +180,25 @@ class MCPTransportSmokeTests(unittest.TestCase):
                     if 'owner' in nested and 'text' in nested:
                         return nested
         self.fail('Missing canonical interpretation policy in MCP response')
+
+    def test_acknowledged_chunk_plan_is_no_draw_over_mcp_transport(self):
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        from test_batch_cast import mixed_twelve
+        from test_chunk_plan import _digest
+        fake = FakeBridge()
+        with patch.object(service, 'ENGINE', fake):
+            response=self.rpc('tools/call',{'name':'plan_batch_chunks',
+                              'arguments':{'items':mixed_twelve(),'chunk_size':3}},16)
+        value=response.get('structuredContent')
+        if value is None:
+            value=next((x.get('text') for x in response.get('content',[])
+                        if isinstance(x,dict) and 'text' in x),None)
+        if isinstance(value,str): value=json.loads(value)
+        if isinstance(value,dict): value=value.get('result',value)
+        self.assertEqual(value['status'],'planned_no_cast')
+        self.assertEqual(value['chunk_count'],4)
+        self.assertEqual([len(x['items']) for x in value['chunks']],[3,3,3,3])
+        self.assertEqual(fake.calls,[])
 
     def test_twelve_mixed_interleaved_receipts_over_mcp_transport(self):
         # The exact ChatGPT-facing tools/call interface, not just pure helpers.

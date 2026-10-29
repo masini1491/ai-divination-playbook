@@ -32,6 +32,29 @@ Palmistry, Astrology, Zi Wei or new methods simply because they appear on main.
   is not a functional MCP smoke-test result.
 - Palmistry, Astrology and Zi Wei remain outside the allowlist.
 
+## Failure-safe handling of lost batch responses (no persistence)
+
+The MCP still has **no server-side reading storage**. A fully lost HTTP response
+cannot be recovered, and no mechanism can guarantee exactly-once random casting
+across an ambiguous network failure without additional durable state or a
+different randomization protocol. Do not claim otherwise.
+
+Use `plan_batch_chunks(items, chunk_size=3)` when reliability matters. The
+plan validates all questions and fixes method routing **without drawing**. It
+returns ordered small groups with input SHA-256. Call `batch_divination` for
+one group, capture its complete receipts and verify the labels/count/IDs,
+then acknowledge locally by preserving the JSON before submitting the next.
+A 12-question plan defaults to four groups of three. This can limit the
+maximum ambiguous/lost group to three questions instead of twelve, but it
+**does not** restore any lost output and it does not turn a failed call into a
+safe automatic retry. Use a smaller group size (1–2) for especially important
+questions.
+
+If any response is lost, stop. Previously acknowledged receipts remain
+valid, and an unacknowledged group's result is **unknown**. Recasting is a
+new reading and requires the user's explicit decision. Never mark unknown
+casts as skipped, not executed, or successfully recovered.
+
 ## Repeated casts / multiple independent questions
 
 - For two to **twelve** independent user-requested readings, call `batch_divination` with stable anonymized labels. Each item independently selects Tarot, Meihua or Liuyao (or server auto-routing), so interleaved order such as Tarot → Liuyao → Meihua → Tarot is supported. For more than 12, use successive batches without reusing old receipts. The server pre-validates all labels and completion rules before any random cast.
