@@ -30,6 +30,16 @@ _SOURCE_FIELDS = (
 )
 
 
+class BatchClarificationRequired(ValueError):
+    """Correctable question-contract gap, before any stochastic execution."""
+
+    def __init__(self, label: str, plan: dict):
+        self.label = label
+        self.reason_code = plan.get("reason_code", "question_not_ready")
+        self.question = plan.get("question", "請補充必要的判斷條件。")
+        super().__init__(f"{label}: {self.reason_code}")
+
+
 def _stable_hash(value: Any) -> str:
     content = json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
     return hashlib.sha256(content.encode("utf-8")).hexdigest()
@@ -57,6 +67,8 @@ def validate_batch(items: Any) -> list[dict]:
             has_completion_rule=item.get("has_completion_rule", False),
             tarot_count=item.get("tarot_count", 3),
         )
+        if plan.get("status") == "needs_clarification":
+            raise BatchClarificationRequired(label, plan)
         if plan.get("status") != "ready":
             raise ValueError(f"{label}: {plan.get('reason_code', 'question_not_ready')}")
         approved.append({"label": label, "plan": plan})
