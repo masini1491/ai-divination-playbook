@@ -79,6 +79,13 @@ class RouterTests(unittest.TestCase):
                 plan = route_from_summary(summary)
                 self.assertEqual((plan["status"], plan["selected_method"]), ("ready", "tarot"))
 
+    def test_date_looking_contact_data_still_rejected(self):
+        for summary in ("2027-06-30聯絡電話0912345678", "https://example.com/2027-06-30"):
+            with self.subTest(summary=summary):
+                plan = route_from_summary(summary)
+                self.assertEqual((plan["status"], plan["reason_code"]),
+                                 ("invalid_input", "possible_contact_or_url"))
+
     def test_calendar_date_formats_are_bounded_outcomes(self):
         for date in ("2027/06/30", "2027-06-30", "2027年6月30日"):
             with self.subTest(date=date):

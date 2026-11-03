@@ -148,7 +148,8 @@ def classify_summary(question_summary: str) -> dict[str, Any]:
     if not isinstance(question_summary, str) or len(question_summary) > 240:
         return {'status': 'invalid_input', 'reason_code': 'invalid_summary_length'}
     summary = re.sub(r'\s+', '', question_summary.strip())
-    if _PII.search(summary):
+    # Dates such as YYYY-MM-DD are not phone numbers; keep all other PII checks.
+    if _PII.search(_DATE.sub('', summary)):
         return {'status': 'invalid_input', 'reason_code': 'possible_contact_or_url',
                 'next_step': 'Remove identifying/contact information and provide only a short anonymous intent summary.'}
     if not summary or _UNSCOPED.fullmatch(summary):
