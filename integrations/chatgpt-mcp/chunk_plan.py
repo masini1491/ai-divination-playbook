@@ -7,7 +7,7 @@ batch_divination item and is validated by the existing canonical router.
 """
 from __future__ import annotations
 from typing import Any
-from batch_cast import validate_batch, MAX_BATCH, _stable_hash
+from batch_cast import validate_batch, BatchClarificationRequired, MAX_BATCH, _stable_hash
 from auto_routing import classify_summary
 
 DEFAULT_CHUNK_SIZE=3
@@ -22,7 +22,14 @@ def plan_chunks(items: Any, chunk_size: int=DEFAULT_CHUNK_SIZE) -> dict:
     """Validate all 1..12 questions before creating a deterministic chunk plan."""
     if type(chunk_size) is not int or not 1<=chunk_size<=MAX_CHUNK_SIZE:
         raise ValueError(f"chunk_size must be an integer between 1 and {MAX_CHUNK_SIZE}")
-    plans=validate_batch(items)
+    try:
+        plans=validate_batch(items)
+    except BatchClarificationRequired as missing:
+        # Return a labeled, no-cast clarification; no partial chunks are created.
+        return {"status":"needs_clarification", "protocol":PROTOCOL,
+                "failed_label":missing.label, "reason_code":missing.reason_code,
+                "question":missing.question,
+                "next_step":"Clarify this item and plan the full batch again. No cast occurred."}
     # Return exact normalized input objects for the next calls; never infer a
     # method from a summary a second time in this plan.
     normalized=[]

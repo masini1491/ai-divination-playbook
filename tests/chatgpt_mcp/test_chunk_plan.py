@@ -13,6 +13,53 @@ from test_batch_cast import FakeBridge, mixed_twelve
 
 
 class ChunkPlanTests(unittest.TestCase):
+    def test_open_timing_clarification_is_structured_without_rng(self):
+        for summary in ("何時會正式交往？", "什麼時候會脫離單身與某個女人交往？"):
+            with self.subTest(summary=summary):
+                with patch("batch_cast.secrets.token_hex", side_effect=AssertionError("NO RNG")):
+                    plan = plan_chunks([{"label": "Time01", "question_summary": summary}], chunk_size=1)
+                self.assertEqual(plan["status"], "needs_clarification")
+                self.assertEqual(plan["reason_code"], "time_window_required")
+                self.assertEqual(plan["failed_label"], "Time01")
+                self.assertIn("時間窗", plan["question"])
+                self.assertNotIn("chunks", plan)
+
+    def test_clarification_after_ready_item_has_no_partial_chunks(self):
+        items = [
+            {"label": "Ready01", "question_summary": "這段關係接下來怎麼發展？"},
+            {"label": "Time02", "question_summary": "何時會正式交往？"},
+        ]
+        with patch("batch_cast.secrets.token_hex", side_effect=AssertionError("NO RNG")):
+            plan = plan_chunks(items, chunk_size=2)
+        self.assertEqual(plan["status"], "needs_clarification")
+        self.assertEqual(plan["failed_label"], "Time02")
+        self.assertNotIn("chunks", plan)
+
+    def test_time_windows_dates_and_evolution_keep_distinct_methods(self):
+        items = [
+            {"label": "Compare", "question_summary": "比較2026年底與2027上半年交往可能性"},
+            {"label": "Outcome", "question_summary": "截至2027/06/30會不會正式交往？"},
+            {"label": "Evolution", "question_summary": "這段關係接下來怎麼發展？"},
+        ]
+        with patch("batch_cast.secrets.token_hex", side_effect=AssertionError("NO RNG")):
+            plan = plan_chunks(items, chunk_size=3)
+        self.assertEqual(plan["status"], "planned_no_cast")
+        chunk = plan["chunks"][0]
+        self.assertEqual([x["method_override"] for x in chunk["items"]],
+                         ["tarot", "liuyao", "meihua"])
+        self.assertEqual([x["has_horizon"] for x in chunk["items"]],
+                         [True, True, False])
+        self.assertTrue(chunk["items"][1]["has_completion_rule"])
+        self.assertEqual(chunk["request_sha256"], _digest(chunk["items"]))
+
+    def test_subjectless_input_clarifies_but_invalid_input_rejects(self):
+        with patch("batch_cast.secrets.token_hex", side_effect=AssertionError("NO RNG")):
+            plan = plan_chunks([{"label": "Vague", "question_summary": "我想知道接下來如何？"}])
+        self.assertEqual(plan["status"], "needs_clarification")
+        self.assertEqual(plan["reason_code"], "question_identity_missing")
+        with self.assertRaises(ValueError):
+            plan_chunks([{"label": "Bad", "question_summary": "https://example.com"}])
+
     def test_twelve_interleaved_methods_split_in_acknowledgeable_groups(self):
         items=mixed_twelve()
         with patch("batch_cast.secrets.token_hex", side_effect=AssertionError("NO RNG DURING PLAN")):

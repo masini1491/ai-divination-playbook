@@ -53,6 +53,56 @@ class RouterTests(unittest.TestCase):
         p = route_plan('outcome_completion')
         self.assertIn('期限', p['question'])
 
+    def test_open_timing_asks_for_missing_windows_without_cast(self):
+        for summary in ("什麼時候會脫離單身與某個女人交往？", "何時會正式交往？"):
+            with self.subTest(summary=summary):
+                plan = route_from_summary(summary)
+                self.assertEqual(plan["status"], "needs_clarification")
+                self.assertEqual(plan["reason_code"], "time_window_required")
+                fake = FakeBridge()
+                self.assertEqual(execute_auto_route(plan, lambda: fake), plan)
+                self.assertEqual(fake.calls, [])
+
+    def test_time_window_override_does_not_invent_horizon(self):
+        plan = route_from_summary("何時會正式交往？", method_override="tarot")
+        self.assertEqual(plan["status"], "needs_clarification")
+        self.assertEqual(plan["selected_method"], "tarot")
+
+    def test_time_window_comparison_is_tarot_with_horizon(self):
+        from auto_routing import classify_summary
+        for summary in (
+            "比較2026年底與2027上半年交往可能性",
+            "比較2026年底與2027上半年會不會正式交往的可能性",
+        ):
+            with self.subTest(summary=summary):
+                self.assertEqual(classify_summary(summary)["has_horizon"], True)
+                plan = route_from_summary(summary)
+                self.assertEqual((plan["status"], plan["selected_method"]), ("ready", "tarot"))
+
+    def test_date_looking_contact_data_still_rejected(self):
+        for summary in ("2027-06-30聯絡電話0912345678", "https://example.com/2027-06-30"):
+            with self.subTest(summary=summary):
+                plan = route_from_summary(summary)
+                self.assertEqual((plan["status"], plan["reason_code"]),
+                                 ("invalid_input", "possible_contact_or_url"))
+
+    def test_calendar_date_formats_are_bounded_outcomes(self):
+        for date in ("2027/06/30", "2027-06-30", "2027年6月30日"):
+            with self.subTest(date=date):
+                plan = route_from_summary(f"截至{date}會不會正式交往？")
+                self.assertEqual((plan["status"], plan["selected_method"]), ("ready", "liuyao"))
+
+    def test_true_event_evolution_and_turning_point_unchanged(self):
+        for summary in ("這段關係接下來怎麼發展？", "這段關係何時進入下一階段？"):
+            with self.subTest(summary=summary):
+                plan = route_from_summary(summary)
+                self.assertEqual((plan["status"], plan["selected_method"]), ("ready", "meihua"))
+
+    def test_subjectless_evolution_needs_clarification(self):
+        plan = route_from_summary("我想知道接下來如何？")
+        self.assertEqual((plan["status"], plan["reason_code"]),
+                         ("needs_clarification", "question_identity_missing"))
+
     def test_explicit_tarot_overrides_outcome(self):
         p = route_plan('outcome_completion', method_override='tarot')
         self.assertEqual((p['selected_method'], p['selection_reason']), ('tarot', 'user_method_override'))

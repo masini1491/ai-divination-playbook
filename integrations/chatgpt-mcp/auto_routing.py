@@ -126,7 +126,14 @@ def execute_auto_route(plan: dict[str, Any], bridge_factory) -> dict[str, Any]:
 # Matching ordering implements METHOD_ROUTING.md's primary judgment function.
 _HORIZON = re.compile(r'(?:截至|之前|以前|之內|以內|到|在).{0,18}(?:月底|年底|本週|下週|本月|下月|[0-9一二兩三四五六七八九十]+(?:天|日|週|個月|月|年))|(?:[0-9一二兩三四五六七八九十]+(?:天|日|週|個月|月|年)(?:內|之內|以內|前))|(?:週[一二三四五六日天]|星期[一二三四五六日天]).{0,3}(?:前|以前)')
 _OUTCOME_QUERY = re.compile(r'是否|會不會|能否|能不能|可否|可不可以|會否|能成功嗎|能達成嗎')
-_VERIFIABLE_ACTION = re.compile(r'正式交往|開始交往|成為情侶|結婚|簽約|簽訂|錄取|通過|完成|結案|交付|成立|批准|核准|回覆|回复|傳訊息|發訊息|聯絡|赴約|見面|成行|談成|付款|成交|成功|達成|獲選|入選|發佈|發布|停班停課')
+_VERIFIABLE_ACTION = re.compile(r'正式交往|開始交往|交往|脫離單身|成為情侶|結婚|簽約|簽訂|錄取|通過|完成|結案|交付|成立|批准|核准|回覆|回复|傳訊息|發訊息|聯絡|赴約|見面|成行|談成|付款|成交|成功|達成|獲選|入選|發佈|發布|停班停課')
+# Time phrases must not silently become event-evolution questions.
+_DATE = re.compile(r'(?:19|20)\d{2}[-/.](?:0?[1-9]|1[0-2])[-/.](?:0?[1-9]|[12]\d|3[01])(?!\d)|(?:19|20)\d{2}年(?:0?[1-9]|1[0-2])月(?:0?[1-9]|[12]\d|3[01])日')
+_PERIOD = re.compile(r'(?:19|20)\d{2}年?(?:上半年|下半年|年初|年中|年底|第?[一二三四1-4]季|Q[1-4])')
+_WINDOW_COMPARE = re.compile(r'比較|哪個(?:時間窗|時段|期間|月份)|哪一個(?:時間窗|時段|期間|月份)')
+_OPEN_TIMING = re.compile(r'什麼時候|何時|幾月|多久(?:後|才會)')
+_EVOLUTION_TURNING_POINT = re.compile(r'何時進入下一階段|何時會有轉折|什麼時候出現轉折')
+_SUBJECTLESS_PROCESS = re.compile(r'(?:(?:我)?想知道|幫我看|幫我看看|請看|看看)?(?:接下來|未來|往後)(?:如何|怎麼樣|怎樣|會怎樣|會如何|怎麼發展)[？?。!！]*$')
 _PROCESS = re.compile(r'發展|走向|演變|變化|轉折|後續|接下來|往後|長期關係|關係進展|如何發展|怎麼發展|怎麼演變|階段|節奏|趨勢|過程|下一步|未來方向|長期發展')
 _PSYCHOLOGY = re.compile(r'為何|為什麼|怎麼想|如何看|怎麼看|定位|心態|動機|感受|感覺|想法|態度|印象|看法|喜歡|在意|感情觀|相處品質|猶豫|比較|哪一個|哪個|選哪|選擇|適合|優缺點|是否喜歡')
 _PII = re.compile(r'(?:https?://|www\.|@|\+?\d[\d\s()\-]{7,}\d)', re.I)
@@ -141,17 +148,27 @@ def classify_summary(question_summary: str) -> dict[str, Any]:
     if not isinstance(question_summary, str) or len(question_summary) > 240:
         return {'status': 'invalid_input', 'reason_code': 'invalid_summary_length'}
     summary = re.sub(r'\s+', '', question_summary.strip())
-    if _PII.search(summary):
+    # Dates such as YYYY-MM-DD are not phone numbers; keep all other PII checks.
+    if _PII.search(_DATE.sub('', summary)):
         return {'status': 'invalid_input', 'reason_code': 'possible_contact_or_url',
                 'next_step': 'Remove identifying/contact information and provide only a short anonymous intent summary.'}
     if not summary or _UNSCOPED.fullmatch(summary):
         return {'status': 'needs_clarification', 'reason_code': 'question_identity_missing',
                 'question': '你主要想占卜什麼問題？'}
-    has_time = bool(_HORIZON.search(summary))
+    has_time = bool(_HORIZON.search(summary) or _DATE.search(summary) or _PERIOD.search(summary))
     has_outcome = bool(_OUTCOME_QUERY.search(summary) and _VERIFIABLE_ACTION.search(summary))
     psycho = bool(_PSYCHOLOGY.search(summary))
     evolution = bool(_PROCESS.search(summary))
-    if has_outcome:
+    if _SUBJECTLESS_PROCESS.fullmatch(summary):
+        return {'status': 'needs_clarification', 'reason_code': 'question_identity_missing',
+                'question': '你想看哪一件具體事情或關係接下來如何發展？'}
+    if has_time and _WINDOW_COMPARE.search(summary):
+        # Explicit discrete-window comparison preserves Tarot responsibility.
+        method = 'psychology_comparison'
+    elif _OPEN_TIMING.search(summary) and not _EVOLUTION_TURNING_POINT.search(summary):
+        return {'status': 'needs_clarification', 'reason_code': 'time_window_required',
+                'question': '你希望比較哪些時間窗，或以哪個截止日期判斷這件事是否完成？'}
+    elif has_outcome:
         method = 'outcome_completion'
     elif evolution and not (psycho and re.search(r'怎麼想|如何看|怎麼看|心態|感受|定位', summary)):
         method = 'process_evolution'
@@ -195,8 +212,12 @@ def route_from_summary(
     info = classify_summary(question_summary)
     if info.get('status') == 'invalid_input':
         return {'router_version': ROUTER_VERSION, **info}
-    if info.get('status') == 'needs_clarification' and method_override == 'auto':
-        return {'router_version': ROUTER_VERSION, **info}
+    if info.get('status') == 'needs_clarification' and (
+            method_override == 'auto' or info.get('reason_code') == 'time_window_required'):
+        # Explicit methods do not invent missing time windows or horizons.
+        return {'router_version': ROUTER_VERSION, **info,
+                **({'selected_method': method_override, 'routing_source': 'explicit_method_override'}
+                   if method_override in TOOLS else {})}
     if info.get('status') == 'needs_clarification':
         judgment = 'unclear'
     else:
