@@ -102,6 +102,7 @@ class MCPTransportSmokeTests(unittest.TestCase):
                        and isinstance(obj, dict) and 'interpretation_policy_version' in obj), None)
         self.assertIsNotNone(status)
         self.assertEqual(status['interpretation_policy_version'], 'canonical-owner-parity-v1')
+        self.assertEqual(service.MCP_RUNTIME_VERSION, '1.4.2-natural-language-timing')
         self.assertEqual(status['mcp_runtime_version'], service.MCP_RUNTIME_VERSION)
         capabilities = status['interpretation_policy_capabilities']
         self.assertEqual(capabilities['policy_read_tool'], 'get_interpretation_policy')
