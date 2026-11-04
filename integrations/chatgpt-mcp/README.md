@@ -32,7 +32,25 @@ Palmistry, Astrology, Zi Wei or new methods simply because they appear on main.
   is not a functional MCP smoke-test result.
 - Palmistry, Astrology and Zi Wei remain outside the allowlist.
 
-## Git Sync MCP stable runtime record (2026-10-29)
+## Git Sync MCP stable runtime record (2026-11-04)
+
+**Current stable runtime:** `1.4.2-natural-language-timing` for **AI Divination Private – Git Sync only**. It is a separate MCP product release and does not change the whole Playbook `v0.x` release series.
+
+| Identity / evidence | Verified 1.4.2 Stable |
+| --- | --- |
+| GitHub Tag and Release | [Git Sync MCP 1.4.2 — Stable](https://github.com/masini1491/ai-divination-playbook/releases/tag/git-sync-mcp-v1.4.2), `git-sync-mcp-v1.4.2` |
+| Verified Production deployment commit / tag target | `3675ff4804bf5edcfbd7e871c2700ef618aadbce` (generated-release PR #428) |
+| Exact pinned runtime/policy source | `fcefad4a591490351aef2d4d3edad297a0e9a5b0` (runtime identity PR #427; intentionally different from deployment commit) |
+| Interpretation and routing | `canonical-owner-parity-v1`, `auto-routing-v2`, `runtime_status.verified=true` |
+| Production | https://ai-divination-mcp-git-sync.vercel.app — Vercel `dpl_D3h9tYH9NDKHneGgXpp1DAaYYhJS` READY |
+| Deployment CI | [Validate Playbook](https://github.com/masini1491/ai-divination-playbook/actions/runs/41753132278), `validate` and `casting-runtime` PASS |
+| Publication | [One-shot publication PR #429](https://github.com/masini1491/ai-divination-playbook/pull/429); published, `draft=false`, `prerelease=false`; exact tag read-back PASS |
+
+**Release delta:** Natural-language open-ended timing questions now request a usable horizon/window instead of being misrouted or raising an opaque batch-planning error. Numeric slash/ISO/Chinese calendar dates and cross-year discrete windows preserve Tarot/Meihua/Liuyao responsibilities. The connected Production MCP was exercised with independent nonrandom `plan_batch_chunks` probes for timing clarification, window comparison, bounded outcome and process evolution; no new user readings or casts were created.
+
+**Unchanged guarantees and limits:** Tarot, Meihua and Liuyao remain the only admitted methods. Existing casting algorithms, raw receipts, request hash checks and pinned policy digests are unchanged; `storage=none`, no idempotency, no exactly-once or lost-response recovery. The older `git-sync-mcp-v1.4.1` Tag and Release remain intact. This release does not establish prediction accuracy or model-language equivalence.
+
+## Historical Git Sync MCP 1.4.1 stable runtime record (2026-10-29)
 
 **Stable runtime:** `1.4.1-private-acknowledged-chunks` for **AI Divination Private – Git Sync only**. This is a product-specific runtime status record; it is **not** a whole-Playbook `v1.4.1` tag/release and does not replace the repository's `v0.x` version series.
 
@@ -98,7 +116,7 @@ casts as skipped, not executed, or successfully recovered.
 
 After a reviewed squash merge and **explicit authorization** for normal Production deployment, verify the existing connected **AI Divination Private – Git Sync** plugin from a fresh ChatGPT web conversation. Do not update or replace the legacy plugin. Do not mistake a READY Preview for a Production release.
 
-1. Call `runtime_status` on **Git Sync**, not the legacy plugin. Expect `mcp_runtime_version=1.4.1-private-acknowledged-chunks`, `interpretation_policy_version=canonical-owner-parity-v1`, `verified=true`, and the pinned canonical `runtime_source_commit`. The old runtime can report the SAME `source_commit` and policy hash but has no interpretation version; these fields distinguish the code release.
+1. Call `runtime_status` on **Git Sync**, not the legacy plugin. Expect `mcp_runtime_version=1.4.2-natural-language-timing`, `interpretation_policy_version=canonical-owner-parity-v1`, `verified=true`, and the pinned canonical `runtime_source_commit`. The old runtime can report the SAME `source_commit` and policy hash but has no interpretation version; these fields distinguish the code release.
 2. Confirm that `get_interpretation_policy` is available in the ChatGPT web tool catalogue. If missing after Production is READY, refresh/reconnect **only this Git Sync plugin** through ChatGPT's plugin settings, then recheck. Do not assume the tool manifest refreshes instantly.
 3. With a fixed existing cast and `existing_cast=true` plus a known `method_override`, confirm a no-draw result includes both the full method owner and full `CHATGPT_OUTPUT.md`, with source identity. Never generate new random cards solely for a smoke test.
 4. For the three methods, read the full canonical owners via `get_interpretation_policy`, verify hashes and excluded methods, and separately carry out the paired model interpretation review. Report factual/policy availability separately from human-language interpretation equivalence.
