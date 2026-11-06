@@ -32,6 +32,49 @@ Palmistry, Astrology, Zi Wei or new methods simply because they appear on main.
   is not a functional MCP smoke-test result.
 - Palmistry, Astrology and Zi Wei remain outside the allowlist.
 
+## Policy-first routing candidate (not yet Production Stable)
+
+The candidate tools separate canonical method selection from MCP fact execution.
+The complete, SHA-verified `METHOD_ROUTING.md` is the source of routing
+judgment; the MCP server no longer keyword-classifies **policy-first** requests.
+
+1. Call `get_routing_policy()` and read its full text before choosing a method.
+   Copy `source_commit` and `policy_sha256` unchanged into the decision.
+2. Apply the manual: respect genuine explicit user overrides, existing raw
+   casts, the primary judgment function, collisions, and conditional contracts.
+   Ambiguous questions must clarify **before** any stochastic call. Explicit
+   Astrology and Zi Wei requests go to their admitted paths, never a substitute
+   Tarot/Meihua/Liuyao cast.
+3. For one **new** reading call `policy_divination(question_summary,
+   route_decision)` with a short anonymous (1..100 characters) summary.
+   The decision has exactly these seven keys:
+   `source_commit`, `policy_sha256`, `selected_method`,
+   `judgment_function`, `selection_basis`, `has_completion_rule`,
+   and `has_horizon`. Allowed methods: `tarot`, `meihua`, `liuyao`.
+   Judgment functions: `psychology_comparison`, `process_evolution`,
+   `outcome_completion`, `unclear`. Selection basis:
+   `policy_routing` or `user_method_override`. The server checks
+   method/function agreement unless there was a genuine user override.
+   Liuyao always needs boolean completion and horizon flags both true.
+4. For 1..12 independent new readings first call
+   `policy_plan_batch_chunks(items, chunk_size)` (no RNG), then one
+   `policy_batch_divination(items, expected_request_sha256)` per planned
+   group. Every item must include its own `route_decision`. Copy planned
+   items and digest verbatim. Preserve each original receipt before next call.
+5. Fetch full selected method owner and `CHATGPT_OUTPUT.md` before
+   interpreting. Existing raw casts must be preserved and never sent to the
+   new-cast APIs.
+
+Legacy `auto_divination`, `plan_batch_chunks`, `batch_divination`
+remain callable for existing clients but are not advertised to fresh clients.
+The underlying random engines and receipts are unchanged.
+
+**Boundary:** The hash proves document provenance, not that an LLM understood
+the text. The MCP can reject malformed or inconsistent route decisions but
+cannot independently verify the semantic judgment about a private request,
+the truth of a claimed user override or any symbolic prediction. This
+candidate does not change Production Stable 1.4.2 by itself.
+
 ## Git Sync MCP stable runtime record (2026-11-04)
 
 **Current stable runtime:** `1.4.2-natural-language-timing` for **AI Divination Private – Git Sync only**. It is a separate MCP product release and does not change the whole Playbook `v0.x` release series.

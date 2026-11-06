@@ -13,7 +13,8 @@ from auto_routing import route_from_summary, execute_auto_route, ROUTER_VERSION
 from mcp.server import MCPServer
 from mcp.server.transport_security import TransportSecuritySettings
 from bridge import DivinationBridge, SOURCE_COMMIT
-from policy_adapter import policy_identity, get_policy_owner
+from policy_adapter import policy_identity, get_policy_owner, _bundle
+from policy_first_routing import routing_identity, route_from_policy
 from response_format import method_policy_output
 from batch_cast import execute_batch, MAX_BATCH, RECEIPT_FORMAT
 from chunk_plan import plan_chunks, PROTOCOL, DEFAULT_CHUNK_SIZE
@@ -29,7 +30,10 @@ mcp = MCPServer(
     instructions=(
         "Fact tools only: Tarot, Meihua and Liuyao. Preserve original raw cast "
         "and provenance. Results are symbolic, not certain predictions. "
-        "When method is not specified, call auto_divination with a short anonymized question_summary, and let the SERVER choose the method. "
+        "For NEW readings first call get_routing_policy, read the complete SHA-pinned METHOD_ROUTING.md and decide the primary judgment function. "
+        "Then use policy_divination or policy_plan_batch_chunks / policy_batch_divination with the exact source_commit and policy_sha256; "
+        "the server checks structural consistency and will not keyword-reclassify policy-first requests. "
+        "Legacy auto_divination is callable only for existing clients and is NOT the preferred new reading route. "
         "Avoid sending user question text, identity, or sensitive data as tool args. "
         "Do not redraw existing facts or invent failed casts. "
         "For existing fixed cards or hexagrams, set existing_cast=true with the known method_override "
@@ -37,13 +41,13 @@ mcp = MCPServer(
         "For interpretation, use the full pinned method owner plus CHATGPT_OUTPUT.md from method_policy. "
         "If excerpts are omitted or an applicable conditional owner is truncated, "
         "call get_interpretation_policy to retrieve exact text before making claims. "
-        "For reliability-sensitive batches, use plan_batch_chunks first, "
-        "execute one small batch_divination chunk per confirmed response, "
+        "For NEW reliability-sensitive batches, use policy_plan_batch_chunks first, "
+        "execute one small policy_batch_divination chunk per confirmed response, "
         "save its receipts, and STOP if a response is lost rather than "
         "automatically re-casting. "
         "When the user requests multiple independent readings of any Tarot, Meihua, "
         "or Liuyao methods, including interleaved mixed-method sequences, "
-        "prefer batch_divination (up to 12 each call) and preserve all labeled "
+        "prefer policy_batch_divination (up to 12 each call) after reading the manual, and preserve all labeled "
         "original receipts BEFORE prose interpretation; "
         "never redraw completed labels if interpretation context is truncated. "
         "Load complete method/output policy only once per distinct method for the batch. "
@@ -67,11 +71,11 @@ def runtime_status() -> dict:
     return {"runtime_source_commit": SOURCE_COMMIT, "verified": True,
             "mcp_runtime_version": MCP_RUNTIME_VERSION,
             "interpretation_policy_version": INTERPRETATION_POLICY_VERSION,
-            "batch_cast_capabilities": {"tool": "batch_divination", "receipt_format": RECEIPT_FORMAT,
+            "batch_cast_capabilities": {"tool": "policy_batch_divination", "receipt_format": RECEIPT_FORMAT,
                                         "max_items": MAX_BATCH,
                                         "mixed_methods": True, "interleaved_calls": True,
                                         "per_invocation_batch_id": True, "storage": "none",
-                                        "chunk_planning_tool": "plan_batch_chunks",
+                                        "chunk_planning_tool": "policy_plan_batch_chunks",
                                         "chunk_protocol": PROTOCOL,
                                         "default_chunk_size": DEFAULT_CHUNK_SIZE},
             "interpretation_policy_capabilities": {
@@ -81,9 +85,80 @@ def runtime_status() -> dict:
                 "existing_cast_preserves_facts_and_method_policy": True,
                 "enabled_methods": ["tarot", "meihua", "liuyao"],
             },
-            "methods": ["tarot", "plum", "liuyao"], "routing": ROUTER_VERSION,
-            "routing_authority": "server_question_summary", "advertised_auto_tool": "auto_divination",
+            "methods": ["tarot", "plum", "liuyao"], "routing": "policy-first-v1",
+            "legacy_router_version": ROUTER_VERSION,
+            "routing_authority": "client_canonical_policy_read",
+            "routing_policy_tool": "get_routing_policy",
+            "advertised_auto_tool": "policy_divination",
             "policy_pack": policy_identity(), "storage": "none"}
+
+
+@mcp.tool()
+def get_routing_policy() -> dict:
+    """FIRST STEP for new readings: read the complete verified METHOD_ROUTING.md.
+
+    Read before choosing the judgment function, method or question contract.
+    The returned source_commit and sha256 MUST be copied unchanged into the
+    subsequent route_decision. This is a provenance handshake, NOT proof that
+    the model interpreted every semantic rule correctly. When the question is
+    ambiguous or mixed, read applicable additional owners with
+    get_interpretation_policy before executing any stochastic method.
+    """
+    identity = routing_identity()  # verifies all pinned policy owners
+    content = _bundle()["owners"]["METHOD_ROUTING.md"]["content"]
+    return {**identity, "text": content, "complete": True,
+            "total_chars": len(content),
+            "next_step": "Apply METHOD_ROUTING.md judgment function, user override, "
+                         "and conditional gates. Prepare route_decision and only "
+                         "then call policy_divination or policy_plan_batch_chunks."}
+
+
+@mcp.tool()
+def policy_divination(question_summary: str, route_decision: dict,
+                      tarot_count: int = 3,
+                      include_policy_excerpts: bool = True) -> dict:
+    """Policy-first SINGLE cast; no server keyword method classification.
+
+    Call get_routing_policy first. Send only an anonymized, short summary and
+    decision fields source_commit, policy_sha256, selected_method,
+    judgment_function, selection_basis (policy_routing or user_method_override),
+    has_completion_rule, has_horizon. Avoid personal names/contact text.
+    Model resolves semantic judgment from the full manual. Server verifies
+    pinned rule identity, method-function responsibility and Liuyao completion
+    gates BEFORE any random cast; does not certify model semantic interpretation.
+    Return needs_clarification or invalid_input WITHOUT drawing if rejected.
+    Existing original cards/hexagrams are NEVER inputs to this new-cast tool.
+    """
+    plan = route_from_policy(question_summary, route_decision, tarot_count)
+    if plan.get("status") != "ready":
+        return plan
+    prepared = method_policy_output(plan, include_policy_excerpts)
+    return execute_auto_route(prepared, _bridge)
+
+
+@mcp.tool()
+def policy_plan_batch_chunks(items: list[dict],
+                             chunk_size: int = DEFAULT_CHUNK_SIZE) -> dict:
+    """No-draw policy-first preflight. Every item needs a route_decision.
+
+    Obtain get_routing_policy before decisions. Returns digest-bound groups,
+    preserving the exact decisions without reclassifying by server keywords.
+    Use policy_batch_divination on each group with expected_request_sha256.
+    """
+    return plan_chunks(items, chunk_size, policy_first=True)
+
+
+@mcp.tool()
+def policy_batch_divination(items: list[dict],
+                            expected_request_sha256: str | None = None) -> dict:
+    """Execute 1..12 policy-first independent casts, preserving raw receipts.
+
+    All items require explicit, pinned route_decision. Reject legacy auto
+    and stale rule versions before RNG. Plan smaller chunks when relevant.
+    Existing lost-response/no-recast limits remain unchanged.
+    """
+    return execute_batch(items, _bridge, expected_request_sha256,
+                         policy_first=True)
 
 
 @mcp.tool()
@@ -96,7 +171,7 @@ def auto_divination(
     tarot_count: int = 3,
     include_policy_excerpts: bool = True,
 ) -> dict:
-    """PREFERRED single entry for new readings. Server routes the question.
+    """LEGACY COMPATIBILITY ONLY: server keyword routes the question. For NEW readings read get_routing_policy and call policy_divination instead.
 
     First rewrite the user's question locally as a short, anonymized INTENT
     SUMMARY, e.g. `長期關係後續如何發展`, not private names or conversation text.
@@ -133,7 +208,7 @@ def auto_divination(
 
 @mcp.tool()
 def plan_batch_chunks(items: list[dict], chunk_size: int = DEFAULT_CHUNK_SIZE) -> dict:
-    """Nonrandom preflight plan for 1–12 independent Tarot/Meihua/Liuyao casts.
+    """LEGACY nonrandom preflight; new clients should use policy_plan_batch_chunks.
 
     Returns up to four-item independently acknowledged batch_divination chunks
     and SHA-256 digests of normalized requests. This is NOT a reservation,
@@ -146,7 +221,7 @@ def plan_batch_chunks(items: list[dict], chunk_size: int = DEFAULT_CHUNK_SIZE) -
 
 @mcp.tool()
 def batch_divination(items: list[dict], expected_request_sha256: str | None = None) -> dict:
-    """PREFERRED for 2–12 independent readings; all three methods may alternate.
+    """LEGACY COMPATIBILITY ONLY for 2–12 independent readings; new clients should call get_routing_policy then policy_plan_batch_chunks and policy_batch_divination.
 
     Each item selects its own method (auto/tarot/meihua/liuyao) and receives
     one independent cast in its supplied order. Separate batch_divination and

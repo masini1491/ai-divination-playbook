@@ -18,12 +18,13 @@ def _digest(value: Any) -> str:
     # Exactly the same canonical JSON hash used by batch_divination.
     return _stable_hash(value)
 
-def plan_chunks(items: Any, chunk_size: int=DEFAULT_CHUNK_SIZE) -> dict:
+def plan_chunks(items: Any, chunk_size: int=DEFAULT_CHUNK_SIZE,
+                policy_first: bool = False) -> dict:
     """Validate all 1..12 questions before creating a deterministic chunk plan."""
     if type(chunk_size) is not int or not 1<=chunk_size<=MAX_CHUNK_SIZE:
         raise ValueError(f"chunk_size must be an integer between 1 and {MAX_CHUNK_SIZE}")
     try:
-        plans=validate_batch(items)
+        plans=validate_batch(items, policy_first=policy_first)
     except BatchClarificationRequired as missing:
         # Return a labeled, no-cast clarification; no partial chunks are created.
         return {"status":"needs_clarification", "protocol":PROTOCOL,
@@ -35,27 +36,37 @@ def plan_chunks(items: Any, chunk_size: int=DEFAULT_CHUNK_SIZE) -> dict:
     normalized=[]
     for entry,original in zip(plans,items):
         plan=entry["plan"]
-        classified=classify_summary(original["question_summary"])
-        # Preserve completion/horizon gates already inferred by the server.
-        # The planned batch must be valid even if its method is now explicit.
-        resolved_completion=(original.get("has_completion_rule", False)
-                             or classified.get("has_completion_rule",False))
-        resolved_horizon=(original.get("has_horizon",False)
-                          or classified.get("has_horizon",False))
-        normalized.append({
-            "label":entry["label"],
-            "question_summary":original["question_summary"],
-            "method_override":plan["selected_method"],
-            "has_completion_rule": resolved_completion,
-            "has_horizon":resolved_horizon,
-            "tarot_count":plan["tarot_count"] if plan["selected_method"]=="tarot" else 3,
-        })
+        if policy_first:
+            # Preserve exact reviewed decision; never regex-reclassify.
+            normalized.append({
+                "label": entry["label"],
+                "question_summary": original["question_summary"],
+                "route_decision": dict(original["route_decision"]),
+                "tarot_count": plan["tarot_count"] if plan["selected_method"] == "tarot" else 3,
+            })
+        else:
+            classified=classify_summary(original["question_summary"])
+            # Preserve completion/horizon gates already inferred by the server.
+            # The planned batch must be valid even if its method is now explicit.
+            resolved_completion=(original.get("has_completion_rule", False)
+                                 or classified.get("has_completion_rule",False))
+            resolved_horizon=(original.get("has_horizon",False)
+                              or classified.get("has_horizon",False))
+            normalized.append({
+                "label":entry["label"],
+                "question_summary":original["question_summary"],
+                "method_override":plan["selected_method"],
+                "has_completion_rule": resolved_completion,
+                "has_horizon":resolved_horizon,
+                "tarot_count":plan["tarot_count"] if plan["selected_method"]=="tarot" else 3,
+            })
     chunks=[]
     for start in range(0,len(normalized),chunk_size):
         group=normalized[start:start+chunk_size]
         chunks.append({"chunk_index":len(chunks),"labels":[x["label"] for x in group],
              "items":group,"request_sha256":_digest(group)})
     return {"status":"planned_no_cast","protocol":PROTOCOL,
+            "routing_mode":"policy-first-v1" if policy_first else "legacy-auto-v2",
             "max_batch_items":MAX_BATCH,"chunk_size":chunk_size,
             "total_items":len(normalized),"chunk_count":len(chunks),
             "plan_sha256":_digest(normalized),"chunks":chunks,

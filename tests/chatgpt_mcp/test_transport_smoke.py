@@ -83,13 +83,49 @@ class MCPTransportSmokeTests(unittest.TestCase):
     def test_catalog_exposes_compact_option(self):
         result = self.rpc('tools/list')
         tools = {t['name']: t for t in result['tools']}
-        self.assertEqual(set(tools), {'runtime_status', 'auto_divination', 'derive_meihua', 'derive_liuyao', 'get_interpretation_policy', 'batch_divination', 'plan_batch_chunks'})
-        self.assertIn('include_policy_excerpts', tools['auto_divination']['inputSchema']['properties'])
+        self.assertEqual(set(tools), {'runtime_status', 'get_routing_policy', 'policy_divination',
+                                      'policy_plan_batch_chunks', 'policy_batch_divination',
+                                      'derive_meihua', 'derive_liuyao', 'get_interpretation_policy'})
+        self.assertIn('route_decision', tools['policy_divination']['inputSchema']['properties'])
+        self.assertIn('items', tools['policy_batch_divination']['inputSchema']['properties'])
+        self.assertIn('chunk_size', tools['policy_plan_batch_chunks']['inputSchema']['properties'])
         self.assertIn('owner', tools['get_interpretation_policy']['inputSchema']['properties'])
-        self.assertIn('items', tools['batch_divination']['inputSchema']['properties'])
         self.assertIn('expected_request_sha256',
-                      tools['batch_divination']['inputSchema']['properties'])
-        self.assertIn('chunk_size', tools['plan_batch_chunks']['inputSchema']['properties'])
+                      tools['policy_batch_divination']['inputSchema']['properties'])
+
+    def test_policy_first_read_then_http_cast_with_explicit_decision(self):
+        owner = self.extract_policy(self.rpc(
+            'tools/call', {'name': 'get_routing_policy', 'arguments': {}}))
+        from policy_adapter import _bundle
+        self.assertTrue(owner['complete'])
+        self.assertEqual(owner['text'],
+                         _bundle()['owners']['METHOD_ROUTING.md']['content'])
+        decision = {
+            'source_commit': owner['source_commit'],
+            'policy_sha256': owner['policy_sha256'],
+            'selected_method': 'meihua',
+            'judgment_function': 'process_evolution',
+            'selection_basis': 'policy_routing',
+            'has_completion_rule': False,
+            'has_horizon': False,
+        }
+        spy = FakeBridge()
+        with patch.object(service, 'ENGINE', spy):
+            result = self.extract_cast(self.rpc('tools/call', {
+                'name': 'policy_divination',
+                'arguments': {'question_summary': '某項合作的階段演變',
+                              'route_decision': decision,
+                              'include_policy_excerpts': False}}))
+        self.assertEqual(result['selected_method'], 'meihua')
+        self.assertEqual(result['status'], 'cast_completed')
+        self.assertEqual(result['routing_source'], 'client_canonical_policy_read')
+        self.assertEqual(spy.calls, [('meihua',)])
+        decision['policy_sha256'] = '0' * 64
+        with patch.object(service, 'ENGINE', spy):
+            rejected = service.policy_divination(
+                '某項合作的階段演變', decision)
+        self.assertEqual(rejected['status'], 'invalid_input')
+        self.assertEqual(spy.calls, [('meihua',)])
 
     def test_runtime_status_advertises_web_plugin_policy_parity_version(self):
         response = self.rpc('tools/call', {
