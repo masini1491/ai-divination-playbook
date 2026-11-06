@@ -171,7 +171,7 @@ def auto_divination(
     tarot_count: int = 3,
     include_policy_excerpts: bool = True,
 ) -> dict:
-    """PREFERRED single entry for new readings. Server routes the question.
+    """LEGACY COMPATIBILITY ONLY: server keyword routes the question. For NEW readings read get_routing_policy and call policy_divination instead.
 
     First rewrite the user's question locally as a short, anonymized INTENT
     SUMMARY, e.g. `長期關係後續如何發展`, not private names or conversation text.
@@ -208,7 +208,7 @@ def auto_divination(
 
 @mcp.tool()
 def plan_batch_chunks(items: list[dict], chunk_size: int = DEFAULT_CHUNK_SIZE) -> dict:
-    """Nonrandom preflight plan for 1–12 independent Tarot/Meihua/Liuyao casts.
+    """LEGACY nonrandom preflight; new clients should use policy_plan_batch_chunks.
 
     Returns up to four-item independently acknowledged batch_divination chunks
     and SHA-256 digests of normalized requests. This is NOT a reservation,
@@ -221,7 +221,7 @@ def plan_batch_chunks(items: list[dict], chunk_size: int = DEFAULT_CHUNK_SIZE) -
 
 @mcp.tool()
 def batch_divination(items: list[dict], expected_request_sha256: str | None = None) -> dict:
-    """PREFERRED for 2–12 independent readings; all three methods may alternate.
+    """LEGACY COMPATIBILITY ONLY for 2–12 independent readings; new clients should call get_routing_policy then policy_plan_batch_chunks and policy_batch_divination.
 
     Each item selects its own method (auto/tarot/meihua/liuyao) and receives
     one independent cast in its supplied order. Separate batch_divination and
