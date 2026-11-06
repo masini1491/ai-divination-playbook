@@ -41,13 +41,13 @@ mcp = MCPServer(
         "For interpretation, use the full pinned method owner plus CHATGPT_OUTPUT.md from method_policy. "
         "If excerpts are omitted or an applicable conditional owner is truncated, "
         "call get_interpretation_policy to retrieve exact text before making claims. "
-        "For reliability-sensitive batches, use plan_batch_chunks first, "
-        "execute one small batch_divination chunk per confirmed response, "
+        "For NEW reliability-sensitive batches, use policy_plan_batch_chunks first, "
+        "execute one small policy_batch_divination chunk per confirmed response, "
         "save its receipts, and STOP if a response is lost rather than "
         "automatically re-casting. "
         "When the user requests multiple independent readings of any Tarot, Meihua, "
         "or Liuyao methods, including interleaved mixed-method sequences, "
-        "prefer batch_divination (up to 12 each call) and preserve all labeled "
+        "prefer policy_batch_divination (up to 12 each call) after reading the manual, and preserve all labeled "
         "original receipts BEFORE prose interpretation; "
         "never redraw completed labels if interpretation context is truncated. "
         "Load complete method/output policy only once per distinct method for the batch. "
@@ -71,11 +71,11 @@ def runtime_status() -> dict:
     return {"runtime_source_commit": SOURCE_COMMIT, "verified": True,
             "mcp_runtime_version": MCP_RUNTIME_VERSION,
             "interpretation_policy_version": INTERPRETATION_POLICY_VERSION,
-            "batch_cast_capabilities": {"tool": "batch_divination", "receipt_format": RECEIPT_FORMAT,
+            "batch_cast_capabilities": {"tool": "policy_batch_divination", "receipt_format": RECEIPT_FORMAT,
                                         "max_items": MAX_BATCH,
                                         "mixed_methods": True, "interleaved_calls": True,
                                         "per_invocation_batch_id": True, "storage": "none",
-                                        "chunk_planning_tool": "plan_batch_chunks",
+                                        "chunk_planning_tool": "policy_plan_batch_chunks",
                                         "chunk_protocol": PROTOCOL,
                                         "default_chunk_size": DEFAULT_CHUNK_SIZE},
             "interpretation_policy_capabilities": {
