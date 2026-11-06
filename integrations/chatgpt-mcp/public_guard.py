@@ -17,10 +17,13 @@ MAX_REQUESTS = 120
 _TOOL_NAMES = {
     'runtime_status', 'draw_tarot', 'cast_meihua', 'cast_liuyao',
     'derive_meihua', 'derive_liuyao', 'auto_divination', 'get_interpretation_policy', 'batch_divination', 'plan_batch_chunks',
+    'get_routing_policy', 'policy_divination', 'policy_plan_batch_chunks', 'policy_batch_divination',
 }
 
 
-_ADVERTISED_TOOLS = {'runtime_status', 'auto_divination', 'derive_meihua', 'derive_liuyao', 'get_interpretation_policy', 'batch_divination', 'plan_batch_chunks'}
+_ADVERTISED_TOOLS = {'runtime_status', 'get_routing_policy', 'policy_divination',
+                     'policy_plan_batch_chunks', 'policy_batch_divination',
+                     'derive_meihua', 'derive_liuyao', 'get_interpretation_policy'}
 
 def decorate_tools_list(body: bytes) -> bytes:
     """Only annotate the confirmed tools/list success response, not errors."""
@@ -47,8 +50,8 @@ def decorate_tools_list(body: bytes) -> bytes:
         if not isinstance(meta, dict):
             raise ValueError('tool metadata invalid')
         meta['securitySchemes'] = [{'type': 'noauth'}]
-    # New ChatGPT tool scans see only the automatic tool as an entry for new
-    # stochastic readings; old raw tools remain callable for backward clients.
+    # New ChatGPT scans expose policy-first only for new random readings;
+    # legacy auto/batch tools remain callable but are not advertised.
     result['tools'] = [t for t in tools if t['name'] in _ADVERTISED_TOOLS]
     return json.dumps(payload, ensure_ascii=False, separators=(',', ':')).encode()
 

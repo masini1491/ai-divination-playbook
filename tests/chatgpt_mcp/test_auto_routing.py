@@ -208,17 +208,21 @@ class RouterTests(unittest.TestCase):
 
 class ToolListTests(unittest.TestCase):
     NAMES=('runtime_status','draw_tarot','cast_meihua','cast_liuyao',
-           'derive_meihua','derive_liuyao','auto_divination','get_interpretation_policy','batch_divination','plan_batch_chunks')
+           'derive_meihua','derive_liuyao','auto_divination','get_interpretation_policy','batch_divination','plan_batch_chunks',
+           'get_routing_policy','policy_divination','policy_plan_batch_chunks','policy_batch_divination')
 
     def payload(self,names=NAMES):
         return json.dumps({'jsonrpc':'2.0','id':2,
                            'result':{'tools':[{'name':name,'inputSchema':{'type':'object'}} for name in names]}}).encode()
 
-    def test_ten_registered_seven_advertised(self):
+    def test_fourteen_registered_eight_policy_first_advertised(self):
         data=json.loads(decorate_tools_list(self.payload()))
         tools=data['result']['tools']
-        self.assertEqual(len(tools),7)
-        self.assertEqual({t["name"] for t in tools},{"runtime_status","auto_divination","derive_meihua","derive_liuyao","get_interpretation_policy","batch_divination","plan_batch_chunks"})
+        self.assertEqual(len(tools),8)
+        self.assertEqual({t["name"] for t in tools},
+                         {"runtime_status", "get_routing_policy", "policy_divination",
+                          "policy_plan_batch_chunks", "policy_batch_divination",
+                          "derive_meihua", "derive_liuyao", "get_interpretation_policy"})
         for tool in tools:
             self.assertEqual(tool['securitySchemes'],[{'type':'noauth'}])
             self.assertEqual(tool['_meta']['securitySchemes'],[{'type':'noauth'}])
@@ -226,7 +230,7 @@ class ToolListTests(unittest.TestCase):
             self.assertFalse(tool['annotations']['destructiveHint'])
             self.assertFalse(tool['annotations']['openWorldHint'])
 
-    def test_missing_auto_is_denied(self):
+    def test_missing_declared_tool_is_denied(self):
         with self.assertRaisesRegex(ValueError,'inventory mismatch'):
             decorate_tools_list(self.payload(self.NAMES[:-1]))
 
