@@ -21,7 +21,7 @@ from chunk_plan import plan_chunks, PROTOCOL, DEFAULT_CHUNK_SIZE
 
 BASE = Path(__file__).resolve().parent
 ENGINE = DivinationBridge(BASE / "canonical-repo")
-MCP_RUNTIME_VERSION = "1.4.2-natural-language-timing"
+MCP_RUNTIME_VERSION = "1.5.0-policy-first-routing"
 INTERPRETATION_POLICY_VERSION = "canonical-owner-parity-v1"
 
 mcp = MCPServer(

@@ -34,6 +34,8 @@ Palmistry, Astrology, Zi Wei or new methods simply because they appear on main.
 
 ## Policy-first routing candidate (not yet Production Stable)
 
+Candidate MCP runtime identity: `1.5.0-policy-first-routing` (separate from the existing `git-sync-mcp-v1.4.2` Stable release).
+
 The candidate tools separate canonical method selection from MCP fact execution.
 The complete, SHA-verified `METHOD_ROUTING.md` is the source of routing
 judgment; the MCP server no longer keyword-classifies **policy-first** requests.
