@@ -15,6 +15,7 @@ from typing import Any
 
 from auto_routing import route_from_summary, execute_auto_route
 from policy_adapter import policy_identity
+from policy_first_routing import route_from_policy
 
 MAX_BATCH = 12
 MAX_SUMMARY_CHARS = 100
@@ -22,7 +23,7 @@ RECEIPT_FORMAT = "compact-original-cast-v2"
 _LABEL = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_-]{0,31}$")
 _ALLOWED_KEYS = frozenset({
     "label", "question_summary", "method_override", "has_completion_rule",
-    "has_horizon", "tarot_count",
+    "has_horizon", "tarot_count", "route_decision",
 })
 _SOURCE_FIELDS = (
     "source", "algorithm_version", "schema_version", "runtime_source_commit",
@@ -45,7 +46,7 @@ def _stable_hash(value: Any) -> str:
     return hashlib.sha256(content.encode("utf-8")).hexdigest()
 
 
-def validate_batch(items: Any) -> list[dict]:
+def validate_batch(items: Any, policy_first: bool = False) -> list[dict]:
     """Preflight the WHOLE mixed-method request before any RNG is consumed."""
     if not isinstance(items, list) or not 1 <= len(items) <= MAX_BATCH:
         raise ValueError(f"batch items must contain 1..{MAX_BATCH} independent questions")
@@ -61,12 +62,21 @@ def validate_batch(items: Any) -> list[dict]:
         summary = item.get("question_summary")
         if not isinstance(summary, str) or len(summary) > MAX_SUMMARY_CHARS:
             raise ValueError(f"{label}: anonymous question_summary must have <= {MAX_SUMMARY_CHARS} chars")
-        plan = route_from_summary(
-            summary, method_override=item.get("method_override", "auto"),
-            has_horizon=item.get("has_horizon", False),
-            has_completion_rule=item.get("has_completion_rule", False),
-            tarot_count=item.get("tarot_count", 3),
-        )
+        if policy_first:
+            if ("method_override" in item or "route_decision" not in item
+                    or "has_completion_rule" in item or "has_horizon" in item):
+                raise ValueError(f"{label}: POLICY_FIRST_ROUTE_REQUIRED")
+            plan = route_from_policy(summary, item["route_decision"],
+                                     tarot_count=item.get("tarot_count", 3))
+        else:
+            if "route_decision" in item:
+                raise ValueError(f"{label}: POLICY_FIRST_API_REQUIRED")
+            plan = route_from_summary(
+                summary, method_override=item.get("method_override", "auto"),
+                has_horizon=item.get("has_horizon", False),
+                has_completion_rule=item.get("has_completion_rule", False),
+                tarot_count=item.get("tarot_count", 3),
+            )
         if plan.get("status") == "needs_clarification":
             raise BatchClarificationRequired(label, plan)
         if plan.get("status") != "ready":
@@ -162,14 +172,15 @@ def _receipt(batch_id: str, index: int, label: str, plan: dict, payload: dict) -
     return {**receipt, "receipt_sha256": _stable_hash(receipt)}
 
 
-def execute_batch(items: Any, bridge_factory, expected_request_sha256: str | None = None) -> dict:
+def execute_batch(items: Any, bridge_factory, expected_request_sha256: str | None = None,
+                  policy_first: bool = False) -> dict:
     """One mixed batch; separate invocations are independent and stateless.
 
     Preflight ALL questions, then policy integrity; only then allocate a batch
     identity and draw in user-specified order. On a later error, completed
     receipts remain available and MUST NOT be redrawn automatically.
     """
-    approved = validate_batch(items)
+    approved = validate_batch(items, policy_first=policy_first)
     request_sha256 = _stable_hash(items)
     if expected_request_sha256 is not None:
         if (not isinstance(expected_request_sha256, str)
@@ -200,6 +211,13 @@ def execute_batch(items: Any, bridge_factory, expected_request_sha256: str | Non
                               "A failed or missing receipt cannot be recovered from this stateless server. "
                               "Do not assume the failed item did or did not consume randomness."),
             }
+    continuation_tool_hint = (
+        "For further NEW casts, read the routing policy and call policy_divination "
+        "or policy_plan_batch_chunks / policy_batch_divination; "
+        if policy_first else
+        "You may interleave subsequent batch_divination, auto_divination "
+        "or deterministic derive calls; "
+    )
     return {
         "status": "batch_completed", "batch_id": batch_id,
         "request_sha256": request_sha256,
@@ -207,8 +225,7 @@ def execute_batch(items: Any, bridge_factory, expected_request_sha256: str | Non
         "completed_count": len(completed), "total_count": len(approved),
         "receipts": completed, "policy_identity": pinned,
         "next_step": ("Preserve all distinct batch_id/receipt_id/receipt_sha256 values before "
-                      "interpreting. You may interleave subsequent batch_divination, "
-                      "auto_divination or deterministic derive calls; never substitute "
-                      "one receipt for another. Load each method's canonical policy "
-                      "once per distinct method. No server-side reading storage."),
+                      "interpreting. " + continuation_tool_hint +
+                      "never substitute one receipt for another. Load each method's "
+                      "canonical policy once per distinct method. No server-side reading storage."),
     }
