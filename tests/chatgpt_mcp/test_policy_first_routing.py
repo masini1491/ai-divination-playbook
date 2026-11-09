@@ -160,6 +160,8 @@ class PolicyFirstRoutingTests(unittest.TestCase):
         ]
         plan = plan_chunks(items, chunk_size=1, policy_first=True)
         self.assertEqual(plan["status"], "planned_no_cast")
+        self.assertIn("Call policy_batch_divination", plan["instructions"])
+        self.assertNotIn("Call batch_divination", plan["instructions"])
         self.assertEqual(plan["chunk_count"], 2)
         for index, ch in enumerate(plan["chunks"]):
             self.assertEqual(ch["items"][0]["route_decision"], items[index]["route_decision"])

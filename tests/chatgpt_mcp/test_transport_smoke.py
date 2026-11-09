@@ -127,6 +127,64 @@ class MCPTransportSmokeTests(unittest.TestCase):
         self.assertEqual(rejected['status'], 'invalid_input')
         self.assertEqual(spy.calls, [('meihua',)])
 
+    def test_policy_first_batch_instructions_and_hash_over_http(self):
+        import copy
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        from test_batch_cast import FakeBridge as ReceiptBridge
+
+        owner = self.extract_policy(self.rpc(
+            'tools/call', {'name': 'get_routing_policy', 'arguments': {}}))
+        def choose(method, function):
+            return {'source_commit': owner['source_commit'],
+                    'policy_sha256': owner['policy_sha256'],
+                    'selected_method': method, 'judgment_function': function,
+                    'selection_basis': 'policy_routing',
+                    'has_completion_rule': False, 'has_horizon': False}
+        items = [
+            {'label': 'T1', 'question_summary': '比較匿名方案的適配度',
+             'route_decision': choose('tarot', 'psychology_comparison')},
+            {'label': 'M2', 'question_summary': '匿名合作的下一階段轉折',
+             'route_decision': choose('meihua', 'process_evolution')},
+        ]
+        spy = ReceiptBridge()
+        def unpack(response):
+            value = response.get('structuredContent')
+            if value is None:
+                value = next(x['text'] for x in response.get('content', [])
+                             if isinstance(x, dict) and 'text' in x)
+            if isinstance(value, str):
+                value = json.loads(value)
+            return value.get('result', value)
+
+        with patch.object(service, 'ENGINE', spy):
+            plan = unpack(self.rpc('tools/call', {
+                'name': 'policy_plan_batch_chunks',
+                'arguments': {'items': items, 'chunk_size': 2}}, 220))
+            self.assertEqual(spy.calls, [])
+            self.assertEqual(plan['routing_mode'], 'policy-first-v1')
+            self.assertIn('Call policy_batch_divination', plan['instructions'])
+            self.assertNotIn('Call batch_divination', plan['instructions'])
+            chunk = plan['chunks'][0]
+            result = unpack(self.rpc('tools/call', {
+                'name': 'policy_batch_divination',
+                'arguments': {'items': chunk['items'],
+                              'expected_request_sha256': chunk['request_sha256']}}, 221))
+            self.assertEqual(result['status'], 'batch_completed')
+            self.assertEqual(result['request_sha256'], chunk['request_sha256'])
+            self.assertEqual([r['label'] for r in result['receipts']], ['T1', 'M2'])
+            self.assertIn('policy_batch_divination', result['next_step'])
+            self.assertNotIn('subsequent batch_divination', result['next_step'])
+            self.assertEqual(spy.calls, ['tarot', 'meihua'])
+
+            tampered = copy.deepcopy(chunk['items'])
+            tampered[0]['question_summary'] = '其他方案的比較'
+            denied = self.rpc('tools/call', {
+                'name': 'policy_batch_divination',
+                'arguments': {'items': tampered,
+                              'expected_request_sha256': chunk['request_sha256']}}, 222)
+            self.assertTrue(denied.get('isError', False), denied)
+            self.assertEqual(spy.calls, ['tarot', 'meihua'])
+
     def test_runtime_status_advertises_web_plugin_policy_parity_version(self):
         response = self.rpc('tools/call', {
             'name': 'runtime_status', 'arguments': {}}, 11)

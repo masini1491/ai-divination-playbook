@@ -211,6 +211,13 @@ def execute_batch(items: Any, bridge_factory, expected_request_sha256: str | Non
                               "A failed or missing receipt cannot be recovered from this stateless server. "
                               "Do not assume the failed item did or did not consume randomness."),
             }
+    continuation_tool_hint = (
+        "For further NEW casts, read the routing policy and call policy_divination "
+        "or policy_plan_batch_chunks / policy_batch_divination; "
+        if policy_first else
+        "You may interleave subsequent batch_divination, auto_divination "
+        "or deterministic derive calls; "
+    )
     return {
         "status": "batch_completed", "batch_id": batch_id,
         "request_sha256": request_sha256,
@@ -218,8 +225,7 @@ def execute_batch(items: Any, bridge_factory, expected_request_sha256: str | Non
         "completed_count": len(completed), "total_count": len(approved),
         "receipts": completed, "policy_identity": pinned,
         "next_step": ("Preserve all distinct batch_id/receipt_id/receipt_sha256 values before "
-                      "interpreting. You may interleave subsequent batch_divination, "
-                      "auto_divination or deterministic derive calls; never substitute "
-                      "one receipt for another. Load each method's canonical policy "
-                      "once per distinct method. No server-side reading storage."),
+                      "interpreting. " + continuation_tool_hint +
+                      "never substitute one receipt for another. Load each method's "
+                      "canonical policy once per distinct method. No server-side reading storage."),
     }

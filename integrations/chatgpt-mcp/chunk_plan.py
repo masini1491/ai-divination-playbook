@@ -2,8 +2,8 @@
 
 Planning does not consume randomness and requires no server storage. It cannot
 recover a completely lost response; the caller must preserve an acknowledged
-receipt group before starting the next. Every item in a chunk remains a normal
-batch_divination item and is validated by the existing canonical router.
+receipt group before starting the next. Each chunk preserves its selected route contract and uses the matching
+policy-first or legacy batch entry point.
 """
 from __future__ import annotations
 from typing import Any
@@ -65,13 +65,14 @@ def plan_chunks(items: Any, chunk_size: int=DEFAULT_CHUNK_SIZE,
         group=normalized[start:start+chunk_size]
         chunks.append({"chunk_index":len(chunks),"labels":[x["label"] for x in group],
              "items":group,"request_sha256":_digest(group)})
+    cast_tool = "policy_batch_divination" if policy_first else "batch_divination"
     return {"status":"planned_no_cast","protocol":PROTOCOL,
             "routing_mode":"policy-first-v1" if policy_first else "legacy-auto-v2",
             "max_batch_items":MAX_BATCH,"chunk_size":chunk_size,
             "total_items":len(normalized),"chunk_count":len(chunks),
             "plan_sha256":_digest(normalized),"chunks":chunks,
             "instructions":(
-                "Call batch_divination for the FIRST chunk only. Before calling "
+                f"Call {cast_tool} for the FIRST chunk only. Before calling "
                 "the next chunk, send exactly the planned items with "
                 "expected_request_sha256 set to that chunk's request_sha256. "
                 "Verify the returned request_sha256, status=batch_completed, "

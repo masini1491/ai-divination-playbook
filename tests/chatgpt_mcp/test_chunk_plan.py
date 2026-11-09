@@ -74,6 +74,8 @@ class ChunkPlanTests(unittest.TestCase):
                          [x["method_override"] for x in items])
         self.assertTrue(all(c["request_sha256"]==_digest(c["items"]) for c in plan["chunks"]))
         self.assertEqual(plan["plan_sha256"],_digest([x for c in plan["chunks"] for x in c["items"]]))
+        self.assertIn("Call batch_divination", plan["instructions"])
+        self.assertNotIn("policy_batch_divination", plan["instructions"])
         self.assertIn("STOP",plan["instructions"])
         self.assertIn("do NOT automatically retry",plan["instructions"])
 
